@@ -33,9 +33,7 @@ Use the sidebar to navigate through the sections, or search (`Ctrl+K` or `Cmd+K`
 Next.js has two different routers:
 
 - **App Router**: The newer router that supports new React features like Server Components.
-- **Pages Router**: The original router, still supported and being improved.
-
-At the top of the sidebar, you'll notice a dropdown menu that allows you to switch between the [App Router](/docs/app) and the [Pages Router](/docs/pages) docs.
+- ~~**Pages Router**: The original router, still supported and being improved.~~
 
 ### React version handling
 
@@ -43,7 +41,7 @@ The App Router and Pages Router handle React versions differently:
 
 - **App Router**: Uses [React canary releases](https://react.dev/blog/2023/05/03/react-canaries) built-in, which include all the stable React 19 changes, as well as newer features being validated in frameworks, prior to a new React release.
 
-- **Pages Router**: Uses the React version installed in your project's `package.json`.
+- ~~**Pages Router**: Uses the React version installed in your project's `package.json`.~~
 
 This approach ensures new React features work reliably in the App Router while maintaining backwards compatibility for existing Pages Router applications.
 

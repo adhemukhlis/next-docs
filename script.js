@@ -9,11 +9,11 @@ const ignoreList = ['02-pages', '03-architecture', '04-community']
 
 // Step 0: Cleanup previous runs if necessary
 if (fs.existsSync(nextJsDir)) {
-	console.log('Cleaning up existing next.js directory...')
+	console.log('🧹 Cleaning up existing next.js directory...')
 	fs.rmSync(nextJsDir, { recursive: true, force: true })
 }
 if (fs.existsSync(docsDir)) {
-	console.log('Cleaning up existing docs directory...')
+	console.log('🧹 Cleaning up existing docs directory...')
 	fs.rmSync(docsDir, { recursive: true, force: true })
 }
 const commitHashFile = path.join(rootDir, 'commit-hash.txt')
@@ -22,46 +22,46 @@ if (fs.existsSync(commitHashFile)) {
 }
 
 // Step 1: Run git clone with sparse-checkout
-console.log('Step 1: Running git clone with sparse-checkout...')
+console.log('🚚 Step 1: Running git clone with sparse-checkout...')
 const gitCommand =
 	"git clone --depth 1 --filter=blob:none --no-checkout https://github.com/vercel/next.js && cd next.js && git sparse-checkout set --no-cone 'docs/*' && git checkout"
 execSync(gitCommand, { stdio: 'inherit', cwd: rootDir, shell: true })
 
 // Step 2: Generate commit-hash.txt containing commit hash of canary branch
-console.log('\nStep 2: Generating commit-hash.txt...')
+console.log('\n📌 Step 2: Generating commit-hash.txt...')
 const commitHash = execSync('git rev-parse HEAD', { cwd: nextJsDir, encoding: 'utf8' }).trim()
 fs.writeFileSync(commitHashFile, commitHash + '\n', 'utf8')
-console.log(`- Commit hash saved: ${commitHash}`)
+console.log(`  🔖 Commit hash saved: ${commitHash}`)
 
 // Step 3: Move docs/ to current directory
-console.log('\nStep 3: Moving docs/ to root directory...')
+console.log('\n📂 Step 3: Moving docs/ to root directory...')
 const sourceDocs = path.join(nextJsDir, 'docs')
 if (fs.existsSync(sourceDocs)) {
 	fs.renameSync(sourceDocs, docsDir)
 } else {
-	console.error('Error: docs/ directory not found in next.js repository')
+	console.error('❌ Error: docs/ directory not found in next.js repository')
 	process.exit(1)
 }
 
 // Step 4: Remove downloaded next.js repository
-console.log('Step 4: Removing next.js repository directory...')
+console.log('🗑️  Step 4: Removing next.js repository directory...')
 fs.rmSync(nextJsDir, { recursive: true, force: true })
 
 // Step 5: Remove contents in docs/ based on ignore string array
-console.log('Step 5: Removing ignored contents from docs/...')
+console.log('🗑️  Step 5: Removing ignored contents from docs/...')
 if (fs.existsSync(docsDir)) {
 	const items = fs.readdirSync(docsDir)
 	for (const item of items) {
 		if (ignoreList.includes(item)) {
 			const itemPath = path.join(docsDir, item)
 			fs.rmSync(itemPath, { recursive: true, force: true })
-			console.log(`- Removed: ${item}`)
+			console.log(`  ➖ Removed: ${item}`)
 		}
 	}
 }
 
 // Step 6: Rename subdirectories in docs/ by removing "[number]-" prefix
-console.log('Step 6: Renaming subdirectories in docs/...')
+console.log('🏷️  Step 6: Renaming subdirectories in docs/...')
 if (fs.existsSync(docsDir)) {
 	const items = fs.readdirSync(docsDir)
 	for (const item of items) {
@@ -71,7 +71,7 @@ if (fs.existsSync(docsDir)) {
 			if (newName !== item) {
 				const newPath = path.join(docsDir, newName)
 				fs.renameSync(itemPath, newPath)
-				console.log(`- Renamed directory: ${item} -> ${newName}`)
+				console.log(`  ✏️  Renamed directory: ${item} -> ${newName}`)
 			}
 		}
 	}
@@ -95,7 +95,7 @@ function cleanMdxContent(filePath) {
 }
 
 // Step 7 & 8: Convert *.mdx files to *.md recursively and clean MDX artifacts
-console.log('Step 7 & 8: Converting *.mdx to *.md and cleaning MDX legacy blocks...')
+console.log('🔄 Step 7 & 8: Converting *.mdx to *.md and cleaning MDX legacy blocks...')
 function processDirectory(dir) {
 	if (!fs.existsSync(dir)) return 0
 	const entries = fs.readdirSync(dir, { withFileTypes: true })
@@ -125,11 +125,44 @@ function processDirectory(dir) {
 }
 
 const convertedCount = processDirectory(docsDir)
-console.log(`- Processed and converted ${convertedCount} .mdx file(s) to .md with cleaned content.`)
+console.log(`  ✨ Processed and converted ${convertedCount} .mdx file(s) to .md with cleaned content.`)
 
-// Step 9: Run prettier formatting
-console.log('\nStep 9: Running Prettier formatting...')
+// Step 9: Apply custom rules from patch/rules.js
+console.log('\n🛠️  Step 9: Applying custom rules from patch/rules.js...')
+const rulesFile = path.join(rootDir, 'patch', 'rules.js')
+if (fs.existsSync(rulesFile)) {
+	const rules = require(rulesFile)
+	let appliedCount = 0
+
+	for (const rule of rules) {
+		const targetPath = path.resolve(rootDir, rule.target)
+		if (fs.existsSync(targetPath)) {
+			let content = fs.readFileSync(targetPath, 'utf8')
+			let modified = false
+
+			for (const { search, replace } of rule.replacements) {
+				const newContent = content.replace(search, replace)
+				if (newContent !== content) {
+					content = newContent
+					modified = true
+				}
+			}
+
+			if (modified) {
+				fs.writeFileSync(targetPath, content, 'utf8')
+				console.log(`  📝 Applied rules to: ${rule.target}`)
+				appliedCount++
+			}
+		} else {
+			console.warn(`  ⚠️  Warning: Target file not found: ${rule.target}`)
+		}
+	}
+	console.log(`  ✅ Processed ${appliedCount} rule set(s).`)
+}
+
+// Step 10: Run prettier formatting
+console.log('\n🎨 Step 10: Running Prettier formatting...')
 const prettierCommand = 'prettier --config .prettierrc --log-level silent --write "**/*.{js,jsx,mjs,cjs,ts,tsx,css,scss,less,json,yml,yaml,md}"'
 execSync(prettierCommand, { stdio: 'inherit', cwd: rootDir, shell: true })
 
-console.log('\nAll steps completed successfully!')
+console.log('\n🎉 All steps completed successfully!')

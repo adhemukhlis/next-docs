@@ -41,7 +41,6 @@ To implement this pattern, use:
 
 - [Route Handlers](/docs/app/api-reference/file-conventions/route)
 - [`proxy`](/docs/app/api-reference/file-conventions/proxy)
-- In Pages Router, [API Routes](/docs/pages/building-your-application/routing/api-routes)
 
 ## Public Endpoints
 

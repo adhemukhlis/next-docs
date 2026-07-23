@@ -23,7 +23,6 @@ Top-level folders are used to organize your application's code and static assets
 |                                                                    |                                    |
 | ------------------------------------------------------------------ | ---------------------------------- |
 | [`app`](/docs/app)                                                 | App Router                         |
-| [`pages`](/docs/pages/building-your-application/routing)           | Pages Router                       |
 | [`public`](/docs/app/api-reference/file-conventions/public-folder) | Static assets to be served         |
 | [`src`](/docs/app/api-reference/file-conventions/src-folder)       | Optional application source folder |
 
