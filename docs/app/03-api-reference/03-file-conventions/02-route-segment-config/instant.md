@@ -144,8 +144,6 @@ The `@next/playwright` package exports an `instant()` helper that holds back dyn
 import { instant } from '@next/playwright'
 ```
 
-{/_ TODO: remove when fixed and from prod-docs-release _/}
-
 ## Known issue: shared cookie across projects
 
 The DevTools use a `next-instant-navigation-testing` cookie to hold back dynamic content and freeze the page at the instant UI. Because cookies are scoped to the domain and not the port, running multiple projects on the same domain (typically `localhost`) means the cookie is shared across them and can cause unexpected behavior. Clear the cookie or close the Navigation Inspector panel when switching between projects to avoid issues.

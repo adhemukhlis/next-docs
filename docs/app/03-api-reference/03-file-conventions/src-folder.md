@@ -7,8 +7,6 @@ related:
   - app/getting-started/project-structure
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 As an alternative to having the special Next.js `app` or `pages` directories in the root of your project, Next.js also supports the common pattern of placing application code under the `src` folder.
 
 This separates application code from project configuration files which mostly live in the root of a project, which is preferred by some individuals and teams.

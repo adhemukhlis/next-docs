@@ -10,8 +10,6 @@ description: Learn how to set up Cypress with Next.js for End-to-End (E2E) and C
 >
 > - Cypress versions below 13.6.3 do not support [TypeScript version 5](https://github.com/cypress-io/cypress/issues/27731) with `moduleResolution:"bundler"`. However, this issue has been resolved in Cypress version 13.6.3 and later. [cypress v13.6.3](https://docs.cypress.io/guides/references/changelog#13-6-3)
 
-<AppOnly>
-
 ## Quickstart
 
 You can use `create-next-app` with the [with-cypress example](https://github.com/vercel/next.js/tree/canary/examples/with-cypress) to quickly get started.
@@ -31,8 +29,6 @@ yarn create next-app --example with-cypress with-cypress-app
 ```bash package="bun"
 bun create next-app --example with-cypress with-cypress-app
 ```
-
-</AppOnly>
 
 ## Manual setup
 
@@ -114,8 +110,6 @@ module.exports = defineConfig({
 
 Then, create two new Next.js files:
 
-<AppOnly>
-
 ```jsx filename="app/page.js"
 import Link from 'next/link'
 
@@ -141,38 +135,6 @@ export default function Page() {
 	)
 }
 ```
-
-</AppOnly>
-
-<PagesOnly>
-
-```jsx filename="pages/index.js"
-import Link from 'next/link'
-
-export default function Home() {
-	return (
-		<div>
-			<h1>Home</h1>
-			<Link href="/about">About</Link>
-		</div>
-	)
-}
-```
-
-```jsx filename="pages/about.js"
-import Link from 'next/link'
-
-export default function About() {
-	return (
-		<div>
-			<h1>About</h1>
-			<Link href="/">Home</Link>
-		</div>
-	)
-}
-```
-
-</PagesOnly>
 
 Add a test to check your navigation is working correctly:
 
@@ -241,8 +203,6 @@ module.exports = defineConfig({
 
 Assuming the same components from the previous section, add a test to validate a component is rendering the expected output:
 
-<AppOnly>
-
 ```tsx filename="cypress/component/about.cy.tsx"
 import Page from '../../app/page'
 
@@ -260,30 +220,6 @@ describe('<Page />', () => {
 	})
 })
 ```
-
-</AppOnly>
-
-<PagesOnly>
-
-```jsx filename="cypress/component/about.cy.js"
-import AboutPage from '../../pages/about'
-
-describe('<AboutPage />', () => {
-	it('should render and display expected content', () => {
-		// Mount the React component for the About page
-		cy.mount(<AboutPage />)
-
-		// The new page should contain an h1 with "About page"
-		cy.get('h1').contains('About')
-
-		// Validate that a link with the expected URL is present
-		// *Following* the link is better suited to an E2E test
-		cy.get('a[href="/"]').should('be.visible')
-	})
-})
-```
-
-</PagesOnly>
 
 > **Good to know**:
 >

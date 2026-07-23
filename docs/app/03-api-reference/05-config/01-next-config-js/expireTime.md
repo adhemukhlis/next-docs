@@ -3,8 +3,6 @@ title: expireTime
 description: Customize stale-while-revalidate expire time for ISR enabled pages.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 You can specify a custom `stale-while-revalidate` expire time for CDNs to consume in the `Cache-Control` header for ISR enabled pages.
 
 Open `next.config.js` and add the `expireTime` config:

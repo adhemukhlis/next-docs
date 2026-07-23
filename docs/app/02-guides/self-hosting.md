@@ -4,8 +4,6 @@ nav_title: Self-Hosting
 description: Learn how to self-host your Next.js application on a Node.js server, Docker image, or static HTML files (static exports).
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 When [deploying](/docs/app/getting-started/deploying) your Next.js app, you may want to configure how different features are handled based on your infrastructure.
 
 > **🎥 Watch:** Learn more about self-hosting Next.js → [YouTube (45 minutes)](https://www.youtube.com/watch?v=sIVL4JMqRfc).
@@ -38,14 +36,6 @@ Next.js can support both build time and runtime environment variables.
 
 **By default, environment variables are only available on the server**. To expose an environment variable to the browser, it must be prefixed with `NEXT_PUBLIC_`. However, these public environment variables will be inlined into the JavaScript bundle during `next build`.
 
-<PagesOnly>
-
-To read runtime environment variables, we recommend using `getServerSideProps` or [incrementally adopting the App Router](/docs/app/guides/migrating/app-router-migration).
-
-</PagesOnly>
-
-<AppOnly>
-
 You safely read environment variables on the server during dynamic rendering.
 
 ```tsx filename="app/page.ts" switcher
@@ -73,8 +63,6 @@ export default async function Component() {
 	// ...
 }
 ```
-
-</AppOnly>
 
 This allows you to use a singular Docker image that can be promoted through multiple environments with different values.
 
@@ -232,8 +220,6 @@ module.exports = {
 
 > **Good to know:** When the application is reloaded, there may be a loss of application state if it's not designed to persist between page navigations. URL state or local storage would persist, but component state like `useState` would be lost.
 
-<AppOnly>
-
 ## Streaming and Suspense
 
 The Next.js App Router supports [streaming responses](/docs/app/api-reference/file-conventions/loading) when self-hosting. If you are using nginx or a similar proxy, you will need to configure it to disable buffering to enable streaming.
@@ -286,49 +272,8 @@ If you don't need a mix of both static and dynamic components, you can make your
 
 For detailed guidance on CDN caching behavior, graceful degradation, and cache variability, see [CDN Caching](/docs/app/guides/cdn-caching). For Partial Prerendering support on different platforms, see the [PPR Platform Guide](/docs/app/guides/ppr-platform-guide) and the [Deployment Adapter API](/docs/app/api-reference/config/next-config-js/adapterPath).
 
-</AppOnly>
-
-<AppOnly>
-
 ## `after`
 
 [`after`](/docs/app/api-reference/functions/after) is fully supported when self-hosting with `next start`.
 
 When stopping the server, ensure a graceful shutdown by sending `SIGINT` or `SIGTERM` signals and waiting. The Next.js server will finish in-flight requests and execute any pending `after()` callbacks before exiting. Platforms should allow a configurable drain period (10-30 seconds is recommended) to ensure all background work completes.
-
-</AppOnly>
-
-<PagesOnly>
-
-## Manual Graceful Shutdowns
-
-When self-hosting, you might want to run code when the server shuts down on `SIGTERM` or `SIGINT` signals.
-
-You can set the env variable `NEXT_MANUAL_SIG_HANDLE` to `true` and then register a handler for that signal inside your `_document.js` file. You will need to register the environment variable directly in the `package.json` script, and not in the `.env` file.
-
-> **Good to know**: Manual signal handling is not available in `next dev`.
-
-```json filename="package.json"
-{
-	"scripts": {
-		"dev": "next dev",
-		"build": "next build",
-		"start": "NEXT_MANUAL_SIG_HANDLE=true next start"
-	}
-}
-```
-
-```js filename="pages/_document.js"
-if (process.env.NEXT_MANUAL_SIG_HANDLE) {
-	process.on('SIGTERM', () => {
-		console.log('Received SIGTERM: cleaning up')
-		process.exit(0)
-	})
-	process.on('SIGINT', () => {
-		console.log('Received SIGINT: cleaning up')
-		process.exit(0)
-	})
-}
-```
-
-</PagesOnly>

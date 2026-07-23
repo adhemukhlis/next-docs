@@ -3,8 +3,6 @@ title: Edge Runtime
 description: API Reference for the Edge Runtime.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 Next.js has two server runtimes you can use in your application:
 
 - The **Node.js Runtime** (default), which has access to all Node.js APIs and is used for rendering your application.

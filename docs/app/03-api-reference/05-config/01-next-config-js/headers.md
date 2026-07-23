@@ -3,8 +3,6 @@ title: headers
 description: Add custom HTTP headers to your Next.js app.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 Headers allow you to set custom HTTP headers on the response to an incoming request on a given path.
 
 To set custom HTTP headers you can use the `headers` key in `next.config.js`:
@@ -324,17 +322,7 @@ module.exports = {
 
 ## Headers with i18n support
 
-<AppOnly>
-
 When leveraging [`i18n` support](/docs/app/guides/internationalization) with headers each `source` is automatically prefixed to handle the configured `locales` unless you add `locale: false` to the header. If `locale: false` is used you must prefix the `source` with a locale for it to be matched correctly.
-
-</AppOnly>
-
-<PagesOnly>
-
-When leveraging [`i18n` support](/docs/pages/guides/internationalization) with headers each `source` is automatically prefixed to handle the configured `locales` unless you add `locale: false` to the header. If `locale: false` is used you must prefix the `source` with a locale for it to be matched correctly.
-
-</PagesOnly>
 
 ```js filename="next.config.js"
 module.exports = {
@@ -398,83 +386,13 @@ Next.js sets the `Cache-Control` header of `public, max-age=31536000, immutable`
 
 However, you can set `Cache-Control` headers for other responses or data.
 
-<AppOnly>
-
 Learn more about [caching](/docs/app/getting-started/caching) with the App Router.
-
-</AppOnly>
-
-<PagesOnly>
-
-If you need to revalidate the cache of a page that has been [statically generated](/docs/pages/building-your-application/rendering/static-site-generation), you can do so by setting the `revalidate` prop in the page's [`getStaticProps`](/docs/pages/building-your-application/data-fetching/get-static-props) function.
-
-To cache the response from an [API Route](/docs/pages/building-your-application/routing/api-routes), you can use `res.setHeader`:
-
-```ts filename="pages/api/hello.ts" switcher
-import type { NextApiRequest, NextApiResponse } from 'next'
-
-type ResponseData = {
-	message: string
-}
-
-export default function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
-	res.setHeader('Cache-Control', 's-maxage=86400')
-	res.status(200).json({ message: 'Hello from Next.js!' })
-}
-```
-
-```js filename="pages/api/hello.js" switcher
-export default function handler(req, res) {
-	res.setHeader('Cache-Control', 's-maxage=86400')
-	res.status(200).json({ message: 'Hello from Next.js!' })
-}
-```
-
-You can also use caching headers (`Cache-Control`) inside `getServerSideProps` to cache dynamic responses. For example, using [`stale-while-revalidate`](https://web.dev/stale-while-revalidate/).
-
-```ts filename="pages/index.tsx" switcher
-import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
-
-// This value is considered fresh for ten seconds (s-maxage=10).
-// If a request is repeated within the next 10 seconds, the previously
-// cached value will still be fresh. If the request is repeated before 59 seconds,
-// the cached value will be stale but still render (stale-while-revalidate=59).
-//
-// In the background, a revalidation request will be made to populate the cache
-// with a fresh value. If you refresh the page, you will see the new value.
-export const getServerSideProps = (async (context) => {
-	context.res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59')
-
-	return {
-		props: {},
-	}
-}) satisfies GetServerSideProps
-```
-
-```js filename="pages/index.js" switcher
-// This value is considered fresh for ten seconds (s-maxage=10).
-// If a request is repeated within the next 10 seconds, the previously
-// cached value will still be fresh. If the request is repeated before 59 seconds,
-// the cached value will be stale but still render (stale-while-revalidate=59).
-//
-// In the background, a revalidation request will be made to populate the cache
-// with a fresh value. If you refresh the page, you will see the new value.
-export async function getServerSideProps({ req, res }) {
-	res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59')
-
-	return {
-		props: {},
-	}
-}
-```
-
-</PagesOnly>
 
 ## Options
 
 ### CORS
 
-[Cross-Origin Resource Sharing (CORS)](https://developer.mozilla.org/docs/Web/HTTP/CORS) is a security feature that allows you to control which sites can access your resources. You can set the `Access-Control-Allow-Origin` header to allow a specific origin to access your <PagesOnly>API Endpoints</PagesOnly><AppOnly>Route Handlers</AppOnly>.
+[Cross-Origin Resource Sharing (CORS)](https://developer.mozilla.org/docs/Web/HTTP/CORS) is a security feature that allows you to control which sites can access your resources. You can set the `Access-Control-Allow-Origin` header to allow a specific origin to access your Route Handlers.
 
 ```js
 headers() {

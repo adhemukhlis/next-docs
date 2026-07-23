@@ -3,10 +3,6 @@ title: Installation
 description: Learn how to create a new Next.js application with the `create-next-app` CLI, and set up TypeScript, ESLint, and Module Path Aliases.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
-<AppOnly>
-
 Create a new Next.js app and run it locally.
 
 ## Quick start
@@ -40,8 +36,6 @@ bun dev
 ```
 
 - `--yes` skips prompts using saved preferences or defaults. The default setup enables TypeScript, Tailwind CSS, ESLint, App Router, and Turbopack, with import alias `@/*`, and includes `AGENTS.md` (with a `CLAUDE.md` that references it) to guide coding agents to write up-to-date Next.js code.
-
-</AppOnly>
 
 ## System requirements
 
@@ -155,8 +149,6 @@ These scripts refer to the different stages of developing an application:
 
 Turbopack is now the default bundler. To use Webpack run `next dev --webpack` or `next build --webpack`. See the [Turbopack docs](/docs/app/api-reference/turbopack) for configuration details.
 
-<AppOnly>
-
 ### Create the `app` directory
 
 Next.js uses file-system routing, which means the routes in your application are determined by how you structure your files.
@@ -212,80 +204,6 @@ Both `layout.tsx` and `page.tsx` will be rendered when the user visits the root 
 > - If you forget to create the root layout, Next.js will automatically create this file when running the development server with `next dev`.
 > - You can optionally use a [`src` folder](/docs/app/api-reference/file-conventions/src-folder) in the root of your project to separate your application's code from configuration files.
 
-</AppOnly>
-
-<PagesOnly>
-
-### Create the `pages` directory
-
-Next.js uses file-system routing, which means the routes in your application are determined by how you structure your files.
-
-Create a `pages` directory at the root of your project. Then, add an `index.tsx` file inside your `pages` folder. This will be your home page (`/`):
-
-```tsx filename="pages/index.tsx" switcher
-export default function Page() {
-	return <h1>Hello, Next.js!</h1>
-}
-```
-
-```jsx filename="pages/index.js" switcher
-export default function Page() {
-	return <h1>Hello, Next.js!</h1>
-}
-```
-
-Next, add an `_app.tsx` file inside `pages/` to define the global layout. Learn more about the [custom App file](/docs/pages/building-your-application/routing/custom-app).
-
-```tsx filename="pages/_app.tsx" switcher
-import type { AppProps } from 'next/app'
-
-export default function App({ Component, pageProps }: AppProps) {
-	return <Component {...pageProps} />
-}
-```
-
-```jsx filename="pages/_app.js" switcher
-export default function App({ Component, pageProps }) {
-	return <Component {...pageProps} />
-}
-```
-
-Finally, add a `_document.tsx` file inside `pages/` to control the initial response from the server. Learn more about the [custom Document file](/docs/pages/building-your-application/routing/custom-document).
-
-```tsx filename="pages/_document.tsx" switcher
-import { Html, Head, Main, NextScript } from 'next/document'
-
-export default function Document() {
-	return (
-		<Html>
-			<Head />
-			<body>
-				<Main />
-				<NextScript />
-			</body>
-		</Html>
-	)
-}
-```
-
-```jsx filename="pages/_document.js" switcher
-import { Html, Head, Main, NextScript } from 'next/document'
-
-export default function Document() {
-	return (
-		<Html>
-			<Head />
-			<body>
-				<Main />
-				<NextScript />
-			</body>
-		</Html>
-	)
-}
-```
-
-</PagesOnly>
-
 ### Create the `public` folder (optional)
 
 Create a [`public` folder](/docs/app/api-reference/file-conventions/public-folder) at the root of your project to store static assets such as images, fonts, etc. Files inside `public` can then be referenced by your code starting from the base URL (`/`).
@@ -326,15 +244,13 @@ export default function Page() {
 
 1. Run `npm run dev` to start the development server.
 2. Visit `http://localhost:3000` to view your application.
-3. Edit the <AppOnly>`app/page.tsx`</AppOnly><PagesOnly>`pages/index.tsx`</PagesOnly> file and save it to see the updated result in your browser.
+3. Edit the `app/page.tsx` file and save it to see the updated result in your browser.
 
 ## Set up TypeScript
 
 > Minimum TypeScript version: `v5.1.0`
 
 Next.js comes with built-in TypeScript support. To add TypeScript to your project, rename a file to `.ts` / `.tsx` and run `next dev`. Next.js will automatically install the necessary dependencies and add a `tsconfig.json` file with the recommended config options.
-
-<AppOnly>
 
 ### IDE Plugin
 
@@ -354,11 +270,7 @@ You can enable the plugin in VS Code by:
   height="637"
 />
 
-</AppOnly>
-
 See the [TypeScript reference](/docs/app/api-reference/config/typescript) page for more information.
-
-<AppOnly>
 
 ## Set up your editor
 
@@ -388,8 +300,6 @@ Set up custom editor labels so my Next.js App Router files are easy to tell apar
 ```
 
 > **Good to know:** JetBrains IDEs (WebStorm, IntelliJ) show the folder for same-named files automatically, so no setup is needed.
-
-</AppOnly>
 
 ## Set up linting
 

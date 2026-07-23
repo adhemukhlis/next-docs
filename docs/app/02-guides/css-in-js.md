@@ -4,10 +4,6 @@ nav_title: CSS-in-JS
 description: Use CSS-in-JS libraries with Next.js
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
-<AppOnly>
-
 > **Warning:** Using CSS-in-JS with newer React features like Server Components and Streaming requires library authors to support the latest version of React, including [concurrent rendering](https://react.dev/blog/2022/03/29/react-v18#what-is-concurrent-react).
 
 The following libraries are supported in Client Components in the `app` directory (alphabetical):
@@ -222,77 +218,3 @@ export default function RootLayout({ children }) {
 > - During streaming, styles from each chunk will be collected and appended to existing styles. After client-side hydration is complete, `styled-components` will take over as usual and inject any further dynamic styles.
 > - We specifically use a Client Component at the top level of the tree for the style registry because it's more efficient to extract CSS rules this way. It avoids re-generating styles on subsequent server renders, and prevents them from being sent in the Server Component payload.
 > - For advanced use cases where you need to configure individual properties of styled-components compilation, you can read our [Next.js styled-components API reference](/docs/architecture/nextjs-compiler#styled-components) to learn more.
-
-</AppOnly>
-
-<PagesOnly>
-
-<details>
-  <summary>Examples</summary>
-
-- [Styled JSX](https://github.com/vercel/next.js/tree/canary/examples/with-styled-jsx)
-- [Styled Components](https://github.com/vercel/next.js/tree/canary/examples/with-styled-components)
-- [Emotion](https://github.com/vercel/next.js/tree/canary/examples/with-emotion)
-- [Linaria](https://github.com/vercel/next.js/tree/canary/examples/with-linaria)
-- [Cxs](https://github.com/vercel/next.js/tree/canary/examples/with-cxs)
-- [Fela](https://github.com/vercel/next.js/tree/canary/examples/with-fela)
-- [Stitches](https://github.com/vercel/next.js/tree/canary/examples/with-stitches)
-
-</details>
-
-It's possible to use any existing CSS-in-JS solution. The simplest one is inline styles:
-
-```jsx
-function HiThere() {
-	return <p style={{ color: 'red' }}>hi there</p>
-}
-
-export default HiThere
-```
-
-We bundle [styled-jsx](https://github.com/vercel/styled-jsx) to provide support for isolated scoped CSS. The aim is to support "shadow CSS" similar to Web Components, which unfortunately [do not support server-rendering and are JS-only](https://github.com/w3c/webcomponents/issues/71).
-
-See the above examples for other popular CSS-in-JS solutions (like Styled Components).
-
-A component using `styled-jsx` looks like this:
-
-```jsx
-function HelloWorld() {
-	return (
-		<div>
-			Hello world
-			<p>scoped!</p>
-			<style jsx>{`
-				p {
-					color: blue;
-				}
-				div {
-					background: red;
-				}
-				@media (max-width: 600px) {
-					div {
-						background: blue;
-					}
-				}
-			`}</style>
-			<style
-				global
-				jsx>{`
-				body {
-					background: black;
-				}
-			`}</style>
-		</div>
-	)
-}
-
-export default HelloWorld
-```
-
-Please see the [styled-jsx documentation](https://github.com/vercel/styled-jsx) for more examples.
-
-### Disabling JavaScript
-
-Yes, if you disable JavaScript the CSS will still be loaded in the production build (`next start`). During development, we require JavaScript to be enabled to provide the best developer experience with [Fast Refresh](https://nextjs.org/blog/next-9-4#fast-refresh).
-
-</PagesOnly>

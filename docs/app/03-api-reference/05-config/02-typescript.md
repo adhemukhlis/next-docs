@@ -3,8 +3,6 @@ title: TypeScript
 description: Next.js provides a TypeScript-first development experience for building your React application.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 Next.js comes with built-in TypeScript, automatically installing the necessary packages and configuring the proper settings when you create a new project with `create-next-app`.
 
 To add TypeScript to an existing project, rename a file to `.ts` / `.tsx`. Run `next dev` and `next build` to automatically install the necessary dependencies and add a `tsconfig.json` file with the recommended config options.
@@ -64,8 +62,6 @@ Next.js does not enable this option automatically. If you install TypeScript 7 w
 > - The CLI checks the complete project selected by your `tsconfig` file. This includes test files and `.next/dev/types` when they are included by that configuration. [`next build --debug-build-paths`](/docs/app/api-reference/cli/next#next-build-options) does not narrow the files that are type checked and produces a warning when used with this option.
 > - [`typescript.tsconfigPath`](#custom-tsconfig-path) continues to select the configuration passed to `tsc`. [`typescript.ignoreBuildErrors`](#disabling-typescript-errors-in-production) skips the type-checking step, including the CLI checker.
 > - `experimental.useTypeScriptCli` is experimental and its behavior may change.
-
-<AppOnly>
 
 ## IDE Plugin
 
@@ -131,8 +127,6 @@ Next.js generates global helpers for App Router route types. These are available
 - [`PageProps`](/docs/app/api-reference/file-conventions/page#page-props-helper)
 - [`LayoutProps`](/docs/app/api-reference/file-conventions/layout#layout-props-helper)
 - [`RouteContext`](/docs/app/api-reference/file-conventions/route#route-context-helper)
-
-</AppOnly>
 
 ## `next-env.d.ts`
 
@@ -236,16 +230,12 @@ Next.js will generate a link definition in `.next/types` that contains informati
 
 > **Good to know**: If you set up your project without `create-next-app`, ensure the generated Next.js types are included by adding `.next/types/**/*.ts` to the `include` array in your `tsconfig.json`:
 
-{/_ prettier-ignore-start _/}
-
 ```json filename="tsconfig.json" highlight={4}
 {
 	"include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
 	"exclude": ["node_modules"]
 }
 ```
-
-{/_ prettier-ignore-end _/}
 
 Currently, support includes any string literal, including dynamic segments. For non-literal strings, you need to manually cast with `as Route`. The example below shows both `next/link` and `next/navigation` usage:
 
@@ -380,79 +370,11 @@ export default nextConfig
 
 > **Good to know**: Types are generated based on the environment variables loaded at development runtime, which excludes variables from `.env.production*` files by default. To include production-specific variables, run `next dev` with `NODE_ENV=production`.
 
-<AppOnly>
-
 ### With Async Server Components
 
 To use an `async` Server Component with TypeScript, ensure you are using TypeScript `5.1.3` or higher and `@types/react` `18.2.8` or higher.
 
 If you are using an older version of TypeScript, you may see a `'Promise<Element>' is not a valid JSX element` type error. Updating to the latest version of TypeScript and `@types/react` should resolve this issue.
-
-</AppOnly>
-
-<PagesOnly>
-
-### Static Generation and Server-side Rendering
-
-For [`getStaticProps`](/docs/pages/api-reference/functions/get-static-props), [`getStaticPaths`](/docs/pages/api-reference/functions/get-static-paths), and [`getServerSideProps`](/docs/pages/api-reference/functions/get-server-side-props), you can use the `GetStaticProps`, `GetStaticPaths`, and `GetServerSideProps` types respectively:
-
-```tsx filename="pages/blog/[slug].tsx"
-import type { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
-
-export const getStaticProps = (async (context) => {
-	// ...
-}) satisfies GetStaticProps
-
-export const getStaticPaths = (async () => {
-	// ...
-}) satisfies GetStaticPaths
-
-export const getServerSideProps = (async (context) => {
-	// ...
-}) satisfies GetServerSideProps
-```
-
-> **Good to know:** `satisfies` was added to TypeScript in [4.9](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html). We recommend upgrading to the latest version of TypeScript.
-
-### With API Routes
-
-The following is an example of how to use the built-in types for API routes:
-
-```ts filename="pages/api/hello.ts"
-import type { NextApiRequest, NextApiResponse } from 'next'
-
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-	res.status(200).json({ name: 'John Doe' })
-}
-```
-
-You can also type the response data:
-
-```ts filename="pages/api/hello.ts"
-import type { NextApiRequest, NextApiResponse } from 'next'
-
-type Data = {
-	name: string
-}
-
-export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
-	res.status(200).json({ name: 'John Doe' })
-}
-```
-
-### With custom `App`
-
-If you have a [custom `App`](/docs/pages/building-your-application/routing/custom-app), you can use the built-in type `AppProps` and change file name to `./pages/_app.tsx` like so:
-
-```ts
-import type { AppProps } from 'next/app'
-
-export default function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
-}
-```
-
-</PagesOnly>
 
 ### Incremental type checking
 

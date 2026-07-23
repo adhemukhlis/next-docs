@@ -3,8 +3,6 @@ title: userAgent
 description: The userAgent helper extends the Web Request API with additional properties and methods to interact with the user agent object from the request.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 The `userAgent` helper extends the [Web Request API](https://developer.mozilla.org/docs/Web/API/Request) with additional properties and methods to interact with the user agent object from the request.
 
 ```ts filename="proxy.ts" switcher

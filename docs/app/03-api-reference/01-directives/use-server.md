@@ -159,8 +159,6 @@ export default async function PostPage({ params }) {
 
 Design your data access functions as secure primitives: validate inputs, check authentication and authorization, and constrain return types to only what the caller needs. When Server Functions delegate to a [Data Access Layer](/docs/app/guides/data-security#using-a-data-access-layer-for-mutations), these guarantees live in one place and apply consistently.
 
-{/_ TODO: showcase input validation _/}
-
 ### Authentication and authorization
 
 Always authenticate and authorize users before performing sensitive server-side operations. Read authentication from cookies or headers rather than accepting tokens as function parameters.

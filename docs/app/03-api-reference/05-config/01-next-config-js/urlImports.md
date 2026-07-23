@@ -4,8 +4,6 @@ description: Configure Next.js to allow importing modules from external URLs.
 version: experimental
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 URL imports are an experimental feature that allows you to import modules directly from external servers (instead of from the local disk).
 
 > **Warning**: Only use domains that you trust to download and execute on your machine. Please exercise discretion, and caution until the feature is flagged as stable.

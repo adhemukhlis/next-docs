@@ -4,8 +4,6 @@ nav_title: Environment Variables
 description: Learn to add and access environment variables in your Next.js application.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 Next.js comes with built-in support for environment variables, which allows you to do the following:
 
 - [Use `.env` to load environment variables](#loading-environment-variables)
@@ -22,27 +20,6 @@ DB_HOST=localhost
 DB_USER=myuser
 DB_PASS=mypassword
 ```
-
-<PagesOnly>
-
-This loads `process.env.DB_HOST`, `process.env.DB_USER`, and `process.env.DB_PASS` into the Node.js environment automatically allowing you to use them in [Next.js data fetching methods](/docs/pages/building-your-application/data-fetching) and [API routes](/docs/pages/building-your-application/routing/api-routes).
-
-For example, using [`getStaticProps`](/docs/pages/building-your-application/data-fetching/get-static-props):
-
-```js filename="pages/index.js"
-export async function getStaticProps() {
-	const db = await myDB.connect({
-		host: process.env.DB_HOST,
-		username: process.env.DB_USER,
-		password: process.env.DB_PASS,
-	})
-	// ...
-}
-```
-
-</PagesOnly>
-
-<AppOnly>
 
 > **Note**: Next.js also supports multiline variables inside of your `.env*` files:
 >
@@ -74,8 +51,6 @@ export async function GET() {
 	// ...
 }
 ```
-
-</AppOnly>
 
 ### Loading Environment Variables with `@next/env`
 
@@ -196,14 +171,6 @@ Next.js can support both build time and runtime environment variables.
 
 **By default, environment variables are only available on the server**. To expose an environment variable to the browser, it must be prefixed with `NEXT_PUBLIC_`. However, these public environment variables will be inlined into the JavaScript bundle during `next build`.
 
-<PagesOnly>
-
-To read runtime environment variables, we recommend using `getServerSideProps` or [incrementally adopting the App Router](/docs/app/guides/migrating/app-router-migration).
-
-</PagesOnly>
-
-<AppOnly>
-
 You can safely read environment variables on the server during dynamic rendering:
 
 ```tsx filename="app/page.ts" switcher
@@ -231,8 +198,6 @@ export default async function Component() {
 	// ...
 }
 ```
-
-</AppOnly>
 
 This allows you to use a singular Docker image that can be promoted through multiple environments with different values.
 

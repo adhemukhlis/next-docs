@@ -3,11 +3,7 @@ title: logging
 description: Configure logging behavior in the terminal when running Next.js in development mode, including fetch logging, incoming requests, and forwarding browser console logs to the terminal.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 ## Options
-
-<AppOnly>
 
 ### Fetching
 
@@ -53,8 +49,6 @@ When enabled, the terminal displays each Server Function call with its function 
 POST /
   └─ ƒ myAction(arg1, arg2) in 5ms app/actions.ts
 ```
-
-</AppOnly>
 
 ### Incoming Requests
 
@@ -115,8 +109,6 @@ module.exports = {
 
 When enabled, browser logs include source location information (file path and line number) by default. For example:
 
-<AppOnly>
-
 ```tsx filename="app/page.tsx" highlight={8}
 'use client'
 
@@ -138,32 +130,6 @@ Clicking the button prints this message to the terminal:
 ```bash filename="Terminal"
 [browser] Hello World (app/page.tsx:8:17)
 ```
-
-</AppOnly>
-
-<PagesOnly>
-
-```tsx filename="pages/index.tsx" highlight={6}
-export default function Home() {
-	return (
-		<button
-			type="button"
-			onClick={() => {
-				console.log('Hello World')
-			}}>
-			Click me
-		</button>
-	)
-}
-```
-
-Clicking the button prints this message to the terminal:
-
-```bash filename="Terminal"
-[browser] Hello World (pages/index.tsx:6:17)
-```
-
-</PagesOnly>
 
 ### Disabling Logging
 

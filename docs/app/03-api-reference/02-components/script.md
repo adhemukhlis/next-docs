@@ -3,8 +3,6 @@ title: Script Component
 description: Optimize third-party scripts in your Next.js application using the built-in `next/script` Component.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 This API reference will help you understand how to use [props](#props) available for the Script Component. For features and usage, please see the [Optimizing Scripts](/docs/app/guides/scripts) page.
 
 ```tsx filename="app/dashboard/page.tsx" switcher
@@ -70,21 +68,9 @@ Scripts that load with the `beforeInteractive` strategy are injected into the in
 
 Scripts denoted with this strategy are preloaded and fetched before any first-party code, but their execution **does not block page hydration from occurring**.
 
-<AppOnly>
-
 `beforeInteractive` scripts must be placed inside the root layout (`app/layout.tsx`) and are designed to load scripts that are needed by the entire site (i.e. the script will load when any page in the application has been loaded server-side).
 
-</AppOnly>
-
-<PagesOnly>
-
-`beforeInteractive` scripts must be placed inside the `Document` Component (`pages/_document.js`) and are designed to load scripts that are needed by the entire site (i.e. the script will load when any page in the application has been loaded server-side).
-
-</PagesOnly>
-
 **This strategy should only be used for critical scripts that need to be fetched as soon as possible.**
-
-<AppOnly>
 
 ```tsx filename="app/layout.tsx" switcher
 import Script from 'next/script'
@@ -121,33 +107,6 @@ export default function RootLayout({ children }) {
 	)
 }
 ```
-
-</AppOnly>
-
-<PagesOnly>
-
-```jsx filename="pages/_document.js"
-import { Html, Head, Main, NextScript } from 'next/document'
-import Script from 'next/script'
-
-export default function Document() {
-	return (
-		<Html>
-			<Head />
-			<body>
-				<Main />
-				<NextScript />
-				<Script
-					src="https://example.com/script.js"
-					strategy="beforeInteractive"
-				/>
-			</body>
-		</Html>
-	)
-}
-```
-
-</PagesOnly>
 
 > **Good to know**: Scripts with `beforeInteractive` will always be injected inside the `head` of the HTML document regardless of where it's placed in the component.
 
@@ -310,8 +269,6 @@ Some third-party scripts require users to run JavaScript code after the script h
 
 Here's an example of how to re-instantiate a Google Maps JS embed every time the component is mounted:
 
-<AppOnly>
-
 ```tsx filename="app/page.tsx" switcher
 'use client'
 
@@ -366,44 +323,11 @@ export default function Page() {
 }
 ```
 
-</AppOnly>
-
-<PagesOnly>
-
-```jsx
-import { useRef } from 'react'
-import Script from 'next/script'
-
-export default function Page() {
-	const mapRef = useRef()
-
-	return (
-		<>
-			<div ref={mapRef}></div>
-			<Script
-				id="google-maps"
-				src="https://maps.googleapis.com/maps/api/js"
-				onReady={() => {
-					new google.maps.Map(mapRef.current, {
-						center: { lat: -34.397, lng: 150.644 },
-						zoom: 8,
-					})
-				}}
-			/>
-		</>
-	)
-}
-```
-
-</PagesOnly>
-
 ### `onError`
 
 > **Warning:** `onError` does not yet work with Server Components and can only be used in Client Components. `onError` cannot be used with the `beforeInteractive` loading strategy.
 
 Sometimes it is helpful to catch when a script fails to load. These errors can be handled with the `onError` property:
-
-<AppOnly>
 
 ```tsx filename="app/page.tsx" switcher
 'use client'
@@ -442,29 +366,6 @@ export default function Page() {
 	)
 }
 ```
-
-</AppOnly>
-
-<PagesOnly>
-
-```jsx
-import Script from 'next/script'
-
-export default function Page() {
-  return (
-    <>
-      <Script
-        src="https://example.com/script.js"
-        onError={(e: Error) => {
-          console.error('Script failed to load', e)
-        }}
-      />
-    </>
-  )
-}
-```
-
-</PagesOnly>
 
 ## Version History
 

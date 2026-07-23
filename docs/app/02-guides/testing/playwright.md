@@ -52,8 +52,6 @@ This will take you through a series of prompts to setup and configure Playwright
 
 Create two new Next.js pages:
 
-<AppOnly>
-
 ```tsx filename="app/page.tsx"
 import Link from 'next/link'
 
@@ -79,38 +77,6 @@ export default function Page() {
 	)
 }
 ```
-
-</AppOnly>
-
-<PagesOnly>
-
-```tsx filename="pages/index.ts"
-import Link from 'next/link'
-
-export default function Home() {
-	return (
-		<div>
-			<h1>Home</h1>
-			<Link href="/about">About</Link>
-		</div>
-	)
-}
-```
-
-```tsx filename="pages/about.ts"
-import Link from 'next/link'
-
-export default function About() {
-	return (
-		<div>
-			<h1>About</h1>
-			<Link href="/">Home</Link>
-		</div>
-	)
-}
-```
-
-</PagesOnly>
 
 Then, add a test to verify that your navigation is working correctly:
 

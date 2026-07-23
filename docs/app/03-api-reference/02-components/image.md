@@ -3,8 +3,6 @@ title: Image Component
 description: Optimize Images in your Next.js Application using the built-in `next/image` Component.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 The Next.js Image component extends the HTML `<img>` element for automatic image optimization.
 
 ```jsx filename="app/page.js"
@@ -21,12 +19,6 @@ export default function Page() {
 	)
 }
 ```
-
-<PagesOnly>
-
-> **Good to know**: If you are using a version of Next.js prior to 13, you'll want to use the [next/legacy/image](/docs/pages/api-reference/components/image-legacy) documentation since the component was renamed.
-
-</PagesOnly>
 
 ## Reference
 
@@ -148,8 +140,6 @@ A custom function used to generate the image URL. The function receives the foll
 - [`width`](#width-and-height)
 - [`quality`](#quality)
 
-<AppOnly>
-
 ```js
 'use client'
 
@@ -173,32 +163,6 @@ export default function Page() {
 ```
 
 > **Good to know**: Using props like `onLoad`, which accept a function, requires using [Client Components](https://react.dev/reference/rsc/use-client) to serialize the provided function.
-
-</AppOnly>
-
-<PagesOnly>
-
-```js
-import Image from 'next/image'
-
-const imageLoader = ({ src, width, quality }) => {
-	return `https://example.com/${src}?w=${width}&q=${quality || 75}`
-}
-
-export default function Page() {
-	return (
-		<Image
-			loader={imageLoader}
-			src="me.png"
-			alt="Picture of the author"
-			width={500}
-			height={500}
-		/>
-	)
-}
-```
-
-</PagesOnly>
 
 Alternatively, you can use the [loaderFile](#loaderfile) configuration in `next.config.js` to configure every instance of `next/image` in your application, without passing a prop.
 
@@ -381,11 +345,7 @@ A callback function that is invoked once the image is completely loaded and the 
 
 The callback function will be called with one argument, the event which has a `target` that references the underlying `<img>` element.
 
-<AppOnly>
-
 > **Good to know**: Using props like `onLoad`, which accept a function, requires using [Client Components](https://react.dev/reference/rsc/use-client) to serialize the provided function.
-
-</AppOnly>
 
 #### `onError`
 
@@ -395,11 +355,7 @@ A callback function that is invoked if the image fails to load.
 <Image onError={(e) => console.error(e.target.id)} />
 ```
 
-<AppOnly>
-
 > **Good to know**: Using props like `onError`, which accept a function, requires using [Client Components](https://react.dev/reference/rsc/use-client) to serialize the provided function.
-
-</AppOnly>
 
 #### `unoptimized`
 
@@ -494,29 +450,13 @@ A callback function that is invoked once the image is completely loaded and the 
 
 The callback function will be called with one argument, a reference to the underlying `<img>` element.
 
-<AppOnly>
-
 ```jsx
 'use client'
 
 <Image onLoadingComplete={(img) => console.log(img.naturalWidth)} />
 ```
 
-</AppOnly>
-
-<PagesOnly>
-
-```jsx
-<Image onLoadingComplete={(img) => console.log(img.naturalWidth)} />
-```
-
-</PagesOnly>
-
-<AppOnly>
-
 > **Good to know**: Using props like `onLoadingComplete`, which accept a function, requires using [Client Components](https://react.dev/reference/rsc/use-client) to serialize the provided function.
-
-</AppOnly>
 
 ### Configuration options
 
@@ -638,8 +578,6 @@ module.exports = {
 
 The path must be relative to the project root. The file must export a default function that returns a URL string:
 
-<AppOnly>
-
 ```js filename="my/image/loader.js"
 'use client'
 
@@ -647,18 +585,6 @@ export default function myImageLoader({ src, width, quality }) {
 	return `https://example.com/${src}?w=${width}&q=${quality || 75}`
 }
 ```
-
-</AppOnly>
-
-<PagesOnly>
-
-```js filename="my/image/loader.js"
-export default function myImageLoader({ src, width, quality }) {
-	return `https://example.com/${src}?w=${width}&q=${quality || 75}`
-}
-```
-
-</PagesOnly>
 
 **Example:**
 

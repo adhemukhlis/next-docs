@@ -3,19 +3,7 @@ title: assetPrefix
 description: Learn how to use the assetPrefix config option to configure your CDN.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
-<AppOnly>
-
 > **Attention**: [Deploying to Vercel](/docs/app/getting-started/deploying) automatically configures a global CDN for your Next.js project. You do not need to manually setup an Asset Prefix.
-
-</AppOnly>
-
-<PagesOnly>
-
-> **Attention**: [Deploying to Vercel](/docs/pages/getting-started/deploying) automatically configures a global CDN for your Next.js project. You do not need to manually setup an Asset Prefix.
-
-</PagesOnly>
 
 > **Good to know**: Next.js 9.5+ added support for a customizable [Base Path](/docs/app/api-reference/config/next-config-js/basePath), which is better suited for hosting your application on a sub-path like `/docs`. We do not suggest you use a custom Asset Prefix for this use case.
 
@@ -57,16 +45,4 @@ The exact configuration for uploading your files to a given CDN will depend on y
 
 While `assetPrefix` covers requests to `_next/static`, it does not influence the following paths:
 
-<AppOnly>
-
 - Files in the [public](/docs/app/api-reference/file-conventions/public-folder) folder; if you want to serve those assets over a CDN, you'll have to introduce the prefix yourself
-
-</AppOnly>
-
-<PagesOnly>
-
-- Files in the [public](/docs/pages/api-reference/file-conventions/public-folder) folder; if you want to serve those assets over a CDN, you'll have to introduce the prefix yourself
-- `/_next/data/` requests for `getServerSideProps` pages. These requests will always be made against the main domain since they're not static.
-- `/_next/data/` requests for `getStaticProps` pages. These requests will always be made against the main domain to support [Incremental Static Generation](/docs/pages/guides/incremental-static-regeneration), even if you're not using it (for consistency).
-
-</PagesOnly>

@@ -9,10 +9,6 @@ related:
   - app/api-reference/components/script
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
-<AppOnly>
-
 ### Layout Scripts
 
 To load a third-party script for multiple routes, import `next/script` and include the script directly in your layout component:
@@ -45,11 +41,7 @@ export default function DashboardLayout({ children }) {
 
 The third-party script is fetched when the folder route (e.g. `dashboard/page.js`) or any nested route (e.g. `dashboard/settings/page.js`) is accessed by the user. Next.js will ensure the script will **only load once**, even if a user navigates between multiple routes in the same layout.
 
-</AppOnly>
-
 ### Application Scripts
-
-<AppOnly>
 
 To load a third-party script for all routes, import `next/script` and include the script directly in your root layout:
 
@@ -78,27 +70,6 @@ export default function RootLayout({ children }) {
 	)
 }
 ```
-
-</AppOnly>
-
-<PagesOnly>
-
-To load a third-party script for all routes, import `next/script` and include the script directly in your custom `_app`:
-
-```jsx filename="pages/_app.js"
-import Script from 'next/script'
-
-export default function MyApp({ Component, pageProps }) {
-	return (
-		<>
-			<Component {...pageProps} />
-			<Script src="https://example.com/script.js" />
-		</>
-	)
-}
-```
-
-</PagesOnly>
 
 This script will load and execute when _any_ route in your application is accessed. Next.js will ensure the script will **only load once**, even if a user navigates between multiple pages.
 
@@ -185,53 +156,6 @@ export default function Home() {
 
 There are a number of trade-offs that need to be considered when loading a third-party script in a web worker. Please see Partytown's [tradeoffs](https://partytown.qwik.dev/trade-offs) documentation for more information.
 
-<PagesOnly>
-
-#### Using custom Partytown configuration
-
-Although the `worker` strategy does not require any additional configuration to work, Partytown supports the use of a config object to modify some of its settings, including enabling `debug` mode and forwarding events and triggers.
-
-If you would like to add additional configuration options, you can include it within the `<Head />` component used in a [custom `_document.js`](/docs/pages/building-your-application/routing/custom-document):
-
-```jsx filename="pages/_document.js"
-import { Html, Head, Main, NextScript } from 'next/document'
-
-export default function Document() {
-	return (
-		<Html>
-			<Head>
-				<script
-					data-partytown-config
-					dangerouslySetInnerHTML={{
-						__html: `
-              partytown = {
-                lib: "/_next/static/~partytown/",
-                debug: true
-              };
-            `,
-					}}
-				/>
-			</Head>
-			<body>
-				<Main />
-				<NextScript />
-			</body>
-		</Html>
-	)
-}
-```
-
-In order to modify Partytown's configuration, the following conditions must be met:
-
-1. The `data-partytown-config` attribute must be used in order to overwrite the default configuration used by Next.js
-2. Unless you decide to save Partytown's library files in a separate directory, the `lib: "/_next/static/~partytown/"` property and value must be included in the configuration object in order to let Partytown know where Next.js stores the necessary static files.
-
-> **Note**: If you are using an [asset prefix](/docs/pages/api-reference/config/next-config-js/assetPrefix) and would like to modify Partytown's default configuration, you must include it as part of the `lib` path.
-
-Take a look at Partytown's [configuration options](https://partytown.qwik.dev/configuration) to see the full list of other properties that can be added.
-
-</PagesOnly>
-
 ### Inline Scripts
 
 Inline scripts, or scripts not loaded from an external file, are also supported by the Script component. They can be written by placing the JavaScript within curly braces:
@@ -260,8 +184,6 @@ Event handlers can be used with the Script component to execute additional code 
 - `onLoad`: Execute code after the script has finished loading.
 - `onReady`: Execute code after the script has finished loading and every time the component is mounted.
 - `onError`: Execute code if the script fails to load.
-
-<AppOnly>
 
 These handlers will only work when `next/script` is imported and used inside of a [Client Component](/docs/app/getting-started/server-and-client-components) where `"use client"` is defined as the first line of code:
 
@@ -305,55 +227,9 @@ export default function Page() {
 
 Refer to the [`next/script`](/docs/app/api-reference/components/script#onload) API reference to learn more about each event handler and view examples.
 
-</AppOnly>
-
-<PagesOnly>
-
-These handlers will only work when `next/script` is imported and used inside of a [Client Component](/docs/app/getting-started/server-and-client-components) where `"use client"` is defined as the first line of code:
-
-```tsx filename="pages/index.tsx" switcher
-import Script from 'next/script'
-
-export default function Page() {
-	return (
-		<>
-			<Script
-				src="https://example.com/script.js"
-				onLoad={() => {
-					console.log('Script has loaded')
-				}}
-			/>
-		</>
-	)
-}
-```
-
-```jsx filename="pages/index.js" switcher
-import Script from 'next/script'
-
-export default function Page() {
-	return (
-		<>
-			<Script
-				src="https://example.com/script.js"
-				onLoad={() => {
-					console.log('Script has loaded')
-				}}
-			/>
-		</>
-	)
-}
-```
-
-Refer to the [`next/script`](/docs/pages/api-reference/components/script#onload) API reference to learn more about each event handler and view examples.
-
-</PagesOnly>
-
 ### Additional Attributes
 
 There are many DOM attributes that can be assigned to a `<script>` element that are not used by the Script component, like [`nonce`](https://developer.mozilla.org/docs/Web/HTML/Global_attributes/nonce) or [custom data attributes](https://developer.mozilla.org/docs/Web/HTML/Global_attributes/data-*). Including any additional attributes will automatically forward it to the final, optimized `<script>` element that is included in the HTML.
-
-<AppOnly>
 
 ```tsx filename="app/page.tsx" switcher
 import Script from 'next/script'
@@ -388,43 +264,3 @@ export default function Page() {
 	)
 }
 ```
-
-</AppOnly>
-
-<PagesOnly>
-
-```tsx filename="pages/index.tsx" switcher
-import Script from 'next/script'
-
-export default function Page() {
-	return (
-		<>
-			<Script
-				src="https://example.com/script.js"
-				id="example-script"
-				nonce="XUENAJFW"
-				data-test="script"
-			/>
-		</>
-	)
-}
-```
-
-```jsx filename="pages/index.js" switcher
-import Script from 'next/script'
-
-export default function Page() {
-	return (
-		<>
-			<Script
-				src="https://example.com/script.js"
-				id="example-script"
-				nonce="XUENAJFW"
-				data-test="script"
-			/>
-		</>
-	)
-}
-```
-
-</PagesOnly>

@@ -4,8 +4,6 @@ nav_title: OpenTelemetry
 description: Learn how to instrument your Next.js app with OpenTelemetry.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 Observability is crucial for understanding and optimizing the behavior and performance of your Next.js app.
 
 As applications become more complex, it becomes increasingly difficult to identify and diagnose issues that may arise. By leveraging observability tools, such as logging and metrics, developers can gain insights into their application's behavior and identify areas for optimization. With observability, developers can proactively address issues before they become major problems and provide a better user experience. Therefore, it is highly recommended to use observability in your Next.js applications to improve performance, optimize resources, and enhance user experience.
@@ -15,11 +13,6 @@ We recommend using OpenTelemetry for instrumenting your apps. It's a platform-ag
 This documentation uses terms like _Span_, _Trace_ or _Exporter_ throughout this doc, all of which can be found in [the OpenTelemetry Observability Primer](https://opentelemetry.io/docs/concepts/observability-primer/).
 
 Next.js supports OpenTelemetry instrumentation out of the box, which means that we already instrumented Next.js itself.
-
-<PagesOnly>
-  When you enable OpenTelemetry we will automatically wrap all your code like
-  `getStaticProps` in _spans_ with helpful attributes.
-</PagesOnly>
 
 ## Getting Started
 
@@ -45,17 +38,7 @@ yarn add @vercel/otel @opentelemetry/sdk-logs @opentelemetry/api-logs @opentelem
 bun add @vercel/otel @opentelemetry/sdk-logs @opentelemetry/api-logs @opentelemetry/instrumentation
 ```
 
-<AppOnly>
-
 Next, create a custom [`instrumentation.ts`](/docs/app/guides/instrumentation) (or `.js`) file in the **root directory** of the project (or inside `src` folder if using one):
-
-</AppOnly>
-
-<PagesOnly>
-
-Next, create a custom [`instrumentation.ts`](/docs/pages/guides/instrumentation) (or `.js`) file in the **root directory** of the project (or inside `src` folder if using one):
-
-</PagesOnly>
 
 ```ts filename="your-project/instrumentation.ts" switcher
 import { registerOTel } from '@vercel/otel'
@@ -75,25 +58,11 @@ export function register() {
 
 See the [`@vercel/otel` documentation](https://www.npmjs.com/package/@vercel/otel) for additional configuration options.
 
-<AppOnly>
-
 > **Good to know**:
 >
 > - The `instrumentation` file should be in the root of your project and not inside the `app` or `pages` directory. If you're using the `src` folder, then place the file inside `src` alongside `pages` and `app`.
 > - If you use the [`pageExtensions` config option](/docs/app/api-reference/config/next-config-js/pageExtensions) to add a suffix, you will also need to update the `instrumentation` filename to match.
 > - We have created a basic [with-opentelemetry](https://github.com/vercel/next.js/tree/canary/examples/with-opentelemetry) example that you can use.
-
-</AppOnly>
-
-<PagesOnly>
-
-> **Good to know**:
->
-> - The `instrumentation` file should be in the root of your project and not inside the `app` or `pages` directory. If you're using the `src` folder, then place the file inside `src` alongside `pages` and `app`.
-> - If you use the [`pageExtensions` config option](/docs/pages/api-reference/config/next-config-js/pageExtensions) to add a suffix, you will also need to update the `instrumentation` filename to match.
-> - We have created a basic [with-opentelemetry](https://github.com/vercel/next.js/tree/canary/examples/with-opentelemetry) example that you can use.
-
-</PagesOnly>
 
 ### Manual OpenTelemetry configuration
 

@@ -3,21 +3,9 @@ title: rewrites
 description: Add rewrites to your Next.js app.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 Rewrites allow you to map an incoming request path to a different destination path.
 
-<AppOnly>
-
 Rewrites act as a URL proxy and mask the destination path, making it appear the user hasn't changed their location on the site. In contrast, [redirects](/docs/app/api-reference/config/next-config-js/redirects) will reroute to a new page and show the URL changes.
-
-</AppOnly>
-
-<PagesOnly>
-
-Rewrites act as a URL proxy and mask the destination path, making it appear the user hasn't changed their location on the site. In contrast, [redirects](/docs/pages/api-reference/config/next-config-js/redirects) will reroute to a new page and show the URL changes.
-
-</PagesOnly>
 
 To use rewrites you can use the `rewrites` key in `next.config.js`:
 
@@ -86,8 +74,6 @@ module.exports = {
 
 The order Next.js routes are checked is:
 
-<AppOnly>
-
 1. [headers](/docs/app/api-reference/config/next-config-js/headers) are checked/applied
 2. [redirects](/docs/app/api-reference/config/next-config-js/redirects) are checked/applied
 3. [proxy](/docs/app/api-reference/file-conventions/proxy)
@@ -96,20 +82,6 @@ The order Next.js routes are checked is:
 6. `afterFiles` rewrites are tried in order. If a `source`, `has`, and `missing` matches the request, it's rewritten to `destination`; the first rewrite that resolves to a static file, page, or dynamic route is served.
 7. dynamic routes (e.g., `app/blog/[slug]/page.tsx`) are matched against the current path
 8. `fallback` rewrites are checked/applied, these are applied before rendering the 404 page and after dynamic routes/all static assets have been checked. If you use [fallback: true/'blocking'](/docs/pages/api-reference/functions/get-static-paths#fallback-true) in `getStaticPaths`, those dynamic routes take priority over the fallback `rewrites` defined in your `next.config.js`.
-
-</AppOnly>
-
-<PagesOnly>
-
-1. [headers](/docs/pages/api-reference/config/next-config-js/headers) are checked/applied
-2. [redirects](/docs/pages/api-reference/config/next-config-js/redirects) are checked/applied
-3. `beforeFiles` rewrites: for each entry, if `source` matches the request, it's rewritten to `destination`.
-4. static files from the [public directory](/docs/pages/api-reference/file-conventions/public-folder), `_next/static` files, and non-dynamic pages are checked/served
-5. `afterFiles` rewrites are tried in order. If a `source` matches the request, it's rewritten to `destination`; the first rewrite that resolves to a static file, page, or dynamic route is served.
-6. dynamic routes (e.g., `pages/blog/[slug].tsx`) are matched against the current path
-7. `fallback` rewrites are checked/applied, these are applied before rendering the 404 page and after dynamic routes/all static assets have been checked. If you use [fallback: true/'blocking'](/docs/pages/api-reference/functions/get-static-paths#fallback-true) in `getStaticPaths`, the fallback `rewrites` defined in your `next.config.js` will _not_ be run.
-
-</PagesOnly>
 
 ## Rewrite parameters
 
@@ -419,56 +391,6 @@ module.exports = {
 	},
 }
 ```
-
-<PagesOnly>
-
-### Rewrites with i18n support
-
-When leveraging [`i18n` support](/docs/pages/guides/internationalization) with rewrites each `source` and `destination` is automatically prefixed to handle the configured `locales` unless you add `locale: false` to the rewrite. If `locale: false` is used you must prefix the `source` and `destination` with a locale for it to be matched correctly.
-
-```js filename="next.config.js"
-module.exports = {
-	i18n: {
-		locales: ['en', 'fr', 'de'],
-		defaultLocale: 'en',
-	},
-
-	rewrites() {
-		return [
-			{
-				source: '/with-locale', // automatically handles all locales
-				destination: '/another', // automatically passes the locale on
-			},
-			{
-				// does not handle locales automatically since locale: false is set
-				source: '/nl/with-locale-manual',
-				destination: '/nl/another',
-				locale: false,
-			},
-			{
-				// this matches '/' since `en` is the defaultLocale
-				source: '/en',
-				destination: '/en/another',
-				locale: false,
-			},
-			{
-				// it's possible to match all locales even when locale: false is set
-				source: '/:locale/api-alias/:path*',
-				destination: '/api/:path*',
-				locale: false,
-			},
-			{
-				// this gets converted to /(en|fr|de)/(.*) so will not match the top-level
-				// `/` or `/fr` routes like /:path* would
-				source: '/(.*)',
-				destination: '/another',
-			},
-		]
-	},
-}
-```
-
-</PagesOnly>
 
 ## Version History
 

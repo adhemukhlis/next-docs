@@ -4,8 +4,6 @@ nav_title: Analytics
 description: Measure and track page performance using Next.js Speed Insights
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 Next.js has built-in support for measuring and reporting performance metrics. You can either use the [`useReportWebVitals`](/docs/app/api-reference/functions/use-report-web-vitals) hook to manage reporting yourself, or alternatively, Vercel provides a [managed service](https://vercel.com/analytics?utm_source=next-site&utm_medium=docs&utm_campaign=next-website) to automatically collect and visualize metrics for you.
 
 ## Client Instrumentation
@@ -26,26 +24,6 @@ window.addEventListener('error', (event) => {
 ```
 
 ## Build Your Own
-
-<PagesOnly>
-
-```jsx filename="pages/_app.js"
-import { useReportWebVitals } from 'next/web-vitals'
-
-function MyApp({ Component, pageProps }) {
-	useReportWebVitals((metric) => {
-		console.log(metric)
-	})
-
-	return <Component {...pageProps} />
-}
-```
-
-View the [API Reference](/docs/pages/api-reference/functions/use-report-web-vitals) for more information.
-
-</PagesOnly>
-
-<AppOnly>
 
 ```jsx filename="app/_components/web-vitals.js"
 'use client'
@@ -78,8 +56,6 @@ export default function Layout({ children }) {
 
 View the [API Reference](/docs/app/api-reference/functions/use-report-web-vitals) for more information.
 
-</AppOnly>
-
 ## Web Vitals
 
 [Web Vitals](https://web.dev/vitals/) are a set of useful metrics that aim to capture the user experience of a web page. The following web vitals are all included:
@@ -92,32 +68,6 @@ View the [API Reference](/docs/app/api-reference/functions/use-report-web-vitals
 - [Interaction to Next Paint](https://web.dev/inp/) (INP)
 
 You can handle all the results of these metrics using the `name` property.
-
-<PagesOnly>
-
-```jsx filename="pages/_app.js"
-import { useReportWebVitals } from 'next/web-vitals'
-
-function MyApp({ Component, pageProps }) {
-	useReportWebVitals((metric) => {
-		switch (metric.name) {
-			case 'FCP': {
-				// handle FCP results
-			}
-			case 'LCP': {
-				// handle LCP results
-			}
-			// ...
-		}
-	})
-
-	return <Component {...pageProps} />
-}
-```
-
-</PagesOnly>
-
-<AppOnly>
 
 ```tsx filename="app/_components/web-vitals.tsx" switcher
 'use client'
@@ -158,42 +108,6 @@ export function WebVitals() {
 	})
 }
 ```
-
-</AppOnly>
-
-<PagesOnly>
-
-## Custom Metrics
-
-In addition to the core metrics listed above, there are some additional custom metrics that measure the time it takes for the page to hydrate and render:
-
-- `Next.js-hydration`: Length of time it takes for the page to start and finish hydrating (in ms)
-- `Next.js-route-change-to-render`: Length of time it takes for a page to start rendering after a route change (in ms)
-- `Next.js-render`: Length of time it takes for a page to finish render after a route change (in ms)
-
-You can handle all the results of these metrics separately:
-
-```js
-export function reportWebVitals(metric) {
-	switch (metric.name) {
-		case 'Next.js-hydration':
-			// handle hydration results
-			break
-		case 'Next.js-route-change-to-render':
-			// handle route-change to render results
-			break
-		case 'Next.js-render':
-			// handle render results
-			break
-		default:
-			break
-	}
-}
-```
-
-These metrics work in all browsers that support the [User Timing API](https://caniuse.com/#feat=user-timing).
-
-</PagesOnly>
 
 ## Sending results to external systems
 

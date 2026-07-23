@@ -181,25 +181,12 @@ The `NextResponse` API allows you to:
 - Set response cookies
 - Set response headers
 
-<AppOnly>
-
 To produce a response from Proxy, you can:
 
 1. `rewrite` to a route ([Page](/docs/app/api-reference/file-conventions/page) or [Route Handler](/docs/app/api-reference/file-conventions/route)) that produces a response
 2. return a `NextResponse` directly. See [Producing a Response](#producing-a-response)
 
 > **Good to know**: For redirects, you can also use `Response.redirect` instead of `NextResponse.redirect`.
-
-</AppOnly>
-
-<PagesOnly>
-
-To produce a response from Proxy, you can:
-
-1. `rewrite` to a route ([Page](/docs/pages/building-your-application/routing/pages-and-layouts) or [Edge API Route](/docs/pages/building-your-application/routing/api-routes)) that produces a response
-2. return a `NextResponse` directly. See [Producing a Response](#producing-a-response)
-
-</PagesOnly>
 
 ## Execution order
 
@@ -543,11 +530,7 @@ export const config = {
 }
 ```
 
-<AppOnly>
-
 > **Good to know:** You can configure CORS headers for individual routes in [Route Handlers](/docs/app/api-reference/file-conventions/route#cors).
-
-</AppOnly>
 
 ### Producing a response
 

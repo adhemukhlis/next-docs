@@ -3,8 +3,6 @@ title: next.config.js
 description: Learn how to configure your application with next.config.js.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 Next.js can be configured through a `next.config.js` file in the root of your project directory (for example, by `package.json`) with a default export.
 
 ```js filename="next.config.js"

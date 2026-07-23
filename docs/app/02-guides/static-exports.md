@@ -4,8 +4,6 @@ nav_title: Static Exports
 description: Next.js enables starting as a static site or Single-Page Application (SPA), then later optionally upgrading to use features that require a server.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 Next.js enables starting as a static site or Single-Page Application (SPA), then later optionally upgrading to use features that require a server.
 
 When running `next build`, Next.js generates an HTML file per route. By breaking a strict SPA into individual HTML files, Next.js can avoid loading unnecessary JavaScript code on the client-side, reducing the bundle size and enabling faster page loads.
@@ -37,14 +35,6 @@ module.exports = nextConfig
 ```
 
 After running `next build`, Next.js will create an `out` folder with the HTML/CSS/JS assets for your application.
-
-<PagesOnly>
-
-You can utilize [`getStaticProps`](/docs/pages/building-your-application/data-fetching/get-static-props) and [`getStaticPaths`](/docs/pages/building-your-application/data-fetching/get-static-paths) to generate an HTML file for each page in your `pages` directory (or more for [dynamic routes](/docs/app/api-reference/file-conventions/dynamic-routes)).
-
-</PagesOnly>
-
-<AppOnly>
 
 ## Supported Features
 
@@ -140,25 +130,6 @@ export default function Page() {
 }
 ```
 
-</AppOnly>
-
-<PagesOnly>
-
-## Supported Features
-
-The majority of core Next.js features needed to build a static site are supported, including:
-
-- [Dynamic Routes when using `getStaticPaths`](/docs/app/api-reference/file-conventions/dynamic-routes)
-- Prefetching with `next/link`
-- Preloading JavaScript
-- [Dynamic Imports](/docs/pages/guides/lazy-loading)
-- Any styling options (e.g. CSS Modules, styled-jsx)
-- [Client-side data fetching](/docs/pages/building-your-application/data-fetching/client-side)
-- [`getStaticProps`](/docs/pages/building-your-application/data-fetching/get-static-props)
-- [`getStaticPaths`](/docs/pages/building-your-application/data-fetching/get-static-paths)
-
-</PagesOnly>
-
 ### Image Optimization
 
 [Image Optimization](/docs/app/api-reference/components/image) through `next/image` can be used with a static export by defining a custom image loader in `next.config.js`. For example, you can optimize images with a service like Cloudinary:
@@ -224,8 +195,6 @@ export default function Page() {
 }
 ```
 
-<AppOnly>
-
 ### Route Handlers
 
 Route Handlers will render a static response when running `next build`. Only the `GET` HTTP verb is supported. This can be used to generate static HTML, JSON, TXT, or other files from cached or uncached data. For example:
@@ -265,13 +234,9 @@ export default function ClientComponent() {
 }
 ```
 
-</AppOnly>
-
 ## Unsupported Features
 
 Features that require a Node.js server, or dynamic logic that cannot be computed during the build process, are **not** supported:
-
-<AppOnly>
 
 - [Dynamic Routes](/docs/app/api-reference/file-conventions/dynamic-routes) with `dynamicParams: true`
 - [Dynamic Routes](/docs/app/api-reference/file-conventions/dynamic-routes) without `generateStaticParams()`
@@ -292,25 +257,6 @@ Attempting to use any of these features with `next dev` will result in an error,
 ```jsx
 export const dynamic = 'error'
 ```
-
-</AppOnly>
-
-<PagesOnly>
-
-- [Internationalized Routing](/docs/pages/guides/internationalization)
-- [API Routes](/docs/pages/building-your-application/routing/api-routes)
-- [Rewrites](/docs/pages/api-reference/config/next-config-js/rewrites)
-- [Redirects](/docs/pages/api-reference/config/next-config-js/redirects)
-- [Headers](/docs/pages/api-reference/config/next-config-js/headers)
-- [Proxy](/docs/pages/api-reference/file-conventions/proxy)
-- [Incremental Static Regeneration](/docs/pages/guides/incremental-static-regeneration)
-- [Image Optimization](/docs/pages/api-reference/components/image) with the default `loader`
-- [Draft Mode](/docs/pages/guides/draft-mode)
-- [`getStaticPaths` with `fallback: true`](/docs/pages/api-reference/functions/get-static-paths#fallback-true)
-- [`getStaticPaths` with `fallback: 'blocking'`](/docs/pages/api-reference/functions/get-static-paths#fallback-blocking)
-- [`getServerSideProps`](/docs/pages/building-your-application/data-fetching/get-server-side-props)
-
-</PagesOnly>
 
 ## Deploying
 

@@ -4,8 +4,6 @@ nav_title: Version 15
 description: Upgrade your Next.js Application from Version 14 to 15.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 ## Upgrading from 14 to 15
 
 To update to Next.js version 15, you can use the `upgrade` codemod:
@@ -424,13 +422,9 @@ export async function GET(request, segmentData) {
 }
 ```
 
-<AppOnly>
-
 ## `runtime` configuration (Breaking change)
 
 The `runtime` [segment configuration](/docs/app/api-reference/file-conventions/route-segment-config/runtime) previously supported a value of `experimental-edge` in addition to `edge`. Both configurations refer to the same thing, and to simplify the options, we will now error if `experimental-edge` is used. To fix this, update your `runtime` configuration to `edge`. A [codemod](/docs/app/guides/upgrading/codemods#app-dir-runtime-config-experimental-edge) is available to automatically do this.
-
-</AppOnly>
 
 ## `fetch` requests
 

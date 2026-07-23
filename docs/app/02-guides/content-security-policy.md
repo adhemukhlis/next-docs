@@ -8,8 +8,6 @@ related:
   - app/api-reference/functions/headers
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 [Content Security Policy (CSP)](https://developer.mozilla.org/docs/Web/HTTP/CSP) is important to guard your Next.js application against various security threats such as cross-site scripting (XSS), clickjacking, and other code injection attacks.
 
 By using CSP, developers can specify which origins are permissible for content sources, scripts, stylesheets, images, fonts, objects, media (audio, video), iframes, and more.
@@ -202,123 +200,6 @@ export default async function Page() {
 
 ### Reading the nonce
 
-<PagesOnly>
-  You can provide the nonce to your page using
-  [`getServerSideProps`](/docs/pages/building-your-application/data-fetching/get-server-side-props):
-
-```tsx filename="pages/index.tsx" switcher
-import Script from 'next/script'
-
-import type { GetServerSideProps } from 'next'
-
-export default function Page({ nonce }) {
-	return (
-		<Script
-			src="https://www.googletagmanager.com/gtag/js"
-			strategy="afterInteractive"
-			nonce={nonce}
-		/>
-	)
-}
-
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-	const nonce = req.headers['x-nonce']
-	return { props: { nonce } }
-}
-```
-
-```jsx filename="pages/index.jsx" switcher
-import Script from 'next/script'
-export default function Page({ nonce }) {
-	return (
-		<Script
-			src="https://www.googletagmanager.com/gtag/js"
-			strategy="afterInteractive"
-			nonce={nonce}
-		/>
-	)
-}
-
-export async function getServerSideProps({ req }) {
-	const nonce = req.headers['x-nonce']
-	return { props: { nonce } }
-}
-```
-
-You can also access the nonce in `_document.tsx` for Pages Router applications:
-
-```tsx filename="pages/_document.tsx" switcher
-import Document, { Html, Head, Main, NextScript, DocumentContext, DocumentInitialProps } from 'next/document'
-
-interface ExtendedDocumentProps extends DocumentInitialProps {
-	nonce?: string
-}
-
-class MyDocument extends Document<ExtendedDocumentProps> {
-	static async getInitialProps(ctx: DocumentContext): Promise<ExtendedDocumentProps> {
-		const initialProps = await Document.getInitialProps(ctx)
-		const nonce = ctx.req?.headers?.['x-nonce'] as string | undefined
-
-		return {
-			...initialProps,
-			nonce,
-		}
-	}
-
-	render() {
-		const { nonce } = this.props
-
-		return (
-			<Html lang="en">
-				<Head nonce={nonce} />
-				<body>
-					<Main />
-					<NextScript nonce={nonce} />
-				</body>
-			</Html>
-		)
-	}
-}
-
-export default MyDocument
-```
-
-```jsx filename="pages/_document.jsx" switcher
-import Document, { Html, Head, Main, NextScript } from 'next/document'
-
-class MyDocument extends Document {
-	static async getInitialProps(ctx) {
-		const initialProps = await Document.getInitialProps(ctx)
-		const nonce = ctx.req?.headers?.['x-nonce']
-
-		return {
-			...initialProps,
-			nonce,
-		}
-	}
-
-	render() {
-		const { nonce } = this.props
-
-		return (
-			<Html lang="en">
-				<Head nonce={nonce} />
-				<body>
-					<Main />
-					<NextScript nonce={nonce} />
-				</body>
-			</Html>
-		)
-	}
-}
-
-export default MyDocument
-```
-
-</PagesOnly>
-
-<AppOnly>
-
 You can read the nonce from a [Server Component](/docs/app/getting-started/server-and-client-components) using [`headers`](/docs/app/api-reference/functions/headers):
 
 ```tsx filename="app/page.tsx" switcher
@@ -354,8 +235,6 @@ export default async function Page() {
 	)
 }
 ```
-
-</AppOnly>
 
 ## Static vs Dynamic Rendering with CSP
 
@@ -425,8 +304,6 @@ module.exports = {
 	},
 }
 ```
-
-<AppOnly>
 
 ## Subresource Integrity (Experimental)
 
@@ -512,8 +389,6 @@ module.exports = {
 - **App Router only**: Not supported in Pages Router
 - **Build-time only**: Cannot handle dynamically generated scripts
 
-</AppOnly>
-
 ## Development vs Production Considerations
 
 CSP implementation differs between development and production environments:
@@ -578,8 +453,6 @@ Common issues in production:
 
 ### Third-party Scripts
 
-<AppOnly>
-
 When using third-party scripts with CSP:
 
 ```tsx filename="app/layout.tsx" switcher
@@ -623,53 +496,6 @@ export default async function RootLayout({ children }) {
 	)
 }
 ```
-
-</AppOnly>
-
-<PagesOnly>
-
-When using third-party scripts with CSP, ensure you add the necessary domains and pass the nonce:
-
-```tsx filename="pages/_app.tsx" switcher
-import type { AppProps } from 'next/app'
-import Script from 'next/script'
-
-export default function App({ Component, pageProps }: AppProps) {
-	const nonce = pageProps.nonce
-
-	return (
-		<>
-			<Component {...pageProps} />
-			<Script
-				src="https://www.googletagmanager.com/gtag/js"
-				strategy="afterInteractive"
-				nonce={nonce}
-			/>
-		</>
-	)
-}
-```
-
-```jsx filename="pages/_app.jsx" switcher
-import Script from 'next/script'
-
-export default function App({ Component, pageProps }) {
-	const nonce = pageProps.nonce
-
-	return (
-		<>
-			<Component {...pageProps} />
-			<Script
-				src="https://www.googletagmanager.com/gtag/js"
-				strategy="afterInteractive"
-				nonce={nonce}
-			/>
-		</>
-	)
-}
-```
-
-</PagesOnly>
 
 Update your CSP to allow third-party domains:
 

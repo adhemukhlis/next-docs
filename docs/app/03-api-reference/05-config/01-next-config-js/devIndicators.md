@@ -46,22 +46,12 @@ Route (app)
 ƒ  (Dynamic)  server-rendered on demand
 ```
 
-<AppOnly>
-
 There are two reasons a route might opt out of prerendering:
 
 - The presence of [Request-time APIs](/docs/app/glossary#request-time-apis) which rely on request information.
 - An [uncached data request](/docs/app/getting-started/fetching-data), like a call to an ORM or database driver.
 
 Check your route for any of these conditions, and if you are not able to statically render the route, then consider using [`loading.js`](/docs/app/api-reference/file-conventions/loading) or [`<Suspense />`](https://react.dev/reference/react/Suspense) to leverage [streaming](/docs/app/getting-started/linking-and-navigating#streaming).
-
-</AppOnly>
-
-<PagesOnly>
-
-When exporting [`getServerSideProps`](/docs/pages/building-your-application/data-fetching/get-server-side-props) or [`getInitialProps`](/docs/pages/api-reference/functions/get-initial-props) from a page, it will be marked as dynamic.
-
-</PagesOnly>
 
 ## Version History
 

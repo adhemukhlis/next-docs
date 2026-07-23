@@ -4,30 +4,14 @@ nav_title: webpack
 description: Learn how to customize the webpack config used by Next.js
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 > **Good to know**: changes to webpack config are not covered by semver so proceed at your own risk
 
 Before continuing to add custom webpack configuration to your application make sure Next.js doesn't already support your use-case:
-
-<AppOnly>
 
 - [CSS imports](/docs/app/getting-started/css)
 - [CSS modules](/docs/app/getting-started/css#css-modules)
 - [Sass/SCSS imports](/docs/app/guides/sass)
 - [Sass/SCSS modules](/docs/app/guides/sass)
-
-</AppOnly>
-
-<PagesOnly>
-
-- [CSS imports](/docs/app/getting-started/css)
-- [CSS modules](/docs/app/getting-started/css)
-- [Sass/SCSS imports](/docs/pages/guides/sass)
-- [Sass/SCSS modules](/docs/pages/guides/sass)
-- [Customizing babel configuration](/docs/pages/guides/babel)
-
-</PagesOnly>
 
 Some commonly asked for features are available as plugins:
 

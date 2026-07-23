@@ -108,8 +108,6 @@ When you run `npm run test`, Vitest will **watch** for changes in your project b
 
 Check that everything is working by creating a test to check if the `<Page />` component successfully renders a heading:
 
-<AppOnly>
-
 ```tsx filename="app/page.tsx" switcher
 import Link from 'next/link'
 
@@ -159,60 +157,6 @@ test('Page', () => {
 ```
 
 > **Good to know**: The example above uses the common `__tests__` convention, but test files can also be colocated inside the `app` router.
-
-</AppOnly>
-
-<PagesOnly>
-
-```tsx filename="pages/index.tsx" switcher
-import Link from 'next/link'
-
-export default function Page() {
-	return (
-		<div>
-			<h1>Home</h1>
-			<Link href="/about">About</Link>
-		</div>
-	)
-}
-```
-
-```jsx filename="pages/index.jsx" switcher
-import Link from 'next/link'
-
-export default function Page() {
-	return (
-		<div>
-			<h1>Home</h1>
-			<Link href="/about">About</Link>
-		</div>
-	)
-}
-```
-
-```tsx filename="__tests__/index.test.tsx" switcher
-import { expect, test } from 'vitest'
-import { render, screen } from '@testing-library/react'
-import Page from '../pages/index'
-
-test('Page', () => {
-	render(<Page />)
-	expect(screen.getByRole('heading', { level: 1, name: 'Home' })).toBeDefined()
-})
-```
-
-```jsx filename="__tests__/index.test.jsx" switcher
-import { expect, test } from 'vitest'
-import { render, screen } from '@testing-library/react'
-import Page from '../pages/index'
-
-test('Page', () => {
-	render(<Page />)
-	expect(screen.getByRole('heading', { level: 1, name: 'Home' })).toBeDefined()
-})
-```
-
-</PagesOnly>
 
 ## Running your tests
 

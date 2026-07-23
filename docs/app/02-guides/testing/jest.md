@@ -4,8 +4,6 @@ nav_title: Jest
 description: Learn how to set up Jest with Next.js for Unit Testing and Snapshot Testing.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 Jest and React Testing Library are frequently used together for **Unit Testing** and **Snapshot Testing**. This guide will show you how to set up Jest with Next.js and write your first tests.
 
 > **Good to know:** Since `async` Server Components are new to the React ecosystem, Jest currently does not support them. While you can still run **unit tests** for synchronous Server and Client Components, we recommend using an **E2E tests** for `async` components.
@@ -127,94 +125,6 @@ Under the hood, `next/jest` is automatically configuring Jest for you, including
 
 > **Good to know**: To test environment variables directly, load them manually in a separate setup script or in your `jest.config.ts` file. For more information, please see [Test Environment Variables](/docs/app/guides/environment-variables#test-environment-variables).
 
-<PagesOnly>
-
-## Setting up Jest (with Babel)
-
-If you opt out of the [Next.js Compiler](/docs/architecture/nextjs-compiler) and use Babel instead, you will need to manually configure Jest and install `babel-jest` and `identity-obj-proxy` in addition to the packages above.
-
-Here are the recommended options to configure Jest for Next.js:
-
-```js filename="jest.config.js"
-module.exports = {
-	collectCoverage: true,
-	// on node 14.x coverage provider v8 offers good speed and more or less good report
-	coverageProvider: 'v8',
-	collectCoverageFrom: ['**/*.{js,jsx,ts,tsx}', '!**/*.d.ts', '!**/node_modules/**', '!<rootDir>/out/**', '!<rootDir>/.next/**', '!<rootDir>/*.config.js', '!<rootDir>/coverage/**'],
-	moduleNameMapper: {
-		// Handle CSS imports (with CSS modules)
-		// https://jestjs.io/docs/webpack#mocking-css-modules
-		'^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
-
-		// Handle CSS imports (without CSS modules)
-		'^.+\\.(css|sass|scss)$': '<rootDir>/__mocks__/styleMock.js',
-
-		// Handle image imports
-		// https://jestjs.io/docs/webpack#handling-static-assets
-		'^.+\\.(png|jpg|jpeg|gif|webp|avif|ico|bmp|svg)$': `<rootDir>/__mocks__/fileMock.js`,
-
-		// Handle module aliases
-		'^@/components/(.*)$': '<rootDir>/components/$1',
-
-		// Handle @next/font
-		'@next/font/(.*)': `<rootDir>/__mocks__/nextFontMock.js`,
-		// Handle next/font
-		'next/font/(.*)': `<rootDir>/__mocks__/nextFontMock.js`,
-		// Disable server-only
-		'server-only': `<rootDir>/__mocks__/empty.js`,
-	},
-	// Add more setup options before each test is run
-	// setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-	testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/'],
-	testEnvironment: 'jsdom',
-	transform: {
-		// Use babel-jest to transpile tests with the next/babel preset
-		// https://jestjs.io/docs/configuration#transform-objectstring-pathtotransformer--pathtotransformer-object
-		'^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
-	},
-	transformIgnorePatterns: ['/node_modules/', '^.+\\.module\\.(css|sass|scss)$'],
-}
-```
-
-You can learn more about each configuration option in the [Jest docs](https://jestjs.io/docs/configuration). We also recommend reviewing [`next/jest` configuration](https://github.com/vercel/next.js/blob/e02fe314dcd0ae614c65b505c6daafbdeebb920e/packages/next/src/build/jest/jest.ts) to see how Next.js configures Jest.
-
-### Handling stylesheets and image imports
-
-Stylesheets and images aren't used in the tests but importing them may cause errors, so they will need to be mocked.
-
-Create the mock files referenced in the configuration above - `fileMock.js` and `styleMock.js` - inside a `__mocks__` directory:
-
-```js filename="__mocks__/fileMock.js"
-module.exports = 'test-file-stub'
-```
-
-```js filename="__mocks__/styleMock.js"
-module.exports = {}
-```
-
-For more information on handling static assets, please refer to the [Jest Docs](https://jestjs.io/docs/webpack#handling-static-assets).
-
-## Handling Fonts
-
-To handle fonts, create the `nextFontMock.js` file inside the `__mocks__` directory, and add the following configuration:
-
-```js filename="__mocks__/nextFontMock.js"
-module.exports = new Proxy(
-	{},
-	{
-		get: function getter() {
-			return () => ({
-				className: 'className',
-				variable: 'variable',
-				style: { fontFamily: 'fontFamily' },
-			})
-		},
-	},
-)
-```
-
-</PagesOnly>
-
 ## Optional: Handling Absolute Imports and Module Path Aliases
 
 If your project is using [Module Path Aliases](/docs/app/getting-started/installation#set-up-absolute-imports-and-module-path-aliases), you will need to configure Jest to resolve the imports by matching the paths option in the `jsconfig.json` file with the `moduleNameMapper` option in the `jest.config.js` file. For example:
@@ -287,36 +197,6 @@ Finally, add a Jest `test` script to your `package.json` file:
 
 Your project is now ready to run tests. Create a folder called `__tests__` in your project's root directory.
 
-<PagesOnly>
-
-For example, we can add a test to check if the `<Home />` component successfully renders a heading:
-
-```jsx filename="pages/index.js
-export default function Home() {
-	return <h1>Home</h1>
-}
-```
-
-```jsx filename="__tests__/index.test.js"
-import '@testing-library/jest-dom'
-import { render, screen } from '@testing-library/react'
-import Home from '../pages/index'
-
-describe('Home', () => {
-	it('renders a heading', () => {
-		render(<Home />)
-
-		const heading = screen.getByRole('heading', { level: 1 })
-
-		expect(heading).toBeInTheDocument()
-	})
-})
-```
-
-</PagesOnly>
-
-<AppOnly>
-
 For example, we can add a test to check if the `<Page />` component successfully renders a heading:
 
 ```jsx filename="app/page.js"
@@ -348,27 +228,7 @@ describe('Page', () => {
 })
 ```
 
-</AppOnly>
-
 Optionally, add a [snapshot test](https://jestjs.io/docs/snapshot-testing) to keep track of any unexpected changes in your component:
-
-<PagesOnly>
-
-```jsx filename="__tests__/snapshot.js"
-import { render } from '@testing-library/react'
-import Home from '../pages/index'
-
-it('renders homepage unchanged', () => {
-	const { container } = render(<Home />)
-	expect(container).toMatchSnapshot()
-})
-```
-
-> **Good to know**: Test files should not be included inside the Pages Router because any files inside the Pages Router are considered routes.
-
-</PagesOnly>
-
-<AppOnly>
 
 ```jsx filename="__tests__/snapshot.js"
 import { render } from '@testing-library/react'
@@ -379,8 +239,6 @@ it('renders homepage unchanged', () => {
 	expect(container).toMatchSnapshot()
 })
 ```
-
-</AppOnly>
 
 ## Running your tests
 

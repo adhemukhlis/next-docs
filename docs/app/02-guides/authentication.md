@@ -26,8 +26,6 @@ The examples on this page walk through basic username and password auth for educ
 
 ## Authentication
 
-<AppOnly>
-
 ### Sign-up and login functionality
 
 You can use the [`<form>`](https://react.dev/reference/react-dom/components/form) element with React's [Server Actions](/docs/app/getting-started/mutating-data) and `useActionState` to capture user credentials, validate form fields, and call your Authentication Provider's API or database.
@@ -427,158 +425,6 @@ After successfully creating the user account or verifying the user credentials, 
 > - The example above is verbose since it breaks down the authentication steps for the purpose of education. This highlights that implementing your own secure solution can quickly become complex. Consider using an [Auth Library](#auth-libraries) to simplify the process.
 > - To improve the user experience, you may want to check for duplicate emails or usernames earlier in the registration flow. For example, as the user types in a username or the input field loses focus. This can help prevent unnecessary form submissions and provide immediate feedback to the user. You can debounce requests with libraries such as [use-debounce](https://www.npmjs.com/package/use-debounce) to manage the frequency of these checks.
 
-</AppOnly>
-
-<PagesOnly>
-
-Here are the steps to implement a sign-up and/or login form:
-
-1. The user submits their credentials through a form.
-2. The form sends a request that is handled by an API route.
-3. Upon successful verification, the process is completed, indicating the user's successful authentication.
-4. If verification is unsuccessful, an error message is shown.
-
-Consider a login form where users can input their credentials:
-
-```tsx filename="pages/login.tsx" switcher
-import { FormEvent } from 'react'
-import { useRouter } from 'next/router'
-
-export default function LoginPage() {
-	const router = useRouter()
-
-	async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-		event.preventDefault()
-
-		const formData = new FormData(event.currentTarget)
-		const email = formData.get('email')
-		const password = formData.get('password')
-
-		const response = await fetch('/api/auth/login', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ email, password }),
-		})
-
-		if (response.ok) {
-			router.push('/profile')
-		} else {
-			// Handle errors
-		}
-	}
-
-	return (
-		<form onSubmit={handleSubmit}>
-			<input
-				type="email"
-				name="email"
-				placeholder="Email"
-				required
-			/>
-			<input
-				type="password"
-				name="password"
-				placeholder="Password"
-				required
-			/>
-			<button type="submit">Login</button>
-		</form>
-	)
-}
-```
-
-```jsx filename="pages/login.jsx" switcher
-import { FormEvent } from 'react'
-import { useRouter } from 'next/router'
-
-export default function LoginPage() {
-	const router = useRouter()
-
-	async function handleSubmit(event) {
-		event.preventDefault()
-
-		const formData = new FormData(event.currentTarget)
-		const email = formData.get('email')
-		const password = formData.get('password')
-
-		const response = await fetch('/api/auth/login', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ email, password }),
-		})
-
-		if (response.ok) {
-			router.push('/profile')
-		} else {
-			// Handle errors
-		}
-	}
-
-	return (
-		<form onSubmit={handleSubmit}>
-			<input
-				type="email"
-				name="email"
-				placeholder="Email"
-				required
-			/>
-			<input
-				type="password"
-				name="password"
-				placeholder="Password"
-				required
-			/>
-			<button type="submit">Login</button>
-		</form>
-	)
-}
-```
-
-The form above has two input fields for capturing the user's email and password. On submission, it triggers a function that sends a POST request to an API route (`/api/auth/login`).
-
-You can then call your Authentication Provider's API in the API route to handle authentication:
-
-```ts filename="pages/api/auth/login.ts" switcher
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { signIn } from '@/auth'
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	try {
-		const { email, password } = req.body
-		await signIn('credentials', { email, password })
-
-		res.status(200).json({ success: true })
-	} catch (error) {
-		if (error.type === 'CredentialsSignin') {
-			res.status(401).json({ error: 'Invalid credentials.' })
-		} else {
-			res.status(500).json({ error: 'Something went wrong.' })
-		}
-	}
-}
-```
-
-```js filename="pages/api/auth/login.js" switcher
-import { signIn } from '@/auth'
-
-export default async function handler(req, res) {
-	try {
-		const { email, password } = req.body
-		await signIn('credentials', { email, password })
-
-		res.status(200).json({ success: true })
-	} catch (error) {
-		if (error.type === 'CredentialsSignin') {
-			res.status(401).json({ error: 'Invalid credentials.' })
-		} else {
-			res.status(500).json({ error: 'Something went wrong.' })
-		}
-	}
-}
-```
-
-</PagesOnly>
-
 ## Session Management
 
 Session management ensures that the user's authenticated state is preserved across requests. It involves creating, storing, refreshing, and deleting sessions or tokens.
@@ -591,8 +437,6 @@ There are two types of sessions:
 > **Good to know:** While you can use either method, or both, we recommend using a session management library such as [iron-session](https://github.com/vvo/iron-session) or [Jose](https://github.com/panva/jose).
 
 ### Stateless Sessions
-
-<AppOnly>
 
 To create and manage stateless sessions, there are a few steps you need to follow:
 
@@ -873,55 +717,6 @@ export async function logout() {
 }
 ```
 
-</AppOnly>
-
-<PagesOnly>
-
-#### Setting and deleting cookies
-
-You can use [API Routes](/docs/pages/building-your-application/routing/api-routes) to set the session as a cookie on the server:
-
-```ts filename="pages/api/login.ts" switcher
-import { serialize } from 'cookie'
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { encrypt } from '@/app/lib/session'
-
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-	const sessionData = req.body
-	const encryptedSessionData = encrypt(sessionData)
-
-	const cookie = serialize('session', encryptedSessionData, {
-		httpOnly: true,
-		secure: process.env.NODE_ENV === 'production',
-		maxAge: 60 * 60 * 24 * 7, // One week
-		path: '/',
-	})
-	res.setHeader('Set-Cookie', cookie)
-	res.status(200).json({ message: 'Successfully set cookie!' })
-}
-```
-
-```js filename="pages/api/login.js" switcher
-import { serialize } from 'cookie'
-import { encrypt } from '@/app/lib/session'
-
-export default function handler(req, res) {
-	const sessionData = req.body
-	const encryptedSessionData = encrypt(sessionData)
-
-	const cookie = serialize('session', encryptedSessionData, {
-		httpOnly: true,
-		secure: process.env.NODE_ENV === 'production',
-		maxAge: 60 * 60 * 24 * 7, // One week
-		path: '/',
-	})
-	res.setHeader('Set-Cookie', cookie)
-	res.status(200).json({ message: 'Successfully set cookie!' })
-}
-```
-
-</PagesOnly>
-
 ### Database Sessions
 
 To create and manage database sessions, you'll need to follow these steps:
@@ -929,8 +724,6 @@ To create and manage database sessions, you'll need to follow these steps:
 1. Create a table in your database to store session and data (or check if your Auth Library handles this).
 2. Implement functionality to insert, update, and delete sessions
 3. Encrypt the session ID before storing it in the user's browser, and ensure the database and cookie stay in sync (this is optional, but recommended for optimistic auth checks in [Proxy](#optimistic-checks-with-proxy-optional)).
-
-<AppOnly>
 
 For example:
 
@@ -1010,55 +803,6 @@ export async function createSession(id) {
 > - You may opt to use database sessions for more advanced use cases, such as keeping track of the last time a user logged in, or number of active devices, or give users the ability to log out of all devices.
 
 After implementing session management, you'll need to add authorization logic to control what users can access and do within your application. Continue to the [Authorization](#authorization) section to learn more.
-
-</AppOnly>
-
-<PagesOnly>
-
-**Creating a Session on the Server**:
-
-```ts filename="pages/api/create-session.ts" switcher
-import db from '../../lib/db'
-import type { NextApiRequest, NextApiResponse } from 'next'
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	try {
-		const user = req.body
-		const sessionId = generateSessionId()
-		await db.insertSession({
-			sessionId,
-			userId: user.id,
-			createdAt: new Date(),
-		})
-
-		res.status(200).json({ sessionId })
-	} catch (error) {
-		res.status(500).json({ error: 'Internal Server Error' })
-	}
-}
-```
-
-```js filename="pages/api/create-session.js" switcher
-import db from '../../lib/db'
-
-export default async function handler(req, res) {
-	try {
-		const user = req.body
-		const sessionId = generateSessionId()
-		await db.insertSession({
-			sessionId,
-			userId: user.id,
-			createdAt: new Date(),
-		})
-
-		res.status(200).json({ sessionId })
-	} catch (error) {
-		res.status(500).json({ error: 'Internal Server Error' })
-	}
-}
-```
-
-</PagesOnly>
 
 ## Authorization
 
@@ -1169,8 +913,6 @@ While Proxy can be useful for initial checks, it should not be your only line of
 > - In Proxy, you can also read cookies using `req.cookies.get('session')?.value`.
 > - Proxy uses the Node.js runtime, check if your Auth library and session management library are compatible.
 > - You can use the `matcher` property in the Proxy to specify which routes Proxy should run on. Although, for auth, it's recommended Proxy runs on all routes.
-
-<AppOnly>
 
 ### Creating a Data Access Layer (DAL)
 
@@ -1641,74 +1383,6 @@ export default function Profile() {
 ```
 
 If session data is needed in Client Components (e.g. for client-side data fetching), use React’s [`taintUniqueValue`](https://react.dev/reference/react/experimental_taintUniqueValue) API to prevent sensitive session data from being exposed to the client.
-
-</AppOnly>
-
-<PagesOnly>
-
-### Creating a Data Access Layer (DAL)
-
-#### Protecting API Routes
-
-API Routes in Next.js are essential for handling server-side logic and data management. It's crucial to secure these routes to ensure that only authorized users can access specific functionalities. This typically involves verifying the user's authentication status and their role-based permissions.
-
-Here's an example of securing an API Route:
-
-```ts filename="pages/api/route.ts" switcher
-import { NextApiRequest, NextApiResponse } from 'next'
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	const session = await getSession(req)
-
-	// Check if the user is authenticated
-	if (!session) {
-		res.status(401).json({
-			error: 'User is not authenticated',
-		})
-		return
-	}
-
-	// Check if the user has the 'admin' role
-	if (session.user.role !== 'admin') {
-		res.status(401).json({
-			error: 'Unauthorized access: User does not have admin privileges.',
-		})
-		return
-	}
-
-	// Proceed with the route for authorized users
-	// ... implementation of the API Route
-}
-```
-
-```js filename="pages/api/route.js" switcher
-export default async function handler(req, res) {
-	const session = await getSession(req)
-
-	// Check if the user is authenticated
-	if (!session) {
-		res.status(401).json({
-			error: 'User is not authenticated',
-		})
-		return
-	}
-
-	// Check if the user has the 'admin' role
-	if (session.user.role !== 'admin') {
-		res.status(401).json({
-			error: 'Unauthorized access: User does not have admin privileges.',
-		})
-		return
-	}
-
-	// Proceed with the route for authorized users
-	// ... implementation of the API Route
-}
-```
-
-This example demonstrates an API Route with a two-tier security check for authentication and authorization. It first checks for an active session, and then verifies if the logged-in user is an 'admin'. This approach ensures secure access, limited to authenticated and authorized users, maintaining robust security for request processing.
-
-</PagesOnly>
 
 ## Resources
 

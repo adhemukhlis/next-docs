@@ -3,8 +3,6 @@ title: images
 description: Custom configuration for the next/image loader
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 If you want to use a cloud provider to optimize images instead of using the Next.js built-in Image Optimization API, you can configure `next.config.js` with the following:
 
 ```js filename="next.config.js"
@@ -17,8 +15,6 @@ module.exports = {
 ```
 
 This `loaderFile` must point to a file relative to the root of your Next.js application. The file must export a default function that returns a string, for example:
-
-<AppOnly>
 
 ```js filename="my/image/loader.js"
 'use client'
@@ -33,22 +29,6 @@ Alternatively, you can use the [`loader` prop](/docs/app/api-reference/component
 > **Good to know**: Customizing the image loader file, which accepts a function, requires using [Client Components](/docs/app/getting-started/server-and-client-components) to serialize the provided function.
 
 To learn more about configuring the behavior of the built-in [Image Optimization API](/docs/app/api-reference/components/image) and the [Image Component](/docs/app/api-reference/components/image), see [Image Configuration Options](/docs/app/api-reference/components/image#configuration-options) for available options.
-
-</AppOnly>
-
-<PagesOnly>
-
-```js filename="my/image/loader.js"
-export default function myImageLoader({ src, width, quality }) {
-	return `https://example.com/${src}?w=${width}&q=${quality || 75}`
-}
-```
-
-Alternatively, you can use the [`loader` prop](/docs/pages/api-reference/components/image#loader) to pass the function to each instance of `next/image`.
-
-To learn more about configuring the behavior of the built-in [Image Optimization API](/docs/pages/api-reference/components/image) and the [Image Component](/docs/pages/api-reference/components/image), see [Image Configuration Options](/docs/pages/api-reference/components/image#configuration-options) for available options.
-
-</PagesOnly>
 
 ## Example Loader Configuration
 

@@ -3,8 +3,6 @@ title: deploymentId
 description: Configure a deployment identifier used for version skew protection and cache busting.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 The `deploymentId` option allows you to set an identifier for your deployment. This identifier is used for [version skew](/docs/app/guides/self-hosting#version-skew) protection and cache busting during rolling deployments.
 
 ```js filename="next.config.js"
@@ -31,7 +29,7 @@ When a `deploymentId` is configured, Next.js:
 4. Injects a `data-dpl-id` attribute on the `<html>` element
 5. Includes the `deploymentId` in the [`'use cache'` cache key](/docs/app/api-reference/directives/use-cache#cache-keys), invalidating cache entries when the deployment ID changes
 
-When the client detects a mismatch between its deployment ID and the server's (via the response header), it triggers a hard navigation (full page reload) instead of a client-side navigation. This ensures users always receive assets <AppOnly>and Server Functions</AppOnly> from a consistent deployment version.
+When the client detects a mismatch between its deployment ID and the server's (via the response header), it triggers a hard navigation (full page reload) instead of a client-side navigation. This ensures users always receive assets and Server Functions from a consistent deployment version.
 
 > **Good to know:** Next.js does not read the `?dpl=` query parameter on incoming requests. The query parameter is for cache busting (ensuring browsers and CDNs fetch fresh assets), not for routing. If you need version-aware routing, consult your hosting provider or CDN's documentation for implementing deployment-based routing.
 
@@ -43,20 +41,9 @@ During a rolling deployment, some server instances may be running the new versio
 
 Setting a consistent `deploymentId` per deployment ensures:
 
-<AppOnly>
-
 - Clients always request assets from a matching deployment version
 - Mismatches trigger a full reload to fetch the correct assets
 - Server Functions work correctly across deployment boundaries
-
-</AppOnly>
-
-<PagesOnly>
-
-- Clients always request assets from a matching deployment version
-- Mismatches trigger a full reload to fetch the correct assets
-
-</PagesOnly>
 
 ### Multi-server environments
 

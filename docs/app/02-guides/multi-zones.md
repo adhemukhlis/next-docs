@@ -4,8 +4,6 @@ nav_title: Multi-zones
 description: Learn how to build micro-frontends using Next.js Multi-Zones to deploy multiple Next.js apps under a single domain.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 <details open>
   <summary>Examples</summary>
 
@@ -121,8 +119,6 @@ The Next.js applications that make up the different zones can live in any reposi
 
 Since the pages in different zones may be released at different times, feature flags can be useful for enabling or disabling features in unison across the different zones.
 
-<AppOnly>
-
 ## Server Actions
 
 When using [Server Actions](/docs/app/getting-started/mutating-data) with Multi-Zones, you must explicitly allow the user-facing origin since your user facing domain may serve multiple applications. In your `next.config.js` file, add the following lines:
@@ -138,5 +134,3 @@ const nextConfig = {
 ```
 
 See [`serverActions.allowedOrigins`](/docs/app/api-reference/config/next-config-js/serverActions#allowedorigins) for more information.
-
-</AppOnly>

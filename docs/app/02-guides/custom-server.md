@@ -4,8 +4,6 @@ nav_title: Custom Server
 description: Start a Next.js app programmatically using a custom server.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 Next.js includes its own server with `next start` by default. If you have an existing backend, you can still use it with Next.js (this is not a custom server). A custom Next.js server allows you to programmatically start a server for custom patterns. The majority of the time, you will not need this approach. However, it's available if you need to eject.
 
 > **Good to know**:
@@ -88,23 +86,3 @@ The above `next` import is a function that receives an object with the following
 | `webpack`    | `Boolean`          | (_Optional_) Enable webpack                                                         |
 
 The returned `app` can then be used to let Next.js handle requests as required.
-
-<PagesOnly>
-
-## Disabling file-system routing
-
-By default, `Next` will serve each file in the `pages` folder under a pathname matching the filename. If your project uses a custom server, this behavior may result in the same content being served from multiple paths, which can present problems with SEO and UX.
-
-To disable this behavior and prevent routing based on files in `pages`, open `next.config.js` and disable the `useFileSystemPublicRoutes` config:
-
-```js filename="next.config.js"
-module.exports = {
-	useFileSystemPublicRoutes: false,
-}
-```
-
-> Note that `useFileSystemPublicRoutes` disables filename routes from SSR; client-side routing may still access those paths. When using this option, you should guard against navigation to routes you do not want programmatically.
-
-> You may also wish to configure the client-side router to disallow client-side redirects to filename routes; for that refer to [`router.beforePopState`](/docs/pages/api-reference/functions/use-router#routerbeforepopstate).
-
-</PagesOnly>

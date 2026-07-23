@@ -3,8 +3,6 @@ title: NextRequest
 description: API Reference for NextRequest.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 NextRequest extends the [Web Request API](https://developer.mozilla.org/docs/Web/API/Request) with additional convenience methods.
 
 ## `cookies`
@@ -86,25 +84,6 @@ request.nextUrl.searchParams
 
 The following options are available:
 
-<PagesOnly>
-
-| Property | Type | Description |
-| --- | --- | --- |
-| `basePath` | `string` | The [base path](/docs/pages/api-reference/config/next-config-js/basePath) of the URL. |
-| `buildId` | `string` \| `undefined` | The build identifier of the Next.js application. Can be [customized](/docs/pages/api-reference/config/next-config-js/generateBuildId). |
-| `defaultLocale` | `string` \| `undefined` | The default locale for [internationalization](/docs/pages/guides/internationalization). |
-| `domainLocale` |  |  |
-| - `defaultLocale` | `string` | The default locale within a domain. |
-| - `domain` | `string` | The domain associated with a specific locale. |
-| - `http` | `boolean` \| `undefined` | Indicates if the domain is using HTTP. |
-| `locales` | `string[]` \| `undefined` | An array of available locales. |
-| `locale` | `string` \| `undefined` | The currently active locale. |
-| `url` | `URL` | The URL object. |
-
-</PagesOnly>
-
-<AppOnly>
-
 | Property       | Type                    | Description                                                                                                                          |
 | -------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | `basePath`     | `string`                | The [base path](/docs/app/api-reference/config/next-config-js/basePath) of the URL.                                                  |
@@ -113,8 +92,6 @@ The following options are available:
 | `searchParams` | `Object`                | The search parameters of the URL.                                                                                                    |
 
 > **Note:** The internationalization properties from the Pages Router are not available for usage in the App Router. Learn more about [internationalization with the App Router](/docs/app/guides/internationalization).
-
-</AppOnly>
 
 ## Version History
 

@@ -3,8 +3,6 @@ title: redirects
 description: Add redirects to your Next.js app.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 Redirects allow you to redirect an incoming request path to a different destination path.
 
 To use redirects you can use the `redirects` key in `next.config.js`:
@@ -254,8 +252,6 @@ module.exports = {
 
 ### Redirects with i18n support
 
-<AppOnly>
-
 When implementing redirects with internationalization in the App Router, you can include locales in `next.config.js` redirects, but only as hardcoded paths.
 
 For dynamic or per-request locale handling, use [dynamic route segments and proxy](/docs/app/guides/internationalization), which can redirect based on the user's preferred language.
@@ -292,61 +288,6 @@ module.exports = {
 	},
 }
 ```
-
-</AppOnly>
-
-<PagesOnly>
-
-When leveraging [`i18n` support](/docs/pages/guides/internationalization) with redirects each `source` and `destination` is automatically prefixed to handle the configured `locales` unless you add `locale: false` to the redirect. If `locale: false` is used you must prefix the `source` and `destination` with a locale for it to be matched correctly.
-
-```js filename="next.config.js"
-module.exports = {
-	i18n: {
-		locales: ['en', 'fr', 'de'],
-		defaultLocale: 'en',
-	},
-
-	redirects() {
-		return [
-			{
-				source: '/with-locale', // automatically handles all locales
-				destination: '/another', // automatically passes the locale on
-				permanent: false,
-			},
-			{
-				// does not handle locales automatically since locale: false is set
-				source: '/nl/with-locale-manual',
-				destination: '/nl/another',
-				locale: false,
-				permanent: false,
-			},
-			{
-				// this matches '/' since `en` is the defaultLocale
-				source: '/en',
-				destination: '/en/another',
-				locale: false,
-				permanent: false,
-			},
-			// it's possible to match all locales even when locale: false is set
-			{
-				source: '/:locale/page',
-				destination: '/en/newpage',
-				permanent: false,
-				locale: false,
-			},
-			{
-				// this gets converted to /(en|fr|de)/(.*) so will not match the top-level
-				// `/` or `/fr` routes like /:path* would
-				source: '/(.*)',
-				destination: '/another',
-				permanent: false,
-			},
-		]
-	},
-}
-```
-
-</PagesOnly>
 
 In some rare cases, you might need to assign a custom status code for older HTTP Clients to properly redirect. In these cases, you can use the `statusCode` property instead of the `permanent` property, but not both. To ensure IE11 compatibility, a `Refresh` header is automatically added for the 308 status code.
 

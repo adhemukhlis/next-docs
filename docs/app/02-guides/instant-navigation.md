@@ -209,8 +209,6 @@ As you develop a route, the Next.js DevTools let you see what your users see on 
 
 The [React DevTools Suspense panel](https://react.dev/learn/react-developer-tools) complements this: it lists the `<Suspense>` boundaries in the tree and lets you toggle each one between its fallback and resolved state, so you can see exactly which boundary covers which part of the page.
 
-{/_ TODO: screenshot — React DevTools Suspense panel listing boundaries with toggle controls _/}
-
 The Navigation Inspector is available when Cache Components is enabled:
 
 ```ts filename="next.config.ts" highlight={4}
@@ -441,8 +439,6 @@ The result is cached at the fetch level. The featured list ships with the App Sh
 Validation passes. Open the DevTools and try a client navigation. The featured section appears immediately, and **"Loading product..."** shows where the product details will stream in.
 
 ### Iterate on loading states
-
-{/_ TODO: diagram — before/after illustration showing a single high-up Suspense boundary being refined down to smaller boundaries closer to the data _/}
 
 Validation passing means the navigation is instant. It does not mean the loading states are good. A `<Suspense>` boundary placed high in the tree (say, wrapping the whole page) might satisfy validation, but it replaces most of the page with a single fallback on every navigation.
 

@@ -568,17 +568,7 @@ Dangerously migrates from `next/legacy/image` to the new `next/image` by adding 
 npx @next/codemod@latest new-link .
 ```
 
-<AppOnly>
-
 Remove `<a>` tags inside [Link Components](/docs/app/api-reference/components/link).
-
-</AppOnly>
-
-<PagesOnly>
-
-Remove `<a>` tags inside [Link Components](/docs/pages/api-reference/components/link).
-
-</PagesOnly>
 
 For example:
 

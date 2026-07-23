@@ -4,8 +4,6 @@ nav_title: Sass
 description: Style your Next.js application using Sass.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 Next.js has built-in support for integrating with Sass after the package is installed using both the `.scss` and `.sass` extensions. You can use component-level Sass via CSS Modules and the `.module.scss`or `.module.sass` extension.
 
 First, install [`sass`](https://github.com/sass/sass):
@@ -102,8 +100,6 @@ $primary-color: #64ff00;
 }
 ```
 
-<AppOnly>
-
 ```jsx filename="app/page.js"
 // maps to root `/` URL
 
@@ -113,21 +109,3 @@ export default function Page() {
 	return <h1 style={{ color: variables.primaryColor }}>Hello, Next.js!</h1>
 }
 ```
-
-</AppOnly>
-
-<PagesOnly>
-
-```jsx filename="pages/_app.js"
-import variables from '../styles/variables.module.scss'
-
-export default function MyApp({ Component, pageProps }) {
-	return (
-		<Layout color={variables.primaryColor}>
-			<Component {...pageProps} />
-		</Layout>
-	)
-}
-```
-
-</PagesOnly>

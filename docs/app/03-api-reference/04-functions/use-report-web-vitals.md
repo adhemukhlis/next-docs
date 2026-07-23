@@ -3,31 +3,9 @@ title: useReportWebVitals
 description: API Reference for the useReportWebVitals function.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 The `useReportWebVitals` hook allows you to report [Core Web Vitals](https://web.dev/vitals/), and can be used in combination with your analytics service.
 
 New functions passed to `useReportWebVitals` are called with the available metrics up to that point. To prevent reporting duplicated data, ensure that the callback function reference does not change (as shown in the code examples below).
-
-<PagesOnly>
-
-```jsx filename="pages/_app.js"
-import { useReportWebVitals } from 'next/web-vitals'
-
-const logWebVitals = (metric) => {
-	console.log(metric)
-}
-
-function MyApp({ Component, pageProps }) {
-	useReportWebVitals(logWebVitals)
-
-	return <Component {...pageProps} />
-}
-```
-
-</PagesOnly>
-
-<AppOnly>
 
 ```jsx filename="app/_components/web-vitals.js"
 'use client'
@@ -62,8 +40,6 @@ export default function Layout({ children }) {
 
 > Since the `useReportWebVitals` hook requires the `'use client'` directive, the most performant approach is to create a separate component that the root layout imports. This confines the client boundary exclusively to the `WebVitals` component.
 
-</AppOnly>
-
 ## useReportWebVitals
 
 The `metric` object passed as the hook's argument consists of a number of properties:
@@ -88,34 +64,6 @@ The `metric` object passed as the hook's argument consists of a number of proper
 - [Interaction to Next Paint](https://web.dev/inp/) (INP)
 
 You can handle all the results of these metrics using the `name` property.
-
-<PagesOnly>
-
-```jsx filename="pages/_app.js"
-import { useReportWebVitals } from 'next/web-vitals'
-
-const handleWebVitals = (metric) => {
-	switch (metric.name) {
-		case 'FCP': {
-			// handle FCP results
-		}
-		case 'LCP': {
-			// handle LCP results
-		}
-		// ...
-	}
-}
-
-function MyApp({ Component, pageProps }) {
-	useReportWebVitals(handleWebVitals)
-
-	return <Component {...pageProps} />
-}
-```
-
-</PagesOnly>
-
-<AppOnly>
 
 ```tsx filename="app/components/web-vitals.tsx" switcher
 'use client'
@@ -162,50 +110,6 @@ export function WebVitals() {
 	useReportWebVitals(handleWebVitals)
 }
 ```
-
-</AppOnly>
-
-<PagesOnly>
-
-## Custom Metrics
-
-In addition to the core metrics listed above, there are some additional custom metrics that measure the time it takes for the page to hydrate and render:
-
-- `Next.js-hydration`: Length of time it takes for the page to start and finish hydrating (in ms)
-- `Next.js-route-change-to-render`: Length of time it takes for a page to start rendering after a route change (in ms)
-- `Next.js-render`: Length of time it takes for a page to finish render after a route change (in ms)
-
-You can handle all the results of these metrics separately:
-
-```jsx filename="pages/_app.js"
-import { useReportWebVitals } from 'next/web-vitals'
-
-function handleCustomMetrics(metric) {
-	switch (metric.name) {
-		case 'Next.js-hydration':
-			// handle hydration results
-			break
-		case 'Next.js-route-change-to-render':
-			// handle route-change to render results
-			break
-		case 'Next.js-render':
-			// handle render results
-			break
-		default:
-			break
-	}
-}
-
-function MyApp({ Component, pageProps }) {
-	useReportWebVitals(handleCustomMetrics)
-
-	return <Component {...pageProps} />
-}
-```
-
-These metrics work in all browsers that support the [User Timing API](https://caniuse.com/#feat=user-timing).
-
-</PagesOnly>
 
 ## Sending results to external systems
 

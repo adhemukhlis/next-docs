@@ -3,8 +3,6 @@ title: output
 description: Next.js automatically traces which files are needed by each page to allow for easy deployment of your application. Learn how it works here.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 During a build, Next.js will automatically trace each page and its dependencies to determine all of the files that are needed for deploying a production version of your application.
 
 This feature helps reduce the size of deployments drastically. Previously, when deploying with Docker you would need to have all files from your package's `dependencies` installed to run `next start`. Starting with Next.js 12, you can leverage Output File Tracing in the `.next/` directory to only include the necessary files.
@@ -47,22 +45,9 @@ To start your minimal `server.js` file locally, run the following command:
 node .next/standalone/server.js
 ```
 
-<AppOnly>
-
 > **Good to know**:
 >
 > - If your project needs to listen to a specific port or hostname, you can define `PORT` or `HOSTNAME` environment variables before running `server.js`. For example, run `PORT=8080 HOSTNAME=0.0.0.0 node server.js` to start the server on `http://0.0.0.0:8080`.
-
-</AppOnly>
-
-<PagesOnly>
-
-> **Good to know**:
->
-> - `next.config.js` is read during `next build` and serialized into the `server.js` output file.
-> - If your project needs to listen to a specific port or hostname, you can define `PORT` or `HOSTNAME` environment variables before running `server.js`. For example, run `PORT=8080 HOSTNAME=0.0.0.0 node server.js` to start the server on `http://0.0.0.0:8080`.
-
-</PagesOnly>
 
 ## Caveats
 

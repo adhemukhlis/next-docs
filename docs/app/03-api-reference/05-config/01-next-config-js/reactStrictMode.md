@@ -3,8 +3,6 @@ title: reactStrictMode
 description: The complete Next.js runtime is now Strict Mode-compliant, learn how to opt-in
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 > **Good to know**: Since Next.js 13.5.1, Strict Mode is `true` by default with `app` router, so the above configuration is only necessary for `pages`. You can still disable Strict Mode by setting `reactStrictMode: false`.
 
 > **Suggested**: We strongly suggest you enable Strict Mode in your Next.js application to better prepare your application for the future of React.

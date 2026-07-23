@@ -3,8 +3,6 @@ title: typescript
 description: Configure how Next.js handles TypeScript errors during production builds and specify a custom tsconfig file.
 ---
 
-{/_ The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. _/}
-
 Configure TypeScript behavior with the `typescript` option in `next.config.js`:
 
 ```js filename="next.config.js"
