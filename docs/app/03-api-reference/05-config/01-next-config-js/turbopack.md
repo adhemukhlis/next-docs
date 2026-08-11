@@ -296,9 +296,12 @@ Available module types:
 | `typescript` | Process as TypeScript                                    |
 | `css`        | Process as CSS                                           |
 | `css-module` | Process as CSS module                                    |
+| `json`       | Parse as JSON and export it                              |
 | `wasm`       | Process as WebAssembly                                   |
-| `raw`        | Return raw contents as string                            |
-| `bytes`      | Inline contents as bytes                                 |
+| `node`       | Process as a native Node.js addon                        |
+| `raw`        | Export the contents as a string (an alias of `text`)     |
+| `text`       | Export the contents as a string                          |
+| `bytes`      | Export the contents as a `Uint8Array`                    |
 
 ### Inline loader configuration with import attributes
 
