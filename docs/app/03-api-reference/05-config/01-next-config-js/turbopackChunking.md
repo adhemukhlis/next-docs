@@ -66,6 +66,7 @@ This avoids re-downloading JavaScript the browser already has when navigating.
 
 These change the assumptions the chunker makes when weighing whether merging two chunks is worth it.
 
+- **`clusters`** (an array of arrays of `RegExp`, e.g. `[[/^\/dashboard/, /^\/settings/]]`): groups of routes that are commonly visited together, matched against the route pathname. Turbopack assumes navigations are likely to stay within a cluster, so chunks shared by a cluster's routes are merged more eagerly.
 - **`firstPageLoadPriority`** (a number between `0` and `1`): how heavily to weight the benefit of merging chunks for a single page load. Higher values merge more eagerly. If you don't have a better value, your site's bounce rate is a good approximation.
 - **`priorityRoutes`** (an array of `RegExp`): routes that are often the first page a visitor lands on (e.g. the homepage). Their client-side bundles are merged more eagerly to reduce the single-route request cost, at the cost of extra requests when navigating to other pages.
 - **`priorityBoost`** (default `1.5`): a multiplier on the single-request probability of `priorityRoutes` routes. Higher values merge those routes' bundles more aggressively.
