@@ -63,7 +63,7 @@ In this case, the `getUserDetails` function returns data about a given user. We 
 ```ts switcher
 import { experimental_taintObjectReference } from 'react'
 
-function getUserDetails(id: string): UserDetails {
+async function getUserDetails(id: string): Promise<UserDetails> {
 	const user = await db.queryUserById(id)
 
 	experimental_taintObjectReference('Do not use the entire user info object. Instead, select only the fields you need.', user)
@@ -75,15 +75,12 @@ function getUserDetails(id: string): UserDetails {
 ```js switcher
 import { experimental_taintObjectReference } from 'react'
 
-function getUserDetails(id) {
-  const user = await db.queryUserById(id)
+async function getUserDetails(id) {
+	const user = await db.queryUserById(id)
 
-  experimental_taintObjectReference(
-    'Do not use the entire user info object. Instead, select only the fields you need.',
-    user
-  )
+	experimental_taintObjectReference('Do not use the entire user info object. Instead, select only the fields you need.', user)
 
-  return user
+	return user
 }
 ```
 
@@ -140,15 +137,15 @@ export async function ContactPage({ params }) {
 
 ### Tainting a unique value
 
-In this case, we can access the server configuration by awaiting calls to `config.getConfigDetails`. However, the system configuration contains the `SERVICE_API_KEY` that we don't want to expose to clients.
+In this case, we can access the server configuration by awaiting calls to `configService.getConfigDetails`. However, the system configuration contains the `SERVICE_API_KEY` that we don't want to expose to clients.
 
 We can taint the `config.SERVICE_API_KEY` value.
 
 ```ts switcher
 import { experimental_taintUniqueValue } from 'react'
 
-function getSystemConfig(): SystemConfig {
-	const config = await config.getConfigDetails()
+async function getSystemConfig(): Promise<SystemConfig> {
+	const config = await configService.getConfigDetails()
 
 	experimental_taintUniqueValue('Do not pass configuration tokens to the client', config, config.SERVICE_API_KEY)
 
@@ -159,16 +156,12 @@ function getSystemConfig(): SystemConfig {
 ```js switcher
 import { experimental_taintUniqueValue } from 'react'
 
-function getSystemConfig() {
-  const config = await config.getConfigDetails()
+async function getSystemConfig() {
+	const config = await configService.getConfigDetails()
 
-  experimental_taintUniqueValue(
-    'Do not pass configuration tokens to the client',
-    config,
-    config.SERVICE_API_KEY
-  )
+	experimental_taintUniqueValue('Do not pass configuration tokens to the client', config, config.SERVICE_API_KEY)
 
-  return config
+	return config
 }
 ```
 

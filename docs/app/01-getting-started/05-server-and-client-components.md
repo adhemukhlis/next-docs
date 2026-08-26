@@ -23,7 +23,7 @@ Use **Client Components** when you need:
 
 - [State](https://react.dev/learn/managing-state) and [event handlers](https://react.dev/learn/responding-to-events). E.g. `onClick`, `onChange`.
 - [Lifecycle logic](https://react.dev/learn/lifecycle-of-reactive-effects). E.g. `useEffect`.
-- Browser-only APIs. E.g. `localStorage`, `window`, `Navigator.geolocation`, etc.
+- Browser-only APIs. E.g. `localStorage`, `window`, `navigator.geolocation`, etc.
 - [Custom hooks](https://react.dev/learn/reusing-logic-with-custom-hooks).
 
 Use **Server Components** when you need:
@@ -55,12 +55,13 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 }
 ```
 
-```jsx filename="app/[id]/page.js" highlight={1,12} switcher
+```jsx filename="app/[id]/page.js" highlight={1,13} switcher
 import LikeButton from '@/app/ui/like-button'
 import { getPost } from '@/lib/data'
 
 export default async function Page({ params }) {
-	const post = await getPost(params.id)
+	const { id } = await params
+	const post = await getPost(id)
 
 	return (
 		<div>
@@ -134,7 +135,7 @@ On subsequent navigations:
 
 ### Using Client Components
 
-You can create a Client Component by adding the [`"use client"`](https://react.dev/reference/react/use-client) directive at the top of the file, above your imports.
+You can create a Client Component by adding the [`"use client"`](https://react.dev/reference/rsc/use-client) directive at the top of the file, above your imports.
 
 ```tsx filename="app/ui/counter.tsx" highlight={1} switcher
 'use client'
@@ -256,12 +257,13 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 }
 ```
 
-```jsx filename="app/[id]/page.js" highlight={1,7} switcher
+```jsx filename="app/[id]/page.js" highlight={1,8} switcher
 import LikeButton from '@/app/ui/like-button'
 import { getPost } from '@/lib/data'
 
 export default async function Page({ params }) {
-	const post = await getPost(params.id)
+	const { id } = await params
+	const post = await getPost(id)
 
 	return <LikeButton likes={post.likes} />
 }

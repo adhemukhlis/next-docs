@@ -109,18 +109,19 @@ export default function MyButton() {
 
 In the following example, `use server` is used inline at the top of a function to mark it as a [Server Function](https://19.react.dev/reference/rsc/server-functions):
 
-```tsx filename="app/posts/[id]/page.tsx" switcher highlight={8}
+```tsx filename="app/posts/[id]/page.tsx" switcher highlight={9}
 import { EditPost } from './edit-post'
 import { revalidatePath } from 'next/cache'
 
-export default async function PostPage({ params }: { params: { id: string } }) {
-	const post = await getPost(params.id)
+export default async function PostPage({ params }: PageProps<'/posts/[id]'>) {
+	const { id } = await params
+	const post = await getPost(id)
 
 	async function updatePost(formData: FormData) {
 		'use server'
 		// Verify auth before saving (e.g. inside savePost)
-		await savePost(params.id, formData)
-		revalidatePath(`/posts/${params.id}`)
+		await savePost(id, formData)
+		revalidatePath(`/posts/${id}`)
 	}
 
 	return (
@@ -132,18 +133,19 @@ export default async function PostPage({ params }: { params: { id: string } }) {
 }
 ```
 
-```jsx filename="app/posts/[id]/page.js" switcher highlight={8}
+```jsx filename="app/posts/[id]/page.js" switcher highlight={9}
 import { EditPost } from './edit-post'
 import { revalidatePath } from 'next/cache'
 
 export default async function PostPage({ params }) {
-	const post = await getPost(params.id)
+	const { id } = await params
+	const post = await getPost(id)
 
 	async function updatePost(formData) {
 		'use server'
 		// Verify auth before saving (e.g. inside savePost)
-		await savePost(params.id, formData)
-		revalidatePath(`/posts/${params.id}`)
+		await savePost(id, formData)
+		revalidatePath(`/posts/${id}`)
 	}
 
 	return (

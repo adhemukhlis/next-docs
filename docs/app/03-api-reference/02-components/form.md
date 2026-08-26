@@ -201,7 +201,7 @@ export default function Page() {
 }
 ```
 
-```jsx filename="/app/ui/search-button.js" switcher
+```jsx filename="/app/page.js" switcher
 import Form from 'next/form'
 import { SearchButton } from '@/ui/search-button'
 

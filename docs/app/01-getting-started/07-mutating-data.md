@@ -438,7 +438,7 @@ export async function createPost(formData: FormData) {
 }
 ```
 
-```js filename="app/actions.js" switcher
+```js filename="app/lib/actions.js" switcher
 import { auth } from '@/lib/auth'
 import { revalidatePath } from 'next/cache'
 
@@ -478,7 +478,7 @@ export async function createPost(formData: FormData) {
 }
 ```
 
-```js filename="app/actions.js" switcher
+```js filename="app/lib/actions.js" switcher
 'use server'
 
 import { auth } from '@/lib/auth'

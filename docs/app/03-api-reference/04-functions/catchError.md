@@ -89,7 +89,7 @@ The `fallback` function must be a Client Component (or defined in a `'use client
 
 ## Examples
 
-### Client Component
+### Basic usage
 
 Define a fallback and use the returned component to wrap parts of your UI:
 

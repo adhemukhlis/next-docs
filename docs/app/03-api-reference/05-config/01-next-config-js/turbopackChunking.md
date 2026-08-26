@@ -4,7 +4,7 @@ description: Configure how Turbopack splits your client-side JavaScript into chu
 version: experimental
 ---
 
-`experimental.turbopackChunking` lets you configure Turbopack's production JavaScript chunker. These options allow you to change the assumptions the chunker makes about user behaviour, tweak the raw size thresholds it uses, and enable the experimental component chunks feature.
+`experimental.turbopackChunking` lets you configure Turbopack's production JavaScript chunker. These options allow you to change the assumptions the chunker makes about user behavior, tweak the raw size thresholds it uses, and enable the experimental component chunks feature.
 
 By default, Turbopack's chunking is configured as follows:
 

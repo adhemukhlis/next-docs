@@ -68,7 +68,7 @@ Scripts that load with the `beforeInteractive` strategy are injected into the in
 
 Scripts denoted with this strategy are preloaded and fetched before any first-party code, but their execution **does not block page hydration from occurring**.
 
-`beforeInteractive` scripts must be placed inside the root layout (`app/layout.tsx`) and are designed to load scripts that are needed by the entire site (i.e. the script will load when any page in the application has been loaded server-side).
+Scripts with the `beforeInteractive` strategy must be placed inside a [root layout](/docs/app/api-reference/file-conventions/layout#root-layout), such as `app/layout.tsx` or `app/[locale]/layout.tsx`, and are designed to load scripts that are needed by the entire site (i.e. the script will load when any page in the application has been loaded server-side).
 
 **This strategy should only be used for critical scripts that need to be fetched as soon as possible.**
 
@@ -109,6 +109,8 @@ export default function RootLayout({ children }) {
 ```
 
 > **Good to know**: Scripts with `beforeInteractive` will always be injected inside the `head` of the HTML document regardless of where it's placed in the component.
+
+> **Good to know**: These scripts run once per document load. A client-side navigation does not run them again, including one that only changes a root param, such as `/en` to `/fi`, since the root layout stays the same.
 
 Some examples of scripts that should be fetched as soon as possible with `beforeInteractive` include:
 

@@ -15,3 +15,5 @@ module.exports = {
 	},
 }
 ```
+
+> **Good to know:** When [`deploymentId`](/docs/app/api-reference/config/next-config-js/deploymentId) is set, Next.js uses a constant build ID and `generateBuildId` has no effect. [Version skew](/docs/app/guides/self-hosting#version-skew) is detected from the deployment ID instead.
