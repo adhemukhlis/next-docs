@@ -79,7 +79,6 @@ pnpm create next-app my-app \
   --import-alias "@/*" \
   --turbopack \
   --cache-components \
-  --react-compiler \
   --biome \
   --tailwind \
   --use-pnpm
@@ -93,14 +92,13 @@ npx create-next-app@latest my-app \
   --import-alias "@/*" \
   --turbopack \
   --cache-components \
-  --react-compiler \
   --biome \
   --tailwind \
   --use-npm
 ```
 
 - Essential: `--app`, `--src-dir`, `--typescript`, `--import-alias`, `--turbopack` — they fix the router, source layout, language, import paths, and bundler.
-- Optional: `--cache-components`, `--react-compiler`, a linter flag, `--tailwind`, and the `--use-*` flag matching the package manager.
+- Optional: `--cache-components`, a linter flag, `--tailwind`, and the `--use-*` flag matching the package manager.
 - Linter: `--eslint` (with the rules from `@next/eslint-plugin-next`), `--biome` (linter and formatter with Next.js and React domain support), or `--no-linter`.
 
 `create-next-app` creates a `my-app` folder and installs the dependencies (`--skip-install` skips installing).
