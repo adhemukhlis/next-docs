@@ -2,22 +2,32 @@
 
 Refined Next.js documentation: consistent, lightweight, and free of legacy baggage. Only stable, first-class App Router usage — no Pages Router.
 
-## Layout
+## Pipeline
 
-- `docs/` — Markdown docs pulled from [vercel/next.js](https://github.com/vercel/next.js/tree/canary/docs) (`canary`), App Router only. Source of truth.
-- `data/` — mdast JSON generated from `docs/` (mirrors its paths, `.md` → `.json`). Never edit by hand.
-- `commit-hash.txt` — upstream commit the current `docs/` was pulled from.
-- `fetch.mjs` — pulls latest upstream docs into `docs/` (sparse clone, drops `02-pages`/`03-architecture`/`04-community`, `.mdx` → `.md`, strips MDX-only syntax, formats).
-- `md-json.mjs` — converts `docs/**/*.md` → `data/**/*.json` (mdast with GFM + frontmatter).
+```
+upstream ──fetch.mjs──▶ docs/ ──AI refine──▶ docs-refined/ ──md-json.mjs──▶ docs-json/ ──md-json.mjs──▶ docs-context/
+```
+
+- `docs/` — upstream mirror from [vercel/next.js](https://github.com/vercel/next.js/tree/canary/docs) (`canary`). Kept original: only `fetch.mjs` writes here (sparse clone, `.mdx` → `.md`, MDX cleanup, `ignoreList`, format). Its git diff is how upstream changes are detected. **Never edit by hand.**
+- `docs-refined/` — AI-refined docs. Same directories and file names as `docs/`, always. The only place content is edited.
+- `docs-json/` — mdast JSON of `docs-refined/`, validated by the `rules` in `md-json.mjs`. Generated.
+- `docs-context/` — final Markdown rebuilt from `docs-json/`, used as context. Generated.
+- `commit-hash.txt` — upstream commit `docs/` was fetched from.
 
 ## Commands
 
-- `bun run pull` — pull latest docs. Refuses if `docs/` has uncommitted changes; `bun fetch.mjs --force` overrides. **Wipes `docs/`** — never run it on uncommitted refinements.
-- `bun run data` — regenerate `data/` from `docs/` (rebuilds the whole dir).
-- `bun run data:check` — same, plus verifies JSON → Markdown → JSON round-trip.
-- `bun run fmt` — format the repo with `bun fmt` (`bun fetch.mjs --fmt`). Options are inline flags in `fetch.mjs` (no config file): tabs, no semi, single quotes, print width 180, prose never wrapped. `node_modules/` and `data/` are ignored.
+- `bun run pull` — fetch upstream into `docs/` (wipes and recreates it), sync `docs-refined/` (copy new files, delete removed ones), then report added / modified / removed files to refine.
+- `bun run sync` — only the `docs-refined/` sync + report (no fetch).
+- `bun run build` — validate `docs-refined/` against rules, then regenerate `docs-json/` and `docs-context/`. Nothing is written if a rule fails.
+- `bun run build:check` — same, plus verifies `docs-context/` parses back to identical mdast.
+- `bun run fmt` — `bun fmt` with inline flags from `format()` in `fetch.mjs` (no config file): tabs, no semi, single quotes, print width 180, prose never wrapped. Ignores `node_modules/`, `docs-json/`, `docs-context/`.
 
-After editing anything in `docs/`, run `bun run fmt` then `bun run data`.
+## Workflow
+
+1. `bun run pull`, commit nothing yet.
+2. Refine only the reported files in `docs-refined/`: added → refine whole file; modified → port `git diff -- docs/<file>` into `docs-refined/<file>`, keeping existing refinements.
+3. To drop a page/section entirely, add its path to `ignoreList` in `fetch.mjs` (relative to `docs/`), then `bun run sync`.
+4. `bun run fmt`, `bun run build`, commit `docs/`, `docs-refined/`, `docs-json/`, `docs-context/` and `commit-hash.txt` together.
 
 ## Tooling
 
@@ -25,6 +35,6 @@ Bun only, plain JavaScript (ESM). No TypeScript, no `tsconfig.json`.
 
 - `bun <file>`, `bun run <script>`, `bun install`, `bunx` — never node/npm/npx.
 - `Bun.file` / `Bun.write` for file I/O, `Bun.Glob` for walking, `Bun.$` for shell, `Bun.argv`, `import.meta.dir`.
-- `node:fs/promises` only for what Bun lacks (`rm`, `rename`, `readdir`).
+- `node:fs/promises` only for what Bun lacks (`rm`, `rename`, `readdir`, `mkdir`).
 
 Detailed rules live in `.claude/rules/`.

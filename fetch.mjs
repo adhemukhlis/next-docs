@@ -1,18 +1,23 @@
-// Pull the latest Next.js docs (canary) into docs/, App Router only.
-// Usage: bun fetch.mjs [--force | --fmt]
-//   --force  overwrite docs/ even if it has uncommitted changes
-//   --fmt    only run formatting (Step 9), no pull
+// Fetch the latest Next.js docs (canary) into docs/ (upstream mirror, App Router only),
+// then sync docs-refined/ to the same file structure and report what needs refining.
+// Usage: bun fetch.mjs [--sync | --fmt]
+//   --sync  only sync docs-refined/ with docs/ (no fetch)
+//   --fmt   only run formatting (no fetch)
 
 import { $ } from 'bun'
-import { rm, rename, readdir } from 'node:fs/promises'
+import { rm, rename, readdir, mkdir } from 'node:fs/promises'
 import { join } from 'node:path'
 
 const rootDir = import.meta.dir
 const nextJsDir = join(rootDir, 'next.js')
 const docsDir = join(rootDir, 'docs')
+const refinedDir = join(rootDir, 'docs-refined')
 const commitHashFile = join(rootDir, 'commit-hash.txt')
-const ignoreList = ['02-pages', '03-architecture', '04-community']
-const force = Bun.argv.includes('--force')
+
+// Removed from docs/ (and therefore docs-refined/). Paths are relative to docs/ after
+// Step 5–7: top-level dirs without "[number]-" prefix, files as .md
+// e.g. 'pages', 'app/02-guides/some-guide.md', 'app/03-api-reference/07-adapters'
+const ignoreList = ['pages', 'architecture', 'community']
 
 $.cwd(rootDir)
 
@@ -20,13 +25,12 @@ if (Bun.argv.includes('--fmt')) {
 	await format()
 	process.exit(0)
 }
-
-// Step 0: Refuse to wipe uncommitted refinements in docs/, then clean up previous runs
-const dirty = (await $`git status --porcelain -- docs`.quiet().nothrow().text()).trim()
-if (dirty && !force) {
-	console.error('❌ docs/ has uncommitted changes. Commit/stash them first, or rerun with --force.')
-	process.exit(1)
+if (Bun.argv.includes('--sync')) {
+	await syncRefined()
+	process.exit(0)
 }
+
+// Step 0: Clean up previous run
 console.log('🧹 Cleaning up previous run...')
 await rm(nextJsDir, { recursive: true, force: true })
 await rm(docsDir, { recursive: true, force: true })
@@ -57,17 +61,8 @@ await rename(sourceDocs, docsDir)
 console.log('🗑️  Step 4: Removing next.js repository directory...')
 await rm(nextJsDir, { recursive: true, force: true })
 
-// Step 5: Remove ignored top-level sections
-console.log('🗑️  Step 5: Removing ignored contents from docs/...')
-for (const item of await readdir(docsDir)) {
-	if (ignoreList.includes(item)) {
-		await rm(join(docsDir, item), { recursive: true, force: true })
-		console.log(`  ➖ Removed: ${item}`)
-	}
-}
-
-// Step 6: Strip "[number]-" prefix from top-level subdirectories
-console.log('🏷️  Step 6: Renaming subdirectories in docs/...')
+// Step 5: Strip "[number]-" prefix from top-level subdirectories
+console.log('🏷️  Step 5: Renaming subdirectories in docs/...')
 for (const entry of await readdir(docsDir, { withFileTypes: true })) {
 	if (!entry.isDirectory()) continue
 	const newName = entry.name.replace(/^\d+-(.+)$/, '$1')
@@ -89,8 +84,8 @@ function cleanMdxContent(content) {
 	return content
 }
 
-// Step 7 & 8: *.mdx -> *.md and clean MDX artifacts
-console.log('🔄 Step 7 & 8: Converting *.mdx to *.md and cleaning MDX legacy blocks...')
+// Step 6 & 7: *.mdx -> *.md and clean MDX artifacts
+console.log('🔄 Step 6 & 7: Converting *.mdx to *.md and cleaning MDX legacy blocks...')
 const files = await Array.fromAsync(new Bun.Glob('**/*.{md,mdx}').scan({ cwd: docsDir, absolute: true }))
 let convertedCount = 0
 for (const file of files) {
@@ -105,15 +100,67 @@ for (const file of files) {
 }
 console.log(`  ✨ Processed ${files.length} file(s), converted ${convertedCount} .mdx file(s) to .md.`)
 
+// Step 8: Remove ignored dirs/files
+console.log('🗑️  Step 8: Removing ignored contents from docs/...')
+for (const item of ignoreList) {
+	const itemPath = join(docsDir, item)
+	if ((await isDir(itemPath)) || (await Bun.file(itemPath).exists())) {
+		await rm(itemPath, { recursive: true, force: true })
+		console.log(`  ➖ Removed: ${item}`)
+	} else {
+		console.warn(`  ⚠️  Not found upstream (renamed or removed?): ${item}`)
+	}
+}
+
 // Step 9: Format with bun fmt
 console.log('\n🎨 Step 9: Running formatting...')
 await format()
+
+// Step 10: Mirror docs/ structure into docs-refined/
+await syncRefined()
 
 console.log('\n🎉 All steps completed successfully!')
 
 // Formatting options live here, inline — the repo has no formatter config file
 async function format() {
-	await $`bun fmt --no-script --no-config --log-level silent --ignore-pattern node_modules --ignore-pattern data --use-tabs --tab-width 1 --bracket-same-line --single-quote --trailing-comma all --arrow-parens always --no-semi --prose-wrap never --print-width 180 --single-attribute-per-line --object-wrap preserve --end-of-line lf .`
+	await $`bun fmt --no-script --no-config --log-level silent --ignore-pattern node_modules --ignore-pattern docs-json --ignore-pattern docs-context --use-tabs --tab-width 1 --bracket-same-line --single-quote --trailing-comma all --arrow-parens always --no-semi --prose-wrap never --print-width 180 --single-attribute-per-line --object-wrap preserve --end-of-line lf .`
+}
+
+// docs-refined/ must have exactly the same files as docs/:
+// new upstream files are copied in raw, files gone upstream are removed.
+// Upstream edits to existing files are only reported — re-refine them from `git diff -- docs/<file>`.
+async function syncRefined() {
+	console.log('\n🔁 Step 10: Syncing docs-refined/ with docs/...')
+	await mkdir(refinedDir, { recursive: true })
+	const upstream = await listMd(docsDir)
+	const refined = await listMd(refinedDir)
+	const added = [...upstream].filter((file) => !refined.has(file)).sort()
+	const removed = [...refined].filter((file) => !upstream.has(file)).sort()
+	for (const file of added) await Bun.write(join(refinedDir, file), Bun.file(join(docsDir, file)))
+	for (const file of removed) await rm(join(refinedDir, file))
+	await $`find ${refinedDir} -type d -empty -delete`
+
+	const status = await $`git status --porcelain -uall -- docs`.text()
+	const modified = status
+		.split('\n')
+		.filter((line) => line.slice(0, 2).includes('M'))
+		.map((line) => line.slice(3).replace(/^docs\//, ''))
+		.filter((file) => refined.has(file))
+		.sort()
+
+	const report = [
+		['➕ Added (copied raw, needs refining)', added],
+		['✏️  Modified upstream (re-refine from `git diff -- docs/<file>`)', modified],
+		['➖ Removed upstream (deleted from docs-refined/)', removed],
+	]
+	for (const [label, list] of report) {
+		console.log(`  ${label}: ${list.length}`)
+		for (const file of list) console.log(`    - ${file}`)
+	}
+}
+
+async function listMd(dir) {
+	return new Set(await Array.fromAsync(new Bun.Glob('**/*.md').scan({ cwd: dir })))
 }
 
 async function isDir(path) {
