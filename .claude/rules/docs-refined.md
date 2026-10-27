@@ -10,7 +10,7 @@ paths:
 ## Workflow
 
 - Structure mirrors `docs/` exactly: same directories, same file names. The only extra files allowed are `*.rules.md` briefs (see below). Never create, rename, move, or delete files here.
-- Rules files: `global.rules.md` applies to every document; `<name>.rules.md` next to `<name>.md` is a lock/brief for that one file and overrides the global rules where they conflict. Read both before any edit to `<name>.md`. Rules files are skipped by `fetch.mjs` sync and by `md-json.mjs`. Create or change them only when asked.
+- Rules files: `global.rules.md` applies to every document; `<name>.rules.md` next to `<name>.md` is a lock/brief for that one file and overrides the global rules where they conflict. Read both before any edit to `<name>.md`. Structure of a rules file: `.claude/rules/rules-files.md`. Rules files are skipped by `fetch.mjs` sync and by `md-json.mjs`. Create or change them only when asked.
 - To drop a file or directory, add its path to `ignoreList` in `fetch.mjs` (relative to `docs/`, e.g. `app/02-guides/foo.md`) and run `bun run sync` — it is removed from both `docs/` and `docs-refined/`.
 - No rules file, no refining: refine `<name>.md` only if `<name>.rules.md` exists. Otherwise keep it as the upstream copy and port upstream changes as-is (details in `docs-refined/global.rules.md`).
 - Refine incrementally. After `bun run pull`, only the files it reports need work:

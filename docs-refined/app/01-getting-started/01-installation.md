@@ -7,7 +7,7 @@ Create a new Next.js app and run it locally.
 
 ## Quick start
 
-1. Create a new Next.js app named `my-app`
+1. Create a new Next.js app named `my-app`.
 2. `cd my-app` and start the dev server.
 3. Visit `http://localhost:3000`.
 
@@ -21,18 +21,6 @@ pnpm dev
 npx create-next-app@latest my-app --yes
 cd my-app
 npm run dev
-```
-
-```bash package="yarn"
-yarn create next-app@latest my-app --yes
-cd my-app
-yarn dev
-```
-
-```bash package="bun"
-bun create next-app@latest my-app --yes
-cd my-app
-bun dev
 ```
 
 - `--yes` skips prompts using saved preferences or defaults. The default setup enables TypeScript, Tailwind CSS, ESLint, App Router, and Turbopack, with import alias `@/*`, and includes `AGENTS.md` to guide coding agents to write up-to-date Next.js code.
@@ -53,8 +41,6 @@ Next.js supports modern browsers with zero configuration.
 - Firefox 111+
 - Safari 16.4+
 
-Learn more about [browser support](/docs/architecture/supported-browsers), including how to configure polyfills and target specific browsers.
-
 ## Create with the CLI
 
 The quickest way to create a new Next.js app is using [`create-next-app`](../03-api-reference/06-cli/create-next-app.md), which sets up everything automatically for you. To create a project, run:
@@ -65,14 +51,6 @@ pnpm create next-app
 
 ```bash package="npm"
 npx create-next-app@latest
-```
-
-```bash package="yarn"
-yarn create next-app
-```
-
-```bash package="bun"
-bun create next-app
 ```
 
 On installation, you'll see the following prompts:
@@ -114,18 +92,7 @@ pnpm i next@latest react@latest react-dom@latest
 npm i next@latest react@latest react-dom@latest
 ```
 
-```bash package="yarn"
-yarn add next@latest react@latest react-dom@latest
-```
-
-```bash package="bun"
-bun add next@latest react@latest react-dom@latest
-```
-
-> **Good to know**:
->
-> - The `App Router` uses [React canary releases](https://react.dev/blog/2023/05/03/react-canaries) built-in, which include all the stable React 19 changes, as well as newer features being validated in frameworks, but you should still declare react and react-dom in package.json for tooling and ecosystem compatibility.
-> - The `Pages Router` uses the React version from your `package.json`.
+> **Good to know**: The App Router uses [React canary releases](https://react.dev/blog/2023/05/03/react-canaries) built-in, which include all the stable React 19 changes, as well as newer features being validated in frameworks. Still declare `react` and `react-dom` in `package.json` for tooling and ecosystem compatibility.
 
 Then, add the following scripts to your `package.json` file:
 
@@ -148,7 +115,7 @@ These scripts refer to the different stages of developing an application:
 - `next start`: Starts the production server.
 - `eslint`: Runs ESLint.
 
-Turbopack is now the default bundler. To use Webpack run `next dev --webpack` or `next build --webpack`. See the [Turbopack docs](../03-api-reference/08-turbopack.md) for configuration details.
+Turbopack is the default bundler. See the [Turbopack docs](../03-api-reference/08-turbopack.md) for configuration details.
 
 ### Create the `app` directory
 
@@ -176,7 +143,7 @@ export default function RootLayout({ children }) {
 }
 ```
 
-Create a home page `app/page.tsx` with some initial content:
+Create the home route in `app/page.tsx` with some initial content:
 
 ```tsx filename="app/page.tsx" switcher
 export default function Page() {
@@ -184,7 +151,7 @@ export default function Page() {
 }
 ```
 
-```jsx filename="app/page.js" switcher
+```jsx filename="app/page.jsx" switcher
 export default function Page() {
 	return <h1>Hello, Next.js!</h1>
 }
@@ -226,7 +193,7 @@ export default function Page() {
 }
 ```
 
-```jsx filename="app/page.js" highlight={4} switcher
+```jsx filename="app/page.jsx" highlight={4} switcher
 import Image from 'next/image'
 
 export default function Page() {
@@ -271,7 +238,7 @@ You can enable the plugin in VS Code by:
   height="637"
 />
 
-See the [TypeScript reference](../03-api-reference/05-config/02-typescript.md) page for more information.
+See the [TypeScript reference](../03-api-reference/05-config/02-typescript.md) for more information.
 
 ## Set up your editor
 
@@ -328,17 +295,11 @@ Next.js supports linting with either ESLint or Biome. Choose a linter and run it
 }
 ```
 
-If your project previously used `next lint`, migrate your scripts to the ESLint CLI with the codemod:
+If you use ESLint, create an [`eslint.config.mjs`](https://eslint.org/docs/latest/use/configure/configuration-files) config. See the [ESLint API reference](../03-api-reference/05-config/03-eslint.md#with-core-web-vitals) for a recommended setup.
 
-```bash filename="Terminal"
-npx @next/codemod@canary next-lint-to-eslint-cli .
-```
+> **Good to know**: `next build` doesn't run the linter. Run it through your `package.json` scripts.
 
-If you use ESLint, create an explicit config (recommended `eslint.config.mjs`). ESLint supports both [the legacy `.eslintrc.*` and the newer `eslint.config.mjs` formats](https://eslint.org/docs/latest/use/configure/configuration-files#configuring-eslint). See the [ESLint API reference](../03-api-reference/05-config/03-eslint.md#with-core-web-vitals) for a recommended setup.
-
-> **Good to know**: Starting with Next.js 16, `next build` no longer runs the linter automatically. Instead, you can run your linter through NPM scripts.
-
-See the [ESLint Plugin](../03-api-reference/05-config/03-eslint.md) page for more information.
+See the [ESLint Plugin](../03-api-reference/05-config/03-eslint.md) reference for more information.
 
 ## Set up Absolute Imports and Module Path Aliases
 
@@ -394,15 +355,7 @@ pnpm next upgrade
 npx next upgrade
 ```
 
-```bash package="yarn"
-yarn next upgrade
-```
-
-```bash package="bun"
-bunx next upgrade
-```
-
-Upgrading also updates the documentation bundled inside the `next` package at `node_modules/next/dist/docs/`. New features arrive with their docs, and existing pages pick up new guidance and pitfalls discovered along the way. [AI coding agents](../02-guides/ai-agents.md) in your project then work from the version you have installed rather than their training data.
+Upgrading also updates the documentation bundled inside the `next` package at `node_modules/next/dist/docs/`. New features arrive with their docs, and existing documents pick up new guidance and pitfalls discovered along the way. [AI coding agents](../02-guides/ai-agents.md) in your project then work from the version you have installed rather than their training data.
 
 To have a coding agent perform and verify the upgrade, run `npx next@canary upgrade --agent=latest`. See [Upgrade with a coding agent](../02-guides/upgrading/agent-upgrade.md) for other policies.
 

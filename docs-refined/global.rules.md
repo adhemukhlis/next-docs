@@ -78,6 +78,14 @@ Related documents:
 - Related documents keep the order of the old `related.links`. Drop links to documents that don't exist in `docs-refined/`.
 - `bun run build` enforces this: it rejects any frontmatter key other than `title`, `description`, `nav_title`, `version`, a `## INDEX` that isn't the last section, and anything in it other than the two leads, each followed by a list.
 
+## Package manager: npm and pnpm only
+
+Show commands for `npm` (`npm`, `npx`) and `pnpm` only. The AI agent consuming these docs adapts them to the project's package manager when it is something else, so more variants are noise.
+
+- Delete the `yarn` and `bun` variants: `bash package="yarn"` / `package="bun"` blocks, and the same commands in prose or tables.
+- Keep the `bash package="pnpm"` and `bash package="npm"` blocks, in that order (upstream's order), as a pair. When upstream only has an npm command, don't invent the pnpm one.
+- Don't mention other package managers ("or use yarn…", "with bun…") unless the document is about one specifically.
+
 ## Writing
 
 - Short and direct. Cut repetition, marketing tone, and filler.
