@@ -3,7 +3,7 @@ title: create-next-app
 description: Create Next.js apps using one command with the create-next-app CLI.
 ---
 
-The `create-next-app` CLI allows you to create a new Next.js application using the default template or an [example](https://github.com/vercel/next.js/tree/canary/examples) from a public GitHub repository.
+`create-next-app` scaffolds a Next.js application from the default template into a new directory: it generates the project files, applies the selected options (router, language, source layout, import alias, bundler, styling, linter), and installs the dependencies.
 
 Basic usage:
 
@@ -104,29 +104,3 @@ npx create-next-app@latest my-app \
 - Linter: `--eslint` (with the rules from `@next/eslint-plugin-next`), `--biome` (linter and formatter with Next.js and React domain support), or `--no-linter`.
 
 `create-next-app` creates a `my-app` folder and installs the dependencies (`--skip-install` skips installing).
-
-### With an official Next.js example
-
-To create a new app using an official Next.js example, use the `--example` flag. For example:
-
-```bash package="pnpm"
-pnpm create next-app --example [example-name] [your-project-name]
-```
-
-```bash package="npm"
-npx create-next-app@latest --example [example-name] [your-project-name]
-```
-
-You can view a list of all available examples along with setup instructions in the [Next.js repository](https://github.com/vercel/next.js/tree/canary/examples).
-
-### With any public GitHub example
-
-To create a new app using any public GitHub example, use the `--example` option with the GitHub repository's URL. For example:
-
-```bash package="pnpm"
-pnpm create next-app --example "https://github.com/.../" [your-project-name]
-```
-
-```bash package="npm"
-npx create-next-app@latest --example "https://github.com/.../" [your-project-name]
-```
