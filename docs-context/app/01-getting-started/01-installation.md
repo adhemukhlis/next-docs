@@ -1,6 +1,6 @@
 ---
 title: Installation
-description: Create a Next.js App Router app with `create-next-app` or by manual installation, run the development server, and set up TypeScript, editor labels, linting, module path aliases, and upgrades.
+description: Create a Next.js App Router app with `create-next-app`, structure the `app` and `public` directories, run the development server, and set up TypeScript, linting, and module path aliases.
 ---
 
 Create a new Next.js app and run it locally.
@@ -48,92 +48,7 @@ npm run dev
 
 - Node.js 20.9 or later.
 
-## Supported browsers
-
-Next.js supports modern browsers with zero configuration.
-
-- Chrome 111+
-- Edge 111+
-- Firefox 111+
-- Safari 16.4+
-
-## Create with the CLI
-
-The quickest way to create a new Next.js app is using [`create-next-app`](../03-api-reference/06-cli/create-next-app.md), which sets up everything automatically for you. To create a project, run:
-
-```bash package="pnpm"
-pnpm create next-app
-```
-
-```bash package="npm"
-npx create-next-app@latest
-```
-
-On installation, you'll see the following prompts:
-
-```txt filename="Terminal"
-What is your project named? my-app
-Would you like to use the recommended Next.js defaults?
-    Yes, use recommended defaults - TypeScript, ESLint, No React Compiler, Tailwind CSS, No src/ directory, App Router, Cache Components, AGENTS.md
-    No, reuse previous settings
-    No, customize settings - Choose your own preferences
-```
-
-If you choose to `customize settings`, you'll see the following prompts:
-
-```txt filename="Terminal"
-Would you like to use TypeScript? No / Yes
-Which linter would you like to use? ESLint / Biome / None
-Would you like to use React Compiler? No / Yes
-Would you like to use Tailwind CSS? No / Yes
-Would you like your code inside a `src/` directory? No / Yes
-Would you like to use App Router? (recommended) No / Yes
-Would you like to use Cache Components? No / Yes
-Would you like to customize the import alias (`@/*` by default)? No / Yes
-What import alias would you like configured? @/*
-Would you like to include AGENTS.md to guide coding agents to write up-to-date Next.js code? No / Yes
-```
-
-After the prompts, [`create-next-app`](../03-api-reference/06-cli/create-next-app.md) will create a folder with your project name and install the required dependencies.
-
-## Manual installation
-
-To manually create a new Next.js app, install the required packages:
-
-```bash package="pnpm"
-pnpm i next@latest react@latest react-dom@latest
-```
-
-```bash package="npm"
-npm i next@latest react@latest react-dom@latest
-```
-
-> **Good to know**: The App Router uses [React canary releases](https://react.dev/blog/2023/05/03/react-canaries) built-in, which include all the stable React 19 changes, as well as newer features being validated in frameworks. Still declare `react` and `react-dom` in `package.json` for tooling and ecosystem compatibility.
-
-Then, add the following scripts to your `package.json` file:
-
-```json filename="package.json"
-{
-	"scripts": {
-		"dev": "next dev",
-		"build": "next build",
-		"start": "next start",
-		"lint": "eslint",
-		"lint:fix": "eslint --fix"
-	}
-}
-```
-
-These scripts refer to the different stages of developing an application:
-
-- `next dev`: Starts the development server using Turbopack (default bundler).
-- `next build`: Builds the application for production.
-- `next start`: Starts the production server.
-- `eslint`: Runs ESLint.
-
-Turbopack is the default bundler. See the [Turbopack docs](../03-api-reference/08-turbopack.md) for configuration details.
-
-### Create the `app` directory
+## Create the `app` directory
 
 Next.js uses file-system routing, which means the routes in your application are determined by how you structure your files.
 
@@ -188,7 +103,7 @@ height="363"
 > - If you forget to create the root layout, Next.js will automatically create this file when running the development server with `next dev`.
 > - You can optionally use a [`src` folder](../03-api-reference/03-file-conventions/src-folder.md) in the root of your project to separate your application's code from configuration files.
 
-### Create the `public` folder (optional)
+## Create the `public` folder (optional)
 
 Create a [`public` folder](../03-api-reference/03-file-conventions/public-folder.md) at the root of your project to store static assets such as images, fonts, etc. Files inside `public` can then be referenced by your code starting from the base URL (`/`).
 
@@ -235,55 +150,6 @@ export default function Page() {
 > Minimum TypeScript version: `v5.1.0`
 
 Next.js comes with built-in TypeScript support. To add TypeScript to your project, rename a file to `.ts` / `.tsx` and run `next dev`. Next.js will automatically install the necessary dependencies and add a `tsconfig.json` file with the recommended config options.
-
-### IDE Plugin
-
-Next.js includes a custom TypeScript plugin and type checker, which VSCode and other code editors can use for advanced type-checking and auto-completion.
-
-You can enable the plugin in VS Code by:
-
-1. Opening the command palette (`Ctrl/⌘` + `Shift` + `P`)
-2. Searching for "TypeScript: Select TypeScript Version"
-3. Selecting "Use Workspace Version"
-
-<Image
-alt="TypeScript Command Palette"
-srcLight="/docs/light/typescript-command-palette.png"
-srcDark="/docs/dark/typescript-command-palette.png"
-width="1600"
-height="637"
-/>
-
-See the [TypeScript reference](../03-api-reference/05-config/02-typescript.md) for more information.
-
-## Set up your editor
-
-The App Router names files by convention, like `page.tsx`, `layout.tsx`, and `route.ts`, so your editor quickly fills with same-named tabs. Label each tab with its enclosing folders, like `blog/[id]`, so you can tell them apart.
-
-In VS Code 1.88+ or Cursor, add [custom editor labels](https://code.visualstudio.com/updates/v1_88#_customize-editor-labels) to `.vscode/settings.json`. Labeling two folders deep keeps dynamic routes like `blog/[id]/page.tsx` from all collapsing to the same `[id]` label:
-
-```json filename=".vscode/settings.json"
-{
-	"workbench.editor.customLabels.patterns": {
-		"**/app/**/page.tsx": "${dirname(1)}/${dirname} - page.tsx",
-		"**/app/**/layout.tsx": "${dirname(1)}/${dirname} - layout.tsx",
-		"**/app/**/loading.tsx": "${dirname(1)}/${dirname} - loading.tsx",
-		"**/app/**/error.tsx": "${dirname(1)}/${dirname} - error.tsx",
-		"**/app/**/not-found.tsx": "${dirname(1)}/${dirname} - not-found.tsx",
-		"**/app/**/template.tsx": "${dirname(1)}/${dirname} - template.tsx",
-		"**/app/**/default.tsx": "${dirname(1)}/${dirname} - default.tsx",
-		"**/app/**/route.ts": "${dirname(1)}/${dirname} - route.ts"
-	}
-}
-```
-
-Or copy this prompt to have your coding agent set it up:
-
-```prompt
-Set up custom editor labels so my Next.js App Router files are easy to tell apart. Read https://nextjs.org/docs/app/getting-started/installation#set-up-your-editor and add the workbench.editor.customLabels.patterns config shown there to my .vscode/settings.json, creating the file if it doesn't exist. Adjust the labels to taste. If I use a different editor, apply the equivalent setting or tell me it's automatic, and leave my other settings untouched.
-```
-
-> **Good to know:** JetBrains IDEs (WebStorm, IntelliJ) show the folder for same-named files automatically, so no setup is needed.
 
 ## Set up linting
 
@@ -358,21 +224,3 @@ For example, the following configuration maps `@/components/*` to `components/*`
 ```
 
 Each of the `"paths"` are relative to the `baseUrl` location.
-
-## Upgrade your Next.js app
-
-Keep your Next.js version up to date. Each release ships security patches, bug fixes, and performance optimizations alongside new features, and staying current keeps every individual upgrade small. Run the `upgrade` command:
-
-```bash package="pnpm"
-pnpm next upgrade
-```
-
-```bash package="npm"
-npx next upgrade
-```
-
-Upgrading also updates the documentation bundled inside the `next` package at `node_modules/next/dist/docs/`. New features arrive with their docs, and existing documents pick up new guidance and pitfalls discovered along the way. [AI coding agents](../02-guides/ai-agents.md) in your project then work from the version you have installed rather than their training data.
-
-To have a coding agent perform and verify the upgrade, run `npx next@canary upgrade --agent=latest`. See [Upgrade with a coding agent](../02-guides/upgrading/agent-upgrade.md) for other policies.
-
-See [Upgrading](./18-upgrading.md) for version guides and manual upgrade steps, or the [preview docs](https://preview.nextjs.org) to explore features before they ship in a stable version.
