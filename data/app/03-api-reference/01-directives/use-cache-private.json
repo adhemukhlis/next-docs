@@ -1,0 +1,865 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: 'use cache: private'\ndescription: 'Learn how to use the \"use cache: private\" directive to cache functions that access runtime request APIs.'\nrelated:\n title: Related\n description: View related API references.\n links:\n  - app/api-reference/directives/use-cache\n  - app/api-reference/config/next-config-js/cacheComponents\n  - app/api-reference/functions/cacheLife\n  - app/api-reference/functions/cacheTag"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache: private'"
+				},
+				{
+					"type": "text",
+					"value": " directive allows functions to access runtime request APIs like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers()"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": " within a cached scope. In production, matching calls within one request can reuse the same result, but Next.js does not store it in a server cache across requests. In development, Next.js stores it in memory, keyed by the request's cookies and headers, and serves it to the next matching request while a fresh result is generated in the background."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The client router can keep the rendered output in browser memory for the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife#client-cache-behavior",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "stale"
+						},
+						{
+							"type": "text",
+							"value": " time"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " configured with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": ". This client-side cache does not persist across page reloads."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Reach for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache: private'"
+				},
+				{
+					"type": "text",
+					"value": " when:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "You want to cache a function that already accesses runtime data, and refactoring to "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/caching#working-with-runtime-apis",
+									"children": [
+										{
+											"type": "text",
+											"value": "move the runtime access outside and pass values as arguments"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " is not practical."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "You need request-specific data to be excluded from server caches that persist across production requests."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Private Cache Functions run at request time and are excluded from "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching#prerendering",
+					"children": [
+						{
+							"type": "text",
+							"value": "static shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " generation. To start a private Cache Function before a component needs its result, see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/fetching-data#preloading-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Preloading data"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "It is "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "not"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " possible to configure custom cache handlers for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache: private'"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For a comparison of the different cache directives, see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache-remote#how-use-cache-remote-differs-from-use-cache-and-use-cache-private",
+					"children": [
+						{
+							"type": "text",
+							"value": "How "
+						},
+						{
+							"type": "inlineCode",
+							"value": "use cache: remote"
+						},
+						{
+							"type": "text",
+							"value": " differs from "
+						},
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						},
+						{
+							"type": "text",
+							"value": " and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "use cache: private"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Usage"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache: private'"
+				},
+				{
+					"type": "text",
+					"value": ", enable the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " flag in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": " file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tcacheComponents: true,\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\tcacheComponents: true,\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache: private'"
+				},
+				{
+					"type": "text",
+					"value": " to your function along with a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": " configuration."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Basic example"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In this example, we demonstrate that you can access cookies within a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache: private'"
+				},
+				{
+					"type": "text",
+					"value": " scope:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/product/[id]/page.tsx\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { cookies } from 'next/headers'\nimport { cacheLife, cacheTag } from 'next/cache'\n\nexport async function generateStaticParams() {\n\treturn [{ id: '1' }]\n}\n\nexport default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {\n\tconst { id } = await params\n\n\treturn (\n\t\t<div>\n\t\t\t<ProductDetails id={id} />\n\t\t\t<Suspense fallback={<div>Loading recommendations...</div>}>\n\t\t\t\t<Recommendations productId={id} />\n\t\t\t</Suspense>\n\t\t</div>\n\t)\n}\n\nasync function Recommendations({ productId }: { productId: string }) {\n\tconst recommendations = await getRecommendations(productId)\n\n\treturn (\n\t\t<div>\n\t\t\t{recommendations.map((rec) => (\n\t\t\t\t<ProductCard\n\t\t\t\t\tkey={rec.id}\n\t\t\t\t\tproduct={rec}\n\t\t\t\t/>\n\t\t\t))}\n\t\t</div>\n\t)\n}\n\nasync function getRecommendations(productId: string) {\n\t'use cache: private'\n\tcacheTag(`recommendations-${productId}`)\n\tcacheLife({ stale: 60 })\n\n\t// Access cookies within private cache functions\n\tconst sessionId = (await cookies()).get('session-id')?.value || 'guest'\n\n\treturn getPersonalizedRecommendations(productId, sessionId)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/product/[id]/page.js\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { cookies } from 'next/headers'\nimport { cacheLife, cacheTag } from 'next/cache'\n\nexport async function generateStaticParams() {\n\treturn [{ id: '1' }]\n}\n\nexport default async function ProductPage({ params }) {\n\tconst { id } = await params\n\n\treturn (\n\t\t<div>\n\t\t\t<ProductDetails id={id} />\n\t\t\t<Suspense fallback={<div>Loading recommendations...</div>}>\n\t\t\t\t<Recommendations productId={id} />\n\t\t\t</Suspense>\n\t\t</div>\n\t)\n}\n\nasync function Recommendations({ productId }) {\n\tconst recommendations = await getRecommendations(productId)\n\n\treturn (\n\t\t<div>\n\t\t\t{recommendations.map((rec) => (\n\t\t\t\t<ProductCard\n\t\t\t\t\tkey={rec.id}\n\t\t\t\t\tproduct={rec}\n\t\t\t\t/>\n\t\t\t))}\n\t\t</div>\n\t)\n}\n\nasync function getRecommendations(productId) {\n\t'use cache: private'\n\tcacheTag(`recommendations-${productId}`)\n\tcacheLife({ stale: 60 })\n\n\t// Access cookies within private cache functions\n\tconst sessionId = (await cookies()).get('session-id')?.value || 'guest'\n\n\treturn getPersonalizedRecommendations(productId, sessionId)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " The "
+						},
+						{
+							"type": "inlineCode",
+							"value": "stale"
+						},
+						{
+							"type": "text",
+							"value": " time must be at least 30 seconds for per-link prefetching to work, and at least 5 minutes for the content to be included in the route's "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/glossary#app-shell",
+							"children": [
+								{
+									"type": "text",
+									"value": "App Shell"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ". See "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/cacheLife#prerendering-behavior",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "cacheLife"
+								},
+								{
+									"type": "text",
+									"value": " prerendering behavior"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for details."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Configuring the client stale time"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Private Cache Functions contribute their "
+				},
+				{
+					"type": "inlineCode",
+					"value": "stale"
+				},
+				{
+					"type": "text",
+					"value": " time to the route's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#client-cache",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client Cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". If a function only needs request-scoped deduplication, use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife({ stale: Infinity })"
+				},
+				{
+					"type": "text",
+					"value": " to keep it from lowering the route's stale time."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js uses the shortest stale time from the route's cache entries, so another cache or route setting can still set a finite value. Setting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "stale"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Infinity"
+				},
+				{
+					"type": "text",
+					"value": " does not store the private result on the server across production requests. Use a finite value when the client router should revalidate personalized output after a known interval."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Request APIs allowed in private caches"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The following request-specific APIs can be used inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache: private'"
+				},
+				{
+					"type": "text",
+					"value": " functions:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "API"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Allowed in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "use cache"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Allowed in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'use cache: private'"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "cookies()"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "headers()"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "searchParams"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "connection()"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Note:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " The "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://nextjs.org/docs/app/api-reference/functions/connection",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "connection()"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " API is prohibited in both "
+						},
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						},
+						{
+							"type": "text",
+							"value": " and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "'use cache: private'"
+						},
+						{
+							"type": "text",
+							"value": " as it provides connection-specific information that cannot be safely cached."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "\"use cache: private\""
+								},
+								{
+									"type": "text",
+									"value": " is enabled with the Cache Components feature."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

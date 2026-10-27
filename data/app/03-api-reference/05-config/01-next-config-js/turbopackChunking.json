@@ -1,0 +1,604 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: turbopackChunking\ndescription: Configure how Turbopack splits your client-side and server-side JavaScript into chunks in production.\nversion: experimental"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "experimental.turbopackChunking"
+				},
+				{
+					"type": "text",
+					"value": " lets you configure Turbopack's production JavaScript chunker. These options allow you to change the assumptions the chunker makes about user behavior, tweak the raw size thresholds it uses, and enable the experimental component chunks feature."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, Turbopack's chunking is configured as follows:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig = {\n\texperimental: {\n\t\tturbopackChunking: {\n\t\t\tminChunkSize: 50000,\n\t\t\tmaxChunkCountPerGroup: 40,\n\t\t\tmaxMergeChunkSize: 200000,\n\t\t\tminComponentChunkSize: 20000,\n\t\t\tgenerateComponentChunks: false,\n\t\t},\n\t},\n} satisfies NextConfig\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\texperimental: {\n\t\tturbopackChunking: {\n\t\t\tminChunkSize: 50000,\n\t\t\tmaxChunkCountPerGroup: 40,\n\t\t\tmaxMergeChunkSize: 200000,\n\t\t\tminComponentChunkSize: 20000,\n\t\t\tgenerateComponentChunks: false,\n\t\t},\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Size Thresholds"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The following options control how aggressively Turbopack merges client-side chunks and how large a chunk is allowed to grow. Sizes are in bytes of uncompressed, unminified code (roughly 5x the size of the compressed, minified output)."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "minChunkSize"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (default "
+								},
+								{
+									"type": "inlineCode",
+									"value": "50000"
+								},
+								{
+									"type": "text",
+									"value": "): Turbopack will avoid creating more than one chunk smaller than this size by merging small chunks into larger ones. Raising this number will produce fewer, larger chunks. Meanwhile, lowering it will produce more chunks that are smaller."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "maxChunkCountPerGroup"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (default "
+								},
+								{
+									"type": "inlineCode",
+									"value": "40"
+								},
+								{
+									"type": "text",
+									"value": "): Turbopack will not emit more than this many chunks per chunk group (eg. a route or a dynamic import). Lowering this number will lead to more aggressive merging and less network requests per-page. Raising it will produce smaller chunks and increase the likelihood of cache hits when navigating."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "maxMergeChunkSize"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (default "
+								},
+								{
+									"type": "inlineCode",
+									"value": "200000"
+								},
+								{
+									"type": "text",
+									"value": "): Turbopack never merges a chunk larger than this size with other chunks. This keeps the code in large chunks from being duplicated across multiple large output chunks."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When merging chunks, the trade-off being made is an improvement to performance on initial page loads at the cost of navigation performance. This is because each additional network request being made is costly, however, smaller chunks are more likely to be re-usable across pages."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Chunks"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The size thresholds above only apply to client-side JavaScript. Server-side JavaScript for the Node.js runtime uses separate thresholds:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "minServerChunkSize"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (default "
+								},
+								{
+									"type": "inlineCode",
+									"value": "4000"
+								},
+								{
+									"type": "text",
+									"value": "): Turbopack will avoid creating more than one server chunk smaller than this size by merging small chunks into larger ones."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "maxMergeServerChunkSize"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (default "
+								},
+								{
+									"type": "inlineCode",
+									"value": "100000"
+								},
+								{
+									"type": "text",
+									"value": "): Turbopack never merges a server chunk larger than this size with other chunks."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "These options don't apply to the Edge runtime, whose chunking is not configurable."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\texperimental: {\n\t\tturbopackChunking: {\n\t\t\tminServerChunkSize: 10000,\n\t\t\tmaxMergeServerChunkSize: 200000,\n\t\t},\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Component Chunks"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Producing component chunks is an experimental feature that aims to give you the initial page load benefits of merged chunks without sacrificing reusability. This feature lets the runtime dynamically choose whether to load a merged chunk as a single file, or to load only the component chunks it doesn't already have. Additionally, chunks that were already loaded as part of a merged chunk will not be re-downloaded."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This avoids re-downloading JavaScript the browser already has when navigating."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "generateComponentChunks"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (default "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": "): when enabled, each merged production chunk also emits its constituent component chunks alongside it, so the browser runtime can fetch individual component chunks."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "minComponentChunkSize"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (default "
+								},
+								{
+									"type": "inlineCode",
+									"value": "20000"
+								},
+								{
+									"type": "text",
+									"value": "): component chunks smaller than this size are folded into a single component instead of being emitted on their own, to avoid producing many tiny chunks."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Heuristics"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "These change the assumptions the chunker makes when weighing whether merging two chunks is worth it."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "clusters"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (an array of arrays of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "RegExp"
+								},
+								{
+									"type": "text",
+									"value": ", e.g. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "[[/^\\/dashboard/, /^\\/settings/]]"
+								},
+								{
+									"type": "text",
+									"value": "): groups of routes that are commonly visited together, matched against the route pathname. Turbopack assumes navigations are likely to stay within a cluster, so chunks shared by a cluster's routes are merged more eagerly."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "firstPageLoadPriority"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (a number between "
+								},
+								{
+									"type": "inlineCode",
+									"value": "0"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "1"
+								},
+								{
+									"type": "text",
+									"value": "): how heavily to weight the benefit of merging chunks for a single page load. Higher values merge more eagerly. If you don't have a better value, your site's bounce rate is a good approximation."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "priorityRoutes"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (an array of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "RegExp"
+								},
+								{
+									"type": "text",
+									"value": "): routes that are often the first page a visitor lands on (e.g. the homepage). Their client-side bundles are merged more eagerly to reduce the single-route request cost, at the cost of extra requests when navigating to other pages."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "priorityBoost"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (default "
+								},
+								{
+									"type": "inlineCode",
+									"value": "1.5"
+								},
+								{
+									"type": "text",
+									"value": "): a multiplier on the single-request probability of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "priorityRoutes"
+								},
+								{
+									"type": "text",
+									"value": " routes. Higher values merge those routes' bundles more aggressively."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "requestCost"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (default "
+								},
+								{
+									"type": "inlineCode",
+									"value": "200000"
+								},
+								{
+									"type": "text",
+									"value": "): the estimated cost of an additional request, in bytes of uncompressed, unminified code. Larger values bias toward fewer, larger chunks and fewer requests overall."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

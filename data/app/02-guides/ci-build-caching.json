@@ -1,0 +1,616 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to configure Continuous Integration (CI) build caching\nnav_title: CI Build Caching\ndescription: Learn how to configure CI to cache Next.js builds"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To improve build performance, Next.js saves a cache to "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next/cache"
+				},
+				{
+					"type": "text",
+					"value": " that is shared between builds."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To take advantage of this cache in Continuous Integration (CI) environments, your CI workflow will need to be configured to correctly persist the cache between builds."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "If your CI is not configured to persist "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".next/cache"
+						},
+						{
+							"type": "text",
+							"value": " between builds, you may see a "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/messages/no-cache",
+							"children": [
+								{
+									"type": "text",
+									"value": "No Cache Detected"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " error."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Here are some example cache configurations for common CI providers:"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Vercel"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js caching is automatically configured for you. There's no action required on your part. If you are using Turborepo on Vercel, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://vercel.com/docs/monorepos/turborepo",
+					"children": [
+						{
+							"type": "text",
+							"value": "learn more here"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "CircleCI"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Edit your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "save_cache"
+				},
+				{
+					"type": "text",
+					"value": " step in "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".circleci/config.yml"
+				},
+				{
+					"type": "text",
+					"value": " to include "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next/cache"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "yaml",
+			"meta": null,
+			"value": "steps:\n - save_cache:\n    key: dependency-cache-{{ checksum \"yarn.lock\" }}\n    paths:\n     - ./node_modules\n     - ./.next/cache"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you do not have a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "save_cache"
+				},
+				{
+					"type": "text",
+					"value": " key, please follow CircleCI's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://circleci.com/docs/2.0/caching/",
+					"children": [
+						{
+							"type": "text",
+							"value": "documentation on setting up build caching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Travis CI"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Add or merge the following into your "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".travis.yml"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "yaml",
+			"meta": null,
+			"value": "cache:\n directories:\n  - $HOME/.cache/yarn\n  - node_modules\n  - .next/cache"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "GitLab CI"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Add or merge the following into your "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".gitlab-ci.yml"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "yaml",
+			"meta": null,
+			"value": "cache:\n key: ${CI_COMMIT_REF_SLUG}\n paths:\n  - node_modules/\n  - .next/cache/"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Netlify CI"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.netlify.com/products/build/plugins/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Netlify Plugins"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.npmjs.com/package/@netlify/plugin-nextjs",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "@netlify/plugin-nextjs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "AWS CodeBuild"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Add (or merge in) the following to your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "buildspec.yml"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "yaml",
+			"meta": null,
+			"value": "cache:\n paths:\n  - 'node_modules/**/*' # Cache `node_modules` for faster `yarn` or `npm i`\n  - '.next/cache/**/*' # Cache Next.js for faster application rebuilds"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "GitHub Actions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Using GitHub's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/actions/cache",
+					"children": [
+						{
+							"type": "text",
+							"value": "actions/cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", add the following step in your workflow file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "yaml",
+			"meta": null,
+			"value": "uses: actions/cache@v4\nwith:\n # See here for caching with `yarn`, `bun` or other package managers https://github.com/actions/cache/blob/main/examples.md or you can leverage caching with actions/setup-node https://github.com/actions/setup-node\n path: |\n  ~/.npm\n  ${{ github.workspace }}/.next/cache\n # Generate a new cache whenever packages or source files change.\n key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}\n # If source files changed but packages didn't, rebuild from a prior cache.\n restore-keys: |\n  ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Bitbucket Pipelines"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Add or merge the following into your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "bitbucket-pipelines.yml"
+				},
+				{
+					"type": "text",
+					"value": " at the top level (same level as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pipelines"
+				},
+				{
+					"type": "text",
+					"value": "):"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "yaml",
+			"meta": null,
+			"value": "definitions:\n caches:\n  nextcache: .next/cache"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then reference it in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "caches"
+				},
+				{
+					"type": "text",
+					"value": " section of your pipeline's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "step"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "yaml",
+			"meta": null,
+			"value": "- step:\n   name: your_step_name\n   caches:\n    - node\n    - nextcache"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Heroku"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Using Heroku's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://devcenter.heroku.com/articles/nodejs-support#custom-caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "custom cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", add a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheDirectories"
+				},
+				{
+					"type": "text",
+					"value": " array in your top-level package.json:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "javascript",
+			"meta": null,
+			"value": "\"cacheDirectories\": [\".next/cache\"]"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Azure Pipelines"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Using Azure Pipelines' "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/cache",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache task"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", add the following task to your pipeline yaml file somewhere prior to the task that executes "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "yaml",
+			"meta": null,
+			"value": "- task: Cache@2\n  displayName: 'Cache .next/cache'\n  inputs:\n   key: next | $(Agent.OS) | yarn.lock\n   path: '$(System.DefaultWorkingDirectory)/.next/cache'"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Jenkins (Pipeline)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Using Jenkins' "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.jenkins.io/doc/pipeline/steps/jobcacher/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Job Cacher"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " plugin, add the following build step to your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Jenkinsfile"
+				},
+				{
+					"type": "text",
+					"value": " where you would normally run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "npm install"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "yaml",
+			"meta": null,
+			"value": "stage(\"Restore npm packages\") {\n    steps {\n        // Writes lock-file to cache based on the GIT_COMMIT hash\n        writeFile file: \"next-lock.cache\", text: \"$GIT_COMMIT\"\n\n        cache(caches: [\n            arbitraryFileCache(\n                path: \"node_modules\",\n                includes: \"**/*\",\n                cacheValidityDecidingFile: \"package-lock.json\"\n            )\n        ]) {\n            sh \"npm install\"\n        }\n    }\n}\nstage(\"Build\") {\n    steps {\n        // Writes lock-file to cache based on the GIT_COMMIT hash\n        writeFile file: \"next-lock.cache\", text: \"$GIT_COMMIT\"\n\n        cache(caches: [\n            arbitraryFileCache(\n                path: \".next/cache\",\n                includes: \"**/*\",\n                cacheValidityDecidingFile: \"next-lock.cache\"\n            )\n        ]) {\n            // aka `next build`\n            sh \"npm run build\"\n        }\n    }\n}"
+		}
+	]
+}

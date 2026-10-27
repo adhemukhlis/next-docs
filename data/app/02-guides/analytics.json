@@ -1,0 +1,498 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to add analytics to your Next.js application\nnav_title: Analytics\ndescription: Measure and track page performance using Next.js Speed Insights"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js has built-in support for measuring and reporting performance metrics. You can either use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-report-web-vitals",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useReportWebVitals"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " hook to manage reporting yourself, or alternatively, Vercel provides a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://vercel.com/analytics?utm_source=next-site&utm_medium=docs&utm_campaign=next-website",
+					"children": [
+						{
+							"type": "text",
+							"value": "managed service"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to automatically collect and visualize metrics for you."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Client Instrumentation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For more advanced analytics and monitoring needs, Next.js provides a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instrumentation-client.js|ts"
+				},
+				{
+					"type": "text",
+					"value": " file that runs before your application's frontend code starts executing. This is ideal for setting up global analytics, error tracking, or performance monitoring tools."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use it, create an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instrumentation-client.js"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instrumentation-client.ts"
+				},
+				{
+					"type": "text",
+					"value": " file in your application's root directory:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"instrumentation-client.js\"",
+			"value": "// Initialize analytics before the app starts\nconsole.log('Analytics initialized')\n\n// Set up global error tracking\nwindow.addEventListener('error', (event) => {\n\t// Send to your error tracking service\n\treportError(event.error)\n})"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Build Your Own"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/_components/web-vitals.js\"",
+			"value": "'use client'\n\nimport { useReportWebVitals } from 'next/web-vitals'\n\nexport function WebVitals() {\n\tuseReportWebVitals((metric) => {\n\t\tconsole.log(metric)\n\t})\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\"",
+			"value": "import { WebVitals } from './_components/web-vitals'\n\nexport default function Layout({ children }) {\n\treturn (\n\t\t<html>\n\t\t\t<body>\n\t\t\t\t<WebVitals />\n\t\t\t\t{children}\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Since the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "useReportWebVitals"
+						},
+						{
+							"type": "text",
+							"value": " hook must be used in a Client Component, create a separate file for the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "WebVitals"
+						},
+						{
+							"type": "text",
+							"value": " component with "
+						},
+						{
+							"type": "inlineCode",
+							"value": "'use client'"
+						},
+						{
+							"type": "text",
+							"value": " at the top, before any imports. Import this component into the root layout to keep the client boundary limited to this module and its imports."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "View the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-report-web-vitals",
+					"children": [
+						{
+							"type": "text",
+							"value": "API Reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more information."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Web Vitals"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://web.dev/vitals/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Web Vitals"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " are a set of useful metrics that aim to capture the user experience of a web page. The following web vitals are all included:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/docs/Glossary/Time_to_first_byte",
+									"children": [
+										{
+											"type": "text",
+											"value": "Time to First Byte"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (TTFB)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/docs/Glossary/First_contentful_paint",
+									"children": [
+										{
+											"type": "text",
+											"value": "First Contentful Paint"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (FCP)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://web.dev/lcp/",
+									"children": [
+										{
+											"type": "text",
+											"value": "Largest Contentful Paint"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (LCP)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://web.dev/cls/",
+									"children": [
+										{
+											"type": "text",
+											"value": "Cumulative Layout Shift"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (CLS)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://web.dev/inp/",
+									"children": [
+										{
+											"type": "text",
+											"value": "Interaction to Next Paint"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (INP)"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can handle all the results of these metrics using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "name"
+				},
+				{
+					"type": "text",
+					"value": " property."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/_components/web-vitals.tsx\" switcher",
+			"value": "'use client'\n\nimport { useReportWebVitals } from 'next/web-vitals'\n\nexport function WebVitals() {\n\tuseReportWebVitals((metric) => {\n\t\tswitch (metric.name) {\n\t\t\tcase 'FCP': {\n\t\t\t\t// handle FCP results\n\t\t\t}\n\t\t\tcase 'LCP': {\n\t\t\t\t// handle LCP results\n\t\t\t}\n\t\t\t// ...\n\t\t}\n\t})\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/_components/web-vitals.js\" switcher",
+			"value": "'use client'\n\nimport { useReportWebVitals } from 'next/web-vitals'\n\nexport function WebVitals() {\n\tuseReportWebVitals((metric) => {\n\t\tswitch (metric.name) {\n\t\t\tcase 'FCP': {\n\t\t\t\t// handle FCP results\n\t\t\t}\n\t\t\tcase 'LCP': {\n\t\t\t\t// handle LCP results\n\t\t\t}\n\t\t\t// ...\n\t\t}\n\t})\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Sending results to external systems"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can send results to any endpoint to measure and track real user performance on your site. For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "useReportWebVitals((metric) => {\n\tconst body = JSON.stringify(metric)\n\tconst url = 'https://example.com/analytics'\n\n\t// Use `navigator.sendBeacon()` if available, falling back to `fetch()`.\n\tif (navigator.sendBeacon) {\n\t\tnavigator.sendBeacon(url, body)\n\t} else {\n\t\tfetch(url, { body, method: 'POST', keepalive: true })\n\t}\n})"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": If you use "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://analytics.google.com/analytics/web/",
+							"children": [
+								{
+									"type": "text",
+									"value": "Google Analytics"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", using the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "id"
+						},
+						{
+							"type": "text",
+							"value": " value can allow you to construct metric distributions manually (to calculate percentiles, etc.)"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "code",
+					"lang": "js",
+					"meta": null,
+					"value": "useReportWebVitals((metric) => {\n\t// Use `window.gtag` if you initialized Google Analytics as this example:\n\t// https://github.com/vercel/next.js/blob/canary/examples/with-google-analytics\n\twindow.gtag('event', metric.name, {\n\t\tvalue: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value), // values must be integers\n\t\tevent_label: metric.id, // id unique to current page load\n\t\tnon_interaction: true, // avoids affecting bounce rate.\n\t})\n})"
+				},
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Read more about "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://github.com/GoogleChrome/web-vitals#send-the-results-to-google-analytics",
+							"children": [
+								{
+									"type": "text",
+									"value": "sending results to Google Analytics"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		}
+	]
+}

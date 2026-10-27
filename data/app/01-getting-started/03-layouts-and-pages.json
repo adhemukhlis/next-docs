@@ -1,0 +1,1720 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Layouts and Pages\ndescription: Learn how to create your first pages and layouts, and link between them with the Link component.\nrelated:\n title: API Reference\n description: Learn more about the features mentioned in this page by reading the API Reference.\n links:\n  - app/getting-started/linking-and-navigating\n  - app/api-reference/file-conventions/layout\n  - app/api-reference/file-conventions/page\n  - app/api-reference/components/link\n  - app/api-reference/file-conventions/dynamic-routes"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js uses "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "file-system based routing"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", meaning you can use folders and files to define routes. This page will guide you through how to create layouts and pages, and link between them."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Creating a page"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "page"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is UI that is rendered on a specific route. To create a page, add a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/page",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "page"
+						},
+						{
+							"type": "text",
+							"value": " file"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " inside the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory and default export a React component. For example, to create an index page ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "/"
+				},
+				{
+					"type": "text",
+					"value": "):"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"page.js special file\"\nsrcLight=\"/docs/light/page-special-file.png\"\nsrcDark=\"/docs/dark/page-special-file.png\"\nwidth=\"1600\"\nheight=\"282\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "export default function Page() {\n\treturn <h1>Hello Next.js!</h1>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "export default function Page() {\n\treturn <h1>Hello Next.js!</h1>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Creating a layout"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A layout is UI that is "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "shared"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " between multiple pages. On navigation, layouts preserve state, remain interactive, and do not rerender."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can define a layout by default exporting a React component from a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "layout"
+						},
+						{
+							"type": "text",
+							"value": " file"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". The component should accept a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "children"
+				},
+				{
+					"type": "text",
+					"value": " prop which can be a page or another "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#nesting-layouts",
+					"children": [
+						{
+							"type": "text",
+							"value": "layout"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, to create a layout that accepts your index page as child, add a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout"
+				},
+				{
+					"type": "text",
+					"value": " file inside the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory:"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"layout.js special file\"\nsrcLight=\"/docs/light/layout-special-file.png\"\nsrcDark=\"/docs/dark/layout-special-file.png\"\nwidth=\"1600\"\nheight=\"363\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "export default function DashboardLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<body>\n\t\t\t\t{/* Layout UI */}\n\t\t\t\t{/* Place children where you want to render a page or nested layout */}\n\t\t\t\t<main>{children}</main>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "export default function DashboardLayout({ children }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<body>\n\t\t\t\t{/* Layout UI */}\n\t\t\t\t{/* Place children where you want to render a page or nested layout */}\n\t\t\t\t<main>{children}</main>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The layout above is called a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout#root-layout",
+					"children": [
+						{
+							"type": "text",
+							"value": "root layout"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " because it's defined at the root of the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory. The root layout is "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "required"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and must contain "
+				},
+				{
+					"type": "inlineCode",
+					"value": "html"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "body"
+				},
+				{
+					"type": "text",
+					"value": " tags."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Creating a nested route"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A nested route is a route composed of multiple URL segments. For example, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/[slug]"
+				},
+				{
+					"type": "text",
+					"value": " route is composed of three segments:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/"
+								},
+								{
+									"type": "text",
+									"value": " (Root Segment)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "blog"
+								},
+								{
+									"type": "text",
+									"value": " (Segment)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "[slug]"
+								},
+								{
+									"type": "text",
+									"value": " (Leaf Segment)"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In Next.js:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Folders"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " are used to define the route segments that map to URL segments."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Files"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (like "
+								},
+								{
+									"type": "inlineCode",
+									"value": "page"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "layout"
+								},
+								{
+									"type": "text",
+									"value": ") are used to create UI that is shown for a segment."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To create nested routes, you can nest folders inside each other. For example, to add a route for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog"
+				},
+				{
+					"type": "text",
+					"value": ", create a folder called "
+				},
+				{
+					"type": "inlineCode",
+					"value": "blog"
+				},
+				{
+					"type": "text",
+					"value": " in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory. Then, to make "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog"
+				},
+				{
+					"type": "text",
+					"value": " publicly accessible, add a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.tsx"
+				},
+				{
+					"type": "text",
+					"value": " file:"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"File hierarchy showing blog folder and a page.js file\"\nsrcLight=\"/docs/light/blog-nested-route.png\"\nsrcDark=\"/docs/dark/blog-nested-route.png\"\nwidth=\"1600\"\nheight=\"525\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/page.tsx\" switcher",
+			"value": "// Dummy imports\nimport { getPosts } from '@/lib/posts'\nimport { Post } from '@/ui/post'\n\nexport default async function Page() {\n\tconst posts = await getPosts()\n\n\treturn (\n\t\t<ul>\n\t\t\t{posts.map((post) => (\n\t\t\t\t<Post\n\t\t\t\t\tkey={post.id}\n\t\t\t\t\tpost={post}\n\t\t\t\t/>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/page.js\" switcher",
+			"value": "// Dummy imports\nimport { getPosts } from '@/lib/posts'\nimport { Post } from '@/ui/post'\n\nexport default async function Page() {\n\tconst posts = await getPosts()\n\n\treturn (\n\t\t<ul>\n\t\t\t{posts.map((post) => (\n\t\t\t\t<Post\n\t\t\t\t\tkey={post.id}\n\t\t\t\t\tpost={post}\n\t\t\t\t/>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can continue nesting folders to create nested routes. For example, to create a route for a specific blog post, create a new "
+				},
+				{
+					"type": "inlineCode",
+					"value": "[slug]"
+				},
+				{
+					"type": "text",
+					"value": " folder inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "blog"
+				},
+				{
+					"type": "text",
+					"value": " and add a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page"
+				},
+				{
+					"type": "text",
+					"value": " file:"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"File hierarchy showing blog folder with a nested slug folder and a page.js file\"\nsrcLight=\"/docs/light/blog-post-nested-route.png\"\nsrcDark=\"/docs/dark/blog-post-nested-route.png\"\nwidth=\"1600\"\nheight=\"687\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" switcher",
+			"value": "export function generateStaticParams() {}\n\nexport default function Page() {\n\treturn <h1>Hello, Blog Post Page!</h1>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\" switcher",
+			"value": "export function generateStaticParams() {}\n\nexport default function Page() {\n\treturn <h1>Hello, Blog Post Page!</h1>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Wrapping a folder name in square brackets (e.g. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "[slug]"
+				},
+				{
+					"type": "text",
+					"value": ") creates a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/dynamic-routes",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamic route segment"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " which is used to generate multiple pages from data. e.g. blog posts, product pages, etc."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Nesting layouts"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, layouts in the folder hierarchy are also nested, which means they wrap child layouts via their "
+				},
+				{
+					"type": "inlineCode",
+					"value": "children"
+				},
+				{
+					"type": "text",
+					"value": " prop. You can nest layouts by adding "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout"
+				},
+				{
+					"type": "text",
+					"value": " inside specific route segments (folders)."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, to create a layout for the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog"
+				},
+				{
+					"type": "text",
+					"value": " route, add a new "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout"
+				},
+				{
+					"type": "text",
+					"value": " file inside the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "blog"
+				},
+				{
+					"type": "text",
+					"value": " folder."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"File hierarchy showing root layout wrapping the blog layout\"\nsrcLight=\"/docs/light/nested-layouts.png\"\nsrcDark=\"/docs/dark/nested-layouts.png\"\nwidth=\"1600\"\nheight=\"768\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/layout.tsx\" switcher",
+			"value": "export default function BlogLayout({ children }: { children: React.ReactNode }) {\n\treturn <section>{children}</section>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/layout.js\" switcher",
+			"value": "export default function BlogLayout({ children }) {\n\treturn <section>{children}</section>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you were to combine the two layouts above, the root layout ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/layout.js"
+				},
+				{
+					"type": "text",
+					"value": ") would wrap the blog layout ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/blog/layout.js"
+				},
+				{
+					"type": "text",
+					"value": "), which would wrap the blog ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/blog/page.js"
+				},
+				{
+					"type": "text",
+					"value": ") and blog post page ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/blog/[slug]/page.js"
+				},
+				{
+					"type": "text",
+					"value": ")."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Creating a dynamic segment"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/dynamic-routes",
+					"children": [
+						{
+							"type": "text",
+							"value": "Dynamic segments"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " allow you to create routes that are generated from data. For example, instead of manually creating a route for each individual blog post, you can create a dynamic segment to generate the routes based on blog post data."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To create a dynamic segment, wrap the segment (folder) name in square brackets: "
+				},
+				{
+					"type": "inlineCode",
+					"value": "[segmentName]"
+				},
+				{
+					"type": "text",
+					"value": ". For example, in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/blog/[slug]/page.tsx"
+				},
+				{
+					"type": "text",
+					"value": " route, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "[slug]"
+				},
+				{
+					"type": "text",
+					"value": " is the dynamic segment."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" switcher",
+			"value": "export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {\n\tconst { slug } = await params\n\tconst post = await getPost(slug)\n\n\treturn (\n\t\t<div>\n\t\t\t<h1>{post.title}</h1>\n\t\t\t<p>{post.content}</p>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\" switcher",
+			"value": "export default async function BlogPostPage({ params }) {\n\tconst { slug } = await params\n\tconst post = await getPost(slug)\n\n\treturn (\n\t\t<div>\n\t\t\t<h1>{post.title}</h1>\n\t\t\t<p>{post.content}</p>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn more about "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/dynamic-routes",
+					"children": [
+						{
+							"type": "text",
+							"value": "Dynamic Segments"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/page#params-optional",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "params"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " props."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Nested "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout#params-optional",
+					"children": [
+						{
+							"type": "text",
+							"value": "layouts within Dynamic Segments"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " can also access the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " props."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Rendering with search params"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In a Server Component "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "page"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", you can access search parameters using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/page#searchparams-optional",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "searchParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " prop:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "export default async function Page({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {\n\tconst filters = (await searchParams).filters\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.jsx\" switcher",
+			"value": "export default async function Page({ searchParams }) {\n\tconst filters = (await searchParams).filters\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": " opts your page into "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#dynamic-rendering",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "dynamic rendering"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " because it requires an incoming request to read the search parameters from."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Client Components can read search params using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-search-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useSearchParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " hook."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn more about "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useSearchParams"
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-search-params#prerendering",
+					"children": [
+						{
+							"type": "text",
+							"value": "prerendered"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-search-params#dynamic-rendering",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamically rendered"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " routes."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "What to use and when"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Use the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "searchParams"
+								},
+								{
+									"type": "text",
+									"value": " prop when you need search parameters to "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "load data for the page"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (e.g. pagination, filtering from a database)."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Use "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useSearchParams"
+								},
+								{
+									"type": "text",
+									"value": " when search parameters are used "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "only on the client"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (e.g. filtering a list already loaded via props)."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "As a small optimization, you can use "
+								},
+								{
+									"type": "inlineCode",
+									"value": "new URLSearchParams(window.location.search)"
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "callbacks or event handlers"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to read search params without triggering re-renders."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Linking between pages"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/link",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Link>"
+						},
+						{
+							"type": "text",
+							"value": " component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to navigate between routes. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " is a built-in Next.js component that extends the HTML "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<a>"
+				},
+				{
+					"type": "text",
+					"value": " tag to provide "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/linking-and-navigating#prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/linking-and-navigating#client-side-transitions",
+					"children": [
+						{
+							"type": "text",
+							"value": "client-side navigation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, to generate a list of blog posts, import "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/link"
+				},
+				{
+					"type": "text",
+					"value": " and pass a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "href"
+				},
+				{
+					"type": "text",
+					"value": " prop to the component:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/post.tsx\" highlight={1,2,11} switcher",
+			"value": "import Link from 'next/link'\nimport { getPosts } from '@/lib/posts'\n\nexport default async function Posts() {\n\tconst posts = await getPosts()\n\n\treturn (\n\t\t<ul>\n\t\t\t{posts.map((post) => (\n\t\t\t\t<li key={post.slug}>\n\t\t\t\t\t<Link href={`/blog/${post.slug}`}>{post.title}</Link>\n\t\t\t\t</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/post.js\" highlight={1,2,11} switcher",
+			"value": "import Link from 'next/link'\nimport { getPosts } from '@/lib/posts'\n\nexport default async function Posts() {\n\tconst posts = await getPosts()\n\n\treturn (\n\t\t<ul>\n\t\t\t{posts.map((post) => (\n\t\t\t\t<li key={post.slug}>\n\t\t\t\t\t<Link href={`/blog/${post.slug}`}>{post.title}</Link>\n\t\t\t\t</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<Link>"
+						},
+						{
+							"type": "text",
+							"value": " is the primary way to navigate between routes in Next.js. You can also use the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/use-router",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "useRouter"
+								},
+								{
+									"type": "text",
+									"value": " hook"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for more advanced navigation."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Props Helpers"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js exposes utility types that infer "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " and named slots from your route structure:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/page#page-props-helper",
+									"children": [
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "text",
+													"value": "PageProps"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Props for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "page"
+								},
+								{
+									"type": "text",
+									"value": " components, including "
+								},
+								{
+									"type": "inlineCode",
+									"value": "params"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "searchParams"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/layout#layout-props-helper",
+									"children": [
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "text",
+													"value": "LayoutProps"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Props for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "layout"
+								},
+								{
+									"type": "text",
+									"value": " components, including "
+								},
+								{
+									"type": "inlineCode",
+									"value": "children"
+								},
+								{
+									"type": "text",
+									"value": " and any named slots (e.g. folders like "
+								},
+								{
+									"type": "inlineCode",
+									"value": "@analytics"
+								},
+								{
+									"type": "text",
+									"value": ")."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "These are globally available helpers, generated when running either "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/cli/next#next-typegen-options",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next typegen"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\"",
+			"value": "export default async function Page(props: PageProps<'/blog/[slug]'>) {\n\tconst { slug } = await props.params\n\treturn <h1>Blog post: {slug}</h1>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/layout.tsx\"",
+			"value": "export default function Layout(props: LayoutProps<'/dashboard'>) {\n\treturn (\n\t\t<section>\n\t\t\t{props.children}\n\t\t\t{/* If you have app/dashboard/@analytics, it appears as a typed slot: */}\n\t\t\t{/* {props.analytics} */}\n\t\t</section>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Static routes resolve "
+										},
+										{
+											"type": "inlineCode",
+											"value": "params"
+										},
+										{
+											"type": "text",
+											"value": " to "
+										},
+										{
+											"type": "inlineCode",
+											"value": "{}"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "PageProps"
+										},
+										{
+											"type": "text",
+											"value": ", "
+										},
+										{
+											"type": "inlineCode",
+											"value": "LayoutProps"
+										},
+										{
+											"type": "text",
+											"value": " are global helpers — no imports required."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Types are generated during "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next dev"
+										},
+										{
+											"type": "text",
+											"value": ", "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next build"
+										},
+										{
+											"type": "text",
+											"value": " or "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next typegen"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,1764 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to implement authentication with Cache Components\nnav_title: Authentication with Cache Components\ndescription: 'Learn how to read the user session, show authenticated UI without slowing down the page, and cache data derived from the session when Cache Components is enabled.'\nrelated:\n title: Next Steps\n description: Learn more about authentication, caching, and prefetching in Next.js.\n links:\n  - app/guides/authentication\n  - app/getting-started/caching\n  - app/getting-started/fetching-data\n  - app/guides/optimizing-prefetching\n  - app/api-reference/directives/use-cache-private\n  - app/api-reference/functions/cacheTag\n  - app/api-reference/config/next-config-js/cacheComponents"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " enabled, a session read happens at request time, so it can't be prerendered into the static shell. Authenticated UI streams in behind a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary instead, and data derived from the session can still be cached."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The examples use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vvo/iron-session",
+					"children": [
+						{
+							"type": "text",
+							"value": "iron-session"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for encrypted cookie sessions, but the patterns apply to any session or authentication library. For a complete, runnable version, see the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/tree/canary/examples/with-iron-session-cache-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "with-iron-session-cache-components example"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Prerequisites"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Enable "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tcacheComponents: true,\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This guide covers code patterns for authentication with Cache Components: reading the session at request time, streaming authenticated UI, and caching session-derived data. It assumes you're comfortable with Cache Components (if not, read "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Caching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " first) and that you already have a session set on login."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For the fundamentals this builds on, we recommend two guides:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/authentication",
+									"children": [
+										{
+											"type": "text",
+											"value": "Authentication"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " covers sign-up, login, session management, authorization, and the Data Access Layer."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/data-security",
+									"children": [
+										{
+											"type": "text",
+											"value": "Data Security"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " covers keeping data access on the server and sensitive data off the client."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Migrating an existing app"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With Cache Components enabled, instant navigation validation flags every route that reads the session, because a request read can't be prerendered into the static shell. You don't have to resolve them all before shipping. Set "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/instant-navigation#opting-out",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "export const instant = false"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " on the page or layout to let it keep blocking on the server, then adopt the patterns below one route at a time. For the full migration workflow, see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/migrating-to-cache-components#following-validation",
+					"children": [
+						{
+							"type": "text",
+							"value": "Migrating to Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 1: Read the current user"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Reading the current user reads the session cookie, then looks the user up. A request read can't be part of the static shell, so it always sits behind a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/loading",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " boundary and streams in on every navigation."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Because a user session is valid for a period of time, adding a cache lifetime lets the framework prefetch that content ahead of time."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The server-side directives can't give it that lifetime, though: neither a plain "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " nor "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache-remote",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache: remote"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " can call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": ", and you can't "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching#passing-runtime-values-to-cached-functions",
+					"children": [
+						{
+							"type": "text",
+							"value": "extract the value and pass it in"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " either, because:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "A session helper reads the cookie deep inside its own code, so there's nothing to lift out."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Validating it compares a token's expiry against the current time (iron-session's "
+								},
+								{
+									"type": "inlineCode",
+									"value": "unsealData"
+								},
+								{
+									"type": "text",
+									"value": " rejects an expired seal), so the read is request- and time-dependent."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "That's what "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache-private",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache: private"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is for: it reads "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers()"
+				},
+				{
+					"type": "text",
+					"value": " directly, keeping the result in the browser only, never on the server."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A private scope stays in the browser, so it never caches on the server. To cache on the server instead, extract a value (the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "userId"
+				},
+				{
+					"type": "text",
+					"value": ", for example) and pass it into a plain "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache-remote",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache: remote"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". The same pattern caches data derived from the session, covered in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#step-4-cache-session-derived-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Step 4"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"lib/session.ts\"",
+			"value": "import 'server-only'\nimport { cookies } from 'next/headers'\nimport { sealData, unsealData } from 'iron-session'\n\nexport type SessionData = {\n\tuserId?: string\n}\n\nconst COOKIE_NAME = 'app_session'\nconst password = process.env.SESSION_PASSWORD!\n\nexport async function getSession(): Promise<SessionData> {\n\tconst cookie = (await cookies()).get(COOKIE_NAME)?.value\n\tif (!cookie) {\n\t\treturn {}\n\t}\n\treturn unsealData<SessionData>(cookie, { password })\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"lib/auth.ts\"",
+			"value": "import 'server-only'\nimport { redirect } from 'next/navigation'\nimport { getSession } from './session'\nimport { findUserById } from './data'\n\nexport type User = {\n\tid: string\n\tname: string\n}\n\nexport async function getCurrentUser(): Promise<User> {\n\t'use cache: private'\n\n\tconst { userId } = await getSession()\n\tif (!userId) {\n\t\tredirect('/login')\n\t}\n\n\tconst user = await findUserById(userId)\n\tif (!user) {\n\t\tredirect('/login')\n\t}\n\n\treturn { id: user.id, name: user.name }\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "redirect()"
+				},
+				{
+					"type": "text",
+					"value": " calls throw to interrupt rendering rather than return a value, so they aren't cached. Only a resolved user is."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " "
+						},
+						{
+							"type": "inlineCode",
+							"value": "use cache: private"
+						},
+						{
+							"type": "text",
+							"value": " accepts "
+						},
+						{
+							"type": "inlineCode",
+							"value": "cookies()"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": "headers()"
+						},
+						{
+							"type": "text",
+							"value": ", and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "searchParams"
+						},
+						{
+							"type": "text",
+							"value": ", but not "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/connection",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "connection()"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ". See "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/directives/use-cache-private",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "use cache: private"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for the full list."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 2: Show the user without blocking the page"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A component that reads the session must sit behind a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/loading",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " boundary. With Cache Components, reading "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": " outside a boundary is a build error. The boundary is also what keeps the rest of the page fast. Anything outside it prerenders into the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching#prerendering",
+					"children": [
+						{
+							"type": "text",
+							"value": "static shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and loads instantly, as long as it's static or wrapped in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and doesn't read runtime data of its own. Only the section behind the boundary waits for the request."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\"",
+			"value": "import { Suspense } from 'react'\nimport { getCurrentUser } from '@/lib/auth'\nimport { getAnnouncements } from '@/lib/data'\n\nexport default function Page() {\n\treturn (\n\t\t<main>\n\t\t\t{/* Cached, so it prerenders into the static shell */}\n\t\t\t<Announcements />\n\n\t\t\t{/* Reads the session, so it streams in behind the boundary */}\n\t\t\t<Suspense fallback={<p>Loading your dashboard…</p>}>\n\t\t\t\t<Dashboard />\n\t\t\t</Suspense>\n\t\t</main>\n\t)\n}\n\nasync function Announcements() {\n\t'use cache'\n\tconst announcements = await getAnnouncements()\n\treturn (\n\t\t<ul>\n\t\t\t{announcements.map((announcement) => (\n\t\t\t\t<li key={announcement}>{announcement}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}\n\nasync function Dashboard() {\n\tconst user = await getCurrentUser()\n\treturn <h1>Welcome, {user.name}</h1>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Keep the session read out of a layout's top level, too. A top-level "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await"
+				},
+				{
+					"type": "text",
+					"value": " on the session in a layout holds the whole segment, including "
+				},
+				{
+					"type": "inlineCode",
+					"value": "{children}"
+				},
+				{
+					"type": "text",
+					"value": ", behind that request, so push it into a component inside a boundary. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/streaming#push-dynamic-access-down",
+					"children": [
+						{
+							"type": "text",
+							"value": "Push dynamic access down"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " "
+						},
+						{
+							"type": "inlineCode",
+							"value": "getCurrentUser"
+						},
+						{
+							"type": "text",
+							"value": " reads the session, checks it, and returns a narrow user. Centralizing those reads in one function is the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/authentication#creating-a-data-access-layer-dal",
+							"children": [
+								{
+									"type": "text",
+									"value": "Data Access Layer"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " pattern."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 3: Share the user across components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You don't have to read the session again in every component that needs the user. Read it once, then hand it to as many Server and Client Components as you like from inside the same boundary."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Components can call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getCurrentUser()"
+				},
+				{
+					"type": "text",
+					"value": " directly. To reach Client Components without prop drilling, create the promise once, pass it through context, and unwrap it with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/use",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". For the general pattern, see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/single-page-applications#using-reacts-use-within-a-context-provider",
+					"children": [
+						{
+							"type": "text",
+							"value": "Using React's "
+						},
+						{
+							"type": "inlineCode",
+							"value": "use"
+						},
+						{
+							"type": "text",
+							"value": " within a Context Provider"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Because "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getCurrentUser"
+				},
+				{
+					"type": "text",
+					"value": " reads the request, create its promise inside the Suspense boundary, not at the top of a layout."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/user-provider.tsx\"",
+			"value": "'use client'\n\nimport { createContext, use } from 'react'\nimport type { ReactNode } from 'react'\nimport type { User } from '@/lib/auth'\n\nconst UserContext = createContext<Promise<User> | null>(null)\n\nexport function UserProvider({ userPromise, children }: { userPromise: Promise<User>; children: ReactNode }) {\n\treturn <UserContext value={userPromise}>{children}</UserContext>\n}\n\nexport function useUser() {\n\tconst userPromise = use(UserContext)\n\tif (!userPromise) {\n\t\tthrow new Error('useUser must be used within a UserProvider')\n\t}\n\treturn use(userPromise)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The Server Component behind the boundary creates the promise and hands it to the provider without awaiting it. Each consumer then resolves it behind its own boundary, so the shared chrome renders without waiting on the session:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\"",
+			"value": "function Dashboard() {\n\tconst userPromise = getCurrentUser()\n\n\treturn (\n\t\t<UserProvider userPromise={userPromise}>\n\t\t\t<Suspense fallback={<span>Loading…</span>}>\n\t\t\t\t<UserBadge />\n\t\t\t</Suspense>\n\t\t</UserProvider>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Client Components call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useUser()"
+				},
+				{
+					"type": "text",
+					"value": " to get the current user. Because "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use()"
+				},
+				{
+					"type": "text",
+					"value": " suspends until the promise resolves, keep the component behind a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/user-badge.tsx\"",
+			"value": "'use client'\n\nimport { useUser } from './user-provider'\n\nexport function UserBadge() {\n\tconst user = useUser()\n\treturn <span>Signed in as {user.name}</span>\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Expose only what the client needs. The "
+						},
+						{
+							"type": "inlineCode",
+							"value": "getCurrentUser"
+						},
+						{
+							"type": "text",
+							"value": " helper returns a narrow "
+						},
+						{
+							"type": "inlineCode",
+							"value": "{ id, name }"
+						},
+						{
+							"type": "text",
+							"value": " rather than the raw session. To keep sensitive fields from reaching the client, see "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://react.dev/reference/react/experimental_taintUniqueValue",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "taintUniqueValue"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 4: Cache session-derived data"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Now that you have the user, you can cache the data you fetch for them in one of two ways. Passing the user id into a plain "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " function keeps the result on the server, keyed by the id (it becomes part of the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache#cache-keys",
+					"children": [
+						{
+							"type": "text",
+							"value": "cache key"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "), where a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " can invalidate it later. Reading it inside a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache-private",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache: private"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " scope keeps it in the browser only, never on the server, which matters when requirements forbid storing certain data server-side, even ephemerally. The example passes the id, since these notes are tagged and refreshed when they change."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A plain "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " scope can't read "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": ", so the exported function resolves the user and passes just the id to the cached function:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"lib/data.ts\"",
+			"value": "import 'server-only'\nimport { cacheLife, cacheTag } from 'next/cache'\nimport { getCurrentUser } from './auth'\n\nexport async function getNotes() {\n\tconst user = await getCurrentUser()\n\treturn getNotesByUserId(user.id)\n}\n\nasync function getNotesByUserId(userId: string) {\n\t'use cache'\n\tcacheTag(`notes:${userId}`)\n\tcacheLife('minutes')\n\n\treturn db.query.notes.findMany({\n\t\twhere: (notes, { eq }) => eq(notes.userId, userId),\n\t})\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Keep "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getNotesByUserId"
+				},
+				{
+					"type": "text",
+					"value": " unexported so a caller can't request another user's notes by passing a different id. Resolving the user inside the exported getter is what makes that safe. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/data-security#data-access-layer",
+					"children": [
+						{
+							"type": "text",
+							"value": "Data Security"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Call it from a Server Component that renders the notes. There's no user id to pass, and the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getCurrentUser()"
+				},
+				{
+					"type": "text",
+					"value": " call inside the getter hits the private cache, so the session isn't read again:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\"",
+			"value": "async function Notes() {\n\tconst notes = await getNotes()\n\t// ...\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know: cache keys and tags are stored in plain text."
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " A cached function's arguments and captured variables are serialized into its cache key, and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "cacheTag"
+						},
+						{
+							"type": "text",
+							"value": " values are stored as written. Neither is hashed: the default cache holds them as plain-text map keys and tag lists, and a "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/directives/use-cache-remote",
+							"children": [
+								{
+									"type": "text",
+									"value": "remote cache"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " receives them the same way. Key and tag on a stable identifier like the user id, and keep secrets and sensitive personal data (tokens, passwords, raw emails) out of arguments and tags."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "On the server, plain "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " keeps the entry in memory as a best effort: it's evicted under pressure and, in serverless, doesn't persist across instances. If that data must survive across instances and requests, opt into "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache-remote",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache: remote"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for durable, shared storage, where "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache-remote#cache-key-considerations",
+					"children": [
+						{
+							"type": "text",
+							"value": "the cache key you choose"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " drives your hit rate."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 5: Update session-derived data"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/mutating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Action"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " changes a user's data, call "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/updateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "updateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with the same tag to refresh the cached entry. Re-read the session inside the action so it authorizes itself rather than trusting the client. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/authentication#server-actions",
+					"children": [
+						{
+							"type": "text",
+							"value": "authentication with Server Actions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for why this matters."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/actions.ts\"",
+			"value": "'use server'\nimport { redirect } from 'next/navigation'\nimport { updateTag } from 'next/cache'\nimport { getSession } from '@/lib/session'\nimport { saveNote } from '@/lib/data'\n\nexport async function addNote(formData: FormData) {\n\tconst { userId } = await getSession()\n\tif (!userId) {\n\t\tredirect('/login')\n\t}\n\n\tconst note = String(formData.get('note') ?? '').trim()\n\tif (note) {\n\t\tawait saveNote(userId, note)\n\t\tupdateTag(`notes:${userId}`)\n\t}\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 6: Make authenticated navigations instant"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Cached reads already have a lifetime, so this mostly happens on its own. A "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache: private"
+				},
+				{
+					"type": "text",
+					"value": " scope uses the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife#preset-cache-profiles",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "default"
+						},
+						{
+							"type": "text",
+							"value": " profile"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " (a five-minute "
+				},
+				{
+					"type": "inlineCode",
+					"value": "stale"
+				},
+				{
+					"type": "text",
+					"value": ") unless you set one, and a route that reads the session produces a per-session "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#app-shell",
+					"children": [
+						{
+							"type": "text",
+							"value": "App Shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with the authenticated content, prefetched and cached per session. Navigations to it are already instant."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Two things keep it that way:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If you tune the lifetime with "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/cacheLife",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cacheLife"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", keep "
+								},
+								{
+									"type": "inlineCode",
+									"value": "stale"
+								},
+								{
+									"type": "text",
+									"value": " at 30 seconds or more. Below that, the scope drops out of prefetching. See "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/cacheLife#client-cache-behavior",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cacheLife"
+										},
+										{
+											"type": "text",
+											"value": " client cache behavior"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "A route that "
+								},
+								{
+									"type": "emphasis",
+									"children": [
+										{
+											"type": "text",
+											"value": "also"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " depends on the URL (a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "params"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "searchParams"
+								},
+								{
+									"type": "text",
+									"value": " value) needs "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/components/link#prefetch",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "<Link prefetch={true}>"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " on the links pointing at it. That opts into "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/optimizing-prefetching",
+									"children": [
+										{
+											"type": "text",
+											"value": "per-link prefetching"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", which resolves the per-link data ahead of the click."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\"",
+			"value": "<Link\n\thref={`/notes/${note.id}`}\n\tprefetch={true}>\n\t{note.text}\n</Link>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The destination needs "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/adopting-partial-prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for this, so enable the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/partialPrefetching",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "partialPrefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " flag or set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch = 'partial'"
+				},
+				{
+					"type": "text",
+					"value": " on the segment. Add the prop where the wait is worth it: that prefetch costs one server invocation per link, so a sidebar of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/chat/[id]"
+				},
+				{
+					"type": "text",
+					"value": " links pays that cost per item."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Common pitfalls"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Reading "
+										},
+										{
+											"type": "inlineCode",
+											"value": "cookies()"
+										},
+										{
+											"type": "text",
+											"value": " or "
+										},
+										{
+											"type": "inlineCode",
+											"value": "headers()"
+										},
+										{
+											"type": "text",
+											"value": " inside a plain "
+										},
+										{
+											"type": "inlineCode",
+											"value": "use cache"
+										},
+										{
+											"type": "text",
+											"value": " function."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " This throws. Read the request outside and pass the value in, or use "
+								},
+								{
+									"type": "inlineCode",
+									"value": "use cache: private"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Putting secrets or personal data in cache keys or tags."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Arguments and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cacheTag"
+								},
+								{
+									"type": "text",
+									"value": " values are stored in plain text. Key and tag on a stable identifier, not on sensitive input."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Trusting the client for authorization."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " UI checks hide elements, but they don't protect data. Re-verify the session in every Server Action and "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/route",
+									"children": [
+										{
+											"type": "text",
+											"value": "Route Handler"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", close to the data. See "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/authentication#authorization",
+									"children": [
+										{
+											"type": "text",
+											"value": "Authorization"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

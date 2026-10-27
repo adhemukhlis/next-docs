@@ -1,0 +1,1953 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: rewrites\ndescription: Add rewrites to your Next.js app."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Rewrites allow you to map an incoming request path to a different destination path."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Rewrites act as a URL proxy and mask the destination path, making it appear the user hasn't changed their location on the site. In contrast, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/redirects",
+					"children": [
+						{
+							"type": "text",
+							"value": "redirects"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " will reroute to a new page and show the URL changes."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use rewrites you can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "rewrites"
+				},
+				{
+					"type": "text",
+					"value": " key in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\trewrites() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/about',\n\t\t\t\tdestination: '/',\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Rewrites are applied to client-side routing. In the example above, navigating to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link href=\"/about\">"
+				},
+				{
+					"type": "text",
+					"value": " will serve content from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/"
+				},
+				{
+					"type": "text",
+					"value": " while keeping the URL as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/about"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "rewrites"
+				},
+				{
+					"type": "text",
+					"value": " can be defined as a synchronous or async function. It should return, or resolve to, either an array or an object of arrays (see below) holding objects with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "source"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "destination"
+				},
+				{
+					"type": "text",
+					"value": " properties:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "source"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "String"
+								},
+								{
+									"type": "text",
+									"value": " - is the incoming request path pattern."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "destination"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "String"
+								},
+								{
+									"type": "text",
+									"value": " is the path you want to route to."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "basePath"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								},
+								{
+									"type": "text",
+									"value": " - if false the basePath won't be included when matching, can be used for external rewrites only."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "locale"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								},
+								{
+									"type": "text",
+									"value": " - whether the locale should not be included when matching."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "has"
+								},
+								{
+									"type": "text",
+									"value": " is an array of "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#header-cookie-and-query-matching",
+									"children": [
+										{
+											"type": "text",
+											"value": "has objects"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " with the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "type"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "key"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "value"
+								},
+								{
+									"type": "text",
+									"value": " properties."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "missing"
+								},
+								{
+									"type": "text",
+									"value": " is an array of "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#header-cookie-and-query-matching",
+									"children": [
+										{
+											"type": "text",
+											"value": "missing objects"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " with the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "type"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "key"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "value"
+								},
+								{
+									"type": "text",
+									"value": " properties."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "rewrites"
+				},
+				{
+					"type": "text",
+					"value": " function returns an array, rewrites are applied after checking the filesystem (pages and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/public"
+				},
+				{
+					"type": "text",
+					"value": " files) and before dynamic routes. When the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "rewrites"
+				},
+				{
+					"type": "text",
+					"value": " function returns an object of arrays with a specific shape, this behavior can be changed and more finely controlled, as of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "v10.1"
+				},
+				{
+					"type": "text",
+					"value": " of Next.js:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\trewrites() {\n\t\treturn {\n\t\t\tbeforeFiles: [\n\t\t\t\t// These rewrites are checked after headers/redirects\n\t\t\t\t// and before all files including _next/static and public files which\n\t\t\t\t// allows overriding page files\n\t\t\t\t{\n\t\t\t\t\tsource: '/some-page',\n\t\t\t\t\tdestination: '/somewhere-else',\n\t\t\t\t\thas: [{ type: 'query', key: 'overrideMe' }],\n\t\t\t\t},\n\t\t\t],\n\t\t\tafterFiles: [\n\t\t\t\t// These rewrites are checked after pages/public files\n\t\t\t\t// are checked but before dynamic routes\n\t\t\t\t{\n\t\t\t\t\tsource: '/non-existent',\n\t\t\t\t\tdestination: '/somewhere-else',\n\t\t\t\t},\n\t\t\t],\n\t\t\tfallback: [\n\t\t\t\t// These rewrites are checked after both pages/public files\n\t\t\t\t// and dynamic routes are checked\n\t\t\t\t{\n\t\t\t\t\tsource: '/:path*',\n\t\t\t\t\tdestination: `https://my-old-site.com/:path*`,\n\t\t\t\t},\n\t\t\t],\n\t\t}\n\t},\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": rewrites in "
+						},
+						{
+							"type": "inlineCode",
+							"value": "beforeFiles"
+						},
+						{
+							"type": "text",
+							"value": " do not check the filesystem/dynamic routes immediately after matching a source, they continue until all "
+						},
+						{
+							"type": "inlineCode",
+							"value": "beforeFiles"
+						},
+						{
+							"type": "text",
+							"value": " have been checked."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The order Next.js routes are checked is:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/headers",
+									"children": [
+										{
+											"type": "text",
+											"value": "headers"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " are checked/applied"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/redirects",
+									"children": [
+										{
+											"type": "text",
+											"value": "redirects"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " are checked/applied"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/proxy",
+									"children": [
+										{
+											"type": "text",
+											"value": "proxy"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "beforeFiles"
+								},
+								{
+									"type": "text",
+									"value": " rewrites: for each entry, if "
+								},
+								{
+									"type": "inlineCode",
+									"value": "source"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "has"
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "missing"
+								},
+								{
+									"type": "text",
+									"value": " matches the request, it's rewritten to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "destination"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "static files from the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/public-folder",
+									"children": [
+										{
+											"type": "text",
+											"value": "public directory"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "_next/static"
+								},
+								{
+									"type": "text",
+									"value": " files, and non-dynamic pages are checked/served"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "afterFiles"
+								},
+								{
+									"type": "text",
+									"value": " rewrites are tried in order. If a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "source"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "has"
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "missing"
+								},
+								{
+									"type": "text",
+									"value": " matches the request, it's rewritten to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "destination"
+								},
+								{
+									"type": "text",
+									"value": "; the first rewrite that resolves to a static file, page, or dynamic route is served."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "dynamic routes (e.g., "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/blog/[slug]/page.tsx"
+								},
+								{
+									"type": "text",
+									"value": ") are matched against the current path"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "fallback"
+								},
+								{
+									"type": "text",
+									"value": " rewrites are checked/applied, these are applied before rendering the 404 page and after dynamic routes/all static assets have been checked. If you use "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/pages/api-reference/functions/get-static-paths#fallback-true",
+									"children": [
+										{
+											"type": "text",
+											"value": "fallback: true/'blocking'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "getStaticPaths"
+								},
+								{
+									"type": "text",
+									"value": ", those dynamic routes take priority over the fallback "
+								},
+								{
+									"type": "inlineCode",
+									"value": "rewrites"
+								},
+								{
+									"type": "text",
+									"value": " defined in your "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next.config.js"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Rewrite parameters"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using parameters in a rewrite the parameters will be passed in the query by default when none of the parameters are used in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "destination"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\trewrites() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/old-about/:path*',\n\t\t\t\tdestination: '/about', // The :path parameter isn't used here so will be automatically passed in the query\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If a parameter is used in the destination none of the parameters will be automatically passed in the query."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\trewrites() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/docs/:path*',\n\t\t\t\tdestination: '/:path*', // The :path parameter is used here so will not be automatically passed in the query\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can still pass the parameters manually in the query if one is already used in the destination by specifying the query in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "destination"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\trewrites() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/:first/:second',\n\t\t\t\tdestination: '/:first?second=:second',\n\t\t\t\t// Since the :first parameter is used in the destination the :second parameter\n\t\t\t\t// will not automatically be added in the query although we can manually add it\n\t\t\t\t// as shown above\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Static pages from "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/pages/building-your-application/rendering/automatic-static-optimization",
+							"children": [
+								{
+									"type": "text",
+									"value": "Automatic Static Optimization"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " or "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/pages/building-your-application/data-fetching/get-static-props",
+							"children": [
+								{
+									"type": "text",
+									"value": "prerendering"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " params from rewrites will be parsed on the client after hydration and provided in the query."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Path Matching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Path matches are allowed, for example "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/:slug"
+				},
+				{
+					"type": "text",
+					"value": " will match "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/first-post"
+				},
+				{
+					"type": "text",
+					"value": " (no nested paths):"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\trewrites() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/blog/:slug',\n\t\t\t\tdestination: '/news/:slug', // Matched parameters can be used in the destination\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The pattern "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/:slug"
+				},
+				{
+					"type": "text",
+					"value": " matches "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/first-post"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/post-1"
+				},
+				{
+					"type": "text",
+					"value": " but not "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/a/b"
+				},
+				{
+					"type": "text",
+					"value": " (no nested paths). Patterns are anchored to the start: "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/:slug"
+				},
+				{
+					"type": "text",
+					"value": " will not match "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/archive/blog/first-post"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use modifiers on parameters: "
+				},
+				{
+					"type": "inlineCode",
+					"value": "*"
+				},
+				{
+					"type": "text",
+					"value": " (zero or more), "
+				},
+				{
+					"type": "inlineCode",
+					"value": "+"
+				},
+				{
+					"type": "text",
+					"value": " (one or more), "
+				},
+				{
+					"type": "inlineCode",
+					"value": "?"
+				},
+				{
+					"type": "text",
+					"value": " (zero or one). For example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/:slug*"
+				},
+				{
+					"type": "text",
+					"value": " matches "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/a"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/a/b/c"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Read more details on "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/pillarjs/path-to-regexp",
+					"children": [
+						{
+							"type": "text",
+							"value": "path-to-regexp"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " documentation."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Wildcard Path Matching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To match a wildcard path you can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "*"
+				},
+				{
+					"type": "text",
+					"value": " after a parameter, for example "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/:slug*"
+				},
+				{
+					"type": "text",
+					"value": " will match "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/a/b/c/d/hello-world"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\trewrites() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/blog/:slug*',\n\t\t\t\tdestination: '/news/:slug*', // Matched parameters can be used in the destination\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Regex Path Matching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To match a regex path you can wrap the regex in parenthesis after a parameter, for example "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/:slug(\\\\d{1,})"
+				},
+				{
+					"type": "text",
+					"value": " will match "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/123"
+				},
+				{
+					"type": "text",
+					"value": " but not "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/abc"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\trewrites() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/old-blog/:post(\\\\d{1,})',\n\t\t\t\tdestination: '/blog/:post', // Matched parameters can be used in the destination\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The following characters "
+				},
+				{
+					"type": "inlineCode",
+					"value": "("
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": ")"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "{"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "}"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "["
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "]"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "|"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\\"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "^"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "."
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": ":"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "*"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "+"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "-"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "?"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "$"
+				},
+				{
+					"type": "text",
+					"value": " are used for regex path matching, so when used in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "source"
+				},
+				{
+					"type": "text",
+					"value": " as non-special values they must be escaped by adding "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\\\\"
+				},
+				{
+					"type": "text",
+					"value": " before them:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\trewrites() {\n\t\treturn [\n\t\t\t{\n\t\t\t\t// this will match `/english(default)/something` being requested\n\t\t\t\tsource: '/english\\\\(default\\\\)/:slug',\n\t\t\t\tdestination: '/en-us/:slug',\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Header, Cookie, and Query Matching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To only match a rewrite when header, cookie, or query values also match the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "has"
+				},
+				{
+					"type": "text",
+					"value": " field or don't match the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "missing"
+				},
+				{
+					"type": "text",
+					"value": " field can be used. Both the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "source"
+				},
+				{
+					"type": "text",
+					"value": " and all "
+				},
+				{
+					"type": "inlineCode",
+					"value": "has"
+				},
+				{
+					"type": "text",
+					"value": " items must match and all "
+				},
+				{
+					"type": "inlineCode",
+					"value": "missing"
+				},
+				{
+					"type": "text",
+					"value": " items must not match for the rewrite to be applied."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "has"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "missing"
+				},
+				{
+					"type": "text",
+					"value": " items can have the following fields:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "type"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "String"
+								},
+								{
+									"type": "text",
+									"value": " - must be either "
+								},
+								{
+									"type": "inlineCode",
+									"value": "header"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cookie"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "host"
+								},
+								{
+									"type": "text",
+									"value": ", or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "query"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "key"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "String"
+								},
+								{
+									"type": "text",
+									"value": " - the key from the selected type to match against."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "value"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "String"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								},
+								{
+									"type": "text",
+									"value": " - the value to check for, if undefined any value will match. A regex like string can be used to capture a specific part of the value, e.g. if the value "
+								},
+								{
+									"type": "inlineCode",
+									"value": "first-(?<paramName>.*)"
+								},
+								{
+									"type": "text",
+									"value": " is used for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "first-second"
+								},
+								{
+									"type": "text",
+									"value": " then "
+								},
+								{
+									"type": "inlineCode",
+									"value": "second"
+								},
+								{
+									"type": "text",
+									"value": " will be usable in the destination with "
+								},
+								{
+									"type": "inlineCode",
+									"value": ":paramName"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\trewrites() {\n\t\treturn [\n\t\t\t// if the header `x-rewrite-me` is present,\n\t\t\t// this rewrite will be applied\n\t\t\t{\n\t\t\t\tsource: '/:path*',\n\t\t\t\thas: [\n\t\t\t\t\t{\n\t\t\t\t\t\ttype: 'header',\n\t\t\t\t\t\tkey: 'x-rewrite-me',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t\tdestination: '/another-page',\n\t\t\t},\n\t\t\t// if the header `x-rewrite-me` is not present,\n\t\t\t// this rewrite will be applied\n\t\t\t{\n\t\t\t\tsource: '/:path*',\n\t\t\t\tmissing: [\n\t\t\t\t\t{\n\t\t\t\t\t\ttype: 'header',\n\t\t\t\t\t\tkey: 'x-rewrite-me',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t\tdestination: '/another-page',\n\t\t\t},\n\t\t\t// if the source, query, and cookie are matched,\n\t\t\t// this rewrite will be applied\n\t\t\t{\n\t\t\t\tsource: '/specific/:path*',\n\t\t\t\thas: [\n\t\t\t\t\t{\n\t\t\t\t\t\ttype: 'query',\n\t\t\t\t\t\tkey: 'page',\n\t\t\t\t\t\t// the page value will not be available in the\n\t\t\t\t\t\t// destination since value is provided and doesn't\n\t\t\t\t\t\t// use a named capture group e.g. (?<page>home)\n\t\t\t\t\t\tvalue: 'home',\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\ttype: 'cookie',\n\t\t\t\t\t\tkey: 'authorized',\n\t\t\t\t\t\tvalue: 'true',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t\tdestination: '/:path*/home',\n\t\t\t},\n\t\t\t// if the header `x-authorized` is present and\n\t\t\t// contains a matching value, this rewrite will be applied\n\t\t\t{\n\t\t\t\tsource: '/:path*',\n\t\t\t\thas: [\n\t\t\t\t\t{\n\t\t\t\t\t\ttype: 'header',\n\t\t\t\t\t\tkey: 'x-authorized',\n\t\t\t\t\t\tvalue: '(?<authorized>yes|true)',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t\tdestination: '/home?authorized=:authorized',\n\t\t\t},\n\t\t\t// if the host is `example.com`,\n\t\t\t// this rewrite will be applied\n\t\t\t{\n\t\t\t\tsource: '/:path*',\n\t\t\t\thas: [\n\t\t\t\t\t{\n\t\t\t\t\t\ttype: 'host',\n\t\t\t\t\t\tvalue: 'example.com',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t\tdestination: '/another-page',\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Rewriting to an external URL"
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "<details>\n  <summary>Examples</summary>"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel/next.js/tree/canary/examples/with-zones",
+									"children": [
+										{
+											"type": "text",
+											"value": "Using Multiple Zones"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "</details>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Rewrites allow you to rewrite to an external URL. This is especially useful for incrementally adopting Next.js. The following is an example rewrite for redirecting the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog"
+				},
+				{
+					"type": "text",
+					"value": " route of your main app to an external site."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\trewrites() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/blog',\n\t\t\t\tdestination: 'https://example.com/blog',\n\t\t\t},\n\t\t\t{\n\t\t\t\tsource: '/blog/:slug',\n\t\t\t\tdestination: 'https://example.com/blog/:slug', // Matched parameters can be used in the destination\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you're using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "trailingSlash: true"
+				},
+				{
+					"type": "text",
+					"value": ", you also need to insert a trailing slash in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "source"
+				},
+				{
+					"type": "text",
+					"value": " parameter. If the destination server is also expecting a trailing slash it should be included in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "destination"
+				},
+				{
+					"type": "text",
+					"value": " parameter as well."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\ttrailingSlash: true,\n\trewrites() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/blog/',\n\t\t\t\tdestination: 'https://example.com/blog/',\n\t\t\t},\n\t\t\t{\n\t\t\t\tsource: '/blog/:path*/',\n\t\t\t\tdestination: 'https://example.com/blog/:path*/',\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Incremental adoption of Next.js"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also have Next.js fall back to proxying to an existing website after checking all Next.js routes."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This way you don't have to change the rewrites configuration when migrating more pages to Next.js"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\trewrites() {\n\t\treturn {\n\t\t\tfallback: [\n\t\t\t\t{\n\t\t\t\t\tsource: '/:path*',\n\t\t\t\t\tdestination: `https://custom-routes-proxying-endpoint.vercel.app/:path*`,\n\t\t\t\t},\n\t\t\t],\n\t\t}\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Rewrites with basePath support"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When leveraging "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/basePath",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "basePath"
+						},
+						{
+							"type": "text",
+							"value": " support"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with rewrites each "
+				},
+				{
+					"type": "inlineCode",
+					"value": "source"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "destination"
+				},
+				{
+					"type": "text",
+					"value": " is automatically prefixed with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "basePath"
+				},
+				{
+					"type": "text",
+					"value": " unless you add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "basePath: false"
+				},
+				{
+					"type": "text",
+					"value": " to the rewrite:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tbasePath: '/docs',\n\n\trewrites() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/with-basePath', // automatically becomes /docs/with-basePath\n\t\t\t\tdestination: '/another', // automatically becomes /docs/another\n\t\t\t},\n\t\t\t{\n\t\t\t\t// does not add /docs to /without-basePath since basePath: false is set\n\t\t\t\t// Note: this cannot be used for internal rewrites e.g. `destination: '/another'`\n\t\t\t\tsource: '/without-basePath',\n\t\t\t\tdestination: 'https://example.com',\n\t\t\t\tbasePath: false,\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "missing"
+								},
+								{
+									"type": "text",
+									"value": " added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v10.2.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "has"
+								},
+								{
+									"type": "text",
+									"value": " added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v9.5.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Headers added."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

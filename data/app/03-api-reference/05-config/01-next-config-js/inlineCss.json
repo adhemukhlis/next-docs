@@ -1,0 +1,567 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: inlineCss\ndescription: Enable inline CSS support.\nversion: experimental"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Usage"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Experimental support for inlining CSS in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<head>"
+				},
+				{
+					"type": "text",
+					"value": ". When this flag is enabled, all places where we normally generate a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<link>"
+				},
+				{
+					"type": "text",
+					"value": " tag will instead have a generated "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<style>"
+				},
+				{
+					"type": "text",
+					"value": " tag."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\texperimental: {\n\t\tinlineCss: true,\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\texperimental: {\n\t\tinlineCss: true,\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Trade-Offs"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Enable"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " if you use atomic CSS (like Tailwind) and want to optimize first-load performance for new visitors"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Skip"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " if returning visitors are common and you want them to benefit from cached stylesheets"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "When Inline CSS Helps"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Normally, the browser must download HTML, parse it, discover CSS "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<link>"
+				},
+				{
+					"type": "text",
+					"value": " tags, then request stylesheets before it can render. Inlining "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://web.dev/learn/performance/optimize-resource-loading#inline_critical_css",
+					"children": [
+						{
+							"type": "text",
+							"value": "eliminates this request waterfall"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", so that styles arrive with the HTML, so the browser can render immediately."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This benefit is strongest with:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": true,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "First-time visitors"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Since CSS files are render-blocking, inlining eliminates the initial download delay that first-time visitors experience. Returning visitors with cached stylesheets won't see this benefit."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Performance metrics"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": By removing additional network requests for CSS files, inlining can significantly improve "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://web.dev/articles/fcp",
+									"children": [
+										{
+											"type": "text",
+											"value": "First Contentful Paint (FCP)"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://web.dev/articles/lcp",
+									"children": [
+										{
+											"type": "text",
+											"value": "Largest Contentful Paint (LCP)"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Slow connections"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": For users on high-latency networks, each additional request adds delay. Inlining reduces round trips, which matters most when connections are slow."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Atomic CSS (Tailwind)"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Utility-first frameworks generate only the classes you use, keeping CSS small. The styles for a page don't grow proportionally with page complexity—they're typically compact regardless of how much UI you build. This makes inlining practical since you get the performance benefit without significantly bloating HTML."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "When External CSS is Better"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Inlined styles cannot be cached separately from HTML. Every page load re-downloads the same CSS."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This trade-off matters most with:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": true,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Returning visitors"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Users who visit your site repeatedly would benefit from cached external stylesheets. With inlining, they re-download styles on every visit."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Large CSS bundles"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": External stylesheets cache independently and load efficiently on modern infrastructure. Inlined CSS arrives with every HTML response, increasing "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://web.dev/articles/ttfb",
+									"children": [
+										{
+											"type": "text",
+											"value": "Time to First Byte (TTFB)"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and preventing browsers from caching styles separately. This trade-off works for small CSS (atomic frameworks like Tailwind), but adds overhead for larger bundles (component libraries like Bootstrap or Material UI)."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Many pages sharing styles"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": External stylesheets cached on one page speed up navigation to other pages. Inlined styles provide no cross-page caching benefit."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "This feature is currently experimental and has some known limitations:"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "CSS inlining is applied globally and cannot be configured on a per-page basis"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Styles are duplicated during initial page load - once within "
+										},
+										{
+											"type": "inlineCode",
+											"value": "<style>"
+										},
+										{
+											"type": "text",
+											"value": " tags for SSR and once in the RSC payload"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "When navigating to prerendered pages, styles will use "
+										},
+										{
+											"type": "inlineCode",
+											"value": "<link>"
+										},
+										{
+											"type": "text",
+											"value": " tags instead of inline CSS to avoid duplication"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "This feature is not available in development mode and only works in production builds"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

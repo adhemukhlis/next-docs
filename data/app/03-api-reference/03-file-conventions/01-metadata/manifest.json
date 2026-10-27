@@ -1,0 +1,253 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: manifest.json\ndescription: API Reference for manifest.json file."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Add or generate a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "manifest.(json|webmanifest)"
+				},
+				{
+					"type": "text",
+					"value": " file that matches the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/Manifest",
+					"children": [
+						{
+							"type": "text",
+							"value": "Web Manifest Specification"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in the "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "root"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory to provide information about your web application for the browser."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Static Manifest file"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"app/manifest.json | app/manifest.webmanifest\"",
+			"value": "{\n\t\"name\": \"My Next.js Application\",\n\t\"short_name\": \"Next.js App\",\n\t\"description\": \"An application built with Next.js\",\n\t\"start_url\": \"/\"\n\t// ...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Generate a Manifest file"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Add a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "manifest.js"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "manifest.ts"
+				},
+				{
+					"type": "text",
+					"value": " file that returns a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#manifest-object",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Manifest"
+						},
+						{
+							"type": "text",
+							"value": " object"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Good to know: "
+						},
+						{
+							"type": "inlineCode",
+							"value": "manifest.js"
+						},
+						{
+							"type": "text",
+							"value": " is a special Route Handlers that is cached by default unless it uses a "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/glossary#request-time-apis",
+							"children": [
+								{
+									"type": "text",
+									"value": "Request-time API"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " or "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/caching-without-cache-components#dynamic",
+							"children": [
+								{
+									"type": "text",
+									"value": "dynamic config"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " option."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/manifest.ts\" switcher",
+			"value": "import type { MetadataRoute } from 'next'\n\nexport default function manifest(): MetadataRoute.Manifest {\n\treturn {\n\t\tname: 'Next.js App',\n\t\tshort_name: 'Next.js App',\n\t\tdescription: 'Next.js App',\n\t\tstart_url: '/',\n\t\tdisplay: 'standalone',\n\t\tbackground_color: '#fff',\n\t\ttheme_color: '#fff',\n\t\ticons: [\n\t\t\t{\n\t\t\t\tsrc: '/favicon.ico',\n\t\t\t\tsizes: 'any',\n\t\t\t\ttype: 'image/x-icon',\n\t\t\t},\n\t\t],\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/manifest.js\" switcher",
+			"value": "export default function manifest() {\n\treturn {\n\t\tname: 'Next.js App',\n\t\tshort_name: 'Next.js App',\n\t\tdescription: 'Next.js App',\n\t\tstart_url: '/',\n\t\tdisplay: 'standalone',\n\t\tbackground_color: '#fff',\n\t\ttheme_color: '#fff',\n\t\ticons: [\n\t\t\t{\n\t\t\t\tsrc: '/favicon.ico',\n\t\t\t\tsizes: 'any',\n\t\t\t\ttype: 'image/x-icon',\n\t\t\t},\n\t\t],\n\t}\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Manifest Object"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The manifest object contains an extensive list of options that may be updated due to new web standards. For information on all the current options, refer to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "MetadataRoute.Manifest"
+				},
+				{
+					"type": "text",
+					"value": " type in your code editor if using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/typescript#ide-plugin",
+					"children": [
+						{
+							"type": "text",
+							"value": "TypeScript"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or see the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/Manifest",
+					"children": [
+						{
+							"type": "text",
+							"value": "MDN"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " docs."
+				}
+			]
+		}
+	]
+}

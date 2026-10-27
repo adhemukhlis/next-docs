@@ -1,0 +1,426 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: instrumentationClientInject\ndescription: Inject additional client-side instrumentation modules before the user's `instrumentation-client.{js,ts}` file."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "instrumentationClientInject"
+				},
+				{
+					"type": "text",
+					"value": " is a list of modules that are imported on the client for their side effects before the user's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/instrumentation-client",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "instrumentation-client.{js,ts}"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " file runs, ahead of React hydration."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This option is primarily intended for "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next.config.js"
+						},
+						{
+							"type": "text",
+							"value": " plugins"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " (for example, wrappers like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "withSentry"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "withAnalytics"
+				},
+				{
+					"type": "text",
+					"value": " that extend a project's config). It lets such a plugin inject its own client instrumentation module — including a navigation hook — without requiring every project to author or modify an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instrumentation-client"
+				},
+				{
+					"type": "text",
+					"value": " file. Application code should generally continue to use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/instrumentation-client",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "instrumentation-client.{js,ts}"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " file convention directly."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A plugin typically appends its own module to whatever the project already has configured:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"withMyInstrumentation.js\"",
+			"value": "module.exports = function withMyInstrumentation(nextConfig = {}) {\n\treturn {\n\t\t...nextConfig,\n\t\tinstrumentationClientInject: [...(nextConfig.instrumentationClientInject ?? []), 'my-instrumentation-package/client'],\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "It can also be set directly:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "/** @type {import('next').NextConfig} */\nmodule.exports = {\n\tinstrumentationClientInject: ['my-analytics-package', './lib/sentry-client.js'],\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each entry is one of:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "A bare npm package name, resolved from the project's "
+								},
+								{
+									"type": "inlineCode",
+									"value": "node_modules"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "A path relative to the project root."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Execution order"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Modules run on the client in this order:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Each entry in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "instrumentationClientInject"
+								},
+								{
+									"type": "text",
+									"value": ", in array order."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The project's "
+								},
+								{
+									"type": "inlineCode",
+									"value": "instrumentation-client.{js,ts}"
+								},
+								{
+									"type": "text",
+									"value": " file, if present."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "React hydration."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Router navigation hook"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each injected module may optionally export an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "onRouterTransitionStart"
+				},
+				{
+					"type": "text",
+					"value": " function with the same signature as the one documented for the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/instrumentation-client#router-navigation-tracking",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "instrumentation-client"
+						},
+						{
+							"type": "text",
+							"value": " file convention"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Next.js composes a single hook that fans out to every exported "
+				},
+				{
+					"type": "inlineCode",
+					"value": "onRouterTransitionStart"
+				},
+				{
+					"type": "text",
+					"value": " on each navigation, calling them in array order, with the user file's hook running last."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"lib/sentry-client.js\"",
+			"value": "// Side-effectful setup runs at load time.\nsetupSentry()\n\nexport function onRouterTransitionStart(url, navigationType) {\n\trecordNavigationBreadcrumb(url, navigationType)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Modules that do not export "
+				},
+				{
+					"type": "inlineCode",
+					"value": "onRouterTransitionStart"
+				},
+				{
+					"type": "text",
+					"value": " are skipped during navigation."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version history"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "instrumentationClientInject"
+								},
+								{
+									"type": "text",
+									"value": " introduced"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

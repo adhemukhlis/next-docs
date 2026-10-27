@@ -1,0 +1,1462 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Revalidating\ndescription: Learn how to revalidate cached data using time-based and on-demand strategies.\nrelated:\n title: API Reference\n description: Learn more about the APIs mentioned on this page.\n links:\n  - app/api-reference/functions/cacheLife\n  - app/api-reference/functions/cacheTag\n  - app/api-reference/functions/revalidateTag\n  - app/api-reference/functions/updateTag\n  - app/api-reference/functions/revalidatePath"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "This page covers revalidation with "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+							"children": [
+								{
+									"type": "text",
+									"value": "Cache Components"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", enabled by setting "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "cacheComponents: true"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " in your "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next.config.ts"
+						},
+						{
+							"type": "text",
+							"value": " file. If you're not using Cache Components, see the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/caching-without-cache-components",
+							"children": [
+								{
+									"type": "text",
+									"value": "Caching and Revalidating (Previous Model)"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " guide."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Revalidation is the process of updating cached data. It lets you keep serving fast, cached responses while ensuring content stays fresh. There are two strategies:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Time-based revalidation"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Automatically refresh cached data after a set duration using "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#cachelife",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cacheLife"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "On-demand revalidation"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Manually invalidate cached data after a mutation using "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#revalidatetag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidateTag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#updatetag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "updateTag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", or "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#revalidatepath",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidatePath"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " controls how long cached data remains valid. Use it inside a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " scope to set the cache lifetime."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/lib/data.ts\" highlight={1,4,5}",
+			"value": "import { cacheLife } from 'next/cache'\n\nexport async function getProducts() {\n\t'use cache'\n\tcacheLife('hours')\n\treturn db.query('SELECT * FROM products')\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": " accepts a profile name or a custom configuration object:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Profile"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "stale"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "revalidate"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "expire"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "default"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "5m"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "15m"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "never"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "seconds"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "30s"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "1s"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "60s"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "minutes"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "5m"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "1m"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "1h"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "hours"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "5m"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "1h"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "1d"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "days"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "5m"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "1d"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "1w"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "weeks"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "5m"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "1w"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "30d"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "max"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "5m"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "30d"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "1y"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For fine-grained control, pass an object:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "highlight={2-6}",
+			"value": "'use cache'\ncacheLife({\n\tstale: 3600, // 1 hour until considered stale\n\trevalidate: 7200, // 2 hours until revalidated\n\texpire: 86400, // 1 day until expired\n})"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " A cache is considered \"short-lived\" when it uses the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "seconds"
+						},
+						{
+							"type": "text",
+							"value": " profile, "
+						},
+						{
+							"type": "inlineCode",
+							"value": "revalidate: 0"
+						},
+						{
+							"type": "text",
+							"value": ", or "
+						},
+						{
+							"type": "inlineCode",
+							"value": "expire"
+						},
+						{
+							"type": "text",
+							"value": " under 5 minutes. Short-lived caches are automatically excluded from prerenders and become dynamic holes instead. See "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/cacheLife#prerendering-behavior",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prerendering behavior"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for details."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						},
+						{
+							"type": "text",
+							"value": " API reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for all profiles and custom configuration options."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "cacheTag"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " lets you tag cached data so it can be invalidated on-demand. Use it inside a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " scope:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/lib/data.ts\" switcher",
+			"value": "import { cacheTag } from 'next/cache'\n\nexport async function getProducts() {\n\t'use cache'\n\tcacheTag('products')\n\treturn db.query('SELECT * FROM products')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/lib/data.js\" switcher",
+			"value": "import { cacheTag } from 'next/cache'\n\nexport async function getProducts() {\n\t'use cache'\n\tcacheTag('products')\n\treturn db.query('SELECT * FROM products')\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Once tagged, invalidate the cache using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#revalidatetag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#updatetag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "updateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheTag"
+						},
+						{
+							"type": "text",
+							"value": " API reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to learn more."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "revalidateTag"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "revalidateTag"
+				},
+				{
+					"type": "text",
+					"value": " invalidates cache entries by tag using stale-while-revalidate semantics — stale content is served immediately while fresh content loads in the background. This is ideal for content where a slight delay in updates is acceptable, like blog posts or product catalogs."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/lib/actions.ts\" highlight={1,5} switcher",
+			"value": "import { revalidateTag } from 'next/cache'\n\nexport async function updateUser(id: string) {\n\t// Mutate data\n\trevalidateTag('user', 'max') // Recommended: stale-while-revalidate\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/lib/actions.js\" highlight={1,5} switcher",
+			"value": "import { revalidateTag } from 'next/cache'\n\nexport async function updateUser(id) {\n\t// Mutate data\n\trevalidateTag('user', 'max') // Recommended: stale-while-revalidate\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can reuse the same tag in multiple functions to revalidate them all at once. Call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidateTag"
+				},
+				{
+					"type": "text",
+					"value": " in a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/mutating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Action"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " The second argument sets how long stale content can be served while fresh content generates in the background. Once it expires, subsequent requests block until fresh content is ready. Using "
+						},
+						{
+							"type": "inlineCode",
+							"value": "'max'"
+						},
+						{
+							"type": "text",
+							"value": " gives the longest stale window."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidateTag"
+						},
+						{
+							"type": "text",
+							"value": " API reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to learn more."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "updateTag"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "updateTag"
+				},
+				{
+					"type": "text",
+					"value": " immediately expires cached data for read-your-own-writes scenarios — the user sees their change right away instead of stale content. Unlike "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidateTag"
+				},
+				{
+					"type": "text",
+					"value": ", it can only be used in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/server-actions",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Actions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/lib/actions.ts\" highlight={1,12} switcher",
+			"value": "import { updateTag } from 'next/cache'\nimport { redirect } from 'next/navigation'\n\nexport async function createPost(formData: FormData) {\n\tconst post = await db.post.create({\n\t\tdata: {\n\t\t\ttitle: formData.get('title'),\n\t\t\tcontent: formData.get('content'),\n\t\t},\n\t})\n\n\tupdateTag('posts')\n\tredirect(`/posts/${post.id}`)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/lib/actions.js\" highlight={1,12} switcher",
+			"value": "import { updateTag } from 'next/cache'\nimport { redirect } from 'next/navigation'\n\nexport async function createPost(formData) {\n\tconst post = await db.post.create({\n\t\tdata: {\n\t\t\ttitle: formData.get('title'),\n\t\t\tcontent: formData.get('content'),\n\t\t},\n\t})\n\n\tupdateTag('posts')\n\tredirect(`/posts/${post.id}`)\n}"
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": []
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "updateTag"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "revalidateTag"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Where"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Server Actions only"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Server Actions and Route Handlers"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Behavior"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Immediately expires cache"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Stale-while-revalidate"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Use case"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Read-your-own-writes (user sees their change)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Background refresh (slight delay OK)"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/updateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "updateTag"
+						},
+						{
+							"type": "text",
+							"value": " API reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to learn more."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "revalidatePath"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "revalidatePath"
+				},
+				{
+					"type": "text",
+					"value": " invalidates all cached data for a specific route path. Use it when you want to revalidate a route without knowing which tags are associated with it."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/lib/actions.ts\" highlight={1,5} switcher",
+			"value": "import { revalidatePath } from 'next/cache'\n\nexport async function updateUser(id: string) {\n\t// Mutate data\n\trevalidatePath('/profile')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/lib/actions.js\" highlight={1,5} switcher",
+			"value": "import { revalidatePath } from 'next/cache'\n\nexport async function updateUser(id) {\n\t// Mutate data\n\trevalidatePath('/profile')\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Prefer tag-based revalidation ("
+						},
+						{
+							"type": "inlineCode",
+							"value": "revalidateTag"
+						},
+						{
+							"type": "text",
+							"value": "/"
+						},
+						{
+							"type": "inlineCode",
+							"value": "updateTag"
+						},
+						{
+							"type": "text",
+							"value": ") over path-based when possible — it's more precise and avoids over-invalidating."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidatePath",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidatePath"
+						},
+						{
+							"type": "text",
+							"value": " API reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to learn more."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "What should I cache?"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache data that doesn't depend on "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching#working-with-runtime-apis",
+					"children": [
+						{
+							"type": "text",
+							"value": "runtime data"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and that you're OK serving from cache for a period of time. Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": " to describe that behavior."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When content doesn't need time-based revalidation, for example data from a CMS, use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#cachetag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and a long "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#cachelife",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "max"
+				},
+				{
+					"type": "text",
+					"value": " to keep it in the static shell. Configure the content source to trigger a webhook, or other notification, that calls "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#revalidatetag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when the content changes. This reduces unnecessary time-based revalidation for content that hasn't changed."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " In serverless environments, in-memory cache entries may not persist across revalidations. See "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/directives/use-cache#runtime-caching-considerations",
+							"children": [
+								{
+									"type": "text",
+									"value": "runtime caching considerations"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for details."
+						}
+					]
+				}
+			]
+		}
+	]
+}

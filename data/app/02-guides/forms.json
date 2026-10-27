@@ -1,0 +1,1116 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to create forms with Server Actions\nnav_title: Forms\ndescription: Learn how to create forms in Next.js with React Server Actions."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "React Server Actions are "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/rsc/server-functions",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Functions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " that execute on the server. They can be called in Server and Client Components to handle form submissions. This guide will walk you through how to create forms in Next.js with Server Actions. For Server Action behaviors beyond forms (single-roundtrip response, sequential dispatch, security, deployment), see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/server-actions",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Actions and Mutations"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "[!WARNING] Always verify "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/authentication",
+							"children": [
+								{
+									"type": "text",
+									"value": "authentication and authorization"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " inside each Server Action, even if the form is only rendered on an authenticated page. See the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/data-security",
+							"children": [
+								{
+									"type": "text",
+									"value": "Data Security guide"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for more details."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "How it works"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "React extends the HTML "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/HTML/Element/form",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<form>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " element to allow Server Actions to be invoked with the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/form#action",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "action"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " attribute."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When used in a form, the function automatically receives the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/FormData/FormData",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "FormData"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " object. You can then extract the data using the native "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/API/FormData#instance_methods",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "FormData"
+						},
+						{
+							"type": "text",
+							"value": " methods"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/invoices/page.tsx\" switcher",
+			"value": "import { auth } from '@/lib/auth'\n\nexport default function Page() {\n\tasync function createInvoice(formData: FormData) {\n\t\t'use server'\n\n\t\tconst session = await auth()\n\t\tif (!session?.user) {\n\t\t\tthrow new Error('Unauthorized')\n\t\t}\n\n\t\tconst rawFormData = {\n\t\t\tcustomerId: formData.get('customerId'),\n\t\t\tamount: formData.get('amount'),\n\t\t\tstatus: formData.get('status'),\n\t\t}\n\n\t\t// mutate data\n\t\t// revalidate the cache\n\t}\n\n\treturn <form action={createInvoice}>...</form>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/invoices/page.js\" switcher",
+			"value": "import { auth } from '@/lib/auth'\n\nexport default function Page() {\n\tasync function createInvoice(formData) {\n\t\t'use server'\n\n\t\tconst session = await auth()\n\t\tif (!session?.user) {\n\t\t\tthrow new Error('Unauthorized')\n\t\t}\n\n\t\tconst rawFormData = {\n\t\t\tcustomerId: formData.get('customerId'),\n\t\t\tamount: formData.get('amount'),\n\t\t\tstatus: formData.get('status'),\n\t\t}\n\n\t\t// mutate data\n\t\t// revalidate the cache\n\t}\n\n\treturn <form action={createInvoice}>...</form>\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " When working with forms that have multiple fields, use JavaScript's "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Object.fromEntries()"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ". For example: "
+						},
+						{
+							"type": "inlineCode",
+							"value": "const rawFormData = Object.fromEntries(formData)"
+						},
+						{
+							"type": "text",
+							"value": ". Note that this object will contain extra properties prefixed with "
+						},
+						{
+							"type": "inlineCode",
+							"value": "$ACTION_"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Passing additional arguments"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Outside of form fields, you can pass additional arguments to a Server Function using the JavaScript "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "bind"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " method. For example, to pass the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "userId"
+				},
+				{
+					"type": "text",
+					"value": " argument to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "updateUser"
+				},
+				{
+					"type": "text",
+					"value": " Server Function:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/client-component.tsx\" highlight={6} switcher",
+			"value": "'use client'\n\nimport { updateUser } from './actions'\n\nexport function UserProfile({ userId }: { userId: string }) {\n\tconst updateUserWithId = updateUser.bind(null, userId)\n\n\treturn (\n\t\t<form action={updateUserWithId}>\n\t\t\t<input\n\t\t\t\ttype=\"text\"\n\t\t\t\tname=\"name\"\n\t\t\t/>\n\t\t\t<button type=\"submit\">Update User Name</button>\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/client-component.js\" highlight={6} switcher",
+			"value": "'use client'\n\nimport { updateUser } from './actions'\n\nexport function UserProfile({ userId }) {\n\tconst updateUserWithId = updateUser.bind(null, userId)\n\n\treturn (\n\t\t<form action={updateUserWithId}>\n\t\t\t<input\n\t\t\t\ttype=\"text\"\n\t\t\t\tname=\"name\"\n\t\t\t/>\n\t\t\t<button type=\"submit\">Update User Name</button>\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The Server Function will receive the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "userId"
+				},
+				{
+					"type": "text",
+					"value": " as an additional argument:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/actions.ts\" switcher",
+			"value": "'use server'\n\nexport async function updateUser(userId: string, formData: FormData) {}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/actions.js\" switcher",
+			"value": "'use server'\n\nexport async function updateUser(userId, formData) {}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "An alternative is to pass arguments as hidden input fields in the form (e.g. "
+										},
+										{
+											"type": "inlineCode",
+											"value": "<input type=\"hidden\" name=\"userId\" value={userId} />"
+										},
+										{
+											"type": "text",
+											"value": "). However, the value will be part of the rendered HTML and will not be encoded."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "bind"
+										},
+										{
+											"type": "text",
+											"value": " works in both Server and Client Components and supports progressive enhancement."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Form validation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Forms can be validated on the client or server."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "For "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "client-side validation"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", you can use the HTML attributes like "
+								},
+								{
+									"type": "inlineCode",
+									"value": "required"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "type=\"email\""
+								},
+								{
+									"type": "text",
+									"value": " for basic validation."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "For "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "server-side validation"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", you can use a schema validation library like "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://zod.dev/",
+									"children": [
+										{
+											"type": "text",
+											"value": "Zod"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://valibot.dev/",
+									"children": [
+										{
+											"type": "text",
+											"value": "Valibot"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to validate the form fields. For example:"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/actions.ts\" switcher",
+			"value": "'use server'\n\nimport { z } from 'zod'\n\nconst schema = z.object({\n\temail: z.string({\n\t\tinvalid_type_error: 'Invalid Email',\n\t}),\n})\n\nexport default async function createUser(formData: FormData) {\n\tconst validatedFields = schema.safeParse({\n\t\temail: formData.get('email'),\n\t})\n\n\t// Return early if the form data is invalid\n\tif (!validatedFields.success) {\n\t\treturn {\n\t\t\terrors: validatedFields.error.flatten().fieldErrors,\n\t\t}\n\t}\n\n\t// Mutate data\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/actions.js\" switcher",
+			"value": "'use server'\n\nimport { z } from 'zod'\n\nconst schema = z.object({\n\temail: z.string({\n\t\tinvalid_type_error: 'Invalid Email',\n\t}),\n})\n\nexport default async function createUser(formData) {\n\tconst validatedFields = schema.safeParse({\n\t\temail: formData.get('email'),\n\t})\n\n\t// Return early if the form data is invalid\n\tif (!validatedFields.success) {\n\t\treturn {\n\t\t\terrors: validatedFields.error.flatten().fieldErrors,\n\t\t}\n\t}\n\n\t// Mutate data\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Validation errors"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To display validation errors or messages, turn the component that defines the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<form>"
+				},
+				{
+					"type": "text",
+					"value": " into a Client Component and use React "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/useActionState",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useActionState"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useActionState"
+				},
+				{
+					"type": "text",
+					"value": ", the Server function signature will change to receive a new "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prevState"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "initialState"
+				},
+				{
+					"type": "text",
+					"value": " parameter as its first argument."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/actions.ts\" highlight={5} switcher",
+			"value": "'use server'\n\nimport { z } from 'zod'\n\nexport async function createUser(initialState: any, formData: FormData) {\n\tconst validatedFields = schema.safeParse({\n\t\temail: formData.get('email'),\n\t})\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/actions.ts\" highlight={7} switcher",
+			"value": "'use server'\n\nimport { z } from 'zod'\n\n// ...\n\nexport async function createUser(initialState, formData) {\n\tconst validatedFields = schema.safeParse({\n\t\temail: formData.get('email'),\n\t})\n\t// ...\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can then conditionally render the error message based on the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "state"
+				},
+				{
+					"type": "text",
+					"value": " object."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/signup.tsx\" highlight={11,18-20} switcher",
+			"value": "'use client'\n\nimport { useActionState } from 'react'\nimport { createUser } from '@/app/actions'\n\nconst initialState = {\n\tmessage: '',\n}\n\nexport function Signup() {\n\tconst [state, formAction, pending] = useActionState(createUser, initialState)\n\n\treturn (\n\t\t<form action={formAction}>\n\t\t\t<label htmlFor=\"email\">Email</label>\n\t\t\t<input\n\t\t\t\ttype=\"text\"\n\t\t\t\tid=\"email\"\n\t\t\t\tname=\"email\"\n\t\t\t\trequired\n\t\t\t/>\n\t\t\t{/* ... */}\n\t\t\t<p aria-live=\"polite\">{state?.message}</p>\n\t\t\t<button disabled={pending}>Sign up</button>\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/signup.js\" highlight={11,18-20} switcher",
+			"value": "'use client'\n\nimport { useActionState } from 'react'\nimport { createUser } from '@/app/actions'\n\nconst initialState = {\n\tmessage: '',\n}\n\nexport function Signup() {\n\tconst [state, formAction, pending] = useActionState(createUser, initialState)\n\n\treturn (\n\t\t<form action={formAction}>\n\t\t\t<label htmlFor=\"email\">Email</label>\n\t\t\t<input\n\t\t\t\ttype=\"text\"\n\t\t\t\tid=\"email\"\n\t\t\t\tname=\"email\"\n\t\t\t\trequired\n\t\t\t/>\n\t\t\t{/* ... */}\n\t\t\t<p aria-live=\"polite\">{state?.message}</p>\n\t\t\t<button disabled={pending}>Sign up</button>\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Pending states"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/useActionState",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useActionState"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " hook exposes a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pending"
+				},
+				{
+					"type": "text",
+					"value": " boolean that can be used to show a loading indicator or disable the submit button while the action is being executed."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/signup.tsx\" highlight={7,12} switcher",
+			"value": "'use client'\n\nimport { useActionState } from 'react'\nimport { createUser } from '@/app/actions'\n\nexport function Signup() {\n\tconst [state, formAction, pending] = useActionState(createUser, initialState)\n\n\treturn (\n\t\t<form action={formAction}>\n\t\t\t{/* Other form elements */}\n\t\t\t<button disabled={pending}>Sign up</button>\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/signup.js\" highlight={7,12} switcher",
+			"value": "'use client'\n\nimport { useActionState } from 'react'\nimport { createUser } from '@/app/actions'\n\nexport function Signup() {\n\tconst [state, formAction, pending] = useActionState(createUser, initialState)\n\n\treturn (\n\t\t<form action={formAction}>\n\t\t\t{/* Other form elements */}\n\t\t\t<button disabled={pending}>Sign up</button>\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Alternatively, you can use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react-dom/hooks/useFormStatus",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useFormStatus"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " hook to show a loading indicator while the action is being executed. When using this hook, you'll need to create a separate component to render the loading indicator. For example, to disable the button when the action is pending:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/button.tsx\" highlight={6} switcher",
+			"value": "'use client'\n\nimport { useFormStatus } from 'react-dom'\n\nexport function SubmitButton() {\n\tconst { pending } = useFormStatus()\n\n\treturn (\n\t\t<button\n\t\t\tdisabled={pending}\n\t\t\ttype=\"submit\">\n\t\t\tSign Up\n\t\t</button>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/button.js\" highlight={6} switcher",
+			"value": "'use client'\n\nimport { useFormStatus } from 'react-dom'\n\nexport function SubmitButton() {\n\tconst { pending } = useFormStatus()\n\n\treturn (\n\t\t<button\n\t\t\tdisabled={pending}\n\t\t\ttype=\"submit\">\n\t\t\tSign Up\n\t\t</button>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can then nest the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "SubmitButton"
+				},
+				{
+					"type": "text",
+					"value": " component inside the form:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/signup.tsx\" switcher",
+			"value": "import { SubmitButton } from './button'\nimport { createUser } from '@/app/actions'\n\nexport function Signup() {\n\treturn (\n\t\t<form action={createUser}>\n\t\t\t{/* Other form elements */}\n\t\t\t<SubmitButton />\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/signup.js\" switcher",
+			"value": "import { SubmitButton } from './button'\nimport { createUser } from '@/app/actions'\n\nexport function Signup() {\n\treturn (\n\t\t<form action={createUser}>\n\t\t\t{/* Other form elements */}\n\t\t\t<SubmitButton />\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " In React 19, "
+						},
+						{
+							"type": "inlineCode",
+							"value": "useFormStatus"
+						},
+						{
+							"type": "text",
+							"value": " includes additional keys on the returned object, like data, method, and action. If you are not using React 19, only the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "pending"
+						},
+						{
+							"type": "text",
+							"value": " key is available."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": With the "
+						},
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "experimental"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/offline-support",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "useOffline"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " config enabled, a Server Action interrupted by a connectivity drop stays pending and completes when the network returns, so a user does not lose their submission."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Optimistic updates"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use the React "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/useOptimistic",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useOptimistic"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " hook to optimistically update the UI before the Server Function finishes executing, rather than waiting for the response:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "'use client'\n\nimport { useOptimistic } from 'react'\nimport { send } from './actions'\n\ntype Message = {\n\tmessage: string\n}\n\nexport function Thread({ messages }: { messages: Message[] }) {\n\tconst [optimisticMessages, addOptimisticMessage] = useOptimistic<Message[], string>(messages, (state, newMessage) => [...state, { message: newMessage }])\n\n\tconst formAction = async (formData: FormData) => {\n\t\tconst message = formData.get('message') as string\n\t\taddOptimisticMessage(message)\n\t\tawait send(message)\n\t}\n\n\treturn (\n\t\t<div>\n\t\t\t{optimisticMessages.map((m, i) => (\n\t\t\t\t<div key={i}>{m.message}</div>\n\t\t\t))}\n\t\t\t<form action={formAction}>\n\t\t\t\t<input\n\t\t\t\t\ttype=\"text\"\n\t\t\t\t\tname=\"message\"\n\t\t\t\t/>\n\t\t\t\t<button type=\"submit\">Send</button>\n\t\t\t</form>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "'use client'\n\nimport { useOptimistic } from 'react'\nimport { send } from './actions'\n\nexport function Thread({ messages }) {\n\tconst [optimisticMessages, addOptimisticMessage] = useOptimistic(messages, (state, newMessage) => [...state, { message: newMessage }])\n\n\tconst formAction = async (formData) => {\n\t\tconst message = formData.get('message')\n\t\taddOptimisticMessage(message)\n\t\tawait send(message)\n\t}\n\n\treturn (\n\t\t<div>\n\t\t\t{optimisticMessages.map((m) => (\n\t\t\t\t<div>{m.message}</div>\n\t\t\t))}\n\t\t\t<form action={formAction}>\n\t\t\t\t<input\n\t\t\t\t\ttype=\"text\"\n\t\t\t\t\tname=\"message\"\n\t\t\t\t/>\n\t\t\t\t<button type=\"submit\">Send</button>\n\t\t\t</form>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Nested form elements"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can call Server Actions in elements nested inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<form>"
+				},
+				{
+					"type": "text",
+					"value": " such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<button>"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<input type=\"submit\">"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<input type=\"image\">"
+				},
+				{
+					"type": "text",
+					"value": ". These elements accept the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "formAction"
+				},
+				{
+					"type": "text",
+					"value": " prop or event handlers."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This is useful in cases where you want to call multiple Server Actions within a form. For example, you can create a specific "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<button>"
+				},
+				{
+					"type": "text",
+					"value": " element for saving a post draft in addition to publishing it. See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react-dom/components/form#handling-multiple-submission-types",
+					"children": [
+						{
+							"type": "text",
+							"value": "React "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<form>"
+						},
+						{
+							"type": "text",
+							"value": " docs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more information."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Programmatic form submission"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can trigger a form submission programmatically using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/requestSubmit",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "requestSubmit()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " method. For example, when the user submits a form using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "⌘"
+				},
+				{
+					"type": "text",
+					"value": " + "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Enter"
+				},
+				{
+					"type": "text",
+					"value": " keyboard shortcut, you can listen for the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "onKeyDown"
+				},
+				{
+					"type": "text",
+					"value": " event:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/entry.tsx\" switcher",
+			"value": "'use client'\n\nexport function Entry() {\n\tconst handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {\n\t\tif ((e.ctrlKey || e.metaKey) && (e.key === 'Enter' || e.key === 'NumpadEnter')) {\n\t\t\te.preventDefault()\n\t\t\te.currentTarget.form?.requestSubmit()\n\t\t}\n\t}\n\n\treturn (\n\t\t<div>\n\t\t\t<textarea\n\t\t\t\tname=\"entry\"\n\t\t\t\trows={20}\n\t\t\t\trequired\n\t\t\t\tonKeyDown={handleKeyDown}\n\t\t\t/>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/entry.js\" switcher",
+			"value": "'use client'\n\nexport function Entry() {\n\tconst handleKeyDown = (e) => {\n\t\tif ((e.ctrlKey || e.metaKey) && (e.key === 'Enter' || e.key === 'NumpadEnter')) {\n\t\t\te.preventDefault()\n\t\t\te.currentTarget.form?.requestSubmit()\n\t\t}\n\t}\n\n\treturn (\n\t\t<div>\n\t\t\t<textarea\n\t\t\t\tname=\"entry\"\n\t\t\t\trows={20}\n\t\t\t\trequired\n\t\t\t\tonKeyDown={handleKeyDown}\n\t\t\t/>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This will trigger the submission of the nearest "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<form>"
+				},
+				{
+					"type": "text",
+					"value": " ancestor, which will invoke the Server Function."
+				}
+			]
+		}
+	]
+}

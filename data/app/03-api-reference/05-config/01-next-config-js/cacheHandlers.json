@@ -1,0 +1,3301 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: cacheHandlers\ndescription: Configure custom cache handlers for use cache directives in Next.js.\nrelated:\n title: Related\n description: View related API references.\n links:\n  - app/api-reference/directives/use-cache\n  - app/api-reference/directives/use-cache-remote\n  - app/api-reference/directives/use-cache-private\n  - app/api-reference/config/next-config-js/cacheLife"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheHandlers"
+				},
+				{
+					"type": "text",
+					"value": " configuration allows you to define custom cache storage implementations for "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "'use cache'"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache-remote",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "'use cache: remote'"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This enables you to store cached components and functions in external services or customize the caching behavior. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache-private",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "'use cache: private'"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is not configurable."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "When to use custom cache handlers"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Most applications don't need custom cache handlers."
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " The default in-memory cache works well in the typical use case."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Custom cache handlers are for advanced scenarios where you need to either share cache across multiple instances or change where the cache is stored. For example, you can configure a custom "
+				},
+				{
+					"type": "inlineCode",
+					"value": "remote"
+				},
+				{
+					"type": "text",
+					"value": " handler for external storage (like a key-value store), then use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache'"
+				},
+				{
+					"type": "text",
+					"value": " in your code for in-memory caching and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache: remote'"
+				},
+				{
+					"type": "text",
+					"value": " for the external storage, allowing different caching strategies within the same application."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Sharing cache across instances"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The default in-memory cache is isolated to each Next.js process. If you're running multiple servers or containers, each instance will have its own cache that isn't shared with others and is lost on restart."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Custom handlers let you integrate with shared storage systems (like Redis, Memcached, or DynamoDB) that all your Next.js instances can access."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Changing storage type"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You might want to store cache differently than the default in-memory approach. You can implement a custom handler to store cache on disk, in a database, or in an external caching service. Reasons include: persistence across restarts, reducing memory usage, or integrating with existing infrastructure."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Usage"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To configure custom cache handlers:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Define your cache handler in a separate file, see "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#examples",
+									"children": [
+										{
+											"type": "text",
+											"value": "examples"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for implementation details."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Reference the file path in your Next config file"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tcacheHandlers: {\n\t\tdefault: require.resolve('./cache-handlers/default-handler.js'),\n\t\tremote: require.resolve('./cache-handlers/remote-handler.js'),\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "module.exports = {\n\tcacheHandlers: {\n\t\tdefault: require.resolve('./cache-handlers/default-handler.js'),\n\t\tremote: require.resolve('./cache-handlers/remote-handler.js'),\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Handler types"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "default"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Used by the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'use cache'"
+								},
+								{
+									"type": "text",
+									"value": " directive"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "remote"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Used by the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'use cache: remote'"
+								},
+								{
+									"type": "text",
+									"value": " directive"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you don't configure "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheHandlers"
+				},
+				{
+					"type": "text",
+					"value": ", Next.js uses an in-memory LRU (Least Recently Used) cache for both "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "remote"
+				},
+				{
+					"type": "text",
+					"value": ". You can view the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/blob/canary/packages/next/src/server/lib/cache-handlers/default.ts",
+					"children": [
+						{
+							"type": "text",
+							"value": "default implementation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " as a reference."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also define additional named handlers (e.g., "
+				},
+				{
+					"type": "inlineCode",
+					"value": "sessions"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "analytics"
+				},
+				{
+					"type": "text",
+					"value": ") and reference them with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache: <name>'"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Note that "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache: private'"
+				},
+				{
+					"type": "text",
+					"value": " does not use cache handlers and cannot be customized."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "CacheEntry Type"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A cache handler stores and returns "
+				},
+				{
+					"type": "inlineCode",
+					"value": "CacheEntry"
+				},
+				{
+					"type": "text",
+					"value": " objects. Both this type and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "CacheHandler"
+				},
+				{
+					"type": "text",
+					"value": " are exported from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/cache"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "import type { CacheHandler, CacheEntry } from 'next/cache'"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "An entry has the following structure:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "interface CacheEntry {\n\tvalue: ReadableStream<Uint8Array>\n\ttags: string[]\n\tstale: number\n\ttimestamp: number\n\texpire: number\n\trevalidate: number\n}"
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Property"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "value"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "ReadableStream<Uint8Array>"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The cached data as a single-use stream."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "tags"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string[]"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Cache tags (excluding soft tags)."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "stale"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "number"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Duration in seconds for client-side staleness."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "timestamp"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "number"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "When the entry was created (timestamp in milliseconds)."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "expire"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "number"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "How long the entry is allowed to be used (in seconds)."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "revalidate"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "number"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "How long until the entry should be revalidated (in seconds)."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "The entry value stream"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Every handler writes entries through "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#set",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "set()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and serves them through "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#get",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "get()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Both methods work with the entry's serialized value, which arrives as a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/ReadableStream",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "ReadableStream<Uint8Array>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Two properties of that stream constrain every implementation:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "It can be read only once."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Consume it in "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#set",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "set()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", and build a new stream over your stored data in every "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#get",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "get()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". A stream that was already read cannot serve a second reader: it delivers no data, or throws if the first reader still holds its lock."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "It belongs to the request that produced the entry."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Do not keep it once "
+								},
+								{
+									"type": "inlineCode",
+									"value": "set()"
+								},
+								{
+									"type": "text",
+									"value": " resolves. The stream holds a reference to that request, so keeping it holds the request's memory until your entry is evicted. The same applies to the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pendingEntry"
+								},
+								{
+									"type": "text",
+									"value": " promise. Next.js keeps its own copy of the value for the render, so your handler is free to consume the stream it receives."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "How you persist the data is up to you. Buffering the stream and piping it to your store as chunks arrive are both fine, as long as you consume it exactly once. Large entries are worth piping: a page can serialize to a lot of bytes, and an S3-like backend can accept them without your handler holding a second copy."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Two more cases to plan for:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Fan-out."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " If a single entry has to reach two destinations, such as a local store and a remote one, use "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/docs/Web/API/ReadableStream/tee",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": ".tee()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and consume both branches before "
+								},
+								{
+									"type": "inlineCode",
+									"value": "set()"
+								},
+								{
+									"type": "text",
+									"value": " resolves. Teeing is not a way to keep the value around. A stored branch does serve the next read, but it holds the source stream, its buffered chunks, and the request that produced them, and none of that appears in the size your store accounts for."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Interrupted values."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " The stream can error partway through rendering, which leaves you holding an incomplete value. Decide whether to keep it or discard it. Discarding is safer, because an incomplete value produces an incomplete page. This is separate from a partially written storage entry, which "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#error-handling",
+									"children": [
+										{
+											"type": "text",
+											"value": "Error Handling"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " covers."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "API Reference"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A cache handler must implement the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "CacheHandler"
+				},
+				{
+					"type": "text",
+					"value": " interface with the following five methods."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "set()"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Store a cache entry for the given cache key."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "set(cacheKey: string, pendingEntry: Promise<CacheEntry>): Promise<void>"
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Parameter"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "cacheKey"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The unique key to store the entry under."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "pendingEntry"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Promise<CacheEntry>"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "A promise that resolves to the cache entry."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Promise<void>"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The entry may still be generating when "
+				},
+				{
+					"type": "inlineCode",
+					"value": "set()"
+				},
+				{
+					"type": "text",
+					"value": " is called, so await "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pendingEntry"
+				},
+				{
+					"type": "text",
+					"value": " first. Then consume the value stream and persist what it delivers, as described in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#the-entry-value-stream",
+					"children": [
+						{
+							"type": "text",
+							"value": "The entry value stream"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The example below buffers, which is the simpler option and the right one for an in-memory store. A remote handler can pipe "
+				},
+				{
+					"type": "inlineCode",
+					"value": "entry.value"
+				},
+				{
+					"type": "text",
+					"value": " into an upload instead."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "const cacheHandler = {\n\tasync set(cacheKey, pendingEntry) {\n\t\t// Wait for the entry to be ready\n\t\tconst entry = await pendingEntry\n\n\t\t// Consume the stream, then keep the data rather than the stream\n\t\tconst value = new Uint8Array(await new Response(entry.value).arrayBuffer())\n\n\t\t// Store in your cache system\n\t\tcache.set(cacheKey, { ...entry, value })\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "get()"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Retrieve a cache entry for the given cache key."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "get(cacheKey: string, softTags: string[]): Promise<CacheEntry | undefined>"
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Parameter"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "cacheKey"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The unique key for the cache entry."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "softTags"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string[]"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Implicit tags derived from the route path. See "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#soft-tags",
+									"children": [
+										{
+											"type": "text",
+											"value": "Soft Tags"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for how to use them."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "CacheEntry"
+				},
+				{
+					"type": "text",
+					"value": " object if one is stored, or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "undefined"
+				},
+				{
+					"type": "text",
+					"value": " if not."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "get"
+				},
+				{
+					"type": "text",
+					"value": " method should retrieve the cache entry from storage and return "
+				},
+				{
+					"type": "inlineCode",
+					"value": "undefined"
+				},
+				{
+					"type": "text",
+					"value": " when there is nothing stored."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You do not need to check how old the entry is. Next.js compares "
+				},
+				{
+					"type": "inlineCode",
+					"value": "timestamp"
+				},
+				{
+					"type": "text",
+					"value": " against the entry's own "
+				},
+				{
+					"type": "inlineCode",
+					"value": "expire"
+				},
+				{
+					"type": "text",
+					"value": " on every read and treats a too-old entry as a miss. It applies the same check to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				},
+				{
+					"type": "text",
+					"value": " when the result is about to be written into another server cache, and it keeps entries a little longer on the dev server so reloads stay fast. Your own age check only duplicates the first of those."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "What the two timings mean for you is what Next.js does with the entry you return:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Past "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "expire"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", the entry is discarded and the value is regenerated."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Past "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidate"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " but within "
+								},
+								{
+									"type": "inlineCode",
+									"value": "expire"
+								},
+								{
+									"type": "text",
+									"value": ", the entry is served and a fresh one is generated in the background."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Dropping entries earlier is a policy choice rather than a requirement. The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/blob/canary/packages/next/src/server/lib/cache-handlers/default.ts",
+					"children": [
+						{
+							"type": "text",
+							"value": "built-in handler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " drops at "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				},
+				{
+					"type": "text",
+					"value": " because warming a replacement is wasted work when an in-memory entry is likely to be evicted before anything reads it. A shared store has no such problem and can serve until "
+				},
+				{
+					"type": "inlineCode",
+					"value": "expire"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Eviction is yours, though. Next.js never deletes from your store, so use a mechanism that reclaims entries nobody reads again: a TTL derived from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "expire"
+				},
+				{
+					"type": "text",
+					"value": ", or a size-bounded LRU like the one in the built-in handler. Checking the age of an entry as you serve it is not eviction, because it only ever reaches the keys that are still being read."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Invalidation is separate from both timings. When a tag tells you an entry is out of date, you have two options:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Return "
+								},
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								},
+								{
+									"type": "text",
+									"value": ". The entry counts as missing, and Next.js regenerates it now."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Return the entry with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidate: -1"
+								},
+								{
+									"type": "text",
+									"value": ". Next.js serves it and regenerates in the background, because a negative "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidate"
+								},
+								{
+									"type": "text",
+									"value": " always lies in the past."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#soft-tags",
+					"children": [
+						{
+							"type": "text",
+							"value": "Soft Tags"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#distributed-tag-coordination",
+					"children": [
+						{
+							"type": "text",
+							"value": "Distributed Tag Coordination"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for where those invalidations come from."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Wrap your stored data in a new stream on every hit, never the stream you received in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "set()"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "const cacheHandler = {\n\tasync get(cacheKey, softTags) {\n\t\tconst entry = cache.get(cacheKey)\n\t\tif (!entry) return undefined\n\n\t\t// No age check: Next.js compares `timestamp` against `expire` itself.\n\t\t// `entry.value` holds the stored bytes, so wrap them in a fresh stream\n\t\treturn {\n\t\t\t...entry,\n\t\t\tvalue: new ReadableStream({\n\t\t\t\tstart(controller) {\n\t\t\t\t\tcontroller.enqueue(entry.value)\n\t\t\t\t\tcontroller.close()\n\t\t\t\t},\n\t\t\t}),\n\t\t}\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "refreshTags()"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Called once per request, before the first cache read for this handler's kind, so the handler can sync tag state from an external service."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "refreshTags(): Promise<void>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Promise<void>"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For in-memory caches, this can be a no-op. For distributed caches, use it to read tag state from an external service or database, so this instance learns about invalidations made by the others before it serves anything from its own store. A request that reads nothing from this handler never calls it."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "const cacheHandler = {\n\tasync refreshTags() {\n\t\t// For in-memory cache, no action needed\n\t\t// For distributed cache, sync tag state from external service\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "getExpiration()"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Get the maximum revalidation timestamp for a set of tags."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "getExpiration(tags: string[]): Promise<number>"
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Parameter"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "tags"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string[]"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Array of tags to check expiration for."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "0"
+								},
+								{
+									"type": "text",
+									"value": " if none of the tags were ever revalidated"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "A timestamp (in milliseconds) representing the most recent revalidation"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Infinity"
+								},
+								{
+									"type": "text",
+									"value": " to indicate soft tags should be checked in the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "get"
+								},
+								{
+									"type": "text",
+									"value": " method instead"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you're not tracking tag revalidation timestamps, return "
+				},
+				{
+					"type": "inlineCode",
+					"value": "0"
+				},
+				{
+					"type": "text",
+					"value": ". Otherwise, find the most recent revalidation timestamp across all the provided tags. Return "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Infinity"
+				},
+				{
+					"type": "text",
+					"value": " if you prefer to handle soft tag checking in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "get"
+				},
+				{
+					"type": "text",
+					"value": " method."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "const cacheHandler = {\n\tasync getExpiration(tags) {\n\t\t// Return 0 if not tracking tag revalidation\n\t\treturn 0\n\n\t\t// Or return the most recent revalidation timestamp\n\t\t// return Math.max(...tags.map(tag => tagTimestamps.get(tag) || 0));\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "updateTags()"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Called when tags are revalidated or expired."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "updateTags(tags: string[], durations?: { expire?: number }): Promise<void>"
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Parameter"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "tags"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string[]"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Array of tags to update."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "durations"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "{ expire?: number }"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Present for profile-based revalidation; carries the profile's "
+								},
+								{
+									"type": "inlineCode",
+									"value": "expire"
+								},
+								{
+									"type": "text",
+									"value": " seconds."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Your handler should update its internal state to mark these tags as invalidated."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Whether "
+				},
+				{
+					"type": "inlineCode",
+					"value": "durations"
+				},
+				{
+					"type": "text",
+					"value": " is present tells you which kind of invalidation this is:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Absent"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": invalidate immediately. Entries carrying these tags should not be served again. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "updateTag()"
+								},
+								{
+									"type": "text",
+									"value": " and a single-argument "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidateTag()"
+								},
+								{
+									"type": "text",
+									"value": " take this path, and the caller expects its own next read to miss."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Present"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": the tags go stale now, but entries carrying them may still be served while they refresh in the background, until "
+								},
+								{
+									"type": "inlineCode",
+									"value": "durations.expire"
+								},
+								{
+									"type": "text",
+									"value": " seconds have passed. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidateTag(tag, 'max')"
+								},
+								{
+									"type": "text",
+									"value": " takes this path."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Promise<void>"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Your handler should record when each tag was invalidated. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#get",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "get()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " compares those times against an entry's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "timestamp"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#getexpiration",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "getExpiration()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " does the same for "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#soft-tags",
+					"children": [
+						{
+							"type": "text",
+							"value": "soft tags"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Soft tags are not stored in an entry's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tags"
+				},
+				{
+					"type": "text",
+					"value": ", so deleting the entries that carry a tag does not cover "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidatePath",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidatePath()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "const cacheHandler = {\n\tasync updateTags(tags, durations) {\n\t\tconst now = Date.now()\n\t\tfor (const tag of tags) {\n\t\t\tconst timestamps = tagTimestamps.get(tag) ?? {}\n\t\t\tif (durations) {\n\t\t\t\t// Serve while refreshing, and expire after `durations.expire` seconds\n\t\t\t\ttimestamps.stale = now\n\t\t\t\tif (durations.expire !== undefined) {\n\t\t\t\t\ttimestamps.expired = now + durations.expire * 1000\n\t\t\t\t}\n\t\t\t} else {\n\t\t\t\t// Expire immediately\n\t\t\t\ttimestamps.expired = now\n\t\t\t}\n\t\t\ttagTimestamps.set(tag, timestamps)\n\t\t}\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Soft Tags"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Soft tags are implicit tags that Next.js automatically generates based on the route path. Every segment in the path gets a layout tag, plus the leaf route itself. For example, the route "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/hello"
+				},
+				{
+					"type": "text",
+					"value": " generates soft tags for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/layout"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/layout"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/hello/layout"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/hello"
+				},
+				{
+					"type": "text",
+					"value": ". These tags are prefixed internally with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "_N_T_"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Soft tags enable "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidatePath",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidatePath()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to work through the same tag-based cache system. When "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidatePath('/blog/hello')"
+				},
+				{
+					"type": "text",
+					"value": " is called, it invalidates all cache entries associated with that path's soft tags."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the cache handler API, soft tags are passed to the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#get",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "get()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " method as the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "softTags"
+				},
+				{
+					"type": "text",
+					"value": " parameter. Your handler should check whether any soft tag has been invalidated (via "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getExpiration()"
+				},
+				{
+					"type": "text",
+					"value": " or direct timestamp comparison) after the cache entry's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "timestamp"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If an invalidation is more recent than the entry, report the entry as out of date using either option described in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#get",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "get()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". The built-in handler uses both: it returns "
+				},
+				{
+					"type": "inlineCode",
+					"value": "undefined"
+				},
+				{
+					"type": "text",
+					"value": " for an expired tag, and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate: -1"
+				},
+				{
+					"type": "text",
+					"value": " for a stale one."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Distributed Tag Coordination"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When running multiple Next.js instances, tag invalidation must be coordinated across instances. The default in-memory handler only tracks tags locally, so calling "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidateTag()"
+				},
+				{
+					"type": "text",
+					"value": " on one instance does not affect others."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To coordinate tags across instances:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "updateTags()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " is called when "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidateTag()"
+								},
+								{
+									"type": "text",
+									"value": " is invoked. Your handler should write the invalidation timestamp to shared storage."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "refreshTags()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " runs once per request, before the first read from this handler. Your handler should read recent invalidation events from shared storage and update its local tag state."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "getExpiration()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " returns the most recent revalidation timestamp across all provided tags. The default implementation returns "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Math.max(...timestamps, 0)"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Here's an example using Redis for distributed tag coordination:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"cache-handlers/distributed-tags.js\"",
+			"value": "const { createClient } = require('redis')\n\nconst client = createClient({ url: process.env.REDIS_URL })\nclient.connect()\n\n// Local cache of tag timestamps, synced via refreshTags\nconst localTagTimestamps = new Map()\n\nmodule.exports = {\n\t// ... get() and set() methods ...\n\n\tasync refreshTags() {\n\t\t// Sync tag invalidation timestamps from Redis\n\t\t// Using a dedicated set to track tag keys avoids scanning the keyspace\n\t\tconst tagKeys = await client.sMembers('revalidated-tags')\n\t\tif (tagKeys.length > 0) {\n\t\t\tconst values = await client.mGet(tagKeys.map((k) => `tag:${k}`))\n\t\t\tfor (let i = 0; i < tagKeys.length; i++) {\n\t\t\t\tlocalTagTimestamps.set(tagKeys[i], Number(values[i]))\n\t\t\t}\n\t\t}\n\t},\n\n\tasync getExpiration(tags) {\n\t\tconst timestamps = tags.map((tag) => localTagTimestamps.get(tag) || 0)\n\t\treturn Math.max(...timestamps, 0)\n\t},\n\n\tasync updateTags(tags, durations) {\n\t\tconst now = Date.now()\n\t\tconst pipeline = client.multi()\n\t\tfor (const tag of tags) {\n\t\t\tpipeline.set(`tag:${tag}`, String(now))\n\t\t\tpipeline.sAdd('revalidated-tags', tag)\n\t\t\tlocalTagTimestamps.set(tag, now)\n\t\t}\n\t\tawait pipeline.exec()\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For a full explanation of the tag architecture (including soft tags and multi-instance considerations), see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/how-revalidation-works",
+					"children": [
+						{
+							"type": "text",
+							"value": "How Revalidation Works"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Error Handling"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache operations should be implemented defensively:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "set()"
+										},
+										{
+											"type": "text",
+											"value": " failure"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": the response is still served to the user because "
+								},
+								{
+									"type": "inlineCode",
+									"value": "set()"
+								},
+								{
+									"type": "text",
+									"value": " is called asynchronously after the response stream is already flowing. The cache entry is lost, and the next request triggers a fresh render. Catch your own errors even so: a rejected "
+								},
+								{
+									"type": "inlineCode",
+									"value": "set()"
+								},
+								{
+									"type": "text",
+									"value": " joins the request's pending revalidation work, where it surfaces as a failed background task instead of a render error."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "get()"
+										},
+										{
+											"type": "text",
+											"value": " failure"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": your handler should catch internal errors and return "
+								},
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								},
+								{
+									"type": "text",
+									"value": " (the \"cache miss\" signal). The framework does not wrap "
+								},
+								{
+									"type": "inlineCode",
+									"value": "get()"
+								},
+								{
+									"type": "text",
+									"value": " in a try/catch, so an unhandled exception from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "get()"
+								},
+								{
+									"type": "text",
+									"value": " will propagate as a render error."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Partial writes"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": if a cache entry is partially written and then read, the behavior is undefined. Use atomic writes or a write-then-rename pattern to avoid serving partial entries."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The examples below show how a handler meets the API contract. They leave out the eviction, error handling, and multi-instance coordination that a production handler must add. The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/tree/canary/examples/cache-handler-redis",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cache-handler-redis"
+						},
+						{
+							"type": "text",
+							"value": " example"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is a fuller Redis implementation of both cache APIs, and its README lists community handlers that cover more cases."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "In-memory handler for learning and debugging"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This handler keeps entries in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Map"
+				},
+				{
+					"type": "text",
+					"value": ", which makes it a place to log or inspect what Next.js stores and how tags invalidate it. It runs per process and has no eviction. The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/blob/canary/packages/next/src/server/lib/cache-handlers/default.ts",
+					"children": [
+						{
+							"type": "text",
+							"value": "built-in handler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is also in memory, and adds a size-bounded LRU and error handling."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"cache-handlers/memory-handler.js\"",
+			"value": "// Entries hold the serialized bytes, never the stream they arrived on\nconst cache = new Map()\nconst pendingSets = new Map()\n// Tag invalidation times in milliseconds: { stale, expired }\nconst tagTimestamps = new Map()\n\nfunction streamFromBytes(bytes) {\n\treturn new ReadableStream({\n\t\tstart(controller) {\n\t\t\tcontroller.enqueue(bytes)\n\t\t\tcontroller.close()\n\t\t},\n\t})\n}\n\nmodule.exports = {\n\tasync get(cacheKey, softTags) {\n\t\t// Wait for any pending set operation to complete\n\t\tconst pendingPromise = pendingSets.get(cacheKey)\n\t\tif (pendingPromise) {\n\t\t\tawait pendingPromise\n\t\t}\n\n\t\tconst entry = cache.get(cacheKey)\n\t\tif (!entry) {\n\t\t\treturn undefined\n\t\t}\n\n\t\t// No age check: Next.js compares `timestamp` against `expire` itself.\n\t\t// Soft tags are checked by Next.js through `getExpiration()`.\n\t\t// This `Map` also has no eviction, which a real handler needs.\n\t\tlet revalidate = entry.revalidate\n\t\tfor (const tag of entry.tags) {\n\t\t\tconst { stale = 0, expired = 0 } = tagTimestamps.get(tag) ?? {}\n\t\t\tif (expired > entry.timestamp && expired <= Date.now()) {\n\t\t\t\treturn undefined\n\t\t\t}\n\t\t\tif (stale > entry.timestamp) {\n\t\t\t\trevalidate = -1\n\t\t\t}\n\t\t}\n\n\t\t// Every hit gets its own stream over the stored bytes\n\t\treturn { ...entry, revalidate, value: streamFromBytes(entry.value) }\n\t},\n\n\tasync set(cacheKey, pendingEntry) {\n\t\t// Create a promise to track this set operation\n\t\tlet resolvePending\n\t\tconst pendingPromise = new Promise((resolve) => {\n\t\t\tresolvePending = resolve\n\t\t})\n\t\tpendingSets.set(cacheKey, pendingPromise)\n\n\t\ttry {\n\t\t\t// Wait for the entry to be ready\n\t\t\tconst entry = await pendingEntry\n\n\t\t\t// An in-memory store buffers the stream. Storing the stream itself, or\n\t\t\t// a branch of it, keeps the request that produced the entry alive.\n\t\t\tconst value = new Uint8Array(await new Response(entry.value).arrayBuffer())\n\n\t\t\tcache.set(cacheKey, { ...entry, value })\n\t\t} finally {\n\t\t\tresolvePending()\n\t\t\tpendingSets.delete(cacheKey)\n\t\t}\n\t},\n\n\tasync refreshTags() {\n\t\t// Tag state lives in this process, so there is nothing to sync\n\t},\n\n\tasync getExpiration(tags) {\n\t\treturn Math.max(...tags.map((tag) => tagTimestamps.get(tag)?.expired ?? 0), 0)\n\t},\n\n\tasync updateTags(tags, durations) {\n\t\tconst now = Date.now()\n\t\tfor (const tag of tags) {\n\t\t\tconst timestamps = tagTimestamps.get(tag) ?? {}\n\t\t\tif (durations) {\n\t\t\t\t// Serve while refreshing, and expire after `durations.expire` seconds\n\t\t\t\ttimestamps.stale = now\n\t\t\t\tif (durations.expire !== undefined) {\n\t\t\t\t\ttimestamps.expired = now + durations.expire * 1000\n\t\t\t\t}\n\t\t\t} else {\n\t\t\t\t// Expire immediately\n\t\t\t\ttimestamps.expired = now\n\t\t\t}\n\t\t\ttagTimestamps.set(tag, timestamps)\n\t\t}\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "External storage pattern"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A handler backed by Redis or a database must serialize each entry. Drain the stream in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "set()"
+				},
+				{
+					"type": "text",
+					"value": ", and rebuild one from the stored bytes in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "get()"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"cache-handlers/redis-handler.js\"",
+			"value": "const { createClient } = require('redis')\n\nconst client = createClient({ url: process.env.REDIS_URL })\nclient.connect()\n\nmodule.exports = {\n\tasync get(cacheKey, softTags) {\n\t\t// Retrieve from Redis\n\t\tconst stored = await client.get(cacheKey)\n\t\tif (!stored) return undefined\n\n\t\t// Deserialize the entry\n\t\tconst data = JSON.parse(stored)\n\n\t\t// Reconstruct the ReadableStream from stored data\n\t\treturn {\n\t\t\tvalue: new ReadableStream({\n\t\t\t\tstart(controller) {\n\t\t\t\t\tcontroller.enqueue(Buffer.from(data.value, 'base64'))\n\t\t\t\t\tcontroller.close()\n\t\t\t\t},\n\t\t\t}),\n\t\t\ttags: data.tags,\n\t\t\tstale: data.stale,\n\t\t\ttimestamp: data.timestamp,\n\t\t\texpire: data.expire,\n\t\t\trevalidate: data.revalidate,\n\t\t}\n\t},\n\n\tasync set(cacheKey, pendingEntry) {\n\t\tconst entry = await pendingEntry\n\n\t\t// Read the stream to get the data\n\t\tconst reader = entry.value.getReader()\n\t\tconst chunks = []\n\n\t\ttry {\n\t\t\twhile (true) {\n\t\t\t\tconst { done, value } = await reader.read()\n\t\t\t\tif (done) break\n\t\t\t\tchunks.push(value)\n\t\t\t}\n\t\t} finally {\n\t\t\treader.releaseLock()\n\t\t}\n\n\t\t// Combine chunks and serialize for Redis storage\n\t\tconst data = Buffer.concat(chunks.map((chunk) => Buffer.from(chunk)))\n\n\t\tawait client.set(\n\t\t\tcacheKey,\n\t\t\tJSON.stringify({\n\t\t\t\tvalue: data.toString('base64'),\n\t\t\t\ttags: entry.tags,\n\t\t\t\tstale: entry.stale,\n\t\t\t\ttimestamp: entry.timestamp,\n\t\t\t\texpire: entry.expire,\n\t\t\t\trevalidate: entry.revalidate,\n\t\t\t}),\n\t\t\t// `EX` needs a positive integer.\n\t\t\t// By definition `expire: Infinity` (\"never expire\")\n\t\t\t// maps to no TTL at all, so omit `EX` and let Redis persist the key.\n\t\t\tNumber.isFinite(entry.expire) ? { EX: Math.max(1, Math.ceil(entry.expire)) } : {},\n\t\t)\n\t},\n\n\t// refreshTags(), getExpiration(), and updateTags() also need shared state.\n\t// See Distributed Tag Coordination for that half of the handler.\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Platform Support"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Deployment Option"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Supported"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#nodejs-server",
+									"children": [
+										{
+											"type": "text",
+											"value": "Node.js server"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#docker",
+									"children": [
+										{
+											"type": "text",
+											"value": "Docker container"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#static-export",
+									"children": [
+										{
+											"type": "text",
+											"value": "Static export"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#adapters",
+									"children": [
+										{
+											"type": "text",
+											"value": "Adapters"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Platform-specific"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "cacheHandlers"
+								},
+								{
+									"type": "text",
+									"value": " stabilized and moved from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "experimental.cacheHandlers"
+								},
+								{
+									"type": "text",
+									"value": " to the top-level "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cacheHandlers"
+								},
+								{
+									"type": "text",
+									"value": " option."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,1329 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Deploying\ndescription: Learn how to deploy your Next.js application."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js can be deployed as a Node.js server, Docker container, static export, or adapted to run on different platforms."
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Deployment Option"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Feature Support"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#nodejs-server",
+									"children": [
+										{
+											"type": "text",
+											"value": "Node.js server"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "All"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#docker",
+									"children": [
+										{
+											"type": "text",
+											"value": "Docker container"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "All"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#static-export",
+									"children": [
+										{
+											"type": "text",
+											"value": "Static export"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Limited"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#adapters",
+									"children": [
+										{
+											"type": "text",
+											"value": "Adapters"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Varies ("
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#verified-adapters",
+									"children": [
+										{
+											"type": "text",
+											"value": "verified"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " adapters run the test suite)"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Node.js server"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js can be deployed to any provider that supports Node.js. Ensure your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "package.json"
+				},
+				{
+					"type": "text",
+					"value": " has the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"build\""
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"start\""
+				},
+				{
+					"type": "text",
+					"value": " scripts:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"package.json\"",
+			"value": "{\n\t\"scripts\": {\n\t\t\"dev\": \"next dev\",\n\t\t\"build\": \"next build\",\n\t\t\"start\": \"next start\"\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "npm run build"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/building",
+					"children": [
+						{
+							"type": "text",
+							"value": "build your application"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "npm run start"
+				},
+				{
+					"type": "text",
+					"value": " to start the Node.js server. This server supports all Next.js features. If needed, you can also eject to a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/custom-server",
+					"children": [
+						{
+							"type": "text",
+							"value": "custom server"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Node.js deployments support all Next.js features. Learn how to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/self-hosting",
+					"children": [
+						{
+							"type": "text",
+							"value": "configure them"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for your infrastructure."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Templates"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/nextjs/deploy-flightcontrol",
+									"children": [
+										{
+											"type": "text",
+											"value": "Flightcontrol"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/nextjs/deploy-railway",
+									"children": [
+										{
+											"type": "text",
+											"value": "Railway"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/nextjs/deploy-replit",
+									"children": [
+										{
+											"type": "text",
+											"value": "Replit"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/hostinger/deploy-nextjs",
+									"children": [
+										{
+											"type": "text",
+											"value": "Hostinger"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Docker"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js can be deployed to any provider that supports "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.docker.com/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Docker"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " containers. This includes container orchestrators like Kubernetes or a cloud provider that runs Docker. For best practices on containerizing your app, refer to Docker's official "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://docs.docker.com/guides/nextjs",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://docs.docker.com/guides/reactjs",
+					"children": [
+						{
+							"type": "text",
+							"value": "React.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " guides."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Docker deployments support all Next.js features. Learn how to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/self-hosting",
+					"children": [
+						{
+							"type": "text",
+							"value": "configure them"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for your infrastructure."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Note for development:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " While Docker is excellent for production deployments, consider using local development ("
+						},
+						{
+							"type": "inlineCode",
+							"value": "npm run dev"
+						},
+						{
+							"type": "text",
+							"value": ") instead of Docker during development on Mac and Windows for better performance. "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/local-development",
+							"children": [
+								{
+									"type": "text",
+									"value": "Learn more about optimizing local development"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Templates"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The following examples demonstrate best practices for containerizing Next.js applications:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel/next.js/tree/canary/examples/with-docker",
+									"children": [
+										{
+											"type": "text",
+											"value": "Docker Standalone Output"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - Deploy a Next.js application using "
+								},
+								{
+									"type": "inlineCode",
+									"value": "output: \"standalone\""
+								},
+								{
+									"type": "text",
+									"value": " to generate a minimal, production-ready Docker image with only the required runtime files and dependencies."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel/next.js/tree/canary/examples/with-docker-export-output",
+									"children": [
+										{
+											"type": "text",
+											"value": "Docker Export Output"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - Deploy a fully static Next.js application using "
+								},
+								{
+									"type": "inlineCode",
+									"value": "output: \"export\""
+								},
+								{
+									"type": "text",
+									"value": " to generate optimized HTML files that can be served from a lightweight container or any static hosting environment."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel/next.js/tree/canary/examples/with-docker-multi-env",
+									"children": [
+										{
+											"type": "text",
+											"value": "Docker Multi-Environment"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - Manage separate Docker configurations for development, staging, and production environments with different environment variables."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Additionally, hosting providers offer guidance on deploying Next.js:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/nextjs/deploy-digitalocean",
+									"children": [
+										{
+											"type": "text",
+											"value": "DigitalOcean"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/nextjs/deploy-fly",
+									"children": [
+										{
+											"type": "text",
+											"value": "Fly.io"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/nextjs/deploy-google-cloud-run",
+									"children": [
+										{
+											"type": "text",
+											"value": "Google Cloud Run"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/nextjs/deploy-render",
+									"children": [
+										{
+											"type": "text",
+											"value": "Render"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/nextjs/deploy-sst",
+									"children": [
+										{
+											"type": "text",
+											"value": "SST"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Static export"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js enables starting as a static site or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/single-page-applications",
+					"children": [
+						{
+							"type": "text",
+							"value": "Single-Page Application (SPA)"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", then later optionally upgrading to use features that require a server."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since Next.js supports "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/static-exports",
+					"children": [
+						{
+							"type": "text",
+							"value": "static exports"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", it can be deployed and hosted on any web server that can serve HTML/CSS/JS static assets. This includes tools like AWS S3, Nginx, or Apache."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Running as a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/static-exports",
+					"children": [
+						{
+							"type": "text",
+							"value": "static export"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "does not"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " support Next.js features that require a server. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/static-exports#unsupported-features",
+					"children": [
+						{
+							"type": "text",
+							"value": "Learn more"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Templates"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/nextjs/deploy-github-pages",
+									"children": [
+										{
+											"type": "text",
+											"value": "GitHub Pages"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Adapters"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js can be adapted to run on different platforms to support their infrastructure capabilities. The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/adapterPath",
+					"children": [
+						{
+							"type": "text",
+							"value": "Deployment Adapter API"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " lets platforms customize how Next.js applications are built and deployed."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Verified Adapters"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Verified adapters are open source, run the full "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/adapters/testing-adapters",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js compatibility test suite"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and are hosted under the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/nextjs",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js GitHub organization"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". The Next.js team coordinates testing with these platforms before major releases. Publicly visible test results for each adapter are coming soon. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/deploying-to-platforms#verified-adapters",
+					"children": [
+						{
+							"type": "text",
+							"value": "Learn more about verified adapters"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://vercel.com/docs/frameworks/full-stack/nextjs",
+									"children": [
+										{
+											"type": "text",
+											"value": "Vercel"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://bun.com/docs/guides/ecosystem/nextjs",
+									"children": [
+										{
+											"type": "text",
+											"value": "Bun"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Cloudflare and Netlify are working on verified adapters built on the Adapter API. In the meantime, they offer their own Next.js integrations (see below)."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Other Platforms"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The following platforms offer their own Next.js integrations. These are not built on the public "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/adapterPath",
+					"children": [
+						{
+							"type": "text",
+							"value": "Adapter API"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and are not verified by the Next.js team, so feature support and compatibility may vary. Refer to each provider's documentation for details:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://appwrite.io/docs/products/sites/quick-start/nextjs",
+									"children": [
+										{
+											"type": "text",
+											"value": "Appwrite Sites"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://docs.amplify.aws/nextjs/start/quickstart/nextjs-app-router-client-components",
+									"children": [
+										{
+											"type": "text",
+											"value": "AWS Amplify Hosting"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developers.cloudflare.com/workers/frameworks/framework-guides/nextjs",
+									"children": [
+										{
+											"type": "text",
+											"value": "Cloudflare"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://docs.deno.com/examples/next_tutorial",
+									"children": [
+										{
+											"type": "text",
+											"value": "Deno Deploy"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://firebase.google.com/docs/app-hosting/get-started",
+									"children": [
+										{
+											"type": "text",
+											"value": "Firebase App Hosting"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://docs.netlify.com/frameworks/next-js/overview/#next-js-support-on-netlify",
+									"children": [
+										{
+											"type": "text",
+											"value": "Netlify"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For details on which Next.js features require specific platform capabilities, see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/deploying-to-platforms",
+					"children": [
+						{
+							"type": "text",
+							"value": "Deploying to Platforms"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		}
+	]
+}

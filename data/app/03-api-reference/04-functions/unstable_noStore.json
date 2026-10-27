@@ -1,0 +1,372 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: unstable_noStore\ndescription: API Reference for the unstable_noStore function.\nversion: legacy"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "In version 15, we recommend using "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/connection",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "connection"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " instead of "
+						},
+						{
+							"type": "inlineCode",
+							"value": "unstable_noStore"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "unstable_noStore"
+				},
+				{
+					"type": "text",
+					"value": " can be used to declaratively opt out of prerendering and indicate a particular component should not be cached."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "import { unstable_noStore as noStore } from 'next/cache';\n\nexport default async function ServerComponent() {\n  noStore();\n  const result = await db.query(...);\n  ...\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "unstable_noStore"
+										},
+										{
+											"type": "text",
+											"value": " is equivalent to "
+										},
+										{
+											"type": "inlineCode",
+											"value": "cache: 'no-store'"
+										},
+										{
+											"type": "text",
+											"value": " on a "
+										},
+										{
+											"type": "inlineCode",
+											"value": "fetch"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "unstable_noStore"
+										},
+										{
+											"type": "text",
+											"value": " is preferred over "
+										},
+										{
+											"type": "inlineCode",
+											"value": "export const dynamic = 'force-dynamic'"
+										},
+										{
+											"type": "text",
+											"value": " as it is more granular and can be used on a per-component basis"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Using "
+								},
+								{
+									"type": "inlineCode",
+									"value": "unstable_noStore"
+								},
+								{
+									"type": "text",
+									"value": " inside "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/unstable_cache",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "unstable_cache"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " will not opt out of static generation. Instead, it will defer to the cache configuration to determine whether to cache the result or not."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Usage"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you prefer not to pass additional options to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": ", like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cache: 'no-store'"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next: { revalidate: 0 }"
+				},
+				{
+					"type": "text",
+					"value": " or in cases where "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " is not available, you can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "noStore()"
+				},
+				{
+					"type": "text",
+					"value": " as a replacement for all of these use cases."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "import { unstable_noStore as noStore } from 'next/cache';\n\nexport default async function ServerComponent() {\n  noStore();\n  const result = await db.query(...);\n  ...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "unstable_noStore"
+								},
+								{
+									"type": "text",
+									"value": " deprecated for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "connection"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v14.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "unstable_noStore"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

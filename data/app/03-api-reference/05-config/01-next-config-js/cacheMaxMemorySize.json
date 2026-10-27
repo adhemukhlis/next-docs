@@ -1,0 +1,196 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: cacheMaxMemorySize\ndescription: Configure the size of the in-memory cache that Next.js keeps in each server instance."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "cacheMaxMemorySize"
+				},
+				{
+					"type": "text",
+					"value": " sets the size, in bytes, of the in-memory cache each Next.js server instance keeps. It defaults to 50 MB."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tcacheMaxMemorySize: 50 * 1024 * 1024, // 50 MB, the default\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\tcacheMaxMemorySize: 50 * 1024 * 1024, // 50 MB, the default\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The option sizes two separate caches:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The server cache that stores prerendered pages, route handler responses, and optimized images. Set this to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "0"
+								},
+								{
+									"type": "text",
+									"value": " when adopting a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/incrementalCacheHandlerPath",
+									"children": [
+										{
+											"type": "text",
+											"value": "custom "
+										},
+										{
+											"type": "inlineCode",
+											"value": "cacheHandler"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", so reads go to your store rather than a per-instance copy."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The built-in handler behind "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/directives/use-cache",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'use cache'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". If you register your own handler through "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/cacheHandlers",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cacheHandlers"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", that handler manages its own memory and this option no longer applies to it."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Setting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheMaxMemorySize: 0"
+				},
+				{
+					"type": "text",
+					"value": " disables both in-memory caches. It is also a way to mimic how "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " behaves in a serverless environment, where entries rarely survive between requests."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next dev"
+						},
+						{
+							"type": "text",
+							"value": " keeps its own in-memory cache regardless of this option, so reloads stay fast. Production honors the configured value exactly."
+						}
+					]
+				}
+			]
+		}
+	]
+}

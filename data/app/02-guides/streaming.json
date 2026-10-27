@@ -1,0 +1,3573 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Streaming\nnav_title: Streaming\ndescription: Learn how streaming works in Next.js and how to use it to progressively render UI as data becomes available.\nrelated:\n description: Related API references and guides.\n links:\n  - app/api-reference/file-conventions/loading\n  - app/getting-started/fetching-data\n  - app/getting-started/linking-and-navigating\n  - app/guides/self-hosting\n  - app/guides/rendering-philosophy"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "What is streaming?"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In traditional server-side rendering, the server produces the full HTML document before sending anything. A single slow database query or API call can block the entire page. Streaming changes this by using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Transfer-Encoding",
+					"children": [
+						{
+							"type": "text",
+							"value": "chunked transfer encoding"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to send parts of the response as they become ready. The browser starts rendering HTML while the server is still generating the rest."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This is especially impactful for pages that combine fast static content (headers, navigation, layout) with slower dynamic content (personalized data, analytics, recommendations). The static parts can be prerendered and served from a CDN, painting instantly, while the dynamic parts stream in from the server as they become ready."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "React's server renderer produces HTML in chunks aligned with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundaries. Next.js integrates this into the App Router so streaming works without additional configuration."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Example"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The companion "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://streaming-demo.labs.vercel.dev/",
+					"children": [
+						{
+							"type": "text",
+							"value": "streaming demo"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " ("
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/nextjs/streaming-demo",
+					"children": [
+						{
+							"type": "text",
+							"value": "source"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ") lets you see each concept from this guide in action:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Page-level streaming with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "loading.tsx"
+								},
+								{
+									"type": "text",
+									"value": " (skeleton appears instantly, content streams in after ~2s)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Granular streaming with sibling "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Suspense>"
+								},
+								{
+									"type": "text",
+									"value": " boundaries that resolve independently"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Hydration comparison: a single blocking pass vs split hydration with Suspense boundaries"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Raw HTML streaming in a Route Handler, with early CSS discovery"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "A configurable "
+								},
+								{
+									"type": "inlineCode",
+									"value": "ReadableStream"
+								},
+								{
+									"type": "text",
+									"value": " API endpoint for experimenting with chunk sizes and browser buffering"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "How the App Router delivers a page"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When a browser requests a page, two streams work together during the initial page load:"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "The HTML stream"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "React's server renderer produces progressive HTML chunks. The static parts of your page (layouts, navigation, Suspense fallbacks) render first and are sent immediately. When a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary's content is ready, for example when an async "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#server-component",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " resolves, React streams its completed HTML along with inline "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<script>"
+				},
+				{
+					"type": "text",
+					"value": " tags: one that swaps the fallback DOM node with the new content, and another carrying the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#the-component-payload",
+					"children": [
+						{
+							"type": "text",
+							"value": "component payload"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " so React can later hydrate it. The browser executes the swap instantly, without waiting for the page's JavaScript bundle to load or hydration to complete. This is what the user "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "sees"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ": the page painting progressively, section by section."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "The component payload"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The component payload is a serialized representation of the component tree that React uses to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#hydration",
+					"children": [
+						{
+							"type": "text",
+							"value": "hydrate"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " the page and handle client-side updates. On initial load, it arrives embedded in the HTML stream (as described above). On "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "client-side navigation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", only the component payload is fetched (with an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "rsc: 1"
+				},
+				{
+					"type": "text",
+					"value": " request header) and no HTML is transferred at all. React uses it to update the component tree in place."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "The static shell"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Everything that renders before any async work resolves is called the "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "static shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ": your layouts, navigation, and the fallback UI defined by your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundaries. It is sent immediately, giving the user something to see and interact with while dynamic content streams in. With "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", the static shell is prerendered at build time and served instantly from the edge."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"How Server Rendering with Streaming Works\"\nsrcLight=\"/docs/light/server-rendering-with-streaming.png\"\nsrcDark=\"/docs/dark/server-rendering-with-streaming.png\"\nwidth=\"1600\"\nheight=\"785\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary is an independent streaming point. Components inside different boundaries resolve and stream in independently. They don't block each other."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Page-level streaming with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The simplest way to add streaming is with a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": " file. Place it alongside your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.js"
+				},
+				{
+					"type": "text",
+					"value": " and Next.js automatically wraps the page content in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary, using your loading component as the fallback."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"loading.js special file\"\nsrcLight=\"/docs/light/loading-special-file.png\"\nsrcDark=\"/docs/dark/loading-special-file.png\"\nwidth=\"1600\"\nheight=\"606\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/loading.tsx\" switcher",
+			"value": "export default function Loading() {\n\treturn (\n\t\t<div className=\"animate-pulse\">\n\t\t\t<div className=\"h-8 w-48 bg-gray-200 rounded mb-4\" />\n\t\t\t<div className=\"h-4 w-full bg-gray-200 rounded mb-2\" />\n\t\t\t<div className=\"h-4 w-full bg-gray-200 rounded mb-2\" />\n\t\t\t<div className=\"h-4 w-2/3 bg-gray-200 rounded\" />\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/loading.js\" switcher",
+			"value": "export default function Loading() {\n\treturn (\n\t\t<div className=\"animate-pulse\">\n\t\t\t<div className=\"h-8 w-48 bg-gray-200 rounded mb-4\" />\n\t\t\t<div className=\"h-4 w-full bg-gray-200 rounded mb-2\" />\n\t\t\t<div className=\"h-4 w-full bg-gray-200 rounded mb-2\" />\n\t\t\t<div className=\"h-4 w-2/3 bg-gray-200 rounded\" />\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Behind the scenes, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": " is nested inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout.js"
+				},
+				{
+					"type": "text",
+					"value": " and wraps "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.js"
+				},
+				{
+					"type": "text",
+					"value": " in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary:"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"loading.js overview\"\nsrcLight=\"/docs/light/loading-overview.png\"\nsrcDark=\"/docs/dark/loading-overview.png\"\nwidth=\"1600\"\nheight=\"768\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This means:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The layout renders immediately as part of the static shell."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The loading skeleton is shown instantly as the Suspense fallback."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "When the page component finishes loading, its HTML replaces the skeleton."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": " is useful when there's nothing meaningful to show until the page's data resolves. If the page needs to await data before it can render anything, a full-page skeleton is a reasonable fallback."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/loading",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "loading.js"
+						},
+						{
+							"type": "text",
+							"value": " API reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more details."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Granular streaming with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " lets you control exactly which parts of the page stream independently. Instead of a full-page skeleton, you can push fallbacks down into specific sections so the static shell includes more real content."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parallel streaming with sibling boundaries"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When multiple components perform async work (fetching data, reading from a database), wrap each one in its own "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary. Each boundary streams independently as its async work completes, in whatever order that happens, without blocking each other:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/page.tsx\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { Revenue } from './revenue'\nimport { RecentOrders } from './recent-orders'\nimport { Recommendations } from './recommendations'\n\nexport default function Dashboard() {\n\treturn (\n\t\t<div>\n\t\t\t<h1>Dashboard</h1>\n\t\t\t<div className=\"grid grid-cols-2 gap-4\">\n\t\t\t\t<Suspense fallback={<p>Loading revenue...</p>}>\n\t\t\t\t\t<Revenue />\n\t\t\t\t</Suspense>\n\t\t\t\t<Suspense fallback={<p>Loading orders...</p>}>\n\t\t\t\t\t<RecentOrders />\n\t\t\t\t</Suspense>\n\t\t\t</div>\n\t\t\t<Suspense fallback={<p>Loading recommendations...</p>}>\n\t\t\t\t<Recommendations />\n\t\t\t</Suspense>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/page.js\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { Revenue } from './revenue'\nimport { RecentOrders } from './recent-orders'\nimport { Recommendations } from './recommendations'\n\nexport default function Dashboard() {\n\treturn (\n\t\t<div>\n\t\t\t<h1>Dashboard</h1>\n\t\t\t<div className=\"grid grid-cols-2 gap-4\">\n\t\t\t\t<Suspense fallback={<p>Loading revenue...</p>}>\n\t\t\t\t\t<Revenue />\n\t\t\t\t</Suspense>\n\t\t\t\t<Suspense fallback={<p>Loading orders...</p>}>\n\t\t\t\t\t<RecentOrders />\n\t\t\t\t</Suspense>\n\t\t\t</div>\n\t\t\t<Suspense fallback={<p>Loading recommendations...</p>}>\n\t\t\t\t<Recommendations />\n\t\t\t</Suspense>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In this example, if "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Revenue"
+				},
+				{
+					"type": "text",
+					"value": " resolves in 200ms, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "RecentOrders"
+				},
+				{
+					"type": "text",
+					"value": " in 1s, and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Recommendations"
+				},
+				{
+					"type": "text",
+					"value": " in 3s, the user sees each section appear as soon as its data is ready."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Nested boundaries for progressive detail"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can nest "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundaries to create a layered loading experience. For example, a product page might stream the header immediately, the product details next, and the reviews last:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/product/[id]/page.tsx\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { ProductDetails } from './product-details'\nimport { Reviews } from './reviews'\n\nexport async function generateStaticParams() {\n\tconst products = await getTopProducts()\n\treturn products.map((product) => ({ id: product.id }))\n}\n\nexport default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {\n\tconst { id } = await params\n\n\treturn (\n\t\t<div>\n\t\t\t<h1>Product</h1>\n\t\t\t<Suspense fallback={<p>Loading product details...</p>}>\n\t\t\t\t<ProductDetails id={id} />\n\t\t\t\t<Suspense fallback={<p>Loading reviews...</p>}>\n\t\t\t\t\t<Reviews productId={id} />\n\t\t\t\t</Suspense>\n\t\t\t</Suspense>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/product/[id]/page.js\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { ProductDetails } from './product-details'\nimport { Reviews } from './reviews'\n\nexport async function generateStaticParams() {\n\tconst products = await getTopProducts()\n\treturn products.map((product) => ({ id: product.id }))\n}\n\nexport default async function ProductPage({ params }) {\n\tconst { id } = await params\n\n\treturn (\n\t\t<div>\n\t\t\t<h1>Product</h1>\n\t\t\t<Suspense fallback={<p>Loading product details...</p>}>\n\t\t\t\t<ProductDetails id={id} />\n\t\t\t\t<Suspense fallback={<p>Loading reviews...</p>}>\n\t\t\t\t\t<Reviews productId={id} />\n\t\t\t\t</Suspense>\n\t\t\t</Suspense>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The outer boundary shows \"Loading product details...\" until "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ProductDetails"
+				},
+				{
+					"type": "text",
+					"value": " resolves. Once it does, the inner boundary becomes visible, showing \"Loading reviews...\" until "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Reviews"
+				},
+				{
+					"type": "text",
+					"value": " resolves. This creates a progressive reveal."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Push dynamic access down"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The key to maximizing what streams instantly is to defer dynamic data access to the component that actually needs it. This applies to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers()"
+				},
+				{
+					"type": "text",
+					"value": ", and data fetches. If you "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await"
+				},
+				{
+					"type": "text",
+					"value": " any of these at the top of a layout or page, everything below that point becomes dynamic and cannot be prerendered as part of the static shell."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Instead, pass the promise down and let the consuming component resolve it inside a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/layout.tsx\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { Nav } from './nav'\nimport { UserMenu } from './user-menu'\nimport { cookies } from 'next/headers'\n\nexport default function DashboardLayout({ children }: { children: React.ReactNode }) {\n\tconst cookieStore = cookies() // Start the work, but don't await\n\n\treturn (\n\t\t<div>\n\t\t\t<Nav>\n\t\t\t\t<Suspense fallback={<p>Loading user...</p>}>\n\t\t\t\t\t<UserMenu cookiePromise={cookieStore} />\n\t\t\t\t</Suspense>\n\t\t\t</Nav>\n\t\t\t{children}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/layout.js\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { Nav } from './nav'\nimport { UserMenu } from './user-menu'\nimport { cookies } from 'next/headers'\n\nexport default function DashboardLayout({ children }) {\n\tconst cookieStore = cookies() // Start the work, but don't await\n\n\treturn (\n\t\t<div>\n\t\t\t<Nav>\n\t\t\t\t<Suspense fallback={<p>Loading user...</p>}>\n\t\t\t\t\t<UserMenu cookiePromise={cookieStore} />\n\t\t\t\t</Suspense>\n\t\t\t</Nav>\n\t\t\t{children}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In this example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Nav>"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "{children}"
+				},
+				{
+					"type": "text",
+					"value": " render as part of the static shell because nothing in the layout awaits. Only "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<UserMenu>"
+				},
+				{
+					"type": "text",
+					"value": " suspends when it resolves the cookie promise. If the layout had called "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await cookies()"
+				},
+				{
+					"type": "text",
+					"value": " at the top instead, the entire layout and all its children would be blocked from prerendering."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The same principle applies to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": ". Rather than destructuring them at the page level, pass the promise to the component that needs the value:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/shop/[category]/page.tsx\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { Hero } from './hero'\nimport { ProductGrid } from './product-grid'\n\nexport async function generateStaticParams() {\n\tconst categories = await getCategories()\n\treturn categories.map((c) => ({ category: c.slug }))\n}\n\nexport default function ShopPage({ params }: { params: Promise<{ category: string }> }) {\n\treturn (\n\t\t<div>\n\t\t\t<Hero />\n\t\t\t<Suspense fallback={<p>Loading products...</p>}>\n\t\t\t\t<ProductGrid paramsPromise={params} />\n\t\t\t</Suspense>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/shop/[category]/page.js\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { Hero } from './hero'\nimport { ProductGrid } from './product-grid'\n\nexport async function generateStaticParams() {\n\tconst categories = await getCategories()\n\treturn categories.map((c) => ({ category: c.slug }))\n}\n\nexport default function ShopPage({ params }) {\n\treturn (\n\t\t<div>\n\t\t\t<Hero />\n\t\t\t<Suspense fallback={<p>Loading products...</p>}>\n\t\t\t\t<ProductGrid paramsPromise={params} />\n\t\t\t</Suspense>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "<Hero />"
+				},
+				{
+					"type": "text",
+					"value": " paints as part of the static shell. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<ProductGrid>"
+				},
+				{
+					"type": "text",
+					"value": " resolves "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " when it needs the category, suspending only within its boundary."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also unwrap the promise inline with "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".then()"
+				},
+				{
+					"type": "text",
+					"value": ", so the child component receives a plain value instead of a promise:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/shop/[category]/page.tsx\" switcher",
+			"value": "<Suspense fallback={<p>Loading products...</p>}>\n\t{params.then(({ category }) => (\n\t\t<ProductGrid category={category} />\n\t))}\n</Suspense>"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/shop/[category]/page.js\" switcher",
+			"value": "<Suspense fallback={<p>Loading products...</p>}>\n\t{params.then(({ category }) => (\n\t\t<ProductGrid category={category} />\n\t))}\n</Suspense>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This keeps "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ProductGrid"
+				},
+				{
+					"type": "text",
+					"value": " simple (it takes a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "string"
+				},
+				{
+					"type": "text",
+					"value": ", not a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Promise"
+				},
+				{
+					"type": "text",
+					"value": ") while still deferring the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " access to inside the Suspense boundary."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "When to use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": " vs "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": []
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "loading.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<Suspense>"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Scope"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Entire page"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Any component"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Setup"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Drop in a file"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Wrap components explicitly"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Navigation"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prefetched as instant fallback"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Not prefetched by default"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Best for"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Pages where nothing renders without data"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Most pages, for granular control"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Prefer explicit "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundaries close to the dynamic access. When the prerenderer encounters dynamic work, it walks up the tree looking for the nearest Suspense boundary. If none is found, the build fails with a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/blocking-prerender-dynamic",
+					"children": [
+						{
+							"type": "text",
+							"value": "blocking route error"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". A "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": " high in the tree is a valid boundary, so the framework finds it and stops, but now the entire page falls back to a full-page skeleton instead of streaming granularly."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Error handling mid-stream"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If a component throws an error after streaming has started, the nearest "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/error",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "error.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " boundary catches it and renders the error UI in place of the failed component. The rest of the page remains intact, only the section that errored is replaced."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Because the HTTP status code ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "200 OK"
+				},
+				{
+					"type": "text",
+					"value": ") has already been sent with the first chunk, it cannot be changed to a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "4xx"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "5xx"
+				},
+				{
+					"type": "text",
+					"value": ". The error is handled entirely within the streamed HTML. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#the-http-contract",
+					"children": [
+						{
+							"type": "text",
+							"value": "The HTTP contract"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more on this constraint."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Streaming data to the client"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can start a fetch in a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#server-component",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and pass the unresolved promise as a prop to a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#client-component",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client Component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". The promise can be passed through as many layers as needed. Only the component that calls React's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/use",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " API to read the value needs a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary around it:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/page.tsx\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { StatsChart } from './stats-chart'\n\ntype Stats = { revenue: number; orders: number }\n\nasync function getStats(): Promise<Stats> {\n\tconst res = await fetch('https://api.example.com/stats')\n\treturn res.json()\n}\n\nexport default function Dashboard() {\n\t// Start the fetch during server render, don't await it\n\tconst statsPromise = getStats()\n\n\treturn (\n\t\t<Suspense fallback={<p>Loading chart...</p>}>\n\t\t\t<StatsChart dataPromise={statsPromise} />\n\t\t</Suspense>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/page.js\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { StatsChart } from './stats-chart'\n\nasync function getStats() {\n\tconst res = await fetch('https://api.example.com/stats')\n\treturn res.json()\n}\n\nexport default function Dashboard() {\n\t// Start the fetch during server render, don't await it\n\tconst statsPromise = getStats()\n\n\treturn (\n\t\t<Suspense fallback={<p>Loading chart...</p>}>\n\t\t\t<StatsChart dataPromise={statsPromise} />\n\t\t</Suspense>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/stats-chart.tsx\" switcher",
+			"value": "'use client'\n\nimport { use } from 'react'\n\ntype Stats = { revenue: number; orders: number }\n\nexport function StatsChart({ dataPromise }: { dataPromise: Promise<Stats> }) {\n\tconst stats = use(dataPromise)\n\n\treturn <div>{/* render chart with stats */}</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/stats-chart.js\" switcher",
+			"value": "'use client'\n\nimport { use } from 'react'\n\nexport function StatsChart({ dataPromise }) {\n\tconst stats = use(dataPromise)\n\n\treturn <div>{/* render chart with stats */}</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The fallback is sent immediately with the static shell. When the promise resolves, React streams the completed HTML into the page."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Sharing a promise across the tree"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When multiple components need the same data, start the fetch once and pass the promise through a context provider so any component in the subtree can resolve it with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use()"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\"",
+			"value": "import { getUser } from '@/lib/data'\n// Stores the promise in React context for the subtree\nimport { UserProvider } from './user-provider'\n\nexport default function Layout({ children }: { children: React.ReactNode }) {\n\tconst userPromise = getUser()\n\n\treturn <UserProvider userPromise={userPromise}>{children}</UserProvider>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/single-page-applications#using-reacts-use-within-a-context-provider",
+					"children": [
+						{
+							"type": "text",
+							"value": "Using React's "
+						},
+						{
+							"type": "inlineCode",
+							"value": "use"
+						},
+						{
+							"type": "text",
+							"value": " within a Context Provider"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the full pattern."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Streaming in Route Handlers"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The patterns above rely on React and Suspense to stream UI. Outside of React rendering, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " can stream raw responses using the Web Streams API. This is useful for Server-Sent Events, large file generation, or any response where you want data to arrive progressively:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/stream/route.ts\" switcher",
+			"value": "export async function GET() {\n\tconst encoder = new TextEncoder()\n\n\tconst stream = new ReadableStream({\n\t\tasync start(controller) {\n\t\t\tfor (let i = 0; i < 10; i++) {\n\t\t\t\tcontroller.enqueue(encoder.encode(`Chunk ${i + 1}\\n`))\n\t\t\t\tawait new Promise((resolve) => setTimeout(resolve, 200))\n\t\t\t}\n\t\t\tcontroller.close()\n\t\t},\n\t})\n\n\treturn new Response(stream, {\n\t\theaders: {\n\t\t\t'Content-Type': 'text/plain; charset=utf-8',\n\t\t\t'X-Content-Type-Options': 'nosniff',\n\t\t},\n\t})\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/stream/route.js\" switcher",
+			"value": "export async function GET() {\n\tconst encoder = new TextEncoder()\n\n\tconst stream = new ReadableStream({\n\t\tasync start(controller) {\n\t\t\tfor (let i = 0; i < 10; i++) {\n\t\t\t\tcontroller.enqueue(encoder.encode(`Chunk ${i + 1}\\n`))\n\t\t\t\tawait new Promise((resolve) => setTimeout(resolve, 200))\n\t\t\t}\n\t\t\tcontroller.close()\n\t\t},\n\t})\n\n\treturn new Response(stream, {\n\t\theaders: {\n\t\t\t'Content-Type': 'text/plain; charset=utf-8',\n\t\t\t'X-Content-Type-Options': 'nosniff',\n\t\t},\n\t})\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Visit this route directly in the browser or with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "curl"
+				},
+				{
+					"type": "text",
+					"value": " to see chunks arrive one at a time:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": null,
+			"value": "curl http://localhost:3000/api/stream"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also stream files without loading them entirely into memory. Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "FileHandle.readableWebStream()"
+				},
+				{
+					"type": "text",
+					"value": " to get a Web "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ReadableStream"
+				},
+				{
+					"type": "text",
+					"value": " directly from a file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/download/route.ts\" switcher",
+			"value": "import { open } from 'node:fs/promises'\n\nexport async function GET() {\n\tconst file = await open('/path/to/large-file.csv')\n\n\treturn new Response(file.readableWebStream(), {\n\t\theaders: {\n\t\t\t'Content-Type': 'text/csv',\n\t\t\t'Content-Disposition': 'attachment; filename=\"data.csv\"',\n\t\t},\n\t})\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/download/route.js\" switcher",
+			"value": "import { open } from 'node:fs/promises'\n\nexport async function GET() {\n\tconst file = await open('/path/to/large-file.csv')\n\n\treturn new Response(file.readableWebStream(), {\n\t\theaders: {\n\t\t\t'Content-Type': 'text/csv',\n\t\t\t'Content-Disposition': 'attachment; filename=\"data.csv\"',\n\t\t},\n\t})\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handler API reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more details on building streaming endpoints."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Streaming and Web Vitals"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://web.dev/articles/vitals",
+					"children": [
+						{
+							"type": "text",
+							"value": "Web Vitals"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " are the metrics Google uses to measure user experience. Streaming directly affects several of them."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "TTFB and FCP"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Without streaming, the server waits for all data before sending any HTML, so TTFB equals the slowest query. With streaming, the server sends the static shell as soon as it's ready. TTFB drops to the time it takes to render your layouts and fallbacks. The browser paints the static shell immediately, so FCP is decoupled from your data fetching time."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "LCP (Largest Contentful Paint)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If your LCP element (a hero image, a main heading, a product photo) is inside a Suspense boundary, it can't paint until that boundary's content is swapped in. The element then depends on the work the server does to render it, not on your initial server response time. Revealing it costs something on the client too, because React streams a small inline script alongside the boundary's HTML and the content only appears once that script runs."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Data fetching is not the only reason a boundary delays your LCP element. React also holds back a large boundary, because sending its HTML takes time. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Suspense#what-activates-a-suspense-boundary",
+					"children": [
+						{
+							"type": "text",
+							"value": "what activates a Suspense boundary"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " As a rule of thumb, if there's a Suspense boundary, React might use it. Under a slow network or a busy CPU, concurrent rendering can fall back to it even when you didn't expect it. Adding a boundary means accepting that, so don't add one you don't need."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To keep LCP fast:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Keep LCP elements "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "outside"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "above"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Suspense boundaries so they render as part of the static shell."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Use the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/components/image#preload",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "preload"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " prop on "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/image"
+								},
+								{
+									"type": "text",
+									"value": " for LCP images. This injects a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<link rel=\"preload\">"
+								},
+								{
+									"type": "text",
+									"value": " into the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<head>"
+								},
+								{
+									"type": "text",
+									"value": ", so the browser starts fetching the image from the very first chunk, before the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<img>"
+								},
+								{
+									"type": "text",
+									"value": " tag even appears in the HTML. It controls when the image is fetched, not when it paints. An image inside a boundary still waits for the swap."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "For non-image LCP elements (text, headings), render them outside Suspense boundaries."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "CLS (Cumulative Layout Shift)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When a Suspense fallback is replaced by the resolved content, the browser reflows the page. If the fallback and the resolved content are different sizes, the surrounding layout shifts. To minimize CLS:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Design skeleton fallbacks that "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "match the dimensions"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " of the content they represent. A skeleton with the same height and width as the final card grid prevents shifts."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Use fixed or min-height containers around Suspense boundaries so the space is reserved before content arrives."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "INP (Interaction to Next Paint)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Streaming enables "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react-dom/client/hydrateRoot",
+					"children": [
+						{
+							"type": "text",
+							"value": "selective hydration"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ": React hydrates components independently as they stream in, and prioritizes hydrating whatever the user is interacting with. Each "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary is a hydration unit. Without them, React hydrates the entire page in one blocking pass. With them, hydration is broken into smaller tasks that yield to the browser, keeping the main thread responsive. The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://streaming-demo.labs.vercel.dev/hydration-single",
+					"children": [
+						{
+							"type": "text",
+							"value": "companion demo"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " lets you compare a single blocking hydration pass with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://streaming-demo.labs.vercel.dev/hydration-split",
+					"children": [
+						{
+							"type": "text",
+							"value": "split hydration"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " using Suspense boundaries."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Early resource discovery"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The static shell includes "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<link>"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<script>"
+				},
+				{
+					"type": "text",
+					"value": " tags in the very first HTML chunk. The browser discovers and starts fetching CSS, JavaScript, and fonts immediately, while the server is still generating content. Resources are fetched during server think time rather than after it."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#parallel-streaming-with-sibling-boundaries",
+					"children": [
+						{
+							"type": "text",
+							"value": "dashboard example"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " above, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<h1>"
+				},
+				{
+					"type": "text",
+					"value": " renders in the shell (good for LCP), each data section streams independently behind its own Suspense boundary (good for INP since hydration is split), and the skeleton fallbacks reserve space (good for CLS)."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "The HTTP contract"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Once streaming begins, the HTTP response headers (including the status code) have already been sent to the client. "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "You cannot change the status code or headers after streaming starts."
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " Everything in this section flows from this fundamental constraint."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Status codes"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " fallback renders or a component suspends, the server must commit to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "200 OK"
+				},
+				{
+					"type": "text",
+					"value": " in order to start sending the HTML stream. If a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/not-found",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "notFound()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " fires mid-stream, Next.js cannot go back and change the status to 404. Instead, it injects "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<meta name=\"robots\" content=\"noindex\">"
+				},
+				{
+					"type": "text",
+					"value": " into the streamed HTML so that search engines don't index the page. Similarly, a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/redirect",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "redirect()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " mid-stream becomes a client-side redirect rather than an HTTP redirect header."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "When does streaming start?"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The response body begins streaming when a Suspense fallback renders (for example, a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.tsx"
+				},
+				{
+					"type": "text",
+					"value": ") or when a component suspends under a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary. To get a real HTTP status code for errors, place "
+				},
+				{
+					"type": "inlineCode",
+					"value": "notFound()"
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "before"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " any "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/post/[slug]/page.tsx\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { notFound } from 'next/navigation'\nimport { PostContent } from './post-content'\n\nexport async function generateStaticParams() {\n\tconst posts = await getPublishedPosts()\n\treturn posts.map((post) => ({ slug: post.slug }))\n}\n\nexport default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {\n\tconst { slug } = await params\n\tconst exists = await checkSlugExists(slug) // Fast existence check\n\tif (!exists) notFound() // Real 404, before any Suspense boundary\n\n\treturn (\n\t\t<Suspense fallback={<p>Loading post...</p>}>\n\t\t\t<PostContent slug={slug} />\n\t\t</Suspense>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/post/[slug]/page.js\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { notFound } from 'next/navigation'\nimport { PostContent } from './post-content'\n\nexport async function generateStaticParams() {\n\tconst posts = await getPublishedPosts()\n\treturn posts.map((post) => ({ slug: post.slug }))\n}\n\nexport default async function PostPage({ params }) {\n\tconst { slug } = await params\n\tconst exists = await checkSlugExists(slug) // Fast existence check\n\tif (!exists) notFound() // Real 404, before any Suspense boundary\n\n\treturn (\n\t\t<Suspense fallback={<p>Loading post...</p>}>\n\t\t\t<PostContent slug={slug} />\n\t\t</Suspense>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " You can also reject requests early using "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/file-conventions/proxy",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "proxy"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " (for redirects, rewrites, or returning a response) or "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/config/next-config-js/redirects",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.config.js"
+								},
+								{
+									"type": "text",
+									"value": " redirects"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ". Both run before the page renders, so HTTP status codes are still available."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Bots and crawlers"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "HTML-limited bots and crawlers need metadata to be available in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<head>"
+				},
+				{
+					"type": "text",
+					"value": " of the initial HTML. Next.js detects them by their user agent and waits for "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-metadata",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateMetadata"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to resolve before streaming the page content. Full browsers and DOM-capable crawlers can instead receive "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-metadata#streaming-metadata",
+					"children": [
+						{
+							"type": "text",
+							"value": "streaming metadata"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " alongside the page content."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can customize which bots receive blocking metadata with the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/htmlLimitedBots",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "htmlLimitedBots"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " configuration option. See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/loading#seo",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "loading.js"
+						},
+						{
+							"type": "text",
+							"value": " SEO section"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more details."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", visitors and DOM-capable crawlers receive the prerendered shell immediately, and dynamic content streams in as it resolves. HTML-limited bots skip the prerendered shell and render the page dynamically so metadata can be placed in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<head>"
+				},
+				{
+					"type": "text",
+					"value": ". Once the metadata resolves, the remaining page content can still stream."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Keep this in mind when your prerendered shell depends on inputs that only exist while prerendering, such as build-time data or values that are not reachable in the request-time environment. Visitors and DOM-capable crawlers receive the shell without re-running that code, but an HTML-limited bot re-renders it dynamically, so a page that loads for a person can fail to render for a crawler. Make sure any data the shell relies on is also available at request time."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "What can affect streaming"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Any layer between your server and the client that buffers the response can diminish the benefits of streaming. The HTML may be fully generated progressively on the server, but if a proxy, CDN, or even the client itself collects all the chunks before rendering them, the user sees a single delayed response instead of progressive rendering."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reverse proxies"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Nginx and similar reverse proxies buffer responses by default. Disable buffering by setting the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "X-Accel-Buffering"
+				},
+				{
+					"type": "text",
+					"value": " header to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "no"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tasync headers() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/:path*{/}?',\n\t\t\t\theaders: [\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'X-Accel-Buffering',\n\t\t\t\t\t\tvalue: 'no',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "CDNs"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Content Delivery Networks may buffer entire responses before forwarding them to the client. Check your CDN provider's documentation for streaming support. Some require specific configuration or plan tiers to pass through chunked responses."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Serverless platforms"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Not all serverless environments support streaming. AWS Lambda, for example, requires "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-response-streaming.html",
+					"children": [
+						{
+							"type": "text",
+							"value": "response streaming mode"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to be explicitly enabled (it is not the default). Vercel supports streaming natively."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Compression"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Gzip and Brotli compression can buffer chunks internally before flushing, as the compression algorithm needs enough data to compress efficiently. This can add latency to the first visible chunk. If you notice streaming delays, check whether your compression layer is flushing aggressively enough."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Clients"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Buffering also happens at the client. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://bugs.webkit.org/show_bug.cgi?id=252413",
+					"children": [
+						{
+							"type": "text",
+							"value": "Safari/WebKit"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " buffers streaming responses until 1024 bytes have been received, so very small responses paint all at once instead of progressively. Real applications easily exceed this threshold (layouts, styles, scripts), so it only affects minimal demos or tiny Route Handler responses."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Command-line tools like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "curl"
+				},
+				{
+					"type": "text",
+					"value": " also buffer by default. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "-N"
+				},
+				{
+					"type": "text",
+					"value": " flag disables output buffering, but "
+				},
+				{
+					"type": "inlineCode",
+					"value": "curl"
+				},
+				{
+					"type": "text",
+					"value": " still relies on newline characters to flush lines to the terminal. A stream that sends chunks without newlines may appear to stall even with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "-N"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Verifying that streaming works"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This section is about confirming the HTTP response is actually arriving in chunks through your infrastructure. For guidance on designing meaningful loading states and placing Suspense boundaries effectively, see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#granular-streaming-with-suspense",
+					"children": [
+						{
+							"type": "text",
+							"value": "Granular streaming with "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " guide."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Check the Network tab."
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " In Chrome DevTools, select the document request and look at the \"Timing\" breakdown. A long \"Content Download\" phase with an early \"Time to First Byte\" confirms the response is streaming rather than arriving all at once."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Observe raw chunks."
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " To see exactly what the server sends and when, use a small script that reads the response as a stream. This is more reliable than "
+				},
+				{
+					"type": "inlineCode",
+					"value": "curl"
+				},
+				{
+					"type": "text",
+					"value": " for observing timed chunks, since "
+				},
+				{
+					"type": "inlineCode",
+					"value": "curl"
+				},
+				{
+					"type": "text",
+					"value": " has its own buffering behavior:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"stream-observer.mjs\"",
+			"value": "const res = await fetch('https://streaming-demo.labs.vercel.dev/suspense-demo', {\n\theaders: { 'Accept-Encoding': 'identity' },\n})\n\nconst reader = res.body.getReader()\nconst decoder = new TextDecoder()\nlet i = 0\nconst start = Date.now()\n\nwhile (true) {\n\tconst { done, value } = await reader.read()\n\tif (done) break\n\tconsole.log(`\\nchunk ${i++} (+${Date.now() - start}ms)\\n`)\n\tconsole.log(decoder.decode(value))\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Run with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "node stream-observer.mjs"
+				},
+				{
+					"type": "text",
+					"value": ". For a page with two sibling Suspense boundaries (like the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://streaming-demo.labs.vercel.dev/suspense-demo",
+					"children": [
+						{
+							"type": "text",
+							"value": "companion demo's Suspense page"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "), you will see output similar to:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "text",
+			"meta": "filename=\"Terminal\"",
+			"value": "chunk 0 (+0ms)    # Static shell: <head>, CSS, nav, fallback skeletons,\n                  # <template id=\"B:0\"> and <template id=\"B:1\"> placeholders,\n                  # bootstrap scripts\nchunk 1 (+170ms)  # Component payload (self.__next_f.push) for hydration\nchunk 2 (+1000ms) # Weather widget: payload + <div hidden id=\"S:0\"> (swaps B:0)\nchunk 3 (+3000ms) # Analytics dashboard: payload + <div hidden id=\"S:1\"> (swaps B:1)"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<template id=\"B:0\">"
+				},
+				{
+					"type": "text",
+					"value": " markers are the Suspense fallback placeholders. When a boundary resolves, React streams a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<div hidden id=\"S:0\">"
+				},
+				{
+					"type": "text",
+					"value": " containing the completed HTML and a script that swaps it into the page. The timestamps show each boundary resolving independently."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " The "
+						},
+						{
+							"type": "inlineCode",
+							"value": "Accept-Encoding: identity"
+						},
+						{
+							"type": "text",
+							"value": " header disables compression so chunks are not buffered by the compression layer."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Compare a bot request."
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " Add a bot user agent to the same script with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers: { 'User-Agent': 'Twitterbot/1.0', 'Accept-Encoding': 'identity' }"
+				},
+				{
+					"type": "text",
+					"value": ". Now "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await fetch()"
+				},
+				{
+					"type": "text",
+					"value": " itself blocks until the full render completes (around 3 seconds for this page), because the server holds the response until it has the finished document. The body then arrives all at once, with none of the staggered "
+				},
+				{
+					"type": "inlineCode",
+					"value": "+1000ms"
+				},
+				{
+					"type": "text",
+					"value": " / "
+				},
+				{
+					"type": "inlineCode",
+					"value": "+3000ms"
+				},
+				{
+					"type": "text",
+					"value": " timestamps:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "text",
+			"meta": "filename=\"Terminal\"",
+			"value": "chunk 0 (+0ms) # Entire document in a single burst, after fetch() already waited"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This is the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#bots-and-crawlers",
+					"children": [
+						{
+							"type": "text",
+							"value": "bots and crawlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " behavior: the server waits for the full render and sends one fully formed HTML document instead of streaming."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Platform support"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Deployment Option"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Supported"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#nodejs-server",
+									"children": [
+										{
+											"type": "text",
+											"value": "Node.js server"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#docker",
+									"children": [
+										{
+											"type": "text",
+											"value": "Docker container"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#static-export",
+									"children": [
+										{
+											"type": "text",
+											"value": "Static export"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#adapters",
+									"children": [
+										{
+											"type": "text",
+											"value": "Adapters"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Platform-specific"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/self-hosting#streaming-and-suspense",
+					"children": [
+						{
+							"type": "text",
+							"value": "Self-Hosting guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for detailed configuration instructions."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Summary"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The trigger is "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "your code"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ": async work, non-deterministic output, or runtime data. When the framework encounters these, it walks up the tree looking for a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary to use as a fallback. Everything above those boundaries forms the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#the-static-shell",
+					"children": [
+						{
+							"type": "text",
+							"value": "static shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", which is sent immediately. As each boundary resolves, React streams the result into the page."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The key decisions are "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "what to cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "where to place Suspense boundaries"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Cache what you can with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "\"use cache\""
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to grow the static shell. Push dynamic access down to the components that need it, and wrap those in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": ". Everything else becomes part of the shell."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For a step-by-step workflow that applies these patterns to an existing route, see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/optimizing-the-static-shell",
+					"children": [
+						{
+							"type": "text",
+							"value": "Optimizing the static shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Further reading"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://rscexplorer.dev/",
+									"children": [
+										{
+											"type": "text",
+											"value": "RSC Explorer"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - interactive tool to explore the component payload format and see how React reconstructs the tree from streamed chunks"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://web.dev/articles/streams",
+									"children": [
+										{
+											"type": "text",
+											"value": "Streams API on web.dev"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - introduction to the Web Streams API that underpins streaming in Route Handlers"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Transfer-Encoding",
+									"children": [
+										{
+											"type": "text",
+											"value": "Chunked transfer encoding (MDN)"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - the HTTP/1.1 mechanism that enables streaming responses"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://browser.engineering/",
+									"children": [
+										{
+											"type": "text",
+											"value": "browser.engineering"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - deep dive into how browsers handle network responses, rendering, and progressive display"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/preventing-flash-before-hydration",
+									"children": [
+										{
+											"type": "text",
+											"value": "Preventing flash before hydration"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - how to update server-rendered HTML with client-specific values (locale, theme, persisted state) before the browser paints"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

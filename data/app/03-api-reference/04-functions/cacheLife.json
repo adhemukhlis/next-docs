@@ -1,0 +1,3290 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: cacheLife\ndescription: Learn how to use the cacheLife function to set the cache expiration time for a cached function or component.\nrelated:\n title: Related\n description: View related API references.\n links:\n  - app/api-reference/config/next-config-js/cacheComponents\n  - app/api-reference/directives/use-cache\n  - app/api-reference/functions/revalidateTag\n  - app/api-reference/functions/cacheTag"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": " function is used to set the cache lifetime of a function or component. It should be used alongside the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " directive, and within the scope of the function or component."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Usage"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Basic setup"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": ", first enable the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents"
+						},
+						{
+							"type": "text",
+							"value": " flag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tcacheComponents: true,\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "const nextConfig = {\n\tcacheComponents: true,\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": " can only be used within a cache directive scope."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Add a cache directive (for example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": ") at the file level or at the top of an async function or component."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": " cannot be used at module scope. Calling it at the top level of a file will throw an error."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "We recommend setting a "
+										},
+										{
+											"type": "inlineCode",
+											"value": "cacheLife"
+										},
+										{
+											"type": "text",
+											"value": " in every "
+										},
+										{
+											"type": "inlineCode",
+											"value": "use cache"
+										},
+										{
+											"type": "text",
+											"value": " scope so its behavior is clear at the call site. Omitting it leaves the lifetime implicit (the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "default"
+										},
+										{
+											"type": "text",
+											"value": " profile applies), which makes it harder to reason about, for example in "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "#nested-caching-behavior",
+											"children": [
+												{
+													"type": "text",
+													"value": "nested cached scopes"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Call "
+										},
+										{
+											"type": "inlineCode",
+											"value": "cacheLife"
+										},
+										{
+											"type": "text",
+											"value": " in the same function or component where caching is defined. Avoid abstracting it into shared utilities so the cache behavior remains explicit and easy to reason about."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "If you call "
+										},
+										{
+											"type": "inlineCode",
+											"value": "cacheLife"
+										},
+										{
+											"type": "text",
+											"value": ", ensure only one call executes per function invocation. You can call it in different control flow branches, but only one should run per request. See the "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "#conditional-cache-lifetimes",
+											"children": [
+												{
+													"type": "text",
+													"value": "conditional cache lifetimes"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " example."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using preset profiles"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js provides preset cache profiles that cover common caching needs. Each profile balances three factors:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "How long users see cached content without checking for updates (client-side)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "How often fresh content is generated on the server"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "When old content expires completely"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Choose a profile based on how frequently your content changes:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "seconds"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - Real-time data (stock prices, live scores)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "minutes"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - Frequently updated (social feeds, news)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "hours"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - Multiple daily updates (product inventory, weather)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "days"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - Daily updates (blog posts, articles)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "weeks"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - Weekly updates (podcasts, newsletters)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "max"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - Rarely changes (legal pages, archived content)"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Import "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": " and pass a profile name:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/page.tsx\" highlight={1,5}",
+			"value": "'use cache'\nimport { cacheLife } from 'next/cache'\n\nexport default async function BlogPage() {\n\tcacheLife('days') // Blog content updated daily\n\n\tconst posts = await getBlogPosts()\n\treturn <div>{/* render posts */}</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The profile name tells Next.js how to cache the entire function's output. If you don't call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": ", the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default"
+				},
+				{
+					"type": "text",
+					"value": " profile is used. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#preset-cache-profiles",
+					"children": [
+						{
+							"type": "text",
+							"value": "preset cache profiles"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for timing details."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache profile properties"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache profiles control caching behavior through three timing properties:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "#stale",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "stale"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": How long the client can use cached data without checking the server"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "#revalidate",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "revalidate"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": After this time, the next request will trigger a background refresh"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "#expire",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "expire"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": After this time with no requests, the next one waits for fresh content"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "stale"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client-side:"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " How long the client can use cached data without checking the server."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "During this time, the client-side router displays cached content immediately without any network request. After this period expires, the router must check with the server on the next navigation or request. This provides instant page loads from the client cache, but data may be outdated."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If omitted, defaults to the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "default"
+								},
+								{
+									"type": "text",
+									"value": " profile's "
+								},
+								{
+									"type": "inlineCode",
+									"value": "stale"
+								},
+								{
+									"type": "text",
+									"value": " value (5 minutes, see "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/staleTimes",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "staleTimes"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ")"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Also determines whether the content can be part of the route's "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/glossary#app-shell",
+									"children": [
+										{
+											"type": "text",
+											"value": "App Shell"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". See "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#prerendering-behavior",
+									"children": [
+										{
+											"type": "text",
+											"value": "Prerendering behavior"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "cacheLife({ stale: 300 }) // 5 minutes"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "How often the server regenerates cached content in the background."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "When a request arrives after this period, the server:"
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": true,
+							"start": 1,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Serves the cached version immediately (if available)"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Regenerates content in the background"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Updates the cache with fresh content"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Similar to "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/incremental-static-regeneration",
+									"children": [
+										{
+											"type": "text",
+											"value": "Incremental Static Regeneration (ISR)"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If omitted, defaults to the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "default"
+								},
+								{
+									"type": "text",
+									"value": " profile's "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidate"
+								},
+								{
+									"type": "text",
+									"value": " value (15 minutes)"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "cacheLife({ revalidate: 900 }) // 15 minutes"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "expire"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Maximum time before the server must regenerate cached content."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "After this period with no traffic, the server regenerates content synchronously on the next request"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "When you set both "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidate"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "expire"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "expire"
+								},
+								{
+									"type": "text",
+									"value": " must be longer than "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidate"
+								},
+								{
+									"type": "text",
+									"value": ". Next.js validates this and raises an error for invalid configurations."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If omitted, defaults to the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "default"
+								},
+								{
+									"type": "text",
+									"value": " profile's "
+								},
+								{
+									"type": "inlineCode",
+									"value": "expire"
+								},
+								{
+									"type": "text",
+									"value": " value (never expires)"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "cacheLife({ expire: 3600 }) // 1 hour"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Preset cache profiles"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you don't specify a profile, Next.js uses the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default"
+				},
+				{
+					"type": "text",
+					"value": " profile. We recommend explicitly setting a profile to make caching behavior clear."
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Profile"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Use Case"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "stale"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "revalidate"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "expire"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "default"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Standard content"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "5 minutes"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "15 minutes"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "never"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "seconds"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Real-time data"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "30 seconds"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "1 second"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "1 minute"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "minutes"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Frequently updated content"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "5 minutes"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "1 minute"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "1 hour"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "hours"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Content updated multiple times per day"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "5 minutes"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "1 hour"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "1 day"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "days"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Content updated daily"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "5 minutes"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "1 day"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "1 week"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "weeks"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Content updated weekly"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "5 minutes"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "1 week"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "30 days"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "max"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Stable content that rarely changes"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "5 minutes"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "30 days"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "1 year"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Overriding the default cache profiles"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The preset profiles map to familiar time periods ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "seconds"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "minutes"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "hours"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "days"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "weeks"
+				},
+				{
+					"type": "text",
+					"value": "), alongside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "max"
+				},
+				{
+					"type": "text",
+					"value": ". You can use these as they are, or redefine any of them, including "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "max"
+				},
+				{
+					"type": "text",
+					"value": ", in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": ". The built-in names keep working with editor autocomplete."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Redefining a built-in is a supported pattern, but document it in your project so a call like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife('hours')"
+				},
+				{
+					"type": "text",
+					"value": " reflects the values you set, not the presets. The time-named profiles carry an intuitive expectation ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "days"
+				},
+				{
+					"type": "text",
+					"value": " reads as roughly 24 hours), so redefining them is more likely to surprise a reader than redefining "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "max"
+				},
+				{
+					"type": "text",
+					"value": ", which don't imply a specific duration. An equally valid approach is to define your own "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#custom-cache-profiles",
+					"children": [
+						{
+							"type": "text",
+							"value": "custom profile"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " rather than overloading a built-in name."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Redefining "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default"
+				},
+				{
+					"type": "text",
+					"value": " also changes the lifetime applied when a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " scope calls no "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": ". The example below sets "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default"
+				},
+				{
+					"type": "text",
+					"value": " to a one hour revalidate:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "const nextConfig = {\n\tcacheComponents: true,\n\tcacheLife: {\n\t\t// Redefine the 'default' profile\n\t\tdefault: {\n\t\t\tstale: 300, // 5 minutes\n\t\t\trevalidate: 3600, // 1 hour\n\t\t\texpire: 86400, // 1 day\n\t\t},\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " The "
+						},
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						},
+						{
+							"type": "text",
+							"value": " function's type signature is generated from "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next.config.ts"
+						},
+						{
+							"type": "text",
+							"value": " during "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next dev"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next build"
+						},
+						{
+							"type": "text",
+							"value": ", or "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/cli/next#next-typegen-options",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next typegen"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", so an overridden profile's editor autocomplete and JSDoc hint reflect the values you set, not the presets."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Custom cache profiles"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Define reusable cache profiles with your own names in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tcacheComponents: true,\n\tcacheLife: {\n\t\tbiweekly: {\n\t\t\tstale: 60 * 60 * 24 * 14, // 14 days\n\t\t\trevalidate: 60 * 60 * 24, // 1 day\n\t\t\texpire: 60 * 60 * 24 * 14, // 14 days\n\t\t},\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "const nextConfig = {\n\tcacheComponents: true,\n\tcacheLife: {\n\t\tbiweekly: {\n\t\t\tstale: 60 * 60 * 24 * 14, // 14 days\n\t\t\trevalidate: 60 * 60 * 24, // 1 day\n\t\t\texpire: 60 * 60 * 24 * 14, // 14 days\n\t\t},\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The example above caches for 14 days, checks for updates daily, and expires the cache after 14 days. You can then reference this profile throughout your application by its name:"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Any omitted properties in a custom profile inherit from the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "default"
+						},
+						{
+							"type": "text",
+							"value": " profile. This also applies to inline profile objects passed directly to "
+						},
+						{
+							"type": "inlineCode",
+							"value": "cacheLife()"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" highlight={5}",
+			"value": "'use cache'\nimport { cacheLife } from 'next/cache'\n\nexport default async function Page() {\n\tcacheLife('biweekly')\n\treturn <div>Page</div>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Inline cache profiles"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For one-off cases, pass a profile object directly to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\"",
+			"value": "'use cache'\nimport { cacheLife } from 'next/cache'\n\nexport default async function Page() {\n\tcacheLife({\n\t\tstale: 3600,\n\t\trevalidate: 900,\n\t\texpire: 86400,\n\t})\n\n\treturn <div>Page</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Inline profiles apply only to the specific function or component. For reusable configurations, define custom profiles in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife({})"
+				},
+				{
+					"type": "text",
+					"value": " with an empty object applies the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default"
+				},
+				{
+					"type": "text",
+					"value": " profile values."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Client cache behavior"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "stale"
+				},
+				{
+					"type": "text",
+					"value": " property controls the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#client-cache",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client Cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", not the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Cache-Control"
+				},
+				{
+					"type": "text",
+					"value": " header:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The server sends the stale time via the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "x-nextjs-stale-time"
+								},
+								{
+									"type": "text",
+									"value": " response header"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The client router uses this value to determine when to revalidate"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Minimum of 30 seconds is enforced"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to ensure prefetched links remain usable"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This 30-second minimum prevents prefetched data from expiring before users can click on links. It only applies to time-based expiration."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When you call revalidation functions from a Server Action ("
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidatePath",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidatePath"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/updateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "updateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/refresh",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "refresh"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "), the entire client cache is immediately cleared, bypassing the stale time."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": The "
+						},
+						{
+							"type": "inlineCode",
+							"value": "stale"
+						},
+						{
+							"type": "text",
+							"value": " property in "
+						},
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						},
+						{
+							"type": "text",
+							"value": " differs from "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/config/next-config-js/staleTimes",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "staleTimes"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ". While "
+						},
+						{
+							"type": "inlineCode",
+							"value": "staleTimes"
+						},
+						{
+							"type": "text",
+							"value": " is a global setting affecting all routes, "
+						},
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						},
+						{
+							"type": "text",
+							"value": " allows per-function or per-route configuration. Updating "
+						},
+						{
+							"type": "inlineCode",
+							"value": "staleTimes.static"
+						},
+						{
+							"type": "text",
+							"value": " also updates the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "stale"
+						},
+						{
+							"type": "text",
+							"value": " value of the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "default"
+						},
+						{
+							"type": "text",
+							"value": " cache profile."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Prerendering behavior"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A short cache lifetime changes where the cached content can be delivered from:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidate"
+										},
+										{
+											"type": "text",
+											"value": " of "
+										},
+										{
+											"type": "inlineCode",
+											"value": "0"
+										},
+										{
+											"type": "text",
+											"value": ", or "
+										},
+										{
+											"type": "inlineCode",
+											"value": "expire"
+										},
+										{
+											"type": "text",
+											"value": " under 5 minutes"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": excluded from prerenders, becoming a \"dynamic hole\" resolved at request time."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "stale"
+										},
+										{
+											"type": "text",
+											"value": " under 30 seconds"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": excluded from prerenders, because a prefetch would expire before the user could click."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "stale"
+										},
+										{
+											"type": "text",
+											"value": " of at least 30 seconds but under 5 minutes"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": included in prerenders, but excluded from the route's "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/glossary#app-shell",
+									"children": [
+										{
+											"type": "text",
+											"value": "App Shell"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Of the presets, only "
+				},
+				{
+					"type": "inlineCode",
+					"value": "seconds"
+				},
+				{
+					"type": "text",
+					"value": " falls under any of these thresholds: its "
+				},
+				{
+					"type": "inlineCode",
+					"value": "expire"
+				},
+				{
+					"type": "text",
+					"value": " of 1 minute excludes it from prerenders."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This behavior allows you to mix static and dynamic content within the same page. Static parts are prerendered, while short-lived caches create boundaries where data is fetched at request time rather than build time. Use a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary around dynamic caches to provide a fallback while content loads."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using preset profiles"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The simplest way to configure caching is using preset profiles. Choose one that matches your content's update pattern:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\"",
+			"value": "import { cacheLife } from 'next/cache'\n\nexport default async function BlogPost() {\n\t'use cache'\n\tcacheLife('days') // Blog posts updated daily\n\n\tconst post = await fetchBlogPost()\n\treturn <article>{post.content}</article>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/[id]/page.tsx\"",
+			"value": "import { cacheLife } from 'next/cache'\n\nexport default async function ProductPage() {\n\t'use cache'\n\tcacheLife('hours') // Product data updated multiple times per day\n\n\tconst product = await fetchProduct()\n\treturn <div>{product.name}</div>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Custom profiles for specific needs"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Define custom profiles when preset options don't match your requirements:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tcacheComponents: true,\n\tcacheLife: {\n\t\teditorial: {\n\t\t\tstale: 600, // 10 minutes\n\t\t\trevalidate: 3600, // 1 hour\n\t\t\texpire: 86400, // 1 day\n\t\t},\n\t\tmarketing: {\n\t\t\tstale: 300, // 5 minutes\n\t\t\trevalidate: 1800, // 30 minutes\n\t\t\texpire: 43200, // 12 hours\n\t\t},\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then use these profiles throughout your application:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/editorial/page.tsx\"",
+			"value": "import { cacheLife } from 'next/cache'\n\nexport default async function EditorialPage() {\n\t'use cache'\n\tcacheLife('editorial')\n\t// ...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Inline profiles for unique cases"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use inline profiles when a specific function needs one-off caching behavior:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/api/limited-offer/route.ts\"",
+			"value": "import { cacheLife } from 'next/cache'\nimport { getDb } from '@lib/db'\n\nasync function getLimitedOffer() {\n\t'use cache'\n\n\tcacheLife({\n\t\tstale: 60, // 1 minute\n\t\trevalidate: 300, // 5 minutes\n\t\texpire: 3600, // 1 hour\n\t})\n\n\tconst offer = await getDb().offer.findFirst({\n\t\twhere: { type: 'limited' },\n\t\torderBy: { created_at: 'desc' },\n\t})\n\n\treturn offer\n}\n\nexport async function GET() {\n\tconst offer = await getLimitedOffer()\n\n\treturn Response.json(offer)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Caching individual functions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Apply caching to utility functions for granular control:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"lib/api.ts\"",
+			"value": "import { cacheLife } from 'next/cache'\n\nexport async function getSettings() {\n\t'use cache'\n\tcacheLife('max') // Settings rarely change\n\n\treturn await fetchSettings()\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"lib/stats.ts\"",
+			"value": "import { cacheLife } from 'next/cache'\n\nexport async function getRealtimeStats() {\n\t'use cache'\n\tcacheLife('seconds') // Stats update constantly\n\n\treturn await fetchStats()\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Nested caching behavior"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When you nest "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " directives (a cached function or component using another cached function or component), the outer cache's behavior depends on whether it has an explicit "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "With explicit outer cacheLife"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The outer cache uses its own lifetime, regardless of inner cache lifetimes. When the outer cache hits, it returns the complete output including all nested data. An explicit "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": " always takes precedence, whether it's longer or shorter than inner lifetimes."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/page.tsx\"",
+			"value": "import { cacheLife } from 'next/cache'\nimport { Widget } from './widget'\n\nexport default async function Dashboard() {\n\t'use cache'\n\tcacheLife('hours') // Outer scope sets its own lifetime\n\n\treturn (\n\t\t<div>\n\t\t\t<h1>Dashboard</h1>\n\t\t\t<Widget /> {/* Inner scope has 'minutes' lifetime */}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Without explicit outer cacheLife"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you don't call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": " in the outer cache, it uses the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default"
+				},
+				{
+					"type": "text",
+					"value": " profile (15 min revalidate). Inner caches with shorter lifetimes can reduce the outer cache's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default"
+				},
+				{
+					"type": "text",
+					"value": " lifetime. Inner caches with longer lifetimes cannot extend it beyond the default."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/page.tsx\"",
+			"value": "import { Widget } from './widget'\n\nexport default async function Dashboard() {\n\t'use cache'\n\t// No cacheLife call - uses default (15 min)\n\t// If Widget has 5 min → Dashboard becomes 5 min\n\t// If Widget has 1 hour → Dashboard stays 15 min\n\n\treturn (\n\t\t<div>\n\t\t\t<h1>Dashboard</h1>\n\t\t\t<Widget />\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "It is recommended to specify an explicit "
+						},
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " With explicit lifetime values, you can inspect a cached function or component and immediately know its behavior without tracing through nested caches. Without explicit lifetime values, the behavior becomes dependent on inner cache lifetimes, making it harder to reason about."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Nested short-lived caches"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "As described in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#prerendering-behavior",
+					"children": [
+						{
+							"type": "text",
+							"value": "Prerendering behavior"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", short-lived caches (zero "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "expire"
+				},
+				{
+					"type": "text",
+					"value": " under 5 minutes) become dynamic holes excluded from prerenders."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When a short-lived cache is nested inside another "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " without an explicit "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": ", the outer cache's lifetime would silently become short too via propagation. To prevent this accidental misconfiguration, Next.js throws an error during prerendering."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Note that the nested cache may not be obvious — it could be in an imported module or even a third-party dependency:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"components/short-lived-widget.tsx\" highlight={5}",
+			"value": "import { cacheLife } from 'next/cache'\n\nexport async function ShortLivedWidget() {\n\t'use cache'\n\tcacheLife('seconds')\n\tconst data = await fetchRealtimeData()\n\treturn <div>{data}</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Using this component from another "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " without an explicit "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": " will error during prerendering:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\"",
+			"value": "import { ShortLivedWidget } from '@/components/short-lived-widget'\n\nexport default async function Page() {\n\t'use cache'\n\t// Error: no explicit cacheLife on outer cache\n\treturn (\n\t\t<div>\n\t\t\t<h1>Dashboard</h1>\n\t\t\t<p>Last updated: {new Date().toISOString()}</p>\n\t\t\t<ShortLivedWidget />\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To fix the error, add an explicit "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife()"
+				},
+				{
+					"type": "text",
+					"value": " to the outer "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "If you want the outer cache to remain static (prerendered)"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", set a longer cache lifetime:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" highlight={6}",
+			"value": "import { cacheLife } from 'next/cache'\nimport { ShortLivedWidget } from '@/components/short-lived-widget'\n\nexport default async function Page() {\n\t'use cache'\n\tcacheLife('default') // Explicit cacheLife prevents the error\n\treturn (\n\t\t<div>\n\t\t\t<h1>Dashboard</h1>\n\t\t\t<p>Last updated: {new Date().toISOString()}</p>\n\t\t\t<ShortLivedWidget />\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "If you want the outer cache to also be short-lived"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", explicitly set a short cache lifetime to confirm this is intentional. Wrap the component in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary to provide a fallback while content loads:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" highlight={7,17-19}",
+			"value": "import { Suspense } from 'react'\nimport { cacheLife } from 'next/cache'\nimport { ShortLivedWidget } from '@/components/short-lived-widget'\n\nasync function Content() {\n\t'use cache: remote'\n\tcacheLife('seconds') // Explicit cacheLife confirms this is intentionally short-lived\n\treturn (\n\t\t<>\n\t\t\t<p>Last updated: {new Date().toISOString()}</p>\n\t\t\t<ShortLivedWidget />\n\t\t</>\n\t)\n}\n\nexport default function Page() {\n\treturn (\n\t\t<div>\n\t\t\t<h1>Dashboard</h1>\n\t\t\t<Suspense fallback={<p>Loading...</p>}>\n\t\t\t\t<Content />\n\t\t\t</Suspense>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Note:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " This example uses "
+						},
+						{
+							"type": "inlineCode",
+							"value": "\"use cache: remote\""
+						},
+						{
+							"type": "text",
+							"value": " because runtime caching in serverless deployments doesn't persist across requests with the default in-memory cache. For self-hosted environments, "
+						},
+						{
+							"type": "inlineCode",
+							"value": "\"use cache\""
+						},
+						{
+							"type": "text",
+							"value": " may be sufficient. See "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/directives/use-cache#runtime-caching-considerations",
+							"children": [
+								{
+									"type": "text",
+									"value": "Runtime caching considerations"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for more details."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Conditional cache lifetimes"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": " conditionally in different code paths to set different cache durations based on your application logic:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"lib/posts.ts\" highlight={14,19}",
+			"value": "import { cacheLife, cacheTag } from 'next/cache'\n\nasync function getPostContent(slug: string) {\n\t'use cache'\n\n\tconst post = await fetchPost(slug)\n\n\t// Tag the cache entry for targeted revalidation\n\tcacheTag(`post-${slug}`)\n\n\tif (!post) {\n\t\t// Content may not be published yet or could be in draft\n\t\t// Cache briefly to reduce database load\n\t\tcacheLife('minutes')\n\t\treturn null\n\t}\n\n\t// Published content can be cached longer\n\tcacheLife('days')\n\n\t// Return only the necessary data to keep cache size minimal\n\treturn post.data\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This pattern is useful when different outcomes need different cache durations, for example, when an item is missing but is likely to be available later."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using dynamic cache lifetimes from data"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you want to calculate cache lifetime at runtime, for example by reading it from the fetched data, use an "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#inline-cache-profiles",
+					"children": [
+						{
+							"type": "text",
+							"value": "inline cache profile"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " object:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"lib/posts.ts\" highlight={15,16,17,18}",
+			"value": "import { cacheLife, cacheTag } from 'next/cache'\n\nasync function getPostContent(slug: string) {\n\t'use cache'\n\n\tconst post = await fetchPost(slug)\n\tcacheTag(`post-${slug}`)\n\n\tif (!post) {\n\t\tcacheLife('minutes')\n\t\treturn null\n\t}\n\n\t// Use cache timing from CMS data directly as an object\n\tcacheLife({\n\t\t// Ensure post.revalidateSeconds is a number in seconds\n\t\t// stale and expire inherit from 'default' profile\n\t\trevalidate: post.revalidateSeconds ?? 3600,\n\t})\n\n\treturn post.data\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "cacheLife"
+								},
+								{
+									"type": "text",
+									"value": " stabilized. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "unstable_cacheLife"
+								},
+								{
+									"type": "text",
+									"value": " deprecated."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/version-16#cachelife-and-cachetag",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js 16 upgrade guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to update imports from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "unstable_cacheLife"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		}
+	]
+}

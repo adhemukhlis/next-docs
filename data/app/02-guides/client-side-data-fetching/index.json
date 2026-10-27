@@ -1,0 +1,988 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Client-side data fetching\ndescription: Fetch data in Client Components with a data-fetching library, optionally provide initial data from a Server Component, and coordinate server and client caches.\nrelated:\n description: Related guides and references.\n links:\n  - app/getting-started/fetching-data\n  - app/guides/single-page-applications\n  - app/guides/interactive-apps\n  - app/getting-started/caching"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Many apps can provide responsive interactions without a client data-fetching library. If a Client Component only needs to read server data once, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/fetching-data#streaming-data-with-the-use-api",
+					"children": [
+						{
+							"type": "text",
+							"value": "pass it a Promise and unwrap it with React's "
+						},
+						{
+							"type": "inlineCode",
+							"value": "use()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This avoids adding a library for data that never revalidates on the client. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/interactive-apps",
+					"children": [
+						{
+							"type": "text",
+							"value": "Building interactive apps"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for patterns using Server Functions, transitions, optimistic UI, and pending feedback."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use a client data-fetching library such as "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://swr.vercel.app",
+					"children": [
+						{
+							"type": "text",
+							"value": "SWR"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://tanstack.com/query",
+					"children": [
+						{
+							"type": "text",
+							"value": "TanStack Query"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.apollographql.com/docs/react",
+					"children": [
+						{
+							"type": "text",
+							"value": "Apollo Client"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when Client Components need a shared browser cache. These libraries can add focus revalidation, interval polling, request deduplication, or optimistic updates across components."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Choose a client fetching pattern"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "First decide whether the initial view needs data from the server or can wait for a browser request after hydration. Client data-fetching libraries support three common patterns:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Pattern"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "SWR"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "TanStack Query"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "When data becomes available"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Inline loading states"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "useSWR"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "useQuery"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Browser request after hydration"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Suspense loading states"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "useSWR"
+								},
+								{
+									"type": "text",
+									"value": " with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "suspense: true"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "useSuspenseQuery"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Browser request after hydration"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Provided by the server"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<SWRConfig fallback>"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<HydrationBoundary>"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Initial render or streamed from server"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use inline loading states when each component should render its own loading UI. Use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/fetching-data#streaming",
+					"children": [
+						{
+							"type": "text",
+							"value": "Suspense"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to define loading UI at a boundary and coordinate which parts of the interface reveal together or progressively. For client-only fetching, choose the pattern that matches the loading experience you want. Suspense coordinates rendering, while the data library and component structure determine when requests start."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For browser-driven interactions such as autocomplete, you can use either client-only pattern. The initial result waits for hydration and a browser request, which is often the right tradeoff for data that is not needed until an interaction."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Provide initial data from a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when the server knows what the initial render needs. The value can be included in the initial render or streamed through Suspense. The library receives it in the React Server Component payload and can continue managing it in the browser."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache server data with Cache Components (optional)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Providing initial data and caching it on the server are independent choices. Add Cache Components when the server read or rendered view should be reused. When both are enabled, three cache layers can hold related data:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Layer"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "What it stores"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Freshness control"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Next.js server cache"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Cached data and Server Component output"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/cacheLife",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cacheLife"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidate"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "expire"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Next.js client cache"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "React Server Component payloads for visited and prefetched routes"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/cacheLife",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cacheLife"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " "
+								},
+								{
+									"type": "inlineCode",
+									"value": "stale"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Client data-fetching library"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Browser data stored under an SWR key or TanStack query key"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The library's revalidation options and mutations"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " can place a route's React Server Component payload in the client cache before navigation."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The cache layers keep independent freshness policies and do not need matching durations. Cache identities and mutation invalidation must stay coordinated across layers."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Coordinate mutations"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Components, data-fetching libraries, and mutations manage different parts of the data flow:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Server Components"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " provide the initial data, scoped to the segment that owns it."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "The data-fetching library"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " stores the browser value under a shared cache identity."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Mutations"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " can update the browser cache immediately and invalidate cached server data so the next render can read a fresh value."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "An optimistic update should restore the previous browser value if the write fails. If the server read is not cached, there is no server tag to invalidate."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After a mutation, invalidate any cached server read that provided the initial data:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Method"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Use when"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Next server read"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/updateTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "updateTag(tag)"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "A Server Action must make its update visible immediately"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Waits for fresh data"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/revalidateTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidateTag(tag, 'max')"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The update is passive or stale data is acceptable"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Serves stale data while revalidating"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/revalidateTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidateTag(tag, { expire: 0 })"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "A webhook or external system requires immediate expiration"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Waits for fresh data"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Apply these patterns with SWR or TanStack Query"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/client-side-data-fetching/swr",
+									"children": [
+										{
+											"type": "text",
+											"value": "Client-side data fetching with SWR"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/client-side-data-fetching/tanstack-query",
+									"children": [
+										{
+											"type": "text",
+											"value": "Client-side data fetching with TanStack Query"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See both patterns in the live "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://next-spa-patterns.labs.vercel.dev",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next-spa-patterns"
+						},
+						{
+							"type": "text",
+							"value": " demo"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and its "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/nextjs/next-spa-patterns",
+					"children": [
+						{
+							"type": "text",
+							"value": "source code"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		}
+	]
+}

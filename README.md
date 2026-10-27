@@ -1,11 +1,14 @@
 # next-docs
 
-This tool extracts official Next.js documentation from the [vercel/next.js](https://github.com/vercel/next.js/tree/canary/docs) repository (`canary` branch).
+Refined [Next.js](https://github.com/vercel/next.js/tree/canary/docs) documentation (`canary`): App Router only, stable first-class APIs, no legacy Pages Router content.
 
-It selectively keeps only the **API Reference** and **Implementation** guides for the **App Router**, including the latest **Canary** features. The goal is to streamline the documentation into a clean and focused knowledge base, free from legacy feature contamination (such as Pages Router).
+- `docs/` — Markdown docs
+- `data/` — the same docs as mdast JSON (generated)
 
 ## Getting Started
 
 ```bash
-node script.js
+bun install
+bun run pull   # pull latest upstream docs into docs/
+bun run data   # convert docs/ -> data/ (mdast JSON)
 ```

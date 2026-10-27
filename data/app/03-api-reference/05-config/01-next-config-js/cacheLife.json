@@ -1,0 +1,559 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: cacheLife\ndescription: Learn how to set up cacheLife configurations in Next.js.\nrelated:\n title: Related\n description: View related API references.\n links:\n  - app/api-reference/directives/use-cache\n  - app/api-reference/config/next-config-js/cacheHandlers\n  - app/api-reference/functions/cacheLife"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": " option allows you to define "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "custom cache profiles"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " function inside components or functions, and within the scope of the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						},
+						{
+							"type": "text",
+							"value": " directive"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Usage"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To define a profile, enable the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents"
+						},
+						{
+							"type": "text",
+							"value": " flag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and add the cache profile in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": " object in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file. For example, a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "blog"
+				},
+				{
+					"type": "text",
+					"value": " profile:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tcacheComponents: true,\n\tcacheLife: {\n\t\tblog: {\n\t\t\tstale: 3600, // 1 hour\n\t\t\trevalidate: 900, // 15 minutes\n\t\t\texpire: 86400, // 1 day\n\t\t},\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "module.exports = {\n\tcacheComponents: true,\n\tcacheLife: {\n\t\tblog: {\n\t\t\tstale: 3600, // 1 hour\n\t\t\trevalidate: 900, // 15 minutes\n\t\t\texpire: 86400, // 1 day\n\t\t},\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can now use this custom "
+				},
+				{
+					"type": "inlineCode",
+					"value": "blog"
+				},
+				{
+					"type": "text",
+					"value": " configuration in your component or function as follows:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/actions.ts\" highlight={4,5} switcher",
+			"value": "import { cacheLife } from 'next/cache'\n\nexport async function getCachedData() {\n\t'use cache'\n\tcacheLife('blog')\n\tconst res = await fetch('https://api.example.com/data')\n\tconst data = await res.json()\n\treturn data\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/actions.js\" highlight={4,5} switcher",
+			"value": "import { cacheLife } from 'next/cache'\n\nexport async function getCachedData() {\n\t'use cache'\n\tcacheLife('blog')\n\tconst res = await fetch('https://api.example.com/data')\n\tconst data = await res.json()\n\treturn data\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also override a built-in profile by defining one with the same name ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "default"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "seconds"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "minutes"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "hours"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "days"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "weeks"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "max"
+				},
+				{
+					"type": "text",
+					"value": "). See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife#overriding-the-default-cache-profiles",
+					"children": [
+						{
+							"type": "text",
+							"value": "Overriding the default cache profiles"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The configuration object has key values with the following format:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Property"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Value"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Description"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Requirement"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "stale"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "number"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Duration the client should cache a value without checking the server."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "revalidate"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "number"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Frequency at which the cache should refresh on the server; stale values may be served while revalidating."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "expire"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "number"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Maximum duration for which a value can remain stale before switching to dynamic."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional - Must be longer than "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidate"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "cacheLife"
+								},
+								{
+									"type": "text",
+									"value": " stabilized and moved from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "experimental.cacheLife"
+								},
+								{
+									"type": "text",
+									"value": " to the top-level "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cacheLife"
+								},
+								{
+									"type": "text",
+									"value": " option."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

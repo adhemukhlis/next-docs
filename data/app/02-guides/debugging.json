@@ -1,0 +1,1474 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to use debugging tools with Next.js\nnav_title: Debugging\ndescription: Learn how to debug your Next.js application with VS Code, Chrome DevTools, or Firefox DevTools."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This documentation explains how you can debug your Next.js frontend and backend code with full source maps support using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://code.visualstudio.com/docs/editor/debugging",
+					"children": [
+						{
+							"type": "text",
+							"value": "VS Code debugger"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developers.google.com/web/tools/chrome-devtools",
+					"children": [
+						{
+							"type": "text",
+							"value": "Chrome DevTools"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://firefox-source-docs.mozilla.org/devtools-user/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Firefox DevTools"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Any debugger that can attach to Node.js can also be used to debug a Next.js application. You can find more details in the Node.js "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nodejs.org/learn/getting-started/debugging/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Debugging Guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Debugging with VS Code"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Create a file named "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".vscode/launch.json"
+				},
+				{
+					"type": "text",
+					"value": " at the root of your project with the following content:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"launch.json\"",
+			"value": "{\n\t\"version\": \"0.2.0\",\n\t\"configurations\": [\n\t\t{\n\t\t\t\"name\": \"Next.js: debug server-side\",\n\t\t\t\"type\": \"node-terminal\",\n\t\t\t\"request\": \"launch\",\n\t\t\t\"command\": \"npm run dev -- --inspect\"\n\t\t},\n\t\t{\n\t\t\t\"name\": \"Next.js: debug client-side\",\n\t\t\t\"type\": \"chrome\",\n\t\t\t\"request\": \"launch\",\n\t\t\t\"url\": \"http://localhost:3000\"\n\t\t},\n\t\t{\n\t\t\t\"name\": \"Next.js: debug client-side (Firefox)\",\n\t\t\t\"type\": \"firefox\",\n\t\t\t\"request\": \"launch\",\n\t\t\t\"url\": \"http://localhost:3000\",\n\t\t\t\"reAttach\": true,\n\t\t\t\"pathMappings\": [\n\t\t\t\t{\n\t\t\t\t\t\"url\": \"webpack://_N_E\",\n\t\t\t\t\t\"path\": \"${workspaceFolder}\"\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t{\n\t\t\t\"name\": \"Next.js: debug full stack\",\n\t\t\t\"type\": \"node\",\n\t\t\t\"request\": \"launch\",\n\t\t\t\"program\": \"${workspaceFolder}/node_modules/next/dist/bin/next\",\n\t\t\t\"runtimeArgs\": [\"--inspect\"],\n\t\t\t\"skipFiles\": [\"<node_internals>/**\"],\n\t\t\t\"serverReadyAction\": {\n\t\t\t\t\"action\": \"debugWithEdge\",\n\t\t\t\t\"killOnServerStop\": true,\n\t\t\t\t\"pattern\": \"- Local:.+(https?://.+)\",\n\t\t\t\t\"uriFormat\": \"%s\",\n\t\t\t\t\"webRoot\": \"${workspaceFolder}\"\n\t\t\t}\n\t\t}\n\t]\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Note"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": To use Firefox debugging in VS Code, you'll need to install the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://marketplace.visualstudio.com/items?itemName=firefox-devtools.vscode-firefox-debug",
+							"children": [
+								{
+									"type": "text",
+									"value": "Firefox Debugger extension"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "npm run dev"
+				},
+				{
+					"type": "text",
+					"value": " can be replaced with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "yarn dev"
+				},
+				{
+					"type": "text",
+					"value": " if you're using Yarn or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pnpm dev"
+				},
+				{
+					"type": "text",
+					"value": " if you're using pnpm."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the \"Next.js: debug full stack\" configuration, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "serverReadyAction.action"
+				},
+				{
+					"type": "text",
+					"value": " specifies which browser to open when the server is ready. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "debugWithEdge"
+				},
+				{
+					"type": "text",
+					"value": " means to launch the Edge browser. If you are using Chrome, change this value to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "debugWithChrome"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you're "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/pages/api-reference/cli/next#next-dev-options",
+					"children": [
+						{
+							"type": "text",
+							"value": "changing the port number"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " your application starts on, replace the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "3000"
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "http://localhost:3000"
+				},
+				{
+					"type": "text",
+					"value": " with the port you're using instead."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you're running Next.js from a directory other than root (for example, if you're using Turborepo) then you need to add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cwd"
+				},
+				{
+					"type": "text",
+					"value": " to the server-side and full stack debugging tasks. For example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"cwd\": \"${workspaceFolder}/apps/web\""
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Now go to the Debug panel ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "Ctrl+Shift+D"
+				},
+				{
+					"type": "text",
+					"value": " on Windows/Linux, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "⇧+⌘+D"
+				},
+				{
+					"type": "text",
+					"value": " on macOS), select a launch configuration, then press "
+				},
+				{
+					"type": "inlineCode",
+					"value": "F5"
+				},
+				{
+					"type": "text",
+					"value": " or select "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Debug: Start Debugging"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " from the Command Palette to start your debugging session."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using the Debugger in Jetbrains WebStorm"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Click the drop down menu listing the runtime configuration, and click "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Edit Configurations..."
+				},
+				{
+					"type": "text",
+					"value": ". Create a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "JavaScript Debug"
+				},
+				{
+					"type": "text",
+					"value": " debug configuration with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "http://localhost:3000"
+				},
+				{
+					"type": "text",
+					"value": " as the URL. Customize to your liking (e.g. Browser for debugging, store as project file), and click "
+				},
+				{
+					"type": "inlineCode",
+					"value": "OK"
+				},
+				{
+					"type": "text",
+					"value": ". Run this debug configuration, and the selected browser should automatically open. At this point, you should have 2 applications in debug mode: the Next.js node application, and the client/browser application."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Debugging with Browser DevTools"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Client-side code"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Start your development server as usual by running "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "npm run dev"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "yarn dev"
+				},
+				{
+					"type": "text",
+					"value": ". Once the server starts, open "
+				},
+				{
+					"type": "inlineCode",
+					"value": "http://localhost:3000"
+				},
+				{
+					"type": "text",
+					"value": " (or your alternate URL) in your preferred browser."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For Chrome:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Open Chrome's Developer Tools ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "Ctrl+Shift+J"
+								},
+								{
+									"type": "text",
+									"value": " on Windows/Linux, "
+								},
+								{
+									"type": "inlineCode",
+									"value": "⌥+⌘+I"
+								},
+								{
+									"type": "text",
+									"value": " on macOS)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Go to the "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Sources"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " tab"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For Firefox:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Open Firefox's Developer Tools ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "Ctrl+Shift+I"
+								},
+								{
+									"type": "text",
+									"value": " on Windows/Linux, "
+								},
+								{
+									"type": "inlineCode",
+									"value": "⌥+⌘+I"
+								},
+								{
+									"type": "text",
+									"value": " on macOS)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Go to the "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Debugger"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " tab"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In either browser, any time your client-side code reaches a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/debugger",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "debugger"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " statement, code execution will pause and that file will appear in the debug area. You can also search for files to set breakpoints manually:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "In Chrome: Press "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Ctrl+P"
+								},
+								{
+									"type": "text",
+									"value": " on Windows/Linux or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "⌘+P"
+								},
+								{
+									"type": "text",
+									"value": " on macOS"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "In Firefox: Press "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Ctrl+P"
+								},
+								{
+									"type": "text",
+									"value": " on Windows/Linux or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "⌘+P"
+								},
+								{
+									"type": "text",
+									"value": " on macOS, or use the file tree in the left panel"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Note that when searching, your source files will have paths starting with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "webpack://_N_E/./"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "React Developer Tools"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For React-specific debugging, install the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/learn/react-developer-tools",
+					"children": [
+						{
+							"type": "text",
+							"value": "React Developer Tools"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " browser extension. This essential tool helps you:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Inspect React components"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Edit props and state"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Identify performance problems"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Server-side code"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To debug server-side Next.js code with browser DevTools, you need to pass the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "--inspect"
+				},
+				{
+					"type": "text",
+					"value": " flag:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm dev --inspect"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm run dev -- --inspect"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn dev --inspect"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun run dev --inspect"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The value of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "--inspect"
+				},
+				{
+					"type": "text",
+					"value": " is passed to the underlying Node.js process. Check out the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nodejs.org/api/cli.html#--inspecthostport",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "--inspect"
+						},
+						{
+							"type": "text",
+							"value": " docs for advanced use cases"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Use "
+						},
+						{
+							"type": "inlineCode",
+							"value": "--inspect=0.0.0.0"
+						},
+						{
+							"type": "text",
+							"value": " to allow remote debugging access outside localhost, such as when running the app in a Docker container."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Launching the Next.js server with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "--inspect"
+				},
+				{
+					"type": "text",
+					"value": " flag will look something like this:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "Debugger listening on ws://127.0.0.1:9229/0cf90313-350d-4466-a748-cd60f4e47c95\nFor help, see: https://nodejs.org/learn/getting-started/debugging\nready - started server on 0.0.0.0:3000, url: http://localhost:3000"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For Chrome:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Open a new tab and visit "
+								},
+								{
+									"type": "inlineCode",
+									"value": "chrome://inspect"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Look for your Next.js application in the "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Remote Target"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " section"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Click "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "inspect"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to open a separate DevTools window"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Go to the "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Sources"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " tab"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For Firefox:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Open a new tab and visit "
+								},
+								{
+									"type": "inlineCode",
+									"value": "about:debugging"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Click "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "This Firefox"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " in the left sidebar"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Under "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Remote Targets"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", find your Next.js application"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Click "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Inspect"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to open the debugger"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Go to the "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Debugger"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " tab"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Debugging server-side code works similarly to client-side debugging. When searching for files ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "Ctrl+P"
+				},
+				{
+					"type": "text",
+					"value": "/"
+				},
+				{
+					"type": "inlineCode",
+					"value": "⌘+P"
+				},
+				{
+					"type": "text",
+					"value": "), your source files will have paths starting with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "webpack://{application-name}/./"
+				},
+				{
+					"type": "text",
+					"value": " (where "
+				},
+				{
+					"type": "inlineCode",
+					"value": "{application-name}"
+				},
+				{
+					"type": "text",
+					"value": " will be replaced with the name of your application according to your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "package.json"
+				},
+				{
+					"type": "text",
+					"value": " file)."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "--inspect-brk"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "--inspect-wait"
+				},
+				{
+					"type": "text",
+					"value": ", you have to specify "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NODE_OPTIONS"
+				},
+				{
+					"type": "text",
+					"value": " instead. e.g. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NODE_OPTIONS=--inspect-brk next dev"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Inspect Server Errors with Browser DevTools"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When you encounter an error, inspecting the source code can help trace the root cause of errors."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js will display a Node.js icon underneath the Next.js version indicator on the error overlay. By clicking that icon, the DevTools URL is copied to your clipboard. You can open a new browser tab with that URL to inspect the Next.js server process."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Debugging on Windows"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Ensure Windows Defender is disabled on your machine. This external service will check "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "every file read"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", which has been reported to greatly increase Fast Refresh time with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": ". This is a known issue, not related to Next.js, but it does affect Next.js development."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "More information"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To learn more about how to use a JavaScript debugger, take a look at the following documentation:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_breakpoints",
+									"children": [
+										{
+											"type": "text",
+											"value": "Node.js debugging in VS Code: Breakpoints"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developers.google.com/web/tools/chrome-devtools/javascript",
+									"children": [
+										{
+											"type": "text",
+											"value": "Chrome DevTools: Debug JavaScript"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://firefox-source-docs.mozilla.org/devtools-user/debugger/",
+									"children": [
+										{
+											"type": "text",
+											"value": "Firefox DevTools: Debugger"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

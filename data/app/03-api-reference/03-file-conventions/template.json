@@ -1,0 +1,737 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: template.js\ndescription: API Reference for the template.js file."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "template"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " file is similar to a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/layouts-and-pages#creating-a-layout",
+					"children": [
+						{
+							"type": "text",
+							"value": "layout"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in that it wraps a layout or page. Unlike layouts that persist across routes and maintain state, templates are given a unique key, meaning children Client Components reset their state on navigation."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "They are useful when you need to:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Resynchronize "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useEffect"
+								},
+								{
+									"type": "text",
+									"value": " on navigation."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Reset the state of a child Client Components on navigation. For example, an input field."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "To change default framework behavior. For example, Suspense boundaries inside layouts only show a fallback on first load, while templates show it on every navigation."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Convention"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A template can be defined by exporting a default React component from a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "template.js"
+				},
+				{
+					"type": "text",
+					"value": " file. The component should accept a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "children"
+				},
+				{
+					"type": "text",
+					"value": " prop."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"template.js special file\"\nsrcLight=\"/docs/light/template-special-file.png\"\nsrcDark=\"/docs/dark/template-special-file.png\"\nwidth=\"1600\"\nheight=\"444\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/template.tsx\" switcher",
+			"value": "export default function Template({ children }: { children: React.ReactNode }) {\n\treturn <div>{children}</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/template.js\" switcher",
+			"value": "export default function Template({ children }) {\n\treturn <div>{children}</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In terms of nesting, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "template.js"
+				},
+				{
+					"type": "text",
+					"value": " is rendered between a layout and its children. Here's a simplified output:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"Output\"",
+			"value": "<Layout>\n\t{/* Note that the template is given a unique key. */}\n\t<Template key={routeParam}>{children}</Template>\n</Layout>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/project-structure#component-hierarchy",
+					"children": [
+						{
+							"type": "text",
+							"value": "component hierarchy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "template.js"
+				},
+				{
+					"type": "text",
+					"value": " renders between "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout.js"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "error.js"
+				},
+				{
+					"type": "text",
+					"value": ". It wraps "
+				},
+				{
+					"type": "inlineCode",
+					"value": "error.js"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "not-found.js"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.js"
+				},
+				{
+					"type": "text",
+					"value": ", but does "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "not"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " wrap the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout.js"
+				},
+				{
+					"type": "text",
+					"value": " in the same segment."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Props"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "children"
+				},
+				{
+					"type": "text",
+					"value": " (required)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Template accepts a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "children"
+				},
+				{
+					"type": "text",
+					"value": " prop."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"Output\"",
+			"value": "<Layout>\n\t{/* Note that the template is automatically given a unique key. */}\n\t<Template key={routeParam}>{children}</Template>\n</Layout>"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Behavior"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Server Components"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": By default, templates are Server Components."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "With navigation"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Templates receive a unique key for their own segment level. They remount when that segment (including its dynamic params) changes. Navigations within deeper segments do not remount higher-level templates. Search params do not trigger remounts."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "State reset"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Any Client Component inside the template will reset its state on navigation."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Effect re-run"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Effects like "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useEffect"
+								},
+								{
+									"type": "text",
+									"value": " will re-synchronize as the component remounts."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "DOM reset"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": DOM elements inside the template are fully recreated."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Templates during navigation and remounting"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This section illustrates how templates behave during navigation. It shows, step by step, which templates remount on each route change and why."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Using this project tree:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": null,
+			"meta": null,
+			"value": "app\n├── about\n│   ├── page.tsx\n├── blog\n│   ├── [slug]\n│   │   └── page.tsx\n│   ├── page.tsx\n│   └── template.tsx\n├── layout.tsx\n├── page.tsx\n└── template.tsx"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Starting at "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/"
+				},
+				{
+					"type": "text",
+					"value": ", the React tree looks roughly like this."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Note: The "
+						},
+						{
+							"type": "inlineCode",
+							"value": "key"
+						},
+						{
+							"type": "text",
+							"value": " values shown in the examples are illustrative, the values in your application may differ."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"Output\"",
+			"value": "<RootLayout>\n\t{/* app/template.tsx */}\n\t<Template key=\"/\">\n\t\t<Page />\n\t</Template>\n</RootLayout>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Navigating to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/about"
+				},
+				{
+					"type": "text",
+					"value": " (first segment changes), the root template key changes, it remounts:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"Output\"",
+			"value": "<RootLayout>\n\t{/* app/template.tsx */}\n\t<Template key=\"/about\">\n\t\t<AboutPage />\n\t</Template>\n</RootLayout>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Navigating to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog"
+				},
+				{
+					"type": "text",
+					"value": " (first segment changes), the root template key changes, it remounts and the blog-level template mounts:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"Output\"",
+			"value": "<RootLayout>\n\t{/* app/template.tsx (root) */}\n\t<Template key=\"/blog\">\n\t\t{/* app/blog/template.tsx */}\n\t\t<Template key=\"/blog\">\n\t\t\t<BlogIndexPage />\n\t\t</Template>\n\t</Template>\n</RootLayout>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Navigating within the same first segment to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/first-post"
+				},
+				{
+					"type": "text",
+					"value": " (child segment changes), the root template key doesn't change, but the blog-level template key changes, it remounts:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"Output\"",
+			"value": "<RootLayout>\n\t{/* app/template.tsx (root) */}\n\t<Template key=\"/blog\">\n\t\t{/* app/blog/template.tsx */}\n\t\t{/* remounts because the child segment at this level changed */}\n\t\t<Template key=\"/blog/first-post\">\n\t\t\t<BlogPostPage slug=\"first-post\" />\n\t\t</Template>\n\t</Template>\n</RootLayout>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Navigating to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/second-post"
+				},
+				{
+					"type": "text",
+					"value": " (same first segment, different child segment), the root template key doesn't change, but the blog-level template key changes, it remounts again:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"Output\"",
+			"value": "<RootLayout>\n\t{/* app/template.tsx (root) */}\n\t<Template key=\"/blog\">\n\t\t{/* app/blog/template.tsx */}\n\t\t{/* remounts again due to changed child segment */}\n\t\t<Template key=\"/blog/second-post\">\n\t\t\t<BlogPostPage slug=\"second-post\" />\n\t\t</Template>\n\t</Template>\n</RootLayout>"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "template"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,3698 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: use cache\ndescription: Learn how to use the \"use cache\" directive to cache data in your Next.js application.\nrelated:\n title: Related\n description: View related API references.\n links:\n  - app/api-reference/directives/use-cache-private\n  - app/api-reference/config/next-config-js/cacheComponents\n  - app/api-reference/config/next-config-js/cacheLife\n  - app/api-reference/config/next-config-js/cacheHandlers\n  - app/api-reference/functions/cacheTag\n  - app/api-reference/functions/cacheLife\n  - app/api-reference/functions/revalidateTag"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " directive allows you to mark a route, React component, or a function as cacheable. It can be used at the top of a file to indicate that all exports in the file should be cached, or inline at the top of a function or component to cache the return value. Functions and components that use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " must be async."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "To use cookies or headers, read them outside cached scopes and pass values as arguments. This is the preferred pattern."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "If the in-memory cache isn't sufficient for runtime data, "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/directives/use-cache-remote",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "'use cache: remote'"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " allows platforms to provide a dedicated cache handler, though it requires a network roundtrip to check the cache and typically incurs platform fees."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "For compliance requirements or when you can't refactor to pass runtime data as arguments to a "
+										},
+										{
+											"type": "inlineCode",
+											"value": "use cache"
+										},
+										{
+											"type": "text",
+											"value": " scope, see "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/directives/use-cache-private",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "'use cache: private'"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Usage"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " is a Cache Components feature. To enable it, add the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " option to your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": " file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tcacheComponents: true,\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\tcacheComponents: true,\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " at the function, component, or file level. Cached functions and components must be async:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "// Function level\nexport async function getData() {\n\t'use cache'\n\tconst res = await fetch('https://api.example.com/data')\n\tconst data = await res.json()\n\treturn data\n}\n\n// Component level\nexport async function MyComponent() {\n\t'use cache'\n\treturn <></>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When used at file level, every exported function becomes a cached function and must also be async:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "// File level\n'use cache'\n\nexport default async function Page() {\n\t// ...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "How "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " works"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache keys"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A cache entry's key is generated using a serialized version of its inputs, which includes:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Build ID"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - Unique per build, changing this invalidates all cache entries. If "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/deploymentId",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "deploymentId"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " is configured, it overrides the build ID for cache key purposes."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Function ID"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - A secure hash of the function's location and signature in the codebase"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Serializable arguments"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - Props (for components) or function arguments"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "HMR refresh hash"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (development only) - Invalidates cache on hot module replacement"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When a cached function references variables from outer scopes, those variables are automatically captured and bound as arguments, making them part of the cache key."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"lib/data.ts\"",
+			"value": "async function Component({ userId }: { userId: string }) {\n\tconst getData = async (filter: string) => {\n\t\t'use cache'\n\t\t// Cache key includes both userId (from closure) and filter (argument)\n\t\tconst res = await fetch(`https://api.example.com/users/${userId}/data?filter=${filter}`)\n\t\treturn res.json()\n\t}\n\n\treturn getData('active')\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the snippet above, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "userId"
+				},
+				{
+					"type": "text",
+					"value": " is captured from the outer scope and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "filter"
+				},
+				{
+					"type": "text",
+					"value": " is passed as an argument, so both become part of the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getData"
+				},
+				{
+					"type": "text",
+					"value": " function's cache key. This means different user and filter combinations will have separate cache entries."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " When a cached function reads "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/next-root-params",
+							"children": [
+								{
+									"type": "text",
+									"value": "root parameters"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", only the ones it actually reads become part of its cache key."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache output"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A cached function produces the same output for the same inputs. The first call with a given set of inputs runs the function body and stores its output. Every later call with the same inputs reuses that output, within a render pass and across requests, for as long as the entry lasts."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Outputs are stored by a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheHandlers",
+					"children": [
+						{
+							"type": "text",
+							"value": "cache handler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#runtime-caching-considerations",
+					"children": [
+						{
+							"type": "text",
+							"value": "in memory"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " by default, and last until they "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#revalidation",
+					"children": [
+						{
+							"type": "text",
+							"value": "revalidate"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"lib/orders.ts\"",
+			"value": "import { cacheLife } from 'next/cache'\n\nexport async function getOrderSummary(accountId: string) {\n\t'use cache'\n\tcacheLife('hours')\n\n\tconst orders = await getOrders(accountId)\n\tconst totals = await getOrderTotals(accountId)\n\n\treturn { orders, totals }\n}\n\nexport async function getOrders(accountId: string) {\n\t'use cache'\n\tcacheLife('hours')\n\n\treturn db.orders.findMany({ where: { accountId } })\n}\n\nexport async function getOrderTotals(accountId: string) {\n\treturn db.orders.aggregate({ where: { accountId }, _sum: { amount: true } })\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the example above, each "
+				},
+				{
+					"type": "inlineCode",
+					"value": "accountId"
+				},
+				{
+					"type": "text",
+					"value": " has its own entry for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getOrderSummary"
+				},
+				{
+					"type": "text",
+					"value": ", holding the serialized "
+				},
+				{
+					"type": "inlineCode",
+					"value": "{ orders, totals }"
+				},
+				{
+					"type": "text",
+					"value": " object it returns. Calls to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getOrders"
+				},
+				{
+					"type": "text",
+					"value": " have their own entries, keyed by the same "
+				},
+				{
+					"type": "inlineCode",
+					"value": "accountId"
+				},
+				{
+					"type": "text",
+					"value": ". If an earlier call, through the summary or directly, already filled one, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "db.orders.findMany"
+				},
+				{
+					"type": "text",
+					"value": " doesn't run and those orders become part of the summary's output. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife#nested-caching-behavior",
+					"children": [
+						{
+							"type": "text",
+							"value": "nested caching behavior"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for how an inner lifetime affects the entry around it."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Note that "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getOrderTotals"
+				},
+				{
+					"type": "text",
+					"value": " is not cached. It is exported so other parts of the application can read fresh totals in an uncached scope. Inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getOrderSummary"
+				},
+				{
+					"type": "text",
+					"value": ", though, the totals query only runs when that function runs following the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'hours'"
+				},
+				{
+					"type": "text",
+					"value": " lifetime set there."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", prerendering fills the entry and keeps rendering, so this output contributes to the route's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching#prerendering",
+					"children": [
+						{
+							"type": "text",
+							"value": "static shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and can contribute to its "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching#prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "prefetch"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". A cache life too short to store safely leaves a hole that resolves at request time instead. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife#prerendering-behavior",
+					"children": [
+						{
+							"type": "text",
+							"value": "prerendering behavior"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the thresholds."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Serialization"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Arguments to cached functions and their return values must be serializable."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For a complete reference, see:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/rsc/use-server#serializable-parameters-and-return-values",
+									"children": [
+										{
+											"type": "text",
+											"value": "Serializable arguments"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - Uses "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "React Server Components"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " serialization"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/rsc/use-client#serializable-types",
+									"children": [
+										{
+											"type": "text",
+											"value": "Serializable return types"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - Uses "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "React Client Components"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " serialization"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Arguments and return values use different serialization systems. Server Component serialization (for arguments) is more restrictive than Client Component serialization (for return values). This means you can return JSX elements but cannot accept them as arguments unless using pass-through patterns."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Supported types"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Arguments:"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Primitives: "
+								},
+								{
+									"type": "inlineCode",
+									"value": "string"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "number"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "boolean"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "null"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Plain objects: "
+								},
+								{
+									"type": "inlineCode",
+									"value": "{ key: value }"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Arrays: "
+								},
+								{
+									"type": "inlineCode",
+									"value": "[1, 2, 3]"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Dates, Maps, Sets, TypedArrays, ArrayBuffers"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "React elements (as pass-through only)"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Return values:"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Same as arguments, plus JSX elements"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Unsupported types"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Class instances"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Functions (except as pass-through)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Symbols, WeakMaps, WeakSets"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "URL instances"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/components/user-card.tsx\"",
+			"value": "// Valid - primitives and plain objects\nasync function UserCard({ id, config }: { id: string; config: { theme: string } }) {\n\t'use cache'\n\treturn <div>{id}</div>\n}\n\n// Invalid - class instance\nasync function UserProfile({ user }: { user: UserClass }) {\n\t'use cache'\n\t// Error: Cannot serialize class instance\n\treturn <div>{user.name}</div>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Pass-through (non-serializable arguments)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can accept non-serializable values "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "as long as you don't introspect them"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This enables composition patterns with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "children"
+				},
+				{
+					"type": "text",
+					"value": " and Server Actions:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/components/cached-wrapper.tsx\"",
+			"value": "async function CachedWrapper({ children }: { children: ReactNode }) {\n\t'use cache'\n\t// Don't read or modify children - just pass it through\n\treturn (\n\t\t<div className=\"wrapper\">\n\t\t\t<header>Cached Header</header>\n\t\t\t{children}\n\t\t</div>\n\t)\n}\n\n// Usage: children can be dynamic\nexport default function Page() {\n\treturn (\n\t\t<CachedWrapper>\n\t\t\t<DynamicComponent /> {/* Not cached, passed through */}\n\t\t</CachedWrapper>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also pass Server Actions through cached components:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/components/cached-form.tsx\"",
+			"value": "async function CachedForm({ action }: { action: () => Promise<void> }) {\n\t'use cache'\n\t// Don't call action here - just pass it through\n\treturn <form action={action}>{/* ... */}</form>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Constraints"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Cached functions execute in an isolated environment. The following constraints ensure cache behavior remains predictable and secure."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Request-time APIs"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Cached functions and components "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "cannot"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " access runtime APIs like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers()"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": ", and the restriction follows the call stack: a helper the cached function calls that reads one of these fails the same way, with the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/next-request-in-use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next-request-in-use-cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " error. On a dynamically rendered route this surfaces when the route runs, so it can pass "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " and fail under "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next start"
+				},
+				{
+					"type": "text",
+					"value": ". Read these values outside the cached scope and pass them as arguments."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Runtime caching considerations"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "While "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " is designed primarily to include uncached data in the static shell, it can also cache data at runtime using in-memory LRU (Least Recently Used) storage."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With the default in-memory handler, runtime cache behavior depends on your hosting environment:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Environment"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Runtime Caching Behavior"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Serverless"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Cache entries typically don't persist across requests (each request can be a different instance), or during revalidation. Build-time caching works normally."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Self-hosted"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Cache entries persist across requests. Control cache size with "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/cacheMaxMemorySize",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cacheMaxMemorySize"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, in a serverless environment, a cached function shared by two pages executes on each static shell revalidation, whereas in self-hosted or environments with persistent memory, the cached output is reused if it's still fresh."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If the default in-memory cache isn't enough, consider "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/directives/use-cache-remote",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "use cache: remote"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " which allows platforms to provide a dedicated cache handler (like Redis or KV database). This helps reduce hits against data sources not scaled to your total traffic, though it comes with costs (storage, network latency, platform fees)."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "[!NOTE] With the default in-memory handler, serverless instances are ephemeral, so entries may not be reused between requests, unlike with "
+						},
+						{
+							"type": "inlineCode",
+							"value": "use cache: remote"
+						},
+						{
+							"type": "text",
+							"value": ". Neither caching directive carries over to a new deploy, because the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "#cache-keys",
+							"children": [
+								{
+									"type": "text",
+									"value": "cache key"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " includes the build (or "
+						},
+						{
+							"type": "inlineCode",
+							"value": "deploymentId"
+						},
+						{
+							"type": "text",
+							"value": ") ID."
+						}
+					]
+				},
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "For data that needs to persist across deploys, use "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/unstable_cache",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "unstable_cache"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for non-"
+						},
+						{
+							"type": "inlineCode",
+							"value": "fetch"
+						},
+						{
+							"type": "text",
+							"value": " functions or the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/fetch",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " cache."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Very rarely, for compliance requirements or when you can't refactor your code to pass runtime data as arguments to a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " scope, you might need "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache-private",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache: private"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Draft Mode"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/draft-mode",
+					"children": [
+						{
+							"type": "text",
+							"value": "Draft Mode"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is enabled, all cached functions and components re-execute on every request, and results are not saved to the cache. This ensures draft content is always fresh without requiring any changes to your caching code."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can read "
+				},
+				{
+					"type": "inlineCode",
+					"value": "isEnabled"
+				},
+				{
+					"type": "text",
+					"value": " from "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/draft-mode",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "draftMode()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " inside a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " scope, however, other runtime APIs like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers()"
+				},
+				{
+					"type": "text",
+					"value": " are not allowed, even when Draft Mode is active. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching#passing-runtime-values-to-cached-functions",
+					"children": [
+						{
+							"type": "text",
+							"value": "Passing runtime values to cached functions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the recommended pattern."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/components/content.tsx\"",
+			"value": "import { draftMode } from 'next/headers'\n\nasync function Content() {\n\t'use cache'\n\n\tconst { isEnabled } = await draftMode()\n\tconst url = isEnabled ? 'https://draft.example.com/content' : 'https://production.example.com/content'\n\n\tconst data = await fetch(url)\n\treturn <article>{/* ... */}</article>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Calling "
+				},
+				{
+					"type": "inlineCode",
+					"value": "enable()"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "disable()"
+				},
+				{
+					"type": "text",
+					"value": " inside a caching directive scope will also throw an error. Draft Mode can only be toggled in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/mutating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Actions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "React.cache isolation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "React.cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " operates in an isolated scope inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " boundaries. Values stored via "
+				},
+				{
+					"type": "inlineCode",
+					"value": "React.cache"
+				},
+				{
+					"type": "text",
+					"value": " outside a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " function are not visible inside it."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This means you cannot use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "React.cache"
+				},
+				{
+					"type": "text",
+					"value": " to pass data into a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " scope:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "import { cache } from 'react'\n\nconst store = cache(() => ({ current: null as string | null }))\n\nfunction Parent() {\n\tconst shared = store()\n\tshared.current = 'value from parent'\n\treturn <Child />\n}\n\nasync function Child() {\n\t'use cache'\n\tconst shared = store()\n\t// shared.current is null, not 'value from parent'\n\t// use cache has its own isolated React.cache scope\n\treturn <div>{shared.current}</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This isolation ensures cached functions have predictable, self-contained behavior. To pass data into a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " scope, use function arguments instead."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " at runtime"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "On the "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "server"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", cache entries are stored in-memory and respect the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "expire"
+				},
+				{
+					"type": "text",
+					"value": " times from your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": " configuration. You can customize the cache storage by configuring "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheHandlers",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheHandlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "On the "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "client"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", content from the server cache is stored in the browser's memory for the duration defined by the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "stale"
+				},
+				{
+					"type": "text",
+					"value": " time. The client router enforces a "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "minimum 30-second stale time"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", regardless of configuration."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "x-nextjs-stale-time"
+				},
+				{
+					"type": "text",
+					"value": " response header communicates cache lifetime from server to client, ensuring coordinated behavior."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Revalidation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Cached functions revalidate based on the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "expire"
+				},
+				{
+					"type": "text",
+					"value": " times in their "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": " profile, or on-demand through tags. These two approaches are not mutually exclusive and are often paired:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "#time-based-revalidation",
+											"children": [
+												{
+													"type": "text",
+													"value": "Time-based"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": refresh automatically after a set duration with "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/cacheLife",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cacheLife"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "#on-demand-revalidation",
+											"children": [
+												{
+													"type": "text",
+													"value": "On-demand"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": invalidate after a mutation with "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/cacheTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cacheTag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/revalidateTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidateTag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/updateTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "updateTag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, a blog post that changes only when its author edits it can use a long "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": " like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "max"
+				},
+				{
+					"type": "text",
+					"value": " with a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheTag"
+				},
+				{
+					"type": "text",
+					"value": ", then invalidate on demand when the post is saved. A list of recent posts that updates throughout the day can use a shorter profile like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "hours"
+				},
+				{
+					"type": "text",
+					"value": " to refresh on its own, without manual invalidation."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Time-based revalidation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Set an explicit cache lifetime with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in every "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " scope. It makes the cache behavior clear at the call site, instead of depending on the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default"
+				},
+				{
+					"type": "text",
+					"value": " profile or surrounding caches."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"lib/data.ts\"",
+			"value": "import { cacheLife } from 'next/cache'\n\nasync function getData() {\n\t'use cache'\n\tcacheLife('hours') // Use built-in 'hours' profile\n\tconst res = await fetch('https://api.example.com/data')\n\treturn res.json()\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you omit "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": ", the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default"
+				},
+				{
+					"type": "text",
+					"value": " profile applies and the lifetime is no longer explicit at the call site:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "stale"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": 5 minutes (client-side)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "revalidate"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": 15 minutes (server-side)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "expire"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": never expires by time"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"lib/data.ts\"",
+			"value": "async function getData() {\n\t'use cache'\n\t// Implicitly uses the 'default' profile\n\tconst res = await fetch('https://api.example.com/data')\n\treturn res.json()\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Nesting a short-lived use cache inside one without an explicit "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife",
+					"children": [
+						{
+							"type": "text",
+							"value": "cacheLife"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " fails the build during prerendering. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife#nested-short-lived-caches",
+					"children": [
+						{
+							"type": "text",
+							"value": "Nested short-lived caches"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the rule and fix."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "On-demand revalidation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/updateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "updateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for on-demand cache invalidation:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"lib/data.ts\"",
+			"value": "import { cacheTag } from 'next/cache'\n\nasync function getProducts() {\n\t'use cache'\n\tcacheTag('products')\n\tconst res = await fetch('https://api.example.com/products')\n\treturn res.json()\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/actions.ts\"",
+			"value": "'use server'\n\nimport { updateTag } from 'next/cache'\n\nexport async function updateProduct() {\n  await db.products.update(...)\n  updateTag('products') // Invalidates all 'products' caches\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Both "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheTag"
+				},
+				{
+					"type": "text",
+					"value": " integrate across client and server caching layers, meaning you configure your caching semantics in one place and they apply everywhere."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Caching function output with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " to any asynchronous function, not only to components and routes. You might want to cache a network request, a database query, or a slow computation."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/actions.ts\" highlight={2} switcher",
+			"value": "export async function getData() {\n\t'use cache'\n\n\tconst res = await fetch('https://api.example.com/data')\n\tconst data = await res.json()\n\treturn data\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/actions.js\" highlight={2} switcher",
+			"value": "export async function getData() {\n\t'use cache'\n\n\tconst res = await fetch('https://api.example.com/data')\n\tconst data = await res.json()\n\treturn data\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Caching a component's output with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " at the component level to cache any fetches or computations performed within that component. The cache entry will be reused as long as the serialized props produce the same value in each instance."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/components/bookings.tsx\" highlight={2} switcher",
+			"value": "export async function Bookings({ type = 'haircut' }: BookingsProps) {\n\t'use cache'\n\tasync function getBookingsData() {\n\t\tconst response = await fetch(`https://api.example.com/bookings?type=${encodeURIComponent(type)}`)\n\t\tconst data = await response.json()\n\t\treturn data\n\t}\n\treturn //...\n}\n\ninterface BookingsProps {\n\ttype: string\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/components/bookings.js\" highlight={2} switcher",
+			"value": "export async function Bookings({ type = 'haircut' }) {\n\t'use cache'\n\tasync function getBookingsData() {\n\t\tconst response = await fetch(`https://api.example.com/bookings?type=${encodeURIComponent(type)}`)\n\t\tconst data = await response.json()\n\t\treturn data\n\t}\n\treturn //...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Interleaving"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In React, composition with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "children"
+				},
+				{
+					"type": "text",
+					"value": " or slots is a well-known pattern for building flexible components. When using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": ", you can continue to compose your UI in this way. Anything included as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "children"
+				},
+				{
+					"type": "text",
+					"value": ", or other compositional slots, in the returned JSX will be passed through the cached component without affecting its cache entry."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "As long as you don't directly reference any of the JSX slots inside the body of the cacheable function itself, their presence in the returned output won't affect the cache entry."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "export default async function Page() {\n\tconst uncachedData = await getData()\n\treturn (\n\t\t// Pass compositional slots as props, e.g. header and children\n\t\t<CacheComponent header={<h1>Home</h1>}>\n\t\t\t{/* DynamicComponent is provided as the children slot */}\n\t\t\t<DynamicComponent data={uncachedData} />\n\t\t</CacheComponent>\n\t)\n}\n\nasync function CacheComponent({\n\theader, // header: a compositional slot, injected as a prop\n\tchildren, // children: another slot for nested composition\n}: {\n\theader: ReactNode\n\tchildren: ReactNode\n}) {\n\t'use cache'\n\tconst res = await fetch('https://api.example.com/cached-data')\n\tconst cachedData = await res.json()\n\treturn (\n\t\t<div>\n\t\t\t{header}\n\t\t\t<PrerenderedComponent data={cachedData} />\n\t\t\t{children}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "export default async function Page() {\n\tconst uncachedData = await getData()\n\treturn (\n\t\t// Pass compositional slots as props, e.g. header and children\n\t\t<CacheComponent header={<h1>Home</h1>}>\n\t\t\t{/* DynamicComponent is provided as the children slot */}\n\t\t\t<DynamicComponent data={uncachedData} />\n\t\t</CacheComponent>\n\t)\n}\n\nasync function CacheComponent({\n\theader, // header: a compositional slot, injected as a prop\n\tchildren, // children: another slot for nested composition\n}) {\n\t'use cache'\n\tconst res = await fetch('https://api.example.com/cached-data')\n\tconst cachedData = await res.json()\n\treturn (\n\t\t<div>\n\t\t\t{header}\n\t\t\t<PrerenderedComponent data={cachedData} />\n\t\t\t{children}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also pass Server Actions through cached components to Client Components without invoking them inside the cacheable function."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import ClientComponent from './ClientComponent'\n\nexport default async function Page() {\n  const performUpdate = async () => {\n    'use server'\n    // Perform some server-side update\n    await db.update(...)\n  }\n\n  return <CachedComponent performUpdate={performUpdate} />\n}\n\nasync function CachedComponent({\n  performUpdate,\n}: {\n  performUpdate: () => Promise<void>\n}) {\n  'use cache'\n  // Do not call performUpdate here\n  return <ClientComponent action={performUpdate} />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import ClientComponent from './ClientComponent'\n\nexport default async function Page() {\n  const performUpdate = async () => {\n    'use server'\n    // Perform some server-side update\n    await db.update(...)\n  }\n\n  return <CachedComponent performUpdate={performUpdate} />\n}\n\nasync function CachedComponent({ performUpdate }) {\n  'use cache'\n  // Do not call performUpdate here\n  return <ClientComponent action={performUpdate} />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ClientComponent.tsx\" switcher",
+			"value": "'use client'\n\nexport default function ClientComponent({ action }: { action: () => Promise<void> }) {\n\treturn <button onClick={action}>Update</button>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ClientComponent.js\" switcher",
+			"value": "'use client'\n\nexport default function ClientComponent({ action }) {\n\treturn <button onClick={action}>Update</button>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Caching a module's exports with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Placing the directive at the top of a file covers every export, instead of repeating it on each one. Every exported function it covers must be async."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/lib/reports.ts\"",
+			"value": "'use cache'\n\nexport async function getMonthlyTotals(accountId: string) {\n\treturn db.orders.aggregate({ where: { accountId }, _sum: { amount: true } })\n}\n\nexport async function getTopProducts() {\n\treturn db.products.findMany({ orderBy: { sales: 'desc' }, take: 10 })\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Framework function exports are covered like any other, so "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-metadata",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateMetadata"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-static-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " must be async in such a file."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "When a cached directive ("
+										},
+										{
+											"type": "inlineCode",
+											"value": "use cache"
+										},
+										{
+											"type": "text",
+											"value": ", "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/directives/use-cache-private",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "use cache: private"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ", or "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/directives/use-cache-remote",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "use cache: remote"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ") is at the top of a file, you can import its exported functions into a Client Component and call them directly; they run on the server and return the result, similar to a "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/glossary#server-function",
+											"children": [
+												{
+													"type": "text",
+													"value": "Server Function"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ". Prefer calling cached functions on the server and passing results down as props."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Only exported functions are available to Client Components. Other exports, such as constants and objects, are dropped from what the client receives, so importing one fails the build with an \"export doesn't exist\" error. Move shared values to a separate file without the directive."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Caching a route segment's output with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout"
+				},
+				{
+					"type": "text",
+					"value": " file is a module too, so a file-level directive there follows the same rules. Each route segment is a separate entry point and is cached independently. To prerender a whole route, add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " to the top of every segment file it renders: the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page"
+				},
+				{
+					"type": "text",
+					"value": ", the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout"
+				},
+				{
+					"type": "text",
+					"value": ", and any "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/parallel-routes",
+					"children": [
+						{
+							"type": "text",
+							"value": "parallel route"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " slots."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "'use cache'\n\nexport default async function Layout({ children }: { children: ReactNode }) {\n\treturn <div>{children}</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "'use cache'\n\nexport default async function Layout({ children }) {\n\treturn <div>{children}</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A cached "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout"
+				},
+				{
+					"type": "text",
+					"value": " does not cache the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "children"
+				},
+				{
+					"type": "text",
+					"value": " it renders, since slots pass through without affecting its entry. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#interleaving",
+					"children": [
+						{
+							"type": "text",
+							"value": "Interleaving"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "'use cache'\n\nasync function Users() {\n\tconst res = await fetch('https://api.example.com/users')\n\tconst users = await res.json()\n\t// loop through users\n}\n\nexport default async function Page() {\n\treturn (\n\t\t<main>\n\t\t\t<Users />\n\t\t</main>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "'use cache'\n\nasync function Users() {\n\tconst res = await fetch('https://api.example.com/users')\n\tconst users = await res.json()\n\t// loop through users\n}\n\nexport default async function Page() {\n\treturn (\n\t\t<main>\n\t\t\t<Users />\n\t\t</main>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Troubleshooting"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Debugging cache behavior"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Verbose logging"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NEXT_PRIVATE_DEBUG_CACHE=1"
+				},
+				{
+					"type": "text",
+					"value": " for verbose cache logging:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": null,
+			"value": "NEXT_PRIVATE_DEBUG_CACHE=1 npm run dev\n# or for production\nNEXT_PRIVATE_DEBUG_CACHE=1 npm run start"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " This environment variable also logs ISR and other caching mechanisms. See "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/incremental-static-regeneration#verifying-correct-production-behavior",
+							"children": [
+								{
+									"type": "text",
+									"value": "Verifying correct production behavior"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for more details."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Console log replays"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In development, console logs from cached functions appear with a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Cache"
+				},
+				{
+					"type": "text",
+					"value": " prefix."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Build Hangs (Cache Timeout)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If your build hangs, you're accessing Promises that resolve to uncached or runtime data, created outside a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " boundary. The cached function waits for data that can't resolve during the build, causing a timeout after 50 seconds."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When the build timeouts you'll see this error message:"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Error: Filling a cache during prerender timed out, likely because request-specific arguments such as params, searchParams, cookies() or uncached data were used inside \"use cache\"."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Common ways this happens: passing such Promises as props, accessing them via closure, or retrieving them from shared storage (Maps)."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Directly calling "
+						},
+						{
+							"type": "inlineCode",
+							"value": "cookies()"
+						},
+						{
+							"type": "text",
+							"value": " or "
+						},
+						{
+							"type": "inlineCode",
+							"value": "headers()"
+						},
+						{
+							"type": "text",
+							"value": " inside "
+						},
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						},
+						{
+							"type": "text",
+							"value": " fails immediately with a "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/messages/next-request-in-use-cache",
+							"children": [
+								{
+									"type": "text",
+									"value": "different error"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", not a timeout."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Passing runtime data Promises as props:"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\"",
+			"value": "import { cookies } from 'next/headers'\nimport { Suspense } from 'react'\n\nexport default function Page() {\n\treturn (\n\t\t<Suspense fallback={<div>Loading...</div>}>\n\t\t\t<Dynamic />\n\t\t</Suspense>\n\t)\n}\n\nasync function Dynamic() {\n\tconst cookieStore = cookies()\n\treturn <Cached promise={cookieStore} /> // Build hangs\n}\n\nasync function Cached({ promise }: { promise: Promise<unknown> }) {\n\t'use cache'\n\tconst data = await promise // Waits for runtime data during build\n\treturn <p>..</p>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Await the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies"
+				},
+				{
+					"type": "text",
+					"value": " store in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Dynamic"
+				},
+				{
+					"type": "text",
+					"value": " component, and pass a cookie value to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Cached"
+				},
+				{
+					"type": "text",
+					"value": " component."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Shared deduplication storage:"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\"",
+			"value": "// Problem: Map stores dynamic Promises, accessed by cached code\nimport { Suspense } from 'react'\n\nconst cache = new Map<string, Promise<string>>()\n\nexport default function Page() {\n\treturn (\n\t\t<>\n\t\t\t<Suspense fallback={<div>Loading...</div>}>\n\t\t\t\t<Dynamic id=\"data\" />\n\t\t\t</Suspense>\n\t\t\t<Cached id=\"data\" />\n\t\t</>\n\t)\n}\n\nasync function Dynamic({ id }: { id: string }) {\n\t// Stores dynamic Promise in shared Map\n\tcache.set(\n\t\tid,\n\t\tfetch(`https://api.example.com/${id}`).then((r) => r.text()),\n\t)\n\treturn <p>Dynamic</p>\n}\n\nasync function Cached({ id }: { id: string }) {\n\t'use cache'\n\treturn <p>{await cache.get(id)}</p> // Build hangs - retrieves dynamic Promise\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use Next.js's built-in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch()"
+				},
+				{
+					"type": "text",
+					"value": " deduplication or use separate Maps for cached and uncached contexts."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Platform Support"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Deployment Option"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Supported"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#nodejs-server",
+									"children": [
+										{
+											"type": "text",
+											"value": "Node.js server"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#docker",
+									"children": [
+										{
+											"type": "text",
+											"value": "Docker container"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#static-export",
+									"children": [
+										{
+											"type": "text",
+											"value": "Static export"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#adapters",
+									"children": [
+										{
+											"type": "text",
+											"value": "Adapters"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Platform-specific"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn how to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/self-hosting#caching-and-isr",
+					"children": [
+						{
+							"type": "text",
+							"value": "configure caching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when self-hosting Next.js."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "\"use cache\""
+								},
+								{
+									"type": "text",
+									"value": " stabilized and is enabled with the Cache Components feature."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "\"use cache\""
+								},
+								{
+									"type": "text",
+									"value": " is introduced as an experimental feature."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,1338 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: after\ndescription: API Reference for the after function."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "after"
+				},
+				{
+					"type": "text",
+					"value": " allows you to schedule work to be executed after a response (or prerender) is finished. This is useful for tasks and other side effects that should not block the response, such as logging and analytics."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "It can be used in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " (including "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-metadata",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateMetadata"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "), "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/mutating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Functions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/proxy",
+					"children": [
+						{
+							"type": "text",
+							"value": "Proxy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The function accepts a callback that will be executed after the response (or prerender) is finished:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import { after } from 'next/server'\n// Custom logging function\nimport { log } from '@/app/utils'\n\nexport default function Layout({ children }: { children: React.ReactNode }) {\n\tafter(() => {\n\t\t// Execute after the layout is rendered and sent to the user\n\t\tlog()\n\t})\n\treturn <>{children}</>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.jsx\" switcher",
+			"value": "import { after } from 'next/server'\n// Custom logging function\nimport { log } from '@/app/utils'\n\nexport default function Layout({ children }) {\n\tafter(() => {\n\t\t// Execute after the layout is rendered and sent to the user\n\t\tlog()\n\t})\n\treturn <>{children}</>\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " "
+						},
+						{
+							"type": "inlineCode",
+							"value": "after"
+						},
+						{
+							"type": "text",
+							"value": " is not a "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/glossary#request-time-apis",
+							"children": [
+								{
+									"type": "text",
+									"value": "Request-time API"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " and calling it does not cause a route to become dynamic. If it's used within a static page, the callback will execute at build time, or whenever a page is revalidated."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parameters"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "A callback function which will be executed after the response (or prerender) is finished."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Duration"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "after"
+				},
+				{
+					"type": "text",
+					"value": " will run for the platform's default or configured max duration of your route. If your platform supports it, you can configure the timeout limit using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config/maxDuration",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "maxDuration"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " route segment config."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Good to know"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "after"
+								},
+								{
+									"type": "text",
+									"value": " will be executed even if the response didn't complete successfully. Including when an error is thrown or when "
+								},
+								{
+									"type": "inlineCode",
+									"value": "notFound"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "redirect"
+								},
+								{
+									"type": "text",
+									"value": " is called."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "In Server Components, you can use React "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react/cache",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cache"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to deduplicate functions called inside "
+								},
+								{
+									"type": "inlineCode",
+									"value": "after"
+								},
+								{
+									"type": "text",
+									"value": ". The callback reuses values already computed during the render. See "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/fetching-data#reusing-data-with-reactcache",
+									"children": [
+										{
+											"type": "text",
+											"value": "Reusing data with "
+										},
+										{
+											"type": "inlineCode",
+											"value": "React.cache"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "after"
+								},
+								{
+									"type": "text",
+									"value": " can be nested inside other "
+								},
+								{
+									"type": "inlineCode",
+									"value": "after"
+								},
+								{
+									"type": "text",
+									"value": " calls, for example, you can create utility functions that wrap "
+								},
+								{
+									"type": "inlineCode",
+									"value": "after"
+								},
+								{
+									"type": "text",
+									"value": " calls to add additional functionality."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "With request APIs"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Whether you can use request APIs like "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cookies",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cookies"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/headers",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "headers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "after"
+				},
+				{
+					"type": "text",
+					"value": " depends on where "
+				},
+				{
+					"type": "inlineCode",
+					"value": "after"
+				},
+				{
+					"type": "text",
+					"value": " is called from."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "In Route Handlers and Server Functions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers"
+				},
+				{
+					"type": "text",
+					"value": " directly inside the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "after"
+				},
+				{
+					"type": "text",
+					"value": " callback when used in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/mutating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Functions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This is useful for logging activity after a mutation or API request. For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/route.ts\" highlight={2,10-16} switcher",
+			"value": "import { after } from 'next/server'\nimport { cookies, headers } from 'next/headers'\nimport { logUserAction } from '@/app/utils'\n\nexport async function POST(request: Request) {\n\t// Perform mutation\n\t// ...\n\n\t// Log user activity for analytics\n\tafter(async () => {\n\t\tconst userAgent = (await headers()).get('user-agent') || 'unknown'\n\t\tconst sessionCookie = (await cookies()).get('session-id')?.value || 'anonymous'\n\n\t\tlogUserAction({ sessionCookie, userAgent })\n\t})\n\n\treturn new Response(JSON.stringify({ status: 'success' }), {\n\t\tstatus: 200,\n\t\theaders: { 'Content-Type': 'application/json' },\n\t})\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/route.js\" highlight={2,10-16} switcher",
+			"value": "import { after } from 'next/server'\nimport { cookies, headers } from 'next/headers'\nimport { logUserAction } from '@/app/utils'\n\nexport async function POST(request) {\n\t// Perform mutation\n\t// ...\n\n\t// Log user activity for analytics\n\tafter(async () => {\n\t\tconst userAgent = (await headers()).get('user-agent') || 'unknown'\n\t\tconst sessionCookie = (await cookies()).get('session-id')?.value || 'anonymous'\n\n\t\tlogUserAction({ sessionCookie, userAgent })\n\t})\n\n\treturn new Response(JSON.stringify({ status: 'success' }), {\n\t\tstatus: 200,\n\t\theaders: { 'Content-Type': 'application/json' },\n\t})\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "In Server Components (pages and layouts)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " (including pages, layouts, and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata"
+				},
+				{
+					"type": "text",
+					"value": ") "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "cannot"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers"
+				},
+				{
+					"type": "text",
+					"value": ", or other Request-time APIs inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "after"
+				},
+				{
+					"type": "text",
+					"value": ". This is because Next.js needs to know which part of the component tree accesses request data to support "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#partial-prerendering-ppr",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Prerendering"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", but "
+				},
+				{
+					"type": "inlineCode",
+					"value": "after"
+				},
+				{
+					"type": "text",
+					"value": " runs after React's rendering lifecycle."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you need request data inside an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "after"
+				},
+				{
+					"type": "text",
+					"value": " callback in a Server Component, read it beforehand and pass the values in:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" highlight={8-10,12} switcher",
+			"value": "import { after } from 'next/server'\nimport { cookies, headers } from 'next/headers'\nimport { logUserAction } from '@/app/utils'\n\nexport default async function Page() {\n\t// Read request data before `after` — this is allowed\n\t// These calls will be read during the component's rendering lifecycle\n\tconst userAgent = (await headers()).get('user-agent') || 'unknown'\n\tconst sessionCookie = (await cookies()).get('session-id')?.value || 'anonymous'\n\n\tafter(() => {\n\t\t// Use the values read above\n\t\tlogUserAction({ sessionCookie, userAgent })\n\t})\n\n\treturn <h1>My Page</h1>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.jsx\" highlight={8-10,12} switcher",
+			"value": "import { after } from 'next/server'\nimport { cookies, headers } from 'next/headers'\nimport { logUserAction } from '@/app/utils'\n\nexport default async function Page() {\n\t// Read request data before `after` — this is allowed\n\t// These calls will be read during the component's rendering lifecycle\n\tconst userAgent = (await headers()).get('user-agent') || 'unknown'\n\tconst sessionCookie = (await cookies()).get('session-id')?.value || 'anonymous'\n\n\tafter(() => {\n\t\t// Use the values read above\n\t\tlogUserAction({ sessionCookie, userAgent })\n\t})\n\n\treturn <h1>My Page</h1>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Calling "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers()"
+				},
+				{
+					"type": "text",
+					"value": " inside the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "after"
+				},
+				{
+					"type": "text",
+					"value": " callback in a Server Component will throw a runtime error."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "With Cache Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", components that access request data like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers"
+				},
+				{
+					"type": "text",
+					"value": " must be wrapped in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Suspense",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " so the rest of the page can be prerendered into a static shell."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can combine this pattern with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "after"
+				},
+				{
+					"type": "text",
+					"value": " by reading request data in a dynamic component and passing it into "
+				},
+				{
+					"type": "inlineCode",
+					"value": "after"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" highlight={18-19,22-24} switcher",
+			"value": "import { Suspense } from 'react'\nimport { after } from 'next/server'\nimport { cookies } from 'next/headers'\nimport { logUserAction } from '@/app/utils'\n\nexport default function Page() {\n\treturn (\n\t\t<>\n\t\t\t<h1>Part of the static shell</h1>\n\t\t\t<Suspense fallback={<p>Loading...</p>}>\n\t\t\t\t<DynamicContent />\n\t\t\t</Suspense>\n\t\t</>\n\t)\n}\n\nasync function DynamicContent() {\n\tconst sessionCookie = (await cookies()).get('session-id')?.value || 'anonymous'\n\n\t// Schedule work after the response is sent\n\tafter(() => {\n\t\tlogUserAction({ sessionCookie })\n\t})\n\n\treturn <p>Your session: {sessionCookie}</p>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.jsx\" highlight={18-19,22-24} switcher",
+			"value": "import { Suspense } from 'react'\nimport { after } from 'next/server'\nimport { cookies } from 'next/headers'\nimport { logUserAction } from '@/app/utils'\n\nexport default function Page() {\n\treturn (\n\t\t<>\n\t\t\t<h1>Part of the static shell</h1>\n\t\t\t<Suspense fallback={<p>Loading...</p>}>\n\t\t\t\t<DynamicContent />\n\t\t\t</Suspense>\n\t\t</>\n\t)\n}\n\nasync function DynamicContent() {\n\tconst sessionCookie = (await cookies()).get('session-id')?.value || 'anonymous'\n\n\t// Schedule work after the response is sent\n\tafter(() => {\n\t\tlogUserAction({ sessionCookie })\n\t})\n\n\treturn <p>Your session: {sessionCookie}</p>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In this example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<h1>"
+				},
+				{
+					"type": "text",
+					"value": " and the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " fallback are included in the static shell. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "DynamicContent"
+				},
+				{
+					"type": "text",
+					"value": " reads the cookie during rendering and passes it into "
+				},
+				{
+					"type": "inlineCode",
+					"value": "after"
+				},
+				{
+					"type": "text",
+					"value": " via closure. Since "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": " is called "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "outside"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "after"
+				},
+				{
+					"type": "text",
+					"value": " callback (during the component's render), this works correctly."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Platform Support"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Deployment Option"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Supported"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#nodejs-server",
+									"children": [
+										{
+											"type": "text",
+											"value": "Node.js server"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#docker",
+									"children": [
+										{
+											"type": "text",
+											"value": "Docker container"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#static-export",
+									"children": [
+										{
+											"type": "text",
+											"value": "Static export"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#adapters",
+									"children": [
+										{
+											"type": "text",
+											"value": "Adapters"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Platform-specific"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn how to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/self-hosting#after",
+					"children": [
+						{
+							"type": "text",
+							"value": "configure "
+						},
+						{
+							"type": "inlineCode",
+							"value": "after"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when self-hosting Next.js."
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "<details id=\"after-serverless\">\n  <summary>Reference: supporting `after` for serverless platforms</summary>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "after"
+				},
+				{
+					"type": "text",
+					"value": " in a serverless context requires waiting for asynchronous tasks to finish after the response has been sent. In Next.js and Vercel, this is achieved using a primitive called "
+				},
+				{
+					"type": "inlineCode",
+					"value": "waitUntil(promise)"
+				},
+				{
+					"type": "text",
+					"value": ", which extends the lifetime of a serverless invocation until all promises passed to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://vercel.com/docs/functions/functions-api-reference#waituntil",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "waitUntil"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " have settled."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you want your users to be able to run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "after"
+				},
+				{
+					"type": "text",
+					"value": ", you will have to provide your implementation of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "waitUntil"
+				},
+				{
+					"type": "text",
+					"value": " that behaves in an analogous way."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "inlineCode",
+					"value": "after"
+				},
+				{
+					"type": "text",
+					"value": " is called, Next.js will access "
+				},
+				{
+					"type": "inlineCode",
+					"value": "waitUntil"
+				},
+				{
+					"type": "text",
+					"value": " like this:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "const RequestContext = globalThis[Symbol.for('@next/request-context')]\nconst contextValue = RequestContext?.get()\nconst waitUntil = contextValue?.waitUntil"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Which means that "
+				},
+				{
+					"type": "inlineCode",
+					"value": "globalThis[Symbol.for('@next/request-context')]"
+				},
+				{
+					"type": "text",
+					"value": " is expected to contain an object like this:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "type NextRequestContext = {\n\tget(): NextRequestContextValue | undefined\n}\n\ntype NextRequestContextValue = {\n\twaitUntil?: (promise: Promise<any>) => void\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Here is an example of the implementation."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "import { AsyncLocalStorage } from 'node:async_hooks'\n\nconst RequestContextStorage = new AsyncLocalStorage<NextRequestContextValue>()\n\n// Define and inject the accessor that next.js will use\nconst RequestContext: NextRequestContext = {\n\tget() {\n\t\treturn RequestContextStorage.getStore()\n\t},\n}\nglobalThis[Symbol.for('@next/request-context')] = RequestContext\n\nconst handler = (req, res) => {\n\tconst contextValue = { waitUntil: YOUR_WAITUNTIL }\n\t// Provide the value\n\treturn RequestContextStorage.run(contextValue, () => nextJsHandler(req, res))\n}"
+		},
+		{
+			"type": "html",
+			"value": "</details>"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.1.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "after"
+								},
+								{
+									"type": "text",
+									"value": " became stable."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.0.0-rc"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "unstable_after"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,1332 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: instant\ndescription: Configure instant navigation validation for a route segment.\nrelated:\n title: Next Steps\n description: Learn how to use instant navigations in practice.\n links:\n  - app/guides/instant-navigation\n  - app/api-reference/file-conventions/route-segment-config/ensureStatic\n  - app/getting-started/caching\n  - app/getting-started/revalidating\n  - app/api-reference/directives/use-cache"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instant"
+				},
+				{
+					"type": "text",
+					"value": " route segment config controls how Next.js validates whether a navigation into this segment would produce an instant UI."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js uses prefetching to preload navigations for all in-app links on the current page. However, client-side data fetching or partially prerendered results from the server can lead to navigations that don't update the UI immediately. To help you build fast-feeling navigations, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instant"
+				},
+				{
+					"type": "text",
+					"value": " lets you tell Next.js what to expect from navigations through the configured segment. For instance, you can indicate that navigations into this segment should produce a UI that renders instantly without waiting on any externally loaded data. You can also indicate that navigations aren't expected to be instant."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When a segment is configured to expect an instant UI, Next.js surfaces any code in your application that would block the navigation from updating the UI immediately. See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/instant-navigation",
+					"children": [
+						{
+							"type": "text",
+							"value": "Instant Navigation guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for an end-to-end walkthrough."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The "
+										},
+										{
+											"type": "inlineCode",
+											"value": "instant"
+										},
+										{
+											"type": "text",
+											"value": " export only works when "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "cacheComponents"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " is enabled."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "instant"
+										},
+										{
+											"type": "text",
+											"value": " cannot be used in Client Components. It will throw an error."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Next.js does not perform prefetches in development, so navigations may not feel as instant as they will in production. Validation reflects what will happen during "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next start"
+										},
+										{
+											"type": "text",
+											"value": ", where prefetching is enabled."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"layout.tsx | page.tsx\" switcher",
+			"value": "export const instant = true\n\nexport default function Page() {\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\" switcher",
+			"value": "export const instant = true\n\nexport default function Page() {\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The export accepts:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "true"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Opts the segment into validation at whatever level is configured globally (see "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#configuring-validation-defaults",
+									"children": [
+										{
+											"type": "text",
+											"value": "Configuring validation defaults"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "). With the framework defaults, validation runs in development only and surfaces errors in the dev overlay."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "false"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Opts the segment out (see "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#disabling-instant",
+									"children": [
+										{
+											"type": "text",
+											"value": "Disabling instant"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ")."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "An "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "object"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Opts in with additional options. See "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#level",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "level"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "level"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Sets the severity at which validation runs for this segment."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"page.tsx\"",
+			"value": "export const instant = {\n\tlevel: 'warning',\n}"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'warning'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Validates in development only. Errors appear in the dev overlay; the build is unaffected."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the future a validation level that supports validation during build will be supported. Unless you are enabling experimental validation modes there is no need to specify level since the only level available is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"warning\""
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "inlineCode",
+					"value": "level"
+				},
+				{
+					"type": "text",
+					"value": " is omitted (or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instant = true"
+				},
+				{
+					"type": "text",
+					"value": " is used), the segment is validated at whatever level is configured globally — see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#configuring-validation-defaults",
+					"children": [
+						{
+							"type": "text",
+							"value": "Configuring validation defaults"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Disabling instant"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " on a layout or page to indicate that this segment is allowed to block when navigating to it."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This is useful when a deeper page should be instant but an ancestor can't be. For instance, if a shared layout cannot load instantly but you still want to assert that pages beneath this layout can be navigated to instantly, you can ensure that the pages have "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instant = true"
+				},
+				{
+					"type": "text",
+					"value": " while the shared layout has "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instant = false"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/tabs/layout.tsx\"",
+			"value": "export const instant = false"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/tabs/[tab]/page.tsx\"",
+			"value": "export const instant = true"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Navigations from outside into a tab are allowed to block at the layout. Navigations between tabs are validated for instant UI."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You don't need to add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " to ancestors of an instant page just because they do something blocking — a higher-up "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instant = true"
+				},
+				{
+					"type": "text",
+					"value": " doesn't force its descendants to validate, and leaving an ancestor unconfigured is fine. Reach for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " only when you've configured a deeper page as instant and need to exempt navigations that pass through a blocking ancestor."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Disabling static shell validation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache Components also validates that each page in your app produces a non-empty static shell at prerender time. To opt a route out of this validation, ensure the highest "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instant"
+				},
+				{
+					"type": "text",
+					"value": " config in the route's tree is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " — a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " higher in the tree takes precedence over any deeper "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": " for the static-shell check."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Setting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " on the root layout disables static shell validation for the entire app. Place the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " as low as possible — only as high as needed to cover the routes you want to opt out — so the rest of the app keeps validating."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "How validation works"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "instant"
+				},
+				{
+					"type": "text",
+					"value": " triggers validation at every shared layout boundary in the route. Validation runs during development (on page loads and HMR updates) and surfaces errors in the dev error overlay."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each error identifies the component that would block navigation. The fix is usually to cache the data with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " or wrap it in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "How "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instant"
+				},
+				{
+					"type": "text",
+					"value": " differs from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ensureStatic"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "instant"
+				},
+				{
+					"type": "text",
+					"value": " validates whether a navigation shows UI immediately. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config/ensureStatic",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "ensureStatic"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " requires selected server-rendered output to be static instead of rendered for each request. A route can be fully static and still block a navigation, for example when a Client Component loads data in the browser."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Configuring validation defaults"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "validationLevel: 'warning'"
+				},
+				{
+					"type": "text",
+					"value": "), Cache Components apps validate every Page and Default segment in development. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.instantInsights.validationLevel"
+				},
+				{
+					"type": "text",
+					"value": " config tunes this behavior — for example, to limit validation to segments that opt in explicitly via "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instant"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\texperimental: {\n\t\tinstantInsights: {\n\t\t\tvalidationLevel: 'warning',\n\t\t},\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The supported levels are:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'warning'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " "
+								},
+								{
+									"type": "emphasis",
+									"children": [
+										{
+											"type": "text",
+											"value": "(framework default)"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Every Page and Default segment is implicitly validated at warning level (dev only)."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'manual-warning'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Only segments with an explicit "
+								},
+								{
+									"type": "inlineCode",
+									"value": "instant"
+								},
+								{
+									"type": "text",
+									"value": " are validated, at warning level (dev only)."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Setting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instant = false"
+				},
+				{
+					"type": "text",
+					"value": " on a segment opts it out of validation entirely."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The framework default may change in future versions to opt users into higher levels of validation. Because this feature is experimental, that change is not considered a breaking change. To pin a specific behavior, set "
+										},
+										{
+											"type": "inlineCode",
+											"value": "validationLevel"
+										},
+										{
+											"type": "text",
+											"value": " explicitly."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Framework-synthesized error routes ("
+										},
+										{
+											"type": "inlineCode",
+											"value": "/_global-error"
+										},
+										{
+											"type": "text",
+											"value": ", "
+										},
+										{
+											"type": "inlineCode",
+											"value": "/_not-found"
+										},
+										{
+											"type": "text",
+											"value": ") are excluded from implicit validation. To validate them, opt in explicitly with "
+										},
+										{
+											"type": "inlineCode",
+											"value": "instant"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Inspecting loading states"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The Navigation Inspector is available when Cache Components is enabled:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tcacheComponents: true,\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Open the Next.js DevTools and select "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Navigation Inspector"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", then turn on "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Pause on navigations"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". While the toggle is on:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Refresh the page to freeze the initial static UI generated for the route, before any dynamic data streams in."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Click a link to freeze the prefetched UI for the destination route."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When the UI is frozen, click "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Resume"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to let the current navigation finish. The toggle stays on, so the next refresh or link click pauses too. Turn it off when you are done. Use both page refreshes and link clicks to check that your loading states look right on first visit and on navigation."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Testing instant navigation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@next/playwright"
+				},
+				{
+					"type": "text",
+					"value": " package exports an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instant()"
+				},
+				{
+					"type": "text",
+					"value": " helper that holds back dynamic content while the callback runs against the instant UI. The testing API is available automatically in development. For a production build, enable "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/exposeTestingApiInProductionBuild",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "experimental.exposeTestingApiInProductionBuild"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in the test build. See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/instant-navigation#prevent-regressions-with-e2e-tests",
+					"children": [
+						{
+							"type": "text",
+							"value": "guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for a full example."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "typescript",
+			"meta": null,
+			"value": "import { instant } from '@next/playwright'"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Known issue: shared cookie across projects"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The DevTools use a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next-instant-navigation-testing"
+				},
+				{
+					"type": "text",
+					"value": " cookie to hold back dynamic content and freeze the page at the instant UI. Because cookies are scoped to the domain and not the port, running multiple projects on the same domain (typically "
+				},
+				{
+					"type": "inlineCode",
+					"value": "localhost"
+				},
+				{
+					"type": "text",
+					"value": ") means the cookie is shared across them and can cause unexpected behavior. Clear the cookie or close the Navigation Inspector panel when switching between projects to avoid issues."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " This will be fixed as part of stabilizing the feature."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "TypeScript"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "type InstantConfig =\n\t| true\n\t| false\n\t| {\n\t\t\tlevel?: 'warning'\n\t  }\n\nexport const instant: InstantConfig = true"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "instant"
+								},
+								{
+									"type": "text",
+									"value": " export stabilized, replacing "
+								},
+								{
+									"type": "inlineCode",
+									"value": "unstable_instant"
+								},
+								{
+									"type": "text",
+									"value": " (Cache Components only)."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,1076 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Optimizing package bundling\nnav_title: Package Bundling\ndescription: Learn how to analyze and optimize your application's server and client bundles with the Next.js Bundle Analyzer for Turbopack, and the `@next/bundle-analyzer` plugin for Webpack.\nrelated:\n description: Learn more about optimizing your application for production.\n links:\n  - app/guides/production-checklist"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Bundling is the process of combining your application code and its dependencies into optimized output files for the client and server. Smaller bundles load faster, reduce JavaScript execution time, improve "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://web.dev/articles/vitals",
+					"children": [
+						{
+							"type": "text",
+							"value": "Core Web Vitals"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and lower server cold start times."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js automatically optimizes bundles by code splitting, tree-shaking, and other techniques. However, there are some cases where you may need to optimize your bundles manually."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There are two tools for analyzing your application's bundles:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#nextjs-bundle-analyzer",
+									"children": [
+										{
+											"type": "text",
+											"value": "Next.js Bundle Analyzer for Turbopack"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#nextbundle-analyzer-for-webpack",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "@next/bundle-analyzer"
+										},
+										{
+											"type": "text",
+											"value": " plugin for Webpack"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This guide will walk you through how to use each tool and how to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#optimizing-large-bundles",
+					"children": [
+						{
+							"type": "text",
+							"value": "optimize large bundles"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js Bundle Analyzer"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Available in v16.1 and later. You can share feedback in the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://github.com/vercel/next.js/discussions/86731",
+							"children": [
+								{
+									"type": "text",
+									"value": "dedicated GitHub discussion"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " and view the demo at "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://turbopack-bundle-analyzer-demo.vercel.sh/",
+							"children": [
+								{
+									"type": "text",
+									"value": "turbopack-bundle-analyzer-demo.vercel.sh"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The Next.js Bundle Analyzer is integrated with Turbopack's module graph. You can inspect server and client modules with precise import tracing, making it easier to find large dependencies. Open the interactive Bundle Analyzer demo to explore the module graph."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 1: Run the Turbopack Bundle Analyzer"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To get started, run the following command and open up the interactive view in your browser."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\" package=\"npm\"",
+			"value": "npx next analyze"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\" package=\"yarn\"",
+			"value": "yarn next analyze"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\" package=\"pnpm\"",
+			"value": "pnpm next analyze"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\" package=\"bun\"",
+			"value": "bunx next analyze"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 2: Filter and inspect modules"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Within the UI, you can filter by route, environment (client or server), and type (JavaScript, CSS, JSON), or search by file:"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Video\ncaption=\"Next.js bundle analyzer UI walkthrough\"\nsrc=\"/videos/bundle-analyzer.mp4\"\nwidth={1708}\nheight={1080}\n/>"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 3: Trace modules with import chains"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The treemap shows each module as a rectangle. Where the size of the module is represented by the area of the rectangle."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Click a module to see its size, inspect its full import chain and see exactly where it’s used in your application:"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\ncaption=\"Next.js Bundle Analyzer import chain view\"\nsrcLight=\"/docs/light/bundle-analyzer.png\"\nsrcDark=\"/docs/dark/bundle-analyzer.png\"\nwidth={1600}\nheight={874}\n/>"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 4: Write output to disk for sharing or diffing"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you want to share the analysis with teammates or compare bundle sizes before/after optimizations, you can skip the interactive view and save the analysis as a static file with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "--output"
+				},
+				{
+					"type": "text",
+					"value": " flag:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\" package=\"npm\"",
+			"value": "npx next analyze --output"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\" package=\"yarn\"",
+			"value": "yarn next analyze --output"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\" package=\"pnpm\"",
+			"value": "pnpm next analyze --output"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\" package=\"bun\"",
+			"value": "bunx next analyze --output"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This command writes the output to "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next/diagnostics/analyze"
+				},
+				{
+					"type": "text",
+					"value": ". You can copy this directory elsewhere to compare results:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "cp -r .next/diagnostics/analyze ./analyze-before-refactor"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Export analysis data"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Available in v16.4 and later. You can share feedback in the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://github.com/vercel/next.js/discussions/86731",
+							"children": [
+								{
+									"type": "text",
+									"value": "dedicated GitHub discussion"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " and view the demo at "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://turbopack-bundle-analyzer-demo.vercel.sh/",
+							"children": [
+								{
+									"type": "text",
+									"value": "turbopack-bundle-analyzer-demo.vercel.sh"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next analyze export"
+				},
+				{
+					"type": "text",
+					"value": " to stream a saved snapshot as JSON Lines for scripts or AI tools, without rebuilding or starting a server:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\" package=\"npm\"",
+			"value": "npx next analyze --output --snapshot before\nnpx next analyze export --snapshot before > bundle-graph.jsonl"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\" package=\"yarn\"",
+			"value": "yarn next analyze --output --snapshot before\nyarn next analyze export --snapshot before > bundle-graph.jsonl"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\" package=\"pnpm\"",
+			"value": "pnpm next analyze --output --snapshot before\npnpm next analyze export --snapshot before > bundle-graph.jsonl"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\" package=\"bun\"",
+			"value": "bunx next analyze --output --snapshot before\nbunx next analyze export --snapshot before > bundle-graph.jsonl"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/cli/next#next-analyze-export-options",
+					"children": [
+						{
+							"type": "text",
+							"value": "CLI reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for export options."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "More options are available for the Bundle Analyzer, see Next.js CLI reference docs for the full list."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Give your AI agent access to the bundle analyzer"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.skills.sh/vercel/next.js/next-bundle-optimizer",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next-bundle-optimizer"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " skill gives your AI agent access to the data powering Turbopack's bundle analyzer to automatically identify sources of large client-side bundles that impact your site's initial load performance."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "First, install the skill:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx skills add vercel/next.js --skill next-bundle-optimizer"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then prompt your agent. In audit-only mode, it produces a report without making any changes:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "prompt",
+			"meta": null,
+			"value": "Use the next-bundle-optimizer skill to produce a report of the initial load performance of this site."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also tell your agent to fix any issues, and it will optimize your site based on its findings. Or have it focus on a specific route by providing the route in the prompt."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "@next/bundle-analyzer"
+				},
+				{
+					"type": "text",
+					"value": " for Webpack"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.npmjs.com/package/@next/bundle-analyzer",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "@next/bundle-analyzer"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is a plugin that helps you manage the size of your application bundles. It generates a visual report of the size of each package and their dependencies. You can use the information to remove large dependencies, split, or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/lazy-loading",
+					"children": [
+						{
+							"type": "text",
+							"value": "lazy-load"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " your code."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 1: Installation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Install the plugin by running the following command:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add @next/bundle-analyzer"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install @next/bundle-analyzer"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add @next/bundle-analyzer"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add @next/bundle-analyzer"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, add the bundle analyzer's settings to your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {}\n\nconst withBundleAnalyzer = require('@next/bundle-analyzer')({\n\tenabled: process.env.ANALYZE === 'true',\n})\n\nmodule.exports = withBundleAnalyzer(nextConfig)"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 2: Generating a report"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Run the following command to analyze your bundles:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": null,
+			"value": "ANALYZE=true npm run build\n# or\nANALYZE=true yarn build\n# or\nANALYZE=true pnpm build"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The report will open three new tabs in your browser, which you can inspect."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Optimizing large bundles"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Once you've identified a large module, the solution will depend on your use case. Below are common causes and how to fix them:"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Packages with many exports"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you're using a package that exports hundreds of modules (such as icon and utility libraries), you can optimize how those imports are resolved using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/optimizePackageImports",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "optimizePackageImports"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " option in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file. This option will only load the modules you "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "actually"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " use, while still giving you the convenience of writing import statements with many named exports."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\texperimental: {\n\t\toptimizePackageImports: ['icon-library'],\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Next.js also optimizes some libraries automatically, thus they do not need to be included in the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "optimizePackageImports"
+						},
+						{
+							"type": "text",
+							"value": " list. See the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/config/next-config-js/optimizePackageImports",
+							"children": [
+								{
+									"type": "text",
+									"value": "full list"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " of supported packages."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Heavy client workloads"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A common cause of large client bundles is doing expensive rendering work in Client Components. This often happens with libraries that exist only to transform data into UI, such as syntax highlighting, chart rendering, or markdown parsing."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If that work does not require browser APIs or user interaction, it can be run in a Server Component."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In this example, a prism based highlighter runs in a Client Component. Even though the final output is just a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<code>"
+				},
+				{
+					"type": "text",
+					"value": " block, the entire highlighting library is bundled into the client JavaScript bundle:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\"",
+			"value": "'use client'\n\nimport Highlight from 'prism-react-renderer'\nimport theme from 'prism-react-renderer/themes/github'\n\nexport default function Page() {\n\tconst code = `export function hello() {\n    console.log(\"hi\")\n  }`\n\n\treturn (\n\t\t<article>\n\t\t\t<h1>Blog Post Title</h1>\n\n\t\t\t{/* The prism package and its tokenization logic are shipped to the client */}\n\t\t\t<Highlight\n\t\t\t\tcode={code}\n\t\t\t\tlanguage=\"tsx\"\n\t\t\t\ttheme={theme}>\n\t\t\t\t{({ className, style, tokens, getLineProps, getTokenProps }) => (\n\t\t\t\t\t<pre\n\t\t\t\t\t\tclassName={className}\n\t\t\t\t\t\tstyle={style}>\n\t\t\t\t\t\t<code>\n\t\t\t\t\t\t\t{tokens.map((line, i) => (\n\t\t\t\t\t\t\t\t<div\n\t\t\t\t\t\t\t\t\tkey={i}\n\t\t\t\t\t\t\t\t\t{...getLineProps({ line })}>\n\t\t\t\t\t\t\t\t\t{line.map((token, key) => (\n\t\t\t\t\t\t\t\t\t\t<span\n\t\t\t\t\t\t\t\t\t\t\tkey={key}\n\t\t\t\t\t\t\t\t\t\t\t{...getTokenProps({ token })}\n\t\t\t\t\t\t\t\t\t\t/>\n\t\t\t\t\t\t\t\t\t))}\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t))}\n\t\t\t\t\t\t</code>\n\t\t\t\t\t</pre>\n\t\t\t\t)}\n\t\t\t</Highlight>\n\t\t</article>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This increases bundle size because the client must download and execute the highlighting library, even though the result is static HTML."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Instead, move the highlighting logic to a Server Component and render the final HTML on the server. The client will only receive the rendered markup."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\"",
+			"value": "import { codeToHtml } from 'shiki'\n\nexport default async function Page() {\n\tconst code = `export function hello() {\n    console.log(\"hi\")\n  }`\n\n\t// The Shiki package runs on the server and is never bundled for the client.\n\tconst highlightedHtml = await codeToHtml(code, {\n\t\tlang: 'tsx',\n\t\ttheme: 'github-dark',\n\t})\n\n\treturn (\n\t\t<article>\n\t\t\t<h1>Blog Post Title</h1>\n\n\t\t\t{/* Client receives plain markup */}\n\t\t\t<pre>\n\t\t\t\t<code dangerouslySetInnerHTML={{ __html: highlightedHtml }} />\n\t\t\t</pre>\n\t\t</article>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Opting specific packages out of bundling"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Packages imported inside Server Components and Route Handlers are automatically bundled by Next.js."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can opt specific packages out of bundling using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/serverExternalPackages",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "serverExternalPackages"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " option in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\tserverExternalPackages: ['package-name'],\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.4.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Add "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next analyze export"
+								},
+								{
+									"type": "text",
+									"value": " and the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next-bundle-optimizer"
+								},
+								{
+									"type": "text",
+									"value": " skill."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,632 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: notFound\ndescription: API Reference for the notFound function.\nrelated:\n links:\n  - app/api-reference/file-conventions/not-found\n  - app/api-reference/functions/forbidden\n  - app/api-reference/functions/unauthorized"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "notFound"
+				},
+				{
+					"type": "text",
+					"value": " function throws an error that renders a Next.js 404 page. It's useful for handling missing resources in your application. You can customize the UI using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/not-found",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "not-found.js"
+						},
+						{
+							"type": "text",
+							"value": " file"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Invoking "
+				},
+				{
+					"type": "inlineCode",
+					"value": "notFound()"
+				},
+				{
+					"type": "text",
+					"value": " throws a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NEXT_HTTP_ERROR_FALLBACK;404"
+				},
+				{
+					"type": "text",
+					"value": " error and terminates rendering of the route segment where it was thrown. Next.js also injects a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<meta name=\"robots\" content=\"noindex\" />"
+				},
+				{
+					"type": "text",
+					"value": " tag so the page is not indexed. Because it works by throwing, call it in the render path: a component, or a function a component "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await"
+				},
+				{
+					"type": "text",
+					"value": "s. A call left in an un-awaited promise throws where nothing catches it, and no not-found UI renders (in development the server logs "
+				},
+				{
+					"type": "inlineCode",
+					"value": "⨯ unhandledRejection: NEXT_HTTP_ERROR_FALLBACK;404"
+				},
+				{
+					"type": "text",
+					"value": ")."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "notFound()"
+				},
+				{
+					"type": "text",
+					"value": " can be invoked in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/mutating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Functions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/user/[id]/page.tsx\" switcher",
+			"value": "import { notFound } from 'next/navigation'\n\nasync function fetchUser(id: string) {\n\tconst res = await fetch('https://...')\n\tif (!res.ok) return undefined\n\treturn res.json()\n}\n\nexport default async function Profile({ params }: { params: Promise<{ id: string }> }) {\n\tconst { id } = await params\n\tconst user = await fetchUser(id)\n\n\tif (!user) {\n\t\tnotFound()\n\t}\n\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/user/[id]/page.js\" switcher",
+			"value": "import { notFound } from 'next/navigation'\n\nasync function fetchUser(id) {\n\tconst res = await fetch('https://...')\n\tif (!res.ok) return undefined\n\treturn res.json()\n}\n\nexport default async function Profile({ params }) {\n\tconst { id } = await params\n\tconst user = await fetchUser(id)\n\n\tif (!user) {\n\t\tnotFound()\n\t}\n\n\t// ...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Good to know"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You do not need to write "
+				},
+				{
+					"type": "inlineCode",
+					"value": "return notFound()"
+				},
+				{
+					"type": "text",
+					"value": ". Calling it is enough, because it throws an exception that stops function execution. TypeScript understands this from its "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.typescriptlang.org/docs/handbook/2/functions.html#never",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "never"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " return type, so a value you check first stays narrowed afterward:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "// fetchUser resolves to a user object, or undefined\nconst user = await fetchUser(id)\n\nif (!user) {\n\tnotFound()\n}\n\n// user is defined here\nreturn <Profile user={user} />"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Like any exception, it travels up the call stack until something catches it. A "
+				},
+				{
+					"type": "inlineCode",
+					"value": "try/catch"
+				},
+				{
+					"type": "text",
+					"value": " around the call suppresses it, and the not-found UI won't render. If you need to catch errors near the call, use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/unstable_rethrow",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "unstable_rethrow"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to let the interrupt through first."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Calling "
+				},
+				{
+					"type": "inlineCode",
+					"value": "notFound()"
+				},
+				{
+					"type": "text",
+					"value": " after streaming has started"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To keep a page's shell and loading UI visible while data loads, do the existence check inside a component wrapped in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Suspense",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " instead of blocking the whole route. The idiomatic place for the check is the data-access function itself, awaited by the component that needs the data:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" switcher highlight={8}",
+			"value": "import { Suspense } from 'react'\nimport Link from 'next/link'\nimport { notFound } from 'next/navigation'\n\nasync function getPost(slug: string) {\n\tconst res = await fetch(`https://api.example.com/posts/${slug}`)\n\tif (res.status === 404) {\n\t\tnotFound()\n\t}\n\tif (!res.ok) {\n\t\tthrow new Error(`Failed to load post: ${res.status}`)\n\t}\n\treturn res.json()\n}\n\nasync function Article({ slug }: { slug: string }) {\n\tconst post = await getPost(slug)\n\treturn (\n\t\t<article>\n\t\t\t<h1>{post.title}</h1>\n\t\t\t<p>{post.content}</p>\n\t\t</article>\n\t)\n}\n\nexport default async function PostPage({ params }: PageProps<'/blog/[slug]'>) {\n\tconst { slug } = await params\n\n\treturn (\n\t\t<section>\n\t\t\t<Link href=\"/blog\">Blog</Link>\n\t\t\t<Suspense fallback={<p>Loading...</p>}>\n\t\t\t\t<Article slug={slug} />\n\t\t\t</Suspense>\n\t\t</section>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\" switcher highlight={8}",
+			"value": "import { Suspense } from 'react'\nimport Link from 'next/link'\nimport { notFound } from 'next/navigation'\n\nasync function getPost(slug) {\n\tconst res = await fetch(`https://api.example.com/posts/${slug}`)\n\tif (res.status === 404) {\n\t\tnotFound()\n\t}\n\tif (!res.ok) {\n\t\tthrow new Error(`Failed to load post: ${res.status}`)\n\t}\n\treturn res.json()\n}\n\nasync function Article({ slug }) {\n\tconst post = await getPost(slug)\n\treturn (\n\t\t<article>\n\t\t\t<h1>{post.title}</h1>\n\t\t\t<p>{post.content}</p>\n\t\t</article>\n\t)\n}\n\nexport default async function PostPage({ params }) {\n\tconst { slug } = await params\n\n\treturn (\n\t\t<section>\n\t\t\t<Link href=\"/blog\">Blog</Link>\n\t\t\t<Suspense fallback={<p>Loading...</p>}>\n\t\t\t\t<Article slug={slug} />\n\t\t\t</Suspense>\n\t\t</section>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When the post doesn't exist, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getPost"
+				},
+				{
+					"type": "text",
+					"value": " calls "
+				},
+				{
+					"type": "inlineCode",
+					"value": "notFound()"
+				},
+				{
+					"type": "text",
+					"value": ", which throws. Because this happens during rendering, the exception propagates to the nearest "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/not-found",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "not-found"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " boundary, which renders in place of the streamed-in content, even though the page shell has already been sent."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Add a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "not-found.tsx"
+				},
+				{
+					"type": "text",
+					"value": " alongside the route to define that UI. Without one, the nearest parent "
+				},
+				{
+					"type": "inlineCode",
+					"value": "not-found"
+				},
+				{
+					"type": "text",
+					"value": " boundary renders, falling back to Next.js's default 404 page:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/not-found.tsx\" switcher",
+			"value": "export default function NotFound() {\n\treturn (\n\t\t<section>\n\t\t\t<h1>Post not found</h1>\n\t\t\t<p>The post you're looking for doesn't exist.</p>\n\t\t</section>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/not-found.js\" switcher",
+			"value": "export default function NotFound() {\n\treturn (\n\t\t<section>\n\t\t\t<h1>Post not found</h1>\n\t\t\t<p>The post you're looking for doesn't exist.</p>\n\t\t</section>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The response starts streaming from the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary before "
+				},
+				{
+					"type": "inlineCode",
+					"value": "notFound()"
+				},
+				{
+					"type": "text",
+					"value": " runs, so it keeps its "
+				},
+				{
+					"type": "inlineCode",
+					"value": "200"
+				},
+				{
+					"type": "text",
+					"value": " status. Next.js adds a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "noindex"
+				},
+				{
+					"type": "text",
+					"value": " tag."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Calling "
+				},
+				{
+					"type": "inlineCode",
+					"value": "notFound()"
+				},
+				{
+					"type": "text",
+					"value": " before streaming starts returns a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "404"
+				},
+				{
+					"type": "text",
+					"value": ". A page that reaches "
+				},
+				{
+					"type": "inlineCode",
+					"value": "notFound()"
+				},
+				{
+					"type": "text",
+					"value": " during prerendering can remain "
+				},
+				{
+					"type": "inlineCode",
+					"value": "○"
+				},
+				{
+					"type": "text",
+					"value": " Static and serve a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "404"
+				},
+				{
+					"type": "text",
+					"value": ". A request-time check can run in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/proxy",
+					"children": [
+						{
+							"type": "text",
+							"value": "Proxy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " before the page renders. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/loading#status-codes",
+					"children": [
+						{
+							"type": "text",
+							"value": "Status codes"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Serving a 404 from a Route Handler"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "notFound()"
+				},
+				{
+					"type": "text",
+					"value": " also works in a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", where it serves a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "404"
+				},
+				{
+					"type": "text",
+					"value": " to the caller."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/api/posts/[slug]/route.ts\" switcher",
+			"value": "import { NextResponse } from 'next/server'\nimport { notFound } from 'next/navigation'\n\nexport async function GET(request: Request, { params }: RouteContext<'/api/posts/[slug]'>) {\n\tconst { slug } = await params\n\tconst res = await fetch(`https://api.example.com/posts/${slug}`)\n\tif (!res.ok) {\n\t\tnotFound()\n\t}\n\treturn NextResponse.json(await res.json())\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/api/posts/[slug]/route.js\" switcher",
+			"value": "import { NextResponse } from 'next/server'\nimport { notFound } from 'next/navigation'\n\nexport async function GET(request, { params }) {\n\tconst { slug } = await params\n\tconst res = await fetch(`https://api.example.com/posts/${slug}`)\n\tif (!res.ok) {\n\t\tnotFound()\n\t}\n\treturn NextResponse.json(await res.json())\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "notFound"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,150 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: refresh\ndescription: API Reference for the refresh function.\nrelated:\n links:\n  - app/guides/server-actions"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "refresh"
+				},
+				{
+					"type": "text",
+					"value": " allows you to refresh the client router from within a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/server-actions",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Action"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Usage"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "refresh"
+				},
+				{
+					"type": "text",
+					"value": " can "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "only"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " be called from within Server Actions. It cannot be used in Route Handlers, Client Components, or any other context."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parameters"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "refresh(): void;"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "refresh"
+				},
+				{
+					"type": "text",
+					"value": " does not return a value."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/actions.ts\" switcher",
+			"value": "'use server'\n\nimport { refresh } from 'next/cache'\n\nexport async function createPost(formData: FormData) {\n\tconst title = formData.get('title')\n\tconst content = formData.get('content')\n\n\t// Create the post in your database\n\tconst post = await db.post.create({\n\t\tdata: { title, content },\n\t})\n\n\trefresh()\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/actions.js\" switcher",
+			"value": "'use server'\n\nimport { refresh } from 'next/cache'\n\nexport async function createPost(formData) {\n\tconst title = formData.get('title')\n\tconst content = formData.get('content')\n\n\t// Create the post in your database\n\tconst post = await db.post.create({\n\t\tdata: { title, content },\n\t})\n\n\trefresh()\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Error when used outside Server Actions"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/posts/route.ts\" switcher",
+			"value": "import { refresh } from 'next/cache'\n\nexport async function POST() {\n\t// This will throw an error\n\trefresh()\n}"
+		}
+	]
+}

@@ -1,0 +1,820 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: useOffline\ndescription: Learn how to enable the experimental `useOffline` configuration option to detect connectivity and retry failed requests automatically.\nversion: experimental\nrelated:\n links:\n  - app/api-reference/functions/use-offline\n  - app/guides/progressive-web-apps"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useOffline"
+				},
+				{
+					"type": "text",
+					"value": " configuration option enables offline connectivity detection and automatic retry of failed navigation, prefetch, and Server Action requests. When enabled, it also exposes the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-offline",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useOffline"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " hook for reading the current offline state from Client Components."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\texperimental: {\n\t\tuseOffline: true,\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "module.exports = {\n\texperimental: {\n\t\tuseOffline: true,\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When enabled, Next.js will:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Listen for the browser's "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/offline_event",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "offline"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/online_event",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "online"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " events to track connectivity."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Detect network failures on navigation, prefetch, and Server Action requests."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Poll for connectivity using "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/HEAD",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "HEAD"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " requests with backoff while offline."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Automatically retry blocked requests once connectivity is restored."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Make the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/use-offline",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "useOffline"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " hook available from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/offline"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "How retry works"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The offline state is entered through one of two paths:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Browser event."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Next.js registers a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "window.addEventListener('offline', ...)"
+								},
+								{
+									"type": "text",
+									"value": " listener. When the OS reports the network interface as down, the offline state flips on immediately."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Failed fetch."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Any navigation, prefetch, or Server Action request whose "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch()"
+								},
+								{
+									"type": "text",
+									"value": " rejects with a non-abort, non-timeout error calls into the offline module. This catches the case where the browser still reports "
+								},
+								{
+									"type": "inlineCode",
+									"value": "navigator.onLine === true"
+								},
+								{
+									"type": "text",
+									"value": " but the actual request cannot reach the origin (captive portal, broken DNS, dead upstream)."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Once in the offline state, a polling loop tries to confirm that connectivity has returned."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "The connectivity check"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each check issues a single "
+				},
+				{
+					"type": "inlineCode",
+					"value": "HEAD"
+				},
+				{
+					"type": "text",
+					"value": " request to the current page's URL with the RSC header set, the same endpoint navigations use. The request is aborted after 200 ms."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Two outcomes count as \"online\":"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The fetch resolves normally."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The 200 ms timeout aborts the request. A truly offline request fails almost instantly (DNS or TCP error), so if it's still pending at 200 ms the TCP handshake succeeded and the server is reachable."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Any other rejection schedules the next check. A successful framework fetch (navigation, prefetch, Server Action) during the offline period also flips the state back to online."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Backoff"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Delays between checks are stepped, not exponential, and capped at 3 seconds:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Attempt"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Delay before next check"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "1"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "500 ms"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "2"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "1 s"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "3"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "2 s"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "4 and after"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "3 s"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The browser's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "online"
+				},
+				{
+					"type": "text",
+					"value": " event short-circuits the current wait and runs a connectivity check immediately. Reconnection is detected without waiting for the next scheduled tick."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Giving up"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The polling loop never gives up on its own. It continues at the 3-second cap until a check succeeds or the page unloads. A device that goes offline for hours and then regains connectivity will have its polling loop resume and resolve normally."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Retry of framework requests"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "While the offline state is active, any navigation, prefetch, or Server Action waits for the next connectivity check to succeed, whether it was newly issued or already in flight when the connection dropped. When the check succeeds, the request runs once; no extra backoff applies."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If it fails with a network error, the app re-enters the offline state and the polling loop starts again."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Traffic at reconnection"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A single client does not produce a runaway burst of traffic against its origin:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "While the client is offline, a failed "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch()"
+								},
+								{
+									"type": "text",
+									"value": " rejects locally at the browser's network layer. The request never reaches the origin."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The polling loop issues one "
+								},
+								{
+									"type": "inlineCode",
+									"value": "HEAD"
+								},
+								{
+									"type": "text",
+									"value": " request at a time, with delays capped at 3 seconds. No other framework requests are sent to the origin during the offline period."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "When connectivity returns, each pending navigation and Server Action fires once. Only the last navigation attempt is kept pending, and a typical form button is disabled while its action is pending."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prefetches run through the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/prefetching#prefetch-scheduling",
+									"children": [
+										{
+											"type": "text",
+											"value": "existing prefetch queue"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", not all at once."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In practice, this feature is unlikely to flood your server. The only extra traffic it generates per offline user is the HEAD polling, which stops as soon as connectivity returns. Prefetches, Server Actions, and navigations fire the same number of times they would have without an outage, just delayed."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.x.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "experimental.useOffline"
+								},
+								{
+									"type": "text",
+									"value": " configuration option introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

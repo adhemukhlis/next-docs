@@ -1,0 +1,4544 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Font Module\nnav_title: Font\ndescription: Optimizing loading web fonts with the built-in `next/font` loaders."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/font",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next/font"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " automatically optimizes your fonts (including custom fonts) and removes external network requests for improved privacy and performance."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "It includes "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "built-in automatic self-hosting"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for any font file. This means you can optimally load web fonts with no "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://web.dev/articles/cls",
+					"children": [
+						{
+							"type": "text",
+							"value": "layout shift"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also conveniently use all "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://fonts.google.com/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Google Fonts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". CSS and font files are downloaded at build time and self-hosted with the rest of your static assets. "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "No requests are sent to Google by the browser."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import { Inter } from 'next/font/google'\n\n// If loading a variable font, you don't need to specify the font weight\nconst inter = Inter({\n\tsubsets: ['latin'],\n\tdisplay: 'swap',\n})\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={inter.className}>\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "import { Inter } from 'next/font/google'\n\n// If loading a variable font, you don't need to specify the font weight\nconst inter = Inter({\n\tsubsets: ['latin'],\n\tdisplay: 'swap',\n})\n\nexport default function RootLayout({ children }) {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={inter.className}>\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "🎥 Watch:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Learn more about using "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next/font"
+						},
+						{
+							"type": "text",
+							"value": " → "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://www.youtube.com/watch?v=L8_98i_bMMA",
+							"children": [
+								{
+									"type": "text",
+									"value": "YouTube (6 minutes)"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Key"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "font/google"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "font/local"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Required"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#src",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "src"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Cross size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "String or Array of Objects"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#weight",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "weight"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "String or Array"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Required/Optional"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#style",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "style"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "String or Array"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "-"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#subsets",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "subsets"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Cross size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Array of Strings"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "-"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#axes",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "axes"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Cross size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Array of Strings"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "-"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#display",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "display"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "String"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "-"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#preload",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "preload"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Boolean"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "-"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#fallback",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "fallback"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Array of Strings"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "-"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#adjustfontfallback",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "adjustFontFallback"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Boolean or String"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "-"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#variable",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "variable"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "String"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "-"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#declarations",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "declarations"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Cross size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Array of Objects"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "-"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "src"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The path of the font file as a string or an array of objects (with type "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Array<{path: string, weight?: string, style?: string}>"
+				},
+				{
+					"type": "text",
+					"value": ") relative to the directory where the font loader function is called."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Used in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/local"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Required"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "src:'./fonts/my-font.woff2'"
+								},
+								{
+									"type": "text",
+									"value": " where "
+								},
+								{
+									"type": "inlineCode",
+									"value": "my-font.woff2"
+								},
+								{
+									"type": "text",
+									"value": " is placed in a directory named "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fonts"
+								},
+								{
+									"type": "text",
+									"value": " inside the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": " directory"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "src:[{path: './inter/Inter-Thin.ttf', weight: '100',},{path: './inter/Inter-Regular.ttf',weight: '400',},{path: './inter/Inter-Bold-Italic.ttf', weight: '700',style: 'italic',},]"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "if the font loader function is called in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/page.tsx"
+								},
+								{
+									"type": "text",
+									"value": " using "
+								},
+								{
+									"type": "inlineCode",
+									"value": "src:'../styles/fonts/my-font.ttf'"
+								},
+								{
+									"type": "text",
+									"value": ", then "
+								},
+								{
+									"type": "inlineCode",
+									"value": "my-font.ttf"
+								},
+								{
+									"type": "text",
+									"value": " is placed in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "styles/fonts"
+								},
+								{
+									"type": "text",
+									"value": " at the root of the project"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "weight"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The font "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://fonts.google.com/knowledge/glossary/weight",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "weight"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with the following possibilities:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "A string with possible values of the weights available for the specific font or a range of values if it's a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://fonts.google.com/variablefonts",
+									"children": [
+										{
+											"type": "text",
+											"value": "variable"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " font"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "An array of weight values if the font is not a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://fonts.google.com/variablefonts",
+									"children": [
+										{
+											"type": "text",
+											"value": "variable google font"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". It applies to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/font/google"
+								},
+								{
+									"type": "text",
+									"value": " only."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Used in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/google"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/local"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Required if the font being used is "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "not"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://fonts.google.com/variablefonts",
+									"children": [
+										{
+											"type": "text",
+											"value": "variable"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "weight: '400'"
+								},
+								{
+									"type": "text",
+									"value": ": A string for a single weight value - for the font "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://fonts.google.com/specimen/Inter?query=inter",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "Inter"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", the possible values are "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'100'"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'200'"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'300'"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'400'"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'500'"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'600'"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'700'"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'800'"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'900'"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'variable'"
+								},
+								{
+									"type": "text",
+									"value": " where "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'variable'"
+								},
+								{
+									"type": "text",
+									"value": " is the default)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "weight: '100 900'"
+								},
+								{
+									"type": "text",
+									"value": ": A string for the range between "
+								},
+								{
+									"type": "inlineCode",
+									"value": "100"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "900"
+								},
+								{
+									"type": "text",
+									"value": " for a variable font"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "weight: ['100','400','900']"
+								},
+								{
+									"type": "text",
+									"value": ": An array of 3 possible values for a non variable font"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "style"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The font "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/CSS/font-style",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "style"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with the following possibilities:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "A string "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/docs/Web/CSS/font-style#values",
+									"children": [
+										{
+											"type": "text",
+											"value": "value"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " with default value of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'normal'"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "An array of style values if the font is not a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://fonts.google.com/variablefonts",
+									"children": [
+										{
+											"type": "text",
+											"value": "variable google font"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". It applies to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/font/google"
+								},
+								{
+									"type": "text",
+									"value": " only."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Used in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/google"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/local"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "style: 'italic'"
+								},
+								{
+									"type": "text",
+									"value": ": A string - it can be "
+								},
+								{
+									"type": "inlineCode",
+									"value": "normal"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "italic"
+								},
+								{
+									"type": "text",
+									"value": " for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/font/google"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "style: 'oblique'"
+								},
+								{
+									"type": "text",
+									"value": ": A string - it can take any value for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/font/local"
+								},
+								{
+									"type": "text",
+									"value": " but is expected to come from "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/docs/Web/CSS/font-style",
+									"children": [
+										{
+											"type": "text",
+											"value": "standard font styles"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "style: ['italic','normal']"
+								},
+								{
+									"type": "text",
+									"value": ": An array of 2 values for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/font/google"
+								},
+								{
+									"type": "text",
+									"value": " - the values are from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "normal"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "italic"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "subsets"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The font "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://fonts.google.com/knowledge/glossary/subsetting",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "subsets"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " defined by an array of string values with the names of each subset you would like to be "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/font#specifying-a-subset",
+					"children": [
+						{
+							"type": "text",
+							"value": "preloaded"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Fonts specified via "
+				},
+				{
+					"type": "inlineCode",
+					"value": "subsets"
+				},
+				{
+					"type": "text",
+					"value": " will have a link preload tag injected into the head when the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#preload",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "preload"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " option is true, which is the default."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Used in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/google"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "subsets: ['latin']"
+								},
+								{
+									"type": "text",
+									"value": ": An array with the subset "
+								},
+								{
+									"type": "inlineCode",
+									"value": "latin"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can find a list of all subsets on the Google Fonts page for your font."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "axes"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Some variable fonts have extra "
+				},
+				{
+					"type": "inlineCode",
+					"value": "axes"
+				},
+				{
+					"type": "text",
+					"value": " that can be included. By default, only the font weight is included to keep the file size down. The possible values of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "axes"
+				},
+				{
+					"type": "text",
+					"value": " depend on the specific font."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Used in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/google"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "axes: ['slnt']"
+								},
+								{
+									"type": "text",
+									"value": ": An array with value "
+								},
+								{
+									"type": "inlineCode",
+									"value": "slnt"
+								},
+								{
+									"type": "text",
+									"value": " for the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Inter"
+								},
+								{
+									"type": "text",
+									"value": " variable font which has "
+								},
+								{
+									"type": "inlineCode",
+									"value": "slnt"
+								},
+								{
+									"type": "text",
+									"value": " as additional "
+								},
+								{
+									"type": "inlineCode",
+									"value": "axes"
+								},
+								{
+									"type": "text",
+									"value": " as shown "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://fonts.google.com/variablefonts?vfquery=inter#font-families",
+									"children": [
+										{
+											"type": "text",
+											"value": "here"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". You can find the possible "
+								},
+								{
+									"type": "inlineCode",
+									"value": "axes"
+								},
+								{
+									"type": "text",
+									"value": " values for your font by using the filter on the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://fonts.google.com/variablefonts#font-families",
+									"children": [
+										{
+											"type": "text",
+											"value": "Google variable fonts page"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and looking for axes other than "
+								},
+								{
+									"type": "inlineCode",
+									"value": "wght"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "display"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The font "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/CSS/@font-face/font-display",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "display"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with possible string "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/CSS/@font-face/font-display#values",
+					"children": [
+						{
+							"type": "text",
+							"value": "values"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'auto'"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'block'"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'swap'"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'fallback'"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'optional'"
+				},
+				{
+					"type": "text",
+					"value": " with default value of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'swap'"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Used in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/google"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/local"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "display: 'optional'"
+								},
+								{
+									"type": "text",
+									"value": ": A string assigned to the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "optional"
+								},
+								{
+									"type": "text",
+									"value": " value"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "preload"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A boolean value that specifies whether the font should be "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/font#preloading",
+					"children": [
+						{
+							"type": "text",
+							"value": "preloaded"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or not. The default is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Every font file a call loads shares this setting, because they become a single group of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@font-face"
+				},
+				{
+					"type": "text",
+					"value": " rules with one "
+				},
+				{
+					"type": "inlineCode",
+					"value": "font-family"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Used in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/google"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/local"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "preload: false"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "fallback"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The fallback font to use if the font cannot be loaded. An array of strings of fallback fonts with no default."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Used in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/google"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/local"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "fallback: ['system-ui', 'arial']"
+								},
+								{
+									"type": "text",
+									"value": ": An array setting the fallback fonts to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "system-ui"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "arial"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "adjustFontFallback"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "For "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/font/google"
+								},
+								{
+									"type": "text",
+									"value": ": A boolean value that sets whether an automatic fallback font should be used to reduce "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://web.dev/cls/",
+									"children": [
+										{
+											"type": "text",
+											"value": "Cumulative Layout Shift"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". The default is "
+								},
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "For "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/font/local"
+								},
+								{
+									"type": "text",
+									"value": ": A string or boolean "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": " value that sets whether an automatic fallback font should be used to reduce "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://web.dev/cls/",
+									"children": [
+										{
+											"type": "text",
+											"value": "Cumulative Layout Shift"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". The possible values are "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'Arial'"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'Times New Roman'"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": ". The default is "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'Arial'"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Used in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/google"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/local"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "adjustFontFallback: false"
+								},
+								{
+									"type": "text",
+									"value": ": for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/font/google"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "adjustFontFallback: 'Times New Roman'"
+								},
+								{
+									"type": "text",
+									"value": ": for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/font/local"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "variable"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A string value to define the CSS variable name to be used if the style is applied with the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#css-variables",
+					"children": [
+						{
+							"type": "text",
+							"value": "CSS variable method"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Used in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/google"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/local"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "variable: '--my-font'"
+								},
+								{
+									"type": "text",
+									"value": ": The CSS variable "
+								},
+								{
+									"type": "inlineCode",
+									"value": "--my-font"
+								},
+								{
+									"type": "text",
+									"value": " is declared"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "declarations"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "An array of font face "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/CSS/@font-face#descriptors",
+					"children": [
+						{
+							"type": "text",
+							"value": "descriptor"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " key-value pairs that define the generated "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@font-face"
+				},
+				{
+					"type": "text",
+					"value": " further."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Setting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "font-family"
+				},
+				{
+					"type": "text",
+					"value": " replaces the name Next.js generates. Keep the value the same as the exported constant, so "
+				},
+				{
+					"type": "inlineCode",
+					"value": "className"
+				},
+				{
+					"type": "text",
+					"value": " and the CSS variable reference the same family."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/fonts.ts\"",
+			"value": "import localFont from 'next/font/local'\n\nexport const myFont = localFont({\n\tsrc: './my-font.woff2',\n\tdeclarations: [{ prop: 'font-family', value: 'myFont' }],\n})"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Used in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/local"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "declarations: [{ prop: 'ascent-override', value: '90%' }]"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Google Fonts"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use a Google font, import it from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/google"
+				},
+				{
+					"type": "text",
+					"value": " as a function. We recommend using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://fonts.google.com/variablefonts",
+					"children": [
+						{
+							"type": "text",
+							"value": "variable fonts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the best performance and flexibility."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import { Inter } from 'next/font/google'\n\n// If loading a variable font, you don't need to specify the font weight\nconst inter = Inter({\n\tsubsets: ['latin'],\n\tdisplay: 'swap',\n})\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={inter.className}>\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "import { Inter } from 'next/font/google'\n\n// If loading a variable font, you don't need to specify the font weight\nconst inter = Inter({\n\tsubsets: ['latin'],\n\tdisplay: 'swap',\n})\n\nexport default function RootLayout({ children }) {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={inter.className}>\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you can't use a variable font, you will "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "need to specify a weight"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import { Roboto } from 'next/font/google'\n\nconst roboto = Roboto({\n\tweight: '400',\n\tsubsets: ['latin'],\n\tdisplay: 'swap',\n})\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={roboto.className}>\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "import { Roboto } from 'next/font/google'\n\nconst roboto = Roboto({\n\tweight: '400',\n\tsubsets: ['latin'],\n\tdisplay: 'swap',\n})\n\nexport default function RootLayout({ children }) {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={roboto.className}>\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can specify multiple weights and/or styles by using an array:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\"",
+			"value": "const roboto = Roboto({\n\tweight: ['400', '700'],\n\tstyle: ['normal', 'italic'],\n\tsubsets: ['latin'],\n\tdisplay: 'swap',\n})"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Use an underscore (_) for font names with multiple words. E.g. "
+						},
+						{
+							"type": "inlineCode",
+							"value": "Roboto Mono"
+						},
+						{
+							"type": "text",
+							"value": " should be imported as "
+						},
+						{
+							"type": "inlineCode",
+							"value": "Roboto_Mono"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Specifying a subset"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Google Fonts are automatically "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://fonts.google.com/knowledge/glossary/subsetting",
+					"children": [
+						{
+							"type": "text",
+							"value": "subset"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This reduces the size of the font file and improves performance. You'll need to define which of these subsets you want to preload. Failing to specify any subsets while "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/font#preload",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "preload"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": " will result in a warning."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This can be done by adding it to the function call:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "const inter = Inter({ subsets: ['latin'] })"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "const inter = Inter({ subsets: ['latin'] })"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "View the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/font",
+					"children": [
+						{
+							"type": "text",
+							"value": "Font API Reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more information."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using Multiple Fonts"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can import and use multiple fonts in your application. There are two approaches you can take."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The first approach is to create a utility function that exports a font, imports it, and applies its "
+				},
+				{
+					"type": "inlineCode",
+					"value": "className"
+				},
+				{
+					"type": "text",
+					"value": " where needed. This ensures the font is preloaded only when it's rendered:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/fonts.ts\" switcher",
+			"value": "import { Inter, Roboto_Mono } from 'next/font/google'\n\nexport const inter = Inter({\n\tsubsets: ['latin'],\n\tdisplay: 'swap',\n})\n\nexport const roboto_mono = Roboto_Mono({\n\tsubsets: ['latin'],\n\tdisplay: 'swap',\n})"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/fonts.js\" switcher",
+			"value": "import { Inter, Roboto_Mono } from 'next/font/google'\n\nexport const inter = Inter({\n\tsubsets: ['latin'],\n\tdisplay: 'swap',\n})\n\nexport const roboto_mono = Roboto_Mono({\n\tsubsets: ['latin'],\n\tdisplay: 'swap',\n})"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import { inter } from './fonts'\n\nexport default function Layout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={inter.className}>\n\t\t\t<body>\n\t\t\t\t<div>{children}</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "import { inter } from './fonts'\n\nexport default function Layout({ children }) {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={inter.className}>\n\t\t\t<body>\n\t\t\t\t<div>{children}</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import { roboto_mono } from './fonts'\n\nexport default function Page() {\n\treturn (\n\t\t<>\n\t\t\t<h1 className={roboto_mono.className}>My page</h1>\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import { roboto_mono } from './fonts'\n\nexport default function Page() {\n\treturn (\n\t\t<>\n\t\t\t<h1 className={roboto_mono.className}>My page</h1>\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the example above, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Inter"
+				},
+				{
+					"type": "text",
+					"value": " will be applied globally, and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Roboto Mono"
+				},
+				{
+					"type": "text",
+					"value": " can be imported and applied as needed."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Alternatively, you can create a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/font#variable",
+					"children": [
+						{
+							"type": "text",
+							"value": "CSS variable"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and use it with your preferred CSS solution:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import { Inter, Roboto_Mono } from 'next/font/google'\nimport styles from './global.css'\n\nconst inter = Inter({\n\tsubsets: ['latin'],\n\tvariable: '--font-inter',\n\tdisplay: 'swap',\n})\n\nconst roboto_mono = Roboto_Mono({\n\tsubsets: ['latin'],\n\tvariable: '--font-roboto-mono',\n\tdisplay: 'swap',\n})\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={`${inter.variable} ${roboto_mono.variable}`}>\n\t\t\t<body>\n\t\t\t\t<h1>My App</h1>\n\t\t\t\t<div>{children}</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "import { Inter, Roboto_Mono } from 'next/font/google'\n\nconst inter = Inter({\n\tsubsets: ['latin'],\n\tvariable: '--font-inter',\n\tdisplay: 'swap',\n})\n\nconst roboto_mono = Roboto_Mono({\n\tsubsets: ['latin'],\n\tvariable: '--font-roboto-mono',\n\tdisplay: 'swap',\n})\n\nexport default function RootLayout({ children }) {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={`${inter.variable} ${roboto_mono.variable}`}>\n\t\t\t<body>\n\t\t\t\t<h1>My App</h1>\n\t\t\t\t<div>{children}</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "css",
+			"meta": "filename=\"app/global.css\"",
+			"value": "html {\n\tfont-family: var(--font-inter);\n}\n\nh1 {\n\tfont-family: var(--font-roboto-mono);\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the example above, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Inter"
+				},
+				{
+					"type": "text",
+					"value": " will be applied globally, and any "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<h1>"
+				},
+				{
+					"type": "text",
+					"value": " tags will be styled with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Roboto Mono"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Recommendation"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Use multiple fonts conservatively since each new font is an additional resource the client has to download."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Local Fonts"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Import "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/local"
+				},
+				{
+					"type": "text",
+					"value": " and specify the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " of your local font file. We recommend using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://fonts.google.com/variablefonts",
+					"children": [
+						{
+							"type": "text",
+							"value": "variable fonts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the best performance and flexibility."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import localFont from 'next/font/local'\n\n// Font files can be colocated inside of `app`\nconst myFont = localFont({\n\tsrc: './my-font.woff2',\n\tdisplay: 'swap',\n})\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={myFont.className}>\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "import localFont from 'next/font/local'\n\n// Font files can be colocated inside of `app`\nconst myFont = localFont({\n\tsrc: './my-font.woff2',\n\tdisplay: 'swap',\n})\n\nexport default function RootLayout({ children }) {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={myFont.className}>\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you want to use multiple files for a single font family, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " can be an array:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "const roboto = localFont({\n\tsrc: [\n\t\t{\n\t\t\tpath: './Roboto-Regular.woff2',\n\t\t\tweight: '400',\n\t\t\tstyle: 'normal',\n\t\t},\n\t\t{\n\t\t\tpath: './Roboto-Italic.woff2',\n\t\t\tweight: '400',\n\t\t\tstyle: 'italic',\n\t\t},\n\t\t{\n\t\t\tpath: './Roboto-Bold.woff2',\n\t\t\tweight: '700',\n\t\t\tstyle: 'normal',\n\t\t},\n\t\t{\n\t\t\tpath: './Roboto-BoldItalic.woff2',\n\t\t\tweight: '700',\n\t\t\tstyle: 'italic',\n\t\t},\n\t],\n})"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "View the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/font",
+					"children": [
+						{
+							"type": "text",
+							"value": "Font API Reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more information."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "With Tailwind CSS"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next/font"
+				},
+				{
+					"type": "text",
+					"value": " integrates seamlessly with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://tailwindcss.com/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Tailwind CSS"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/font#css-variables",
+					"children": [
+						{
+							"type": "text",
+							"value": "CSS variables"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the example below, we use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Inter"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Roboto_Mono"
+				},
+				{
+					"type": "text",
+					"value": " fonts from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/google"
+				},
+				{
+					"type": "text",
+					"value": " (you can use any Google Font or Local Font). Use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "variable"
+				},
+				{
+					"type": "text",
+					"value": " option to define a CSS variable name, such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "inter"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "roboto_mono"
+				},
+				{
+					"type": "text",
+					"value": " for these fonts, respectively. Then, apply "
+				},
+				{
+					"type": "inlineCode",
+					"value": "inter.variable"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "roboto_mono.variable"
+				},
+				{
+					"type": "text",
+					"value": " to include the CSS variables in your HTML document."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": You can add these variables to the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<html>"
+						},
+						{
+							"type": "text",
+							"value": " or "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<body>"
+						},
+						{
+							"type": "text",
+							"value": " tag, depending on your preference, styling needs or project requirements."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import { Inter, Roboto_Mono } from 'next/font/google'\n\nconst inter = Inter({\n\tsubsets: ['latin'],\n\tdisplay: 'swap',\n\tvariable: '--font-inter',\n})\n\nconst roboto_mono = Roboto_Mono({\n\tsubsets: ['latin'],\n\tdisplay: 'swap',\n\tvariable: '--font-roboto-mono',\n})\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={`${inter.variable} ${roboto_mono.variable} antialiased`}>\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "import { Inter, Roboto_Mono } from 'next/font/google'\n\nconst inter = Inter({\n\tsubsets: ['latin'],\n\tdisplay: 'swap',\n\tvariable: '--font-inter',\n})\n\nconst roboto_mono = Roboto_Mono({\n\tsubsets: ['latin'],\n\tdisplay: 'swap',\n\tvariable: '--font-roboto-mono',\n})\n\nexport default function RootLayout({ children }) {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={`${inter.variable} ${roboto_mono.variable} antialiased`}>\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Finally, add the CSS variable to your "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/css#tailwind-css",
+					"children": [
+						{
+							"type": "text",
+							"value": "Tailwind CSS config"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "css",
+			"meta": "filename=\"global.css\"",
+			"value": "@import 'tailwindcss';\n\n@theme inline {\n\t--font-sans: var(--font-inter);\n\t--font-mono: var(--font-roboto-mono);\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Tailwind CSS v3"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"tailwind.config.js\"",
+			"value": "/** @type {import('tailwindcss').Config} */\nmodule.exports = {\n\tcontent: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}', './app/**/*.{js,ts,jsx,tsx}'],\n\ttheme: {\n\t\textend: {\n\t\t\tfontFamily: {\n\t\t\t\tsans: ['var(--font-inter)'],\n\t\t\t\tmono: ['var(--font-roboto-mono)'],\n\t\t\t},\n\t\t},\n\t},\n\tplugins: [],\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can now use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "font-sans"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "font-mono"
+				},
+				{
+					"type": "text",
+					"value": " utility classes to apply the font to your elements."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": null,
+			"value": "<p class=\"font-sans ...\">The quick brown fox ...</p>\n<p class=\"font-mono ...\">The quick brown fox ...</p>"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Applying Styles"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can apply the font styles in three ways:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#classname",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "className"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#style-1",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "style"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#css-variables",
+									"children": [
+										{
+											"type": "text",
+											"value": "CSS Variables"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "className"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns a read-only CSS "
+				},
+				{
+					"type": "inlineCode",
+					"value": "className"
+				},
+				{
+					"type": "text",
+					"value": " for the loaded font to be passed to an HTML element."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "<p className={inter.className}>Hello, Next.js!</p>"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "style"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns a read-only CSS "
+				},
+				{
+					"type": "inlineCode",
+					"value": "style"
+				},
+				{
+					"type": "text",
+					"value": " object for the loaded font to be passed to an HTML element, including "
+				},
+				{
+					"type": "inlineCode",
+					"value": "style.fontFamily"
+				},
+				{
+					"type": "text",
+					"value": " to access the font family name and fallback fonts."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "<p style={inter.style}>Hello World</p>"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "CSS Variables"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you would like to set your styles in an external style sheet and specify additional options there, use the CSS variable method."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In addition to importing the font, also import the CSS file where the CSS variable is defined and set the variable option of the font loader object as follows:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import { Inter } from 'next/font/google'\nimport styles from '../styles/component.module.css'\n\nconst inter = Inter({\n\tvariable: '--font-inter',\n})"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import { Inter } from 'next/font/google'\nimport styles from '../styles/component.module.css'\n\nconst inter = Inter({\n\tvariable: '--font-inter',\n})"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use the font, set the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "className"
+				},
+				{
+					"type": "text",
+					"value": " of the parent container of the text you would like to style to the font loader's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "variable"
+				},
+				{
+					"type": "text",
+					"value": " value and the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "className"
+				},
+				{
+					"type": "text",
+					"value": " of the text to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "styles"
+				},
+				{
+					"type": "text",
+					"value": " property from the external CSS file."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "<main className={inter.variable}>\n\t<p className={styles.text}>Hello World</p>\n</main>"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "<main className={inter.variable}>\n\t<p className={styles.text}>Hello World</p>\n</main>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Define the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "text"
+				},
+				{
+					"type": "text",
+					"value": " selector class in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "component.module.css"
+				},
+				{
+					"type": "text",
+					"value": " CSS file as follows:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "css",
+			"meta": "filename=\"styles/component.module.css\"",
+			"value": ".text {\n\tfont-family: var(--font-inter);\n\tfont-weight: 200;\n\tfont-style: italic;\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the example above, the text "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Hello World"
+				},
+				{
+					"type": "text",
+					"value": " is styled using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Inter"
+				},
+				{
+					"type": "text",
+					"value": " font and the generated font fallback with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "font-weight: 200"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "font-style: italic"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using a font definitions file"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Every time you call the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "localFont"
+				},
+				{
+					"type": "text",
+					"value": " or Google font function, that font will be hosted as one instance in your application. Therefore, if you need to use the same font in multiple places, you should load it in one place and import the related font object where you need it. This is done using a font definitions file."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, create a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fonts.ts"
+				},
+				{
+					"type": "text",
+					"value": " file in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "styles"
+				},
+				{
+					"type": "text",
+					"value": " folder at the root of your app directory."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, specify your font definitions as follows:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"styles/fonts.ts\" switcher",
+			"value": "import { Inter, Lora, Source_Sans_3 } from 'next/font/google'\nimport localFont from 'next/font/local'\n\n// define your variable fonts\nconst inter = Inter()\nconst lora = Lora()\n// define 2 weights of a non-variable font\nconst sourceCodePro400 = Source_Sans_3({ weight: '400' })\nconst sourceCodePro700 = Source_Sans_3({ weight: '700' })\n// define a custom local font where GreatVibes-Regular.ttf is stored in the styles folder\nconst greatVibes = localFont({ src: './GreatVibes-Regular.ttf' })\n\nexport { inter, lora, sourceCodePro400, sourceCodePro700, greatVibes }"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"styles/fonts.js\" switcher",
+			"value": "import { Inter, Lora, Source_Sans_3 } from 'next/font/google'\nimport localFont from 'next/font/local'\n\n// define your variable fonts\nconst inter = Inter()\nconst lora = Lora()\n// define 2 weights of a non-variable font\nconst sourceCodePro400 = Source_Sans_3({ weight: '400' })\nconst sourceCodePro700 = Source_Sans_3({ weight: '700' })\n// define a custom local font where GreatVibes-Regular.ttf is stored in the styles folder\nconst greatVibes = localFont({ src: './GreatVibes-Regular.ttf' })\n\nexport { inter, lora, sourceCodePro400, sourceCodePro700, greatVibes }"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can now use these definitions in your code as follows:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import { inter, lora, sourceCodePro700, greatVibes } from '../styles/fonts'\n\nexport default function Page() {\n\treturn (\n\t\t<div>\n\t\t\t<p className={inter.className}>Hello world using Inter font</p>\n\t\t\t<p style={lora.style}>Hello world using Lora font</p>\n\t\t\t<p className={sourceCodePro700.className}>Hello world using Source_Sans_3 font with weight 700</p>\n\t\t\t<p className={greatVibes.className}>My title in Great Vibes font</p>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import { inter, lora, sourceCodePro700, greatVibes } from '../styles/fonts'\n\nexport default function Page() {\n\treturn (\n\t\t<div>\n\t\t\t<p className={inter.className}>Hello world using Inter font</p>\n\t\t\t<p style={lora.style}>Hello world using Lora font</p>\n\t\t\t<p className={sourceCodePro700.className}>Hello world using Source_Sans_3 font with weight 700</p>\n\t\t\t<p className={greatVibes.className}>My title in Great Vibes font</p>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To make it easier to access the font definitions in your code, you can define a path alias in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tsconfig.json"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "jsconfig.json"
+				},
+				{
+					"type": "text",
+					"value": " files as follows:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"tsconfig.json\"",
+			"value": "{\n\t\"compilerOptions\": {\n\t\t\"paths\": {\n\t\t\t\"@/fonts\": [\"./styles/fonts\"]\n\t\t}\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can now import any font definition as follows:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/about/page.tsx\" switcher",
+			"value": "import { greatVibes, sourceCodePro400 } from '@/fonts'"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/about/page.js\" switcher",
+			"value": "import { greatVibes, sourceCodePro400 } from '@/fonts'"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Preloading"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When a font function is called on a page of your site, it is not globally available and preloaded on all routes. Rather, the font is only preloaded on the related routes based on the type of file where it is used:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If it's a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/page",
+									"children": [
+										{
+											"type": "text",
+											"value": "unique page"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", it is preloaded on the unique route for that page."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If it's a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/layout",
+									"children": [
+										{
+											"type": "text",
+											"value": "layout"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", it is preloaded on all the routes wrapped by the layout."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If it's the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/layout#root-layout",
+									"children": [
+										{
+											"type": "text",
+											"value": "root layout"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", it is preloaded on all routes."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version Changes"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.2.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "@next/font"
+								},
+								{
+									"type": "text",
+									"value": " renamed to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/font"
+								},
+								{
+									"type": "text",
+									"value": ". Installation no longer required."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "@next/font"
+								},
+								{
+									"type": "text",
+									"value": " was added."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

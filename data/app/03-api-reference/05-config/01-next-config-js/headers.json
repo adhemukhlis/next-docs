@@ -1,0 +1,1831 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: headers\ndescription: Add custom HTTP headers to your Next.js app."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Headers allow you to set custom HTTP headers on the response to an incoming request on a given path."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To set custom HTTP headers you can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers"
+				},
+				{
+					"type": "text",
+					"value": " key in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\theaders() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/about',\n\t\t\t\theaders: [\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'x-custom-header',\n\t\t\t\t\t\tvalue: 'my custom header value',\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'x-another-custom-header',\n\t\t\t\t\t\tvalue: 'my other custom header value',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "headers"
+				},
+				{
+					"type": "text",
+					"value": " can be defined as a synchronous or async function. It should return, or resolve to, an array of objects with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "source"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers"
+				},
+				{
+					"type": "text",
+					"value": " properties:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "source"
+								},
+								{
+									"type": "text",
+									"value": " is the incoming request path pattern."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "headers"
+								},
+								{
+									"type": "text",
+									"value": " is an array of response header objects, with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "key"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "value"
+								},
+								{
+									"type": "text",
+									"value": " properties."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "basePath"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								},
+								{
+									"type": "text",
+									"value": " - if false the basePath won't be included when matching, can be used for external rewrites only."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "locale"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								},
+								{
+									"type": "text",
+									"value": " - whether the locale should not be included when matching."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "has"
+								},
+								{
+									"type": "text",
+									"value": " is an array of "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#header-cookie-and-query-matching",
+									"children": [
+										{
+											"type": "text",
+											"value": "has objects"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " with the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "type"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "key"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "value"
+								},
+								{
+									"type": "text",
+									"value": " properties."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "missing"
+								},
+								{
+									"type": "text",
+									"value": " is an array of "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#header-cookie-and-query-matching",
+									"children": [
+										{
+											"type": "text",
+											"value": "missing objects"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " with the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "type"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "key"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "value"
+								},
+								{
+									"type": "text",
+									"value": " properties."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Headers are checked before the filesystem which includes pages and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/public"
+				},
+				{
+					"type": "text",
+					"value": " files."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Header Overriding Behavior"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If two headers match the same path and set the same header key, the last header key will override the first. Using the below headers, the path "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/hello"
+				},
+				{
+					"type": "text",
+					"value": " will result in the header "
+				},
+				{
+					"type": "inlineCode",
+					"value": "x-hello"
+				},
+				{
+					"type": "text",
+					"value": " being "
+				},
+				{
+					"type": "inlineCode",
+					"value": "world"
+				},
+				{
+					"type": "text",
+					"value": " due to the last header value set being "
+				},
+				{
+					"type": "inlineCode",
+					"value": "world"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\theaders() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/:path*',\n\t\t\t\theaders: [\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'x-hello',\n\t\t\t\t\t\tvalue: 'there',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t},\n\t\t\t{\n\t\t\t\tsource: '/hello',\n\t\t\t\theaders: [\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'x-hello',\n\t\t\t\t\t\tvalue: 'world',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Path Matching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Path matches are allowed, for example "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/:slug"
+				},
+				{
+					"type": "text",
+					"value": " will match "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/first-post"
+				},
+				{
+					"type": "text",
+					"value": " (no nested paths):"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\theaders() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/blog/:slug',\n\t\t\t\theaders: [\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'x-slug',\n\t\t\t\t\t\tvalue: ':slug', // Matched parameters can be used in the value\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'x-slug-:slug', // Matched parameters can be used in the key\n\t\t\t\t\t\tvalue: 'my other custom header value',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The pattern "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/:slug"
+				},
+				{
+					"type": "text",
+					"value": " matches "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/first-post"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/post-1"
+				},
+				{
+					"type": "text",
+					"value": " but not a nested path like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/a/b"
+				},
+				{
+					"type": "text",
+					"value": ". Patterns are anchored to the start, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/:slug"
+				},
+				{
+					"type": "text",
+					"value": " will not match "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/archive/blog/first-post"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use modifiers on parameters: "
+				},
+				{
+					"type": "inlineCode",
+					"value": "*"
+				},
+				{
+					"type": "text",
+					"value": " (zero or more), "
+				},
+				{
+					"type": "inlineCode",
+					"value": "+"
+				},
+				{
+					"type": "text",
+					"value": " (one or more), "
+				},
+				{
+					"type": "inlineCode",
+					"value": "?"
+				},
+				{
+					"type": "text",
+					"value": " (zero or one). For example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/:slug*"
+				},
+				{
+					"type": "text",
+					"value": " matches "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/a"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/a/b/c"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Read more details on "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/pillarjs/path-to-regexp",
+					"children": [
+						{
+							"type": "text",
+							"value": "path-to-regexp"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " documentation."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Wildcard Path Matching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To match a wildcard path you can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "*"
+				},
+				{
+					"type": "text",
+					"value": " after a parameter, for example "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/:slug*"
+				},
+				{
+					"type": "text",
+					"value": " will match "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/a/b/c/d/hello-world"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\theaders() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/blog/:slug*',\n\t\t\t\theaders: [\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'x-slug',\n\t\t\t\t\t\tvalue: ':slug*', // Matched parameters can be used in the value\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'x-slug-:slug*', // Matched parameters can be used in the key\n\t\t\t\t\t\tvalue: 'my other custom header value',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Regex Path Matching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To match a regex path you can wrap the regex in parenthesis after a parameter, for example "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/:slug(\\\\d{1,})"
+				},
+				{
+					"type": "text",
+					"value": " will match "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/123"
+				},
+				{
+					"type": "text",
+					"value": " but not "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/abc"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\theaders() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/blog/:post(\\\\d{1,})',\n\t\t\t\theaders: [\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'x-post',\n\t\t\t\t\t\tvalue: ':post',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The following characters "
+				},
+				{
+					"type": "inlineCode",
+					"value": "("
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": ")"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "{"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "}"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": ":"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "*"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "+"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "?"
+				},
+				{
+					"type": "text",
+					"value": " are used for regex path matching, so when used in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "source"
+				},
+				{
+					"type": "text",
+					"value": " as non-special values they must be escaped by adding "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\\\\"
+				},
+				{
+					"type": "text",
+					"value": " before them:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\theaders() {\n\t\treturn [\n\t\t\t{\n\t\t\t\t// this will match `/english(default)/something` being requested\n\t\t\t\tsource: '/english\\\\(default\\\\)/:slug',\n\t\t\t\theaders: [\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'x-header',\n\t\t\t\t\t\tvalue: 'value',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Header, Cookie, and Query Matching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To only apply a header when header, cookie, or query values also match the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "has"
+				},
+				{
+					"type": "text",
+					"value": " field or don't match the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "missing"
+				},
+				{
+					"type": "text",
+					"value": " field can be used. Both the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "source"
+				},
+				{
+					"type": "text",
+					"value": " and all "
+				},
+				{
+					"type": "inlineCode",
+					"value": "has"
+				},
+				{
+					"type": "text",
+					"value": " items must match and all "
+				},
+				{
+					"type": "inlineCode",
+					"value": "missing"
+				},
+				{
+					"type": "text",
+					"value": " items must not match for the header to be applied."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "has"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "missing"
+				},
+				{
+					"type": "text",
+					"value": " items can have the following fields:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "type"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "String"
+								},
+								{
+									"type": "text",
+									"value": " - must be either "
+								},
+								{
+									"type": "inlineCode",
+									"value": "header"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cookie"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "host"
+								},
+								{
+									"type": "text",
+									"value": ", or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "query"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "key"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "String"
+								},
+								{
+									"type": "text",
+									"value": " - the key from the selected type to match against."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "value"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "String"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								},
+								{
+									"type": "text",
+									"value": " - the value to check for, if undefined any value will match. A regex like string can be used to capture a specific part of the value, e.g. if the value "
+								},
+								{
+									"type": "inlineCode",
+									"value": "first-(?<paramName>.*)"
+								},
+								{
+									"type": "text",
+									"value": " is used for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "first-second"
+								},
+								{
+									"type": "text",
+									"value": " then "
+								},
+								{
+									"type": "inlineCode",
+									"value": "second"
+								},
+								{
+									"type": "text",
+									"value": " will be usable in the destination with "
+								},
+								{
+									"type": "inlineCode",
+									"value": ":paramName"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\theaders() {\n\t\treturn [\n\t\t\t// if the header `x-add-header` is present,\n\t\t\t// the `x-another-header` header will be applied\n\t\t\t{\n\t\t\t\tsource: '/:path*',\n\t\t\t\thas: [\n\t\t\t\t\t{\n\t\t\t\t\t\ttype: 'header',\n\t\t\t\t\t\tkey: 'x-add-header',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t\theaders: [\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'x-another-header',\n\t\t\t\t\t\tvalue: 'hello',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t},\n\t\t\t// if the header `x-no-header` is not present,\n\t\t\t// the `x-another-header` header will be applied\n\t\t\t{\n\t\t\t\tsource: '/:path*',\n\t\t\t\tmissing: [\n\t\t\t\t\t{\n\t\t\t\t\t\ttype: 'header',\n\t\t\t\t\t\tkey: 'x-no-header',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t\theaders: [\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'x-another-header',\n\t\t\t\t\t\tvalue: 'hello',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t},\n\t\t\t// if the source, query, and cookie are matched,\n\t\t\t// the `x-authorized` header will be applied\n\t\t\t{\n\t\t\t\tsource: '/specific/:path*',\n\t\t\t\thas: [\n\t\t\t\t\t{\n\t\t\t\t\t\ttype: 'query',\n\t\t\t\t\t\tkey: 'page',\n\t\t\t\t\t\t// the page value will not be available in the\n\t\t\t\t\t\t// header key/values since value is provided and\n\t\t\t\t\t\t// doesn't use a named capture group e.g. (?<page>home)\n\t\t\t\t\t\tvalue: 'home',\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\ttype: 'cookie',\n\t\t\t\t\t\tkey: 'authorized',\n\t\t\t\t\t\tvalue: 'true',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t\theaders: [\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'x-authorized',\n\t\t\t\t\t\tvalue: ':authorized',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t},\n\t\t\t// if the header `x-authorized` is present and\n\t\t\t// contains a matching value, the `x-another-header` will be applied\n\t\t\t{\n\t\t\t\tsource: '/:path*',\n\t\t\t\thas: [\n\t\t\t\t\t{\n\t\t\t\t\t\ttype: 'header',\n\t\t\t\t\t\tkey: 'x-authorized',\n\t\t\t\t\t\tvalue: '(?<authorized>yes|true)',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t\theaders: [\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'x-another-header',\n\t\t\t\t\t\tvalue: ':authorized',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t},\n\t\t\t// if the host is `example.com`,\n\t\t\t// this header will be applied\n\t\t\t{\n\t\t\t\tsource: '/:path*',\n\t\t\t\thas: [\n\t\t\t\t\t{\n\t\t\t\t\t\ttype: 'host',\n\t\t\t\t\t\tvalue: 'example.com',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t\theaders: [\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'x-another-header',\n\t\t\t\t\t\tvalue: ':authorized',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Headers with basePath support"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When leveraging "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/basePath",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "basePath"
+						},
+						{
+							"type": "text",
+							"value": " support"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with headers each "
+				},
+				{
+					"type": "inlineCode",
+					"value": "source"
+				},
+				{
+					"type": "text",
+					"value": " is automatically prefixed with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "basePath"
+				},
+				{
+					"type": "text",
+					"value": " unless you add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "basePath: false"
+				},
+				{
+					"type": "text",
+					"value": " to the header:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tbasePath: '/docs',\n\n\theaders() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/with-basePath', // becomes /docs/with-basePath\n\t\t\t\theaders: [\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'x-hello',\n\t\t\t\t\t\tvalue: 'world',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t},\n\t\t\t{\n\t\t\t\tsource: '/without-basePath', // is not modified since basePath: false is set\n\t\t\t\theaders: [\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'x-hello',\n\t\t\t\t\t\tvalue: 'world',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t\tbasePath: false,\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Headers with i18n support"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When leveraging "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/internationalization",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "i18n"
+						},
+						{
+							"type": "text",
+							"value": " support"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with headers each "
+				},
+				{
+					"type": "inlineCode",
+					"value": "source"
+				},
+				{
+					"type": "text",
+					"value": " is automatically prefixed to handle the configured "
+				},
+				{
+					"type": "inlineCode",
+					"value": "locales"
+				},
+				{
+					"type": "text",
+					"value": " unless you add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "locale: false"
+				},
+				{
+					"type": "text",
+					"value": " to the header. If "
+				},
+				{
+					"type": "inlineCode",
+					"value": "locale: false"
+				},
+				{
+					"type": "text",
+					"value": " is used you must prefix the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "source"
+				},
+				{
+					"type": "text",
+					"value": " with a locale for it to be matched correctly."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\ti18n: {\n\t\tlocales: ['en', 'fr', 'de'],\n\t\tdefaultLocale: 'en',\n\t},\n\n\theaders() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/with-locale', // automatically handles all locales\n\t\t\t\theaders: [\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'x-hello',\n\t\t\t\t\t\tvalue: 'world',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t},\n\t\t\t{\n\t\t\t\t// does not handle locales automatically since locale: false is set\n\t\t\t\tsource: '/nl/with-locale-manual',\n\t\t\t\tlocale: false,\n\t\t\t\theaders: [\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'x-hello',\n\t\t\t\t\t\tvalue: 'world',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t},\n\t\t\t{\n\t\t\t\t// this matches '/' since `en` is the defaultLocale\n\t\t\t\tsource: '/en',\n\t\t\t\tlocale: false,\n\t\t\t\theaders: [\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'x-hello',\n\t\t\t\t\t\tvalue: 'world',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t},\n\t\t\t{\n\t\t\t\t// this gets converted to /(en|fr|de)/(.*) so will not match the top-level\n\t\t\t\t// `/` or `/fr` routes like /:path* would\n\t\t\t\tsource: '/(.*)',\n\t\t\t\theaders: [\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'x-hello',\n\t\t\t\t\t\tvalue: 'world',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache-Control"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js sets the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Cache-Control"
+				},
+				{
+					"type": "text",
+					"value": " header of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "public, max-age=31536000, immutable"
+				},
+				{
+					"type": "text",
+					"value": " for truly immutable assets. It cannot be overridden. These immutable files contain a SHA-hash in the file name, so they can be safely cached indefinitely. For example, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/images#local-images",
+					"children": [
+						{
+							"type": "text",
+							"value": "Static Image Imports"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". You cannot set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Cache-Control"
+				},
+				{
+					"type": "text",
+					"value": " headers in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " for these assets."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "However, you can set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Cache-Control"
+				},
+				{
+					"type": "text",
+					"value": " headers for other responses or data."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn more about "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "caching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with the App Router."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Options"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "CORS"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/HTTP/CORS",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cross-Origin Resource Sharing (CORS)"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is a security feature that allows you to control which sites can access your resources. You can set the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Access-Control-Allow-Origin"
+				},
+				{
+					"type": "text",
+					"value": " header to allow a specific origin to access your Route Handlers."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "headers() {\n    return [\n      {\n        source: \"/api/:path*\",\n        headers: [\n          {\n            key: \"Access-Control-Allow-Origin\",\n            value: \"*\", // Set your origin\n          },\n          {\n            key: \"Access-Control-Allow-Methods\",\n            value: \"GET, POST, PUT, DELETE, OPTIONS\",\n          },\n          {\n            key: \"Access-Control-Allow-Headers\",\n            value: \"Content-Type, Authorization\",\n          },\n        ],\n      },\n    ];\n  },"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "X-DNS-Prefetch-Control"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control",
+					"children": [
+						{
+							"type": "text",
+							"value": "This header"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " controls DNS prefetching, allowing browsers to proactively perform domain name resolution on external links, images, CSS, JavaScript, and more. This prefetching is performed in the background, so the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Glossary/DNS",
+					"children": [
+						{
+							"type": "text",
+							"value": "DNS"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is more likely to be resolved by the time the referenced items are needed. This reduces latency when the user clicks a link."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "{\n  key: 'X-DNS-Prefetch-Control',\n  value: 'on'\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Strict-Transport-Security"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/HTTP/Headers/Strict-Transport-Security",
+					"children": [
+						{
+							"type": "text",
+							"value": "This header"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " informs browsers it should only be accessed using HTTPS, instead of using HTTP. Using the configuration below, all present and future subdomains will use HTTPS for a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "max-age"
+				},
+				{
+					"type": "text",
+					"value": " of 2 years. This blocks access to pages or subdomains that can only be served over HTTP."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "{\n  key: 'Strict-Transport-Security',\n  value: 'max-age=63072000; includeSubDomains; preload'\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "X-Frame-Options"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/HTTP/Headers/X-Frame-Options",
+					"children": [
+						{
+							"type": "text",
+							"value": "This header"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " indicates whether the site should be allowed to be displayed within an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "iframe"
+				},
+				{
+					"type": "text",
+					"value": ". This can prevent against clickjacking attacks."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "This header has been superseded by CSP's "
+						},
+						{
+							"type": "inlineCode",
+							"value": "frame-ancestors"
+						},
+						{
+							"type": "text",
+							"value": " option"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", which has better support in modern browsers (see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/content-security-policy",
+					"children": [
+						{
+							"type": "text",
+							"value": "Content Security Policy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for configuration details)."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "{\n  key: 'X-Frame-Options',\n  value: 'SAMEORIGIN'\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Permissions-Policy"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/HTTP/Headers/Permissions-Policy",
+					"children": [
+						{
+							"type": "text",
+							"value": "This header"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " allows you to control which features and APIs can be used in the browser. It was previously named "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Feature-Policy"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "{\n  key: 'Permissions-Policy',\n  value: 'camera=(), microphone=(), geolocation=(), browsing-topics=()'\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "X-Content-Type-Options"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/HTTP/Headers/X-Content-Type-Options",
+					"children": [
+						{
+							"type": "text",
+							"value": "This header"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " prevents the browser from attempting to guess the type of content if the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Content-Type"
+				},
+				{
+					"type": "text",
+					"value": " header is not explicitly set. This can prevent XSS exploits for websites that allow users to upload and share files."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, a user trying to download an image, but having it treated as a different "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Content-Type"
+				},
+				{
+					"type": "text",
+					"value": " like an executable, which could be malicious. This header also applies to downloading browser extensions. The only valid value for this header is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "nosniff"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "{\n  key: 'X-Content-Type-Options',\n  value: 'nosniff'\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Referrer-Policy"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/HTTP/Headers/Referrer-Policy",
+					"children": [
+						{
+							"type": "text",
+							"value": "This header"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " controls how much information the browser includes when navigating from the current website (origin) to another."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "{\n  key: 'Referrer-Policy',\n  value: 'origin-when-cross-origin'\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Content-Security-Policy"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn more about adding a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/content-security-policy",
+					"children": [
+						{
+							"type": "text",
+							"value": "Content Security Policy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to your application."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "missing"
+								},
+								{
+									"type": "text",
+									"value": " added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v10.2.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "has"
+								},
+								{
+									"type": "text",
+									"value": " added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v9.5.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Headers added."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

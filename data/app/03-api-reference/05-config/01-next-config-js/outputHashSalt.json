@@ -1,0 +1,175 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: outputHashSalt\ndescription: Learn how to incorporate a custom salt string into content-addressed output filenames."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "outputHashSalt"
+				},
+				{
+					"type": "text",
+					"value": " is an option that incorporates a configurable salt string into every content-addressed output filename (chunks, assets). Changing this value forces all output hashes to change, which is useful for invalidating cached assets across deployments without modifying source files."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To configure the output hash salt, set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "outputHashSalt"
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\toutputHashSalt: 'my-deployment-salt',\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This works with both Webpack and Turbopack bundlers."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NEXT_HASH_SALT"
+				},
+				{
+					"type": "text",
+					"value": " environment variable can also be used for the same purpose. When both are set, the values are "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "concatenated"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "outputHashSalt + NEXT_HASH_SALT"
+				},
+				{
+					"type": "text",
+					"value": ") to form the effective salt. This lets you combine a per-project salt baked into the config with a per-deployment salt injected at build time via environment variable."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "NEXT_HASH_SALT=my-deployment-salt next build"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "16.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "outputHashSalt"
+								},
+								{
+									"type": "text",
+									"value": " was added."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

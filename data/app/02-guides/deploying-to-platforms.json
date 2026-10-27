@@ -1,0 +1,1630 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Deploying Next.js to different platforms\nnav_title: Deploying to Platforms\ndescription: Understand which Next.js features require specific platform capabilities and how to choose the right deployment target.\nrelated:\n description: Related guides and references.\n links:\n  - app/guides/rendering-philosophy\n  - app/guides/self-hosting\n  - app/getting-started/deploying\n  - app/api-reference/config/next-config-js/adapterPath"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/rendering-philosophy",
+					"children": [
+						{
+							"type": "text",
+							"value": "treats static and dynamic content as a spectrum"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " at the component level. Different features in this model require different platform capabilities. This page helps you understand what your platform needs to support and how to configure your deployment."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Minimum Requirements"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To run Next.js, your platform needs "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "a Node.js server"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". That's it."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A single "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next start"
+				},
+				{
+					"type": "text",
+					"value": " process handles every Next.js feature correctly: Server Components, ISR, PPR, Cache Components, Server Actions, Proxy, and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "after()"
+				},
+				{
+					"type": "text",
+					"value": ". Streaming support is needed for features like PPR and Server Components to deliver content progressively (without it, responses are buffered and sent as a whole, which still works but loses the streaming performance benefit). Additional infrastructure (CDN caching, edge compute, shared cache) primarily improves performance and multi-instance consistency. In multi-instance deployments, shared cache and tag coordination reduce stale divergence between instances. The only additional dependency is the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "sharp"
+				},
+				{
+					"type": "text",
+					"value": " package, which is required for "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image",
+					"children": [
+						{
+							"type": "text",
+							"value": "Image Optimization"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Functional Fidelity vs. Performance Fidelity"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When evaluating platform support for Next.js, it helps to distinguish between two levels:"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Functional fidelity"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " means every Next.js feature works correctly. The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/adapters/testing-adapters",
+					"children": [
+						{
+							"type": "text",
+							"value": "adapter test suite"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is the contract: if a platform's adapter passes the tests, it supports Next.js. This is binary: it passes or it doesn't."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Performance fidelity"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " means features achieve their optimal performance characteristics. Examples include PPR's static shell served at CDN latency rather than origin latency, or ISR serving stale content instantly with sub-second revalidation propagation. Performance fidelity is a spectrum that every platform will achieve differently based on their architecture."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A platform that achieves functional fidelity is a fully supported deployment target for Next.js. Performance fidelity is how platforms differentiate, and it improves incrementally over time."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use the feature matrix below through this lens: \"Streaming Required\" and \"Shared Cache Recommended\" describe what is needed for functional fidelity. \"Edge Stitching\" is a performance fidelity optimization."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Feature Support Matrix"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Different features require different infrastructure capabilities. The \"Edge Stitching\" column is a "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "performance optimization"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", not a correctness requirement. All features work correctly from a single origin server."
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Feature"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Streaming"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Shared Cache"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Edge Stitching"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Notes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Server Components"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Required"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Basic streaming support"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "ISR (time-based)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Recommended"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Works per-instance without shared cache"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "ISR (on-demand)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Recommended"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/how-revalidation-works",
+									"children": [
+										{
+											"type": "text",
+											"value": "Tag propagation"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " needs shared cache for multi-instance"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Partial Prerendering"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Required"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Recommended"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/ppr-platform-guide",
+									"children": [
+										{
+											"type": "text",
+											"value": "See PPR Platform Guide"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Cache Components ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "use cache"
+								},
+								{
+									"type": "text",
+									"value": ")"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Required"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Recommended"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Shared cache enables cross-instance consistency"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Proxy / Middleware"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Runs at edge or origin"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Server Actions"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Required"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "POST requests with streaming response"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "after()"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Requires "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/self-hosting#after",
+									"children": [
+										{
+											"type": "text",
+											"value": "graceful shutdown"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " support"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Streaming Required"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " means the platform must support chunked transfer encoding or HTTP/2 streaming and must not buffer the response before sending it to the client."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Shared Cache Recommended"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " means multiple server instances benefit from shared cache backends to coordinate. For ISR and server response caching, use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/incrementalCacheHandlerPath",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheHandler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". For "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache'"
+				},
+				{
+					"type": "text",
+					"value": " entries, use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheHandlers",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheHandlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Without shared cache, each instance maintains its own cache independently — features still work correctly on each instance, but revalidation events don't propagate across instances."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "CDN Infrastructure Compatibility"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The following table maps infrastructure primitives for each major CDN. These are available building blocks, not finished integrations:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "CDN"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Edge Compute"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Key-Value / Tags"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Blob Storage"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "PPR Resuming"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Cloudflare"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Workers"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "KV"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "R2"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes (worker)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Akamai"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "EdgeWorkers"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "EdgeKV"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Object Storage"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes (worker)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Amazon CloudFront"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Lambda@Edge"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "KeyValueStore"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "S3"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes (Lambda)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Fastly"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Compute"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "KV Store"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Object Storage"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes (WASM)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Azure"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Functions"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Managed Redis"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Blob Storage"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes (server)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Google Cloud"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Cloud Run"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Various KV"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Cloud Storage"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes (server)"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "These are available building blocks, not finished integrations. Most community adapters today deploy Next.js as a Docker container or Node.js server without leveraging CDN-specific primitives like edge KV or PPR resuming. See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/deploying#adapters",
+					"children": [
+						{
+							"type": "text",
+							"value": "Deploying"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " page for the current list of adapters. For CDN-specific caching considerations (including known limitations with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Vary"
+				},
+				{
+					"type": "text",
+					"value": " on custom headers), see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/cdn-caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "CDN Caching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Adapters"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js provides a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/adapterPath",
+					"children": [
+						{
+							"type": "text",
+							"value": "Deployment Adapter API"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " that lets platforms customize how Next.js applications are built and deployed for their infrastructure. Adapters run at build time and produce platform-specific output from the standard Next.js build. Anyone can build an adapter using the public API with no special access required."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The adapter API plus Next.js caching interfaces form the complete platform integration surface. The adapter handles build-time output, while "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheHandler"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheHandlers"
+				},
+				{
+					"type": "text",
+					"value": " cover different runtime caching paths. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheHandler"
+				},
+				{
+					"type": "text",
+					"value": " (singular) covers server cache paths like ISR, route handlers, patched "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": "/"
+				},
+				{
+					"type": "inlineCode",
+					"value": "unstable_cache"
+				},
+				{
+					"type": "text",
+					"value": ", and image optimization. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheHandlers"
+				},
+				{
+					"type": "text",
+					"value": " (plural) configures "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache'"
+				},
+				{
+					"type": "text",
+					"value": " directive backends."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Verified Adapters"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "verified adapter"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is one that meets two requirements:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Open source."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " The adapter source code is publicly available so the community and the Next.js team can inspect, contribute to, and verify it."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Runs the compatibility test suite."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " The platform provides a way to run the full "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/adapters/testing-adapters",
+									"children": [
+										{
+											"type": "text",
+											"value": "Next.js compatibility test suite"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " against their adapter. This gives visibility into which features work, which are in progress, and where gaps remain."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Verified adapters are hosted under the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/nextjs",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js GitHub organization"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", listed as supported deployment targets in the Next.js documentation, and maintained by their respective platform teams. There are no private framework hooks or integration paths: Vercel's adapter uses the same public API as every other adapter."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For verified adapters and platforms working toward verified status through the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nextjs.org/ecosystem-working-group",
+					"children": [
+						{
+							"type": "text",
+							"value": "Ecosystem Working Group"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", the Next.js team commits to:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Coordinated testing."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Before major releases, we work with platform teams to run the compatibility test suite and surface issues early."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Early access."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Adapter authors receive early access to API changes during RFCs and release candidates."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Direct support."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " When the adapter contract needs updating, we work directly with adapter teams."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Platforms can build closed-source adapters on the same public API and test suite. However, closed-source adapters will not be listed as verified, since the Next.js team cannot verify what it cannot inspect."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "A Note on Infrastructure Requirements"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/rendering-philosophy",
+					"children": [
+						{
+							"type": "text",
+							"value": "rendering model"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " places the static/dynamic boundary at the component level rather than the route level. Finer-grained boundaries provide more flexibility for developers at the cost of broader requirements for hosting platforms. This is a deliberate trade-off: the infrastructure requirements on this page exist because of what the rendering model delivers."
+				}
+			]
+		}
+	]
+}

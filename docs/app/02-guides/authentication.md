@@ -927,7 +927,9 @@ For example, create a separate file for your DAL that includes a `verifySession(
 ```tsx filename="app/lib/dal.ts" switcher
 import 'server-only'
 
+import { cache } from 'react'
 import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 import { decrypt } from '@/app/lib/session'
 
 export const verifySession = cache(async () => {
@@ -945,7 +947,9 @@ export const verifySession = cache(async () => {
 ```js filename="app/lib/dal.js" switcher
 import 'server-only'
 
+import { cache } from 'react'
 import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 import { decrypt } from '@/app/lib/session'
 
 export const verifySession = cache(async () => {
@@ -960,7 +964,9 @@ export const verifySession = cache(async () => {
 })
 ```
 
-You can then invoke the `verifySession()` function in your data requests, Server Actions, Route Handlers:
+You can then invoke the `verifySession()` function in your data requests, Server Actions, and Route Handlers:
+
+> **Good to know**: React's [`cache`](https://react.dev/reference/react/cache) deduplicates within a React render pass. Server Actions and Route Handlers are not part of a render pass, so the wrapper does nothing and every call runs the function.
 
 ```tsx filename="app/lib/dal.ts" switcher
 export const getUser = cache(async () => {
@@ -1100,7 +1106,7 @@ import { verifySession } from '@/app/lib/dal'
 
 export default async function Dashboard() {
 	const session = await verifySession()
-	const userRole = session?.user?.role // Assuming 'role' is part of the session object
+	const userRole = session?.role // Assuming 'role' is part of the session object
 
 	if (userRole === 'admin') {
 		return <AdminDashboard />
@@ -1117,7 +1123,7 @@ import { verifySession } from '@/app/lib/dal'
 
 export default async function Dashboard() {
 	const session = await verifySession()
-	const userRole = session?.user?.role // Assuming 'role' is part of the session object
+	const userRole = session?.role // Assuming 'role' is part of the session object
 
 	if (userRole === 'admin') {
 		return <AdminDashboard />
@@ -1200,7 +1206,7 @@ import { verifySession } from '@/app/lib/dal'
 
 export default async function AdminActions() {
 	const session = await verifySession()
-	const userRole = session?.user?.role
+	const userRole = session?.role
 
 	if (userRole !== 'admin') {
 		return null
@@ -1220,7 +1226,7 @@ import { verifySession } from '@/app/lib/dal'
 
 export default async function AdminActions() {
 	const session = await verifySession()
-	const userRole = session?.user?.role
+	const userRole = session?.role
 
 	if (userRole !== 'admin') {
 		return null
@@ -1254,7 +1260,7 @@ import { verifySession } from '@/app/lib/dal'
 
 export async function serverAction(formData: FormData) {
 	const session = await verifySession()
-	const userRole = session?.user?.role
+	const userRole = session?.role
 
 	// Return early if user is not authorized to perform the action
 	if (userRole !== 'admin') {
@@ -1271,7 +1277,7 @@ import { verifySession } from '@/app/lib/dal'
 
 export async function serverAction() {
 	const session = await verifySession()
-	const userRole = session.user.role
+	const userRole = session?.role
 
 	// Return early if user is not authorized to perform the action
 	if (userRole !== 'admin') {
@@ -1302,7 +1308,7 @@ export async function GET() {
 	}
 
 	// Check if the user has the 'admin' role
-	if (session.user.role !== 'admin') {
+	if (session?.role !== 'admin') {
 		// User is authenticated but does not have the right permissions
 		return new Response(null, { status: 403 })
 	}
@@ -1325,7 +1331,7 @@ export async function GET() {
 	}
 
 	// Check if the user has the 'admin' role
-	if (session.user.role !== 'admin') {
+	if (session?.role !== 'admin') {
 		// User is authenticated but does not have the right permissions
 		return new Response(null, { status: 403 })
 	}

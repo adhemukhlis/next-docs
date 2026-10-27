@@ -35,7 +35,7 @@ cd my-app
 bun dev
 ```
 
-- `--yes` skips prompts using saved preferences or defaults. The default setup enables TypeScript, Tailwind CSS, ESLint, App Router, and Turbopack, with import alias `@/*`, and includes `AGENTS.md` (with a `CLAUDE.md` that references it) to guide coding agents to write up-to-date Next.js code.
+- `--yes` skips prompts using saved preferences or defaults. The default setup enables TypeScript, Tailwind CSS, ESLint, App Router, and Turbopack, with import alias `@/*`, and includes `AGENTS.md` to guide coding agents to write up-to-date Next.js code.
 
 ## System requirements
 
@@ -80,7 +80,7 @@ On installation, you'll see the following prompts:
 ```txt filename="Terminal"
 What is your project named? my-app
 Would you like to use the recommended Next.js defaults?
-    Yes, use recommended defaults - TypeScript, ESLint, Tailwind CSS, App Router, AGENTS.md
+    Yes, use recommended defaults - TypeScript, ESLint, No React Compiler, Tailwind CSS, No src/ directory, App Router, Cache Components, AGENTS.md
     No, reuse previous settings
     No, customize settings - Choose your own preferences
 ```
@@ -94,6 +94,7 @@ Would you like to use React Compiler? No / Yes
 Would you like to use Tailwind CSS? No / Yes
 Would you like your code inside a `src/` directory? No / Yes
 Would you like to use App Router? (recommended) No / Yes
+Would you like to use Cache Components? No / Yes
 Would you like to customize the import alias (`@/*` by default)? No / Yes
 What import alias would you like configured? @/*
 Would you like to include AGENTS.md to guide coding agents to write up-to-date Next.js code? No / Yes
@@ -124,6 +125,7 @@ bun add next@latest react@latest react-dom@latest
 > **Good to know**:
 >
 > - The `App Router` uses [React canary releases](https://react.dev/blog/2023/05/03/react-canaries) built-in, which include all the stable React 19 changes, as well as newer features being validated in frameworks, but you should still declare react and react-dom in package.json for tooling and ecosystem compatibility.
+> - The `Pages Router` uses the React version from your `package.json`.
 
 Then, add the following scripts to your `package.json` file:
 
@@ -400,10 +402,8 @@ yarn next upgrade
 bunx next upgrade
 ```
 
-Upgrading also updates the documentation bundled inside the `next` package at `node_modules/next/dist/docs/`. New features arrive with their docs, and existing pages pick up new guidance and pitfalls discovered along the way. [AI coding agents](/docs/app/guides/ai-agents) in your project then work from the version you have installed rather than their training data. After an upgrade, you can prompt your agent to catch up:
+Upgrading also updates the documentation bundled inside the `next` package at `node_modules/next/dist/docs/`. New features arrive with their docs, and existing pages pick up new guidance and pitfalls discovered along the way. [AI coding agents](/docs/app/guides/ai-agents) in your project then work from the version you have installed rather than their training data.
 
-```prompt
-Let's get our Next.js knowledge up to speed, and give me a summary of what's new for you
-```
+To have a coding agent perform and verify the upgrade, run `npx next@canary upgrade --agent=latest`. See [Upgrade with a coding agent](/docs/app/guides/upgrading/agent-upgrade) for other policies.
 
 See [Upgrading](/docs/app/getting-started/upgrading) for version guides and manual upgrade steps, or the [preview docs](https://preview.nextjs.org) to explore features before they ship in a stable version.

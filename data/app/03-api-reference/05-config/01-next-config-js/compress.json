@@ -1,0 +1,201 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: compress\ndescription: Next.js provides gzip compression to compress rendered content and static files, it only works with the server target. Learn more about it here."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, Next.js uses "
+				},
+				{
+					"type": "inlineCode",
+					"value": "gzip"
+				},
+				{
+					"type": "text",
+					"value": " to compress rendered content and static files when using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next start"
+				},
+				{
+					"type": "text",
+					"value": " or a custom server. This is an optimization for applications that do not have compression configured. If compression is "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "already"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " configured in your application via a custom server, Next.js will not add compression."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can check if compression is enabled and which algorithm is used by looking at the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Accept-Encoding"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " (browser accepted options) and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Content-Encoding"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " (currently used) headers in the response."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Disabling compression"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To disable "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "compression"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", set the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "compress"
+				},
+				{
+					"type": "text",
+					"value": " config option to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tcompress: false,\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "do not recommend disabling compression"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " unless you have compression configured on your server, as compression reduces bandwidth usage and improves the performance of your application. For example, you're using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nginx.org/",
+					"children": [
+						{
+							"type": "text",
+							"value": "nginx"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and want to switch to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "brotli"
+				},
+				{
+					"type": "text",
+					"value": ", set the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "compress"
+				},
+				{
+					"type": "text",
+					"value": " option to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " to allow nginx to handle compression."
+				}
+			]
+		}
+	]
+}

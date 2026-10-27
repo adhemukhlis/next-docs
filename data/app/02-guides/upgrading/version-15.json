@@ -1,0 +1,2158 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to upgrade to version 15\nnav_title: Version 15\ndescription: Upgrade your Next.js Application from Version 14 to 15."
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Upgrading from 14 to 15"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To update to Next.js version 15, you can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "upgrade"
+				},
+				{
+					"type": "text",
+					"value": " codemod:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm dlx @next/codemod@canary upgrade latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npx @next/codemod@canary upgrade latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn dlx @next/codemod@canary upgrade latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bunx @next/codemod@canary upgrade latest"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you prefer to do it manually, ensure that you're installing the latest Next & React versions:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add next@latest react@latest react-dom@latest eslint-config-next@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install next@latest react@latest react-dom@latest eslint-config-next@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add next@latest react@latest react-dom@latest eslint-config-next@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add next@latest react@latest react-dom@latest eslint-config-next@latest"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "If you see a peer dependencies warning, you may need to update "
+										},
+										{
+											"type": "inlineCode",
+											"value": "react"
+										},
+										{
+											"type": "text",
+											"value": " and "
+										},
+										{
+											"type": "inlineCode",
+											"value": "react-dom"
+										},
+										{
+											"type": "text",
+											"value": " to the suggested versions, or use the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "--force"
+										},
+										{
+											"type": "text",
+											"value": " or "
+										},
+										{
+											"type": "inlineCode",
+											"value": "--legacy-peer-deps"
+										},
+										{
+											"type": "text",
+											"value": " flag to ignore the warning. This won't be necessary once both Next.js 15 and React 19 are stable."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "React 19"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": true,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The minimum versions of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "react"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "react-dom"
+								},
+								{
+									"type": "text",
+									"value": " is now 19."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "useFormState"
+								},
+								{
+									"type": "text",
+									"value": " has been replaced by "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useActionState"
+								},
+								{
+									"type": "text",
+									"value": ". The "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useFormState"
+								},
+								{
+									"type": "text",
+									"value": " hook is still available in React 19, but it is deprecated and will be removed in a future release. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useActionState"
+								},
+								{
+									"type": "text",
+									"value": " is recommended and includes additional properties like reading the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pending"
+								},
+								{
+									"type": "text",
+									"value": " state directly. "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react/useActionState",
+									"children": [
+										{
+											"type": "text",
+											"value": "Learn more"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "useFormStatus"
+								},
+								{
+									"type": "text",
+									"value": " now includes additional keys like "
+								},
+								{
+									"type": "inlineCode",
+									"value": "data"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "method"
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "action"
+								},
+								{
+									"type": "text",
+									"value": ". If you are not using React 19, only the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pending"
+								},
+								{
+									"type": "text",
+									"value": " key is available. "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react-dom/hooks/useFormStatus",
+									"children": [
+										{
+											"type": "text",
+											"value": "Learn more"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Read more in the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/blog/2024/04/25/react-19-upgrade-guide",
+									"children": [
+										{
+											"type": "text",
+											"value": "React 19 upgrade guide"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " If you are using TypeScript, ensure you also upgrade "
+						},
+						{
+							"type": "inlineCode",
+							"value": "@types/react"
+						},
+						{
+							"type": "text",
+							"value": " and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "@types/react-dom"
+						},
+						{
+							"type": "text",
+							"value": " to their latest versions."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Async Request APIs (Breaking change)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Previously synchronous Request-time APIs that rely on request information are now "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "asynchronous"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/cookies",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cookies"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/headers",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "headers"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/draft-mode",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "draftMode"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "params"
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/layout",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "layout.js"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/page",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "page.js"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/route",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "route.js"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/default",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "default.js"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/metadata/opengraph-image",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "opengraph-image"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/metadata/opengraph-image",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "twitter-image"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/metadata/app-icons",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "icon"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/metadata/app-icons",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "apple-icon"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "searchParams"
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/page",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "page.js"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To ease the burden of migration, a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/codemods#150",
+					"children": [
+						{
+							"type": "text",
+							"value": "codemod is available"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to automate the process and the APIs can temporarily be accessed synchronously."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "cookies"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Recommended Async Usage"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "import { cookies } from 'next/headers'\n\n// Before\nconst cookieStore = cookies()\nconst token = cookieStore.get('token')\n\n// After\nconst cookieStore = await cookies()\nconst token = cookieStore.get('token')"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Temporary Synchronous Usage"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import { cookies, type UnsafeUnwrappedCookies } from 'next/headers'\n\n// Before\nconst cookieStore = cookies()\nconst token = cookieStore.get('token')\n\n// After\nconst cookieStore = cookies() as unknown as UnsafeUnwrappedCookies\n// will log a warning in dev\nconst token = cookieStore.get('token')"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import { cookies } from 'next/headers'\n\n// Before\nconst cookieStore = cookies()\nconst token = cookieStore.get('token')\n\n// After\nconst cookieStore = cookies()\n// will log a warning in dev\nconst token = cookieStore.get('token')"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "headers"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Recommended Async Usage"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "import { headers } from 'next/headers'\n\n// Before\nconst headersList = headers()\nconst userAgent = headersList.get('user-agent')\n\n// After\nconst headersList = await headers()\nconst userAgent = headersList.get('user-agent')"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Temporary Synchronous Usage"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import { headers, type UnsafeUnwrappedHeaders } from 'next/headers'\n\n// Before\nconst headersList = headers()\nconst userAgent = headersList.get('user-agent')\n\n// After\nconst headersList = headers() as unknown as UnsafeUnwrappedHeaders\n// will log a warning in dev\nconst userAgent = headersList.get('user-agent')"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import { headers } from 'next/headers'\n\n// Before\nconst headersList = headers()\nconst userAgent = headersList.get('user-agent')\n\n// After\nconst headersList = headers()\n// will log a warning in dev\nconst userAgent = headersList.get('user-agent')"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "draftMode"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Recommended Async Usage"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "import { draftMode } from 'next/headers'\n\n// Before\nconst { isEnabled } = draftMode()\n\n// After\nconst { isEnabled } = await draftMode()"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Temporary Synchronous Usage"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import { draftMode, type UnsafeUnwrappedDraftMode } from 'next/headers'\n\n// Before\nconst { isEnabled } = draftMode()\n\n// After\n// will log a warning in dev\nconst { isEnabled } = draftMode() as unknown as UnsafeUnwrappedDraftMode"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import { draftMode } from 'next/headers'\n\n// Before\nconst { isEnabled } = draftMode()\n\n// After\n// will log a warning in dev\nconst { isEnabled } = draftMode()"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " & "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Asynchronous Layout"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "// Before\ntype Params = { slug: string }\n\nexport function generateMetadata({ params }: { params: Params }) {\n\tconst { slug } = params\n}\n\nexport default async function Layout({ children, params }: { children: React.ReactNode; params: Params }) {\n\tconst { slug } = params\n}\n\n// After\ntype Params = Promise<{ slug: string }>\n\nexport async function generateMetadata({ params }: { params: Params }) {\n\tconst { slug } = await params\n}\n\nexport default async function Layout({ children, params }: { children: React.ReactNode; params: Params }) {\n\tconst { slug } = await params\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "// Before\nexport function generateMetadata({ params }) {\n  const { slug } = params\n}\n\nexport default async function Layout({ children, params }) {\n  const { slug } = params\n}\n\n// After\nexport async function generateMetadata({ params }) {\n  const { slug } = await params\n}\n\nexport default async function Layout({ children, params }) {\n  const { slug } = await params\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Synchronous Layout"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "// Before\ntype Params = { slug: string }\n\nexport default function Layout({ children, params }: { children: React.ReactNode; params: Params }) {\n\tconst { slug } = params\n}\n\n// After\nimport { use } from 'react'\n\ntype Params = Promise<{ slug: string }>\n\nexport default function Layout(props: { children: React.ReactNode; params: Params }) {\n\tconst params = use(props.params)\n\tconst slug = params.slug\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "// Before\nexport default function Layout({ children, params }) {\n  const { slug } = params\n}\n\n// After\nimport { use } from 'react'\nexport default async function Layout(props) {\n  const params = use(props.params)\n  const slug = params.slug\n}\n"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Asynchronous Page"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "// Before\ntype Params = { slug: string }\ntype SearchParams = { [key: string]: string | string[] | undefined }\n\nexport function generateMetadata({ params, searchParams }: { params: Params; searchParams: SearchParams }) {\n\tconst { slug } = params\n\tconst { query } = searchParams\n}\n\nexport default async function Page({ params, searchParams }: { params: Params; searchParams: SearchParams }) {\n\tconst { slug } = params\n\tconst { query } = searchParams\n}\n\n// After\ntype Params = Promise<{ slug: string }>\ntype SearchParams = Promise<{ [key: string]: string | string[] | undefined }>\n\nexport async function generateMetadata(props: { params: Params; searchParams: SearchParams }) {\n\tconst params = await props.params\n\tconst searchParams = await props.searchParams\n\tconst slug = params.slug\n\tconst query = searchParams.query\n}\n\nexport default async function Page(props: { params: Params; searchParams: SearchParams }) {\n\tconst params = await props.params\n\tconst searchParams = await props.searchParams\n\tconst slug = params.slug\n\tconst query = searchParams.query\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "// Before\nexport function generateMetadata({ params, searchParams }) {\n  const { slug } = params\n  const { query } = searchParams\n}\n\nexport default function Page({ params, searchParams }) {\n  const { slug } = params\n  const { query } = searchParams\n}\n\n// After\nexport async function generateMetadata(props) {\n  const params = await props.params\n  const searchParams = await props.searchParams\n  const slug = params.slug\n  const query = searchParams.query\n}\n\nexport default async function Page(props) {\n  const params = await props.params\n  const searchParams = await props.searchParams\n  const slug = params.slug\n  const query = searchParams.query\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Synchronous Page"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "'use client'\n\n// Before\ntype Params = { slug: string }\ntype SearchParams = { [key: string]: string | string[] | undefined }\n\nexport default function Page({ params, searchParams }: { params: Params; searchParams: SearchParams }) {\n\tconst { slug } = params\n\tconst { query } = searchParams\n}\n\n// After\nimport { use } from 'react'\n\ntype Params = Promise<{ slug: string }>\ntype SearchParams = Promise<{ [key: string]: string | string[] | undefined }>\n\nexport default function Page(props: { params: Params; searchParams: SearchParams }) {\n\tconst params = use(props.params)\n\tconst searchParams = use(props.searchParams)\n\tconst slug = params.slug\n\tconst query = searchParams.query\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "// Before\nexport default function Page({ params, searchParams }) {\n  const { slug } = params\n  const { query } = searchParams\n}\n\n// After\nimport { use } from \"react\"\n\nexport default function Page(props) {\n  const params = use(props.params)\n  const searchParams = use(props.searchParams)\n  const slug = params.slug\n  const query = searchParams.query\n}\n"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Handlers"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/api/route.ts\" switcher",
+			"value": "// Before\ntype Params = { slug: string }\n\nexport async function GET(request: Request, segmentData: { params: Params }) {\n\tconst params = segmentData.params\n\tconst slug = params.slug\n}\n\n// After\ntype Params = Promise<{ slug: string }>\n\nexport async function GET(request: Request, segmentData: { params: Params }) {\n\tconst params = await segmentData.params\n\tconst slug = params.slug\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/route.js\" switcher",
+			"value": "// Before\nexport async function GET(request, segmentData) {\n\tconst params = segmentData.params\n\tconst slug = params.slug\n}\n\n// After\nexport async function GET(request, segmentData) {\n\tconst params = await segmentData.params\n\tconst slug = params.slug\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "runtime"
+				},
+				{
+					"type": "text",
+					"value": " configuration (Breaking change)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "runtime"
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config/runtime",
+					"children": [
+						{
+							"type": "text",
+							"value": "segment configuration"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " previously supported a value of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental-edge"
+				},
+				{
+					"type": "text",
+					"value": " in addition to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "edge"
+				},
+				{
+					"type": "text",
+					"value": ". Both configurations refer to the same thing, and to simplify the options, we will now error if "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental-edge"
+				},
+				{
+					"type": "text",
+					"value": " is used. To fix this, update your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "runtime"
+				},
+				{
+					"type": "text",
+					"value": " configuration to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "edge"
+				},
+				{
+					"type": "text",
+					"value": ". A "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/codemods#app-dir-runtime-config-experimental-edge",
+					"children": [
+						{
+							"type": "text",
+							"value": "codemod"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is available to automatically do this."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " requests"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/fetch",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "fetch"
+						},
+						{
+							"type": "text",
+							"value": " requests"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " are no longer cached by default."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To opt specific "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " requests into caching, you can pass the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cache: 'force-cache'"
+				},
+				{
+					"type": "text",
+					"value": " option."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/layout.js\"",
+			"value": "export default async function RootLayout() {\n\tconst a = await fetch('https://...') // Not Cached\n\tconst b = await fetch('https://...', { cache: 'force-cache' }) // Cached\n\n\t// ...\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To opt all "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " requests in a layout or page into caching, you can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "export const fetchCache = 'default-cache'"
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config",
+					"children": [
+						{
+							"type": "text",
+							"value": "segment config option"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". If individual "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " requests specify a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cache"
+				},
+				{
+					"type": "text",
+					"value": " option, that will be used instead."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/layout.js\"",
+			"value": "// Since this is the root layout, all fetch requests in the app\n// that don't set their own cache option will be cached.\nexport const fetchCache = 'default-cache'\n\nexport default async function RootLayout() {\n\tconst a = await fetch('https://...') // Cached\n\tconst b = await fetch('https://...', { cache: 'no-store' }) // Not cached\n\n\t// ...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Handlers"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "GET"
+				},
+				{
+					"type": "text",
+					"value": " functions in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " are no longer cached by default. To opt "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GET"
+				},
+				{
+					"type": "text",
+					"value": " methods into caching, you can use a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config",
+					"children": [
+						{
+							"type": "text",
+							"value": "route config option"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "export const dynamic = 'force-static'"
+				},
+				{
+					"type": "text",
+					"value": " in your Route Handler file."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/route.js\"",
+			"value": "export const dynamic = 'force-static'\n\nexport async function GET() {}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Client Cache"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When navigating between pages via "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useRouter"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/page",
+					"children": [
+						{
+							"type": "text",
+							"value": "page"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " segments are no longer reused from the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#client-cache",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client Cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". However, they are still reused during browser backward and forward navigation and for shared layouts."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To opt page segments into caching, you can use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/staleTimes",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "staleTimes"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " config option:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\texperimental: {\n\t\tstaleTimes: {\n\t\t\tdynamic: 30,\n\t\t\tstatic: 180,\n\t\t},\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout",
+					"children": [
+						{
+							"type": "text",
+							"value": "Layouts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/loading",
+					"children": [
+						{
+							"type": "text",
+							"value": "loading states"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " are still cached and reused on navigation."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next/font"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@next/font"
+				},
+				{
+					"type": "text",
+					"value": " package has been removed in favor of the built-in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/font",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next/font"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". A "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/codemods#built-in-next-font",
+					"children": [
+						{
+							"type": "text",
+							"value": "codemod is available"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to safely and automatically rename your imports."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/layout.js\"",
+			"value": "// Before\nimport { Inter } from '@next/font/google'\n\n// After\nimport { Inter } from 'next/font/google'"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "bundlePagesRouterDependencies"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "experimental.bundlePagesExternals"
+				},
+				{
+					"type": "text",
+					"value": " is now stable and renamed to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "bundlePagesRouterDependencies"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\t// Before\n\texperimental: {\n\t\tbundlePagesExternals: true,\n\t},\n\n\t// After\n\tbundlePagesRouterDependencies: true,\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "serverExternalPackages"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "experimental.serverComponentsExternalPackages"
+				},
+				{
+					"type": "text",
+					"value": " is now stable and renamed to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "serverExternalPackages"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\t// Before\n\texperimental: {\n\t\tserverComponentsExternalPackages: ['package-name'],\n\t},\n\n\t// After\n\tserverExternalPackages: ['package-name'],\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Speed Insights"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Auto instrumentation for Speed Insights was removed in Next.js 15."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To continue using Speed Insights, follow the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://vercel.com/docs/speed-insights/quickstart",
+					"children": [
+						{
+							"type": "text",
+							"value": "Vercel Speed Insights Quickstart"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " guide."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "NextRequest"
+				},
+				{
+					"type": "text",
+					"value": " Geolocation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "geo"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ip"
+				},
+				{
+					"type": "text",
+					"value": " properties on "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NextRequest"
+				},
+				{
+					"type": "text",
+					"value": " have been removed as these values are provided by your hosting provider. A "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/codemods#150",
+					"children": [
+						{
+							"type": "text",
+							"value": "codemod"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is available to automate this migration."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you are using Vercel, you can alternatively use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "geolocation"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ipAddress"
+				},
+				{
+					"type": "text",
+					"value": " functions from "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://vercel.com/docs/functions/functions-api-reference/vercel-functions-package",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "@vercel/functions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " instead:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"middleware.ts\"",
+			"value": "import { geolocation } from '@vercel/functions'\nimport type { NextRequest } from 'next/server'\n\nexport function middleware(request: NextRequest) {\n\tconst { city } = geolocation(request)\n\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"middleware.ts\"",
+			"value": "import { ipAddress } from '@vercel/functions'\nimport type { NextRequest } from 'next/server'\n\nexport function middleware(request: NextRequest) {\n\tconst ip = ipAddress(request)\n\n\t// ...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Troubleshooting"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Installation fails after upgrading to React 19"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If another package's peer dependencies reject React 19, revert "
+								},
+								{
+									"type": "inlineCode",
+									"value": "react"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "react-dom"
+								},
+								{
+									"type": "text",
+									"value": ", their types, and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "react-is"
+								},
+								{
+									"type": "text",
+									"value": " (if present) to the previous versions, provided the target Next.js version and router support them."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Restore or remove React type overrides or resolutions added by the upgrade in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "package.json"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pnpm-workspace.yaml"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If installation interrupted the upgrade command, retry the same exact target with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "--skip-react-upgrade"
+								},
+								{
+									"type": "text",
+									"value": " to preserve the repaired dependencies. If Next.js already matches the target, install dependencies and run any skipped codemods individually. Run the app's checks."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Installation fails after upgrading to ESLint 9"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If another package's peer dependencies reject ESLint 9, restore the previous compatible versions of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "eslint"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "eslint-config-next"
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "@next/eslint-plugin-next"
+								},
+								{
+									"type": "text",
+									"value": " (if present), along with the previous lint configuration."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If installation interrupted the upgrade command, retry the same exact target with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "--skip-eslint-upgrade"
+								},
+								{
+									"type": "text",
+									"value": " to preserve the repaired dependency. If Next.js already matches the target, install dependencies and run any skipped codemods individually. Complete any required lint migration manually, then run the app's lint checks."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Review migration checklist"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After applying the changes relevant to your app, review these action items before you consider the migration complete:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": true,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "React dependencies and types meet the React 19 requirements for the app's router."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Font imports use "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/font"
+								},
+								{
+									"type": "text",
+									"value": " instead of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "@next/font"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Existing "
+								},
+								{
+									"type": "inlineCode",
+									"value": "bundlePagesExternals"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "serverComponentsExternalPackages"
+								},
+								{
+									"type": "text",
+									"value": " settings use their documented stable names while preserving package configuration."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "NextRequest"
+								},
+								{
+									"type": "text",
+									"value": " "
+								},
+								{
+									"type": "inlineCode",
+									"value": "geo"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "ip"
+								},
+								{
+									"type": "text",
+									"value": " consumers use an appropriate source for the actual hosting provider."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Apps that relied on automatic Speed Insights instrumentation have an explicit integration if they still need it."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The app's supported checks and affected runtime behavior pass. Remaining required failures keep the migration incomplete."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Async Request API access, including affected helpers and callers, is migrated. Resolve codemod error comments and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "UnsafeUnwrapped"
+								},
+								{
+									"type": "text",
+									"value": " casts instead of treating them as completed repairs."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Route segment runtime settings no longer use "
+								},
+								{
+									"type": "inlineCode",
+									"value": "experimental-edge"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,164 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: public Folder\nnav_title: public\ndescription: Next.js allows you to serve static files, like images, in the public directory. You can learn how it works here."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js can serve static files, like images, under a folder called "
+				},
+				{
+					"type": "inlineCode",
+					"value": "public"
+				},
+				{
+					"type": "text",
+					"value": " in the root directory. Files inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "public"
+				},
+				{
+					"type": "text",
+					"value": " can then be referenced by your code starting from the base URL ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "/"
+				},
+				{
+					"type": "text",
+					"value": ")."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, the file "
+				},
+				{
+					"type": "inlineCode",
+					"value": "public/avatars/me.png"
+				},
+				{
+					"type": "text",
+					"value": " can be viewed by visiting the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/avatars/me.png"
+				},
+				{
+					"type": "text",
+					"value": " path. The code to display that image might look like:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"avatar.js\"",
+			"value": "import Image from 'next/image'\n\nexport function Avatar({ id, alt }) {\n\treturn (\n\t\t<Image\n\t\t\tsrc={`/avatars/${id}.png`}\n\t\t\talt={alt}\n\t\t\twidth=\"64\"\n\t\t\theight=\"64\"\n\t\t/>\n\t)\n}\n\nexport function AvatarOfMe() {\n\treturn (\n\t\t<Avatar\n\t\t\tid=\"me\"\n\t\t\talt=\"A portrait of me\"\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Caching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js cannot safely cache assets in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "public"
+				},
+				{
+					"type": "text",
+					"value": " folder because they may change. The default caching headers applied are:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "Cache-Control: public, max-age=0"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Robots, Favicons, and others"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For static metadata files, such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "robots.txt"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "favicon.ico"
+				},
+				{
+					"type": "text",
+					"value": ", etc, you should use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/metadata",
+					"children": [
+						{
+							"type": "text",
+							"value": "special metadata files"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " inside the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " folder."
+				}
+			]
+		}
+	]
+}

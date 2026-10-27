@@ -1,0 +1,819 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: useReportWebVitals\ndescription: API Reference for the useReportWebVitals function."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useReportWebVitals"
+				},
+				{
+					"type": "text",
+					"value": " hook allows you to report "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://web.dev/vitals/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Core Web Vitals"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and can be used in combination with your analytics service."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "New functions passed to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useReportWebVitals"
+				},
+				{
+					"type": "text",
+					"value": " are called with the available metrics up to that point. To prevent reporting duplicated data, ensure that the callback function reference does not change (as shown in the code examples below)."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/_components/web-vitals.js\"",
+			"value": "'use client'\n\nimport { useReportWebVitals } from 'next/web-vitals'\n\nconst logWebVitals = (metric) => {\n\tconsole.log(metric)\n}\n\nexport function WebVitals() {\n\tuseReportWebVitals(logWebVitals)\n\n\treturn null\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\"",
+			"value": "import { WebVitals } from './_components/web-vitals'\n\nexport default function Layout({ children }) {\n\treturn (\n\t\t<html>\n\t\t\t<body>\n\t\t\t\t<WebVitals />\n\t\t\t\t{children}\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Since the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "useReportWebVitals"
+						},
+						{
+							"type": "text",
+							"value": " hook must be used in a Client Component, create a separate file for the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "WebVitals"
+						},
+						{
+							"type": "text",
+							"value": " component with "
+						},
+						{
+							"type": "inlineCode",
+							"value": "'use client'"
+						},
+						{
+							"type": "text",
+							"value": " at the top, before any imports. Import this component into the root layout to keep the client boundary limited to this module and its imports."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "useReportWebVitals"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "metric"
+				},
+				{
+					"type": "text",
+					"value": " object passed as the hook's argument consists of a number of properties:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "id"
+								},
+								{
+									"type": "text",
+									"value": ": Unique identifier for the metric in the context of the current page load"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "name"
+								},
+								{
+									"type": "text",
+									"value": ": The name of the performance metric. Possible values include names of "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#web-vitals",
+									"children": [
+										{
+											"type": "text",
+											"value": "Web Vitals"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " metrics (TTFB, FCP, LCP, INP, CLS) specific to a web application."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "delta"
+								},
+								{
+									"type": "text",
+									"value": ": The difference between the current value and the previous value of the metric. The value is typically in milliseconds and represents the change in the metric's value over time."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "entries"
+								},
+								{
+									"type": "text",
+									"value": ": An array of "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/docs/Web/API/PerformanceEntry",
+									"children": [
+										{
+											"type": "text",
+											"value": "Performance Entries"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " associated with the metric. These entries provide detailed information about the performance events related to the metric."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "navigationType"
+								},
+								{
+									"type": "text",
+									"value": ": Indicates the navigation type that triggered metric collection. Values are derived from "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/docs/Web/API/PerformanceNavigationTiming/type",
+									"children": [
+										{
+											"type": "text",
+											"value": "PerformanceNavigationTiming.type"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and may include "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"navigate\""
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"reload\""
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"prerender\""
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"back-forward\""
+								},
+								{
+									"type": "text",
+									"value": " (normalized from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"back_forward\""
+								},
+								{
+									"type": "text",
+									"value": "), "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"back-forward-cache\""
+								},
+								{
+									"type": "text",
+									"value": " (BFCache restore), "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"restore\""
+								},
+								{
+									"type": "text",
+									"value": " (page restored after discard), and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"soft-navigation\""
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "navigationId"
+								},
+								{
+									"type": "text",
+									"value": ": The ID of the navigation for which the metric was measured."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "navigationURL"
+								},
+								{
+									"type": "text",
+									"value": ": The URL of the navigation for which the metric was measured. This is especially useful for soft navigations because a metric may be reported after the URL has changed again."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "navigationStartTime"
+								},
+								{
+									"type": "text",
+									"value": ": The start time of the navigation for which the metric was measured."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "navigationInteractionId"
+								},
+								{
+									"type": "text",
+									"value": ": For soft navigations, the interaction ID that triggered the navigation."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "rating"
+								},
+								{
+									"type": "text",
+									"value": ": A qualitative rating of the metric value, providing an assessment of the performance. Possible values are "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"good\""
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"needs-improvement\""
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"poor\""
+								},
+								{
+									"type": "text",
+									"value": ". The rating is typically determined by comparing the metric value against predefined thresholds that indicate acceptable or suboptimal performance."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "value"
+								},
+								{
+									"type": "text",
+									"value": ": The actual value or duration of the performance entry, typically in milliseconds. The value provides a quantitative measure of the performance aspect being tracked by the metric. The source of the value depends on the specific metric being measured and can come from various "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/docs/Web/API/Performance_API",
+									"children": [
+										{
+											"type": "text",
+											"value": "Performance API"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "s."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Web Vitals"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://web.dev/vitals/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Web Vitals"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " are a set of useful metrics that aim to capture the user experience of a web page. The following web vitals are all included:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/docs/Glossary/Time_to_first_byte",
+									"children": [
+										{
+											"type": "text",
+											"value": "Time to First Byte"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (TTFB)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/docs/Glossary/First_contentful_paint",
+									"children": [
+										{
+											"type": "text",
+											"value": "First Contentful Paint"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (FCP)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://web.dev/lcp/",
+									"children": [
+										{
+											"type": "text",
+											"value": "Largest Contentful Paint"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (LCP)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://web.dev/cls/",
+									"children": [
+										{
+											"type": "text",
+											"value": "Cumulative Layout Shift"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (CLS)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://web.dev/inp/",
+									"children": [
+										{
+											"type": "text",
+											"value": "Interaction to Next Paint"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (INP)"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can handle all the results of these metrics using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "name"
+				},
+				{
+					"type": "text",
+					"value": " property."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/components/web-vitals.tsx\" switcher",
+			"value": "'use client'\n\nimport { useReportWebVitals } from 'next/web-vitals'\n\ntype ReportWebVitalsCallback = Parameters<typeof useReportWebVitals>[0]\n\nconst handleWebVitals: ReportWebVitalsCallback = (metric) => {\n\tswitch (metric.name) {\n\t\tcase 'FCP': {\n\t\t\t// handle FCP results\n\t\t}\n\t\tcase 'LCP': {\n\t\t\t// handle LCP results\n\t\t}\n\t\t// ...\n\t}\n}\n\nexport function WebVitals() {\n\tuseReportWebVitals(handleWebVitals)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/components/web-vitals.js\" switcher",
+			"value": "'use client'\n\nimport { useReportWebVitals } from 'next/web-vitals'\n\nconst handleWebVitals = (metric) => {\n\tswitch (metric.name) {\n\t\tcase 'FCP': {\n\t\t\t// handle FCP results\n\t\t}\n\t\tcase 'LCP': {\n\t\t\t// handle LCP results\n\t\t}\n\t\t// ...\n\t}\n}\n\nexport function WebVitals() {\n\tuseReportWebVitals(handleWebVitals)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Sending results to external systems"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can send results to any endpoint to measure and track real user performance on your site. For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "function postWebVitals(metric) {\n\tconst body = JSON.stringify(metric)\n\tconst url = 'https://example.com/analytics'\n\n\t// Use `navigator.sendBeacon()` if available, falling back to `fetch()`.\n\tif (navigator.sendBeacon) {\n\t\tnavigator.sendBeacon(url, body)\n\t} else {\n\t\tfetch(url, { body, method: 'POST', keepalive: true })\n\t}\n}\n\nuseReportWebVitals(postWebVitals)"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": If you use "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://analytics.google.com/analytics/web/",
+							"children": [
+								{
+									"type": "text",
+									"value": "Google Analytics"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", using the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "id"
+						},
+						{
+							"type": "text",
+							"value": " value can allow you to construct metric distributions manually (to calculate percentiles, etc.)"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "code",
+					"lang": "js",
+					"meta": null,
+					"value": "useReportWebVitals(metric => {\n  // Use `window.gtag` if you initialized Google Analytics as this example:\n  // https://github.com/vercel/next.js/blob/canary/examples/with-google-analytics\n  window.gtag('event', metric.name, {\n    value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value), // values must be integers\n    event_label: metric.id, // id unique to current page load\n    non_interaction: true, // avoids affecting bounce rate.\n  });\n}"
+				},
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Read more about "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://github.com/GoogleChrome/web-vitals#send-the-results-to-google-analytics",
+							"children": [
+								{
+									"type": "text",
+									"value": "sending results to Google Analytics"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		}
+	]
+}

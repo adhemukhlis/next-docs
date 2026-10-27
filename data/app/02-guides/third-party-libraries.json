@@ -1,0 +1,2189 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to optimize third-party libraries\nnav_title: Third Party Libraries\ndescription: Optimize the performance of third-party libraries in your application with the `@next/third-parties` package."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "@next/third-parties"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is a library that provides a collection of components and utilities that improve the performance and developer experience of loading popular third-party libraries in your Next.js application."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "All third-party integrations provided by "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@next/third-parties"
+				},
+				{
+					"type": "text",
+					"value": " have been optimized for performance and ease of use."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Getting Started"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To get started, install the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@next/third-parties"
+				},
+				{
+					"type": "text",
+					"value": " library:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add @next/third-parties@latest next@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install @next/third-parties@latest next@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add @next/third-parties@latest next@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add @next/third-parties@latest next@latest"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "@next/third-parties"
+				},
+				{
+					"type": "text",
+					"value": " is currently an "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "experimental"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " library under active development. We recommend installing it with the "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "latest"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "canary"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " flags while we work on adding more third-party integrations."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Google Third-Parties"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "All supported third-party libraries from Google can be imported from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@next/third-parties/google"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Google Tag Manager"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GoogleTagManager"
+				},
+				{
+					"type": "text",
+					"value": " component can be used to instantiate a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developers.google.com/tag-platform/tag-manager",
+					"children": [
+						{
+							"type": "text",
+							"value": "Google Tag Manager"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " container to your page. By default, it fetches the original inline script after hydration occurs on the page."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To load Google Tag Manager for all routes, include the component directly in your root layout and pass in your GTM container ID:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import { GoogleTagManager } from '@next/third-parties/google'\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<GoogleTagManager gtmId=\"GTM-XYZ\" />\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "import { GoogleTagManager } from '@next/third-parties/google'\n\nexport default function RootLayout({ children }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<GoogleTagManager gtmId=\"GTM-XYZ\" />\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To load Google Tag Manager for a single route, include the component in your page file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\"",
+			"value": "import { GoogleTagManager } from '@next/third-parties/google'\n\nexport default function Page() {\n\treturn <GoogleTagManager gtmId=\"GTM-XYZ\" />\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Sending Events"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "sendGTMEvent"
+				},
+				{
+					"type": "text",
+					"value": " function can be used to track user interactions on your page by sending events using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "dataLayer"
+				},
+				{
+					"type": "text",
+					"value": " object. For this function to work, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<GoogleTagManager />"
+				},
+				{
+					"type": "text",
+					"value": " component must be included in either a parent layout, page, or component, or directly in the same file."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\"",
+			"value": "'use client'\n\nimport { sendGTMEvent } from '@next/third-parties/google'\n\nexport function EventButton() {\n\treturn (\n\t\t<div>\n\t\t\t<button onClick={() => sendGTMEvent({ event: 'buttonClicked', value: 'xyz' })}>Send Event</button>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Refer to the Tag Manager "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developers.google.com/tag-platform/tag-manager/datalayer",
+					"children": [
+						{
+							"type": "text",
+							"value": "developer documentation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to learn about the different variables and events that can be passed into the function."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Server-side Tagging"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you're using a server-side tag manager and serving "
+				},
+				{
+					"type": "inlineCode",
+					"value": "gtm.js"
+				},
+				{
+					"type": "text",
+					"value": " scripts from your tagging server you can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "gtmScriptUrl"
+				},
+				{
+					"type": "text",
+					"value": " option to specify the URL of the script."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Options"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Options to pass to the Google Tag Manager. For a full list of options, read the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developers.google.com/tag-platform/tag-manager/datalayer",
+					"children": [
+						{
+							"type": "text",
+							"value": "Google Tag Manager docs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Name"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "gtmId"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Required*"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Your GTM container ID. Usually starts with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "GTM-"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "gtmScriptUrl"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional*"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "GTM script URL. Defaults to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "https://www.googletagmanager.com/gtm.js"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "dataLayer"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Data layer object to instantiate the container with."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "dataLayerName"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Name of the data layer. Defaults to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "dataLayer"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "auth"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Value of authentication parameter ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "gtm_auth"
+								},
+								{
+									"type": "text",
+									"value": ") for environment snippets."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "preview"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Value of preview parameter ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "gtm_preview"
+								},
+								{
+									"type": "text",
+									"value": ") for environment snippets."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "*"
+				},
+				{
+					"type": "inlineCode",
+					"value": "gtmId"
+				},
+				{
+					"type": "text",
+					"value": " can be omitted when "
+				},
+				{
+					"type": "inlineCode",
+					"value": "gtmScriptUrl"
+				},
+				{
+					"type": "text",
+					"value": " is provided to support "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developers.google.com/tag-platform/tag-manager/gateway/setup-guide?setup=manual",
+					"children": [
+						{
+							"type": "text",
+							"value": "Google tag gateway for advertisers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Google Analytics"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GoogleAnalytics"
+				},
+				{
+					"type": "text",
+					"value": " component can be used to include "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developers.google.com/analytics/devguides/collection/ga4",
+					"children": [
+						{
+							"type": "text",
+							"value": "Google Analytics 4"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to your page via the Google tag ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "gtag.js"
+				},
+				{
+					"type": "text",
+					"value": "). By default, it fetches the original scripts after hydration occurs on the page."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Recommendation"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": If Google Tag Manager is already included in your application, you can configure Google Analytics directly using it, rather than including Google Analytics as a separate component. Refer to the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://developers.google.com/analytics/devguides/collection/ga4/tag-options#what-is-gtm",
+							"children": [
+								{
+									"type": "text",
+									"value": "documentation"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " to learn more about the differences between Tag Manager and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "gtag.js"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To load Google Analytics for all routes, include the component directly in your root layout and pass in your measurement ID:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import { GoogleAnalytics } from '@next/third-parties/google'\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<body>{children}</body>\n\t\t\t<GoogleAnalytics gaId=\"G-XYZ\" />\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "import { GoogleAnalytics } from '@next/third-parties/google'\n\nexport default function RootLayout({ children }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<body>{children}</body>\n\t\t\t<GoogleAnalytics gaId=\"G-XYZ\" />\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To load Google Analytics for a single route, include the component in your page file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\"",
+			"value": "import { GoogleAnalytics } from '@next/third-parties/google'\n\nexport default function Page() {\n\treturn <GoogleAnalytics gaId=\"G-XYZ\" />\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Sending Events"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "sendGAEvent"
+				},
+				{
+					"type": "text",
+					"value": " function can be used to measure user interactions on your page by sending events using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "dataLayer"
+				},
+				{
+					"type": "text",
+					"value": " object. For this function to work, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<GoogleAnalytics />"
+				},
+				{
+					"type": "text",
+					"value": " component must be included in either a parent layout, page, or component, or directly in the same file."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\"",
+			"value": "'use client'\n\nimport { sendGAEvent } from '@next/third-parties/google'\n\nexport function EventButton() {\n\treturn (\n\t\t<div>\n\t\t\t<button onClick={() => sendGAEvent('event', 'buttonClicked', { value: 'xyz' })}>Send Event</button>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Refer to the Google Analytics "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developers.google.com/analytics/devguides/collection/ga4/event-parameters",
+					"children": [
+						{
+							"type": "text",
+							"value": "developer documentation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to learn more about event parameters."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Tracking Pageviews"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Google Analytics automatically tracks pageviews when the browser history state changes. This means that client-side navigations between Next.js routes will send pageview data without any configuration."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To ensure that client-side navigations are being measured correctly, verify that the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://support.google.com/analytics/answer/9216061#enable_disable",
+					"children": [
+						{
+							"type": "emphasis",
+							"children": [
+								{
+									"type": "text",
+									"value": "“Enhanced Measurement”"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " property is enabled in your Admin panel and the "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "“Page changes based on browser history events”"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " checkbox is selected."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Note"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": If you decide to manually send pageview events, make sure to disable the default pageview measurement to avoid having duplicate data. Refer to the Google Analytics "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://developers.google.com/analytics/devguides/collection/ga4/views?client_type=gtag#manual_pageviews",
+							"children": [
+								{
+									"type": "text",
+									"value": "developer documentation"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " to learn more."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Options"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Options to pass to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<GoogleAnalytics>"
+				},
+				{
+					"type": "text",
+					"value": " component."
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Name"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "gaId"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Required"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Your "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://support.google.com/analytics/answer/12270356",
+									"children": [
+										{
+											"type": "text",
+											"value": "measurement ID"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". Usually starts with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "G-"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "dataLayerName"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Name of the data layer. Defaults to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "dataLayer"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "debugMode"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enable Google Analytics "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://support.google.com/analytics/answer/7201382",
+									"children": [
+										{
+											"type": "text",
+											"value": "debug mode"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "nonce"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "A "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/content-security-policy#nonces",
+									"children": [
+										{
+											"type": "text",
+											"value": "nonce"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Google Maps Embed"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GoogleMapsEmbed"
+				},
+				{
+					"type": "text",
+					"value": " component can be used to add a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developers.google.com/maps/documentation/embed/embedding-map",
+					"children": [
+						{
+							"type": "text",
+							"value": "Google Maps Embed"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to your page. By default, it uses the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading"
+				},
+				{
+					"type": "text",
+					"value": " attribute to lazy-load the embed below the fold."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\"",
+			"value": "import { GoogleMapsEmbed } from '@next/third-parties/google'\n\nexport default function Page() {\n\treturn (\n\t\t<GoogleMapsEmbed\n\t\t\tapiKey=\"XYZ\"\n\t\t\theight={200}\n\t\t\twidth=\"100%\"\n\t\t\tmode=\"place\"\n\t\t\tq=\"Brooklyn+Bridge,New+York,NY\"\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Options"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Options to pass to the Google Maps Embed. For a full list of options, read the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developers.google.com/maps/documentation/embed/embedding-map",
+					"children": [
+						{
+							"type": "text",
+							"value": "Google Map Embed docs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Name"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "apiKey"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Required"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Your api key."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "mode"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Required"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developers.google.com/maps/documentation/embed/embedding-map#choosing_map_modes",
+									"children": [
+										{
+											"type": "text",
+											"value": "Map mode"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "height"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Height of the embed. Defaults to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "auto"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "width"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Width of the embed. Defaults to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "auto"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "style"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Pass styles to the iframe."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "allowfullscreen"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Property to allow certain map parts to go full screen."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "loading"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Defaults to lazy. Consider changing if you know your embed will be above the fold."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "q"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Defines map marker location. "
+								},
+								{
+									"type": "emphasis",
+									"children": [
+										{
+											"type": "text",
+											"value": "This may be required depending on the map mode"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "center"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Defines the center of the map view."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "zoom"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Sets initial zoom level of the map."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "maptype"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Defines type of map tiles to load."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "language"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Defines the language to use for UI elements and for the display of labels on map tiles."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "region"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Defines the appropriate borders and labels to display, based on geo-political sensitivities."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "YouTube Embed"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "YouTubeEmbed"
+				},
+				{
+					"type": "text",
+					"value": " component can be used to load and display a YouTube embed. This component loads faster by using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/paulirish/lite-youtube-embed",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "lite-youtube-embed"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " under the hood."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\"",
+			"value": "import { YouTubeEmbed } from '@next/third-parties/google'\n\nexport default function Page() {\n\treturn (\n\t\t<YouTubeEmbed\n\t\t\tvideoid=\"ogfYd705cRs\"\n\t\t\theight={400}\n\t\t\tparams=\"controls=0\"\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Options"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Name"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "videoid"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Required"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "YouTube video id."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "width"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Width of the video container. Defaults to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "auto"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "height"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Height of the video container. Defaults to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "auto"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "playlabel"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "A visually hidden label for the play button for accessibility."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "params"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The video player params defined "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developers.google.com/youtube/player_parameters#Parameters",
+									"children": [
+										{
+											"type": "text",
+											"value": "here"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". "
+								},
+								{
+									"type": "html",
+									"value": "<br/>"
+								},
+								{
+									"type": "text",
+									"value": " Params are passed as a query param string. "
+								},
+								{
+									"type": "html",
+									"value": "<br/>"
+								},
+								{
+									"type": "text",
+									"value": " Eg: "
+								},
+								{
+									"type": "inlineCode",
+									"value": "params=\"controls=0&start=10&end=30\""
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "style"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Used to apply styles to the video container."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,190 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: distDir\ndescription: Set a custom build directory to use instead of the default .next directory."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can specify a name to use for a custom build directory to use instead of "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Open "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " and add the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "distDir"
+				},
+				{
+					"type": "text",
+					"value": " config:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tdistDir: 'build',\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Now if you run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " Next.js will use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "build"
+				},
+				{
+					"type": "text",
+					"value": " instead of the default "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next"
+				},
+				{
+					"type": "text",
+					"value": " folder."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good To Know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Next.js takes ownership of "
+						},
+						{
+							"type": "inlineCode",
+							"value": "distDir"
+						},
+						{
+							"type": "text",
+							"value": " and will sometimes delete its contents. Point it at a directory used only by Next.js."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "distDir"
+				},
+				{
+					"type": "text",
+					"value": " is resolved relative to the directory holding your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ", and may point to a dedicated directory inside the workspace that contains it. In a monorepo, an application at "
+				},
+				{
+					"type": "inlineCode",
+					"value": "apps/web"
+				},
+				{
+					"type": "text",
+					"value": " can build into "
+				},
+				{
+					"type": "inlineCode",
+					"value": "../.next"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To protect against data loss, Next.js refuses to use the directory and fails with an "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/invalid-dist-dir",
+					"children": [
+						{
+							"type": "text",
+							"value": "Invalid distDir"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " error when "
+				},
+				{
+					"type": "inlineCode",
+					"value": "distDir"
+				},
+				{
+					"type": "text",
+					"value": " resolves outside the application and workspace, or when it is the application directory itself or one of its ancestors."
+				}
+			]
+		}
+	]
+}

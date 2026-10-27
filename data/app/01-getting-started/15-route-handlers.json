@@ -1,0 +1,1428 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Route Handlers\nnav_title: Route Handlers\ndescription: Create custom request handlers with Next.js Route Handlers using the Web Request and Response APIs.\nrelated:\n title: API Reference\n description: Learn more about Route Handlers\n links:\n  - app/api-reference/file-conventions/route\n  - app/guides/backend-for-frontend"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Handlers"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Handlers allow you to create custom request handlers for a given route using the Web "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/Request",
+					"children": [
+						{
+							"type": "text",
+							"value": "Request"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/Response",
+					"children": [
+						{
+							"type": "text",
+							"value": "Response"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " APIs."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"Route.js Special File\"\nsrcLight=\"/docs/light/route-special-file.png\"\nsrcDark=\"/docs/dark/route-special-file.png\"\nwidth=\"1600\"\nheight=\"444\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Route Handlers are only available inside the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "app"
+						},
+						{
+							"type": "text",
+							"value": " directory. They are the equivalent of "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/pages/building-your-application/routing/api-routes",
+							"children": [
+								{
+									"type": "text",
+									"value": "API Routes"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " inside the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "pages"
+						},
+						{
+							"type": "text",
+							"value": " directory meaning you "
+						},
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "do not"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " need to use API Routes and Route Handlers together."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Convention"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Handlers are defined in a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "route.js|ts"
+						},
+						{
+							"type": "text",
+							"value": " file"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " inside the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/route.ts\" switcher",
+			"value": "export async function GET(request: Request) {}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/route.js\" switcher",
+			"value": "export async function GET(request) {}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Handlers can be nested anywhere inside the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory, similar to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.js"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout.js"
+				},
+				{
+					"type": "text",
+					"value": ". But there "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "cannot"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " be a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "route.js"
+				},
+				{
+					"type": "text",
+					"value": " file at the same route segment level as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.js"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Supported HTTP Methods"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The following "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/HTTP/Methods",
+					"children": [
+						{
+							"type": "text",
+							"value": "HTTP methods"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " are supported: "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GET"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "POST"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "PUT"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "PATCH"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "DELETE"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "HEAD"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "OPTIONS"
+				},
+				{
+					"type": "text",
+					"value": ". If an unsupported method is called, Next.js will return a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "405 Method Not Allowed"
+				},
+				{
+					"type": "text",
+					"value": " response."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Extended "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NextRequest"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NextResponse"
+				},
+				{
+					"type": "text",
+					"value": " APIs"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In addition to supporting the native "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/Request",
+					"children": [
+						{
+							"type": "text",
+							"value": "Request"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/Response",
+					"children": [
+						{
+							"type": "text",
+							"value": "Response"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " APIs, Next.js extends them with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/next-request",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "NextRequest"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/next-response",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "NextResponse"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to provide convenient helpers for advanced use cases."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Caching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Handlers are not cached by default. You can, however, opt into caching for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GET"
+				},
+				{
+					"type": "text",
+					"value": " methods. Other supported HTTP methods are "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "not"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " cached. To cache a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GET"
+				},
+				{
+					"type": "text",
+					"value": " method, use a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/caching-without-cache-components#dynamic",
+					"children": [
+						{
+							"type": "text",
+							"value": "route config option"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "export const dynamic = 'force-static'"
+				},
+				{
+					"type": "text",
+					"value": " in your Route Handler file."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/items/route.ts\" switcher",
+			"value": "export const dynamic = 'force-static'\n\nexport async function GET() {\n\tconst res = await fetch('https://data.mongodb-api.com/...', {\n\t\theaders: {\n\t\t\t'Content-Type': 'application/json',\n\t\t\t'API-Key': process.env.DATA_API_KEY,\n\t\t},\n\t})\n\tconst data = await res.json()\n\n\treturn Response.json({ data })\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/items/route.js\" switcher",
+			"value": "export const dynamic = 'force-static'\n\nexport async function GET() {\n\tconst res = await fetch('https://data.mongodb-api.com/...', {\n\t\theaders: {\n\t\t\t'Content-Type': 'application/json',\n\t\t\t'API-Key': process.env.DATA_API_KEY,\n\t\t},\n\t})\n\tconst data = await res.json()\n\n\treturn Response.json({ data })\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Other supported HTTP methods are "
+						},
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "not"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " cached, even if they are placed alongside a "
+						},
+						{
+							"type": "inlineCode",
+							"value": "GET"
+						},
+						{
+							"type": "text",
+							"value": " method that is cached, in the same file."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "With Cache Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is enabled, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GET"
+				},
+				{
+					"type": "text",
+					"value": " Route Handlers follow the same model as normal UI routes in your application. They run at request time by default, can be prerendered when they don't access uncached or runtime data, and you can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " to include uncached data in the static response."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Static example"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " - doesn't access uncached or runtime data, so it will be prerendered at build time:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/api/project-info/route.ts\"",
+			"value": "export async function GET() {\n\treturn Response.json({\n\t\tprojectName: 'Next.js',\n\t})\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Dynamic example"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " - accesses non-deterministic operations. During the build, prerendering stops when "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Math.random()"
+				},
+				{
+					"type": "text",
+					"value": " is called, deferring to request-time rendering:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/api/random-number/route.ts\"",
+			"value": "export async function GET() {\n\treturn Response.json({\n\t\trandomNumber: Math.random(),\n\t})\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Runtime data example"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " - accesses request-specific data. Prerendering terminates when runtime APIs like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers()"
+				},
+				{
+					"type": "text",
+					"value": " are called:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/api/user-agent/route.ts\"",
+			"value": "import { headers } from 'next/headers'\n\nexport async function GET() {\n\tconst headersList = await headers()\n\tconst userAgent = headersList.get('user-agent')\n\n\treturn Response.json({ userAgent })\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Prerendering stops if the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "GET"
+						},
+						{
+							"type": "text",
+							"value": " handler accesses network requests, database queries, async file system operations, request object properties (like "
+						},
+						{
+							"type": "inlineCode",
+							"value": "req.url"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": "request.headers"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": "request.cookies"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": "request.body"
+						},
+						{
+							"type": "text",
+							"value": "), runtime APIs like "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/cookies",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "cookies()"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/headers",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "headers()"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/connection",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "connection()"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", or non-deterministic operations."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cached example"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " - accesses uncached data (database query) but caches it with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": ", allowing it to be included in the prerendered response:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/api/products/route.ts\"",
+			"value": "import { cacheLife } from 'next/cache'\n\nexport async function GET() {\n\tconst products = await getProducts()\n\treturn Response.json(products)\n}\n\nasync function getProducts() {\n\t'use cache'\n\tcacheLife('hours')\n\n\treturn await db.query('SELECT * FROM products')\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						},
+						{
+							"type": "text",
+							"value": " cannot be used directly inside a Route Handler body; extract it to a helper function. Cached responses revalidate according to "
+						},
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						},
+						{
+							"type": "text",
+							"value": " when a new request arrives."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Special Route Handlers"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Special Route Handlers like "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/metadata/sitemap",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "sitemap.ts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/metadata/opengraph-image",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "opengraph-image.tsx"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/metadata/app-icons",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "icon.tsx"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and other "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/metadata",
+					"children": [
+						{
+							"type": "text",
+							"value": "metadata files"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " remain static by default unless they use Request-time APIs or dynamic config options."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Resolution"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can consider a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "route"
+				},
+				{
+					"type": "text",
+					"value": " the lowest level routing primitive."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "They "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "do not"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " participate in layouts or client-side navigations like "
+								},
+								{
+									"type": "inlineCode",
+									"value": "page"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "There "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "cannot"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " be a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "route.js"
+								},
+								{
+									"type": "text",
+									"value": " file at the same route as "
+								},
+								{
+									"type": "inlineCode",
+									"value": "page.js"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Page"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Route"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Result"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/page.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/route.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Cross size={18} />"
+								},
+								{
+									"type": "text",
+									"value": " Conflict"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/page.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/api/route.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								},
+								{
+									"type": "text",
+									"value": " Valid"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/[user]/page.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/api/route.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								},
+								{
+									"type": "text",
+									"value": " Valid"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each "
+				},
+				{
+					"type": "inlineCode",
+					"value": "route.js"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.js"
+				},
+				{
+					"type": "text",
+					"value": " file takes over all HTTP verbs for that route."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/page.ts\" switcher",
+			"value": "export default function Page() {\n  return <h1>Hello, Next.js!</h1>\n}\n\n// Conflict\n// `app/route.ts`\nexport async function POST(request: Request) {}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "export default function Page() {\n\treturn <h1>Hello, Next.js!</h1>\n}\n\n// Conflict\n// `app/route.js`\nexport async function POST(request) {}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Read more about how Route Handlers "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/backend-for-frontend",
+					"children": [
+						{
+							"type": "text",
+							"value": "complement your frontend application"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", or explore the Route Handlers "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "API Reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Context Helper"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In TypeScript, you can type the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "context"
+				},
+				{
+					"type": "text",
+					"value": " parameter for Route Handlers with the globally available "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route#route-context-helper",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "RouteContext"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " helper:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/users/[id]/route.ts\" switcher",
+			"value": "import type { NextRequest } from 'next/server'\n\nexport async function GET(_req: NextRequest, ctx: RouteContext<'/users/[id]'>) {\n\tconst { id } = await ctx.params\n\treturn Response.json({ id })\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Types are generated during "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next dev"
+										},
+										{
+											"type": "text",
+											"value": ", "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next build"
+										},
+										{
+											"type": "text",
+											"value": " or "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next typegen"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

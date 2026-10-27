@@ -1,0 +1,410 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: allowedDevOrigins\ndescription: Use `allowedDevOrigins` to configure additional origins that can request the dev server."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js blocks cross-origin requests to dev-only assets and endpoints during development by default to prevent unauthorized access."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To configure a Next.js application to allow requests from origins other than the hostname the server was initialized with ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "localhost"
+				},
+				{
+					"type": "text",
+					"value": " by default), use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "allowedDevOrigins"
+				},
+				{
+					"type": "text",
+					"value": " config option."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "allowedDevOrigins"
+				},
+				{
+					"type": "text",
+					"value": " lets you set additional origins that can request the dev server in development mode. For example, to use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "local-origin.dev"
+				},
+				{
+					"type": "text",
+					"value": " instead of only "
+				},
+				{
+					"type": "inlineCode",
+					"value": "localhost"
+				},
+				{
+					"type": "text",
+					"value": ", open "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " and add the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "allowedDevOrigins"
+				},
+				{
+					"type": "text",
+					"value": " config:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tallowedDevOrigins: ['local-origin.dev', '*.local-origin.dev'],\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Only the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/API/URL/hostname",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "hostname"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " of the request's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Origin"
+				},
+				{
+					"type": "text",
+					"value": " header is matched against your entries. For a request from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "http://local-origin.dev:3000/dashboard?tab=1"
+				},
+				{
+					"type": "text",
+					"value": ", that is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "local-origin.dev"
+				},
+				{
+					"type": "text",
+					"value": ". The scheme, the port, the path, and the query string are ignored. Write your entries that way too, without "
+				},
+				{
+					"type": "inlineCode",
+					"value": "https://"
+				},
+				{
+					"type": "text",
+					"value": " and without a port."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A no-cors cross-site request, such as a script tag loading a dev asset, sends no "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Origin"
+				},
+				{
+					"type": "text",
+					"value": " header. Those are matched on the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Referer"
+				},
+				{
+					"type": "text",
+					"value": " hostname instead."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Entries can also expand, through two wildcards: a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "*"
+				},
+				{
+					"type": "text",
+					"value": " stands in for exactly one label of the hostname, and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "**"
+				},
+				{
+					"type": "text",
+					"value": " for one or more. That is why the example above lists two entries, one for the bare hostname and one for its subdomains."
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Entry"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Matches"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Does not match"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "local-origin.dev"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "local-origin.dev"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "team.local-origin.dev"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "*.local-origin.dev"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "team.local-origin.dev"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "local-origin.dev"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "team.eu.local-origin.dev"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "**.local-origin.dev"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "team.local-origin.dev"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "team.eu.local-origin.dev"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "local-origin.dev"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Partial replacement is not supported. Write "
+				},
+				{
+					"type": "inlineCode",
+					"value": "*.local-origin.dev"
+				},
+				{
+					"type": "text",
+					"value": ", rather than "
+				},
+				{
+					"type": "inlineCode",
+					"value": "team-*.local-origin.dev"
+				},
+				{
+					"type": "text",
+					"value": ". Using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "**"
+				},
+				{
+					"type": "text",
+					"value": " is only supported at the start of the pattern."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The dev server already allows "
+				},
+				{
+					"type": "inlineCode",
+					"value": "localhost"
+				},
+				{
+					"type": "text",
+					"value": ", its subdomains, and the hostname it was started with. Any other hostname needs an entry, such as a tunnel used for remote development:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tallowedDevOrigins: ['*.tunnel.example.com'],\n}"
+		}
+	]
+}

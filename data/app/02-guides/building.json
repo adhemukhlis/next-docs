@@ -1,0 +1,2505 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Building your application\ndescription: Learn what happens when you run next build and how to read the build output.\nnav_title: Building\nrelated:\n title: Next Steps\n description: Learn more about deploying, caching, and configuring production builds.\n links:\n  - app/getting-started/deploying\n  - app/getting-started/caching\n  - app/guides/incremental-static-regeneration-cache-components\n  - app/guides/ci-build-caching"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Running "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " compiles your application for production, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#prerendering",
+					"children": [
+						{
+							"type": "text",
+							"value": "prerenders"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " eligible routes, and prints a route table showing how each route is served."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "What "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " does"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When you run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ", the build moves through these phases:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Setup."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Loads "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/environment-variables",
+									"children": [
+										{
+											"type": "text",
+											"value": "environment variables"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " ("
+								},
+								{
+									"type": "inlineCode",
+									"value": ".env"
+								},
+								{
+									"type": "text",
+									"value": " files), validates your "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "next.config"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", and generates a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/generateBuildId",
+									"children": [
+										{
+											"type": "text",
+											"value": "build ID"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Route discovery."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Scans the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pages/"
+								},
+								{
+									"type": "text",
+									"value": " directories for routes, and detects root-level convention files like "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/proxy",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "proxy"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/instrumentation",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "instrumentation"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". Generates TypeScript route definitions."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Compilation."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Bundles client, server, and edge code with "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/turbopack",
+									"children": [
+										{
+											"type": "text",
+											"value": "Turbopack"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (or webpack). Transpiles TypeScript and JSX, tree-shakes unused code, and optimizes CSS and fonts."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Static analysis."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Classifies each route for prerendering versus on-demand rendering. Collects "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/generate-static-params",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "generateStaticParams"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " output. With Cache Components, checks for "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/blocking-prerender-dynamic",
+									"children": [
+										{
+											"type": "text",
+											"value": "prerender-blocking errors"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Prerendering."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Prerenders static pages and PPR shells to HTML. Generates "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/server-and-client-components#on-the-server",
+									"children": [
+										{
+											"type": "text",
+											"value": "RSC payloads"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for client-side navigation."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Output."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Writes the build to "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".next/"
+								},
+								{
+									"type": "text",
+									"value": ". For "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/self-hosting",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "output: 'standalone'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", bundles only the files needed at runtime. For "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/static-exports",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "output: 'export'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", generates a full static site. Prints the route table."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The build checks TypeScript unless "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/typescript",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "typescript.ignoreBuildErrors"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is enabled."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " stores the running development server's state and incremental compilation caches in "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next/dev"
+				},
+				{
+					"type": "text",
+					"value": ". Deleting or moving "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next"
+				},
+				{
+					"type": "text",
+					"value": " discards that state, so the development server has to recreate it. To run an isolated production build, configure a separate "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/distDir",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "distDir"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reading the build output"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The build command depends on your package manager:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm build"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm run build"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn build"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun run build"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After a successful build, Next.js prints a route table with a symbol next to each route."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The symbols differ depending on whether Cache Components is enabled."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Without Cache Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Without Cache Components, App Router pages and Pages Router routes use these rendering classifications:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Symbol"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Name"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Behavior"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "○"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Static"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Next.js prerenders the entire route as HTML."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "●"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "SSG"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Next.js prerenders paths from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "generateStaticParams"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "getStaticProps"
+								},
+								{
+									"type": "text",
+									"value": " as HTML."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "ƒ"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Dynamic"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Next.js renders the route on demand."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "With Cache Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching#static-cached-and-streaming",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Prerendering"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is the only rendering model for App Router pages. For these pages, the symbols describe how much HTML the build produced:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Symbol"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Name"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Behavior"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "○"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Static"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Next.js prerenders the entire route as HTML."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "◐"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Partial Prerender"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Next.js prerenders a static HTML shell and renders the remaining content on demand."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "ƒ"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Dynamic"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Next.js renders the route on demand."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For a Cache Components page, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ƒ"
+				},
+				{
+					"type": "text",
+					"value": " means the build accepted an empty HTML prerender. Next.js renders the route on request. A dynamic route can also include a fallback for pathnames not returned by "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Other route entries"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Request-dependent "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " (API endpoints), Proxy (Middleware), and dynamic metadata routes such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "icon"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "opengraph-image"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "twitter-image"
+				},
+				{
+					"type": "text",
+					"value": " use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ƒ"
+				},
+				{
+					"type": "text",
+					"value": ". These entries render on demand and do not use PPR."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Prerender validation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With Cache Components, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " validates that each App Router page can produce a static shell. Request-time values such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers()"
+				},
+				{
+					"type": "text",
+					"value": " outside of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " produce a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/blocking-prerender-runtime",
+					"children": [
+						{
+							"type": "text",
+							"value": "runtime data error"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Uncached data produces an "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/blocking-prerender-dynamic",
+					"children": [
+						{
+							"type": "text",
+							"value": "uncached data error"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Each error links to the fixes that apply to that data source."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Debug prerender errors"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Production builds minify server code and omit server source maps by default. Use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/cli/next#debugging-prerender-errors",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "--debug-prerender"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more detailed stack traces and code frames:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "next build --debug-prerender"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The option disables server minification, enables server source maps, and prevents one failed route from stopping the rest of the build."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Warning"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Do not deploy builds produced with "
+						},
+						{
+							"type": "inlineCode",
+							"value": "--debug-prerender"
+						},
+						{
+							"type": "text",
+							"value": ". These builds include debugging options and are not optimized for production."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Build specific routes"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/cli/next#building-specific-routes",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "--debug-build-paths"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to compile and prerender selected routes while debugging a large application. The option accepts comma-separated paths and glob patterns. Prefix a pattern with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "!"
+				},
+				{
+					"type": "text",
+					"value": " to exclude it. You can also combine it with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "--debug-prerender"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Only matching routes appear in the route table. When you select an App Router route, Next.js also includes the built-in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/_not-found"
+				},
+				{
+					"type": "text",
+					"value": " route."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Example"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": The following example uses "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+							"children": [
+								{
+									"type": "text",
+									"value": "Cache Components"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " with "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/config/next-config-js/partialPrefetching",
+							"children": [
+								{
+									"type": "text",
+									"value": "Partial Prefetching"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", enabled with "
+						},
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents: true"
+						},
+						{
+							"type": "text",
+							"value": " and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "partialPrefetching: true"
+						},
+						{
+							"type": "text",
+							"value": " in "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next.config.ts"
+						},
+						{
+							"type": "text",
+							"value": ". The route symbols and prerender errors differ when Cache Components is disabled. See "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/getting-started/caching#enabling-cache-components",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enabling Cache Components"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for setup."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Find blocking work"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In this example, a store application has a product page with a dynamic "
+				},
+				{
+					"type": "inlineCode",
+					"value": "[id]"
+				},
+				{
+					"type": "text",
+					"value": " segment:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "txt",
+			"meta": null,
+			"value": "app/\n├── layout.tsx\n├── page.tsx\n└── products/\n    └── [id]/\n        └── page.tsx"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The page reads the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "id"
+				},
+				{
+					"type": "text",
+					"value": " param to fetch the product:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/[id]/page.tsx\" switcher",
+			"value": "export default async function Page(props: PageProps<'/products/[id]'>) {\n\tconst { id } = await props.params\n\tconst res = await fetch(`https://api.example.com/products/${id}`)\n\tconst product = await res.json()\n\treturn <div>{product.name}</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/products/[id]/page.js\" switcher",
+			"value": "export default async function Page({ params }) {\n\tconst { id } = await params\n\tconst res = await fetch(`https://api.example.com/products/${id}`)\n\tconst product = await res.json()\n\treturn <div>{product.name}</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ". Next.js prerenders as much of each route as it can before printing the build output. In this case, the build fails:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "Error: Route \"/products/[id]\": Next.js encountered uncached or runtime data during prerendering.\n\n`fetch(...)`, `cookies()`, `headers()`, `params`, `searchParams`, or `connection()` accessed outside of `<Suspense>` prevents the route from being prerendered, blocking the page load and leading to a slower user experience.\n\nWays to fix this:\n  - [stream] Provide a placeholder with `<Suspense fallback={...}>` around the data access\n  - [cache] For uncached data (`fetch`, database calls): cache the access with `\"use cache\"` (does not apply to `connection()`)\n  - [block] Set `export const instant = false` to allow a blocking route\n\nLearn more: https://nextjs.org/docs/messages/blocking-prerender-dynamic\n    at body (<anonymous>)\n    at html (<anonymous>)\nTo get a more detailed stack trace and pinpoint the issue, try one of the following:\n  - Start the app in development mode by running `next dev`, then open \"/products/[id]\" in your browser to investigate the error.\n  - Rerun the production build with `next build --debug-prerender` to generate better stack traces.\nError occurred prerendering page \"/products/[id]\"."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The error shows that request-time work is blocking prerendering, but the stack only points to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "body"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "html"
+				},
+				{
+					"type": "text",
+					"value": ". It does not identify the source line. Combining the two debugging options produces a detailed stack trace for the product route:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "next build --debug-prerender --debug-build-paths=\"app/products/[id]/page.tsx\""
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The stack now points to the first blocked access in the page, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " read:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "Error: Route \"/products/[id]\": Next.js encountered uncached or runtime data during prerendering.\n  ...\n    at Page (app/products/[id]/page.tsx:2:30)\n  1 | export default async function Page(props: PageProps<'/products/[id]'>) {\n> 2 |   const { id } = await props.params\n    |                              ^\n  3 |   const res = await fetch(`https://api.example.com/products/${id}`)\n  4 |   const product = await res.json()"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The detailed stack identifies the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/page#params-optional",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "params"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " read as the first blocked access."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "During development, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " shows all validation errors in the dev overlay and terminal with stack frames that resolve to your source. It reruns validation as you edit. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/instant-navigation",
+					"children": [
+						{
+							"type": "text",
+							"value": "Ensuring instant navigations"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the development workflow."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This guide uses production builds for the rest of the walkthrough so you can compare how each change affects the route table."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The error offers three options based on whether the request-time work can stream, be cached, or must block the route. The first approach streams fallback UI."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "A streaming product page"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Choose the error's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "[stream]"
+				},
+				{
+					"type": "text",
+					"value": " option when the route has useful UI to show while request-time data loads. Next.js prerenders that fallback, then replaces it with the product page after the params and product data resolve. In this route, a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/loading",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "loading.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " file provides the fallback:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/[id]/loading.tsx\" switcher",
+			"value": "export default function Loading() {\n\treturn <div>Loading...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/products/[id]/loading.js\" switcher",
+			"value": "export default function Loading() {\n\treturn <div>Loading...</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": " wraps the page in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary and uses the loading component as its fallback. Next.js prerenders this fallback as the product route's static shell. The page reads the params and fetches the product at request time, then replaces the fallback with the completed content."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For more granular streaming, add an explicit "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary around only the component that needs request-time data. More of the page can then stay in the static shell. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/streaming",
+					"children": [
+						{
+							"type": "text",
+							"value": "Streaming"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Build the application:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "next build"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The build passes:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "Route (app)\n┌ ○ /\n├ ○ /_not-found\n└ ◐ /products/[id]\n\n○  (Static)             prerendered as static content\n◐  (Partial Prerender)  prerendered as static HTML with dynamic server-streamed content"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "◐"
+				},
+				{
+					"type": "text",
+					"value": " symbol shows that the route serves a static shell and streams the remaining content."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Prerendered product pages"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The route now has a segment-wide fallback from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": ". To prerender pages for known products, keep "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": " and use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-static-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to provide their IDs:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/[id]/page.tsx\" switcher",
+			"value": "export async function generateStaticParams() {\n\tconst res = await fetch('https://api.example.com/products')\n\tconst products = await res.json()\n\treturn products.slice(0, 12).map((product) => ({ id: product.id }))\n}\n\nexport default async function Page(props: PageProps<'/products/[id]'>) {\n\tconst { id } = await props.params\n\tconst res = await fetch(`https://api.example.com/products/${id}`)\n\tconst product = await res.json()\n\treturn <div>{product.name}</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/products/[id]/page.js\" switcher",
+			"value": "export async function generateStaticParams() {\n\tconst res = await fetch('https://api.example.com/products')\n\tconst products = await res.json()\n\treturn products.slice(0, 12).map((product) => ({ id: product.id }))\n}\n\nexport default async function Page({ params }) {\n\tconst { id } = await params\n\tconst res = await fetch(`https://api.example.com/products/${id}`)\n\tconst product = await res.json()\n\treturn <div>{product.name}</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Rebuild the application:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "next build"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js now attempts to prerender a page for each product ID:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "Route (app)\n┌ ○ /\n├ ○ /_not-found\n└   /products/[id]      # Route pattern group\n  ├ ◐ /products/[id]    # Fallback row\n  ├ ◐ /products/1       # Product content streams into the static shell\n  ├ ◐ /products/2\n  └ ◐ [+10 more paths]\n\n○  (Static)             prerendered as static content\n◐  (Partial Prerender)  prerendered as static HTML with dynamic server-streamed content"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The unmarked "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/products/[id]"
+				},
+				{
+					"type": "text",
+					"value": " row groups the route outputs beneath it. When there are more prerendered paths than fit in the table, Next.js prints a short list ending with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "[+N more paths]"
+				},
+				{
+					"type": "text",
+					"value": ". Each indented row stays "
+				},
+				{
+					"type": "inlineCode",
+					"value": "◐"
+				},
+				{
+					"type": "text",
+					"value": ". The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": " fallback is prerendered, then the product loads at request time and streams into that shell."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						},
+						{
+							"type": "text",
+							"value": " is optional. Use it when a set of pathnames is known at build time and worth prerendering. With Cache Components, it must return at least one param. An empty array causes a "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/messages/empty-generate-static-params",
+							"children": [
+								{
+									"type": "text",
+									"value": "build error"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Cached product data"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Choose the error's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "[cache]"
+				},
+				{
+					"type": "text",
+					"value": " option when the product lookup can be reused across requests instead of running for every visitor. Caching lets Next.js include the product data when it prerenders a known product, producing complete HTML for those paths. Add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " to the lookup:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/[id]/page.tsx\" switcher",
+			"value": "export async function generateStaticParams() {\n\tconst res = await fetch('https://api.example.com/products')\n\tconst products = await res.json()\n\treturn products.slice(0, 12).map((product) => ({ id: product.id }))\n}\n\nasync function getProduct(id: string) {\n\t'use cache'\n\tconst res = await fetch(`https://api.example.com/products/${id}`)\n\treturn res.json()\n}\n\nexport default async function Page(props: PageProps<'/products/[id]'>) {\n\tconst { id } = await props.params\n\tconst product = await getProduct(id)\n\treturn <div>{product.name}</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/products/[id]/page.js\" switcher",
+			"value": "export async function generateStaticParams() {\n\tconst res = await fetch('https://api.example.com/products')\n\tconst products = await res.json()\n\treturn products.slice(0, 12).map((product) => ({ id: product.id }))\n}\n\nasync function getProduct(id) {\n\t'use cache'\n\tconst res = await fetch(`https://api.example.com/products/${id}`)\n\treturn res.json()\n}\n\nexport default async function Page({ params }) {\n\tconst { id } = await params\n\tconst product = await getProduct(id)\n\treturn <div>{product.name}</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Rebuilding the application shows the listed params as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "○"
+				},
+				{
+					"type": "text",
+					"value": ". Their params are known and their data is cached, so Next.js prerenders each page in full. The fallback row remains "
+				},
+				{
+					"type": "inlineCode",
+					"value": "◐"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "Route (app)\n┌ ○ /\n├ ○ /_not-found\n└   /products/[id]      # Route pattern group\n  ├ ◐ /products/[id]    # Fallback row\n  ├ ○ /products/1       # Full HTML prerender\n  ├ ○ /products/2\n  └ ○ [+10 more paths]\n\n○  (Static)             prerendered as static content\n◐  (Partial Prerender)  prerendered as static HTML with dynamic server-streamed content"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/products/[id]"
+				},
+				{
+					"type": "text",
+					"value": " fallback represents product IDs not returned by "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": ". It stays "
+				},
+				{
+					"type": "inlineCode",
+					"value": "◐"
+				},
+				{
+					"type": "text",
+					"value": " because the build does not know every product ID. On the first visit to an unlisted product, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/partialPrefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " serves the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": " fallback immediately while Next.js renders the page for that ID and stores it in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#incremental-static-regeneration-isr",
+					"children": [
+						{
+							"type": "text",
+							"value": "ISR cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Later visits receive the completed page instead of the fallback. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/incremental-static-regeneration-cache-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "ISR with Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the complete upgrade flow."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Routes that contain cached functions or components can also show "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Revalidate"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Expire"
+				},
+				{
+					"type": "text",
+					"value": " columns. A route reports the shortest "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "expire"
+				},
+				{
+					"type": "text",
+					"value": " across all the caches it contains. Caches use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife#preset-cache-profiles",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "default"
+						},
+						{
+							"type": "text",
+							"value": " profile"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when there is no explicit "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " call. A "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/products"
+				},
+				{
+					"type": "text",
+					"value": " listing page that renders the same cached data produces this output:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "Route (app)           Revalidate  Expire\n┌ ○ /\n├ ○ /_not-found\n├ ○ /products                15m      1y\n└   /products/[id]\n  ├ ◐ /products/[id]\n  ├ ○ /products/1            15m      1y\n  ├ ○ /products/2            15m      1y\n  └ ○ [+10 more paths]"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The default "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife#preset-cache-profiles",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						},
+						{
+							"type": "text",
+							"value": " profile"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " revalidates after 15 minutes. The route's default "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/expireTime",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "expireTime"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is one year, so the table shows "
+				},
+				{
+					"type": "inlineCode",
+					"value": "15m"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "1y"
+				},
+				{
+					"type": "text",
+					"value": ". You can configure both values in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "A blocking product page"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Choose the error's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "[block]"
+				},
+				{
+					"type": "text",
+					"value": " option when waiting for request-time work is the correct behavior for the route. The route may need the completed result before it responds, or you may want to defer a difficult refactor while "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/migrating-to-cache-components#adopting-incrementally",
+					"children": [
+						{
+							"type": "text",
+							"value": "adopting Cache Components incrementally"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Suppose this product route needs to remain blocking for now. Keep "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": ", remove the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading"
+				},
+				{
+					"type": "text",
+					"value": " file and the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " directive, then set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instant = false"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/[id]/page.tsx\" switcher",
+			"value": "import { notFound } from 'next/navigation'\n\nexport const instant = false\n\nexport async function generateStaticParams() {\n\tconst res = await fetch('https://api.example.com/products')\n\tconst products = await res.json()\n\treturn products.slice(0, 12).map((product) => ({ id: product.id }))\n}\n\nexport default async function Page(props: PageProps<'/products/[id]'>) {\n\tconst { id } = await props.params\n\tconst res = await fetch(`https://api.example.com/products/${id}`)\n\tif (!res.ok) {\n\t\tnotFound()\n\t}\n\tconst product = await res.json()\n\treturn <div>{product.name}</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/products/[id]/page.js\" switcher",
+			"value": "import { notFound } from 'next/navigation'\n\nexport const instant = false\n\nexport async function generateStaticParams() {\n\tconst res = await fetch('https://api.example.com/products')\n\tconst products = await res.json()\n\treturn products.slice(0, 12).map((product) => ({ id: product.id }))\n}\n\nexport default async function Page({ params }) {\n\tconst { id } = await params\n\tconst res = await fetch(`https://api.example.com/products/${id}`)\n\tif (!res.ok) {\n\t\tnotFound()\n\t}\n\tconst product = await res.json()\n\treturn <div>{product.name}</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading"
+				},
+				{
+					"type": "text",
+					"value": " boundary removed, no fallback can render while the page awaits "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " and the product lookup. Removing "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " means the lookup also runs for each request. The server waits for both before returning the product page or a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "404"
+				},
+				{
+					"type": "text",
+					"value": ". During a client navigation, the destination has no fallback to show until this work completes."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config/instant",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "instant = false"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " disables instant-navigation validation for this route, including the check that its static shell is non-empty. It does not change the rendering model or prevent prerendering."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The build output now shows:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "Route (app)\n┌ ○ /\n├ ○ /_not-found\n└   /products/[id]      # Route pattern group\n  ├ ƒ /products/[id]    # Empty fallback for unlisted IDs\n  ├ ƒ /products/1       # Rendered on request with no HTML prerender\n  ├ ƒ /products/2\n  └ ƒ [+10 more paths]\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The indented "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/products/[id]"
+				},
+				{
+					"type": "text",
+					"value": " row is the fallback for IDs not returned by "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": ". The other indented rows are the generated product paths. The product lookup blocks the generated paths before they produce HTML, while "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " blocks the fallback first. Every prerender is empty and uses "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ƒ"
+				},
+				{
+					"type": "text",
+					"value": ". When a shared layout wraps "
+				},
+				{
+					"type": "inlineCode",
+					"value": "children"
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": ", Next.js preserves its fallback as the static shell and uses "
+				},
+				{
+					"type": "inlineCode",
+					"value": "◐"
+				},
+				{
+					"type": "text",
+					"value": " instead."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Synchronous values such as "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/blocking-prerender-random",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Math.random()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/blocking-prerender-current-time",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "new Date()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/blocking-prerender-crypto",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "crypto.randomUUID()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " still produce prerender errors."
+				}
+			]
+		}
+	]
+}

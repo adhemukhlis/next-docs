@@ -1,0 +1,300 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Implementing PPR in an Adapter\ndescription: Implement Partial Prerendering support in an adapter using fallback output and cache hooks."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For partially prerendered app routes, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "onBuildComplete"
+				},
+				{
+					"type": "text",
+					"value": " gives you the data needed to seed and resume PPR:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "outputs.prerenders[].fallback.filePath"
+								},
+								{
+									"type": "text",
+									"value": ": path to the generated fallback shell (for example HTML)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "outputs.prerenders[].fallback.postponedState"
+								},
+								{
+									"type": "text",
+									"value": ": serialized postponed state used to resume rendering"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "1. Seed shell + postponed state at build time"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"my-adapter.ts\"",
+			"value": "import { readFile } from 'node:fs/promises'\n\nasync function seedPprEntries(outputs: AdapterOutputs) {\n\tfor (const prerender of outputs.prerenders) {\n\t\tconst fallback = prerender.fallback\n\t\tif (!fallback?.filePath || !fallback.postponedState) continue\n\n\t\tconst shell = await readFile(fallback.filePath, 'utf8')\n\t\tawait platformCache.set(prerender.pathname, {\n\t\t\tshell,\n\t\t\tpostponedState: fallback.postponedState,\n\t\t\tinitialHeaders: fallback.initialHeaders,\n\t\t\tinitialStatus: fallback.initialStatus,\n\t\t\tinitialRevalidate: fallback.initialRevalidate,\n\t\t\tinitialExpiration: fallback.initialExpiration,\n\t\t})\n\t}\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "2. Runtime flow: serve cached shell and resume in background"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "At request time, you can stream a single response that is the concatenation of:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "cached HTML shell stream"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "resumed render stream (generated after invoking "
+								},
+								{
+									"type": "inlineCode",
+									"value": "handler"
+								},
+								{
+									"type": "text",
+									"value": " with postponed state)"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "text",
+			"meta": null,
+			"value": "Client\n  | GET /ppr-route\n  v\nAdapter Router\n  |\n  |-- read cached shell + postponedState ---> Platform Cache\n  |<------------- cache hit -----------------|\n  |\n  |-- create responseStream = concat(shellStream, resumedStream)\n  |\n  |-- start piping shellStream ------------> Client (first bytes)\n  |\n  |-- invoke handler(req, res, { requestMeta: { postponed } })\n  |   -------------------------------------> Entrypoint (handler)\n  |   <------------------------------------- resumed chunks/cache entry\n  |\n  |-- append resumed chunks to resumedStream\n  |\n  '-- client receives one HTTP response:\n      [shell bytes........][resumed bytes........]"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "3. Update cache with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "requestMeta.onCacheEntryV2"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "requestMeta.onCacheEntryV2"
+				},
+				{
+					"type": "text",
+					"value": " is called when a response cache entry is looked up or generated. Use it to persist updated shell/postponed data."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "[!NOTE]"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "requestMeta.onCacheEntry"
+										},
+										{
+											"type": "text",
+											"value": " still works, but is deprecated."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Prefer "
+										},
+										{
+											"type": "inlineCode",
+											"value": "requestMeta.onCacheEntryV2"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "If your adapter uses an internal "
+										},
+										{
+											"type": "inlineCode",
+											"value": "onCacheCallback"
+										},
+										{
+											"type": "text",
+											"value": " abstraction, wire it to "
+										},
+										{
+											"type": "inlineCode",
+											"value": "requestMeta.onCacheEntryV2"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"my-adapter.ts\"",
+			"value": "await handler(req, res, {\n\twaitUntil,\n\trequestMeta: {\n\t\tpostponed: cachedPprEntry?.postponedState,\n\t\tonCacheEntryV2: async (cacheEntry, meta) => {\n\t\t\tif (cacheEntry.value?.kind === 'APP_PAGE') {\n\t\t\t\tconst html = cacheEntry.value.html && typeof cacheEntry.value.html.toUnchunkedString === 'function' ? cacheEntry.value.html.toUnchunkedString() : null\n\n\t\t\t\tawait platformCache.set(meta.url || req.url || '/', {\n\t\t\t\t\tshell: html,\n\t\t\t\t\tpostponedState: cacheEntry.value.postponed,\n\t\t\t\t\theaders: cacheEntry.value.headers,\n\t\t\t\t\tstatus: cacheEntry.value.status,\n\t\t\t\t\tcacheControl: cacheEntry.cacheControl,\n\t\t\t\t})\n\t\t\t}\n\n\t\t\t// Return true only if your adapter already wrote the response itself.\n\t\t\treturn false\n\t\t},\n\t},\n})"
+		},
+		{
+			"type": "code",
+			"lang": "text",
+			"meta": null,
+			"value": "Entrypoint (handler)\n  | onCacheEntryV2(cacheEntry, { url })\n  v\nrequestMeta.onCacheEntryV2 callback\n  |\n  |-- if APP_PAGE ---> persist html + postponedState + headers ---> Platform Cache\n  |\n  '-- return false: continue normal Next.js response flow\n      return true:  adapter already handled response (short-circuit)"
+		}
+	]
+}

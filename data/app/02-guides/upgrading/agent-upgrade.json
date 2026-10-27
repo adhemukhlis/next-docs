@@ -1,0 +1,764 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Upgrade with a coding agent\nnav_title: Upgrade with a coding agent\ndescription: Use a coding agent to upgrade and verify a Next.js app.\nversion: experimental\nrelated:\n links:\n  - app/getting-started/upgrading\n  - app/api-reference/cli/next\n  - app/api-reference/config/next-config-js/agentUpgrade\n  - app/guides/ai-agents"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next upgrade --agent"
+				},
+				{
+					"type": "text",
+					"value": " to have a coding agent upgrade and verify your app. The command determines the target version from the configured policy, prepares the relevant migration guides and Skills, and hands the task to the agent."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The command supports App Router and Pages Router projects. Without "
+				},
+				{
+					"type": "inlineCode",
+					"value": "--agent"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/cli/next#next-upgrade-options",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next upgrade"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " runs the interactive codemod workflow instead."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Start an upgrade"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Run the latest upgrade CLI from your app's directory:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx next@canary upgrade --agent=latest"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "From a workspace root, pass the app directory:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx next@canary upgrade apps/web --agent=latest"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next@canary"
+				},
+				{
+					"type": "text",
+					"value": " runs the latest upgrade tooling, even when the app uses an older Next.js version. The CLI reads the version installed in the app and selects a canary target only when the app already uses a canary version. If the project's package manager sets a minimum release age, the CLI uses the newest canary that policy allows."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Choose a policy"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Policy"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Behavior"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "security"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "For an affected stable version, selects the latest safe release in the earliest eligible major."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "latest"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Moves stable, RC, beta, and preview apps to npm's "
+								},
+								{
+									"type": "inlineCode",
+									"value": "latest"
+								},
+								{
+									"type": "text",
+									"value": " stable release, or a canary app to the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "canary"
+								},
+								{
+									"type": "text",
+									"value": " release."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "experimental-future"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Applies the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "latest"
+								},
+								{
+									"type": "text",
+									"value": " policy, then adopts applicable "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#adopt-future-defaults",
+									"children": [
+										{
+											"type": "text",
+											"value": "Future Defaults"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Omit the policy to use the string value from "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/agentUpgrade",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "experimental.agentUpgrade"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Otherwise, the command uses "
+				},
+				{
+					"type": "inlineCode",
+					"value": "security"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx next@canary upgrade --agent"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "--agent"
+				},
+				{
+					"type": "text",
+					"value": " cannot be combined with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "--revision"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "security"
+				},
+				{
+					"type": "text",
+					"value": " supports stable installations. Canary installations can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "latest"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental-future"
+				},
+				{
+					"type": "text",
+					"value": ". RC, beta, and preview installations can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "latest"
+				},
+				{
+					"type": "text",
+					"value": " to move to a newer stable release. Other prerelease channels are not supported."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Adopt future defaults"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Future Defaults are features Next.js plans to enable by default, such as Cache Components and Partial Prefetching. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental-future"
+				},
+				{
+					"type": "text",
+					"value": " policy is an early version of how upgrades will help apps adopt them, even when the app already uses the latest Next.js version. Moving to a new default then becomes part of the upgrade instead of a separate migration."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For App Router projects on Next.js 16.3 or later, the policy currently prepares the Cache Components guide and adoption Skill:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx next@canary upgrade --agent=experimental-future"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Pages Router projects can use it for version upgrades, but it does not offer Cache Components until the project uses the App Router."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To adopt new features today, use their adoption Skills directly. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/migrating-to-cache-components#use-the-adoption-skill-recommended",
+					"children": [
+						{
+							"type": "text",
+							"value": "Migrating to Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/adopting-partial-prefetching#use-the-adoption-skill-recommended",
+					"children": [
+						{
+							"type": "text",
+							"value": "Adopting Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "What the command does"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Before starting an agent session, the CLI checks the installed version, release metadata, and any security data required by the selected policy. It stops with an explanation when no upgrade is needed or it cannot establish a target."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For a ready upgrade, the CLI copies the relevant migration guides into a temporary directory, prepares the applicable Skills, and creates a task for the selected target. For a major upgrade, the task includes the guide for every major version crossed. It also asks the agent to check for duplicate work, use a separate Git worktree when available, run the relevant checks, and verify the result."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The task also asks the agent to save the selected policy as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.agentUpgrade"
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config"
+				},
+				{
+					"type": "text",
+					"value": " for future upgrade reminders. To disable reminders, set the option to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When you run the command inside a coding agent, the CLI prints the task for the current agent to follow. In an interactive terminal, it can start an installed Codex or Claude Code session, or copy the task for another agent. In a non-interactive terminal, it prints the task."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Choose how to run the agent"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When you start the command from an interactive terminal, it asks which installed agent to use. For a new agent session, you can also choose its model, reasoning effort, whether to use Auto permissions, and whether to use a separate Git worktree. The available choices depend on the selected agent and CLI version."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The terminal shows prompts similar to the following:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "txt",
+			"meta": "filename=\"Terminal\"",
+			"value": "Multiple coding agents detected. Which one would you like to use?\nUse ↑/↓ to choose, then press Enter.\n\n❯ Continue with Codex\n  Continue with Claude Code\n  Copy prompt for another coding agent\n  Cancel\n\nWhich Codex model should run the upgrade?\n❯ Terra\n  Sol\n  Cancel\n\nWhich reasoning effort should the upgrade use?\n  low\n  medium\n❯ high\n  xhigh\n  max\n  ultra\n  Cancel\n\nUse Auto permission mode for Codex?\n❯ Yes\n  No, ask for approval\n  Cancel\n\nOpen the upgrade in a separate Git worktree?\n❯ Yes\n  No"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When you run the command from an existing coding agent, it provides the prepared task to that agent instead. The agent keeps the model, reasoning effort, and permissions already configured for its session."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Configure upgrade reminders"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Upgrade reminders are enabled by default with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "security"
+				},
+				{
+					"type": "text",
+					"value": " policy. Set "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/agentUpgrade",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "experimental.agentUpgrade"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to choose another policy or disable reminders:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\texperimental: {\n\t\tagentUpgrade: 'latest',\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Set the option to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " to disable reminders."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The option does not upgrade the app automatically. In an interactive terminal, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " continues while the reminder is open and buffers its output. "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Upgrade now"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " stops the command before starting the upgrade. "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Skip"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " returns to the running command and replays that output. "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Skip until next version"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " dismisses the reminder for the installed version. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/agentUpgrade#reminder-behavior",
+					"children": [
+						{
+							"type": "text",
+							"value": "Reminder behavior"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for details."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When a coding agent encounters a reminder, it reports the available upgrade and can continue the original task after retrying the command."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "During "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": ", Next.js DevTools can also show a "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Vulnerability Insight"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when the installed version is affected by a known security vulnerability. The insight provides a copyable prompt for starting a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "security"
+				},
+				{
+					"type": "text",
+					"value": " upgrade with a coding agent."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The CLI needs access to release metadata and, for stable targets, security advisory data. If it cannot establish a target, it reports the reason without starting an agent session."
+				}
+			]
+		}
+	]
+}

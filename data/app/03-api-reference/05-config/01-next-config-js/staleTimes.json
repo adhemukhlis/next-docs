@@ -1,0 +1,496 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: staleTimes\ndescription: Learn how to override the invalidation time of the client cache.\nversion: experimental"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "staleTimes"
+				},
+				{
+					"type": "text",
+					"value": " is an experimental feature that enables caching of page segments in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#client-cache",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client Cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can enable this experimental feature and provide custom revalidation times by setting the experimental "
+				},
+				{
+					"type": "inlineCode",
+					"value": "staleTimes"
+				},
+				{
+					"type": "text",
+					"value": " flag:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\texperimental: {\n\t\tstaleTimes: {\n\t\t\tdynamic: 30,\n\t\t\tstatic: 180,\n\t\t},\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "static"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "dynamic"
+				},
+				{
+					"type": "text",
+					"value": " properties correspond with the time period (in seconds) based on different types of "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/link#prefetch",
+					"children": [
+						{
+							"type": "text",
+							"value": "link prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "inlineCode",
+									"value": "dynamic"
+								},
+								{
+									"type": "text",
+									"value": " property is used when the page is neither statically generated nor fully prefetched (e.g. with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "prefetch={true}"
+								},
+								{
+									"type": "text",
+									"value": ")."
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Default: 0 seconds (not cached)"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "inlineCode",
+									"value": "static"
+								},
+								{
+									"type": "text",
+									"value": " property is used for statically generated pages, or when the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "prefetch"
+								},
+								{
+									"type": "text",
+									"value": " prop on "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Link"
+								},
+								{
+									"type": "text",
+									"value": " is set to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": ", or when calling "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/use-router",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "router.prefetch"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Default: 5 minutes"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/loading",
+											"children": [
+												{
+													"type": "text",
+													"value": "Loading boundaries"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " are considered reusable for the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "static"
+										},
+										{
+											"type": "text",
+											"value": " period defined in this configuration."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "This doesn't affect "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/getting-started/linking-and-navigating#client-side-transitions",
+											"children": [
+												{
+													"type": "text",
+													"value": "partial rendering"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ", "
+										},
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "text",
+													"value": "meaning shared layouts won't automatically be refetched on every navigation, only the page segment that changes."
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "This doesn't change "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/glossary#client-cache",
+											"children": [
+												{
+													"type": "text",
+													"value": "back/forward caching"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " behavior to prevent layout shift and to prevent losing the browser scroll position."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "inlineCode",
+									"value": "dynamic"
+								},
+								{
+									"type": "text",
+									"value": " "
+								},
+								{
+									"type": "inlineCode",
+									"value": "staleTimes"
+								},
+								{
+									"type": "text",
+									"value": " default changed from 30s to 0s."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v14.2.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Experimental "
+								},
+								{
+									"type": "inlineCode",
+									"value": "staleTimes"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

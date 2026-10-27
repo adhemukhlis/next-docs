@@ -1,0 +1,3228 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to migrate from Vite to Next.js\nnav_title: Vite\ndescription: Learn how to migrate your existing React application from Vite to Next.js."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This guide will help you migrate an existing Vite application to Next.js."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Why Switch?"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There are several reasons why you might want to switch from Vite to Next.js:"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Slow initial page loading time"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you have built your application with the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react",
+					"children": [
+						{
+							"type": "text",
+							"value": "default Vite plugin for React"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", your application is a purely client-side application. Client-side only applications, also known as single-page applications (SPAs), often experience slow initial page loading time. This happens due to a couple of reasons:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The browser needs to wait for the React code and your entire application bundle to download and run before your code is able to send requests to load some data."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Your application code grows with every new feature and extra dependency you add."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "No automatic code splitting"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The previous issue of slow loading times can be somewhat managed with code splitting. However, if you try to do code splitting manually, you'll often make performance worse. It's easy to inadvertently introduce network waterfalls when code-splitting manually. Next.js provides automatic code splitting built into its router."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Network waterfalls"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A common cause of poor performance occurs when applications make sequential client-server requests to fetch data. One common pattern for data fetching in an SPA is to initially render a placeholder, and then fetch data after the component has mounted. Unfortunately, this means that a child component that fetches data can't start fetching until the parent component has finished loading its own data."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "While fetching data on the client is supported with Next.js, it also gives you the option to shift data fetching to the server, which can eliminate client-server waterfalls."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Fast and intentional loading states"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With built-in support for "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/linking-and-navigating#streaming",
+					"children": [
+						{
+							"type": "text",
+							"value": "streaming through React Suspense"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", you can be more intentional about which parts of your UI you want to load first and in what order without introducing network waterfalls."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This enables you to build pages that are faster to load and eliminate "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://vercel.com/blog/how-core-web-vitals-affect-seo",
+					"children": [
+						{
+							"type": "text",
+							"value": "layout shifts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Choose the data fetching strategy"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Depending on your needs, Next.js allows you to choose your data fetching strategy on a page and component basis. You can decide to fetch at build time, at request time on the server, or on the client. For example, you can fetch data from your CMS and render your blog posts at build time, which can then be efficiently cached on a CDN."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Proxy"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/proxy",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js Proxy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " allows you to run code on the server before a request is completed. This is especially useful to avoid having a flash of unauthenticated content when the user visits an authenticated-only page by redirecting the user to a login page. The proxy is also useful for experimentation and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/internationalization",
+					"children": [
+						{
+							"type": "text",
+							"value": "internationalization"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Built-in Optimizations"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image",
+					"children": [
+						{
+							"type": "text",
+							"value": "Images"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/font",
+					"children": [
+						{
+							"type": "text",
+							"value": "fonts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/scripts",
+					"children": [
+						{
+							"type": "text",
+							"value": "third-party scripts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " often have significant impact on an application's performance. Next.js comes with built-in components that automatically optimize those for you."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Migration Steps"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Our goal with this migration is to get a working Next.js application as quickly as possible, so that you can then adopt Next.js features incrementally. To begin with, we'll keep it as a purely client-side application (SPA) without migrating your existing router. This helps minimize the chances of encountering issues during the migration process and reduces merge conflicts."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 1: Install the Next.js Dependency"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The first thing you need to do is to install "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next"
+				},
+				{
+					"type": "text",
+					"value": " as a dependency:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add next@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install next@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add next@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add next@latest"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 2: Create the Next.js Configuration File"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Create a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.mjs"
+				},
+				{
+					"type": "text",
+					"value": " at the root of your project. This file will hold your "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js configuration options"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.mjs\"",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\toutput: 'export', // Outputs a Single-Page Application (SPA).\n\tdistDir: './dist', // Changes the build output directory to `./dist/`.\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " You can use either "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".js"
+						},
+						{
+							"type": "text",
+							"value": " or "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".mjs"
+						},
+						{
+							"type": "text",
+							"value": " for your Next.js configuration file."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 3: Update TypeScript Configuration"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you're using TypeScript, you need to update your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tsconfig.json"
+				},
+				{
+					"type": "text",
+					"value": " file with the following changes to make it compatible with Next.js. If you're not using TypeScript, you can skip this step."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Remove the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://www.typescriptlang.org/tsconfig#references",
+									"children": [
+										{
+											"type": "text",
+											"value": "project reference"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "tsconfig.node.json"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Add "
+								},
+								{
+									"type": "inlineCode",
+									"value": "./dist/types/**/*.ts"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "./next-env.d.ts"
+								},
+								{
+									"type": "text",
+									"value": " to the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://www.typescriptlang.org/tsconfig#include",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "include"
+										},
+										{
+											"type": "text",
+											"value": " array"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Add "
+								},
+								{
+									"type": "inlineCode",
+									"value": "./node_modules"
+								},
+								{
+									"type": "text",
+									"value": " to the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://www.typescriptlang.org/tsconfig#exclude",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "exclude"
+										},
+										{
+											"type": "text",
+											"value": " array"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Add "
+								},
+								{
+									"type": "inlineCode",
+									"value": "{ \"name\": \"next\" }"
+								},
+								{
+									"type": "text",
+									"value": " to the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://www.typescriptlang.org/tsconfig#plugins",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "plugins"
+										},
+										{
+											"type": "text",
+											"value": " array in "
+										},
+										{
+											"type": "inlineCode",
+											"value": "compilerOptions"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"plugins\": [{ \"name\": \"next\" }]"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Set "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://www.typescriptlang.org/tsconfig#esModuleInterop",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "esModuleInterop"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"esModuleInterop\": true"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Set "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://www.typescriptlang.org/tsconfig#jsx",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "jsx"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "react-jsx"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"jsx\": \"react-jsx\""
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Set "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://www.typescriptlang.org/tsconfig#allowJs",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "allowJs"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"allowJs\": true"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Set "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://www.typescriptlang.org/tsconfig#forceConsistentCasingInFileNames",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "forceConsistentCasingInFileNames"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"forceConsistentCasingInFileNames\": true"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Set "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://www.typescriptlang.org/tsconfig#incremental",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "incremental"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"incremental\": true"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Here's an example of a working "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tsconfig.json"
+				},
+				{
+					"type": "text",
+					"value": " with those changes:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"tsconfig.json\"",
+			"value": "{\n\t\"compilerOptions\": {\n\t\t\"target\": \"ES2020\",\n\t\t\"useDefineForClassFields\": true,\n\t\t\"lib\": [\"ES2020\", \"DOM\", \"DOM.Iterable\"],\n\t\t\"module\": \"ESNext\",\n\t\t\"esModuleInterop\": true,\n\t\t\"skipLibCheck\": true,\n\t\t\"moduleResolution\": \"bundler\",\n\t\t\"allowImportingTsExtensions\": true,\n\t\t\"resolveJsonModule\": true,\n\t\t\"isolatedModules\": true,\n\t\t\"noEmit\": true,\n\t\t\"jsx\": \"react-jsx\",\n\t\t\"strict\": true,\n\t\t\"noUnusedLocals\": true,\n\t\t\"noUnusedParameters\": true,\n\t\t\"noFallthroughCasesInSwitch\": true,\n\t\t\"allowJs\": true,\n\t\t\"forceConsistentCasingInFileNames\": true,\n\t\t\"incremental\": true,\n\t\t\"plugins\": [{ \"name\": \"next\" }]\n\t},\n\t\"include\": [\"./src\", \"./dist/types/**/*.ts\", \"./next-env.d.ts\"],\n\t\"exclude\": [\"./node_modules\"]\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can find more information about configuring TypeScript on the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/typescript#ide-plugin",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js docs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 4: Create the Root Layout"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A Next.js "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app",
+					"children": [
+						{
+							"type": "text",
+							"value": "App Router"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " application must include a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout#root-layout",
+					"children": [
+						{
+							"type": "text",
+							"value": "root layout"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " file, which is a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "React Server Component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " that will wrap all pages in your application. This file is defined at the top level of the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The closest equivalent to the root layout file in a Vite application is the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://vitejs.dev/guide/#index-html-and-project-root",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "index.html"
+						},
+						{
+							"type": "text",
+							"value": " file"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", which contains your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<html>"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<head>"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<body>"
+				},
+				{
+					"type": "text",
+					"value": " tags."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In this step, you'll convert your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "index.html"
+				},
+				{
+					"type": "text",
+					"value": " file into a root layout file:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Create a new "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": " directory in your "
+								},
+								{
+									"type": "inlineCode",
+									"value": "src"
+								},
+								{
+									"type": "text",
+									"value": " folder."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Create a new "
+								},
+								{
+									"type": "inlineCode",
+									"value": "layout.tsx"
+								},
+								{
+									"type": "text",
+									"value": " file inside that "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": " directory:"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "export default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn '...'\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "export default function RootLayout({ children }) {\n\treturn '...'\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".js"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".jsx"
+						},
+						{
+							"type": "text",
+							"value": ", or "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".tsx"
+						},
+						{
+							"type": "text",
+							"value": " extensions can be used for Layout files."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 3,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Copy the content of your "
+								},
+								{
+									"type": "inlineCode",
+									"value": "index.html"
+								},
+								{
+									"type": "text",
+									"value": " file into the previously created "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<RootLayout>"
+								},
+								{
+									"type": "text",
+									"value": " component while replacing the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "body.div#root"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "body.script"
+								},
+								{
+									"type": "text",
+									"value": " tags with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<div id=\"root\">{children}</div>"
+								},
+								{
+									"type": "text",
+									"value": ":"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "export default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<head>\n\t\t\t\t<meta charSet=\"UTF-8\" />\n\t\t\t\t<link\n\t\t\t\t\trel=\"icon\"\n\t\t\t\t\ttype=\"image/svg+xml\"\n\t\t\t\t\thref=\"/icon.svg\"\n\t\t\t\t/>\n\t\t\t\t<meta\n\t\t\t\t\tname=\"viewport\"\n\t\t\t\t\tcontent=\"width=device-width, initial-scale=1.0\"\n\t\t\t\t/>\n\t\t\t\t<title>My App</title>\n\t\t\t\t<meta\n\t\t\t\t\tname=\"description\"\n\t\t\t\t\tcontent=\"My App is a...\"\n\t\t\t\t/>\n\t\t\t</head>\n\t\t\t<body>\n\t\t\t\t<div id=\"root\">{children}</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "export default function RootLayout({ children }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<head>\n\t\t\t\t<meta charSet=\"UTF-8\" />\n\t\t\t\t<link\n\t\t\t\t\trel=\"icon\"\n\t\t\t\t\ttype=\"image/svg+xml\"\n\t\t\t\t\thref=\"/icon.svg\"\n\t\t\t\t/>\n\t\t\t\t<meta\n\t\t\t\t\tname=\"viewport\"\n\t\t\t\t\tcontent=\"width=device-width, initial-scale=1.0\"\n\t\t\t\t/>\n\t\t\t\t<title>My App</title>\n\t\t\t\t<meta\n\t\t\t\t\tname=\"description\"\n\t\t\t\t\tcontent=\"My App is a...\"\n\t\t\t\t/>\n\t\t\t</head>\n\t\t\t<body>\n\t\t\t\t<div id=\"root\">{children}</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 4,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Next.js already includes by default the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/docs/Web/HTML/Element/meta#charset",
+									"children": [
+										{
+											"type": "text",
+											"value": "meta charset"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/docs/Web/HTML/Viewport_meta_tag",
+									"children": [
+										{
+											"type": "text",
+											"value": "meta viewport"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " tags, so you can safely remove those from your "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<head>"
+								},
+								{
+									"type": "text",
+									"value": ":"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "export default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<head>\n\t\t\t\t<link\n\t\t\t\t\trel=\"icon\"\n\t\t\t\t\ttype=\"image/svg+xml\"\n\t\t\t\t\thref=\"/icon.svg\"\n\t\t\t\t/>\n\t\t\t\t<title>My App</title>\n\t\t\t\t<meta\n\t\t\t\t\tname=\"description\"\n\t\t\t\t\tcontent=\"My App is a...\"\n\t\t\t\t/>\n\t\t\t</head>\n\t\t\t<body>\n\t\t\t\t<div id=\"root\">{children}</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "export default function RootLayout({ children }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<head>\n\t\t\t\t<link\n\t\t\t\t\trel=\"icon\"\n\t\t\t\t\ttype=\"image/svg+xml\"\n\t\t\t\t\thref=\"/icon.svg\"\n\t\t\t\t/>\n\t\t\t\t<title>My App</title>\n\t\t\t\t<meta\n\t\t\t\t\tname=\"description\"\n\t\t\t\t\tcontent=\"My App is a...\"\n\t\t\t\t/>\n\t\t\t</head>\n\t\t\t<body>\n\t\t\t\t<div id=\"root\">{children}</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 5,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Any "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/metadata-and-og-images#file-based-metadata",
+									"children": [
+										{
+											"type": "text",
+											"value": "metadata files"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " such as "
+								},
+								{
+									"type": "inlineCode",
+									"value": "favicon.ico"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "icon.png"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "robots.txt"
+								},
+								{
+									"type": "text",
+									"value": " are automatically added to the application "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<head>"
+								},
+								{
+									"type": "text",
+									"value": " tag as long as you have them placed into the top level of the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": " directory. After moving "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/metadata-and-og-images#file-based-metadata",
+									"children": [
+										{
+											"type": "text",
+											"value": "all supported files"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " into the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": " directory you can safely delete their "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<link>"
+								},
+								{
+									"type": "text",
+									"value": " tags:"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "export default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<head>\n\t\t\t\t<title>My App</title>\n\t\t\t\t<meta\n\t\t\t\t\tname=\"description\"\n\t\t\t\t\tcontent=\"My App is a...\"\n\t\t\t\t/>\n\t\t\t</head>\n\t\t\t<body>\n\t\t\t\t<div id=\"root\">{children}</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "export default function RootLayout({ children }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<head>\n\t\t\t\t<title>My App</title>\n\t\t\t\t<meta\n\t\t\t\t\tname=\"description\"\n\t\t\t\t\tcontent=\"My App is a...\"\n\t\t\t\t/>\n\t\t\t</head>\n\t\t\t<body>\n\t\t\t\t<div id=\"root\">{children}</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 6,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Finally, Next.js can manage your last "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<head>"
+								},
+								{
+									"type": "text",
+									"value": " tags with the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/metadata-and-og-images",
+									"children": [
+										{
+											"type": "text",
+											"value": "Metadata API"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". Move your final metadata info into an exported "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/generate-metadata#metadata-object",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "metadata"
+										},
+										{
+											"type": "text",
+											"value": " object"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ":"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import type { Metadata } from 'next'\n\nexport const metadata: Metadata = {\n\ttitle: 'My App',\n\tdescription: 'My App is a...',\n}\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<body>\n\t\t\t\t<div id=\"root\">{children}</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "export const metadata = {\n\ttitle: 'My App',\n\tdescription: 'My App is a...',\n}\n\nexport default function RootLayout({ children }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<body>\n\t\t\t\t<div id=\"root\">{children}</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With the above changes, you shifted from declaring everything in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "index.html"
+				},
+				{
+					"type": "text",
+					"value": " to using Next.js' convention-based approach built into the framework ("
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/metadata-and-og-images",
+					"children": [
+						{
+							"type": "text",
+							"value": "Metadata API"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "). This approach enables you to more easily improve your SEO and web shareability of your pages."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 5: Create the Entrypoint Page"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "On Next.js you declare an entrypoint for your application by creating a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.tsx"
+				},
+				{
+					"type": "text",
+					"value": " file. The closest equivalent of this file on Vite is your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "main.tsx"
+				},
+				{
+					"type": "text",
+					"value": " file. In this step, you’ll set up the entrypoint of your application."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Create a "
+										},
+										{
+											"type": "inlineCode",
+											"value": "[[...slug]]"
+										},
+										{
+											"type": "text",
+											"value": " directory in your "
+										},
+										{
+											"type": "inlineCode",
+											"value": "app"
+										},
+										{
+											"type": "text",
+											"value": " directory."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since in this guide we're aiming first to set up our Next.js as an SPA (Single Page Application), you need your page entrypoint to catch all possible routes of your application. For that, create a new "
+				},
+				{
+					"type": "inlineCode",
+					"value": "[[...slug]]"
+				},
+				{
+					"type": "text",
+					"value": " directory in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This directory is what is called an "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/dynamic-routes#optional-catch-all-segments",
+					"children": [
+						{
+							"type": "text",
+							"value": "optional catch-all route segment"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Next.js uses a file-system based router where folders are used to define routes. This special directory will make sure that all routes of your application will be directed to its containing "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.tsx"
+				},
+				{
+					"type": "text",
+					"value": " file."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 2,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Create a new "
+										},
+										{
+											"type": "inlineCode",
+											"value": "page.tsx"
+										},
+										{
+											"type": "text",
+											"value": " file inside the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "app/[[...slug]]"
+										},
+										{
+											"type": "text",
+											"value": " directory with the following content:"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/[[...slug]]/page.tsx\" switcher",
+			"value": "import '../../index.css'\n\nexport function generateStaticParams() {\n\treturn [{ slug: [''] }]\n}\n\nexport default function Page() {\n\treturn '...' // We'll update this\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/[[...slug]]/page.js\" switcher",
+			"value": "import '../../index.css'\n\nexport function generateStaticParams() {\n\treturn [{ slug: [''] }]\n}\n\nexport default function Page() {\n\treturn '...' // We'll update this\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".js"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".jsx"
+						},
+						{
+							"type": "text",
+							"value": ", or "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".tsx"
+						},
+						{
+							"type": "text",
+							"value": " extensions can be used for Page files."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This file is a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". When you run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ", the file is prerendered into a static asset. It does "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "not"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " require any dynamic code."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This file imports our global CSS and tells "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-static-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " we are only going to generate one route, the index route at "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Now, let's move the rest of our Vite application which will run client-only."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/[[...slug]]/client.tsx\" switcher",
+			"value": "'use client'\n\nimport React from 'react'\nimport dynamic from 'next/dynamic'\n\nconst App = dynamic(() => import('../../App'), { ssr: false })\n\nexport function ClientOnly() {\n\treturn <App />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/[[...slug]]/client.js\" switcher",
+			"value": "'use client'\n\nimport React from 'react'\nimport dynamic from 'next/dynamic'\n\nconst App = dynamic(() => import('../../App'), { ssr: false })\n\nexport function ClientOnly() {\n\treturn <App />\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This file is a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client Component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", defined by the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use client'"
+				},
+				{
+					"type": "text",
+					"value": " directive. Client Components are still "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components#how-do-server-and-client-components-work-in-nextjs",
+					"children": [
+						{
+							"type": "text",
+							"value": "prerendered to HTML"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " on the server before being sent to the client."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since we want a client-only application to start, we can configure Next.js to disable prerendering from the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "App"
+				},
+				{
+					"type": "text",
+					"value": " component down."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "const App = dynamic(() => import('../../App'), { ssr: false })"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Now, update your entrypoint page to use the new component:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/[[...slug]]/page.tsx\" switcher",
+			"value": "import '../../index.css'\nimport { ClientOnly } from './client'\n\nexport function generateStaticParams() {\n\treturn [{ slug: [''] }]\n}\n\nexport default function Page() {\n\treturn <ClientOnly />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/[[...slug]]/page.js\" switcher",
+			"value": "import '../../index.css'\nimport { ClientOnly } from './client'\n\nexport function generateStaticParams() {\n\treturn [{ slug: [''] }]\n}\n\nexport default function Page() {\n\treturn <ClientOnly />\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 6: Update Static Image Imports"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js handles static image imports slightly different from Vite. With Vite, importing an image file will return its public URL as a string:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"App.tsx\"",
+			"value": "import image from './img.png' // `image` will be '/assets/img.2d8efhg.png' in production\n\nexport default function App() {\n\treturn <img src={image} />\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With Next.js, static image imports return an object. The object can then be used directly with the Next.js "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Image>"
+						},
+						{
+							"type": "text",
+							"value": " component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", or you can use the object's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " property with your existing "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<img>"
+				},
+				{
+					"type": "text",
+					"value": " tag."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Image>"
+				},
+				{
+					"type": "text",
+					"value": " component has the added benefits of "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image",
+					"children": [
+						{
+							"type": "text",
+							"value": "automatic image optimization"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Image>"
+				},
+				{
+					"type": "text",
+					"value": " component automatically sets the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "width"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "height"
+				},
+				{
+					"type": "text",
+					"value": " attributes of the resulting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<img>"
+				},
+				{
+					"type": "text",
+					"value": " based on the image's dimensions. This prevents layout shifts when the image loads. However, this can cause issues if your app contains images with only one of their dimensions being styled without the other styled to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "auto"
+				},
+				{
+					"type": "text",
+					"value": ". When not styled to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "auto"
+				},
+				{
+					"type": "text",
+					"value": ", the dimension will default to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<img>"
+				},
+				{
+					"type": "text",
+					"value": " dimension attribute's value, which can cause the image to appear distorted."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Keeping the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<img>"
+				},
+				{
+					"type": "text",
+					"value": " tag will reduce the amount of changes in your application and prevent the above issues. You can then optionally later migrate to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Image>"
+				},
+				{
+					"type": "text",
+					"value": " component to take advantage of optimizing images by "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image#loader",
+					"children": [
+						{
+							"type": "text",
+							"value": "configuring a loader"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", or moving to the default Next.js server which has automatic image optimization."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Convert absolute import paths for images imported from "
+										},
+										{
+											"type": "inlineCode",
+											"value": "/public"
+										},
+										{
+											"type": "text",
+											"value": " into relative imports:"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "// Before\nimport logo from '/logo.png'\n\n// After\nimport logo from '../public/logo.png'"
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 2,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Pass the image "
+										},
+										{
+											"type": "inlineCode",
+											"value": "src"
+										},
+										{
+											"type": "text",
+											"value": " property instead of the whole image object to your "
+										},
+										{
+											"type": "inlineCode",
+											"value": "<img>"
+										},
+										{
+											"type": "text",
+											"value": " tag:"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "// Before\n<img src={logo} />\n\n// After\n<img src={logo.src} />"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Alternatively, you can reference the public URL for the image asset based on the filename. For example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "public/logo.png"
+				},
+				{
+					"type": "text",
+					"value": " will serve the image at "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/logo.png"
+				},
+				{
+					"type": "text",
+					"value": " for your application, which would be the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " value."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Warning:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " If you're using TypeScript, you might encounter type errors when accessing the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "src"
+						},
+						{
+							"type": "text",
+							"value": " property. You can safely ignore those for now. They will be fixed by the end of this guide."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 7: Migrate the Environment Variables"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js has support for "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".env"
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/environment-variables",
+					"children": [
+						{
+							"type": "text",
+							"value": "environment variables"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " similar to Vite. The main difference is the prefix used to expose environment variables on the client-side."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Change all environment variables with the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "VITE_"
+								},
+								{
+									"type": "text",
+									"value": " prefix to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "NEXT_PUBLIC_"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack supports Vite's built-in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "import.meta.env.MODE"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "DEV"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "PROD"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "BASE_URL"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "SSR"
+				},
+				{
+					"type": "text",
+					"value": " properties with no changes needed. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "BASE_URL"
+				},
+				{
+					"type": "text",
+					"value": " reflects the Next.js "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/basePath",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "basePath"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " configuration and includes a trailing slash, matching Vite's format."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "import.meta.glob"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is supported by Turbopack (the default Next.js bundler) with no changes needed."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack has no built-in handling for Vite's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "?raw"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "?url"
+				},
+				{
+					"type": "text",
+					"value": " queries, so the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "as"
+				},
+				{
+					"type": "text",
+					"value": " option (deprecated in Vite 5) and its "
+				},
+				{
+					"type": "inlineCode",
+					"value": "query"
+				},
+				{
+					"type": "text",
+					"value": " replacement need a matching rule in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Before (Vite)\nconst modules = import.meta.glob('./dir/*.txt', { as: 'raw' })\n\n// After (Next.js / Turbopack)\nconst modules = import.meta.glob('./dir/*.txt', { query: '?raw' })"
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tturbopack: {\n\t\trules: {\n\t\t\t// Any file imported with `?raw` is loaded as a string\n\t\t\t'*': { condition: { query: '?raw' }, type: 'text' },\n\t\t},\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/turbopack#importmetaglob",
+					"children": [
+						{
+							"type": "text",
+							"value": "import.meta.glob docs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the full API."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If your Vite application configured a custom base URL, set the equivalent "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/basePath",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "basePath"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.mjs"
+				},
+				{
+					"type": "text",
+					"value": " file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.mjs\"",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\toutput: 'export', // Outputs a Single-Page Application (SPA).\n\tdistDir: './dist', // Changes the build output directory to `./dist/`.\n\tbasePath: '/some-base-path',\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 8: Update Scripts in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "package.json"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You should now be able to run your application to test if you successfully migrated to Next.js. But before that, you need to update your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "scripts"
+				},
+				{
+					"type": "text",
+					"value": " in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "package.json"
+				},
+				{
+					"type": "text",
+					"value": " with Next.js related commands, and add "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next-env.d.ts"
+				},
+				{
+					"type": "text",
+					"value": " to your "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".gitignore"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"package.json\"",
+			"value": "{\n\t\"scripts\": {\n\t\t\"dev\": \"next dev\",\n\t\t\"build\": \"next build\",\n\t\t\"start\": \"next start\"\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "txt",
+			"meta": "filename=\".gitignore\"",
+			"value": "# ...\n.next\nnext-env.d.ts\ndist"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Now run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "npm run dev"
+				},
+				{
+					"type": "text",
+					"value": ", and open "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "http://localhost:3000",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "http://localhost:3000"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". You should see your application now running on Next.js."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Example:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Check out "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://github.com/inngest/vite-to-nextjs/pull/1",
+							"children": [
+								{
+									"type": "text",
+									"value": "this pull request"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for a working example of a Vite application migrated to Next.js."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 9: Clean Up"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can now clean up your codebase from Vite related artifacts:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Delete "
+								},
+								{
+									"type": "inlineCode",
+									"value": "main.tsx"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Delete "
+								},
+								{
+									"type": "inlineCode",
+									"value": "index.html"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Delete "
+								},
+								{
+									"type": "inlineCode",
+									"value": "vite-env.d.ts"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Delete "
+								},
+								{
+									"type": "inlineCode",
+									"value": "tsconfig.node.json"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Delete "
+								},
+								{
+									"type": "inlineCode",
+									"value": "vite.config.ts"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Uninstall Vite dependencies"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Next Steps"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If everything went according to plan, you now have a functioning Next.js application running as a single-page application. However, you aren't yet taking advantage of most of Next.js' benefits, but you can now start making incremental changes to reap all the benefits. Here's what you might want to do next:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Migrate from React Router to the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app",
+									"children": [
+										{
+											"type": "text",
+											"value": "Next.js App Router"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to get:"
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Automatic code splitting"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "link",
+													"title": null,
+													"url": "/docs/app/api-reference/file-conventions/loading",
+													"children": [
+														{
+															"type": "text",
+															"value": "Streaming Server-Rendering"
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "link",
+													"title": null,
+													"url": "/docs/app/getting-started/server-and-client-components",
+													"children": [
+														{
+															"type": "text",
+															"value": "React Server Components"
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/components/image",
+									"children": [
+										{
+											"type": "text",
+											"value": "Optimize images with the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "<Image>"
+										},
+										{
+											"type": "text",
+											"value": " component"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/components/font",
+									"children": [
+										{
+											"type": "text",
+											"value": "Optimize fonts with "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next/font"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/scripts",
+									"children": [
+										{
+											"type": "text",
+											"value": "Optimize third-party scripts with the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "<Script>"
+										},
+										{
+											"type": "text",
+											"value": " component"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/eslint",
+									"children": [
+										{
+											"type": "text",
+											"value": "Update your ESLint configuration to support Next.js rules"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

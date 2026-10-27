@@ -1,0 +1,2001 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: generateStaticParams\ndescription: API reference for the generateStaticParams function."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " function can be used in combination with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/dynamic-routes",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamic route segments"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#prerendering",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "statically generate"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " routes at build time instead of on-demand at request time."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " can be used with:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/page",
+									"children": [
+										{
+											"type": "text",
+											"value": "Pages"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "page.tsx"
+								},
+								{
+									"type": "text",
+									"value": "/"
+								},
+								{
+									"type": "inlineCode",
+									"value": "page.js"
+								},
+								{
+									"type": "text",
+									"value": ")"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/layout",
+									"children": [
+										{
+											"type": "text",
+											"value": "Layouts"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "layout.tsx"
+								},
+								{
+									"type": "text",
+									"value": "/"
+								},
+								{
+									"type": "inlineCode",
+									"value": "layout.js"
+								},
+								{
+									"type": "text",
+									"value": ")"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/route",
+									"children": [
+										{
+											"type": "text",
+											"value": "Route Handlers"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "route.ts"
+								},
+								{
+									"type": "text",
+									"value": "/"
+								},
+								{
+									"type": "inlineCode",
+									"value": "route.js"
+								},
+								{
+									"type": "text",
+									"value": ")"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" switcher",
+			"value": "// Return a list of `params` to populate the [slug] dynamic segment\nexport async function generateStaticParams() {\n\tconst posts = await fetch('https://.../posts').then((res) => res.json())\n\n\treturn posts.map((post) => ({\n\t\tslug: post.slug,\n\t}))\n}\n\n// Multiple versions of this page will be statically generated\n// using the `params` returned by `generateStaticParams`\nexport default async function Page({ params }: { params: Promise<{ slug: string }> }) {\n\tconst { slug } = await params\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\" switcher",
+			"value": "// Return a list of `params` to populate the [slug] dynamic segment\nexport async function generateStaticParams() {\n\tconst posts = await fetch('https://.../posts').then((res) => res.json())\n\n\treturn posts.map((post) => ({\n\t\tslug: post.slug,\n\t}))\n}\n\n// Multiple versions of this page will be statically generated\n// using the `params` returned by `generateStaticParams`\nexport default async function Page({ params }) {\n\tconst { slug } = await params\n\t// ...\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "You can use the "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/route-segment-config/dynamicParams",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "dynamicParams"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " segment config option to control what happens when a dynamic segment is visited that was not generated with "
+										},
+										{
+											"type": "inlineCode",
+											"value": "generateStaticParams"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "A dynamic route that uses "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/route-segment-config/ensureStatic#navigation",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "ensureStatic = 'navigation'"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " must return at least one params object, and every object must include all dynamic parameters for the route. See the "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/messages/generate-static-params#with-ensurestatic",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "generateStaticParams"
+												},
+												{
+													"type": "text",
+													"value": " error guide"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "You must return "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "#all-paths-at-runtime",
+											"children": [
+												{
+													"type": "text",
+													"value": "an empty array from "
+												},
+												{
+													"type": "inlineCode",
+													"value": "generateStaticParams"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " or utilize "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/guides/caching-without-cache-components#dynamic",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "export const dynamic = 'force-static'"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " in order to revalidate (ISR) "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "#all-paths-at-runtime",
+											"children": [
+												{
+													"type": "text",
+													"value": "paths at runtime"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "During "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next dev"
+										},
+										{
+											"type": "text",
+											"value": ", "
+										},
+										{
+											"type": "inlineCode",
+											"value": "generateStaticParams"
+										},
+										{
+											"type": "text",
+											"value": " will be called when you navigate to a route."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "During "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next build"
+										},
+										{
+											"type": "text",
+											"value": ", "
+										},
+										{
+											"type": "inlineCode",
+											"value": "generateStaticParams"
+										},
+										{
+											"type": "text",
+											"value": " runs before the corresponding Layouts or Pages are generated."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "During revalidation (ISR), "
+										},
+										{
+											"type": "inlineCode",
+											"value": "generateStaticParams"
+										},
+										{
+											"type": "text",
+											"value": " will not be called again."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "generateStaticParams"
+										},
+										{
+											"type": "text",
+											"value": " replaces the "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/pages/api-reference/functions/get-static-paths",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "getStaticPaths"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " function in the Pages Router."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parameters"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "options.params"
+				},
+				{
+					"type": "text",
+					"value": " (optional)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If multiple dynamic segments in a route use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": ", the child "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " function is executed once for each set of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " the parent generates."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " object contains the populated "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " from the parent "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": ", which can be used to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#multiple-dynamic-segments-in-a-route",
+					"children": [
+						{
+							"type": "text",
+							"value": "generate the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "params"
+						},
+						{
+							"type": "text",
+							"value": " in a child segment"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " should return an array of objects where each object represents the populated dynamic segments of a single route."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Each property in the object is a dynamic segment to be filled in for the route."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The properties name is the segment's name, and the properties value is what that segment should be filled in with."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Example Route"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "generateStaticParams"
+								},
+								{
+									"type": "text",
+									"value": " Return Type"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/product/[id]"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "{ id: string }[]"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/products/[category]/[product]"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "{ category: string, product: string }[]"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/products/[...slug]"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "{ slug: string[] }[]"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Single Dynamic Segment"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/product/[id]/page.tsx\" switcher",
+			"value": "export function generateStaticParams() {\n\treturn [{ id: '1' }, { id: '2' }, { id: '3' }]\n}\n\n// Three versions of this page will be statically generated\n// using the `params` returned by `generateStaticParams`\n// - /product/1\n// - /product/2\n// - /product/3\nexport default async function Page({ params }: { params: Promise<{ id: string }> }) {\n\tconst { id } = await params\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/product/[id]/page.js\" switcher",
+			"value": "export function generateStaticParams() {\n\treturn [{ id: '1' }, { id: '2' }, { id: '3' }]\n}\n\n// Three versions of this page will be statically generated\n// using the `params` returned by `generateStaticParams`\n// - /product/1\n// - /product/2\n// - /product/3\nexport default async function Page({ params }) {\n\tconst { id } = await params\n\t// ...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Multiple Dynamic Segments"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/[category]/[product]/page.tsx\" switcher",
+			"value": "export function generateStaticParams() {\n\treturn [\n\t\t{ category: 'a', product: '1' },\n\t\t{ category: 'b', product: '2' },\n\t\t{ category: 'c', product: '3' },\n\t]\n}\n\n// Three versions of this page will be statically generated\n// using the `params` returned by `generateStaticParams`\n// - /products/a/1\n// - /products/b/2\n// - /products/c/3\nexport default async function Page({ params }: { params: Promise<{ category: string; product: string }> }) {\n\tconst { category, product } = await params\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/products/[category]/[product]/page.js\" switcher",
+			"value": "export function generateStaticParams() {\n\treturn [\n\t\t{ category: 'a', product: '1' },\n\t\t{ category: 'b', product: '2' },\n\t\t{ category: 'c', product: '3' },\n\t]\n}\n\n// Three versions of this page will be statically generated\n// using the `params` returned by `generateStaticParams`\n// - /products/a/1\n// - /products/b/2\n// - /products/c/3\nexport default async function Page({ params }) {\n\tconst { category, product } = await params\n\t// ...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Catch-all Dynamic Segment"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/product/[...slug]/page.tsx\" switcher",
+			"value": "export function generateStaticParams() {\n\treturn [{ slug: ['a', '1'] }, { slug: ['b', '2'] }, { slug: ['c', '3'] }]\n}\n\n// Three versions of this page will be statically generated\n// using the `params` returned by `generateStaticParams`\n// - /product/a/1\n// - /product/b/2\n// - /product/c/3\nexport default async function Page({ params }: { params: Promise<{ slug: string[] }> }) {\n\tconst { slug } = await params\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/product/[...slug]/page.js\" switcher",
+			"value": "export function generateStaticParams() {\n\treturn [{ slug: ['a', '1'] }, { slug: ['b', '2'] }, { slug: ['c', '3'] }]\n}\n\n// Three versions of this page will be statically generated\n// using the `params` returned by `generateStaticParams`\n// - /product/a/1\n// - /product/b/2\n// - /product/c/3\nexport default async function Page({ params }) {\n\tconst { slug } = await params\n\t// ...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Prerendering"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "All paths at build time"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To statically render all paths at build time, supply the full list of paths to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" switcher",
+			"value": "export async function generateStaticParams() {\n\tconst posts = await fetch('https://.../posts').then((res) => res.json())\n\n\treturn posts.map((post) => ({\n\t\tslug: post.slug,\n\t}))\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\" switcher",
+			"value": "export async function generateStaticParams() {\n\tconst posts = await fetch('https://.../posts').then((res) => res.json())\n\n\treturn posts.map((post) => ({\n\t\tslug: post.slug,\n\t}))\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Subset of paths at build time"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To statically render a subset of paths at build time, and the rest the first time they're visited at runtime, return a partial list of paths:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" switcher",
+			"value": "export async function generateStaticParams() {\n\tconst posts = await fetch('https://.../posts').then((res) => res.json())\n\n\t// Render the first 10 posts at build time\n\treturn posts.slice(0, 10).map((post) => ({\n\t\tslug: post.slug,\n\t}))\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\" switcher",
+			"value": "export async function generateStaticParams() {\n\tconst posts = await fetch('https://.../posts').then((res) => res.json())\n\n\t// Render the first 10 posts at build time\n\treturn posts.slice(0, 10).map((post) => ({\n\t\tslug: post.slug,\n\t}))\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, by using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config/dynamicParams",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "dynamicParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " segment config option, you can control what happens when a dynamic segment is visited that was not generated with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" switcher",
+			"value": "// All posts besides the top 10 will be a 404\nexport const dynamicParams = false\n\nexport async function generateStaticParams() {\n\tconst posts = await fetch('https://.../posts').then((res) => res.json())\n\tconst topPosts = posts.slice(0, 10)\n\n\treturn topPosts.map((post) => ({\n\t\tslug: post.slug,\n\t}))\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\" switcher",
+			"value": "// All posts besides the top 10 will be a 404\nexport const dynamicParams = false\n\nexport async function generateStaticParams() {\n\tconst posts = await fetch('https://.../posts').then((res) => res.json())\n\tconst topPosts = posts.slice(0, 10)\n\n\treturn topPosts.map((post) => ({\n\t\tslug: post.slug,\n\t}))\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "All paths at runtime"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To statically render all paths the first time they're visited, return an empty array (no paths will be rendered at build time) or utilize "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/caching-without-cache-components#dynamic",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "export const dynamic = 'force-static'"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\"",
+			"value": "export async function generateStaticParams() {\n\treturn []\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "You must always return an array from "
+										},
+										{
+											"type": "inlineCode",
+											"value": "generateStaticParams"
+										},
+										{
+											"type": "text",
+											"value": ", even if it's empty. Otherwise, the route will be dynamically rendered."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/changelog/[slug]/page.js\"",
+			"value": "export const dynamic = 'force-static'"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "With Cache Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with dynamic routes, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " must return "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "at least one param"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Empty arrays cause a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/empty-generate-static-params",
+					"children": [
+						{
+							"type": "text",
+							"value": "build error"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This allows Cache Components to validate your route doesn't incorrectly access "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers()"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": " at runtime."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": If you don't know the actual param values at build time, you can return a placeholder param (e.g., "
+						},
+						{
+							"type": "inlineCode",
+							"value": "[{ slug: '__placeholder__' }]"
+						},
+						{
+							"type": "text",
+							"value": ") for validation, then handle it in your page with "
+						},
+						{
+							"type": "inlineCode",
+							"value": "notFound()"
+						},
+						{
+							"type": "text",
+							"value": ". However, this prevents build time validation from working effectively and may cause runtime errors."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/dynamic-routes#with-cache-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamic routes section"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for detailed walkthroughs, or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/incremental-static-regeneration-cache-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "ISR with Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for prerendering a subset of routes and serving App Shells for the rest."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "With Route Handlers"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to statically generate API responses at build time:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/posts/[id]/route.ts\" switcher",
+			"value": "export async function generateStaticParams() {\n\treturn [{ id: '1' }, { id: '2' }, { id: '3' }]\n}\n\nexport async function GET(request: Request, { params }: RouteContext<'/api/posts/[id]'>) {\n\tconst { id } = await params\n\t// This will be statically generated for IDs 1, 2, and 3\n\treturn Response.json({ id, title: `Post ${id}` })\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/posts/[id]/route.js\" switcher",
+			"value": "export async function generateStaticParams() {\n\treturn [{ id: '1' }, { id: '2' }, { id: '3' }]\n}\n\nexport async function GET(request, { params }) {\n\tconst { id } = await params\n\t// This will be statically generated for IDs 1, 2, and 3\n\treturn Response.json({ id, title: `Post ${id}` })\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Handlers with Cache Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", combine with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " for optimal caching:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/posts/[id]/route.ts\"",
+			"value": "export async function generateStaticParams() {\n\treturn [{ id: '1' }, { id: '2' }, { id: '3' }]\n}\n\nasync function getPost(id: Promise<string>) {\n\t'use cache'\n\tconst resolvedId = await id\n\tconst response = await fetch(`https://api.example.com/posts/${resolvedId}`)\n\treturn response.json()\n}\n\nexport async function GET(request: Request, { params }: RouteContext<'/api/posts/[id]'>) {\n\tconst post = await getPost(params.then((p) => p.id))\n\treturn Response.json(post)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route#static-generation-with-generatestaticparams",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handlers documentation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more details."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Disable rendering for unspecified paths"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To prevent unspecified paths from being prerendered at runtime, add the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "export const dynamicParams = false"
+				},
+				{
+					"type": "text",
+					"value": " option in a route segment. When this config option is used, only paths provided by "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " will be served, and unspecified routes will 404 or match (in the case of "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/dynamic-routes#catch-all-segments",
+					"children": [
+						{
+							"type": "text",
+							"value": "catch-all routes"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ")."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Multiple Dynamic Segments in a Route"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can generate params for dynamic segments above the current layout or page, but "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "not below"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". For example, given the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/products/[category]/[product]"
+				},
+				{
+					"type": "text",
+					"value": " route:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/products/[category]/[product]/page.js"
+								},
+								{
+									"type": "text",
+									"value": " can generate params for "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "both"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " "
+								},
+								{
+									"type": "inlineCode",
+									"value": "[category]"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "[product]"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/products/[category]/layout.js"
+								},
+								{
+									"type": "text",
+									"value": " can "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "only"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " generate params for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "[category]"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There are two approaches to generating params for a route with multiple dynamic segments:"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Generate params from the bottom up"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Generate multiple dynamic segments from the child route segment."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/[category]/[product]/page.tsx\" switcher",
+			"value": "// Generate segments for both [category] and [product]\nexport async function generateStaticParams() {\n\tconst products = await fetch('https://.../products').then((res) => res.json())\n\n\treturn products.map((product) => ({\n\t\tcategory: product.category.slug,\n\t\tproduct: product.id,\n\t}))\n}\n\nexport default function Page({ params }: { params: Promise<{ category: string; product: string }> }) {\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/products/[category]/[product]/page.js\" switcher",
+			"value": "// Generate segments for both [category] and [product]\nexport async function generateStaticParams() {\n\tconst products = await fetch('https://.../products').then((res) => res.json())\n\n\treturn products.map((product) => ({\n\t\tcategory: product.category.slug,\n\t\tproduct: product.id,\n\t}))\n}\n\nexport default function Page({ params }) {\n\t// ...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Generate params from the top down"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Generate the parent segments first and use the result to generate the child segments."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/[category]/layout.tsx\" switcher",
+			"value": "// Generate segments for [category]\nexport async function generateStaticParams() {\n\tconst products = await fetch('https://.../products').then((res) => res.json())\n\n\treturn products.map((product) => ({\n\t\tcategory: product.category.slug,\n\t}))\n}\n\nexport default function Layout({ params }: { params: Promise<{ category: string }> }) {\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/products/[category]/layout.js\" switcher",
+			"value": "// Generate segments for [category]\nexport async function generateStaticParams() {\n\tconst products = await fetch('https://.../products').then((res) => res.json())\n\n\treturn products.map((product) => ({\n\t\tcategory: product.category.slug,\n\t}))\n}\n\nexport default function Layout({ params }) {\n\t// ...\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A child route segment's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " function is executed once for each segment a parent "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " generates."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The child "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " function can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " returned from the parent "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " function to dynamically generate its own segments."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/[category]/[product]/page.tsx\" switcher",
+			"value": "// Generate segments for [product] using the `params` passed from\n// the parent segment's `generateStaticParams` function\nexport async function generateStaticParams({ params: { category } }: { params: { category: string } }) {\n\tconst products = await fetch(`https://.../products?category=${category}`).then((res) => res.json())\n\n\treturn products.map((product) => ({\n\t\tproduct: product.id,\n\t}))\n}\n\nexport default function Page({ params }: { params: Promise<{ category: string; product: string }> }) {\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/products/[category]/[product]/page.js\" switcher",
+			"value": "// Generate segments for [product] using the `params` passed from\n// the parent segment's `generateStaticParams` function\nexport async function generateStaticParams({ params: { category } }) {\n\tconst products = await fetch(`https://.../products?category=${category}`).then((res) => res.json())\n\n\treturn products.map((product) => ({\n\t\tproduct: product.id,\n\t}))\n}\n\nexport default function Page({ params }) {\n\t// ...\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Notice that the params argument can be accessed synchronously and includes only parent segment params."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " When a parent dynamic segment is a "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/next-root-params",
+							"children": [
+								{
+									"type": "text",
+									"value": "root parameter"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", you can also read it inside a nested "
+						},
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						},
+						{
+							"type": "text",
+							"value": " by calling its getter from the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next/root-params"
+						},
+						{
+							"type": "text",
+							"value": " module."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For type completion, you can make use of the TypeScript "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Awaited"
+				},
+				{
+					"type": "text",
+					"value": " helper in combination with either "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/page#page-props-helper",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Page Props helper"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout#layout-props-helper",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Layout Props helper"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/products/[category]/[product]/page.tsx\" switcher",
+			"value": "export async function generateStaticParams({ params: { category } }: { params: Awaited<LayoutProps<'/products/[category]'>['params']> }) {\n\tconst products = await fetch(`https://.../products?category=${category}`).then((res) => res.json())\n\n\treturn products.map((product) => ({\n\t\tproduct: product.id,\n\t}))\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": "fetch"
+						},
+						{
+							"type": "text",
+							"value": " requests are automatically "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/glossary#memoization",
+							"children": [
+								{
+									"type": "text",
+									"value": "memoized"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for the same data across all "
+						},
+						{
+							"type": "inlineCode",
+							"value": "generate"
+						},
+						{
+							"type": "text",
+							"value": "-prefixed functions, Layouts, Pages, and Server Components. React "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://react.dev/reference/react/cache",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "cache"
+								},
+								{
+									"type": "text",
+									"value": " can be used"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " if "
+						},
+						{
+							"type": "inlineCode",
+							"value": "fetch"
+						},
+						{
+							"type": "text",
+							"value": " is unavailable."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "generateStaticParams"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

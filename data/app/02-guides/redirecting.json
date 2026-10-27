@@ -1,0 +1,2010 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to handle redirects in Next.js\nnav_title: Redirecting\ndescription: Learn the different ways to handle redirects in Next.js.\nrelated:\n links:\n  - app/api-reference/functions/redirect\n  - app/api-reference/functions/permanentRedirect\n  - app/api-reference/file-conventions/proxy\n  - app/api-reference/config/next-config-js/redirects"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There are a few ways you can handle redirects in Next.js. This page will go through each available option, use cases, and how to manage large numbers of redirects."
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "API"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Purpose"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Where"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Status Code"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#redirect-function",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "redirect"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Redirect user after a mutation or event"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Server Components, Server Functions, Route Handlers"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "307 (Temporary) or 303 (Server Action)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#permanentredirect-function",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "permanentRedirect"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Redirect user after a mutation or event"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Server Components, Server Functions, Route Handlers"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "308 (Permanent)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#userouter-hook",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "useRouter"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Perform a client-side navigation"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Event Handlers in Client Components"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "N/A"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#redirects-in-nextconfigjs",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "redirects"
+										},
+										{
+											"type": "text",
+											"value": " in "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next.config.js"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Redirect an incoming request based on a path"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.config.js"
+								},
+								{
+									"type": "text",
+									"value": " file"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "307 (Temporary) or 308 (Permanent)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#nextresponseredirect-in-proxy",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "NextResponse.redirect"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Redirect an incoming request based on a condition"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Proxy"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Any"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "redirect"
+				},
+				{
+					"type": "text",
+					"value": " function"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "redirect"
+				},
+				{
+					"type": "text",
+					"value": " function allows you to redirect the user to another URL. You can call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "redirect"
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/mutating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Functions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "redirect"
+				},
+				{
+					"type": "text",
+					"value": " is often used after a mutation or event. For example, creating a post:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/actions.ts\" switcher",
+			"value": "'use server'\n\nimport { redirect } from 'next/navigation'\nimport { revalidatePath } from 'next/cache'\n\nexport async function createPost(id: string) {\n\ttry {\n\t\t// Call database\n\t} catch (error) {\n\t\t// Handle errors\n\t}\n\n\trevalidatePath('/posts') // Update cached posts\n\tredirect(`/post/${id}`) // Navigate to the new post page\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/actions.js\" switcher",
+			"value": "'use server'\n\nimport { redirect } from 'next/navigation'\nimport { revalidatePath } from 'next/cache'\n\nexport async function createPost(id) {\n\ttry {\n\t\t// Call database\n\t} catch (error) {\n\t\t// Handle errors\n\t}\n\n\trevalidatePath('/posts') // Update cached posts\n\tredirect(`/post/${id}`) // Navigate to the new post page\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "In a Server Action, "
+										},
+										{
+											"type": "inlineCode",
+											"value": "redirect"
+										},
+										{
+											"type": "text",
+											"value": " performs a client-side navigation when JavaScript is available. Without JavaScript, the form submission uses a 303 (See Other). In other contexts, "
+										},
+										{
+											"type": "inlineCode",
+											"value": "redirect"
+										},
+										{
+											"type": "text",
+											"value": " uses a 307 (Temporary Redirect)."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "redirect"
+										},
+										{
+											"type": "text",
+											"value": " throws an error so it should be called "
+										},
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "text",
+													"value": "outside"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "try"
+										},
+										{
+											"type": "text",
+											"value": " block when using "
+										},
+										{
+											"type": "inlineCode",
+											"value": "try/catch"
+										},
+										{
+											"type": "text",
+											"value": " statements."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "redirect"
+										},
+										{
+											"type": "text",
+											"value": " can be called in Client Components during the rendering process but not in event handlers. You can use the "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "#userouter-hook",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "useRouter"
+												},
+												{
+													"type": "text",
+													"value": " hook"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " instead."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "redirect"
+										},
+										{
+											"type": "text",
+											"value": " also accepts absolute URLs and can be used to redirect to external links."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "If you'd like to redirect before the render process, use "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "#redirects-in-nextconfigjs",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "next.config.js"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " or "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "#nextresponseredirect-in-proxy",
+											"children": [
+												{
+													"type": "text",
+													"value": "Proxy"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/redirect",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "redirect"
+						},
+						{
+							"type": "text",
+							"value": " API reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more information."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "permanentRedirect"
+				},
+				{
+					"type": "text",
+					"value": " function"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "permanentRedirect"
+				},
+				{
+					"type": "text",
+					"value": " function allows you to "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "permanently"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " redirect the user to another URL. You can call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "permanentRedirect"
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/mutating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Functions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "permanentRedirect"
+				},
+				{
+					"type": "text",
+					"value": " is often used after a mutation or event that changes an entity's canonical URL, such as updating a user's profile URL after they change their username:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/actions.ts\" switcher",
+			"value": "'use server'\n\nimport { permanentRedirect } from 'next/navigation'\nimport { revalidateTag } from 'next/cache'\n\nexport async function updateUsername(username: string, formData: FormData) {\n\ttry {\n\t\t// Call database\n\t} catch (error) {\n\t\t// Handle errors\n\t}\n\n\trevalidateTag('username', 'max') // Update all references to the username\n\tpermanentRedirect(`/profile/${username}`) // Navigate to the new user profile\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/actions.js\" switcher",
+			"value": "'use server'\n\nimport { permanentRedirect } from 'next/navigation'\nimport { revalidateTag } from 'next/cache'\n\nexport async function updateUsername(username, formData) {\n\ttry {\n\t\t// Call database\n\t} catch (error) {\n\t\t// Handle errors\n\t}\n\n\trevalidateTag('username', 'max') // Update all references to the username\n\tpermanentRedirect(`/profile/${username}`) // Navigate to the new user profile\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "In a Server Action, "
+										},
+										{
+											"type": "inlineCode",
+											"value": "permanentRedirect"
+										},
+										{
+											"type": "text",
+											"value": " performs a client-side navigation when JavaScript is available. Without JavaScript, the form submission uses a 303 (See Other). In other contexts, "
+										},
+										{
+											"type": "inlineCode",
+											"value": "permanentRedirect"
+										},
+										{
+											"type": "text",
+											"value": " uses a 308 (Permanent Redirect)."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "permanentRedirect"
+										},
+										{
+											"type": "text",
+											"value": " also accepts absolute URLs and can be used to redirect to external links."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "If you'd like to redirect before the render process, use "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "#redirects-in-nextconfigjs",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "next.config.js"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " or "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "#nextresponseredirect-in-proxy",
+											"children": [
+												{
+													"type": "text",
+													"value": "Proxy"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/permanentRedirect",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "permanentRedirect"
+						},
+						{
+							"type": "text",
+							"value": " API reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more information."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "useRouter()"
+				},
+				{
+					"type": "text",
+					"value": " hook"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you need to redirect inside an event handler in a Client Component, you can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "push"
+				},
+				{
+					"type": "text",
+					"value": " method from the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useRouter"
+				},
+				{
+					"type": "text",
+					"value": " hook. For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "'use client'\n\nimport { useRouter } from 'next/navigation'\n\nexport default function Page() {\n\tconst router = useRouter()\n\n\treturn (\n\t\t<button\n\t\t\ttype=\"button\"\n\t\t\tonClick={() => router.push('/dashboard')}>\n\t\t\tDashboard\n\t\t</button>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "'use client'\n\nimport { useRouter } from 'next/navigation'\n\nexport default function Page() {\n\tconst router = useRouter()\n\n\treturn (\n\t\t<button\n\t\t\ttype=\"button\"\n\t\t\tonClick={() => router.push('/dashboard')}>\n\t\t\tDashboard\n\t\t</button>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "If you don't need to programmatically navigate a user, you should use a "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/components/link",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "<Link>"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " component."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-router",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useRouter"
+						},
+						{
+							"type": "text",
+							"value": " API reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more information."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "redirects"
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "redirects"
+				},
+				{
+					"type": "text",
+					"value": " option in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file allows you to redirect an incoming request path to a different destination path. This is useful when you change the URL structure of pages or have a list of redirects that are known ahead of time."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "redirects"
+				},
+				{
+					"type": "text",
+					"value": " supports "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/redirects#path-matching",
+					"children": [
+						{
+							"type": "text",
+							"value": "path"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/redirects#header-cookie-and-query-matching",
+					"children": [
+						{
+							"type": "text",
+							"value": "header, cookie, and query matching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", giving you the flexibility to redirect users based on an incoming request."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "redirects"
+				},
+				{
+					"type": "text",
+					"value": ", add the option to your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tasync redirects() {\n\t\treturn [\n\t\t\t// Basic redirect\n\t\t\t{\n\t\t\t\tsource: '/about',\n\t\t\t\tdestination: '/',\n\t\t\t\tpermanent: true,\n\t\t\t},\n\t\t\t// Wildcard path matching\n\t\t\t{\n\t\t\t\tsource: '/blog/:slug',\n\t\t\t\tdestination: '/news/:slug',\n\t\t\t\tpermanent: true,\n\t\t\t},\n\t\t]\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "module.exports = {\n\tasync redirects() {\n\t\treturn [\n\t\t\t// Basic redirect\n\t\t\t{\n\t\t\t\tsource: '/about',\n\t\t\t\tdestination: '/',\n\t\t\t\tpermanent: true,\n\t\t\t},\n\t\t\t// Wildcard path matching\n\t\t\t{\n\t\t\t\tsource: '/blog/:slug',\n\t\t\t\tdestination: '/news/:slug',\n\t\t\t\tpermanent: true,\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/redirects",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "redirects"
+						},
+						{
+							"type": "text",
+							"value": " API reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more information."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "redirects"
+										},
+										{
+											"type": "text",
+											"value": " can return a 307 (Temporary Redirect) or 308 (Permanent Redirect) status code with the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "permanent"
+										},
+										{
+											"type": "text",
+											"value": " option."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "redirects"
+										},
+										{
+											"type": "text",
+											"value": " may have a limit on platforms. For example, on Vercel, there's a limit of 1,024 redirects. To manage a large number of redirects (1000+), consider creating a custom solution using "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/proxy",
+											"children": [
+												{
+													"type": "text",
+													"value": "Proxy"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ". See "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "#managing-redirects-at-scale-advanced",
+											"children": [
+												{
+													"type": "text",
+													"value": "managing redirects at scale"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " for more."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "redirects"
+										},
+										{
+											"type": "text",
+											"value": " runs "
+										},
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "text",
+													"value": "before"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " Proxy."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "NextResponse.redirect"
+				},
+				{
+					"type": "text",
+					"value": " in Proxy"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Proxy allows you to run code before a request is completed. Then, based on the incoming request, redirect to a different URL using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NextResponse.redirect"
+				},
+				{
+					"type": "text",
+					"value": ". This is useful if you want to redirect users based on a condition (e.g. authentication, session management, etc) or have "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#managing-redirects-at-scale-advanced",
+					"children": [
+						{
+							"type": "text",
+							"value": "a large number of redirects"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, to redirect the user to a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/login"
+				},
+				{
+					"type": "text",
+					"value": " page if they are not authenticated:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"proxy.ts\" switcher",
+			"value": "import { NextResponse, NextRequest } from 'next/server'\nimport { authenticate } from 'auth-provider'\n\nexport function proxy(request: NextRequest) {\n\tconst isAuthenticated = authenticate(request)\n\n\t// If the user is authenticated, continue as normal\n\tif (isAuthenticated) {\n\t\treturn NextResponse.next()\n\t}\n\n\t// Redirect to login page if not authenticated\n\treturn NextResponse.redirect(new URL('/login', request.url))\n}\n\nexport const config = {\n\tmatcher: '/dashboard/:path*',\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"proxy.js\" switcher",
+			"value": "import { NextResponse } from 'next/server'\nimport { authenticate } from 'auth-provider'\n\nexport function proxy(request) {\n\tconst isAuthenticated = authenticate(request)\n\n\t// If the user is authenticated, continue as normal\n\tif (isAuthenticated) {\n\t\treturn NextResponse.next()\n\t}\n\n\t// Redirect to login page if not authenticated\n\treturn NextResponse.redirect(new URL('/login', request.url))\n}\n\nexport const config = {\n\tmatcher: '/dashboard/:path*',\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Proxy runs "
+										},
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "text",
+													"value": "after"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " "
+										},
+										{
+											"type": "inlineCode",
+											"value": "redirects"
+										},
+										{
+											"type": "text",
+											"value": " in "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next.config.js"
+										},
+										{
+											"type": "text",
+											"value": " and "
+										},
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "text",
+													"value": "before"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " rendering."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/proxy",
+					"children": [
+						{
+							"type": "text",
+							"value": "Proxy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " documentation for more information."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Managing redirects at scale (advanced)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To manage a large number of redirects (1000+), you may consider creating a custom solution using Proxy. This allows you to handle redirects programmatically without having to redeploy your application."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To do this, you'll need to consider:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Creating and storing a redirect map."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optimizing data lookup performance."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Next.js Example"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": See our "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://redirects-bloom-filter.vercel.app/",
+							"children": [
+								{
+									"type": "text",
+									"value": "Proxy with Bloom filter"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " example for an implementation of the recommendations below."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "1. Creating and storing a redirect map"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A redirect map is a list of redirects that you can store in a database (usually a key-value store) or JSON file."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Consider the following data structure:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": null,
+			"value": "{\n\t\"/old\": {\n\t\t\"destination\": \"/new\",\n\t\t\"permanent\": true\n\t},\n\t\"/blog/post-old\": {\n\t\t\"destination\": \"/blog/post-new\",\n\t\t\"permanent\": true\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/proxy",
+					"children": [
+						{
+							"type": "text",
+							"value": "Proxy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", you can read from a database such as Vercel's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://vercel.com/docs/global-config/get-started",
+					"children": [
+						{
+							"type": "text",
+							"value": "Global Config"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://vercel.com/docs/redis",
+					"children": [
+						{
+							"type": "text",
+							"value": "Redis"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and redirect the user based on the incoming request:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"proxy.ts\" switcher",
+			"value": "import { NextResponse, NextRequest } from 'next/server'\nimport { get } from '@vercel/global-config'\n\ntype RedirectEntry = {\n\tdestination: string\n\tpermanent: boolean\n}\n\nexport async function proxy(request: NextRequest) {\n\tconst pathname = request.nextUrl.pathname\n\tconst redirectData = await get(pathname)\n\n\tif (redirectData && typeof redirectData === 'string') {\n\t\tconst redirectEntry: RedirectEntry = JSON.parse(redirectData)\n\t\tconst statusCode = redirectEntry.permanent ? 308 : 307\n\t\treturn NextResponse.redirect(redirectEntry.destination, statusCode)\n\t}\n\n\t// No redirect found, continue without redirecting\n\treturn NextResponse.next()\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"proxy.js\" switcher",
+			"value": "import { NextResponse } from 'next/server'\nimport { get } from '@vercel/global-config'\n\nexport async function proxy(request) {\n\tconst pathname = request.nextUrl.pathname\n\tconst redirectData = await get(pathname)\n\n\tif (redirectData) {\n\t\tconst redirectEntry = JSON.parse(redirectData)\n\t\tconst statusCode = redirectEntry.permanent ? 308 : 307\n\t\treturn NextResponse.redirect(redirectEntry.destination, statusCode)\n\t}\n\n\t// No redirect found, continue without redirecting\n\treturn NextResponse.next()\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "2. Optimizing data lookup performance"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Reading a large dataset for every incoming request can be slow and expensive. There are two ways you can optimize data lookup performance:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Use a database that is optimized for fast reads"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Use a data lookup strategy such as a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://en.wikipedia.org/wiki/Bloom_filter",
+									"children": [
+										{
+											"type": "text",
+											"value": "Bloom filter"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to efficiently check if a redirect exists "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "before"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " reading the larger redirects file or database."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Considering the previous example, you can import a generated bloom filter file into Proxy, then, check if the incoming request pathname exists in the bloom filter."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If it does, forward the request to a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " which will check the actual file and redirect the user to the appropriate URL. This avoids importing a large redirects file into Proxy, which can slow down every incoming request."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"proxy.ts\" switcher",
+			"value": "import { NextResponse, NextRequest } from 'next/server'\nimport { ScalableBloomFilter } from 'bloom-filters'\nimport GeneratedBloomFilter from './redirects/bloom-filter.json'\n\ntype RedirectEntry = {\n\tdestination: string\n\tpermanent: boolean\n}\n\n// Initialize bloom filter from a generated JSON file\nconst bloomFilter = ScalableBloomFilter.fromJSON(GeneratedBloomFilter as any)\n\nexport async function proxy(request: NextRequest) {\n\t// Get the path for the incoming request\n\tconst pathname = request.nextUrl.pathname\n\n\t// Check if the path is in the bloom filter\n\tif (bloomFilter.has(pathname)) {\n\t\t// Forward the pathname to the Route Handler\n\t\tconst api = new URL(`/api/redirects?pathname=${encodeURIComponent(request.nextUrl.pathname)}`, request.nextUrl.origin)\n\n\t\ttry {\n\t\t\t// Fetch redirect data from the Route Handler\n\t\t\tconst redirectData = await fetch(api)\n\n\t\t\tif (redirectData.ok) {\n\t\t\t\tconst redirectEntry: RedirectEntry | undefined = await redirectData.json()\n\n\t\t\t\tif (redirectEntry) {\n\t\t\t\t\t// Determine the status code\n\t\t\t\t\tconst statusCode = redirectEntry.permanent ? 308 : 307\n\n\t\t\t\t\t// Redirect to the destination\n\t\t\t\t\treturn NextResponse.redirect(redirectEntry.destination, statusCode)\n\t\t\t\t}\n\t\t\t}\n\t\t} catch (error) {\n\t\t\tconsole.error(error)\n\t\t}\n\t}\n\n\t// No redirect found, continue the request without redirecting\n\treturn NextResponse.next()\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"proxy.js\" switcher",
+			"value": "import { NextResponse } from 'next/server'\nimport { ScalableBloomFilter } from 'bloom-filters'\nimport GeneratedBloomFilter from './redirects/bloom-filter.json'\n\n// Initialize bloom filter from a generated JSON file\nconst bloomFilter = ScalableBloomFilter.fromJSON(GeneratedBloomFilter)\n\nexport async function proxy(request) {\n\t// Get the path for the incoming request\n\tconst pathname = request.nextUrl.pathname\n\n\t// Check if the path is in the bloom filter\n\tif (bloomFilter.has(pathname)) {\n\t\t// Forward the pathname to the Route Handler\n\t\tconst api = new URL(`/api/redirects?pathname=${encodeURIComponent(request.nextUrl.pathname)}`, request.nextUrl.origin)\n\n\t\ttry {\n\t\t\t// Fetch redirect data from the Route Handler\n\t\t\tconst redirectData = await fetch(api)\n\n\t\t\tif (redirectData.ok) {\n\t\t\t\tconst redirectEntry = await redirectData.json()\n\n\t\t\t\tif (redirectEntry) {\n\t\t\t\t\t// Determine the status code\n\t\t\t\t\tconst statusCode = redirectEntry.permanent ? 308 : 307\n\n\t\t\t\t\t// Redirect to the destination\n\t\t\t\t\treturn NextResponse.redirect(redirectEntry.destination, statusCode)\n\t\t\t\t}\n\t\t\t}\n\t\t} catch (error) {\n\t\t\tconsole.error(error)\n\t\t}\n\t}\n\n\t// No redirect found, continue the request without redirecting\n\treturn NextResponse.next()\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, in the Route Handler:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/redirects/route.ts\" switcher",
+			"value": "import { NextRequest, NextResponse } from 'next/server'\nimport redirects from '@/app/redirects/redirects.json'\n\ntype RedirectEntry = {\n\tdestination: string\n\tpermanent: boolean\n}\n\nexport function GET(request: NextRequest) {\n\tconst pathname = request.nextUrl.searchParams.get('pathname')\n\tif (!pathname) {\n\t\treturn new Response('Bad Request', { status: 400 })\n\t}\n\n\t// Get the redirect entry from the redirects.json file\n\tconst redirect = (redirects as Record<string, RedirectEntry>)[pathname]\n\n\t// Account for bloom filter false positives\n\tif (!redirect) {\n\t\treturn new Response('No redirect', { status: 400 })\n\t}\n\n\t// Return the redirect entry\n\treturn NextResponse.json(redirect)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/redirects/route.js\" switcher",
+			"value": "import { NextResponse } from 'next/server'\nimport redirects from '@/app/redirects/redirects.json'\n\nexport function GET(request) {\n\tconst pathname = request.nextUrl.searchParams.get('pathname')\n\tif (!pathname) {\n\t\treturn new Response('Bad Request', { status: 400 })\n\t}\n\n\t// Get the redirect entry from the redirects.json file\n\tconst redirect = redirects[pathname]\n\n\t// Account for bloom filter false positives\n\tif (!redirect) {\n\t\treturn new Response('No redirect', { status: 400 })\n\t}\n\n\t// Return the redirect entry\n\treturn NextResponse.json(redirect)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "To generate a bloom filter, you can use a library like "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://www.npmjs.com/package/bloom-filters",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "bloom-filters"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "You should validate requests made to your Route Handler to prevent malicious requests."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

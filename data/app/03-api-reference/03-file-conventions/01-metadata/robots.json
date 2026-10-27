@@ -1,0 +1,518 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: robots.txt\ndescription: API Reference for robots.txt file."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Add or generate a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "robots.txt"
+				},
+				{
+					"type": "text",
+					"value": " file that matches the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://en.wikipedia.org/wiki/Robots.txt#Standard",
+					"children": [
+						{
+							"type": "text",
+							"value": "Robots Exclusion Standard"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in the "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "root"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory to tell search engine crawlers which URLs they can access on your site."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Static "
+				},
+				{
+					"type": "inlineCode",
+					"value": "robots.txt"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "txt",
+			"meta": "filename=\"app/robots.txt\"",
+			"value": "User-Agent: *\nAllow: /\nDisallow: /private/\n\nSitemap: https://acme.com/sitemap.xml"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Generate a Robots file"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Add a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "robots.js"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "robots.ts"
+				},
+				{
+					"type": "text",
+					"value": " file that returns a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#robots-object",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Robots"
+						},
+						{
+							"type": "text",
+							"value": " object"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": "robots.js"
+						},
+						{
+							"type": "text",
+							"value": " is a special Route Handler that is cached by default unless it uses a "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/glossary#request-time-apis",
+							"children": [
+								{
+									"type": "text",
+									"value": "Request-time API"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " or "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/caching-without-cache-components#dynamic",
+							"children": [
+								{
+									"type": "text",
+									"value": "dynamic config"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " option."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/robots.ts\" switcher",
+			"value": "import type { MetadataRoute } from 'next'\n\nexport default function robots(): MetadataRoute.Robots {\n\treturn {\n\t\trules: {\n\t\t\tuserAgent: '*',\n\t\t\tallow: '/',\n\t\t\tdisallow: '/private/',\n\t\t},\n\t\tsitemap: 'https://acme.com/sitemap.xml',\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/robots.js\" switcher",
+			"value": "export default function robots() {\n\treturn {\n\t\trules: {\n\t\t\tuserAgent: '*',\n\t\t\tallow: '/',\n\t\t\tdisallow: '/private/',\n\t\t},\n\t\tsitemap: 'https://acme.com/sitemap.xml',\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Output:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "txt",
+			"meta": null,
+			"value": "User-Agent: *\nAllow: /\nDisallow: /private/\n\nSitemap: https://acme.com/sitemap.xml"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Customizing specific user agents"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can customize how individual search engine bots crawl your site by passing an array of user agents to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "rules"
+				},
+				{
+					"type": "text",
+					"value": " property. For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/robots.ts\" switcher",
+			"value": "import type { MetadataRoute } from 'next'\n\nexport default function robots(): MetadataRoute.Robots {\n\treturn {\n\t\trules: [\n\t\t\t{\n\t\t\t\tuserAgent: 'Googlebot',\n\t\t\t\tallow: ['/'],\n\t\t\t\tdisallow: '/private/',\n\t\t\t},\n\t\t\t{\n\t\t\t\tuserAgent: ['Applebot', 'Bingbot'],\n\t\t\t\tdisallow: ['/'],\n\t\t\t},\n\t\t],\n\t\tsitemap: 'https://acme.com/sitemap.xml',\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/robots.js\" switcher",
+			"value": "export default function robots() {\n\treturn {\n\t\trules: [\n\t\t\t{\n\t\t\t\tuserAgent: 'Googlebot',\n\t\t\t\tallow: ['/'],\n\t\t\t\tdisallow: ['/private/'],\n\t\t\t},\n\t\t\t{\n\t\t\t\tuserAgent: ['Applebot', 'Bingbot'],\n\t\t\t\tdisallow: ['/'],\n\t\t\t},\n\t\t],\n\t\tsitemap: 'https://acme.com/sitemap.xml',\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Output:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "txt",
+			"meta": null,
+			"value": "User-Agent: Googlebot\nAllow: /\nDisallow: /private/\n\nUser-Agent: Applebot\nDisallow: /\n\nUser-Agent: Bingbot\nDisallow: /\n\nSitemap: https://acme.com/sitemap.xml"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Non-standard directives"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Some search engines support directives that aren't part of the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://en.wikipedia.org/wiki/Robots.txt#Standard",
+					"children": [
+						{
+							"type": "text",
+							"value": "Robots Exclusion Standard"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Request-Rate"
+				},
+				{
+					"type": "text",
+					"value": " (Seznam) or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Clean-param"
+				},
+				{
+					"type": "text",
+					"value": " (Yandex). Pass these through the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "other"
+				},
+				{
+					"type": "text",
+					"value": " field on a rule. Keys preserve their casing and array values emit one line per entry, scoped to the rule's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "User-Agent"
+				},
+				{
+					"type": "text",
+					"value": " block."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/robots.ts\" switcher",
+			"value": "import type { MetadataRoute } from 'next'\n\nexport default function robots(): MetadataRoute.Robots {\n\treturn {\n\t\trules: [\n\t\t\t{ userAgent: '*', allow: '/' },\n\t\t\t{\n\t\t\t\tuserAgent: 'SeznamBot',\n\t\t\t\tallow: '/',\n\t\t\t\tother: {\n\t\t\t\t\t'Request-Rate': '10/1m',\n\t\t\t\t},\n\t\t\t},\n\t\t],\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/robots.js\" switcher",
+			"value": "export default function robots() {\n\treturn {\n\t\trules: [\n\t\t\t{ userAgent: '*', allow: '/' },\n\t\t\t{\n\t\t\t\tuserAgent: 'SeznamBot',\n\t\t\t\tallow: '/',\n\t\t\t\tother: {\n\t\t\t\t\t'Request-Rate': '10/1m',\n\t\t\t\t},\n\t\t\t},\n\t\t],\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Output:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "txt",
+			"meta": null,
+			"value": "User-Agent: *\nAllow: /\n\nUser-Agent: SeznamBot\nAllow: /\nRequest-Rate: 10/1m"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Values in "
+						},
+						{
+							"type": "inlineCode",
+							"value": "other"
+						},
+						{
+							"type": "text",
+							"value": " are passed through verbatim. Next.js does not validate directive names or values, so refer to the target search engine's documentation for the exact syntax."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Robots object"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "type Robots = {\n\trules:\n\t\t| {\n\t\t\t\tuserAgent?: string | string[]\n\t\t\t\tallow?: string | string[]\n\t\t\t\tdisallow?: string | string[]\n\t\t\t\tcrawlDelay?: number\n\t\t\t\tother?: Record<string, string | number | Array<string | number>>\n\t\t  }\n\t\t| Array<{\n\t\t\t\tuserAgent: string | string[]\n\t\t\t\tallow?: string | string[]\n\t\t\t\tdisallow?: string | string[]\n\t\t\t\tcrawlDelay?: number\n\t\t\t\tother?: Record<string, string | number | Array<string | number>>\n\t\t  }>\n\tsitemap?: string | string[]\n\thost?: string\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Added "
+								},
+								{
+									"type": "inlineCode",
+									"value": "other"
+								},
+								{
+									"type": "text",
+									"value": " field for non-standard per-agent directives."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "robots"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

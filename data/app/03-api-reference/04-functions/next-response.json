@@ -1,0 +1,530 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: NextResponse\ndescription: API Reference for NextResponse."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "NextResponse extends the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/Response",
+					"children": [
+						{
+							"type": "text",
+							"value": "Web Response API"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with additional convenience methods."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "cookies"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Read or mutate the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/HTTP/Headers/Set-Cookie",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Set-Cookie"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " header of the response."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "set(name, value)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Given a name, set a cookie with the given value on the response."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "// Given incoming request /home\nlet response = NextResponse.next()\n// Set a cookie to hide the banner\nresponse.cookies.set('show-banner', 'false')\n// Response will have a `Set-Cookie:show-banner=false;path=/home` header\nreturn response"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "get(name)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Given a cookie name, return the value of the cookie. If the cookie is not found, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "undefined"
+				},
+				{
+					"type": "text",
+					"value": " is returned. If multiple cookies are found, the first one is returned."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "// Given incoming request /home\nlet response = NextResponse.next()\n// { name: 'show-banner', value: 'false', Path: '/home' }\nresponse.cookies.get('show-banner')"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "getAll()"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Given a cookie name, return the values of the cookie. If no name is given, return all cookies on the response."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "// Given incoming request /home\nlet response = NextResponse.next()\n// [\n//   { name: 'experiments', value: 'new-pricing-page', Path: '/home' },\n//   { name: 'experiments', value: 'winter-launch', Path: '/home' },\n// ]\nresponse.cookies.getAll('experiments')\n// Alternatively, get all cookies for the response\nresponse.cookies.getAll()"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "has(name)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Given a cookie name, return "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": " if the cookie exists on the response."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "// Given incoming request /home\nlet response = NextResponse.next()\n// Returns true if cookie exists, false if it does not\nresponse.cookies.has('experiments')"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "delete(name)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Given a cookie name, delete the cookie from the response."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "// Given incoming request /home\nlet response = NextResponse.next()\n// Returns true for deleted, false if nothing is deleted\nresponse.cookies.delete('experiments')"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "json()"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Produce a response with the given JSON body."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/route.ts\" switcher",
+			"value": "import { NextResponse } from 'next/server'\n\nexport async function GET(request: Request) {\n\treturn NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/route.js\" switcher",
+			"value": "import { NextResponse } from 'next/server'\n\nexport async function GET(request) {\n\treturn NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "redirect()"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Produce a response that redirects to a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/URL",
+					"children": [
+						{
+							"type": "text",
+							"value": "URL"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "import { NextResponse } from 'next/server'\n\nreturn NextResponse.redirect(new URL('/new', request.url))"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/URL",
+					"children": [
+						{
+							"type": "text",
+							"value": "URL"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " can be created and modified before being used in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NextResponse.redirect()"
+				},
+				{
+					"type": "text",
+					"value": " method. For example, you can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "request.nextUrl"
+				},
+				{
+					"type": "text",
+					"value": " property to get the current URL, and then modify it to redirect to a different URL."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "import { NextResponse } from 'next/server'\n\n// Given an incoming request...\nconst loginUrl = new URL('/login', request.url)\n// Add ?from=/incoming-url to the /login URL\nloginUrl.searchParams.set('from', request.nextUrl.pathname)\n// And redirect to the new URL\nreturn NextResponse.redirect(loginUrl)"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "rewrite()"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Produce a response that rewrites (proxies) the given "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/URL",
+					"children": [
+						{
+							"type": "text",
+							"value": "URL"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " while preserving the original URL."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "import { NextResponse } from 'next/server'\n\n// Incoming request: /about, browser shows /about\n// Rewritten request: /proxy, browser shows /about\nreturn NextResponse.rewrite(new URL('/proxy', request.url))"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next()"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next()"
+				},
+				{
+					"type": "text",
+					"value": " method is useful for Proxy, as it allows you to return early and continue routing."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "import { NextResponse } from 'next/server'\n\nreturn NextResponse.next()"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also forward "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers"
+				},
+				{
+					"type": "text",
+					"value": " upstream when producing the response, using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NextResponse.next({ request: { headers } })"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "import { NextResponse } from 'next/server'\n\n// Given an incoming request...\nconst newHeaders = new Headers(request.headers)\n// Add a new header\nnewHeaders.set('x-version', '123')\n// Forward the modified request headers upstream\nreturn NextResponse.next({\n\trequest: {\n\t\t// New request headers\n\t\theaders: newHeaders,\n\t},\n})"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This forwards "
+				},
+				{
+					"type": "inlineCode",
+					"value": "newHeaders"
+				},
+				{
+					"type": "text",
+					"value": " upstream to the target page, route, or server action, and does not expose them to the client. While this pattern is useful for passing data upstream, it should be used with caution because the headers containing this data may be forwarded to external services."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In contrast, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NextResponse.next({ headers })"
+				},
+				{
+					"type": "text",
+					"value": " is a shorthand for sending headers from proxy to the client. This is "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "NOT"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " good practice and should be avoided. Among other reasons because setting response headers like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Content-Type"
+				},
+				{
+					"type": "text",
+					"value": ", can override framework expectations (for example, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Content-Type"
+				},
+				{
+					"type": "text",
+					"value": " used by Server Actions), leading to failed submissions or broken streaming responses."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "import { type NextRequest, NextResponse } from 'next/server'\n\nasync function proxy(request: NextRequest) {\n\tconst headers = await injectAuth(request.headers)\n\t// DO NOT forward headers like this\n\treturn NextResponse.next({ headers })\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In general, avoid copying all incoming request headers because doing so can leak sensitive data to clients or upstream services."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Prefer a defensive approach by creating a subset of incoming request headers using an allow-list. For example, you might discard custom "
+				},
+				{
+					"type": "inlineCode",
+					"value": "x-*"
+				},
+				{
+					"type": "text",
+					"value": " headers and only forward known-safe headers:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "import { type NextRequest, NextResponse } from 'next/server'\n\nfunction proxy(request: NextRequest) {\n\tconst incoming = new Headers(request.headers)\n\tconst forwarded = new Headers()\n\n\tfor (const [name, value] of incoming) {\n\t\tconst headerName = name.toLowerCase()\n\t\t// Keep only known-safe headers, discard custom x-* and other sensitive ones\n\t\tif (!headerName.startsWith('x-') && headerName !== 'authorization' && headerName !== 'cookie') {\n\t\t\t// Preserve original header name casing\n\t\t\tforwarded.set(name, value)\n\t\t}\n\t}\n\n\treturn NextResponse.next({\n\t\trequest: {\n\t\t\theaders: forwarded,\n\t\t},\n\t})\n}"
+		}
+	]
+}

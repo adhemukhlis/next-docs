@@ -1,0 +1,404 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: reactCompiler\ndescription: Enable the React Compiler to automatically optimize component rendering."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js includes support for the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/learn/react-compiler/introduction",
+					"children": [
+						{
+							"type": "text",
+							"value": "React Compiler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", a tool designed to improve performance by automatically optimizing component rendering. This reduces the need for manual memoization using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useMemo"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useCallback"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js includes a custom performance optimization written in SWC that makes the React Compiler more efficient. Instead of running the compiler on every file, Next.js analyzes your project and only applies the React Compiler to relevant files. This avoids unnecessary work and leads to faster builds compared to using the Babel plugin on its own."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "How It Works"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The React Compiler runs through a Babel plugin. To keep builds fast, Next.js uses a custom SWC optimization that only applies the React Compiler to relevant files—like those with JSX or React Hooks."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This avoids compiling everything and keeps the performance cost minimal. You may still see slightly slower builds compared to the default Rust-based compiler, but the impact is small and localized."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use it, install the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "babel-plugin-react-compiler"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add -D babel-plugin-react-compiler"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install -D babel-plugin-react-compiler"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add -D babel-plugin-react-compiler"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add -D babel-plugin-react-compiler"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "reactCompiler"
+				},
+				{
+					"type": "text",
+					"value": " option in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\treactCompiler: true,\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\treactCompiler: true,\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Annotations"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can configure the compiler to run in \"opt-in\" mode as follows:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\treactCompiler: {\n\t\tcompilationMode: 'annotation',\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\treactCompiler: {\n\t\tcompilationMode: 'annotation',\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, you can annotate specific components or hooks with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"use memo\""
+				},
+				{
+					"type": "text",
+					"value": " directive from React to opt-in:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "export default function Page() {\n\t'use memo'\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "export default function Page() {\n\t'use memo'\n\t// ...\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Note:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " You can also use the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "\"use no memo\""
+						},
+						{
+							"type": "text",
+							"value": " directive from React for the opposite effect, to opt-out a component or hook."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Existing memoization guarantees"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can configure whether the compiler preserves existing memoization guarantees from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useMemo"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useCallback"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "React.memo"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\treactCompiler: {\n\t\tenvironment: {\n\t\t\tenablePreserveExistingMemoizationGuarantees: false,\n\t\t},\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\treactCompiler: {\n\t\tenvironment: {\n\t\t\tenablePreserveExistingMemoizationGuarantees: false,\n\t\t},\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When omitted, Next.js uses the default from the active React Compiler implementation. Because defaults may differ between compiler implementations and versions, set this option explicitly to ensure consistent behavior."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "reactCompiler"
+								},
+								{
+									"type": "text",
+									"value": " stabilized and moved from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "experimental.reactCompiler"
+								},
+								{
+									"type": "text",
+									"value": " to the top-level "
+								},
+								{
+									"type": "inlineCode",
+									"value": "reactCompiler"
+								},
+								{
+									"type": "text",
+									"value": " option."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

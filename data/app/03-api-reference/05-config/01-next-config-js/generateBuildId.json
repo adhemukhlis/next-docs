@@ -1,0 +1,118 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: generateBuildId\ndescription: Configure the build id, which is used to identify the current build in which your application is being served."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js generates an ID during "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " to identify which version of your application is being served. The same build should be used and boot up multiple containers."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you are rebuilding for each stage of your environment, you will need to generate a consistent build ID to use between containers. Use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateBuildId"
+				},
+				{
+					"type": "text",
+					"value": " command in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tgenerateBuildId: async () => {\n\t\t// This could be anything, using the latest git hash\n\t\treturn process.env.GIT_HASH\n\t},\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " When "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/config/next-config-js/deploymentId",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "deploymentId"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " is set, Next.js uses a constant build ID unless you explicitly configure "
+						},
+						{
+							"type": "inlineCode",
+							"value": "generateBuildId"
+						},
+						{
+							"type": "text",
+							"value": ". "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/self-hosting#version-skew",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version skew"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " is detected from the deployment ID instead."
+						}
+					]
+				}
+			]
+		}
+	]
+}

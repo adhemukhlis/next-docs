@@ -1,0 +1,1411 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Keeping pages static\ndescription: Keep selected route output static as your app changes.\nnav_title: Keeping pages static\nrelated:\n title: API reference\n description: Require static output across a route or defer work within one subtree.\n links:\n  - app/api-reference/file-conventions/route-segment-config/ensureStatic\n  - app/api-reference/functions/prefetch\n  - app/api-reference/functions/navigation"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Before "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", route segment configs such as "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/caching-without-cache-components#dynamic",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "dynamic = 'force-static'"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "dynamic = 'force-dynamic'"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "dynamic = 'error'"
+				},
+				{
+					"type": "text",
+					"value": " selected a rendering mode for an entire route. Cache Components lets one route combine prerendered UI, cached content, and request-specific content rendered at request time."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This flexibility is useful for routes that need personalization. Use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config/ensureStatic",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "ensureStatic"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when some or all of a route must avoid request-time server rendering for predictable performance and compute costs."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Decide what should stay static"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Static output does not depend on request-specific data. Next.js can generate it before a request and reuse it across requests."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/partialPrefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", route output becomes available in three "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#navigation-stages",
+					"children": [
+						{
+							"type": "text",
+							"value": "navigation stages"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "A default "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Link>"
+								},
+								{
+									"type": "text",
+									"value": " loads the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/glossary#app-shell",
+									"children": [
+										{
+											"type": "text",
+											"value": "App Shell"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<Link prefetch={true}>"
+								},
+								{
+									"type": "text",
+									"value": " can also load content for that link's URL."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The navigation renders anything that remains after the click."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ensureStatic"
+				},
+				{
+					"type": "text",
+					"value": " level extends the static requirement through one of these stages. In the following diagram, gray marks static output and blue marks content that can render at request time:"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"The Shell, Prefetch, and Navigation stages, with bars showing how each ensureStatic value extends the static requirement through those stages\"\nsrcLight=\"/docs/light/ensure-static-visual.png\"\nsrcDark=\"/docs/dark/ensure-static-visual.png\"\nwidth=\"1200\"\nheight=\"530\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Choose a level based on which request must use only static output:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'shell'"
+								},
+								{
+									"type": "text",
+									"value": ": the App Shell loaded by a default "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Link>"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'prefetch'"
+								},
+								{
+									"type": "text",
+									"value": ": the App Shell and the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/optimizing-prefetching",
+									"children": [
+										{
+											"type": "text",
+											"value": "per-link prefetch"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Link prefetch={true}>"
+								},
+								{
+									"type": "text",
+									"value": ", which can include content for the link's "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/glossary#url-data",
+									"children": [
+										{
+											"type": "text",
+											"value": "URL data"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", such as "
+								},
+								{
+									"type": "inlineCode",
+									"value": "params"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'navigation'"
+								},
+								{
+									"type": "text",
+									"value": ": the complete route, including the response returned after the user navigates."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Example"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The following example adds static requirements to three parts of an online store: its shared cart, product pages, and public buying guides."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "txt",
+			"meta": null,
+			"value": "app/\n├── store/\n│   ├── layout.tsx         # Shared layout with the cart\n│   ├── page.tsx           # Product catalog\n│   └── products/\n│       └── [slug]/\n│           └── page.tsx   # Product details and cart status\n├── guides/\n│   └── [id]/\n│       └── page.tsx       # Editorial buying guides\n└── ui/\n    ├── cart.tsx\n    └── product.tsx\nlib/\n└── guides.ts"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Enable "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/partialPrefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" highlight={4,5}",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tcacheComponents: true,\n\tpartialPrefetching: true,\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 1: Load a static App Shell"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The shared store layout displays a visitor's cart count. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "CartButton"
+				},
+				{
+					"type": "text",
+					"value": " reads the count from a cookie on the server:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/cart.tsx\"",
+			"value": "import { cookies } from 'next/headers'\n\nexport async function CartButton() {\n\tconst value = Number((await cookies()).get('cart-count')?.value ?? 0)\n\treturn <button>Cart ({value})</button>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The layout places "
+				},
+				{
+					"type": "inlineCode",
+					"value": "CartButton"
+				},
+				{
+					"type": "text",
+					"value": " inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": ", which provides a static fallback while the current count renders:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/store/layout.tsx\"",
+			"value": "import Link from 'next/link'\nimport { Suspense } from 'react'\nimport { CartButton } from '@/app/ui/cart'\n\nexport default function StoreLayout({ children }: LayoutProps<'/store'>) {\n\treturn (\n\t\t<>\n\t\t\t<nav>\n\t\t\t\t<Link href=\"/store\">Products</Link>\n\t\t\t\t<Link href=\"/guides\">Buying guides</Link>\n\t\t\t\t<Suspense fallback={<button>Cart (0)</button>}>\n\t\t\t\t\t<CartButton />\n\t\t\t\t</Suspense>\n\t\t\t</nav>\n\t\t\t<main>{children}</main>\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The navigation and cart fallback are shared across visitors. Loading a link to the store should not render the personalized cart count on the server before the user clicks. Add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ensureStatic = 'shell'"
+				},
+				{
+					"type": "text",
+					"value": " to make a default "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " request only the static App Shell:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/store/layout.tsx\" highlight={5}",
+			"value": "import Link from 'next/link'\nimport { Suspense } from 'react'\nimport { CartButton } from '@/app/ui/cart'\n\nexport const ensureStatic = 'shell'\n\nexport default function StoreLayout({ children }: LayoutProps<'/store'>) {\n\t// ...\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A default "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " into the store now loads the navigation and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Cart (0)"
+				},
+				{
+					"type": "text",
+					"value": " fallback from static output. The server does not render the current cart count until a later per-link prefetch or navigation requests it. This avoids request-time server work for links that the user may never click."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": If only "
+						},
+						{
+							"type": "inlineCode",
+							"value": "CartButton"
+						},
+						{
+							"type": "text",
+							"value": " needed to be deferred from the App Shell, you could call "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/prefetch",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "await prefetch()"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " inside that subtree. Here, the requirement applies to the entire store shell, including future changes, so the layout uses "
+						},
+						{
+							"type": "inlineCode",
+							"value": "ensureStatic = 'shell'"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 2: Prefetch static product details"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each product page combines details that can be reused across visitors with a cart action that depends on the current visitor. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ProductDetails"
+				},
+				{
+					"type": "text",
+					"value": " caches its query with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", while "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ProductCartStatus"
+				},
+				{
+					"type": "text",
+					"value": " reads a cookie to check whether the product is already in the cart:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/product.tsx\"",
+			"value": "import { cookies } from 'next/headers'\nimport { db } from '@/lib/db'\n\ntype Params = Promise<{ slug: string }>\n\nexport async function ProductDetails({ params }: { params: Params }) {\n\tconst { slug } = await params\n\tconst product = await getProduct(slug)\n\treturn <h1>{product.name}</h1>\n}\n\nexport async function ProductCartStatus({ params }: { params: Params }) {\n\tconst { slug } = await params\n\tconst cart = (await cookies()).get('cart')?.value?.split(',') ?? []\n\treturn <button>{cart.includes(slug) ? 'Remove from cart' : 'Add to cart'}</button>\n}\n\nasync function getProduct(slug: string) {\n\t'use cache'\n\treturn db.product.findUniqueOrThrow({ where: { slug } })\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The product route prerenders the catalog's product URL with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-static-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Separate "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundaries let the product details render with a static cart fallback:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/store/products/[slug]/page.tsx\"",
+			"value": "import { Suspense } from 'react'\nimport { ProductCartStatus, ProductDetails } from '@/app/ui/product'\n\nexport function generateStaticParams() {\n\treturn [{ slug: 'coffee-grinder' }]\n}\n\nexport default function ProductPage({ params }: PageProps<'/store/products/[slug]'>) {\n\treturn (\n\t\t<>\n\t\t\t<Suspense fallback={<p>Loading product...</p>}>\n\t\t\t\t<ProductDetails params={params} />\n\t\t\t</Suspense>\n\t\t\t<Suspense fallback={<button>Add to cart</button>}>\n\t\t\t\t<ProductCartStatus params={params} />\n\t\t\t</Suspense>\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A default product link loads the App Shell, which contains the product fallback. Because the product details are already prerendered, the catalog can include them before the click by setting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch={true}"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/store/page.tsx\"",
+			"value": "<Link\n\thref=\"/store/products/coffee-grinder\"\n\tprefetch={true}>\n\tCoffee grinder\n</Link>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each visible "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch={true}"
+				},
+				{
+					"type": "text",
+					"value": " link can render "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ProductCartStatus"
+				},
+				{
+					"type": "text",
+					"value": " to personalize the cart action for that product. A grid with 20 visible products can therefore trigger 20 request-time server renders before the user clicks a product."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ensureStatic = 'prefetch'"
+				},
+				{
+					"type": "text",
+					"value": " to make every product prefetch use only static output:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/store/products/[slug]/page.tsx\" highlight={4}",
+			"value": "import { Suspense } from 'react'\nimport { ProductCartStatus, ProductDetails } from '@/app/ui/product'\n\nexport const ensureStatic = 'prefetch'\n\nexport default function ProductPage({ params }: PageProps<'/store/products/[slug]'>) {\n\t// ...\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each product prefetch now includes the cached product details and the static "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Add to cart"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " fallback without invoking request-time server rendering. The current cart status renders after the user follows the link."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "An "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ensureStatic"
+				},
+				{
+					"type": "text",
+					"value": " value covers the whole route, including layouts above the segment that exports it. On product routes, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'prefetch'"
+				},
+				{
+					"type": "text",
+					"value": " also keeps the store layout static through the per-link prefetch."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": If only "
+						},
+						{
+							"type": "inlineCode",
+							"value": "ProductCartStatus"
+						},
+						{
+							"type": "text",
+							"value": " needed to be deferred from per-link prefetches, you could call "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/navigation",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "await navigation()"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " before reading the cookie. Here, every product prefetch must avoid request-time server rendering, so the page uses "
+						},
+						{
+							"type": "inlineCode",
+							"value": "ensureStatic = 'prefetch'"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 3: Prerender the buying guides"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The store also has public buying guides. Each guide reads its content from the database and applies a theme from a cookie:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/guides/[id]/page.tsx\"",
+			"value": "import { Suspense } from 'react'\nimport { cookies } from 'next/headers'\nimport { getGuide } from '@/lib/guides'\n\nexport default function GuidePage({ params }: PageProps<'/guides/[id]'>) {\n\treturn (\n\t\t<Suspense fallback={<p>Loading guide...</p>}>\n\t\t\t<Guide params={params} />\n\t\t</Suspense>\n\t)\n}\n\nasync function Guide({ params }: { params: Promise<{ id: string }> }) {\n\tconst { id } = await params\n\tconst guide = await getGuide(id)\n\tconst theme = (await cookies()).get('theme')?.value\n\treturn <article data-theme={theme}>{guide.content}</article>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The existing "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getGuide()"
+				},
+				{
+					"type": "text",
+					"value": " helper performs the database query:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"lib/guides.ts\"",
+			"value": "import { db } from '@/lib/db'\n\nexport async function getGuide(id: string) {\n\treturn db.guide.findUniqueOrThrow({ where: { id } })\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " currently produces partial prerenders for the store routes and the buying guides:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "text",
+			"meta": "filename=\"Terminal\"",
+			"value": "Route (app)\n├   /guides/[id]\n│ └ ◐ /guides/[id]\n├ ◐ /store\n└   /store/products/[slug]\n  ├ ◐ /store/products/[slug]\n  └ ◐ /store/products/coffee-grinder\n\n◐  (Partial Prerender)  prerendered as static HTML with dynamic server-streamed content"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Partial output is expected for the store and product routes because their request-specific cart UI renders later. The buying guides are public editorial pages, so they should return complete static output without request-time server rendering. Add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ensureStatic = 'navigation'"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "diff",
+			"meta": "filename=\"app/guides/[id]/page.tsx\"",
+			"value": "  import { Suspense } from 'react'\n  import { cookies } from 'next/headers'\n\n+ export const ensureStatic = 'navigation'\n\n  export default function GuidePage({ params }) {\n    // ...\n  }"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When running "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " again, Next.js first reports that the dynamic route does not provide any parameter values to prerender:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "Error: Page \"/guides/[id]\": `ensureStatic = \"navigation\"` requires an exported `generateStaticParams()` function.\nLearn more: https://nextjs.org/docs/messages/generate-static-params#with-ensurestatic\n    at ignore-listed frames\n> Build error occurred\nError: Failed to collect page data for /guides/[id]"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Export "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams()"
+				},
+				{
+					"type": "text",
+					"value": " and return at least one buying guide ID. Next.js prerenders the returned IDs during the build. It can generate other allowed IDs on their first request and store the result for later requests. With "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'navigation'"
+				},
+				{
+					"type": "text",
+					"value": ", that first request waits for the complete static page instead of streaming a fallback. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/incremental-static-regeneration-cache-components#at-runtime",
+					"children": [
+						{
+							"type": "text",
+							"value": "ISR with Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Add a helper that returns the guide IDs to prerender:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"lib/guides.ts\"",
+			"value": "export async function getGuideIds() {\n\tconst guides = await db.guide.findMany({ select: { id: true } })\n\treturn guides.map(({ id }) => id)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/guides/[id]/page.tsx\" highlight={3,7-10}",
+			"value": "import { Suspense } from 'react'\nimport { cookies } from 'next/headers'\nimport { getGuide, getGuideIds } from '@/lib/guides'\n\nexport const ensureStatic = 'navigation'\n\nexport async function generateStaticParams() {\n\tconst ids = await getGuideIds()\n\treturn ids.map((id) => ({ id }))\n}\n\nexport default function GuidePage({ params }: PageProps<'/guides/[id]'>) {\n\treturn (\n\t\t<Suspense fallback={<p>Loading guide...</p>}>\n\t\t\t<Guide params={params} />\n\t\t</Suspense>\n\t)\n}\n\nasync function Guide({ params }: { params: Promise<{ id: string }> }) {\n\tconst { id } = await params\n\tconst guide = await getGuide(id)\n\tconst theme = (await cookies()).get('theme')?.value\n\treturn <article data-theme={theme}>{guide.content}</article>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams()"
+				},
+				{
+					"type": "text",
+					"value": " provides the parameter values, but the guide still contains uncached and request-specific work. The next build reports that the route cannot be fully static:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "Error: Route \"/guides/[id]\": Next.js encountered uncached or runtime data on a route that must be fully static.\n\nThis route is configured to be fully static, but uncached or runtime data prevents it from being fully prerendered.\n\nWays to fix this:\n  - [cache] For uncached data (`fetch`, database calls): cache the access with `\"use cache\"` (does not apply to `connection()`)\n  - [remove] Remove the data access\n  - [client] Read the data on the client\n\nLearn more: https://nextjs.org/docs/messages/static-route-dynamic\n    at Suspense (<anonymous>)\n    at body (<anonymous>)\n    at html (<anonymous>)"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The build identifies the affected route, but its stack frames do not include source locations for the data access. To get source-mapped code frames while fixing it, start "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " and open "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/guides/coffee"
+				},
+				{
+					"type": "text",
+					"value": ". If you can only run a build, use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/building#debug-prerender-errors",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next build --debug-prerender"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The development overlay first points to the uncached database query:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"lib/guides.ts\" highlight={1}",
+			"value": "return db.guide.findUniqueOrThrow({ where: { id } })"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "It presents three ways to handle uncached data:"
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "<FixCardGrid>\n  <FixCard\n    group=\"cache\"\n    title=\"Cache the data\"\n    href=\"/docs/messages/static-route-dynamic#cache-the-data\"\n    snippets={[\n      { text: 'async function getData() {' },\n      { text: '  \"use cache\"', highlight: true },\n      { text: '  return await db.query(…)' },\n    ]}\n  />\n  <FixCard\n    group=\"remove\"\n    title=\"Remove the data access\"\n    href=\"/docs/messages/static-route-dynamic#remove-the-data-access\"\n    snippets={[\n      { text: 'async function Page() {' },\n      { text: '- await connection()', highlight: true },\n      { text: '  return <Content />' },\n    ]}\n  />\n  <FixCard\n    group=\"client\"\n    title=\"Read the data on the client\"\n    href=\"/docs/messages/static-route-dynamic#read-the-data-on-the-client\"\n    snippets={[\n      { text: \"'use client'\" },\n      { text: \"const data = useSWR('/api')\", highlight: true },\n      { text: 'return <Content data={data} />' },\n    ]}\n  />\n</FixCardGrid>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The buying-guide content can be shared across visitors, so the "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " fix preserves the page's static requirement. Add the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "'use cache'"
+						},
+						{
+							"type": "text",
+							"value": " directive"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getGuide()"
+				},
+				{
+					"type": "text",
+					"value": " so Next.js can reuse the query result:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"lib/guides.ts\" highlight={9}",
+			"value": "import { db } from '@/lib/db'\n\nexport async function getGuideIds() {\n\tconst guides = await db.guide.findMany({ select: { id: true } })\n\treturn guides.map(({ id }) => id)\n}\n\nexport async function getGuide(id: string) {\n\t'use cache'\n\treturn db.guide.findUniqueOrThrow({ where: { id } })\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After the query is cached, the overlay points to the remaining request-specific value:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/guides/[id]/page.tsx\" highlight={1}",
+			"value": "const theme = (await cookies()).get('theme')?.value"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The overlay now presents the fixes for runtime data:"
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "<FixCardGrid>\n  <FixCard\n    group=\"remove\"\n    title=\"Remove the data access\"\n    href=\"/docs/messages/static-route-runtime#remove-the-data-access\"\n    snippets={[\n      { text: 'async function Page() {' },\n      { text: '- const store = await cookies()', highlight: true },\n      { text: '  return <Content />' },\n    ]}\n  />\n  <FixCard\n    group=\"client\"\n    title=\"Read the data on the client\"\n    href=\"/docs/messages/static-route-runtime#read-the-data-on-the-client\"\n    snippets={[\n      { text: \"'use client'\" },\n      { text: \"use(browser('Read cookie'))\", highlight: true },\n      { text: 'document.cookie.match(/cart=/)' },\n    ]}\n  />\n</FixCardGrid>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The buying guides do not need a visitor-specific theme, so remove the cookie access:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "diff",
+			"meta": "filename=\"app/guides/[id]/page.tsx\"",
+			"value": "  import { Suspense } from 'react'\n- import { cookies } from 'next/headers'\n  import { getGuide, getGuideIds } from '@/lib/guides'\n\n  // ...\n\n  async function Guide({ params }) {\n    const { id } = await params\n    const guide = await getGuide(id)\n-   const theme = (await cookies()).get('theme')?.value\n-   return <article data-theme={theme}>{guide.content}</article>\n+   return <article>{guide.content}</article>\n  }"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With the database query cached and the request-specific theme removed, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " produces a complete static page for the listed guide:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "text",
+			"meta": "filename=\"Terminal\"",
+			"value": "Route (app)\n├   /guides/[id]\n│ ├ ◐ /guides/[id]\n│ └ ○ /guides/coffee\n├ ◐ /store\n└   /store/products/[slug]\n  ├ ◐ /store/products/[slug]\n  └ ◐ /store/products/coffee-grinder\n\n○  (Static)             prerendered as static content\n◐  (Partial Prerender)  prerendered as static HTML with dynamic server-streamed content"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The listed guide is now fully prerendered. For an unlisted guide ID, the first request waits while Next.js generates and stores the complete static page. The buying guides no longer perform request-time server rendering, and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ensureStatic"
+				},
+				{
+					"type": "text",
+					"value": " will report future changes that would break that requirement."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The store now loads shared navigation from its static App Shell, includes cached product details in per-link prefetches without invoking the server, and returns complete static output for buying guides. Personalized cart data still renders when it is needed."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Next steps"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/optimizing-prefetching#defer-work-to-a-later-stage",
+									"children": [
+										{
+											"type": "text",
+											"value": "Optimize prefetching"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to control when individual subtrees render."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/instant-navigation",
+									"children": [
+										{
+											"type": "text",
+											"value": "Ensure instant navigations"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to validate that client navigations into the store show UI immediately."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/migrating-to-cache-components",
+									"children": [
+										{
+											"type": "text",
+											"value": "Migrate to Cache Components"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to replace route-level configs such as "
+								},
+								{
+									"type": "inlineCode",
+									"value": "dynamic = 'force-static'"
+								},
+								{
+									"type": "text",
+									"value": " in an existing app."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

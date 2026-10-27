@@ -1,0 +1,2200 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Fetching Data\ndescription: Learn how to fetch data and stream content that depends on data.\nrelated:\n title: Next steps\n description: Learn more about advanced data-fetching patterns and the features mentioned in this page.\n links:\n  - app/guides/single-page-applications\n  - app/guides/data-security\n  - app/api-reference/functions/fetch\n  - app/api-reference/file-conventions/loading\n  - app/api-reference/config/next-config-js/logging\n  - app/api-reference/config/next-config-js/taint"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This page will walk you through how you can fetch data in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#server-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " Components, and how to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#streaming",
+					"children": [
+						{
+							"type": "text",
+							"value": "stream"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " components that depend on uncached data."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Fetching data"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can fetch data in Server Components using any asynchronous I/O, such as:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#with-the-fetch-api",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "fetch"
+										},
+										{
+											"type": "text",
+											"value": " API"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "An "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#with-an-orm-or-database",
+									"children": [
+										{
+											"type": "text",
+											"value": "ORM or database"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "With the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " API"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To fetch data with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " API, turn your component into an asynchronous function, and await the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " call. For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/page.tsx\" switcher",
+			"value": "export default async function Page() {\n\tconst data = await fetch('https://api.vercel.app/blog')\n\tconst posts = await data.json()\n\treturn (\n\t\t<ul>\n\t\t\t{posts.map((post) => (\n\t\t\t\t<li key={post.id}>{post.title}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/page.js\" switcher",
+			"value": "export default async function Page() {\n\tconst data = await fetch('https://api.vercel.app/blog')\n\tconst posts = await data.json()\n\treturn (\n\t\t<ul>\n\t\t\t{posts.map((post) => (\n\t\t\t\t<li key={post.id}>{post.title}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Identical "
+										},
+										{
+											"type": "inlineCode",
+											"value": "fetch"
+										},
+										{
+											"type": "text",
+											"value": " requests in a React component tree are "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/glossary#memoization",
+											"children": [
+												{
+													"type": "text",
+													"value": "memoized"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " by default, so you can fetch data in the component that needs it instead of drilling props."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "fetch"
+										},
+										{
+											"type": "text",
+											"value": " requests are not cached by default and will block the page from rendering until the request is complete. Use the "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/directives/use-cache",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "use cache"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " directive to cache results, or wrap the fetching component in "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/getting-started/caching#streaming-uncached-data",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "<Suspense>"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " to stream fresh data at request time. See "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/getting-started/caching",
+											"children": [
+												{
+													"type": "text",
+													"value": "caching"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " for details."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "During development, you can log "
+										},
+										{
+											"type": "inlineCode",
+											"value": "fetch"
+										},
+										{
+											"type": "text",
+											"value": " calls for better visibility and debugging. See the "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/config/next-config-js/logging",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "logging"
+												},
+												{
+													"type": "text",
+													"value": " API reference"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "With an ORM or database"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since Server Components are rendered on the server, credentials and query logic will not be included in the client bundle so you can safely make database queries using an ORM or database client."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/page.tsx\" switcher",
+			"value": "import { db, posts } from '@/lib/db'\n\nexport default async function Page() {\n\tconst allPosts = await db.select().from(posts)\n\treturn (\n\t\t<ul>\n\t\t\t{allPosts.map((post) => (\n\t\t\t\t<li key={post.id}>{post.title}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/page.js\" switcher",
+			"value": "import { db, posts } from '@/lib/db'\n\nexport default async function Page() {\n\tconst allPosts = await db.select().from(posts)\n\treturn (\n\t\t<ul>\n\t\t\t{allPosts.map((post) => (\n\t\t\t\t<li key={post.id}>{post.title}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You should still ensure requests are properly authenticated and authorized. For best practices on securing server-side data access, see the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/data-security",
+					"children": [
+						{
+							"type": "text",
+							"value": "data security guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Streaming"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When you fetch data in Server Components, the data is fetched and rendered on the server for each request. If you have any slow data requests, the whole route will be blocked from rendering until all the data is fetched."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To improve the initial load time and user experience, you can break the page into smaller "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "chunks"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and progressively send those chunks from the server to the client. This is called streaming. See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/streaming",
+					"children": [
+						{
+							"type": "text",
+							"value": "Streaming guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for a deeper look at how streaming works, including the HTTP contract, infrastructure considerations, and performance trade-offs."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"How Server Rendering with Streaming Works\"\nsrcLight=\"/docs/light/server-rendering-with-streaming.png\"\nsrcDark=\"/docs/dark/server-rendering-with-streaming.png\"\nwidth=\"1600\"\nheight=\"785\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There are two ways you can use streaming in your application:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Wrapping a page with a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#with-loadingjs",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "loading.js"
+										},
+										{
+											"type": "text",
+											"value": " file"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Wrapping a component with "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#with-suspense",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "<Suspense>"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Bots and crawlers are served differently from browsers. Next.js waits for data fetching to finish and sends the fully rendered page instead of streaming it progressively. See "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/streaming#bots-and-crawlers",
+							"children": [
+								{
+									"type": "text",
+									"value": "Bots and crawlers"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can create a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": " file in the same folder as your page to stream the "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "entire page"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " while the data is being fetched. For example, to stream "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/blog/page.js"
+				},
+				{
+					"type": "text",
+					"value": ", add the file inside the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/blog"
+				},
+				{
+					"type": "text",
+					"value": " folder."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"Blog folder structure with loading.js file\"\nsrcLight=\"/docs/light/loading-file.png\"\nsrcDark=\"/docs/dark/loading-file.png\"\nwidth=\"1600\"\nheight=\"525\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/loading.tsx\" switcher",
+			"value": "export default function Loading() {\n\t// Define the Loading UI here\n\treturn <div>Loading...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/loading.js\" switcher",
+			"value": "export default function Loading() {\n\t// Define the Loading UI here\n\treturn <div>Loading...</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "On navigation, the user will immediately see the layout and a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#creating-meaningful-loading-states",
+					"children": [
+						{
+							"type": "text",
+							"value": "loading state"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " while the page is being rendered. The new content will then be automatically swapped in once rendering is complete."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"Loading UI\"\nsrcLight=\"/docs/light/loading-ui.png\"\nsrcDark=\"/docs/dark/loading-ui.png\"\nwidth=\"1600\"\nheight=\"691\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Behind the scenes, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": " will be "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/project-structure#component-hierarchy",
+					"children": [
+						{
+							"type": "text",
+							"value": "nested inside "
+						},
+						{
+							"type": "inlineCode",
+							"value": "layout.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and will automatically wrap the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.js"
+				},
+				{
+					"type": "text",
+					"value": " file and any children below in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"loading.js overview\"\nsrcLight=\"/docs/light/loading-overview.png\"\nsrcDark=\"/docs/dark/loading-overview.png\"\nwidth=\"1600\"\nheight=\"768\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Because of this, a layout that accesses uncached or runtime data (e.g. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers()"
+				},
+				{
+					"type": "text",
+					"value": ", or uncached fetches) does not fall back to a same route segment "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": ". Instead, it blocks navigation until the layout finishes rendering. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " prevents this by guiding you with a build-time error."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To fix this, wrap the uncached access in its own "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#with-suspense",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " boundary with a fallback, or move the data fetching into "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.js"
+				},
+				{
+					"type": "text",
+					"value": " where "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": " can cover it. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/loading",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "loading.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more details."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This is why, while "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": " works well for streaming route segments, using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " closer to the runtime or uncached data access is recommended."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " allows you to be more granular about what parts of the page to stream. For example, you can immediately show any page content that falls outside of the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary, and stream in the list of blog posts inside the boundary."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/page.tsx\" switcher",
+			"value": "import { Suspense } from 'react'\nimport BlogList from '@/components/BlogList'\nimport BlogListSkeleton from '@/components/BlogListSkeleton'\n\nexport default function BlogPage() {\n\treturn (\n\t\t<div>\n\t\t\t{/* This content will be sent to the client immediately */}\n\t\t\t<header>\n\t\t\t\t<h1>Welcome to the Blog</h1>\n\t\t\t\t<p>Read the latest posts below.</p>\n\t\t\t</header>\n\t\t\t<main>\n\t\t\t\t{/* If there's any dynamic content inside this boundary, it will be streamed in */}\n\t\t\t\t<Suspense fallback={<BlogListSkeleton />}>\n\t\t\t\t\t<BlogList />\n\t\t\t\t</Suspense>\n\t\t\t</main>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/page.js\" switcher",
+			"value": "import { Suspense } from 'react'\nimport BlogList from '@/components/BlogList'\nimport BlogListSkeleton from '@/components/BlogListSkeleton'\n\nexport default function BlogPage() {\n\treturn (\n\t\t<div>\n\t\t\t{/* This content will be sent to the client immediately */}\n\t\t\t<header>\n\t\t\t\t<h1>Welcome to the Blog</h1>\n\t\t\t\t<p>Read the latest posts below.</p>\n\t\t\t</header>\n\t\t\t<main>\n\t\t\t\t{/* If there's any dynamic content inside this boundary, it will be streamed in */}\n\t\t\t\t<Suspense fallback={<BlogListSkeleton />}>\n\t\t\t\t\t<BlogList />\n\t\t\t\t</Suspense>\n\t\t\t</main>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Creating meaningful loading states"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "An instant loading state is fallback UI that is shown immediately to the user after navigation. For the best user experience, we recommend designing loading states that are meaningful and help users understand the app is responding. For example, you can use skeletons and spinners, or a small but meaningful part of future screens such as a cover photo, title, etc."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In development, you can preview and inspect the loading state of your components using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/learn/react-developer-tools",
+					"children": [
+						{
+							"type": "text",
+							"value": "React Devtools"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Client Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There are two ways to fetch data in Client Components, using:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "React's "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react/use",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "use"
+										},
+										{
+											"type": "text",
+											"value": " API"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "A community library like "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://swr.vercel.app/",
+									"children": [
+										{
+											"type": "text",
+											"value": "SWR"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://tanstack.com/query/latest",
+									"children": [
+										{
+											"type": "text",
+											"value": "React Query"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Streaming data with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use"
+				},
+				{
+					"type": "text",
+					"value": " API"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use React's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/use",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use"
+						},
+						{
+							"type": "text",
+							"value": " API"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#streaming",
+					"children": [
+						{
+							"type": "text",
+							"value": "stream"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " data from the server to client. Start by fetching data in your Server component, and pass the promise to your Client Component as prop:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/page.tsx\" switcher",
+			"value": "import Posts from '@/app/ui/posts'\nimport { Suspense } from 'react'\n\nexport default function Page() {\n\t// Don't await the data fetching function\n\tconst posts = getPosts()\n\n\treturn (\n\t\t<Suspense fallback={<div>Loading...</div>}>\n\t\t\t<Posts posts={posts} />\n\t\t</Suspense>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/page.js\" switcher",
+			"value": "import Posts from '@/app/ui/posts'\nimport { Suspense } from 'react'\n\nexport default function Page() {\n\t// Don't await the data fetching function\n\tconst posts = getPosts()\n\n\treturn (\n\t\t<Suspense fallback={<div>Loading...</div>}>\n\t\t\t<Posts posts={posts} />\n\t\t</Suspense>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, in your Client Component, use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use"
+				},
+				{
+					"type": "text",
+					"value": " API to read the promise:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/posts.tsx\" switcher",
+			"value": "'use client'\nimport { use } from 'react'\n\nexport default function Posts({ posts }: { posts: Promise<{ id: string; title: string }[]> }) {\n\tconst allPosts = use(posts)\n\n\treturn (\n\t\t<ul>\n\t\t\t{allPosts.map((post) => (\n\t\t\t\t<li key={post.id}>{post.title}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/posts.js\" switcher",
+			"value": "'use client'\nimport { use } from 'react'\n\nexport default function Posts({ posts }) {\n\tconst allPosts = use(posts)\n\n\treturn (\n\t\t<ul>\n\t\t\t{allPosts.map((post) => (\n\t\t\t\t<li key={post.id}>{post.title}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the example above, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Posts>"
+				},
+				{
+					"type": "text",
+					"value": " component is wrapped in a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Suspense",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						},
+						{
+							"type": "text",
+							"value": " boundary"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This means the fallback will be shown while the promise is being resolved. Learn more about "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#streaming",
+					"children": [
+						{
+							"type": "text",
+							"value": "streaming"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can resolve a promise on the server with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await"
+				},
+				{
+					"type": "text",
+					"value": " or in a Client Component with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use()"
+				},
+				{
+					"type": "text",
+					"value": ". React covers "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/use#resolve-promise-in-server-or-client-component",
+					"children": [
+						{
+							"type": "text",
+							"value": "when to resolve a Promise in a Server or Client Component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". To share one promise with many Client Components instead of passing it as a prop, provide it through context. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/single-page-applications#using-reacts-use-within-a-context-provider",
+					"children": [
+						{
+							"type": "text",
+							"value": "Using React's "
+						},
+						{
+							"type": "inlineCode",
+							"value": "use"
+						},
+						{
+							"type": "text",
+							"value": " within a Context Provider"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Community libraries"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use a community library like "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://swr.vercel.app/",
+					"children": [
+						{
+							"type": "text",
+							"value": "SWR"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://tanstack.com/query/latest",
+					"children": [
+						{
+							"type": "text",
+							"value": "React Query"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to fetch data in Client Components. These libraries have their own semantics for caching, streaming, and other features. For example, with SWR:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/page.tsx\" switcher",
+			"value": "'use client'\nimport useSWR from 'swr'\n\nconst fetcher = (url) => fetch(url).then((r) => r.json())\n\nexport default function BlogPage() {\n\tconst { data, error, isLoading } = useSWR('https://api.vercel.app/blog', fetcher)\n\n\tif (isLoading) return <div>Loading...</div>\n\tif (error) return <div>Error: {error.message}</div>\n\n\treturn (\n\t\t<ul>\n\t\t\t{data.map((post: { id: string; title: string }) => (\n\t\t\t\t<li key={post.id}>{post.title}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/page.js\" switcher",
+			"value": "'use client'\n\nimport useSWR from 'swr'\n\nconst fetcher = (url) => fetch(url).then((r) => r.json())\n\nexport default function BlogPage() {\n\tconst { data, error, isLoading } = useSWR('https://api.vercel.app/blog', fetcher)\n\n\tif (isLoading) return <div>Loading...</div>\n\tif (error) return <div>Error: {error.message}</div>\n\n\treturn (\n\t\t<ul>\n\t\t\t{data.map((post) => (\n\t\t\t\t<li key={post.id}>{post.title}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/client-side-data-fetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client-side data fetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for direct browser fetching, providing initial data from a Server Component, and coordinating a library cache with the Next.js server and client caches."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Sequential data fetching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Sequential data fetching happens when one request depends on data from another."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Playlists>"
+				},
+				{
+					"type": "text",
+					"value": " can only fetch data after "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getArtist()"
+				},
+				{
+					"type": "text",
+					"value": " resolves because it needs the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "artistID"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/artist/[username]/page.tsx\" switcher",
+			"value": "export default async function Page({ params }: { params: Promise<{ username: string }> }) {\n\tconst { username } = await params\n\t// Get artist information\n\tconst artist = await getArtist(username)\n\n\treturn (\n\t\t<>\n\t\t\t<h1>{artist.name}</h1>\n\t\t\t{/* Show fallback UI while the Playlists component is loading */}\n\t\t\t<Suspense fallback={<div>Loading...</div>}>\n\t\t\t\t{/* Pass the artist ID to the Playlists component */}\n\t\t\t\t<Playlists artistID={artist.id} />\n\t\t\t</Suspense>\n\t\t</>\n\t)\n}\n\nasync function Playlists({ artistID }: { artistID: string }) {\n\t// Use the artist ID to fetch playlists\n\tconst playlists = await getArtistPlaylists(artistID)\n\n\treturn (\n\t\t<ul>\n\t\t\t{playlists.map((playlist) => (\n\t\t\t\t<li key={playlist.id}>{playlist.name}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/artist/[username]/page.js\" switcher",
+			"value": "export default async function Page({ params }) {\n\tconst { username } = await params\n\t// Get artist information\n\tconst artist = await getArtist(username)\n\n\treturn (\n\t\t<>\n\t\t\t<h1>{artist.name}</h1>\n\t\t\t{/* Show fallback UI while the Playlists component is loading */}\n\t\t\t<Suspense fallback={<div>Loading...</div>}>\n\t\t\t\t{/* Pass the artist ID to the Playlists component */}\n\t\t\t\t<Playlists artistID={artist.id} />\n\t\t\t</Suspense>\n\t\t</>\n\t)\n}\n\nasync function Playlists({ artistID }) {\n\t// Use the artist ID to fetch playlists\n\tconst playlists = await getArtistPlaylists(artistID)\n\n\treturn (\n\t\t<ul>\n\t\t\t{playlists.map((playlist) => (\n\t\t\t\t<li key={playlist.id}>{playlist.name}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In this example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " allows the playlists to stream in after the artist data loads. However, the page still waits for the artist data before displaying anything. To prevent this, you can wrap the entire page component in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary (for example, using a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#with-loadingjs",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "loading.js"
+						},
+						{
+							"type": "text",
+							"value": " file"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ") to show a loading state immediately."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Ensure your data source can resolve the first request quickly, as it blocks everything else. If you can't optimize the request further, consider "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "caching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " the result if the data changes infrequently."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parallel data fetching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Parallel data fetching happens when data requests in a route are eagerly initiated and start at the same time."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/layouts-and-pages",
+					"children": [
+						{
+							"type": "text",
+							"value": "layouts and pages"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " are rendered in parallel. So each segment starts fetching data as soon as possible."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "However, within "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "any"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " component, multiple "
+				},
+				{
+					"type": "inlineCode",
+					"value": "async"
+				},
+				{
+					"type": "text",
+					"value": "/"
+				},
+				{
+					"type": "inlineCode",
+					"value": "await"
+				},
+				{
+					"type": "text",
+					"value": " requests can still be sequential if placed after the other. For example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getAlbums"
+				},
+				{
+					"type": "text",
+					"value": " will be blocked until "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getArtist"
+				},
+				{
+					"type": "text",
+					"value": " is resolved:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/artist/[username]/page.tsx\" switcher",
+			"value": "import { getArtist, getAlbums } from '@/app/lib/data'\n\nexport default async function Page({ params }) {\n\t// These requests will be sequential\n\tconst { username } = await params\n\tconst artist = await getArtist(username)\n\tconst albums = await getAlbums(username)\n\treturn <div>{artist.name}</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Start multiple requests by calling "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": ", then await them with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Promise.all"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Requests begin as soon as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " is called."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/artist/[username]/page.tsx\" highlight={3,8,24} switcher",
+			"value": "import Albums from './albums'\n\nasync function getArtist(username: string) {\n\tconst res = await fetch(`https://api.example.com/artist/${username}`)\n\treturn res.json()\n}\n\nasync function getAlbums(username: string) {\n\tconst res = await fetch(`https://api.example.com/artist/${username}/albums`)\n\treturn res.json()\n}\n\nexport default async function Page({ params }: { params: Promise<{ username: string }> }) {\n\tconst { username } = await params\n\n\t// Initiate requests\n\tconst artistData = getArtist(username)\n\tconst albumsData = getAlbums(username)\n\n\tconst [artist, albums] = await Promise.all([artistData, albumsData])\n\n\treturn (\n\t\t<>\n\t\t\t<h1>{artist.name}</h1>\n\t\t\t<Albums list={albums} />\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/artist/[username]/page.js\" highlight={3,8,20} switcher",
+			"value": "import Albums from './albums'\n\nasync function getArtist(username) {\n\tconst res = await fetch(`https://api.example.com/artist/${username}`)\n\treturn res.json()\n}\n\nasync function getAlbums(username) {\n\tconst res = await fetch(`https://api.example.com/artist/${username}/albums`)\n\treturn res.json()\n}\n\nexport default async function Page({ params }) {\n\tconst { username } = await params\n\n\t// Initiate requests\n\tconst artistData = getArtist(username)\n\tconst albumsData = getAlbums(username)\n\n\tconst [artist, albums] = await Promise.all([artistData, albumsData])\n\n\treturn (\n\t\t<>\n\t\t\t<h1>{artist.name}</h1>\n\t\t\t<Albums list={albums} />\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " If one request fails when using "
+						},
+						{
+							"type": "inlineCode",
+							"value": "Promise.all"
+						},
+						{
+							"type": "text",
+							"value": ", the entire operation will fail. To handle this, you can use the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Promise.allSettled"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " method instead."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reusing data with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "React.cache"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For data access that does not use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": ", such as an ORM or database query, wrap the function in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "React.cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Multiple components can then call the function within the same request while sharing one result:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/lib/user.ts\" switcher",
+			"value": "import { cache } from 'react'\nimport { db, eq, users } from '@/lib/db'\n\nexport const getUser = cache(async (id: string) => {\n\treturn db.query.users.findFirst({\n\t\twhere: eq(users.id, id),\n\t})\n})"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/lib/user.js\" switcher",
+			"value": "import { cache } from 'react'\nimport { db, eq, users } from '@/lib/db'\n\nexport const getUser = cache(async (id) => {\n\treturn db.query.users.findFirst({\n\t\twhere: eq(users.id, id),\n\t})\n})"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Components can call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getUser()"
+				},
+				{
+					"type": "text",
+					"value": " directly:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/page.tsx\" switcher",
+			"value": "import { getUser } from '../lib/user'\n\nexport default async function DashboardPage() {\n\tconst user = await getUser('1')\n\n\tif (!user) {\n\t\treturn null\n\t}\n\n\treturn <h1>Dashboard for {user.name}</h1>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/page.js\" switcher",
+			"value": "import { getUser } from '../lib/user'\n\nexport default async function DashboardPage() {\n\tconst user = await getUser('1')\n\n\tif (!user) {\n\t\treturn null\n\t}\n\n\treturn <h1>Dashboard for {user.name}</h1>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getUser"
+				},
+				{
+					"type": "text",
+					"value": " is wrapped with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "React.cache"
+				},
+				{
+					"type": "text",
+					"value": ", calls with the same "
+				},
+				{
+					"type": "inlineCode",
+					"value": "id"
+				},
+				{
+					"type": "text",
+					"value": " within one request return the same memoized result."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://react.dev/reference/react/cache#caveats",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "React.cache"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " is scoped to the current request only. Each request gets its own memoization scope with no sharing between requests."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Preloading data"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When a component renders after other blocking work, its data request starts late even if the request inputs are already available. Preloading starts the request earlier so it can run in parallel with that work and avoid a request waterfall."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To preload data, call the data-fetching function without "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await"
+				},
+				{
+					"type": "text",
+					"value": " before blocking work, then call the same function in the component that consumes the result."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The data-fetching function must deduplicate matching calls so the component can reuse the request started during preloading. Use one of the following approaches:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "For "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/fetch#memoization",
+									"children": [
+										{
+											"type": "text",
+											"value": "identical requests are memoized automatically"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "For an ORM or database, wrap the data-fetching function in "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#reusing-data-with-reactcache",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "React.cache"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "With Cache Components, add "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/directives/use-cache",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'use cache'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to the data-fetching function. If the function reads request APIs such as "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cookies()"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "headers()"
+								},
+								{
+									"type": "text",
+									"value": ", use "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/directives/use-cache-private",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'use cache: private'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In production, matching calls to a private Cache Function can reuse the same result within one request. This lets a component reuse a request started during preloading without storing the result in a server cache across requests."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Keep the preload function next to the component that consumes the data. This makes the dependency easier to find if you move or remove the component:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/item/[id]/item.tsx\" switcher",
+			"value": "async function getItem(id: string) {\n\tconst res = await fetch(`https://api.example.com/items/${id}`)\n\treturn res.json()\n}\n\nexport const preload = (id: string) => {\n\tvoid getItem(id)\n}\n\nexport default async function Item({ id }: { id: string }) {\n\tconst item = await getItem(id)\n\treturn <div>{item.name}</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/item/[id]/item.js\" switcher",
+			"value": "async function getItem(id) {\n\tconst res = await fetch(`https://api.example.com/items/${id}`)\n\treturn res.json()\n}\n\nexport const preload = (id) => {\n\tvoid getItem(id)\n}\n\nexport default async function Item({ id }) {\n\tconst item = await getItem(id)\n\treturn <div>{item.name}</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "preload()"
+				},
+				{
+					"type": "text",
+					"value": " before another blocking request to start loading the item earlier:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/item/[id]/page.tsx\" switcher",
+			"value": "import Item, { preload } from './item'\nimport { checkIsAvailable } from '@/app/lib/data'\n\nexport default async function Page({ params }: { params: Promise<{ id: string }> }) {\n\tconst { id } = await params\n\n\tpreload(id)\n\tconst isAvailable = await checkIsAvailable(id)\n\n\treturn isAvailable ? <Item id={id} /> : null\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/item/[id]/page.js\" switcher",
+			"value": "import Item, { preload } from './item'\nimport { checkIsAvailable } from '@/app/lib/data'\n\nexport default async function Page({ params }) {\n\tconst { id } = await params\n\n\tpreload(id)\n\tconst isAvailable = await checkIsAvailable(id)\n\n\treturn isAvailable ? <Item id={id} /> : null\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The item request continues while "
+				},
+				{
+					"type": "inlineCode",
+					"value": "checkIsAvailable()"
+				},
+				{
+					"type": "text",
+					"value": " runs. If the page renders "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Item>"
+				},
+				{
+					"type": "text",
+					"value": ", the identical "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " call reuses the request that "
+				},
+				{
+					"type": "inlineCode",
+					"value": "preload()"
+				},
+				{
+					"type": "text",
+					"value": " started."
+				}
+			]
+		}
+	]
+}

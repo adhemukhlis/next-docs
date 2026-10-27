@@ -1,0 +1,1644 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: redirects\ndescription: Add redirects to your Next.js app."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Redirects allow you to redirect an incoming request path to a different destination path."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use redirects you can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "redirects"
+				},
+				{
+					"type": "text",
+					"value": " key in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tredirects() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/about',\n\t\t\t\tdestination: '/',\n\t\t\t\tpermanent: true,\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "redirects"
+				},
+				{
+					"type": "text",
+					"value": " can be defined as a synchronous or async function. It should return, or resolve to, an array of objects with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "source"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "destination"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "permanent"
+				},
+				{
+					"type": "text",
+					"value": " properties:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "source"
+								},
+								{
+									"type": "text",
+									"value": " is the incoming request path pattern."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "destination"
+								},
+								{
+									"type": "text",
+									"value": " is the path you want to route to."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "permanent"
+								},
+								{
+									"type": "text",
+									"value": " "
+								},
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": " - if "
+								},
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": " will use the 308 status code which instructs clients/search engines to cache the redirect forever, if "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": " will use the 307 status code which is temporary and is not cached."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Why does Next.js use 307 and 308?"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Traditionally a 302 was used for a temporary redirect, and a 301 for a permanent redirect, but many browsers changed the request method of the redirect to "
+						},
+						{
+							"type": "inlineCode",
+							"value": "GET"
+						},
+						{
+							"type": "text",
+							"value": ", regardless of the original method. For example, if the browser made a request to "
+						},
+						{
+							"type": "inlineCode",
+							"value": "POST /v1/users"
+						},
+						{
+							"type": "text",
+							"value": " which returned status code "
+						},
+						{
+							"type": "inlineCode",
+							"value": "302"
+						},
+						{
+							"type": "text",
+							"value": " with location "
+						},
+						{
+							"type": "inlineCode",
+							"value": "/v2/users"
+						},
+						{
+							"type": "text",
+							"value": ", the subsequent request might be "
+						},
+						{
+							"type": "inlineCode",
+							"value": "GET /v2/users"
+						},
+						{
+							"type": "text",
+							"value": " instead of the expected "
+						},
+						{
+							"type": "inlineCode",
+							"value": "POST /v2/users"
+						},
+						{
+							"type": "text",
+							"value": ". Next.js uses the 307 temporary redirect, and 308 permanent redirect status codes to explicitly preserve the request method used."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "basePath"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								},
+								{
+									"type": "text",
+									"value": " - if false the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "basePath"
+								},
+								{
+									"type": "text",
+									"value": " won't be included when matching, can be used for external redirects only."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "locale"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								},
+								{
+									"type": "text",
+									"value": " - whether the locale should not be included when matching."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "has"
+								},
+								{
+									"type": "text",
+									"value": " is an array of "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#header-cookie-and-query-matching",
+									"children": [
+										{
+											"type": "text",
+											"value": "has objects"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " with the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "type"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "key"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "value"
+								},
+								{
+									"type": "text",
+									"value": " properties."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "missing"
+								},
+								{
+									"type": "text",
+									"value": " is an array of "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#header-cookie-and-query-matching",
+									"children": [
+										{
+											"type": "text",
+											"value": "missing objects"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " with the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "type"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "key"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "value"
+								},
+								{
+									"type": "text",
+									"value": " properties."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Redirects are checked before the filesystem which includes pages and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/public"
+				},
+				{
+					"type": "text",
+					"value": " files."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using the Pages Router, redirects are not applied to client-side routing ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "Link"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "router.push"
+				},
+				{
+					"type": "text",
+					"value": ") unless "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/proxy",
+					"children": [
+						{
+							"type": "text",
+							"value": "Proxy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is present and matches the path."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When a redirect is applied, any query values provided in the request will be passed through to the redirect destination. For example, see the following redirect configuration:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "{\n  source: '/old-blog/:path*',\n  destination: '/blog/:path*',\n  permanent: false\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Remember to include the forward slash "
+						},
+						{
+							"type": "inlineCode",
+							"value": "/"
+						},
+						{
+							"type": "text",
+							"value": " before the colon "
+						},
+						{
+							"type": "inlineCode",
+							"value": ":"
+						},
+						{
+							"type": "text",
+							"value": " in path parameters of the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "source"
+						},
+						{
+							"type": "text",
+							"value": " and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "destination"
+						},
+						{
+							"type": "text",
+							"value": " paths, otherwise the path will be treated as a literal string and you run the risk of causing infinite redirects."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/old-blog/post-1?hello=world"
+				},
+				{
+					"type": "text",
+					"value": " is requested, the client will be redirected to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/post-1?hello=world"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Path Matching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Path matches are allowed, for example "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/old-blog/:slug"
+				},
+				{
+					"type": "text",
+					"value": " will match "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/old-blog/first-post"
+				},
+				{
+					"type": "text",
+					"value": " (no nested paths):"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tredirects() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/old-blog/:slug',\n\t\t\t\tdestination: '/news/:slug', // Matched parameters can be used in the destination\n\t\t\t\tpermanent: true,\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The pattern "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/old-blog/:slug"
+				},
+				{
+					"type": "text",
+					"value": " matches "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/old-blog/first-post"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/old-blog/post-1"
+				},
+				{
+					"type": "text",
+					"value": " but not "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/old-blog/a/b"
+				},
+				{
+					"type": "text",
+					"value": " (no nested paths). Patterns are anchored to the start: "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/old-blog/:slug"
+				},
+				{
+					"type": "text",
+					"value": " will not match "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/archive/old-blog/first-post"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use modifiers on parameters: "
+				},
+				{
+					"type": "inlineCode",
+					"value": "*"
+				},
+				{
+					"type": "text",
+					"value": " (zero or more), "
+				},
+				{
+					"type": "inlineCode",
+					"value": "+"
+				},
+				{
+					"type": "text",
+					"value": " (one or more), "
+				},
+				{
+					"type": "inlineCode",
+					"value": "?"
+				},
+				{
+					"type": "text",
+					"value": " (zero or one). For example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/:slug*"
+				},
+				{
+					"type": "text",
+					"value": " matches "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/a"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/a/b/c"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Read more details on "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/pillarjs/path-to-regexp",
+					"children": [
+						{
+							"type": "text",
+							"value": "path-to-regexp"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " documentation."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Wildcard Path Matching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To match a wildcard path you can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "*"
+				},
+				{
+					"type": "text",
+					"value": " after a parameter, for example "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/:slug*"
+				},
+				{
+					"type": "text",
+					"value": " will match "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/a/b/c/d/hello-world"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tredirects() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/blog/:slug*',\n\t\t\t\tdestination: '/news/:slug*', // Matched parameters can be used in the destination\n\t\t\t\tpermanent: true,\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Regex Path Matching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To match a regex path you can wrap the regex in parentheses after a parameter, for example "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/post/:slug(\\\\d{1,})"
+				},
+				{
+					"type": "text",
+					"value": " will match "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/post/123"
+				},
+				{
+					"type": "text",
+					"value": " but not "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/post/abc"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tredirects() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/post/:slug(\\\\d{1,})',\n\t\t\t\tdestination: '/news/:slug', // Matched parameters can be used in the destination\n\t\t\t\tpermanent: false,\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The following characters "
+				},
+				{
+					"type": "inlineCode",
+					"value": "("
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": ")"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "{"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "}"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": ":"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "*"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "+"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "?"
+				},
+				{
+					"type": "text",
+					"value": " are used for regex path matching, so when used in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "source"
+				},
+				{
+					"type": "text",
+					"value": " as non-special values they must be escaped by adding "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\\\\"
+				},
+				{
+					"type": "text",
+					"value": " before them:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tredirects() {\n\t\treturn [\n\t\t\t{\n\t\t\t\t// this will match `/english(default)/something` being requested\n\t\t\t\tsource: '/english\\\\(default\\\\)/:slug',\n\t\t\t\tdestination: '/en-us/:slug',\n\t\t\t\tpermanent: false,\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Header, Cookie, and Query Matching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To only match a redirect when header, cookie, or query values also match the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "has"
+				},
+				{
+					"type": "text",
+					"value": " field or don't match the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "missing"
+				},
+				{
+					"type": "text",
+					"value": " field can be used. Both the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "source"
+				},
+				{
+					"type": "text",
+					"value": " and all "
+				},
+				{
+					"type": "inlineCode",
+					"value": "has"
+				},
+				{
+					"type": "text",
+					"value": " items must match and all "
+				},
+				{
+					"type": "inlineCode",
+					"value": "missing"
+				},
+				{
+					"type": "text",
+					"value": " items must not match for the redirect to be applied."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "has"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "missing"
+				},
+				{
+					"type": "text",
+					"value": " items can have the following fields:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "type"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "String"
+								},
+								{
+									"type": "text",
+									"value": " - must be either "
+								},
+								{
+									"type": "inlineCode",
+									"value": "header"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cookie"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "host"
+								},
+								{
+									"type": "text",
+									"value": ", or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "query"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "key"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "String"
+								},
+								{
+									"type": "text",
+									"value": " - the key from the selected type to match against."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "value"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "String"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								},
+								{
+									"type": "text",
+									"value": " - the value to check for, if undefined any value will match. A regex like string can be used to capture a specific part of the value, e.g. if the value "
+								},
+								{
+									"type": "inlineCode",
+									"value": "first-(?<paramName>.*)"
+								},
+								{
+									"type": "text",
+									"value": " is used for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "first-second"
+								},
+								{
+									"type": "text",
+									"value": " then "
+								},
+								{
+									"type": "inlineCode",
+									"value": "second"
+								},
+								{
+									"type": "text",
+									"value": " will be usable in the destination with "
+								},
+								{
+									"type": "inlineCode",
+									"value": ":paramName"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tredirects() {\n\t\treturn [\n\t\t\t// if the header `x-redirect-me` is present,\n\t\t\t// this redirect will be applied\n\t\t\t{\n\t\t\t\tsource: '/:path((?!another-page$).*)',\n\t\t\t\thas: [\n\t\t\t\t\t{\n\t\t\t\t\t\ttype: 'header',\n\t\t\t\t\t\tkey: 'x-redirect-me',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t\tpermanent: false,\n\t\t\t\tdestination: '/another-page',\n\t\t\t},\n\t\t\t// if the header `x-do-not-redirect` is present,\n\t\t\t// this redirect will NOT be applied\n\t\t\t{\n\t\t\t\tsource: '/:path((?!another-page$).*)',\n\t\t\t\tmissing: [\n\t\t\t\t\t{\n\t\t\t\t\t\ttype: 'header',\n\t\t\t\t\t\tkey: 'x-do-not-redirect',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t\tpermanent: false,\n\t\t\t\tdestination: '/another-page',\n\t\t\t},\n\t\t\t// if the source, query, and cookie are matched,\n\t\t\t// this redirect will be applied\n\t\t\t{\n\t\t\t\tsource: '/specific/:path*',\n\t\t\t\thas: [\n\t\t\t\t\t{\n\t\t\t\t\t\ttype: 'query',\n\t\t\t\t\t\tkey: 'page',\n\t\t\t\t\t\t// the page value will not be available in the\n\t\t\t\t\t\t// destination since value is provided and doesn't\n\t\t\t\t\t\t// use a named capture group e.g. (?<page>home)\n\t\t\t\t\t\tvalue: 'home',\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\ttype: 'cookie',\n\t\t\t\t\t\tkey: 'authorized',\n\t\t\t\t\t\tvalue: 'true',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t\tpermanent: false,\n\t\t\t\tdestination: '/another/:path*',\n\t\t\t},\n\t\t\t// if the header `x-authorized` is present and\n\t\t\t// contains a matching value, this redirect will be applied\n\t\t\t{\n\t\t\t\tsource: '/',\n\t\t\t\thas: [\n\t\t\t\t\t{\n\t\t\t\t\t\ttype: 'header',\n\t\t\t\t\t\tkey: 'x-authorized',\n\t\t\t\t\t\tvalue: '(?<authorized>yes|true)',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t\tpermanent: false,\n\t\t\t\tdestination: '/home?authorized=:authorized',\n\t\t\t},\n\t\t\t// if the host is `example.com`,\n\t\t\t// this redirect will be applied\n\t\t\t{\n\t\t\t\tsource: '/:path((?!another-page$).*)',\n\t\t\t\thas: [\n\t\t\t\t\t{\n\t\t\t\t\t\ttype: 'host',\n\t\t\t\t\t\tvalue: 'example.com',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t\tpermanent: false,\n\t\t\t\tdestination: '/another-page',\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Redirects with basePath support"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When leveraging "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/basePath",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "basePath"
+						},
+						{
+							"type": "text",
+							"value": " support"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with redirects each "
+				},
+				{
+					"type": "inlineCode",
+					"value": "source"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "destination"
+				},
+				{
+					"type": "text",
+					"value": " is automatically prefixed with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "basePath"
+				},
+				{
+					"type": "text",
+					"value": " unless you add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "basePath: false"
+				},
+				{
+					"type": "text",
+					"value": " to the redirect:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tbasePath: '/docs',\n\n\tredirects() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/with-basePath', // automatically becomes /docs/with-basePath\n\t\t\t\tdestination: '/another', // automatically becomes /docs/another\n\t\t\t\tpermanent: false,\n\t\t\t},\n\t\t\t{\n\t\t\t\t// does not add /docs since basePath: false is set\n\t\t\t\tsource: '/without-basePath',\n\t\t\t\tdestination: 'https://example.com',\n\t\t\t\tbasePath: false,\n\t\t\t\tpermanent: false,\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Redirects with i18n support"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When implementing redirects with internationalization in the App Router, you can include locales in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " redirects, but only as hardcoded paths."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For dynamic or per-request locale handling, use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/internationalization",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamic route segments and proxy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", which can redirect based on the user's preferred language."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tredirects() {\n\t\treturn [\n\t\t\t{\n\t\t\t\t// Manually handle locale prefixes for App Router\n\t\t\t\tsource: '/en/old-path',\n\t\t\t\tdestination: '/en/new-path',\n\t\t\t\tpermanent: false,\n\t\t\t},\n\t\t\t{\n\t\t\t\t// Redirect for all locales using a parameter\n\t\t\t\tsource: '/:locale/old-path',\n\t\t\t\tdestination: '/:locale/new-path',\n\t\t\t\tpermanent: false,\n\t\t\t},\n\t\t\t{\n\t\t\t\t// Redirect from one locale to another\n\t\t\t\tsource: '/de/old-path',\n\t\t\t\tdestination: '/en/new-path',\n\t\t\t\tpermanent: false,\n\t\t\t},\n\t\t\t{\n\t\t\t\t// Catch-all redirect for multiple locales\n\t\t\t\tsource: '/:locale(en|fr|de)/:path*',\n\t\t\t\tdestination: '/:locale/new-section/:path*',\n\t\t\t\tpermanent: false,\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In some rare cases, you might need to assign a custom status code for older HTTP Clients to properly redirect. In these cases, you can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "statusCode"
+				},
+				{
+					"type": "text",
+					"value": " property instead of the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "permanent"
+				},
+				{
+					"type": "text",
+					"value": " property, but not both. To ensure IE11 compatibility, a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Refresh"
+				},
+				{
+					"type": "text",
+					"value": " header is automatically added for the 308 status code."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Other Redirects"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Inside "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/pages/building-your-application/routing/api-routes",
+									"children": [
+										{
+											"type": "text",
+											"value": "API Routes"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/route",
+									"children": [
+										{
+											"type": "text",
+											"value": "Route Handlers"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", you can redirect based on the incoming request."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Inside "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/pages/building-your-application/data-fetching/get-static-props",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "getStaticProps"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/pages/building-your-application/data-fetching/get-server-side-props",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "getServerSideProps"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", you can redirect specific pages at request-time."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "missing"
+								},
+								{
+									"type": "text",
+									"value": " added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v10.2.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "has"
+								},
+								{
+									"type": "text",
+									"value": " added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v9.5.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "redirects"
+								},
+								{
+									"type": "text",
+									"value": " added."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

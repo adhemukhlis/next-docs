@@ -1,0 +1,113 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: sassOptions\ndescription: Configure Sass options."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "sassOptions"
+				},
+				{
+					"type": "text",
+					"value": " allow you to configure the Sass compiler."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst sassOptions = {\n\tadditionalData: `\n    $var: red;\n  `,\n}\n\nconst nextConfig: NextConfig = {\n\tsassOptions: {\n\t\t...sassOptions,\n\t\timplementation: 'sass-embedded',\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\n\nconst sassOptions = {\n\tadditionalData: `\n    $var: red;\n  `,\n}\n\nconst nextConfig = {\n\tsassOptions: {\n\t\t...sassOptions,\n\t\timplementation: 'sass-embedded',\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "sassOptions"
+										},
+										{
+											"type": "text",
+											"value": " are not typed outside of "
+										},
+										{
+											"type": "inlineCode",
+											"value": "implementation"
+										},
+										{
+											"type": "text",
+											"value": " because Next.js does not maintain the other possible properties."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The "
+										},
+										{
+											"type": "inlineCode",
+											"value": "functions"
+										},
+										{
+											"type": "text",
+											"value": " property for defining custom Sass functions is only supported with webpack. When using Turbopack, custom Sass functions are not available because Turbopack's Rust-based architecture cannot directly execute JavaScript functions passed through this option."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

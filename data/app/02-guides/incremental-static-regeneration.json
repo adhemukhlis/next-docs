@@ -1,0 +1,1850 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to implement Incremental Static Regeneration (ISR)\nnav_title: ISR\ndescription: Learn how to create or update static pages at runtime with Incremental Static Regeneration."
+		},
+		{
+			"type": "html",
+			"value": "<details>\n  <summary>Examples</summary>"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://vercel.com/templates/next.js/nextjs-commerce",
+									"children": [
+										{
+											"type": "text",
+											"value": "Next.js Commerce"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://on-demand-isr.vercel.app",
+									"children": [
+										{
+											"type": "text",
+											"value": "On-Demand ISR"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel/next.js/tree/canary/examples/next-forms",
+									"children": [
+										{
+											"type": "text",
+											"value": "Next.js Forms"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "</details>"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": This guide covers ISR without Cache Components. If you are using "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "cacheComponents"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", see "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/incremental-static-regeneration-cache-components",
+							"children": [
+								{
+									"type": "text",
+									"value": "ISR with Cache Components"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " instead."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Incremental Static Regeneration (ISR) enables you to:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Update static content without rebuilding the entire site"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Reduce server load by serving prerendered, static pages for most requests"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Ensure proper "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cache-control"
+								},
+								{
+									"type": "text",
+									"value": " headers are automatically added to pages"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Handle large amounts of content pages without long "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next build"
+								},
+								{
+									"type": "text",
+									"value": " times"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Here's a minimal example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[id]/page.tsx\" switcher",
+			"value": "interface Post {\n\tid: string\n\ttitle: string\n\tcontent: string\n}\n\n// Next.js will invalidate the cache when a\n// request comes in, at most once every 60 seconds.\nexport const revalidate = 60\n\nexport async function generateStaticParams() {\n\tconst posts: Post[] = await fetch('https://api.vercel.app/blog').then((res) => res.json())\n\treturn posts.map((post) => ({\n\t\tid: String(post.id),\n\t}))\n}\n\nexport default async function Page({ params }: { params: Promise<{ id: string }> }) {\n\tconst { id } = await params\n\tconst post: Post = await fetch(`https://api.vercel.app/blog/${id}`).then((res) => res.json())\n\treturn (\n\t\t<main>\n\t\t\t<h1>{post.title}</h1>\n\t\t\t<p>{post.content}</p>\n\t\t</main>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[id]/page.jsx\" switcher",
+			"value": "// Next.js will invalidate the cache when a\n// request comes in, at most once every 60 seconds.\nexport const revalidate = 60\n\nexport async function generateStaticParams() {\n\tconst posts = await fetch('https://api.vercel.app/blog').then((res) => res.json())\n\treturn posts.map((post) => ({\n\t\tid: String(post.id),\n\t}))\n}\n\nexport default async function Page({ params }) {\n\tconst { id } = await params\n\tconst post = await fetch(`https://api.vercel.app/blog/${id}`).then((res) => res.json())\n\treturn (\n\t\t<main>\n\t\t\t<h1>{post.title}</h1>\n\t\t\t<p>{post.content}</p>\n\t\t</main>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Here's how this example works:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/generate-static-params",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "generateStaticParams"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " enables ISR for the dynamic route by returning the list of posts to prerender"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "During "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next build"
+								},
+								{
+									"type": "text",
+									"value": ", a page is prerendered for each post"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "All requests made to these pages (e.g. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "/blog/1"
+								},
+								{
+									"type": "text",
+									"value": ") are cached and instantaneous"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "After 60 seconds has passed, the next request will still return the cached (now stale) page"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The cache is invalidated and a new version of the page begins generating in the background"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Once generated successfully, the next request will return the updated page and cache it for subsequent requests"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If "
+								},
+								{
+									"type": "inlineCode",
+									"value": "/blog/26"
+								},
+								{
+									"type": "text",
+									"value": " is requested, and it exists, the page will be generated on-demand. This behavior can be changed by using a different "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/route-segment-config/dynamicParams",
+									"children": [
+										{
+											"type": "text",
+											"value": "dynamicParams"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " value. However, if the post does not exist, then 404 is returned."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Route segment config"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/caching-without-cache-components#route-segment-config-revalidate",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidate"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/route-segment-config/dynamicParams",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "dynamicParams"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Functions"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/generate-static-params",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "generateStaticParams"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/revalidatePath",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidatePath"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/revalidateTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidateTag"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Time-based revalidation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This fetches and displays a list of blog posts on /blog. After an hour has passed, the next visitor will still receive the cached (stale) version of the page immediately for a fast response. Simultaneously, Next.js triggers regeneration of a fresh version in the background. Once the new version is successfully generated, it replaces the cached version, and subsequent visitors will receive the updated content."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/page.tsx\" switcher",
+			"value": "interface Post {\n\tid: string\n\ttitle: string\n\tcontent: string\n}\n\nexport const revalidate = 3600 // invalidate every hour\n\nexport default async function Page() {\n\tconst data = await fetch('https://api.vercel.app/blog')\n\tconst posts: Post[] = await data.json()\n\treturn (\n\t\t<main>\n\t\t\t<h1>Blog Posts</h1>\n\t\t\t<ul>\n\t\t\t\t{posts.map((post) => (\n\t\t\t\t\t<li key={post.id}>{post.title}</li>\n\t\t\t\t))}\n\t\t\t</ul>\n\t\t</main>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/page.js\" switcher",
+			"value": "export const revalidate = 3600 // invalidate every hour\n\nexport default async function Page() {\n\tconst data = await fetch('https://api.vercel.app/blog')\n\tconst posts = await data.json()\n\treturn (\n\t\t<main>\n\t\t\t<h1>Blog Posts</h1>\n\t\t\t<ul>\n\t\t\t\t{posts.map((post) => (\n\t\t\t\t\t<li key={post.id}>{post.title}</li>\n\t\t\t\t))}\n\t\t\t</ul>\n\t\t</main>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We recommend setting a high revalidation time. For instance, 1 hour instead of 1 second. If you need more precision, consider using on-demand revalidation. If you need real-time data, consider switching to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#dynamic-rendering",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamic rendering"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "On-demand revalidation with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidatePath"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For a more precise method of revalidation, invalidate cached pages on-demand with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidatePath"
+				},
+				{
+					"type": "text",
+					"value": " function."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, this Server Action would get called after adding a new post. Regardless of how you retrieve your data in your Server Component, either using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " or connecting to a database, this will invalidate the cache for the entire route. The next request to that route will trigger regeneration and serve fresh data, which will then be cached for subsequent requests."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Note:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " "
+						},
+						{
+							"type": "inlineCode",
+							"value": "revalidatePath"
+						},
+						{
+							"type": "text",
+							"value": " invalidates the cache entries but regeneration happens on the next request. If you want to eagerly regenerate the cache entry immediately instead of waiting for the next request, you can use the Pages router "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/pages/guides/incremental-static-regeneration#on-demand-validation-with-resrevalidate",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "res.revalidate"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " method. We're working on adding new methods to provide eager regeneration capabilities for the App Router."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/actions.ts\" switcher",
+			"value": "'use server'\n\nimport { revalidatePath } from 'next/cache'\n\nexport async function createPost() {\n\t// Invalidate the cache for the /posts route\n\trevalidatePath('/posts')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/actions.js\" switcher",
+			"value": "'use server'\n\nimport { revalidatePath } from 'next/cache'\n\nexport async function createPost() {\n\t// Invalidate the cache for the /posts route\n\trevalidatePath('/posts')\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://on-demand-isr.vercel.app",
+					"children": [
+						{
+							"type": "text",
+							"value": "View a demo"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/nextjs/on-demand-isr",
+					"children": [
+						{
+							"type": "text",
+							"value": "explore the source code"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "On-demand revalidation with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidateTag"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For most use cases, prefer revalidating entire paths. If you need more granular control, you can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidateTag"
+				},
+				{
+					"type": "text",
+					"value": " function. For example, you can tag individual "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " calls:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/page.tsx\" switcher",
+			"value": "export default async function Page() {\n\tconst data = await fetch('https://api.vercel.app/blog', {\n\t\tnext: { tags: ['posts'] },\n\t})\n\tconst posts = await data.json()\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/page.js\" switcher",
+			"value": "export default async function Page() {\n\tconst data = await fetch('https://api.vercel.app/blog', {\n\t\tnext: { tags: ['posts'] },\n\t})\n\tconst posts = await data.json()\n\t// ...\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you are using an ORM or connecting to a database, you can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "unstable_cache"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/page.tsx\" switcher",
+			"value": "import { unstable_cache } from 'next/cache'\nimport { db, posts } from '@/lib/db'\n\nconst getCachedPosts = unstable_cache(\n\tasync () => {\n\t\treturn await db.select().from(posts)\n\t},\n\t['posts'],\n\t{ revalidate: 3600, tags: ['posts'] },\n)\n\nexport default async function Page() {\n\tconst posts = getCachedPosts()\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/page.js\" switcher",
+			"value": "import { unstable_cache } from 'next/cache'\nimport { db, posts } from '@/lib/db'\n\nconst getCachedPosts = unstable_cache(\n\tasync () => {\n\t\treturn await db.select().from(posts)\n\t},\n\t['posts'],\n\t{ revalidate: 3600, tags: ['posts'] },\n)\n\nexport default async function Page() {\n\tconst posts = getCachedPosts()\n\t// ...\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can then use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidateTag"
+				},
+				{
+					"type": "text",
+					"value": " in a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/mutating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Actions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/actions.ts\" switcher",
+			"value": "'use server'\n\nimport { revalidateTag } from 'next/cache'\n\nexport async function createPost() {\n\t// Invalidate all data tagged with 'posts'\n\trevalidateTag('posts', 'max')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/actions.js\" switcher",
+			"value": "'use server'\n\nimport { revalidateTag } from 'next/cache'\n\nexport async function createPost() {\n\t// Invalidate all data tagged with 'posts'\n\trevalidateTag('posts', 'max')\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Handling uncaught exceptions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If an error is thrown while attempting to revalidate data, the last successfully generated data will continue to be served from the cache. On the next subsequent request, Next.js will retry revalidating the data. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/error-handling",
+					"children": [
+						{
+							"type": "text",
+							"value": "Learn more about error handling"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Customizing the cache location"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can configure the Next.js cache location if you want to persist cached pages and data to durable storage, or share the cache across multiple containers or instances of your Next.js application. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/self-hosting#caching-and-isr",
+					"children": [
+						{
+							"type": "text",
+							"value": "Learn more"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Troubleshooting"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Debugging cached data in local development"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you are using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " API, you can add additional logging to understand which requests are cached or uncached. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/logging",
+					"children": [
+						{
+							"type": "text",
+							"value": "Learn more about the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "logging"
+						},
+						{
+							"type": "text",
+							"value": " option"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tlogging: {\n\t\tfetches: {\n\t\t\tfullUrl: true,\n\t\t},\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Verifying correct production behavior"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To verify your pages are cached and revalidated correctly in production, you can test locally by running "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " and then "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next start"
+				},
+				{
+					"type": "text",
+					"value": " to run the production Next.js server."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This will allow you to test ISR behavior as it would work in a production environment. For further debugging, add the following environment variable to your "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".env"
+				},
+				{
+					"type": "text",
+					"value": " file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\".env\"",
+			"value": "NEXT_PRIVATE_DEBUG_CACHE=1"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This will make the Next.js server console log ISR cache hits and misses. You can inspect the output to see which pages are generated during "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ", as well as how pages are updated as paths are accessed on-demand."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Caveats"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "ISR is only supported when using the Node.js runtime (default)."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "ISR is not supported when creating a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/static-exports",
+									"children": [
+										{
+											"type": "text",
+											"value": "Static Export"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If you have multiple "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " requests in a prerendered route, and each has a different "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidate"
+								},
+								{
+									"type": "text",
+									"value": " frequency, the lowest time will be used for ISR. However, those revalidate frequencies will still be respected by the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/caching",
+									"children": [
+										{
+											"type": "text",
+											"value": "cache"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If any of the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " requests used on a route have a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidate"
+								},
+								{
+									"type": "text",
+									"value": " time of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "0"
+								},
+								{
+									"type": "text",
+									"value": ", or an explicit "
+								},
+								{
+									"type": "inlineCode",
+									"value": "no-store"
+								},
+								{
+									"type": "text",
+									"value": ", the route will be dynamically rendered."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Proxy won't be executed for on-demand ISR requests, meaning any path rewrites or logic in Proxy will not be applied. Ensure you are revalidating the exact path. For example, "
+								},
+								{
+									"type": "inlineCode",
+									"value": "/post/1"
+								},
+								{
+									"type": "text",
+									"value": " instead of a rewritten "
+								},
+								{
+									"type": "inlineCode",
+									"value": "/post-1"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "When running multiple instances, the default file-system cache is per-instance. On-demand revalidation only invalidates the instance that receives the call. Use a shared "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/incrementalCacheHandlerPath",
+									"children": [
+										{
+											"type": "text",
+											"value": "custom cache handler"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to coordinate across instances. See "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/how-revalidation-works",
+									"children": [
+										{
+											"type": "text",
+											"value": "How Revalidation Works"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for the full architecture."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Background regeneration (stale-while-revalidate) runs on the instance that receives the triggering request. On platforms with per-request billing, this background work counts as additional compute."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "You can use the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "x-nextjs-cache"
+								},
+								{
+									"type": "text",
+									"value": " response header to observe cache behavior. Values are "
+								},
+								{
+									"type": "inlineCode",
+									"value": "HIT"
+								},
+								{
+									"type": "text",
+									"value": " (served from cache), "
+								},
+								{
+									"type": "inlineCode",
+									"value": "STALE"
+								},
+								{
+									"type": "text",
+									"value": " (served from cache, revalidating in background), "
+								},
+								{
+									"type": "inlineCode",
+									"value": "MISS"
+								},
+								{
+									"type": "text",
+									"value": " (not in cache, rendered fresh), or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "REVALIDATED"
+								},
+								{
+									"type": "text",
+									"value": " (regenerated via on-demand revalidation)."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Platform Support"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Deployment Option"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Supported"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#nodejs-server",
+									"children": [
+										{
+											"type": "text",
+											"value": "Node.js server"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#docker",
+									"children": [
+										{
+											"type": "text",
+											"value": "Docker container"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#static-export",
+									"children": [
+										{
+											"type": "text",
+											"value": "Static export"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#adapters",
+									"children": [
+										{
+											"type": "text",
+											"value": "Adapters"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Platform-specific"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn how to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/self-hosting#caching-and-isr",
+					"children": [
+						{
+							"type": "text",
+							"value": "configure ISR"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when self-hosting Next.js."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version history"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v14.1.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Custom "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cacheHandler"
+								},
+								{
+									"type": "text",
+									"value": " is stable."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "App Router is introduced."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v12.2.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Pages Router: On-Demand ISR is stable"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v12.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Pages Router: "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/blog/next-12#bot-aware-isr-fallback",
+									"children": [
+										{
+											"type": "text",
+											"value": "Bot-aware ISR fallback"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v9.5.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Pages Router: "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/blog/next-9-5",
+									"children": [
+										{
+											"type": "text",
+											"value": "Stable ISR introduced"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

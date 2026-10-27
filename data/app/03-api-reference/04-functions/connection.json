@@ -1,0 +1,489 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: connection\ndescription: API Reference for the connection function."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "connection()"
+				},
+				{
+					"type": "text",
+					"value": " function allows you to indicate rendering should wait for an incoming user request before continuing."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "It's useful when a component doesn't use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#request-time-apis",
+					"children": [
+						{
+							"type": "text",
+							"value": "Request-time APIs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers"
+				},
+				{
+					"type": "text",
+					"value": ", but still needs to produce different output per request, such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Math.random()"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "new Date()"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import { connection } from 'next/server'\n\nexport default async function Page() {\n  await connection() // prerendering stops here\n  // the following code only runs at request time\n  const rand = Math.random()\n  return <span>{rand}</span>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import { connection } from 'next/server'\n\nexport default async function Page() {\n\tawait connection() // prerendering stops here\n\t// the following code only runs at request time\n\tconst rand = Math.random()\n\treturn <span>{rand}</span>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Synchronous database drivers"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Queries from synchronous database drivers like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "better-sqlite3"
+				},
+				{
+					"type": "text",
+					"value": " complete during prerendering. If you are not already using Request-time APIs, call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "connection()"
+				},
+				{
+					"type": "text",
+					"value": " before your query to exclude them from prerendering:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/lib/data.ts\" switcher",
+			"value": "import { connection } from 'next/server'\nimport Database from 'better-sqlite3'\n\nconst db = new Database('app.db')\n\nexport async function getVisitorCount() {\n\tawait connection()\n\treturn db.prepare('SELECT value FROM counters WHERE name = ?').get('visitors')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/lib/data.js\" switcher",
+			"value": "import { connection } from 'next/server'\nimport Database from 'better-sqlite3'\n\nconst db = new Database('app.db')\n\nexport async function getVisitorCount() {\n\tawait connection()\n\treturn db.prepare('SELECT value FROM counters WHERE name = ?').get('visitors')\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Now any component that calls "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getVisitorCount()"
+				},
+				{
+					"type": "text",
+					"value": " will be excluded from prerendering, along with the rest of its output."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Type"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "function connection(): Promise<void>"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parameters"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The function does not accept any parameters."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The function returns a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "void"
+								},
+								{
+									"type": "text",
+									"value": " Promise. It is not meant to be consumed."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Good to know"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "connection"
+								},
+								{
+									"type": "text",
+									"value": " replaces "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/unstable_noStore",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "unstable_noStore"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to better align with the future of Next.js."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The function is only necessary when dynamic rendering is required and common Request-time APIs are not used."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "With "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+									"children": [
+										{
+											"type": "text",
+											"value": "Cache Components"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", prefer "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/io",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "io()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for excluding content from the static shell. It works the same way but can also be cached and prefetched. Reach for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "connection()"
+								},
+								{
+									"type": "text",
+									"value": " only when rendering should wait for a real user request."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "connection"
+								},
+								{
+									"type": "text",
+									"value": " stabilized."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.0.0-RC"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "connection"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

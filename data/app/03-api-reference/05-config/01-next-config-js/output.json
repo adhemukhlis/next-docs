@@ -1,0 +1,1244 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: output\ndescription: Next.js automatically traces which files are needed by each page to allow for easy deployment of your application. Learn how it works here."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "During a build, Next.js will automatically trace each page and its dependencies to determine all of the files that are needed for deploying a production version of your application."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This feature helps reduce the size of deployments drastically. Previously, when deploying with Docker you would need to have all files from your package's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "dependencies"
+				},
+				{
+					"type": "text",
+					"value": " installed to run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next start"
+				},
+				{
+					"type": "text",
+					"value": ". Starting with Next.js 12, you can leverage Output File Tracing in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next/"
+				},
+				{
+					"type": "text",
+					"value": " directory to only include the necessary files."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Furthermore, this removes the need for the deprecated "
+				},
+				{
+					"type": "inlineCode",
+					"value": "serverless"
+				},
+				{
+					"type": "text",
+					"value": " target which can cause various issues and also creates unnecessary duplication."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "How it Works"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "During "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ", Next.js will use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/nft",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "@vercel/nft"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to statically analyze "
+				},
+				{
+					"type": "inlineCode",
+					"value": "import"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "require"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fs"
+				},
+				{
+					"type": "text",
+					"value": " usage to determine all files that a page might load."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js' production server is also traced for its needed files and output at "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next/next-server.js.nft.json"
+				},
+				{
+					"type": "text",
+					"value": " which can be leveraged in production."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To leverage the "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".nft.json"
+				},
+				{
+					"type": "text",
+					"value": " files emitted to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next"
+				},
+				{
+					"type": "text",
+					"value": " output directory, you can read the list of files in each trace that are relative to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".nft.json"
+				},
+				{
+					"type": "text",
+					"value": " file and then copy them to your deployment location."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack NFT extensions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".nft.json"
+				},
+				{
+					"type": "text",
+					"value": " files include "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fileHashes"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "symlinks"
+				},
+				{
+					"type": "text",
+					"value": " extensions:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "fileHashes"
+								},
+								{
+									"type": "text",
+									"value": " is a parallel array with the same length and ordering as "
+								},
+								{
+									"type": "inlineCode",
+									"value": "files"
+								},
+								{
+									"type": "text",
+									"value": ". For example, "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fileHashes[0]"
+								},
+								{
+									"type": "text",
+									"value": " is the hash for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "files[0]"
+								},
+								{
+									"type": "text",
+									"value": ". A consumer can use the hash as a content identifier for caching or deduplicating traced assets."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "symlinks"
+								},
+								{
+									"type": "text",
+									"value": " maps indexes in the sibling "
+								},
+								{
+									"type": "inlineCode",
+									"value": "files"
+								},
+								{
+									"type": "text",
+									"value": " array to their immediate targets. When "
+								},
+								{
+									"type": "inlineCode",
+									"value": "symlinks"
+								},
+								{
+									"type": "text",
+									"value": " is present, files without a corresponding entry can be assumed to be normal files or directories."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Traces that use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/turbopack#additional-roots-experimental",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "experimental.turbopackAdditionalRoots"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " also include the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "additionalRoots"
+				},
+				{
+					"type": "text",
+					"value": " extension:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "additionalRoots"
+								},
+								{
+									"type": "text",
+									"value": " is an ordered list of named source roots. Each root has its own "
+								},
+								{
+									"type": "inlineCode",
+									"value": "files"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fileHashes"
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "symlinks"
+								},
+								{
+									"type": "text",
+									"value": " lists. Its "
+								},
+								{
+									"type": "inlineCode",
+									"value": "path"
+								},
+								{
+									"type": "text",
+									"value": " is relative to the directory containing the "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".nft.json"
+								},
+								{
+									"type": "text",
+									"value": " file and identifies the source location on the build machine. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "additionalRoots"
+								},
+								{
+									"type": "text",
+									"value": " names match those provided in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next.config.js"
+								},
+								{
+									"type": "text",
+									"value": " and are guaranteed to be valid directory names on most operating systems and filesystems."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Automatically Copying Traced Files"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js can automatically create a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "standalone"
+				},
+				{
+					"type": "text",
+					"value": " folder that copies only the necessary files for a production deployment including select files in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "node_modules"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To leverage this automatic copying you can enable it in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\toutput: 'standalone',\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This will create a folder at "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next/standalone"
+				},
+				{
+					"type": "text",
+					"value": " which can then be deployed on its own without installing "
+				},
+				{
+					"type": "inlineCode",
+					"value": "node_modules"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "On Windows, creating directory symlinks "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://blogs.windows.com/windowsdeveloper/2016/12/02/symlinks-windows-10/",
+					"children": [
+						{
+							"type": "text",
+							"value": "can require elevated privileges or Developer Mode"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". If standalone generation must fall back to a junction point, Windows stores an absolute target and that particular output is not relocatable."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Additionally, a minimal "
+				},
+				{
+					"type": "inlineCode",
+					"value": "server.js"
+				},
+				{
+					"type": "text",
+					"value": " file is also output which can be used instead of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next start"
+				},
+				{
+					"type": "text",
+					"value": ". This minimal server does not copy the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "public"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next/static"
+				},
+				{
+					"type": "text",
+					"value": " folders by default as these should ideally be handled by a CDN instead, although these folders can be copied to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "standalone/public"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "standalone/.next/static"
+				},
+				{
+					"type": "text",
+					"value": " folders manually, after which "
+				},
+				{
+					"type": "inlineCode",
+					"value": "server.js"
+				},
+				{
+					"type": "text",
+					"value": " file will serve these automatically."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To copy these manually, you can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cp"
+				},
+				{
+					"type": "text",
+					"value": " command-line tool after you "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To start your minimal "
+				},
+				{
+					"type": "inlineCode",
+					"value": "server.js"
+				},
+				{
+					"type": "text",
+					"value": " file locally, run the following command:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "node .next/standalone/server.js"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "If your project needs to listen to a specific port or hostname, you can define "
+										},
+										{
+											"type": "inlineCode",
+											"value": "PORT"
+										},
+										{
+											"type": "text",
+											"value": " or "
+										},
+										{
+											"type": "inlineCode",
+											"value": "HOSTNAME"
+										},
+										{
+											"type": "text",
+											"value": " environment variables before running "
+										},
+										{
+											"type": "inlineCode",
+											"value": "server.js"
+										},
+										{
+											"type": "text",
+											"value": ". For example, run "
+										},
+										{
+											"type": "inlineCode",
+											"value": "PORT=8080 HOSTNAME=0.0.0.0 node server.js"
+										},
+										{
+											"type": "text",
+											"value": " to start the server on "
+										},
+										{
+											"type": "inlineCode",
+											"value": "http://0.0.0.0:8080"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Caveats"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "While tracing in monorepo setups, the project directory is used for tracing by default. For "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next build packages/web-app"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "packages/web-app"
+								},
+								{
+									"type": "text",
+									"value": " would be the tracing root and any files outside of that folder will not be included. To include files outside of this folder you can set "
+								},
+								{
+									"type": "inlineCode",
+									"value": "outputFileTracingRoot"
+								},
+								{
+									"type": "text",
+									"value": " in your "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next.config.js"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"packages/web-app/next.config.js\"",
+			"value": "const path = require('path')\n\nmodule.exports = {\n\t// this includes files from the monorepo base two directories up\n\toutputFileTracingRoot: path.join(__dirname, '../../'),\n}"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "There are some cases in which Next.js might fail to include required files, or might incorrectly include unused files. In those cases, you can leverage "
+								},
+								{
+									"type": "inlineCode",
+									"value": "outputFileTracingExcludes"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "outputFileTracingIncludes"
+								},
+								{
+									"type": "text",
+									"value": " respectively in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next.config.js"
+								},
+								{
+									"type": "text",
+									"value": ". Each option accepts an object whose keys are "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "route globs"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (matched with "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://www.npmjs.com/package/picomatch#basic-globbing",
+									"children": [
+										{
+											"type": "text",
+											"value": "picomatch"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " against the route path, e.g. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "/api/hello"
+								},
+								{
+									"type": "text",
+									"value": ") and whose values are "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "glob patterns resolved from the project root"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " that specify files to include or exclude in the trace."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": In a monorepo, "
+						},
+						{
+							"type": "inlineCode",
+							"value": "project root"
+						},
+						{
+							"type": "text",
+							"value": " refers to the Next.js project root (the folder containing next.config.js, e.g., packages/web-app), not necessarily the monorepo root."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\toutputFileTracingExcludes: {\n\t\t'/api/hello': ['./un-necessary-folder/**/*'],\n\t},\n\toutputFileTracingIncludes: {\n\t\t'/api/another': ['./necessary-folder/**/*'],\n\t\t'/api/login/\\\\[\\\\[\\\\.\\\\.\\\\.slug\\\\]\\\\]': ['./node_modules/aws-crt/dist/bin/**/*'],\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Using a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src/"
+				},
+				{
+					"type": "text",
+					"value": " directory does not change how you write these options:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Keys"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " still match the route path ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "'/api/hello'"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'/products/[id]'"
+								},
+								{
+									"type": "text",
+									"value": ", etc.)."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Values"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " can reference paths under "
+								},
+								{
+									"type": "inlineCode",
+									"value": "src/"
+								},
+								{
+									"type": "text",
+									"value": " since they are resolved relative to the project root."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\toutputFileTracingIncludes: {\n\t\t'/products/*': ['src/lib/payments/**/*'],\n\t\t'/*': ['src/config/runtime/**/*.json'],\n\t},\n\toutputFileTracingExcludes: {\n\t\t'/api/*': ['src/temp/**/*', 'public/large-logs/**/*'],\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also target all routes using a global key like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'/*'"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\toutputFileTracingIncludes: {\n\t\t'/*': ['src/i18n/locales/**/*.json'],\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "These options are applied to server traces and do not affect routes that do not produce a server trace file:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Edge Runtime routes are not affected."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Fully static pages are not affected."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In monorepos or when you need to include files outside the app folder, combine "
+				},
+				{
+					"type": "inlineCode",
+					"value": "outputFileTracingRoot"
+				},
+				{
+					"type": "text",
+					"value": " with includes:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "const path = require('path')\n\nmodule.exports = {\n\t// Trace from the monorepo root\n\toutputFileTracingRoot: path.join(__dirname, '../../'),\n\toutputFileTracingIncludes: {\n\t\t'/route1': ['../shared/assets/**/*'],\n\t},\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Prefer forward slashes ("
+										},
+										{
+											"type": "inlineCode",
+											"value": "/"
+										},
+										{
+											"type": "text",
+											"value": ") in patterns for cross-platform compatibility."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Keep patterns as narrow as possible to avoid oversized traces (avoid "
+										},
+										{
+											"type": "inlineCode",
+											"value": "**/*"
+										},
+										{
+											"type": "text",
+											"value": " at the repo root)."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Common include patterns for native/runtime assets:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\toutputFileTracingIncludes: {\n\t\t'/*': ['node_modules/sharp/**/*', 'node_modules/aws-crt/dist/bin/**/*'],\n\t},\n}"
+		}
+	]
+}

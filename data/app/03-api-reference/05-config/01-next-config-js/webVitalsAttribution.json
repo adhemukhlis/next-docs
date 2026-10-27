@@ -1,0 +1,155 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: webVitalsAttribution\ndescription: Learn how to use the webVitalsAttribution option to pinpoint the source of Web Vitals issues.\nversion: experimental"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When debugging issues related to Web Vitals, it is often helpful if we can pinpoint the source of the problem. For example, in the case of Cumulative Layout Shift (CLS), we might want to know the first element that shifted when the single largest layout shift occurred. Or, in the case of Largest Contentful Paint (LCP), we might want to identify the element corresponding to the LCP for the page. If the LCP element is an image, knowing the URL of the image resource can help us locate the asset we need to optimize."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Pinpointing the biggest contributor to the Web Vitals score, aka "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/GoogleChrome/web-vitals/blob/4ca38ae64b8d1e899028c692f94d4c56acfc996c/README.md#attribution",
+					"children": [
+						{
+							"type": "text",
+							"value": "attribution"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", allows us to obtain more in-depth information like entries for "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/PerformanceEventTiming",
+					"children": [
+						{
+							"type": "text",
+							"value": "PerformanceEventTiming"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/PerformanceNavigationTiming",
+					"children": [
+						{
+							"type": "text",
+							"value": "PerformanceNavigationTiming"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/PerformanceResourceTiming",
+					"children": [
+						{
+							"type": "text",
+							"value": "PerformanceResourceTiming"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Attribution is disabled by default in Next.js but can be enabled "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "per metric"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " by specifying the following in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\texperimental: {\n\t\twebVitalsAttribution: ['CLS', 'LCP'],\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Valid attribution values are all "
+				},
+				{
+					"type": "inlineCode",
+					"value": "web-vitals"
+				},
+				{
+					"type": "text",
+					"value": " metrics specified in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/blob/442378d21dd56d6e769863eb8c2cb521a463a2e0/packages/next/shared/lib/utils.ts#L43",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "NextWebVitalsMetric"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " type."
+				}
+			]
+		}
+	]
+}

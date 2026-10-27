@@ -58,7 +58,7 @@ By default all the incoming requests will be logged in the console during develo
 module.exports = {
 	logging: {
 		incomingRequests: {
-			ignore: [/\api\/v1\/health/],
+			ignore: [/\/api\/v1\/health/],
 		},
 	},
 }

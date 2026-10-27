@@ -1,0 +1,677 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Intercepting Routes\ndescription: Use intercepting routes to load a new route within the current layout while masking the browser URL, useful for advanced routing patterns such as modals.\nrelated:\n title: Next Steps\n description: Learn how to create modals with Intercepted and Parallel Routes.\n links:\n  - app/api-reference/file-conventions/parallel-routes"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Intercepting routes allows you to load a route from another part of your application within the current layout. This routing paradigm can be useful when you want to display the content of a route without the user switching to a different context."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, when clicking on a photo in a feed, you can display the photo in a modal, overlaying the feed. In this case, Next.js intercepts the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/photo/123"
+				},
+				{
+					"type": "text",
+					"value": " route, masks the URL, and overlays it over "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/feed"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"Intercepting routes soft navigation\"\nsrcLight=\"/docs/light/intercepting-routes-soft-navigate.png\"\nsrcDark=\"/docs/dark/intercepting-routes-soft-navigate.png\"\nwidth=\"1600\"\nheight=\"617\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "However, when navigating to the photo by clicking a shareable URL or by refreshing the page, the entire photo page should render instead of the modal. No route interception should occur."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"Intercepting routes hard navigation\"\nsrcLight=\"/docs/light/intercepting-routes-hard-navigate.png\"\nsrcDark=\"/docs/dark/intercepting-routes-hard-navigate.png\"\nwidth=\"1600\"\nheight=\"604\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Convention"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Intercepting routes can be defined with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "(..)"
+				},
+				{
+					"type": "text",
+					"value": " convention, which is similar to relative path convention "
+				},
+				{
+					"type": "inlineCode",
+					"value": "../"
+				},
+				{
+					"type": "text",
+					"value": " but for route segments."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "(.)"
+								},
+								{
+									"type": "text",
+									"value": " to match segments on the "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "same level"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "(..)"
+								},
+								{
+									"type": "text",
+									"value": " to match segments "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "one level above"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "(..)(..)"
+								},
+								{
+									"type": "text",
+									"value": " to match segments "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "two levels above"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "(...)"
+								},
+								{
+									"type": "text",
+									"value": " to match segments from the "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "root"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": " directory"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, you can intercept the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "photo"
+				},
+				{
+					"type": "text",
+					"value": " segment from within the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "feed"
+				},
+				{
+					"type": "text",
+					"value": " segment by creating a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "(..)photo"
+				},
+				{
+					"type": "text",
+					"value": " directory."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"Intercepting routes folder structure\"\nsrcLight=\"/docs/light/intercepted-routes-files.png\"\nsrcDark=\"/docs/dark/intercepted-routes-files.png\"\nwidth=\"1600\"\nheight=\"604\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " The "
+						},
+						{
+							"type": "inlineCode",
+							"value": "(..)"
+						},
+						{
+							"type": "text",
+							"value": " convention is based on "
+						},
+						{
+							"type": "emphasis",
+							"children": [
+								{
+									"type": "text",
+									"value": "route segments"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", not the file-system. For example, it does not consider "
+						},
+						{
+							"type": "inlineCode",
+							"value": "@slot"
+						},
+						{
+							"type": "text",
+							"value": " folders in "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/file-conventions/parallel-routes",
+							"children": [
+								{
+									"type": "text",
+									"value": "Parallel Routes"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Modals"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Intercepting Routes can be used together with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/parallel-routes",
+					"children": [
+						{
+							"type": "text",
+							"value": "Parallel Routes"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to create modals. This allows you to solve common challenges when building modals, such as:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Making the modal content "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "shareable through a URL"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Preserving context"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " when the page is refreshed, instead of closing the modal."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Closing the modal on backwards navigation"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " rather than going to the previous route."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Reopening the modal on forwards navigation"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Consider the following UI pattern, where a user can open a photo modal from a gallery using client-side navigation, or navigate to the photo page directly from a shareable URL:"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"Intercepting routes modal example\"\nsrcLight=\"/docs/light/intercepted-routes-modal-example.png\"\nsrcDark=\"/docs/dark/intercepted-routes-modal-example.png\"\nwidth=\"1600\"\nheight=\"976\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the above example, the path to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "photo"
+				},
+				{
+					"type": "text",
+					"value": " segment can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "(..)"
+				},
+				{
+					"type": "text",
+					"value": " matcher since "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@modal"
+				},
+				{
+					"type": "text",
+					"value": " is a slot and "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "not"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " a segment. This means that the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "photo"
+				},
+				{
+					"type": "text",
+					"value": " route is only one segment level higher, despite being two file-system levels higher."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/parallel-routes#modals",
+					"children": [
+						{
+							"type": "text",
+							"value": "Parallel Routes"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " documentation for a step-by-step example, or see our "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/nextjs/nextgram",
+					"children": [
+						{
+							"type": "text",
+							"value": "image gallery example"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Other examples could include opening a login modal in a top navbar while also having a dedicated "
+										},
+										{
+											"type": "inlineCode",
+											"value": "/login"
+										},
+										{
+											"type": "text",
+											"value": " page, or opening a shopping cart in a side modal."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

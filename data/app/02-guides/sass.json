@@ -1,0 +1,357 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to use Sass\nnav_title: Sass\ndescription: Style your Next.js application using Sass."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js has built-in support for integrating with Sass after the package is installed using both the "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".scss"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".sass"
+				},
+				{
+					"type": "text",
+					"value": " extensions. You can use component-level Sass via CSS Modules and the "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".module.scss"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".module.sass"
+				},
+				{
+					"type": "text",
+					"value": " extension."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "First, install "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/sass/sass",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "sass"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add -D sass"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install --save-dev sass"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add -D sass"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add -D sass"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Sass supports "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://sass-lang.com/documentation/syntax",
+							"children": [
+								{
+									"type": "text",
+									"value": "two different syntaxes"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", each with their own extension. The "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".scss"
+						},
+						{
+							"type": "text",
+							"value": " extension requires you use the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://sass-lang.com/documentation/syntax#scss",
+							"children": [
+								{
+									"type": "text",
+									"value": "SCSS syntax"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", while the "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".sass"
+						},
+						{
+							"type": "text",
+							"value": " extension requires you use the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://sass-lang.com/documentation/syntax#the-indented-syntax",
+							"children": [
+								{
+									"type": "text",
+									"value": "Indented Syntax (\"Sass\")"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				},
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "If you're not sure which to choose, start with the "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".scss"
+						},
+						{
+							"type": "text",
+							"value": " extension which is a superset of CSS, and doesn't require you learn the Indented Syntax (\"Sass\")."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Customizing Sass Options"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you want to configure your Sass options, use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "sassOptions"
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tsassOptions: {\n\t\tadditionalData: `$var: red;`,\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\n\nconst nextConfig = {\n\tsassOptions: {\n\t\tadditionalData: `$var: red;`,\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Implementation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "implementation"
+				},
+				{
+					"type": "text",
+					"value": " property to specify the Sass implementation to use. By default, Next.js uses the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.npmjs.com/package/sass",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "sass"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " package."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tsassOptions: {\n\t\timplementation: 'sass-embedded',\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\n\nconst nextConfig = {\n\tsassOptions: {\n\t\timplementation: 'sass-embedded',\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Sass Variables"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js supports Sass variables exported from CSS Module files."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, using the exported "
+				},
+				{
+					"type": "inlineCode",
+					"value": "primaryColor"
+				},
+				{
+					"type": "text",
+					"value": " Sass variable:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "scss",
+			"meta": "filename=\"app/variables.module.scss\"",
+			"value": "$primary-color: #64ff00;\n\n:export {\n\tprimaryColor: $primary-color;\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\"",
+			"value": "// maps to root `/` URL\n\nimport variables from './variables.module.scss'\n\nexport default function Page() {\n\treturn <h1 style={{ color: variables.primaryColor }}>Hello, Next.js!</h1>\n}"
+		}
+	]
+}

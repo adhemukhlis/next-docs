@@ -1,0 +1,3397 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Codemods\ndescription: Use codemods to upgrade your Next.js codebase when new features are released."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Codemods are transformations that run on your codebase programmatically. This allows a large number of changes to be programmatically applied without having to manually go through every file."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js provides Codemod transformations to help upgrade your Next.js codebase when an API is updated or deprecated."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Usage"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In your terminal, navigate ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "cd"
+				},
+				{
+					"type": "text",
+					"value": ") into your project's folder, then run:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod <transform> <path>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Replacing "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<transform>"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<path>"
+				},
+				{
+					"type": "text",
+					"value": " with appropriate values."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "transform"
+								},
+								{
+									"type": "text",
+									"value": " - name of transform"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "path"
+								},
+								{
+									"type": "text",
+									"value": " - files or directory to transform"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "--dry"
+								},
+								{
+									"type": "text",
+									"value": " Do a dry-run, no code will be edited"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "--print"
+								},
+								{
+									"type": "text",
+									"value": " Prints the changed output for comparison"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Upgrade"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Upgrades your Next.js application, automatically running codemods and updating Next.js, React, and React DOM."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To have a coding agent run the codemods, complete the remaining migration work, and verify the app, run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "npx next@canary upgrade --agent=latest"
+				},
+				{
+					"type": "text",
+					"value": " instead. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/agent-upgrade",
+					"children": [
+						{
+							"type": "text",
+							"value": "Upgrade with a coding agent"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for details."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod upgrade [revision]"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Options"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "revision"
+								},
+								{
+									"type": "text",
+									"value": " (optional): Specify the upgrade type ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "patch"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "minor"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "major"
+								},
+								{
+									"type": "text",
+									"value": "), an NPM dist tag (e.g. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "latest"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "canary"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "rc"
+								},
+								{
+									"type": "text",
+									"value": "), or an exact version (e.g. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "15.0.0"
+								},
+								{
+									"type": "text",
+									"value": "). Defaults to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "minor"
+								},
+								{
+									"type": "text",
+									"value": " for stable versions."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "--verbose"
+								},
+								{
+									"type": "text",
+									"value": ": Show more detailed output during the upgrade process."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "--skip-react-upgrade"
+								},
+								{
+									"type": "text",
+									"value": ": Preserve React dependencies, types, and overrides, and skip React codemods."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "--skip-eslint-upgrade"
+								},
+								{
+									"type": "text",
+									"value": ": Preserve "
+								},
+								{
+									"type": "inlineCode",
+									"value": "eslint"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "eslint-config-next"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "@next/eslint-plugin-next"
+								},
+								{
+									"type": "text",
+									"value": ", and skip "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next-lint-to-eslint-cli"
+								},
+								{
+									"type": "text",
+									"value": ". Complete required lint migrations manually before verification."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "-y, --yes"
+								},
+								{
+									"type": "text",
+									"value": ": Skip every interactive prompt and accept its default (upgrade React past 18, enable Turbopack, apply all recommended codemods, run the React 19 codemods). Also auto-enabled when stdin is not a TTY (CI, an AI coding agent, or any non-interactive shell), so you usually don't need to pass it explicitly."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "# Upgrade to the latest patch (e.g. 16.0.7 -> 16.0.8)\nnpx @next/codemod upgrade patch\n\n# Upgrade to the latest minor (e.g. 15.3.7 -> 15.4.8). This is the default.\nnpx @next/codemod upgrade minor\n\n# Upgrade to the latest major (e.g. 15.5.7 -> 16.0.7)\nnpx @next/codemod upgrade major\n\n# Upgrade to a specific version\nnpx @next/codemod upgrade 16\n\n# Upgrade to the canary release\nnpx @next/codemod upgrade canary\n\n# Run from an agent or CI: skip every prompt\nnpx @next/codemod upgrade canary --yes"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "If the target version is the same as or lower than your current version, the command exits without making changes."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The skip flags do not bypass the target's peer dependency requirements. If installation previously failed, repair the dependencies and retry the same exact target with the relevant flag. If Next.js already matches the target, run any skipped migrations individually using the guides below."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "During the upgrade, you may be prompted to choose which Next.js codemods to apply and run React 19 codemods if upgrading React."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "When invoked by an AI coding agent or in CI (anywhere stdin isn't a TTY), the upgrade runs non-interactively and accepts every default. Pass "
+										},
+										{
+											"type": "inlineCode",
+											"value": "--yes"
+										},
+										{
+											"type": "text",
+											"value": " to force this behavior even from a terminal."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Codemods"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "16.3"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Opt every route out of Cache Components validation"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "cache-components-instant-false"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod@canary cache-components-instant-false ./app"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This codemod adds "
+				},
+				{
+					"type": "inlineCode",
+					"value": "export const instant = false"
+				},
+				{
+					"type": "text",
+					"value": " to every "
+				},
+				{
+					"type": "inlineCode",
+					"value": "{page,layout,default}"
+				},
+				{
+					"type": "text",
+					"value": " file in your app directory that doesn't already export "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instant"
+				},
+				{
+					"type": "text",
+					"value": ", so you can enable "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and then remove the opt-outs route by route. It skips Client Components ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"use client\""
+				},
+				{
+					"type": "text",
+					"value": ") and files that already declare "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instant"
+				},
+				{
+					"type": "text",
+					"value": ". The generated "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@next-codemod-ignore"
+				},
+				{
+					"type": "text",
+					"value": " comment marks the intentional opt-out without blocking compilation."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Pass "
+						},
+						{
+							"type": "inlineCode",
+							"value": "./src/app"
+						},
+						{
+							"type": "text",
+							"value": " in a "
+						},
+						{
+							"type": "inlineCode",
+							"value": "src/"
+						},
+						{
+							"type": "text",
+							"value": " project. A wrong path reports "
+						},
+						{
+							"type": "inlineCode",
+							"value": "0 ok"
+						},
+						{
+							"type": "text",
+							"value": " instead of failing, so check the file count."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "diff",
+			"meta": "filename=\"app/page.tsx\"",
+			"value": "+ // @next-codemod-ignore Cache Components adoption: this segment temporarily allows blocking.\n+ // Remove this opt-out after verifying the segment passes validation without it.\n+ // See: https://nextjs.org/docs/app/guides/migrating-to-cache-components\n+ export const instant = false\n+\n  export default function Page() {\n    return <h1>Hello</h1>\n  }"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/migrating-to-cache-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Migrating to Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " guide for the full adoption path."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Remove "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch = 'partial'"
+				},
+				{
+					"type": "text",
+					"value": " Route Segment Config after enabling Partial Prefetching"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "remove-partial-prefetch"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod@canary remove-partial-prefetch ./app"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This codemod removes "
+				},
+				{
+					"type": "inlineCode",
+					"value": "export const prefetch = 'partial'"
+				},
+				{
+					"type": "text",
+					"value": " from the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "{page,layout}"
+				},
+				{
+					"type": "text",
+					"value": " files in your app directory, so you can enable "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/partialPrefetching",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "partialPrefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " globally and then drop the now-redundant per-route opt-ins. It removes only the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'partial'"
+				},
+				{
+					"type": "text",
+					"value": " value and leaves other values such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch = 'force-disabled'"
+				},
+				{
+					"type": "text",
+					"value": " in place."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Pass "
+						},
+						{
+							"type": "inlineCode",
+							"value": "./src/app"
+						},
+						{
+							"type": "text",
+							"value": " in a "
+						},
+						{
+							"type": "inlineCode",
+							"value": "src/"
+						},
+						{
+							"type": "text",
+							"value": " project. A wrong path reports "
+						},
+						{
+							"type": "inlineCode",
+							"value": "0 ok"
+						},
+						{
+							"type": "text",
+							"value": " instead of failing, so check the file count."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "diff",
+			"meta": "filename=\"app/products/[slug]/page.tsx\"",
+			"value": "- export const prefetch = 'partial'"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/adopting-partial-prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Adopting Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " guide for the full adoption path."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "16.0"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Remove "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental_ppr"
+				},
+				{
+					"type": "text",
+					"value": " Route Segment Config from App Router pages and layouts"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "remove-experimental-ppr"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod@latest remove-experimental-ppr ."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This codemod removes the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental_ppr"
+				},
+				{
+					"type": "text",
+					"value": " Route Segment Config from App Router pages and layouts."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "diff",
+			"meta": "filename=\"app/page.tsx\"",
+			"value": "- export const experimental_ppr = true;"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Remove "
+				},
+				{
+					"type": "inlineCode",
+					"value": "unstable_"
+				},
+				{
+					"type": "text",
+					"value": " prefix from stabilized API"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "remove-unstable-prefix"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod@latest remove-unstable-prefix ."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This codemod removes the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "unstable_"
+				},
+				{
+					"type": "text",
+					"value": " prefix from stabilized API."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "import { unstable_cacheTag as cacheTag } from 'next/cache'\n\ncacheTag()"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Transforms into:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "import { cacheTag } from 'next/cache'\n\ncacheTag()"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Migrate from deprecated "
+				},
+				{
+					"type": "inlineCode",
+					"value": "middleware"
+				},
+				{
+					"type": "text",
+					"value": " convention to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "proxy"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "middleware-to-proxy"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod@latest middleware-to-proxy ."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This codemod migrates projects from using the deprecated "
+				},
+				{
+					"type": "inlineCode",
+					"value": "middleware"
+				},
+				{
+					"type": "text",
+					"value": " convention to using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "proxy"
+				},
+				{
+					"type": "text",
+					"value": " convention. It:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Renames "
+								},
+								{
+									"type": "inlineCode",
+									"value": "middleware.<extension>"
+								},
+								{
+									"type": "text",
+									"value": " to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "proxy.<extension>"
+								},
+								{
+									"type": "text",
+									"value": " (e.g. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "middleware.ts"
+								},
+								{
+									"type": "text",
+									"value": " to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "proxy.ts"
+								},
+								{
+									"type": "text",
+									"value": ")"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Renames named export "
+								},
+								{
+									"type": "inlineCode",
+									"value": "middleware"
+								},
+								{
+									"type": "text",
+									"value": " to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "proxy"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Renames Next.js config property "
+								},
+								{
+									"type": "inlineCode",
+									"value": "experimental.middlewarePrefetch"
+								},
+								{
+									"type": "text",
+									"value": " to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "experimental.proxyPrefetch"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Renames Next.js config property "
+								},
+								{
+									"type": "inlineCode",
+									"value": "experimental.middlewareClientMaxBodySize"
+								},
+								{
+									"type": "text",
+									"value": " to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "experimental.proxyClientMaxBodySize"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Renames Next.js config property "
+								},
+								{
+									"type": "inlineCode",
+									"value": "experimental.externalMiddlewareRewritesResolve"
+								},
+								{
+									"type": "text",
+									"value": " to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "experimental.externalProxyRewritesResolve"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Renames Next.js config property "
+								},
+								{
+									"type": "inlineCode",
+									"value": "skipMiddlewareUrlNormalize"
+								},
+								{
+									"type": "text",
+									"value": " to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "skipProxyUrlNormalize"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"middleware.ts\"",
+			"value": "import { NextResponse } from 'next/server'\n\nexport function middleware() {\n\treturn NextResponse.next()\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Transforms into:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"proxy.ts\"",
+			"value": "import { NextResponse } from 'next/server'\n\nexport function proxy() {\n\treturn NextResponse.next()\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Migrate from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next lint"
+				},
+				{
+					"type": "text",
+					"value": " to ESLint CLI"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next-lint-to-eslint-cli"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod@canary next-lint-to-eslint-cli ."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This codemod migrates projects from using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next lint"
+				},
+				{
+					"type": "text",
+					"value": " to using the ESLint CLI with your local ESLint config. It:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Creates an "
+								},
+								{
+									"type": "inlineCode",
+									"value": "eslint.config.mjs"
+								},
+								{
+									"type": "text",
+									"value": " file with Next.js recommended configurations"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Updates "
+								},
+								{
+									"type": "inlineCode",
+									"value": "package.json"
+								},
+								{
+									"type": "text",
+									"value": " scripts to use "
+								},
+								{
+									"type": "inlineCode",
+									"value": "eslint ."
+								},
+								{
+									"type": "text",
+									"value": " instead of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next lint"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Adds necessary ESLint dependencies to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "package.json"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Preserves existing ESLint configurations when found"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"package.json\"",
+			"value": "{\n\t\"scripts\": {\n\t\t\"lint\": \"next lint\"\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Becomes:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"package.json\"",
+			"value": "{\n\t\"scripts\": {\n\t\t\"lint\": \"eslint .\"\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "And creates:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"eslint.config.mjs\"",
+			"value": "import { dirname } from 'path'\nimport { fileURLToPath } from 'url'\nimport { FlatCompat } from '@eslint/eslintrc'\n\nconst __filename = fileURLToPath(import.meta.url)\nconst __dirname = dirname(__filename)\n\nconst compat = new FlatCompat({\n\tbaseDirectory: __dirname,\n})\n\nconst eslintConfig = [\n\t...compat.extends('next/core-web-vitals', 'next/typescript'),\n\t{\n\t\tignores: ['node_modules/**', '.next/**', 'out/**', 'build/**', 'next-env.d.ts'],\n\t},\n]\n\nexport default eslintConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "15.0"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Transform App Router Route Segment Config "
+				},
+				{
+					"type": "inlineCode",
+					"value": "runtime"
+				},
+				{
+					"type": "text",
+					"value": " value from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental-edge"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "edge"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "app-dir-runtime-config-experimental-edge"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Note"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": This codemod is App Router specific."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod@latest app-dir-runtime-config-experimental-edge ."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This codemod transforms "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config/runtime",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Segment Config "
+						},
+						{
+							"type": "inlineCode",
+							"value": "runtime"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " value "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental-edge"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "edge"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "export const runtime = 'experimental-edge'"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Transforms into:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "export const runtime = 'edge'"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Migrate to async Dynamic APIs"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "APIs that opted into dynamic rendering that previously supported synchronous access are now asynchronous. You can read more about this breaking change in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/version-15",
+					"children": [
+						{
+							"type": "text",
+							"value": "upgrade guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next-async-request-api"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod@latest next-async-request-api ."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This codemod will transform dynamic APIs ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers()"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "draftMode()"
+				},
+				{
+					"type": "text",
+					"value": " from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/headers"
+				},
+				{
+					"type": "text",
+					"value": ") that are now asynchronous to be properly awaited or wrapped with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "React.use()"
+				},
+				{
+					"type": "text",
+					"value": " if applicable. When automatic migration isn't possible, the codemod adds an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@next-codemod-error"
+				},
+				{
+					"type": "text",
+					"value": " comment and may add a temporary "
+				},
+				{
+					"type": "inlineCode",
+					"value": "UnsafeUnwrapped*"
+				},
+				{
+					"type": "text",
+					"value": " cast. Complete the migration before removing them. If the suggested change doesn't apply, replace the directive with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@next-codemod-ignore"
+				},
+				{
+					"type": "text",
+					"value": " and explain why."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/version-15#async-request-apis-breaking-change",
+					"children": [
+						{
+							"type": "text",
+							"value": "Async Request APIs migration guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for examples."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "import { cookies, headers } from 'next/headers'\nconst token = cookies().get('token')\n\nfunction useToken() {\n\tconst token = cookies().get('token')\n\treturn token\n}\n\nexport default function Page() {\n\tconst name = cookies().get('name')\n}\n\nfunction getHeader() {\n\treturn headers().get('x-foo')\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Transforms into:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "import { use } from 'react'\nimport { cookies, headers, type UnsafeUnwrappedCookies, type UnsafeUnwrappedHeaders } from 'next/headers'\nconst token =\n\t/* @next-codemod-error Await this API and update its callers; remove the temporary UnsafeUnwrappedCookies cast after repairing the migration. */\n\t(cookies() as unknown as UnsafeUnwrappedCookies).get('token')\n\nfunction useToken() {\n\tconst token = use(cookies()).get('token')\n\treturn token\n}\n\nexport default async function Page() {\n\tconst name = (await cookies()).get('name')\n}\n\nfunction getHeader() {\n\treturn (\n\t\t/* @next-codemod-error Await this API and update its callers; remove the temporary UnsafeUnwrappedHeaders cast after repairing the migration. */\n\t\t(headers() as unknown as UnsafeUnwrappedHeaders).get('x-foo')\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When we detect property access on the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": " props in the page / route entries ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.js"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout.js"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "route.js"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default.js"
+				},
+				{
+					"type": "text",
+					"value": ") or the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata"
+				},
+				{
+					"type": "text",
+					"value": " / "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateViewport"
+				},
+				{
+					"type": "text",
+					"value": " APIs, it will attempt to transform the callsite from a sync to an async function, and await the property access. If it can't be made async (such as with a Client Component), it will use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "React.use"
+				},
+				{
+					"type": "text",
+					"value": " to unwrap the promise ."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "// page.tsx\nexport default function Page({ params, searchParams }: { params: { slug: string }; searchParams: { [key: string]: string | string[] | undefined } }) {\n\tconst { value } = searchParams\n\tif (value === 'foo') {\n\t\t// ...\n\t}\n}\n\nexport function generateMetadata({ params }: { params: { slug: string } }) {\n\tconst { slug } = params\n\treturn {\n\t\ttitle: `My Page - ${slug}`,\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Transforms into:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "// page.tsx\nexport default async function Page(props: { params: Promise<{ slug: string }>; searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {\n\tconst searchParams = await props.searchParams\n\tconst { value } = searchParams\n\tif (value === 'foo') {\n\t\t// ...\n\t}\n}\n\nexport async function generateMetadata(props: { params: Promise<{ slug: string }> }) {\n\tconst params = await props.params\n\tconst { slug } = params\n\treturn {\n\t\ttitle: `My Page - ${slug}`,\n\t}\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " When this codemod identifies a spot that might require manual intervention, but we aren't able to determine the exact fix, it will add a comment or typecast to the code to inform the user that it needs to be manually updated. These comments are prefixed with "
+						},
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "@next/codemod"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", and typecasts are prefixed with "
+						},
+						{
+							"type": "inlineCode",
+							"value": "UnsafeUnwrapped"
+						},
+						{
+							"type": "text",
+							"value": ". Your build will error until these comments are explicitly removed. "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/messages/sync-dynamic-apis",
+							"children": [
+								{
+									"type": "text",
+									"value": "Read more"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Replace "
+				},
+				{
+					"type": "inlineCode",
+					"value": "geo"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ip"
+				},
+				{
+					"type": "text",
+					"value": " properties of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NextRequest"
+				},
+				{
+					"type": "text",
+					"value": " with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@vercel/functions"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next-request-geo-ip"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod@latest next-request-geo-ip ."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This codemod installs "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@vercel/functions"
+				},
+				{
+					"type": "text",
+					"value": " and transforms "
+				},
+				{
+					"type": "inlineCode",
+					"value": "geo"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ip"
+				},
+				{
+					"type": "text",
+					"value": " properties of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NextRequest"
+				},
+				{
+					"type": "text",
+					"value": " with corresponding "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@vercel/functions"
+				},
+				{
+					"type": "text",
+					"value": " features."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "import type { NextRequest } from 'next/server'\n\nexport function GET(req: NextRequest) {\n\tconst { geo, ip } = req\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Transforms into:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "import type { NextRequest } from 'next/server'\nimport { geolocation, ipAddress } from '@vercel/functions'\n\nexport function GET(req: NextRequest) {\n\tconst geo = geolocation(req)\n\tconst ip = ipAddress(req)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "14.0"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Migrate "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ImageResponse"
+				},
+				{
+					"type": "text",
+					"value": " imports"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next-og-import"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod@latest next-og-import ."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This codemod moves transforms imports from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/server"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/og"
+				},
+				{
+					"type": "text",
+					"value": " for usage of "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/metadata-and-og-images#generated-open-graph-images",
+					"children": [
+						{
+							"type": "text",
+							"value": "Dynamic OG Image Generation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "import { ImageResponse } from 'next/server'"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Transforms into:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "import { ImageResponse } from 'next/og'"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "viewport"
+				},
+				{
+					"type": "text",
+					"value": " export"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "metadata-to-viewport-export"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod@latest metadata-to-viewport-export ."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This codemod migrates certain viewport metadata to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "viewport"
+				},
+				{
+					"type": "text",
+					"value": " export."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "export const metadata = {\n\ttitle: 'My App',\n\tthemeColor: 'dark',\n\tviewport: {\n\t\twidth: 1,\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Transforms into:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "export const metadata = {\n\ttitle: 'My App',\n}\n\nexport const viewport = {\n\twidth: 1,\n\tthemeColor: 'dark',\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "13.2"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Use Built-in Font"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "built-in-next-font"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod@latest built-in-next-font ."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This codemod uninstalls the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@next/font"
+				},
+				{
+					"type": "text",
+					"value": " package and transforms "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@next/font"
+				},
+				{
+					"type": "text",
+					"value": " imports into the built-in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "import { Inter } from '@next/font/google'"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Transforms into:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "import { Inter } from 'next/font/google'"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "13.0"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Rename Next Image Imports"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next-image-to-legacy-image"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod@latest next-image-to-legacy-image ."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Safely renames "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/image"
+				},
+				{
+					"type": "text",
+					"value": " imports in existing Next.js 10, 11, or 12 applications to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/legacy/image"
+				},
+				{
+					"type": "text",
+					"value": " in Next.js 13. Also renames "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/future/image"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/image"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"pages/index.js\"",
+			"value": "import Image1 from 'next/image'\nimport Image2 from 'next/future/image'\n\nexport default function Home() {\n\treturn (\n\t\t<div>\n\t\t\t<Image1\n\t\t\t\tsrc=\"/test.jpg\"\n\t\t\t\twidth=\"200\"\n\t\t\t\theight=\"300\"\n\t\t\t/>\n\t\t\t<Image2\n\t\t\t\tsrc=\"/test.png\"\n\t\t\t\twidth=\"500\"\n\t\t\t\theight=\"400\"\n\t\t\t/>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Transforms into:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"pages/index.js\"",
+			"value": "// 'next/image' becomes 'next/legacy/image'\nimport Image1 from 'next/legacy/image'\n// 'next/future/image' becomes 'next/image'\nimport Image2 from 'next/image'\n\nexport default function Home() {\n\treturn (\n\t\t<div>\n\t\t\t<Image1\n\t\t\t\tsrc=\"/test.jpg\"\n\t\t\t\twidth=\"200\"\n\t\t\t\theight=\"300\"\n\t\t\t/>\n\t\t\t<Image2\n\t\t\t\tsrc=\"/test.png\"\n\t\t\t\twidth=\"500\"\n\t\t\t\theight=\"400\"\n\t\t\t/>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Migrate to the New Image Component"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next-image-experimental"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod@latest next-image-experimental ."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Dangerously migrates from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/legacy/image"
+				},
+				{
+					"type": "text",
+					"value": " to the new "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/image"
+				},
+				{
+					"type": "text",
+					"value": " by adding inline styles and removing unused props."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Removes "
+								},
+								{
+									"type": "inlineCode",
+									"value": "layout"
+								},
+								{
+									"type": "text",
+									"value": " prop and adds "
+								},
+								{
+									"type": "inlineCode",
+									"value": "style"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Removes "
+								},
+								{
+									"type": "inlineCode",
+									"value": "objectFit"
+								},
+								{
+									"type": "text",
+									"value": " prop and adds "
+								},
+								{
+									"type": "inlineCode",
+									"value": "style"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Removes "
+								},
+								{
+									"type": "inlineCode",
+									"value": "objectPosition"
+								},
+								{
+									"type": "text",
+									"value": " prop and adds "
+								},
+								{
+									"type": "inlineCode",
+									"value": "style"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Removes "
+								},
+								{
+									"type": "inlineCode",
+									"value": "lazyBoundary"
+								},
+								{
+									"type": "text",
+									"value": " prop."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Removes "
+								},
+								{
+									"type": "inlineCode",
+									"value": "lazyRoot"
+								},
+								{
+									"type": "text",
+									"value": " prop."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Remove "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<a>"
+				},
+				{
+					"type": "text",
+					"value": " Tags From Link Components"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "new-link"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod@latest new-link ."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Remove "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<a>"
+				},
+				{
+					"type": "text",
+					"value": " tags inside "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/link",
+					"children": [
+						{
+							"type": "text",
+							"value": "Link Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "<Link href=\"/about\">\n  <a>About</a>\n</Link>\n// transforms into\n<Link href=\"/about\">\n  About\n</Link>\n\n<Link href=\"/about\">\n  <a onClick={() => console.log('clicked')}>About</a>\n</Link>\n// transforms into\n<Link href=\"/about\" onClick={() => console.log('clicked')}>\n  About\n</Link>"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "11"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Migrate from CRA"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "cra-to-next"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod cra-to-next"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Migrates a Create React App project to Next.js; creating a Pages Router and necessary config to match behavior. Client-side only rendering is leveraged initially to prevent breaking compatibility due to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "window"
+				},
+				{
+					"type": "text",
+					"value": " usage during SSR and can be enabled seamlessly to allow the gradual adoption of Next.js specific features."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Please share any feedback related to this transform "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/discussions/25858",
+					"children": [
+						{
+							"type": "text",
+							"value": "in this discussion"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "10"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Add React imports"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "add-missing-react-import"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod add-missing-react-import"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Transforms files that do not import "
+				},
+				{
+					"type": "inlineCode",
+					"value": "React"
+				},
+				{
+					"type": "text",
+					"value": " to include the import in order for the new "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html",
+					"children": [
+						{
+							"type": "text",
+							"value": "React JSX transform"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to work."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"my-component.js\"",
+			"value": "export default class Home extends React.Component {\n\trender() {\n\t\treturn <div>Hello World</div>\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Transforms into:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"my-component.js\"",
+			"value": "import React from 'react'\nexport default class Home extends React.Component {\n\trender() {\n\t\treturn <div>Hello World</div>\n\t}\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "9"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Transform Anonymous Components into Named Components"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "name-default-component"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod name-default-component"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Versions 9 and above."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Transforms anonymous components into named components to make sure they work with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nextjs.org/blog/next-9-4#fast-refresh",
+					"children": [
+						{
+							"type": "text",
+							"value": "Fast Refresh"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"my-component.js\"",
+			"value": "export default function () {\n\treturn <div>Hello World</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Transforms into:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"my-component.js\"",
+			"value": "export default function MyComponent() {\n\treturn <div>Hello World</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The component will have a camel-cased name based on the name of the file, and it also works with arrow functions."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "8"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Note"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Built-in AMP support and this codemod have been removed in Next.js 16."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Transform AMP HOC into page config"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "withamp-to-config"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod withamp-to-config"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Transforms the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "withAmp"
+				},
+				{
+					"type": "text",
+					"value": " HOC into Next.js 9 page configuration."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Before\nimport { withAmp } from 'next/amp'\n\nfunction Home() {\n\treturn <h1>My AMP Page</h1>\n}\n\nexport default withAmp(Home)"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// After\nexport default function Home() {\n\treturn <h1>My AMP Page</h1>\n}\n\nexport const config = {\n\tamp: true,\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "6"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "withRouter"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "url-to-withrouter"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod url-to-withrouter"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Transforms the deprecated automatically injected "
+				},
+				{
+					"type": "inlineCode",
+					"value": "url"
+				},
+				{
+					"type": "text",
+					"value": " property on top level pages to using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "withRouter"
+				},
+				{
+					"type": "text",
+					"value": " and the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "router"
+				},
+				{
+					"type": "text",
+					"value": " property it injects. Read more here: "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/url-deprecated",
+					"children": [
+						{
+							"type": "text",
+							"value": "https://nextjs.org/docs/messages/url-deprecated"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"From\"",
+			"value": "import React from 'react'\nexport default class extends React.Component {\n\trender() {\n\t\tconst { pathname } = this.props.url\n\t\treturn <div>Current pathname: {pathname}</div>\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"To\"",
+			"value": "import React from 'react'\nimport { withRouter } from 'next/router'\nexport default withRouter(\n\tclass extends React.Component {\n\t\trender() {\n\t\t\tconst { pathname } = this.props.router\n\t\t\treturn <div>Current pathname: {pathname}</div>\n\t\t}\n\t},\n)"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This is one case. All the cases that are transformed (and tested) can be found in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/tree/canary/packages/next-codemod/transforms/__testfixtures__/url-to-withrouter",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "__testfixtures__"
+						},
+						{
+							"type": "text",
+							"value": " directory"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		}
+	]
+}

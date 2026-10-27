@@ -1,0 +1,1164 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Building public pages\ndescription: Learn how to build public, \"static\" pages that share data across users, such as landing pages, list pages (products, blogs, etc.), marketing and news sites.\nnav_title: Public pages\nrelated:\n links:\n  - app/guides/keeping-pages-static\n  - app/guides/incremental-static-regeneration-cache-components"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Public pages show the same content to every user. Common examples include landing pages, marketing pages, and product pages."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since data is shared, these kind of pages can be "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#prerendering",
+					"children": [
+						{
+							"type": "text",
+							"value": "prerendered"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " ahead of time and reused. This leads to faster page loads and lower server costs."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This guide will show you how to build public pages that share data across users."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Example"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "As an example, we'll build a product list page."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We'll start with a static header, add a product list with async external data, and learn how to render it without blocking the response. Finally, we'll add a user-specific promotion banner without switching the entire page to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#dynamic-rendering",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamic rendering"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can find the resources used in this example here:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://youtu.be/F6romq71KtI",
+									"children": [
+										{
+											"type": "text",
+											"value": "Video"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://cache-components-public-pages.labs.vercel.dev/",
+									"children": [
+										{
+											"type": "text",
+											"value": "Demo"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/nextjs/cache-components-public-pages",
+									"children": [
+										{
+											"type": "text",
+											"value": "Code"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 1: Add a simple header"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Let's start with a simple header."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/page.tsx\"",
+			"value": "// Static component\nfunction Header() {\n\treturn <h1>Shop</h1>\n}\n\nexport default async function Page() {\n\treturn (\n\t\t<>\n\t\t\t<Header />\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Static components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Header />"
+				},
+				{
+					"type": "text",
+					"value": " component doesn't depend on any inputs that change between requests, such as: external data, request headers, route params, the current time, or random values."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": If you need to display locale-aware dates or times without a visible flash, see "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/preventing-flash-before-hydration",
+							"children": [
+								{
+									"type": "text",
+									"value": "Preventing flash before hydration"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since its output never changes and can be determined ahead of time, this kind of component is called a "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "static"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " component. With no reason to wait for a request, Next.js can safely "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "prerender"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " the page at "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#build-time",
+					"children": [
+						{
+							"type": "text",
+							"value": "build time"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We can confirm this by running "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/cli/next#next-build-options",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next build"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "Route (app)      Revalidate  Expire\n┌ ○ /products           15m      1y\n└ ○ /_not-found\n\n○  (Static)  prerendered as static content"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Notice that the product route is marked as static, even though we didn't add any explicit configuration."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 2: Add the product list"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Now, let's fetch and render our product list."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/page.tsx\"",
+			"value": "import db from '@/db'\nimport { List } from '@/app/products/ui'\n\nfunction Header() {}\n\n// Dynamic component\nasync function ProductList() {\n\tconst products = await db.product.findMany()\n\treturn <List items={products} />\n}\n\nexport default async function Page() {\n\treturn (\n\t\t<>\n\t\t\t<Header />\n\t\t\t<ProductList />\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Unlike the header, the product list depends on external data."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Dynamic components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since this data "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "can"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " change over time, the rendered output is no longer guaranteed to be stable. This makes the product list a "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamic"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " component."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Without guidance, the framework assumes you want to fetch "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "fresh"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " data on every user request. This design choice reflects standard web behavior where a new server request renders the page."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "However, if this component is rendered at request time, fetching its data will delay the "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "entire"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " route from responding. If we refresh the page, we can see this happen."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Even though the header is rendered instantly, it can't be sent to the browser until the product list has finished fetching."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To protect us from this performance cliff, the first time we "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "await"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " this uncached data Next.js shows a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/blocking-prerender-dynamic",
+					"children": [
+						{
+							"type": "text",
+							"value": "warning"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ": accessing uncached data outside of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " prevents the route from being prerendered."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "At this point, we have to decide how to "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "unblock"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " the response. Either:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/glossary#cache-components",
+									"children": [
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "text",
+													"value": "Cache"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " the component, so it becomes "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "stable"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and can be prerendered with the rest of the page."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/glossary#streaming",
+									"children": [
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "text",
+													"value": "Stream"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " the component, so it becomes "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "non-blocking"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and the rest of the page doesn't have to wait for it."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In our case, the product catalog is shared across all users, so caching is the right choice."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We can mark a function as cacheable using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "'use cache'"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " directive."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/page.tsx\"",
+			"value": "import db from '@/db'\nimport { List } from '@/app/products/ui'\n\nfunction Header() {}\n\n// Cache component\nasync function ProductList() {\n\t'use cache'\n\tconst products = await db.product.findMany()\n\treturn <List items={products} />\n}\n\nexport default async function Page() {\n\treturn (\n\t\t<>\n\t\t\t<Header />\n\t\t\t<ProductList />\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This turns it into a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#cache-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "cache component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". The first time it runs, whatever we return will be cached and reused."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If a cache component's inputs are available "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "before"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " the request arrives, it can be prerendered just like a static component."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If we refresh again, we can see the page loads instantly because the cache component doesn't block the response. And, if we run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " again, we can confirm the page is still static:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "Route (app)      Revalidate  Expire\n┌ ○ /products           15m      1y\n└ ○ /_not-found\n\n○  (Static)  prerendered as static content"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "But, pages rarely stay static forever."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 3: Add a dynamic promotion banner"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Sooner or later, even simple pages need some dynamic content. To demonstrate this, let's add a promotional banner:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/page.tsx\"",
+			"value": "import db from '@/db'\nimport { List, Promotion } from '@/app/products/ui'\nimport { getPromotion } from '@/app/products/data'\n\nfunction Header() {}\n\nasync function ProductList() {}\n\n// Dynamic component\nasync function PromotionContent() {\n\tconst promotion = await getPromotion()\n\treturn <Promotion data={promotion} />\n}\n\nexport default async function Page() {\n\treturn (\n\t\t<>\n\t\t\t<PromotionContent />\n\t\t\t<Header />\n\t\t\t<ProductList />\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Once again, this starts off as dynamic. And as before, introducing blocking behavior triggers a Next.js warning."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Last time, the data was shared, so it could be cached. This time, the promotion depends on request specific inputs like the user's location and A/B tests, so we can't cache our way out of the blocking behavior."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Partial prerendering"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Adding dynamic content doesn't mean we have to go back to a fully blocking render. We can unblock the response with streaming."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js supports streaming by default. We can use a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#suspense-boundary",
+					"children": [
+						{
+							"type": "text",
+							"value": "Suspense boundary"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to tell the framework where to slice the streamed response into "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "chunks"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and what fallback UI to show while content loads."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/page.tsx\"",
+			"value": "import { Suspense } from 'react'\nimport db from '@/db'\nimport { List, Promotion, PromotionSkeleton } from '@/app/products/ui'\nimport { getPromotion } from '@/app/products/data'\n\nfunction Header() {}\n\nasync function ProductList() {}\n\n// Dynamic component (streamed)\nasync function PromotionContent() {\n\tconst promotion = await getPromotion()\n\treturn <Promotion data={promotion} />\n}\n\nexport default async function Page() {\n\treturn (\n\t\t<>\n\t\t\t<Suspense fallback={<PromotionSkeleton />}>\n\t\t\t\t<PromotionContent />\n\t\t\t</Suspense>\n\t\t\t<Header />\n\t\t\t<ProductList />\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The fallback is prerendered alongside the rest of our static and cached content. The inner component streams in later, once its async work completes."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With this change, Next.js can separate prerenderable work from request-time work and the route becomes "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#partial-prerendering-ppr",
+					"children": [
+						{
+							"type": "text",
+							"value": "partially prerendered"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Again, we can confirm this by running "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "Route (app)      Revalidate  Expire\n┌ ◐ /products    15m      1y\n└ ◐ /_not-found\n\n◐  (Partial Prerender)  Prerendered as static HTML with dynamic server-streamed content"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "At "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#build-time",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "build time"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", most of the page, including the header, product list and promotion fallback, is rendered, cached and pushed to a content delivery network."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "At "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#dynamic-rendering",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "request time"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", the prerendered part is served instantly from a CDN node close to the user."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In parallel, the user specific promotion is rendered on the server, streamed to the client, and swapped into the fallback slot."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If we refresh the page one last time, we can see most of the page loads instantly, while the dynamic parts stream in as they become available."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Next steps"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We've learned how to build mostly static pages that include pockets of dynamic content."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We started with a static page, added async work, and resolved the blocking behavior by caching what could be prerendered and streaming what could not. From here, you can:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/keeping-pages-static",
+									"children": [
+										{
+											"type": "text",
+											"value": "Keep selected route output static"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " as the application changes."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/incremental-static-regeneration-cache-components",
+									"children": [
+										{
+											"type": "text",
+											"value": "Revalidate prerendered pages or cached data"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/generate-static-params",
+									"children": [
+										{
+											"type": "text",
+											"value": "Create variants with route parameters"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/authentication-with-cache-components",
+									"children": [
+										{
+											"type": "text",
+											"value": "Add authentication to a Cache Components application"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

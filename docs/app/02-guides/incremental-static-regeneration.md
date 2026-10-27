@@ -183,7 +183,7 @@ export async function createPost() {
 }
 ```
 
-[View a demo](https://on-demand-isr.vercel.app) and [explore the source code](https://github.com/vercel/on-demand-isr).
+[View a demo](https://on-demand-isr.vercel.app) and [explore the source code](https://github.com/nextjs/on-demand-isr).
 
 ### On-demand revalidation with `revalidateTag`
 
@@ -331,7 +331,10 @@ Learn how to [configure ISR](/docs/app/guides/self-hosting#caching-and-isr) when
 
 ## Version history
 
-| Version   | Changes                          |
-| --------- | -------------------------------- |
-| `v14.1.0` | Custom `cacheHandler` is stable. |
-| `v13.0.0` | App Router is introduced.        |
+| Version   | Changes                                                                             |
+| --------- | ----------------------------------------------------------------------------------- |
+| `v14.1.0` | Custom `cacheHandler` is stable.                                                    |
+| `v13.0.0` | App Router is introduced.                                                           |
+| `v12.2.0` | Pages Router: On-Demand ISR is stable                                               |
+| `v12.0.0` | Pages Router: [Bot-aware ISR fallback](/blog/next-12#bot-aware-isr-fallback) added. |
+| `v9.5.0`  | Pages Router: [Stable ISR introduced](/blog/next-9-5).                              |

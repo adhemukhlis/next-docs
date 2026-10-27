@@ -1,0 +1,1063 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: catchError\ndescription: API Reference for the catchError function.\nrelated:\n title: Learn more about error handling\n links:\n  - app/getting-started/error-handling\n  - app/api-reference/file-conventions/error"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "catchError"
+				},
+				{
+					"type": "text",
+					"value": " function creates a component that wraps its children in an error boundary. It provides a programmatic alternative to the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/error",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "error.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " file convention, enabling component-level error recovery anywhere in your component tree."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Compared to a custom React error boundary, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "catchError"
+				},
+				{
+					"type": "text",
+					"value": " is designed to work with Next.js out of the box:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Built-in error recovery"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " — "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/error#retry",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "retry()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " re-renders the page inside a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react/startTransition",
+									"children": [
+										{
+											"type": "text",
+											"value": "Transition"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", preserving Client Components state outside of the error boundary."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Framework-aware integration"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " — APIs like "
+								},
+								{
+									"type": "inlineCode",
+									"value": "redirect()"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "notFound()"
+								},
+								{
+									"type": "text",
+									"value": " work by throwing special errors under the hood. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "catchError"
+								},
+								{
+									"type": "text",
+									"value": " handles these seamlessly, so they're not accidentally caught by your error boundary."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Client navigation handling"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " — The error state automatically clears when you do a client navigation to a different route."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "catchError"
+				},
+				{
+					"type": "text",
+					"value": " can be called from "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/custom-error-boundary.tsx\" switcher",
+			"value": "'use client'\n\nimport { catchError, type ErrorInfo } from 'next/error'\n\nfunction ErrorFallback(props: { title: string }, { error, retry }: ErrorInfo) {\n\tconst message = error instanceof Error ? error.message : String(error)\n\n\treturn (\n\t\t<div>\n\t\t\t<h2>{props.title}</h2>\n\t\t\t<p>{message}</p>\n\t\t\t<button onClick={() => retry()}>Try again</button>\n\t\t</div>\n\t)\n}\n\nexport default catchError(ErrorFallback)"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/custom-error-boundary.js\" switcher",
+			"value": "'use client'\n\nimport { catchError } from 'next/error'\n\nfunction ErrorFallback(props, { error, retry }) {\n\tconst message = error instanceof Error ? error.message : String(error)\n\n\treturn (\n\t\t<div>\n\t\t\t<h2>{props.title}</h2>\n\t\t\t<p>{message}</p>\n\t\t\t<button onClick={() => retry()}>Try again</button>\n\t\t</div>\n\t)\n}\n\nexport default catchError(ErrorFallback)"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parameters"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "catchError"
+				},
+				{
+					"type": "text",
+					"value": " accepts a single argument:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "const ErrorWrapper = catchError(fallback)"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "fallback"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A function that renders the error UI when an error is caught. It receives two arguments:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "props"
+								},
+								{
+									"type": "text",
+									"value": " — The props passed to the wrapper component (excluding "
+								},
+								{
+									"type": "inlineCode",
+									"value": "children"
+								},
+								{
+									"type": "text",
+									"value": ")."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "errorInfo"
+								},
+								{
+									"type": "text",
+									"value": " — An object containing information about the error:"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Property"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "error"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "unknown"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The value that was thrown. Narrow it, for example with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "instanceof Error"
+								},
+								{
+									"type": "text",
+									"value": ", before reading properties like "
+								},
+								{
+									"type": "inlineCode",
+									"value": "message"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "retry"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "() => void"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Re-fetches and re-renders the error boundary's children. If successful, the fallback is replaced with the re-rendered result."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "reset"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "() => void"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Resets the error state and re-renders without re-fetching. Use "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/error#retry",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "retry()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " in most cases."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fallback"
+				},
+				{
+					"type": "text",
+					"value": " function must be a Client Component (or defined in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use client'"
+				},
+				{
+					"type": "text",
+					"value": " module)."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "catchError"
+				},
+				{
+					"type": "text",
+					"value": " returns a React component that:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Accepts the same props as your fallback's first argument, plus "
+								},
+								{
+									"type": "inlineCode",
+									"value": "children"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Wraps "
+								},
+								{
+									"type": "inlineCode",
+									"value": "children"
+								},
+								{
+									"type": "text",
+									"value": " in an error boundary."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Renders the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fallback"
+								},
+								{
+									"type": "text",
+									"value": " when an error is caught in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "children"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Basic usage"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Define a fallback and use the returned component to wrap parts of your UI:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/some-component.tsx\" switcher",
+			"value": "import ErrorWrapper from '../custom-error-boundary'\n\nexport default function Component({ children }: { children: React.ReactNode }) {\n\treturn <ErrorWrapper title=\"Dashboard Error\">{children}</ErrorWrapper>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/some-component.js\" switcher",
+			"value": "import ErrorWrapper from '../custom-error-boundary'\n\nexport default function Component({ children }) {\n\treturn <ErrorWrapper title=\"Dashboard Error\">{children}</ErrorWrapper>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Recovering from errors"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "retry()"
+				},
+				{
+					"type": "text",
+					"value": " to prompt the user to recover from the error. When called, the function re-fetches and re-renders the error boundary's children. If successful, the fallback is replaced with the re-rendered result."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In most cases, use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "retry()"
+				},
+				{
+					"type": "text",
+					"value": " instead of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "reset()"
+				},
+				{
+					"type": "text",
+					"value": ". The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "reset()"
+				},
+				{
+					"type": "text",
+					"value": " function only clears the error state and re-renders without re-fetching, which means it won't recover from Server Component errors."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/custom-error-boundary.tsx\" switcher",
+			"value": "'use client'\n\nimport { catchError, type ErrorInfo } from 'next/error'\n\nfunction ErrorFallback(props: {}, { error, retry, reset }: ErrorInfo) {\n\tconst message = error instanceof Error ? error.message : String(error)\n\n\treturn (\n\t\t<div>\n\t\t\t<p>{message}</p>\n\t\t\t<button onClick={() => retry()}>Try again</button>\n\t\t\t<button onClick={() => reset()}>Reset</button>\n\t\t</div>\n\t)\n}\n\nexport default catchError(ErrorFallback)"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/custom-error-boundary.js\" switcher",
+			"value": "'use client'\n\nimport { catchError } from 'next/error'\n\nfunction ErrorFallback(props, { error, retry, reset }) {\n\tconst message = error instanceof Error ? error.message : String(error)\n\n\treturn (\n\t\t<div>\n\t\t\t<p>{message}</p>\n\t\t\t<button onClick={() => retry()}>Try again</button>\n\t\t\t<button onClick={() => reset()}>Reset</button>\n\t\t</div>\n\t)\n}\n\nexport default catchError(ErrorFallback)"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Server-rendered error fallback"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can pass server-rendered content as a prop to display data-driven fallback UI. This works by rendering a Server Component as a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "React.ReactNode"
+				},
+				{
+					"type": "text",
+					"value": " prop that the fallback displays when an error is caught."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": This pattern eagerly renders the fallback on every page render, even when no error occurs. For most use cases, a simpler client-side fallback is sufficient."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/error-boundary.tsx\" switcher",
+			"value": "'use client'\n\nimport { catchError, type ErrorInfo } from 'next/error'\n\nfunction ErrorFallback(props: { fallback: React.ReactNode }, errorInfo: ErrorInfo) {\n\treturn props.fallback\n}\n\nexport default catchError(ErrorFallback)"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/error-boundary.js\" switcher",
+			"value": "'use client'\n\nimport { catchError } from 'next/error'\n\nfunction ErrorFallback(props, errorInfo) {\n\treturn props.fallback\n}\n\nexport default catchError(ErrorFallback)"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/some-component.tsx\" switcher",
+			"value": "import ErrorBoundary from '../error-boundary'\n\nasync function ErrorFallback() {\n\tconst data = await getData()\n\treturn <div>{data.message}</div>\n}\n\nexport default function Component({ children }: { children: React.ReactNode }) {\n\treturn <ErrorBoundary fallback={<ErrorFallback />}>{children}</ErrorBoundary>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/some-component.js\" switcher",
+			"value": "import ErrorBoundary from '../error-boundary'\n\nasync function ErrorFallback() {\n\tconst data = await getData()\n\treturn <div>{data.message}</div>\n}\n\nexport default function Component({ children }) {\n\treturn <ErrorBoundary fallback={<ErrorFallback />}>{children}</ErrorBoundary>\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Unlike the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "error.js"
+										},
+										{
+											"type": "text",
+											"value": " file convention which is scoped to route segments, "
+										},
+										{
+											"type": "inlineCode",
+											"value": "catchError"
+										},
+										{
+											"type": "text",
+											"value": " can be used to wrap any part of your component tree for component-level error recovery."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Props passed to the wrapper component are forwarded to the fallback function, making it easy to create reusable error UIs with different configurations."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "You don't need to wrap "
+										},
+										{
+											"type": "inlineCode",
+											"value": "error.js"
+										},
+										{
+											"type": "text",
+											"value": " default exports with "
+										},
+										{
+											"type": "inlineCode",
+											"value": "catchError"
+										},
+										{
+											"type": "text",
+											"value": ". The "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/error",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "error.js"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " file convention already renders inside a built-in error boundary provided by Next.js."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "catchError"
+								},
+								{
+									"type": "text",
+									"value": " became stable."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.2.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "unstable_catchError"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

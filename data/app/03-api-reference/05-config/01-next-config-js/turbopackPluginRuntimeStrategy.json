@@ -1,0 +1,354 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: turbopackPluginRuntimeStrategy\ndescription: Choose how Turbopack runs Node.js evaluation for webpack loaders, Babel, and PostCSS.\nversion: experimental\nrelated:\n links:\n  - app/api-reference/config/next-config-js/turbopack"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.turbopackPluginRuntimeStrategy"
+				},
+				{
+					"type": "text",
+					"value": " option chooses whether Turbopack runs Node.js evaluation in child processes or worker threads."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher highlight={5}",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\texperimental: {\n\t\tturbopackPluginRuntimeStrategy: 'workerThreads',\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher highlight={4}",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\texperimental: {\n\t\tturbopackPluginRuntimeStrategy: 'workerThreads',\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This runtime executes Node.js-based tools, including "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/turbopack#configuring-webpack-loaders",
+					"children": [
+						{
+							"type": "text",
+							"value": "webpack loaders"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", Babel, and PostCSS."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Value"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Default"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'childProcesses'"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Runs Node.js evaluation in a pool of child processes and communicates with them over sockets."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'workerThreads'"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Runs Node.js evaluation in worker threads within the Next.js process. This can reduce memory and CPU overhead compared with a child process pool."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'forceWorkerThreads'"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Uses worker threads even when the current Node.js version is affected by the worker-thread teardown issue described below. This can abort the process."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Node.js compatibility"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "On Node.js 24.13.1 and newer, a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/nodejs/node/issues/65100",
+					"children": [
+						{
+							"type": "text",
+							"value": "Node.js worker-thread teardown issue"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " can abort the process when a worker exits while a native addon has a live Node-API thread-safe function."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "inlineCode",
+					"value": "turbopackPluginRuntimeStrategy"
+				},
+				{
+					"type": "text",
+					"value": " is set to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'workerThreads'"
+				},
+				{
+					"type": "text",
+					"value": " on an affected Node.js version, Next.js prints a warning and falls back to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'childProcesses'"
+				},
+				{
+					"type": "text",
+					"value": ". Set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'forceWorkerThreads'"
+				},
+				{
+					"type": "text",
+					"value": " to bypass the fallback at the risk of aborting the process."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.4.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "experimental.turbopackPluginRuntimeStrategy"
+								},
+								{
+									"type": "text",
+									"value": " configuration option added."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

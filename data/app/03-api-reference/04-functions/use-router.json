@@ -1,0 +1,1588 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: useRouter\ndescription: API reference for the useRouter hook."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useRouter"
+				},
+				{
+					"type": "text",
+					"value": " hook allows you to programmatically change routes inside "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Recommendation:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Use the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/components/link",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<Link>"
+								},
+								{
+									"type": "text",
+									"value": " component"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for navigation unless you have a specific requirement for using "
+						},
+						{
+							"type": "inlineCode",
+							"value": "useRouter"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/example-client-component.tsx\" switcher",
+			"value": "'use client'\n\nimport { useRouter } from 'next/navigation'\n\nexport default function Page() {\n\tconst router = useRouter()\n\n\treturn (\n\t\t<button\n\t\t\ttype=\"button\"\n\t\t\tonClick={() => router.push('/dashboard')}>\n\t\t\tDashboard\n\t\t</button>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/example-client-component.js\" switcher",
+			"value": "'use client'\n\nimport { useRouter } from 'next/navigation'\n\nexport default function Page() {\n\tconst router = useRouter()\n\n\treturn (\n\t\t<button\n\t\t\ttype=\"button\"\n\t\t\tonClick={() => router.push('/dashboard')}>\n\t\t\tDashboard\n\t\t</button>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "useRouter()"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "router.push()"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "router.push(href: string, {\n  scroll: boolean\n  transitionTypes: string[]\n})"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Perform a client-side navigation to the provided route. Adds a new entry into the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/History_API",
+					"children": [
+						{
+							"type": "text",
+							"value": "browser's history stack"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". The optional "
+				},
+				{
+					"type": "inlineCode",
+					"value": "transitionTypes"
+				},
+				{
+					"type": "text",
+					"value": " are passed to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/addTransitionType",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "React.addTransitionType"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " inside the navigation Transition."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "router.replace()"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "router.replace(href: string, {\n  scroll: boolean\n  transitionTypes: string[]\n})"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Perform a client-side navigation to the provided route without adding a new entry into the browser’s history stack. The optional "
+				},
+				{
+					"type": "inlineCode",
+					"value": "transitionTypes"
+				},
+				{
+					"type": "text",
+					"value": " are passed to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/addTransitionType",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "React.addTransitionType"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " inside the navigation Transition."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "router.refresh()"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "router.refresh()"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Refresh the current route. Making a new request to the server, re-fetching data requests, and re-rendering Server Components. The client will merge the updated React Server Component payload without losing unaffected client-side React (e.g. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useState"
+				},
+				{
+					"type": "text",
+					"value": ") or browser state (e.g. scroll position). This clears the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#client-cache",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client Cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the current route, but does "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "not"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " invalidate the server-side cache. Use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidatePath",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidatePath"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to invalidate server-side cached data."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "router.prefetch()"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "router.prefetch(\n  href: string,\n  options?: {\n    kind?: 'auto' | 'full'\n    onInvalidate?: () => void\n  }\n)"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/linking-and-navigating#prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Prefetch"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " the provided route for faster client-side transitions. The optional "
+				},
+				{
+					"type": "inlineCode",
+					"value": "kind"
+				},
+				{
+					"type": "text",
+					"value": " controls how much of the route to prefetch. The optional "
+				},
+				{
+					"type": "inlineCode",
+					"value": "onInvalidate"
+				},
+				{
+					"type": "text",
+					"value": " callback is called when the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/prefetching#extending-or-ejecting-link",
+					"children": [
+						{
+							"type": "text",
+							"value": "prefetched data becomes stale"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/partialPrefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", each "
+				},
+				{
+					"type": "inlineCode",
+					"value": "router.prefetch()"
+				},
+				{
+					"type": "text",
+					"value": " call matches a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " prefetch option:"
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "<div style={{ overflowX: 'auto', width: '100%' }}>"
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "router.prefetch()"
+								},
+								{
+									"type": "text",
+									"value": " call"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Equivalent "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Link>"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "router.prefetch(href)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<Link href={href}>"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "router.prefetch(href, { kind: 'auto' })"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<Link href={href}>"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "router.prefetch(href, { kind: 'full' })"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<Link href={href} prefetch={true}>"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "</div>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The default and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'auto'"
+				},
+				{
+					"type": "text",
+					"value": " options prefetch the route's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#app-shell",
+					"children": [
+						{
+							"type": "text",
+							"value": "App Shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'full'"
+				},
+				{
+					"type": "text",
+					"value": " option also prefetches the per-link stage, including content below "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/prefetch",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "await prefetch()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Neither value includes content deferred with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/navigation",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "await navigation()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". That content renders when navigation begins."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "router.back()"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "router.back()"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Navigate back to the previous route in the browser’s history stack."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "router.forward()"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "router.forward()"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Navigate forwards to the next page in the browser’s history stack."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "router.bfcacheId"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "An opaque string identifier scoped to the current route segment. It changes when the surrounding segment is freshly created by a push or replace navigation, and stays the same for back/forward navigations, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "router.refresh()"
+				},
+				{
+					"type": "text",
+					"value": ", and search-param- or hash-only navigations. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#bfcacheid",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "bfcacheId"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " below for details."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "You must not send untrusted or unsanitized URLs to "
+										},
+										{
+											"type": "inlineCode",
+											"value": "router.push"
+										},
+										{
+											"type": "text",
+											"value": " or "
+										},
+										{
+											"type": "inlineCode",
+											"value": "router.replace"
+										},
+										{
+											"type": "text",
+											"value": ", as this can open your site to cross-site scripting (XSS) vulnerabilities. For example, "
+										},
+										{
+											"type": "inlineCode",
+											"value": "javascript:"
+										},
+										{
+											"type": "text",
+											"value": " URLs sent to "
+										},
+										{
+											"type": "inlineCode",
+											"value": "router.push"
+										},
+										{
+											"type": "text",
+											"value": " or "
+										},
+										{
+											"type": "inlineCode",
+											"value": "router.replace"
+										},
+										{
+											"type": "text",
+											"value": " will be executed in the context of your page."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The "
+										},
+										{
+											"type": "inlineCode",
+											"value": "<Link>"
+										},
+										{
+											"type": "text",
+											"value": " component automatically prefetch routes as they become visible in the viewport."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "refresh()"
+										},
+										{
+											"type": "text",
+											"value": " could re-produce the same result if fetch requests are cached. Other Request-time APIs like "
+										},
+										{
+											"type": "inlineCode",
+											"value": "cookies"
+										},
+										{
+											"type": "text",
+											"value": " and "
+										},
+										{
+											"type": "inlineCode",
+											"value": "headers"
+										},
+										{
+											"type": "text",
+											"value": " could also change the response."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The "
+										},
+										{
+											"type": "inlineCode",
+											"value": "onInvalidate"
+										},
+										{
+											"type": "text",
+											"value": " callback is called at most once per prefetch request. It signals when you may want to trigger a new prefetch for updated route data."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Migrating from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/router"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useRouter"
+								},
+								{
+									"type": "text",
+									"value": " hook should be imported from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/navigation"
+								},
+								{
+									"type": "text",
+									"value": " and not "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/router"
+								},
+								{
+									"type": "text",
+									"value": " when using the App Router"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pathname"
+								},
+								{
+									"type": "text",
+									"value": " string has been removed and is replaced by "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/use-pathname",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "usePathname()"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "inlineCode",
+									"value": "query"
+								},
+								{
+									"type": "text",
+									"value": " object has been removed and is replaced by "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/use-search-params",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "useSearchParams()"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "router.events"
+								},
+								{
+									"type": "text",
+									"value": " has been replaced. "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#router-events",
+									"children": [
+										{
+											"type": "text",
+											"value": "See below."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/migrating/app-router-migration",
+					"children": [
+						{
+							"type": "text",
+							"value": "View the full migration guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Router events"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can listen for page changes by composing other Client Component hooks like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "usePathname"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useSearchParams"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/components/navigation-events.js\"",
+			"value": "'use client'\n\nimport { useEffect } from 'react'\nimport { usePathname, useSearchParams } from 'next/navigation'\n\nexport function NavigationEvents() {\n\tconst pathname = usePathname()\n\tconst searchParams = useSearchParams()\n\n\tuseEffect(() => {\n\t\tconst url = `${pathname}?${searchParams}`\n\t\tconsole.log(url)\n\t\t// You can now use the current URL\n\t\t// ...\n\t}, [pathname, searchParams])\n\n\treturn '...'\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Which can be imported into a layout."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" highlight={2,10-12}",
+			"value": "import { Suspense } from 'react'\nimport { NavigationEvents } from './components/navigation-events'\n\nexport default function Layout({ children }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<body>\n\t\t\t\t{children}\n\n\t\t\t\t<Suspense fallback={null}>\n\t\t\t\t\t<NavigationEvents />\n\t\t\t\t</Suspense>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<NavigationEvents>"
+						},
+						{
+							"type": "text",
+							"value": " is wrapped in a "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/file-conventions/loading#examples",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Suspense"
+								},
+								{
+									"type": "text",
+									"value": " boundary"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " because"
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/use-search-params",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "useSearchParams()"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " causes client-side rendering up to the closest "
+						},
+						{
+							"type": "inlineCode",
+							"value": "Suspense"
+						},
+						{
+							"type": "text",
+							"value": " boundary during "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/glossary#prerendering",
+							"children": [
+								{
+									"type": "text",
+									"value": "prerendering"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ". "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/use-search-params#behavior",
+							"children": [
+								{
+									"type": "text",
+									"value": "Learn more"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Disabling scroll to top"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, Next.js will scroll to the top of the page when navigating to a new route. You can disable this behavior by passing "
+				},
+				{
+					"type": "inlineCode",
+					"value": "scroll: false"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "router.push()"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "router.replace()"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/example-client-component.tsx\" switcher",
+			"value": "'use client'\n\nimport { useRouter } from 'next/navigation'\n\nexport default function Page() {\n\tconst router = useRouter()\n\n\treturn (\n\t\t<button\n\t\t\ttype=\"button\"\n\t\t\tonClick={() => router.push('/dashboard', { scroll: false })}>\n\t\t\tDashboard\n\t\t</button>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/example-client-component.jsx\" switcher",
+			"value": "'use client'\n\nimport { useRouter } from 'next/navigation'\n\nexport default function Page() {\n\tconst router = useRouter()\n\n\treturn (\n\t\t<button\n\t\t\ttype=\"button\"\n\t\t\tonClick={() => router.push('/dashboard', { scroll: false })}>\n\t\t\tDashboard\n\t\t</button>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "bfcacheId"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "router.bfcacheId"
+				},
+				{
+					"type": "text",
+					"value": " is an opaque string identifier scoped to the current route segment. It changes when the surrounding segment is freshly created by a push or replace navigation, and stays the same for back/forward navigations, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "router.refresh()"
+				},
+				{
+					"type": "text",
+					"value": ", and search-param- or hash-only navigations."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The recommended use is to pass it as a React "
+				},
+				{
+					"type": "inlineCode",
+					"value": "key"
+				},
+				{
+					"type": "text",
+					"value": " to opt out of state preservation on fresh navigations, while still restoring it during a back/forward navigation:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/example/page.tsx\"",
+			"value": "'use client'\n\nimport { useRouter } from 'next/navigation'\n\nexport default function Page() {\n\tconst { bfcacheId } = useRouter()\n\treturn <form key={bfcacheId}>{/* ... */}</form>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheComponents"
+				},
+				{
+					"type": "text",
+					"value": " is enabled, the App Router preserves Client Component state across navigations using React "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Activity>"
+				},
+				{
+					"type": "text",
+					"value": ". Keying a component on "
+				},
+				{
+					"type": "inlineCode",
+					"value": "bfcacheId"
+				},
+				{
+					"type": "text",
+					"value": " resets it on each fresh navigation while still preserving its state across browser back/forward navigations. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/preserving-ui-state",
+					"children": [
+						{
+							"type": "text",
+							"value": "Preserving UI state"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the recommended per-pattern resets."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Instead of "
+						},
+						{
+							"type": "inlineCode",
+							"value": "bfcacheId"
+						},
+						{
+							"type": "text",
+							"value": ", prefer resetting state explicitly in an event handler (for example, "
+						},
+						{
+							"type": "inlineCode",
+							"value": "onSubmit"
+						},
+						{
+							"type": "text",
+							"value": ") or deriving a key from your data (for example, a draft id from the server). Use "
+						},
+						{
+							"type": "inlineCode",
+							"value": "bfcacheId"
+						},
+						{
+							"type": "text",
+							"value": " only as a last resort, like when migrating an existing codebase."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.5.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "kind"
+								},
+								{
+									"type": "text",
+									"value": " option for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "router.prefetch"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.4.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional "
+								},
+								{
+									"type": "inlineCode",
+									"value": "onInvalidate"
+								},
+								{
+									"type": "text",
+									"value": " callback for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "router.prefetch"
+								},
+								{
+									"type": "text",
+									"value": " introduced"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "useRouter"
+								},
+								{
+									"type": "text",
+									"value": " from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/navigation"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

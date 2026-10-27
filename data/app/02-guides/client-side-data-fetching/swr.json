@@ -1,0 +1,1151 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to fetch client-side data with SWR\nnav_title: SWR\ndescription: Fetch client-side data with SWR, optionally provide initial data from a Server Component, and coordinate server and client caches.\nrelated:\n description: Related guides and references.\n links:\n  - app/getting-started/fetching-data\n  - app/guides/single-page-applications\n  - app/getting-started/caching\n  - app/api-reference/directives/use-cache\n  - app/api-reference/file-conventions/route\n  - app/api-reference/functions/updateTag"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://swr.vercel.app",
+					"children": [
+						{
+							"type": "text",
+							"value": "SWR"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to fetch data in Client Components, provide initial data from Server Components, and coordinate browser mutations with cached server data. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/client-side-data-fetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client-side data fetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to choose a pattern."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Fetch data on the client"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "SWR can fetch entirely in the browser when the initial view can wait for a browser request after hydration. Choose an "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/client-side-data-fetching#choose-a-client-fetching-pattern",
+					"children": [
+						{
+							"type": "text",
+							"value": "inline or Suspense loading state"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " based on where the loading UI should appear. In these examples, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "query"
+				},
+				{
+					"type": "text",
+					"value": " starts empty and updates from client state after hydration."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useSWR"
+				},
+				{
+					"type": "text",
+					"value": " when the component should render its own loading and error states. A conditional key delays the request until the interaction provides an input:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/product-autocomplete.tsx\"",
+			"value": "'use client'\n\nimport useSWR from 'swr'\n\ntype Product = { id: string; name: string }\n\nasync function fetcher(url: string): Promise<Product[]> {\n\tconst response = await fetch(url)\n\tif (!response.ok) throw new Error('Failed to fetch products')\n\treturn response.json()\n}\n\nexport function ProductAutocomplete({ query }: { query: string }) {\n\tconst { data = [], error, isLoading } = useSWR(query ? `/api/products?query=${encodeURIComponent(query)}` : null, fetcher)\n\n\tif (!query) return null\n\tif (error) return <p>Failed to load products.</p>\n\tif (isLoading) return <p>Loading products...</p>\n\n\treturn (\n\t\t<ul>\n\t\t\t{data.map((product) => (\n\t\t\t\t<li key={product.id}>{product.name}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Use Suspense for client data"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "suspense: true"
+				},
+				{
+					"type": "text",
+					"value": " when the nearest Suspense boundary should define the loading UI. Keep the interactive shell outside the boundary so it remains available while the results load:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/product-autocomplete.tsx\"",
+			"value": "'use client'\n\nimport { Suspense } from 'react'\nimport useSWR from 'swr'\n\ntype Product = { id: string; name: string }\n\nasync function fetcher(url: string): Promise<Product[]> {\n\tconst response = await fetch(url)\n\tif (!response.ok) throw new Error('Failed to fetch products')\n\treturn response.json()\n}\n\nexport function ProductAutocomplete({ query }: { query: string }) {\n\tif (!query) return null\n\n\treturn (\n\t\t<Suspense fallback={<p>Loading products...</p>}>\n\t\t\t<ProductResults query={query} />\n\t\t</Suspense>\n\t)\n}\n\nfunction ProductResults({ query }: { query: string }) {\n\tconst { data } = useSWR(`/api/products?query=${encodeURIComponent(query)}`, fetcher, { suspense: true })\n\n\treturn (\n\t\t<ul>\n\t\t\t{data.map((product) => (\n\t\t\t\t<li key={product.id}>{product.name}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With an unconditional key, SWR defines "
+				},
+				{
+					"type": "inlineCode",
+					"value": "data"
+				},
+				{
+					"type": "text",
+					"value": " after Suspense resolves. Handle request errors with the nearest "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/error-handling#nested-error-boundaries",
+					"children": [
+						{
+							"type": "text",
+							"value": "error boundary"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "isLoading"
+				},
+				{
+					"type": "text",
+					"value": " value is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": " when a request is running and there is no loaded data to display. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "isValidating"
+				},
+				{
+					"type": "text",
+					"value": " value is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": " whenever a request is running, including background revalidation."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "inlineCode",
+					"value": "suspense: true"
+				},
+				{
+					"type": "text",
+					"value": ", Suspense handles the initial no-data state. Later revalidation for the same key keeps the current data rendered instead of showing the Suspense fallback again. Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "isValidating"
+				},
+				{
+					"type": "text",
+					"value": " to provide background refresh feedback. Learn more about "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://swr.vercel.app/docs/advanced/understanding#combining-with-isloading-and-isvalidating-for-better-ux",
+					"children": [
+						{
+							"type": "text",
+							"value": "SWR loading states"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn more: "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://swr.vercel.app/docs/data-fetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "SWR data fetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Independent Suspense reads can start in parallel when they render in sibling components. Multiple Suspense reads in one component run sequentially. Learn more about "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/migrating/from-create-react-app#network-waterfalls",
+							"children": [
+								{
+									"type": "text",
+									"value": "network waterfalls"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " and "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://swr.vercel.app/docs/suspense",
+							"children": [
+								{
+									"type": "text",
+									"value": "SWR Suspense"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Provide initial data from a Server Component"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/client-side-data-fetching#choose-a-client-fetching-pattern",
+					"children": [
+						{
+							"type": "text",
+							"value": "server-provided data pattern"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when the initial render needs the data and SWR should continue managing it in the browser. With SWR 2.3.0 and React 19, a Server Component can provide fallback data before the client takes over."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Scope "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<SWRConfig>"
+				},
+				{
+					"type": "text",
+					"value": " to the route segment that owns the data. The provider keeps the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fallback"
+				},
+				{
+					"type": "text",
+					"value": " close to its consumer and avoids adding feature data to a shared layout:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/[id]/page.tsx\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { SWRConfig } from 'swr'\nimport { getProduct } from './data' // some server-side function\nimport { productCache } from './product-cache'\nimport { ProductView } from './product-view'\n\nexport default function Page({ params }: PageProps<'/products/[id]'>) {\n\treturn (\n\t\t<Suspense fallback={<p>Loading…</p>}>\n\t\t\t{params.then(({ id }) => (\n\t\t\t\t<ProductData id={id} />\n\t\t\t))}\n\t\t</Suspense>\n\t)\n}\n\nfunction ProductData({ id }: { id: string }) {\n\treturn (\n\t\t<SWRConfig\n\t\t\tvalue={{\n\t\t\t\tfallback: {\n\t\t\t\t\t// Not awaited: only components that read this key suspend\n\t\t\t\t\t[productCache.key(id)]: getProduct(id),\n\t\t\t\t},\n\t\t\t}}>\n\t\t\t<ProductView id={id} />\n\t\t</SWRConfig>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/products/[id]/page.js\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { SWRConfig } from 'swr'\nimport { getProduct } from './data' // some server-side function\nimport { productCache } from './product-cache'\nimport { ProductView } from './product-view'\n\nexport default function Page({ params }) {\n\treturn (\n\t\t<Suspense fallback={<p>Loading…</p>}>\n\t\t\t{params.then(({ id }) => (\n\t\t\t\t<ProductData id={id} />\n\t\t\t))}\n\t\t</Suspense>\n\t)\n}\n\nfunction ProductData({ id }) {\n\treturn (\n\t\t<SWRConfig\n\t\t\tvalue={{\n\t\t\t\tfallback: {\n\t\t\t\t\t// Not awaited: only components that read this key suspend\n\t\t\t\t\t[productCache.key(id)]: getProduct(id),\n\t\t\t\t},\n\t\t\t}}>\n\t\t\t<ProductView id={id} />\n\t\t</SWRConfig>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The fallback and Client Component must use the same SWR key. Define the key once so both call sites share the same identity:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/products/[id]/product-cache.ts\" switcher",
+			"value": "export const productCache = {\n\tkey: (id: string) => `/api/products/${id}`,\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/products/[id]/product-cache.js\" switcher",
+			"value": "export const productCache = {\n\tkey: (id) => `/api/products/${id}`,\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the page example, the Promise returned by "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params.then()"
+				},
+				{
+					"type": "text",
+					"value": " keeps the fallback visible until the route parameters resolve. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ProductData"
+				},
+				{
+					"type": "text",
+					"value": " then creates a separate, unawaited "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getProduct(id)"
+				},
+				{
+					"type": "text",
+					"value": " Promise for the SWR "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fallback"
+				},
+				{
+					"type": "text",
+					"value": ". React passes that Promise through the React Server Component payload, and the component reading the matching key suspends until the data resolves."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The Client Component reads the data with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useSWR"
+				},
+				{
+					"type": "text",
+					"value": " using the same key:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/[id]/product-view.tsx\" switcher",
+			"value": "'use client'\n\nimport useSWR from 'swr'\nimport { productCache } from './product-cache'\n\ntype Product = { id: string; name: string }\n\nasync function fetcher(url: string): Promise<Product> {\n\tconst response = await fetch(url)\n\tif (!response.ok) throw new Error('Failed to fetch product')\n\treturn response.json()\n}\n\nexport function ProductView({ id }: { id: string }) {\n\tconst { data } = useSWR(productCache.key(id), fetcher, { suspense: true })\n\n\treturn <h1>{data.name}</h1>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/products/[id]/product-view.js\" switcher",
+			"value": "'use client'\n\nimport useSWR from 'swr'\nimport { productCache } from './product-cache'\n\nasync function fetcher(url) {\n\tconst response = await fetch(url)\n\tif (!response.ok) throw new Error('Failed to fetch product')\n\treturn response.json()\n}\n\nexport function ProductView({ id }) {\n\tconst { data } = useSWR(productCache.key(id), fetcher, { suspense: true })\n\n\treturn <h1>{data.name}</h1>\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " The "
+						},
+						{
+							"type": "inlineCode",
+							"value": "fallback"
+						},
+						{
+							"type": "text",
+							"value": " key and the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "useSWR"
+						},
+						{
+							"type": "text",
+							"value": " key must match exactly. If they drift, SWR ignores the fallback value and fetches on the client."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fallback"
+				},
+				{
+					"type": "text",
+					"value": " provides the hook's initial value. By default, SWR treats fallback data as stale and starts a browser revalidation after hydration."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "SWR does not provide a time-based freshness window for fallback data. Setting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidateIfStale: false"
+				},
+				{
+					"type": "text",
+					"value": " skips revalidation when the hook mounts with cached data. This setting applies to every mount, unlike TanStack Query's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "staleTime"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Focus, reconnect, polling, and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "mutate"
+				},
+				{
+					"type": "text",
+					"value": " can still revalidate the key. To refresh on a schedule, set "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://swr.vercel.app/docs/revalidation#revalidate-on-interval",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "refreshInterval"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The SWR key points to a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GET"
+				},
+				{
+					"type": "text",
+					"value": " method. The Route Handler can call the same "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getProduct"
+				},
+				{
+					"type": "text",
+					"value": " function that provides the fallback, while the browser uses the URL for revalidation and polling."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn more: "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://swr.vercel.app/docs/arguments",
+					"children": [
+						{
+							"type": "text",
+							"value": "SWR arguments and keys"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://swr.vercel.app/docs/with-nextjs",
+					"children": [
+						{
+							"type": "text",
+							"value": "SWR with Next.js App Router"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache server-provided data with Cache Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Enable "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": " before using this pattern. You can then cache the server data used as the SWR fallback. Add "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", choose a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " profile, and apply "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " so mutations can invalidate it:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/products/[id]/data.ts\" switcher",
+			"value": "import { cacheLife, cacheTag } from 'next/cache'\n\nexport async function getProduct(id: string) {\n\t'use cache'\n\tcacheLife('max')\n\tcacheTag(`product:${id}`)\n\n\tconst product = await db.product.findUnique({ where: { id } })\n\tif (!product) throw new Error('Product not found')\n\treturn product\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/products/[id]/data.js\" switcher",
+			"value": "import { cacheLife, cacheTag } from 'next/cache'\n\nexport async function getProduct(id) {\n\t'use cache'\n\tcacheLife('max')\n\tcacheTag(`product:${id}`)\n\n\tconst product = await db.product.findUnique({ where: { id } })\n\tif (!product) throw new Error('Product not found')\n\treturn product\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This example uses "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife('max')"
+				},
+				{
+					"type": "text",
+					"value": " because writes invalidate the product tag. Within the cache profile, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "stale"
+				},
+				{
+					"type": "text",
+					"value": " controls how long the Next.js client cache can reuse a prefetched payload, while "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "expire"
+				},
+				{
+					"type": "text",
+					"value": " control the server cache. Choose a shorter profile when the server value should refresh with time."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "SWR owns a separate browser cache, so its revalidation options do not need to match "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When the same mutation updates the browser cache and invalidates cached server data, you may define both identities in one shared contract:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "diff",
+			"meta": "filename=\"app/products/[id]/product-cache.ts\" switcher",
+			"value": " export const productCache = {\n   key: (id: string) => `/api/products/${id}`,\n+  tag: (id: string) => `product:${id}`,\n }"
+		},
+		{
+			"type": "code",
+			"lang": "diff",
+			"meta": "filename=\"app/products/[id]/product-cache.js\" switcher",
+			"value": " export const productCache = {\n   key: (id) => `/api/products/${id}`,\n+  tag: (id) => `product:${id}`,\n }"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The server function can then call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheTag(productCache.tag(id))"
+				},
+				{
+					"type": "text",
+					"value": ". Keep this contract free of server-only and client-only imports so both cache layers can reuse it."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Coordinate server and client caches after mutations"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The fallback provides the initial value. After hydration, SWR manages the browser cache and revalidation. For reused data, keep the SWR key and server tag in the same cache contract:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/activity/activity-cache.ts\" switcher",
+			"value": "export const activityCache = {\n\tkey: '/api/activity/unread',\n\ttag: (userId: string) => `activity:${userId}`,\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/activity/activity-cache.js\" switcher",
+			"value": "export const activityCache = {\n\tkey: '/api/activity/unread',\n\ttag: (userId) => `activity:${userId}`,\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use the same key for the fallback, the Client Component read, and the mutation. With SWR, pass the write to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://swr.vercel.app/docs/mutation",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "mutate"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and provide "
+				},
+				{
+					"type": "inlineCode",
+					"value": "optimisticData"
+				},
+				{
+					"type": "text",
+					"value": ". SWR shows the optimistic value immediately and rolls it back if the write fails. This example keeps the optimistic value after the action succeeds because the final value is known:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/activity/mark-read-button.tsx\" switcher",
+			"value": "'use client'\n\nimport { useSWRConfig } from 'swr'\nimport { markActivityReadAction } from './actions'\nimport { activityCache } from './activity-cache'\n\nexport function MarkReadButton() {\n\tconst { mutate } = useSWRConfig()\n\n\tfunction markRead() {\n\t\treturn mutate(\n\t\t\tactivityCache.key,\n\t\t\tasync () => {\n\t\t\t\tawait markActivityReadAction()\n\t\t\t\treturn { count: 0 }\n\t\t\t},\n\t\t\t{\n\t\t\t\toptimisticData: { count: 0 },\n\t\t\t\trevalidate: false,\n\t\t\t\trollbackOnError: true,\n\t\t\t\tthrowOnError: false,\n\t\t\t},\n\t\t)\n\t}\n\n\treturn <button onClick={markRead}>Mark read</button>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/activity/mark-read-button.js\" switcher",
+			"value": "'use client'\n\nimport { useSWRConfig } from 'swr'\nimport { markActivityReadAction } from './actions'\nimport { activityCache } from './activity-cache'\n\nexport function MarkReadButton() {\n\tconst { mutate } = useSWRConfig()\n\n\tfunction markRead() {\n\t\treturn mutate(\n\t\t\tactivityCache.key,\n\t\t\tasync () => {\n\t\t\t\tawait markActivityReadAction()\n\t\t\t\treturn { count: 0 }\n\t\t\t},\n\t\t\t{\n\t\t\t\toptimisticData: { count: 0 },\n\t\t\t\trevalidate: false,\n\t\t\t\trollbackOnError: true,\n\t\t\t\tthrowOnError: false,\n\t\t\t},\n\t\t)\n\t}\n\n\treturn <button onClick={markRead}>Mark read</button>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The Server Action writes to the database and expires the tagged server data with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/updateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "updateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Tag the cached server query with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " so the tag matches:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/activity/actions.ts\" switcher",
+			"value": "'use server'\n\nimport { updateTag } from 'next/cache'\nimport { getCurrentUserId, markActivityRead as markActivityReadInDatabase } from './data'\nimport { activityCache } from './activity-cache'\n\nexport async function markActivityReadAction() {\n\tconst userId = await getCurrentUserId()\n\tawait markActivityReadInDatabase(userId)\n\tupdateTag(activityCache.tag(userId))\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/activity/actions.js\" switcher",
+			"value": "'use server'\n\nimport { updateTag } from 'next/cache'\nimport { getCurrentUserId, markActivityRead as markActivityReadInDatabase } from './data'\nimport { activityCache } from './activity-cache'\n\nexport async function markActivityReadAction() {\n\tconst userId = await getCurrentUserId()\n\tawait markActivityReadInDatabase(userId)\n\tupdateTag(activityCache.tag(userId))\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The optimistic SWR value updates the current screen. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "updateTag"
+				},
+				{
+					"type": "text",
+					"value": " ensures the next cached server read returns fresh activity."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Call "
+						},
+						{
+							"type": "inlineCode",
+							"value": "updateTag"
+						},
+						{
+							"type": "text",
+							"value": " when a Server Action changes a cached read that must reflect the write immediately. An uncached read does not have a server tag to update. See "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/client-side-data-fetching#coordinate-mutations",
+							"children": [
+								{
+									"type": "text",
+									"value": "Client-side data fetching"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for other invalidation behaviors."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://next-spa-patterns.labs.vercel.dev/swr",
+					"children": [
+						{
+							"type": "text",
+							"value": "live "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next-spa-patterns"
+						},
+						{
+							"type": "text",
+							"value": " demo"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and its "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/nextjs/next-spa-patterns/tree/main/app/swr",
+					"children": [
+						{
+							"type": "text",
+							"value": "source code"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Learn more about "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://swr.vercel.app/docs/mutation",
+					"children": [
+						{
+							"type": "text",
+							"value": "SWR mutation and optimistic updates"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://swr.vercel.app/docs/getting-started",
+					"children": [
+						{
+							"type": "text",
+							"value": "SWR documentation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		}
+	]
+}

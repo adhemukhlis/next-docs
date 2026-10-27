@@ -1,0 +1,941 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: exportPathMap\ndescription: Customize the pages that will be exported as HTML files when using `next export`.\nversion: legacy"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "This feature is exclusive to "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next export"
+						},
+						{
+							"type": "text",
+							"value": " and currently "
+						},
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "deprecated"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " in favor of "
+						},
+						{
+							"type": "inlineCode",
+							"value": "getStaticPaths"
+						},
+						{
+							"type": "text",
+							"value": " with "
+						},
+						{
+							"type": "inlineCode",
+							"value": "pages"
+						},
+						{
+							"type": "text",
+							"value": " or "
+						},
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						},
+						{
+							"type": "text",
+							"value": " with "
+						},
+						{
+							"type": "inlineCode",
+							"value": "app"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "exportPathMap"
+				},
+				{
+					"type": "text",
+					"value": " allows you to specify a mapping of request paths to page destinations, to be used during export. Paths defined in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "exportPathMap"
+				},
+				{
+					"type": "text",
+					"value": " will also be available when using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/cli/next#next-dev-options",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next dev"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Let's start with an example, to create a custom "
+				},
+				{
+					"type": "inlineCode",
+					"value": "exportPathMap"
+				},
+				{
+					"type": "text",
+					"value": " for an app with the following pages:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "pages/index.js"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "pages/about.js"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "pages/post.js"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Open "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " and add the following "
+				},
+				{
+					"type": "inlineCode",
+					"value": "exportPathMap"
+				},
+				{
+					"type": "text",
+					"value": " config:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\texportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {\n\t\treturn {\n\t\t\t'/': { page: '/' },\n\t\t\t'/about': { page: '/about' },\n\t\t\t'/p/hello-nextjs': { page: '/post', query: { title: 'hello-nextjs' } },\n\t\t\t'/p/learn-nextjs': { page: '/post', query: { title: 'learn-nextjs' } },\n\t\t\t'/p/deploy-nextjs': { page: '/post', query: { title: 'deploy-nextjs' } },\n\t\t}\n\t},\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "query"
+						},
+						{
+							"type": "text",
+							"value": " field in "
+						},
+						{
+							"type": "inlineCode",
+							"value": "exportPathMap"
+						},
+						{
+							"type": "text",
+							"value": " cannot be used with "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/pages/building-your-application/rendering/automatic-static-optimization",
+							"children": [
+								{
+									"type": "text",
+									"value": "automatically statically optimized pages"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " or "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/pages/building-your-application/data-fetching/get-static-props",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "getStaticProps"
+								},
+								{
+									"type": "text",
+									"value": " pages"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " as they are rendered to HTML files at build-time and additional query information cannot be provided during "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next export"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The pages will then be exported as HTML files, for example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/about"
+				},
+				{
+					"type": "text",
+					"value": " will become "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/about.html"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "exportPathMap"
+				},
+				{
+					"type": "text",
+					"value": " is an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "async"
+				},
+				{
+					"type": "text",
+					"value": " function that receives 2 arguments: the first one is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "defaultPathMap"
+				},
+				{
+					"type": "text",
+					"value": ", which is the default map used by Next.js. The second argument is an object with:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "dev"
+								},
+								{
+									"type": "text",
+									"value": " - "
+								},
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": " when "
+								},
+								{
+									"type": "inlineCode",
+									"value": "exportPathMap"
+								},
+								{
+									"type": "text",
+									"value": " is being called in development. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": " when running "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next export"
+								},
+								{
+									"type": "text",
+									"value": ". In development "
+								},
+								{
+									"type": "inlineCode",
+									"value": "exportPathMap"
+								},
+								{
+									"type": "text",
+									"value": " is used to define routes."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "dir"
+								},
+								{
+									"type": "text",
+									"value": " - Absolute path to the project directory"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "outDir"
+								},
+								{
+									"type": "text",
+									"value": " - Absolute path to the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "out/"
+								},
+								{
+									"type": "text",
+									"value": " directory ("
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#customizing-the-output-directory",
+									"children": [
+										{
+											"type": "text",
+											"value": "configurable with "
+										},
+										{
+											"type": "inlineCode",
+											"value": "-o"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "). When "
+								},
+								{
+									"type": "inlineCode",
+									"value": "dev"
+								},
+								{
+									"type": "text",
+									"value": " is "
+								},
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": " the value of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "outDir"
+								},
+								{
+									"type": "text",
+									"value": " will be "
+								},
+								{
+									"type": "inlineCode",
+									"value": "null"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "distDir"
+								},
+								{
+									"type": "text",
+									"value": " - Absolute path to the "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".next/"
+								},
+								{
+									"type": "text",
+									"value": " directory (configurable with the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/pages/api-reference/config/next-config-js/distDir",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "distDir"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " config)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "buildId"
+								},
+								{
+									"type": "text",
+									"value": " - The generated build id"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The returned object is a map of pages where the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "key"
+				},
+				{
+					"type": "text",
+					"value": " is the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pathname"
+				},
+				{
+					"type": "text",
+					"value": " and the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "value"
+				},
+				{
+					"type": "text",
+					"value": " is an object that accepts the following fields:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "page"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "String"
+								},
+								{
+									"type": "text",
+									"value": " - the page inside the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pages"
+								},
+								{
+									"type": "text",
+									"value": " directory to render"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "query"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Object"
+								},
+								{
+									"type": "text",
+									"value": " - the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "query"
+								},
+								{
+									"type": "text",
+									"value": " object passed to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "getInitialProps"
+								},
+								{
+									"type": "text",
+									"value": " when prerendering. Defaults to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "{}"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "The exported "
+						},
+						{
+							"type": "inlineCode",
+							"value": "pathname"
+						},
+						{
+							"type": "text",
+							"value": " can also be a filename (for example, "
+						},
+						{
+							"type": "inlineCode",
+							"value": "/readme.md"
+						},
+						{
+							"type": "text",
+							"value": "), but you may need to set the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "Content-Type"
+						},
+						{
+							"type": "text",
+							"value": " header to "
+						},
+						{
+							"type": "inlineCode",
+							"value": "text/html"
+						},
+						{
+							"type": "text",
+							"value": " when serving its content if it is different than "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".html"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Adding a trailing slash"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "It is possible to configure Next.js to export pages as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "index.html"
+				},
+				{
+					"type": "text",
+					"value": " files and require trailing slashes, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/about"
+				},
+				{
+					"type": "text",
+					"value": " becomes "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/about/index.html"
+				},
+				{
+					"type": "text",
+					"value": " and is routable via "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/about/"
+				},
+				{
+					"type": "text",
+					"value": ". This was the default behavior prior to Next.js 9."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To switch back and add a trailing slash, open "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " and enable the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "trailingSlash"
+				},
+				{
+					"type": "text",
+					"value": " config:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\ttrailingSlash: true,\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Customizing the output directory"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/static-exports",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next export"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " will use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "out"
+				},
+				{
+					"type": "text",
+					"value": " as the default output directory, you can customize this using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "-o"
+				},
+				{
+					"type": "text",
+					"value": " argument, like so:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "next export -o outdir"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Warning"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Using "
+						},
+						{
+							"type": "inlineCode",
+							"value": "exportPathMap"
+						},
+						{
+							"type": "text",
+							"value": " is deprecated and is overridden by "
+						},
+						{
+							"type": "inlineCode",
+							"value": "getStaticPaths"
+						},
+						{
+							"type": "text",
+							"value": " inside "
+						},
+						{
+							"type": "inlineCode",
+							"value": "pages"
+						},
+						{
+							"type": "text",
+							"value": ". We don't recommend using them together."
+						}
+					]
+				}
+			]
+		}
+	]
+}

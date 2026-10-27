@@ -1,0 +1,1183 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: cssChunking\ndescription: Use the `cssChunking` option to control how CSS files are chunked in your Next.js application.\nversion: experimental"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "CSS Chunking is a strategy used to improve the performance of your web application by splitting and re-ordering CSS files into chunks. This lets a route load close to only the CSS it needs, instead of loading all the application's CSS at once."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can control how CSS files are chunked using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.cssChunking"
+				},
+				{
+					"type": "text",
+					"value": " option in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig = {\n\texperimental: {\n\t\tcssChunking: true, // default\n\t},\n} satisfies NextConfig\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\texperimental: {\n\t\tcssChunking: true, // default\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Options"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "true"
+										},
+										{
+											"type": "text",
+											"value": " (default)"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " ("
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "webpack and Turbopack"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "): Next.js will try to merge CSS files whenever possible, determining explicit and implicit dependencies between files from import order to reduce the number of chunks and therefore the number of requests."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "false"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " ("
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "webpack only"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "): Next.js will not attempt to merge or re-order your CSS files."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'strict'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " ("
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "webpack only"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "): Next.js will load CSS files in the correct order they are imported into your files, which can lead to more chunks and requests."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'graph'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " ("
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Turbopack only"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "): Next.js uses a cost-based graph algorithm to group CSS across your routes, balancing the bytes each route downloads and the requests it makes."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Choosing a strategy"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For most applications, the default ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": ") is the right choice in either bundler: it merges CSS to make fewer requests. Reach for another strategy only for a specific reason."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In Turbopack, that reason is usually performance. Switch to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "graph"
+				},
+				{
+					"type": "text",
+					"value": " to tune how CSS is shared across routes, cutting the unused CSS a route downloads at the cost of more requests (see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#balancing-requests-and-grouping",
+					"children": [
+						{
+							"type": "text",
+							"value": "Balancing requests and grouping"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ")."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In webpack, that reason is usually correctness. Switch to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'strict'"
+				},
+				{
+					"type": "text",
+					"value": " if you run into unexpected CSS behavior. For example, if you import "
+				},
+				{
+					"type": "inlineCode",
+					"value": "a.css"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "b.css"
+				},
+				{
+					"type": "text",
+					"value": " in different files using a different "
+				},
+				{
+					"type": "inlineCode",
+					"value": "import"
+				},
+				{
+					"type": "text",
+					"value": " order ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "a"
+				},
+				{
+					"type": "text",
+					"value": " before "
+				},
+				{
+					"type": "inlineCode",
+					"value": "b"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "b"
+				},
+				{
+					"type": "text",
+					"value": " before "
+				},
+				{
+					"type": "inlineCode",
+					"value": "a"
+				},
+				{
+					"type": "text",
+					"value": "), "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": " merges them in any order and assumes there are no dependencies between them; if "
+				},
+				{
+					"type": "inlineCode",
+					"value": "b.css"
+				},
+				{
+					"type": "text",
+					"value": " depends on "
+				},
+				{
+					"type": "inlineCode",
+					"value": "a.css"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'strict'"
+				},
+				{
+					"type": "text",
+					"value": " prevents the merge and loads them in import order, at the cost of more chunks and requests. Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " to disable merging entirely."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Debugging what a route actually uses"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "While some unused CSS is acceptable, and most apps do not need to change anything, it is worth keeping render-blocking CSS in check. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.chrome.com/docs/lighthouse/performance/unused-css-rules",
+					"children": [
+						{
+							"type": "text",
+							"value": "Lighthouse"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " flags this as a "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Reduce unused CSS"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " opportunity with an estimated saving, and Chrome DevTools shows it per stylesheet in its "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.chrome.com/docs/devtools/coverage",
+					"children": [
+						{
+							"type": "text",
+							"value": "Coverage panel"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", where a usage bar shows each stylesheet's applied CSS in green and unused CSS in gray."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When reading the report, watch out for styles that only apply on interaction, such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": ":hover"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": ":focus"
+				},
+				{
+					"type": "text",
+					"value": ", or classes toggled by JavaScript for menus and modals, since Coverage counts them as unused until you trigger them."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The source of this unused CSS is one of two things. Either it is dead CSS in a stylesheet your route imports, which you fix in your source by removing the unused rules or moving them into a stylesheet only the routes that use them import ("
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/css#css-modules",
+					"children": [
+						{
+							"type": "text",
+							"value": "CSS Modules"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " make this natural by scoping styles to the component that imports them)."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Or the bundler merged another stylesheet into a shared chunk that your route loads. That is governed by your "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#choosing-a-strategy",
+					"children": [
+						{
+							"type": "text",
+							"value": "chunking strategy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". In Turbopack, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#balancing-requests-and-grouping",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "graph"
+						},
+						{
+							"type": "text",
+							"value": " mode"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " lets you fine-tune how aggressively CSS merges."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Balancing requests and grouping"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "graph"
+				},
+				{
+					"type": "text",
+					"value": " strategy groups CSS into shared chunks to cut requests. Turn it on with the string form, which uses the default tuning:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig = {\n\texperimental: {\n\t\tcssChunking: 'graph',\n\t},\n} satisfies NextConfig\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\texperimental: {\n\t\tcssChunking: 'graph',\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To shift that balance, pass an object instead. Both "
+				},
+				{
+					"type": "inlineCode",
+					"value": "requestCost"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "weightDistribution"
+				},
+				{
+					"type": "text",
+					"value": " are optional, so include only the one you want to change:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig = {\n\texperimental: {\n\t\tcssChunking: {\n\t\t\ttype: 'graph',\n\t\t\trequestCost: 100000,\n\t\t\tweightDistribution: 0.1,\n\t\t},\n\t},\n} satisfies NextConfig\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\texperimental: {\n\t\tcssChunking: {\n\t\t\ttype: 'graph',\n\t\t\trequestCost: 100000,\n\t\t\tweightDistribution: 0.1,\n\t\t},\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "requestCost"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (default "
+								},
+								{
+									"type": "inlineCode",
+									"value": "20000"
+								},
+								{
+									"type": "text",
+									"value": "): the estimated cost, in bytes, of each additional CSS request. Larger values bias toward fewer, larger shared chunks, and fewer requests overall."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "weightDistribution"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (default "
+								},
+								{
+									"type": "inlineCode",
+									"value": "0.1"
+								},
+								{
+									"type": "text",
+									"value": "): controls how a shared chunk's cost is distributed across the routes that load it, weighted by how much CSS each route imports. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "0"
+								},
+								{
+									"type": "text",
+									"value": " weights every route equally; higher values give more weight to routes that import less CSS, so the algorithm prioritizes routes with less CSS, assuming extra CSS is less noticeable on large routes."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "How "
+				},
+				{
+					"type": "inlineCode",
+					"value": "graph"
+				},
+				{
+					"type": "text",
+					"value": " decides what to merge"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Merging CSS into shared chunks is what the default ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": ") already does; "
+				},
+				{
+					"type": "inlineCode",
+					"value": "graph"
+				},
+				{
+					"type": "text",
+					"value": " just lets you control where it draws the line between merging and splitting."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Take two routes that share a stylesheet:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "txt",
+			"meta": null,
+			"value": "/a → [shared.css, only-a.css]\n/b → [shared.css]"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Here, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/b"
+				},
+				{
+					"type": "text",
+					"value": " never imports "
+				},
+				{
+					"type": "inlineCode",
+					"value": "only-a.css"
+				},
+				{
+					"type": "text",
+					"value": ", so there is one decision to make: keep "
+				},
+				{
+					"type": "inlineCode",
+					"value": "only-a.css"
+				},
+				{
+					"type": "text",
+					"value": " in the shared chunk, or give it its own."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Keeping it merged lets "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/a"
+				},
+				{
+					"type": "text",
+					"value": " load all its CSS in a single request. The cost is that "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/b"
+				},
+				{
+					"type": "text",
+					"value": ", which also loads that shared chunk, now downloads "
+				},
+				{
+					"type": "inlineCode",
+					"value": "only-a.css"
+				},
+				{
+					"type": "text",
+					"value": " even though it never imported it."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Splitting it out spares "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/b"
+				},
+				{
+					"type": "text",
+					"value": " those bytes, but now "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/a"
+				},
+				{
+					"type": "text",
+					"value": " has to make two requests. The default picks between these with a fixed heuristic."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "requestCost"
+				},
+				{
+					"type": "text",
+					"value": " option is how "
+				},
+				{
+					"type": "inlineCode",
+					"value": "graph"
+				},
+				{
+					"type": "text",
+					"value": " prices that trade: the amount of un-imported CSS worth one extra request. It keeps "
+				},
+				{
+					"type": "inlineCode",
+					"value": "only-a.css"
+				},
+				{
+					"type": "text",
+					"value": " merged while "
+				},
+				{
+					"type": "inlineCode",
+					"value": "only-a.css"
+				},
+				{
+					"type": "text",
+					"value": " stays well under "
+				},
+				{
+					"type": "inlineCode",
+					"value": "requestCost"
+				},
+				{
+					"type": "text",
+					"value": ", and splits it out once it grows large enough to outweigh the request."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "What drives the decision is the size of the un-imported CSS a merge would push onto a route, much more than the size of the shared chunk it joins. With the default "
+				},
+				{
+					"type": "inlineCode",
+					"value": "requestCost"
+				},
+				{
+					"type": "text",
+					"value": " of about 20 KB, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "only-a.css"
+				},
+				{
+					"type": "text",
+					"value": " would have to exceed roughly that size before it earns its own chunk, so small stylesheets stay merged."
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "<details>\n  <summary>Graph algorithm overview</summary>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "At a high level, the algorithm works with individual CSS files. It starts from the ordered list of CSS each route imports:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "txt",
+			"meta": null,
+			"value": "/dashboard  → [reset.css, theme.css, layout.css, dashboard.css]\n/settings   → [reset.css, theme.css, layout.css, settings.css]\n/login      → [reset.css, login.css]"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "From these it builds a weighted graph where two CSS files get a heavier edge the more routes import them together in the same order. It flattens that graph into a single line that keeps frequently-paired files adjacent, then places "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "cuts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " that divide the line into chunks, for example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "txt",
+			"meta": null,
+			"value": "reset theme layout │ dashboard │ settings │ login\n└──── chunk 1 ────┘   chunk 2     chunk 3    chunk 4"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A route loads every chunk holding a file it imports, so "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/dashboard"
+				},
+				{
+					"type": "text",
+					"value": " loads chunks 1 and 2 while "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/login"
+				},
+				{
+					"type": "text",
+					"value": " loads chunks 1 and 4."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The algorithm chooses where to split chunks to minimize the total download cost across all routes, balancing bytes and requests. It optimizes that total, not each route on its own, so a route can end up carrying some CSS it never imported when that keeps the overall cost down. The two options control the weighing:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "requestCost"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "reset.css"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "theme.css"
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "layout.css"
+								},
+								{
+									"type": "text",
+									"value": " share one chunk, so a route that needs them makes one request instead of three. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "requestCost"
+								},
+								{
+									"type": "text",
+									"value": " is the price of a request in bytes: raise it and the algorithm merges more like this, trading larger downloads for fewer requests; lower it toward "
+								},
+								{
+									"type": "inlineCode",
+									"value": "0"
+								},
+								{
+									"type": "text",
+									"value": " and it splits chunks apart, so routes download closer to only what they import but make more requests."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "weightDistribution"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "/login"
+								},
+								{
+									"type": "text",
+									"value": " needs only "
+								},
+								{
+									"type": "inlineCode",
+									"value": "reset.css"
+								},
+								{
+									"type": "text",
+									"value": " from chunk 1 but downloads "
+								},
+								{
+									"type": "inlineCode",
+									"value": "theme.css"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "layout.css"
+								},
+								{
+									"type": "text",
+									"value": " too, since they share that chunk. This option decides how much the algorithm minds that. At "
+								},
+								{
+									"type": "inlineCode",
+									"value": "0"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "/login"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "/dashboard"
+								},
+								{
+									"type": "text",
+									"value": " count equally, so it lets the extra ride along; raise it and routes that import little CSS, like "
+								},
+								{
+									"type": "inlineCode",
+									"value": "/login"
+								},
+								{
+									"type": "text",
+									"value": ", count for more, so the algorithm works to spare them CSS they never imported, at the cost of more requests overall."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "</details>"
+		}
+	]
+}

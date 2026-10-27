@@ -1,0 +1,619 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: ImageResponse\ndescription: API Reference for the ImageResponse constructor."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ImageResponse"
+				},
+				{
+					"type": "text",
+					"value": " constructor allows you to generate dynamic images using JSX and CSS. This is useful for generating social media images such as Open Graph images, Twitter cards, and more."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parameters"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The following parameters are available for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ImageResponse"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "import { ImageResponse } from 'next/og'\n\nnew ImageResponse(\n  element: ReactElement,\n  options: {\n    width?: number = 1200\n    height?: number = 630\n    emoji?: 'twemoji' | 'blobmoji' | 'noto' | 'openmoji' = 'twemoji',\n    fonts?: {\n      name: string,\n      data: ArrayBuffer,\n      weight: number,\n      style: 'normal' | 'italic'\n    }[]\n    debug?: boolean = false\n\n    // Options that will be passed to the HTTP response\n    status?: number = 200\n    statusText?: string\n    headers?: Record<string, string>\n  },\n)"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Examples are available in the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://og-playground.vercel.app/",
+							"children": [
+								{
+									"type": "text",
+									"value": "Vercel OG Playground"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Supported HTML and CSS features"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "ImageResponse"
+				},
+				{
+					"type": "text",
+					"value": " supports common CSS properties including flexbox and absolute positioning, custom fonts, text wrapping, centering, and nested images."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Please refer to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/satori#css",
+					"children": [
+						{
+							"type": "text",
+							"value": "Satori’s documentation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for a list of supported HTML and CSS features."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Behavior"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "ImageResponse"
+								},
+								{
+									"type": "text",
+									"value": " uses "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://vercel.com/docs/og-image-generation",
+									"children": [
+										{
+											"type": "text",
+											"value": "@vercel/og"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel/satori",
+									"children": [
+										{
+											"type": "text",
+											"value": "Satori"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", and Resvg to convert HTML and CSS into PNG."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Only flexbox and a subset of CSS properties are supported. Advanced layouts (e.g. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "display: grid"
+								},
+								{
+									"type": "text",
+									"value": ") will not work."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Maximum bundle size of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "500KB"
+								},
+								{
+									"type": "text",
+									"value": ". The bundle size includes your JSX, CSS, fonts, images, and any other assets. If you exceed the limit, consider reducing the size of any assets or fetching at runtime."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Only "
+								},
+								{
+									"type": "inlineCode",
+									"value": "ttf"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "otf"
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "woff"
+								},
+								{
+									"type": "text",
+									"value": " font formats are supported. To maximize the font parsing speed, "
+								},
+								{
+									"type": "inlineCode",
+									"value": "ttf"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "otf"
+								},
+								{
+									"type": "text",
+									"value": " are preferred over "
+								},
+								{
+									"type": "inlineCode",
+									"value": "woff"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Handlers"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "ImageResponse"
+				},
+				{
+					"type": "text",
+					"value": " can be used in Route Handlers to generate images dynamically at request time."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/route.js\"",
+			"value": "import { ImageResponse } from 'next/og'\n\nexport async function GET() {\n\ttry {\n\t\treturn new ImageResponse(\n\t\t\t<div\n\t\t\t\tstyle={{\n\t\t\t\t\theight: '100%',\n\t\t\t\t\twidth: '100%',\n\t\t\t\t\tdisplay: 'flex',\n\t\t\t\t\tflexDirection: 'column',\n\t\t\t\t\talignItems: 'center',\n\t\t\t\t\tjustifyContent: 'center',\n\t\t\t\t\tbackgroundColor: 'white',\n\t\t\t\t\tpadding: '40px',\n\t\t\t\t}}>\n\t\t\t\t<div\n\t\t\t\t\tstyle={{\n\t\t\t\t\t\tfontSize: 60,\n\t\t\t\t\t\tfontWeight: 'bold',\n\t\t\t\t\t\tcolor: 'black',\n\t\t\t\t\t\ttextAlign: 'center',\n\t\t\t\t\t}}>\n\t\t\t\t\tWelcome to My Site\n\t\t\t\t</div>\n\t\t\t\t<div\n\t\t\t\t\tstyle={{\n\t\t\t\t\t\tfontSize: 30,\n\t\t\t\t\t\tcolor: '#666',\n\t\t\t\t\t\tmarginTop: '20px',\n\t\t\t\t\t}}>\n\t\t\t\t\tGenerated with Next.js ImageResponse\n\t\t\t\t</div>\n\t\t\t</div>,\n\t\t\t{\n\t\t\t\twidth: 1200,\n\t\t\t\theight: 630,\n\t\t\t},\n\t\t)\n\t} catch (e) {\n\t\tconsole.log(`${e.message}`)\n\t\treturn new Response(`Failed to generate the image`, {\n\t\t\tstatus: 500,\n\t\t})\n\t}\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "File-based Metadata"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ImageResponse"
+				},
+				{
+					"type": "text",
+					"value": " in a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/metadata/opengraph-image",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "opengraph-image.tsx"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " file to generate Open Graph images at build time or dynamically at request time."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/opengraph-image.tsx\"",
+			"value": "import { ImageResponse } from 'next/og'\n\n// Image metadata\nexport const alt = 'My site'\nexport const size = {\n\twidth: 1200,\n\theight: 630,\n}\n\nexport const contentType = 'image/png'\n\n// Image generation\nexport default async function Image() {\n\treturn new ImageResponse(\n\t\t// ImageResponse JSX element\n\t\t<div\n\t\t\tstyle={{\n\t\t\t\tfontSize: 128,\n\t\t\t\tbackground: 'white',\n\t\t\t\twidth: '100%',\n\t\t\t\theight: '100%',\n\t\t\t\tdisplay: 'flex',\n\t\t\t\talignItems: 'center',\n\t\t\t\tjustifyContent: 'center',\n\t\t\t}}>\n\t\t\tMy site\n\t\t</div>,\n\t\t// ImageResponse options\n\t\t{\n\t\t\t// For convenience, we can re-use the exported opengraph-image\n\t\t\t// size config to also set the ImageResponse's width and height.\n\t\t\t...size,\n\t\t},\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Custom fonts"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use custom fonts in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ImageResponse"
+				},
+				{
+					"type": "text",
+					"value": " by providing a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fonts"
+				},
+				{
+					"type": "text",
+					"value": " array in the options. The font doesn't depend on request data, so read it once at module scope. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching#predictable-values",
+					"children": [
+						{
+							"type": "text",
+							"value": "Predictable values"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/opengraph-image.tsx\"",
+			"value": "import { ImageResponse } from 'next/og'\nimport { readFile } from 'node:fs/promises'\nimport { join } from 'node:path'\n\n// Image metadata\nexport const alt = 'My site'\nexport const size = {\n  width: 1200,\n  height: 630,\n}\n\nexport const contentType = 'image/png'\n\nconst interSemiBold = await readFile(\n  join(process.cwd(), 'assets/Inter-SemiBold.ttf')\n)\n\n// Image generation\nexport default async function Image() {\n  return new ImageResponse(\n    (\n      // ...\n    ),\n    // ImageResponse options\n    {\n      // For convenience, we can re-use the exported opengraph-image\n      // size config to also set the ImageResponse's width and height.\n      ...size,\n      fonts: [\n        {\n          name: 'Inter',\n          data: interSemiBold,\n          style: 'normal',\n          weight: 400,\n        },\n      ],\n    }\n  )\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v14.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "ImageResponse"
+								},
+								{
+									"type": "text",
+									"value": " moved from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/server"
+								},
+								{
+									"type": "text",
+									"value": " to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/og"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "ImageResponse"
+								},
+								{
+									"type": "text",
+									"value": " can be imported from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/server"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "ImageResponse"
+								},
+								{
+									"type": "text",
+									"value": " introduced via "
+								},
+								{
+									"type": "inlineCode",
+									"value": "@vercel/og"
+								},
+								{
+									"type": "text",
+									"value": " package."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

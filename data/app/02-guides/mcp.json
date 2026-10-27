@@ -1,0 +1,1343 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Connecting coding agents to the Next.js MCP server\nnav_title: Next.js MCP Server\ndescription: Learn how to give coding agents access to your running Next.js app through the built-in MCP endpoint.\nrelated:\n links:\n  - app/guides/ai-agents"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://modelcontextprotocol.io",
+					"children": [
+						{
+							"type": "text",
+							"value": "Model Context Protocol (MCP)"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is an open standard that lets AI agents and coding assistants interact with your applications through one shared interface."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In Next.js 16 and later, the development server exposes an MCP endpoint at "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/_next/mcp"
+				},
+				{
+					"type": "text",
+					"value": ". It gives coding agents the running app's view of errors, routes, logs, and compilation issues. To connect your agent client to it, install the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.npmjs.com/package/next-devtools-mcp",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next-devtools-mcp"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " package."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Skills such as "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/ai-agents#next-dev-loop",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next-dev-loop"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/_next/mcp"
+				},
+				{
+					"type": "text",
+					"value": " directly, so they work without this setup."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Getting started"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Install "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next-devtools-mcp"
+				},
+				{
+					"type": "text",
+					"value": " for the coding agents on your machine with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.npmjs.com/package/add-mcp",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "add-mcp"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx add-mcp next-devtools-mcp@latest"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Or add it to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".mcp.json"
+				},
+				{
+					"type": "text",
+					"value": " file at the root of your project:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\".mcp.json\"",
+			"value": "{\n\t\"mcpServers\": {\n\t\t\"next-devtools\": {\n\t\t\t\"command\": \"npx\",\n\t\t\t\"args\": [\"-y\", \"next-devtools-mcp@latest\"]\n\t\t}\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When you start your development server, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next-devtools-mcp"
+				},
+				{
+					"type": "text",
+					"value": " discovers and connects to the running Next.js instance. For client-specific setup, see the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next-devtools-mcp",
+					"children": [
+						{
+							"type": "text",
+							"value": "next-devtools-mcp repository"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Capabilities"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next-devtools-mcp"
+				},
+				{
+					"type": "text",
+					"value": " connects your agent client to the Next.js development server. It gives agents these tools:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "nextjs_index"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Discovers running Next.js dev servers and lists the runtime tools each one exposes."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "nextjs_call"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Calls a runtime tool on a discovered dev server."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "nextjs_docs"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Points the agent at the version-matched docs bundled with your installed Next.js in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "node_modules/next/dist/docs/"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "browser_eval"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Points the agent at the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel-labs/agent-browser",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "agent-browser"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " CLI for verifying pages in a real browser."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "nextjs_docs"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "browser_eval"
+				},
+				{
+					"type": "text",
+					"value": " don't do the work themselves. They tell the agent where the docs are or how to run the CLI, and the agent uses them directly."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Runtime tools"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Through "
+				},
+				{
+					"type": "inlineCode",
+					"value": "nextjs_call"
+				},
+				{
+					"type": "text",
+					"value": ", agents can use the tools the Next.js development server exposes at "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/_next/mcp"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "get_errors"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Get the current error state, including Next.js global errors such as "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next.config"
+								},
+								{
+									"type": "text",
+									"value": " validation, browser runtime errors, and build errors with source-mapped stack traces."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "get_logs"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Get the path to the development log file, which contains browser console logs and server output."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "get_page_metadata"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Get runtime metadata about what contributes to the current page render. Requires the page to be open in a browser."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "get_project_metadata"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Get the project path and dev server URL."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "get_routes"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Get all routes that will become entry points by scanning the filesystem. Returns routes grouped by router type ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "appRouter"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pagesRouter"
+								},
+								{
+									"type": "text",
+									"value": "). Dynamic segments appear as "
+								},
+								{
+									"type": "inlineCode",
+									"value": "[param]"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "[...slug]"
+								},
+								{
+									"type": "text",
+									"value": " patterns."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "get_server_action_by_id"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Look up a Server Action by its ID to find its source file and export name."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "get_compilation_issues"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Build the module graph for all routes and return compilation issues such as resolve errors, missing modules, and transform errors. Doesn't require a browser session. Turbopack only."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "compile_route"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Compile a specific route without making an HTTP request to it. Accepts either a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "routeSpecifier"
+								},
+								{
+									"type": "text",
+									"value": " (for example, "
+								},
+								{
+									"type": "inlineCode",
+									"value": "/blog/[slug]"
+								},
+								{
+									"type": "text",
+									"value": ", as returned by "
+								},
+								{
+									"type": "inlineCode",
+									"value": "get_routes"
+								},
+								{
+									"type": "text",
+									"value": ") or a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "path"
+								},
+								{
+									"type": "text",
+									"value": " (for example, "
+								},
+								{
+									"type": "inlineCode",
+									"value": "/blog/hello-world"
+								},
+								{
+									"type": "text",
+									"value": "), which is resolved to the matching route. Returns any compilation issues for the route. Turbopack only."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "get_request_insights"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Get recent App Router request timelines, server fetches, and cache behavior captured by the local span recorder. Requires "
+								},
+								{
+									"type": "inlineCode",
+									"value": "experimental.requestInsights"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With the compilation tools, agents can check whether code compiles from the running dev server instead of running "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " while they are still editing."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Development workflow"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Start your Next.js development server:"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm dev"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm run dev"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn dev"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun dev"
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 2,
+			"spread": true,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Your coding agent connects to the running Next.js instance through "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next-devtools-mcp"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Open the pages you're working on in the browser. Tools such as "
+								},
+								{
+									"type": "inlineCode",
+									"value": "get_errors"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "get_page_metadata"
+								},
+								{
+									"type": "text",
+									"value": " read from active browser sessions."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Ask your agent about the running app, as in the examples below."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Error detection and diagnosis"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Ask your agent about errors in the running app:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "prompt",
+			"meta": null,
+			"value": "What errors are currently in my application?"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The agent will:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Discover the running dev server with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "nextjs_index"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Call "
+								},
+								{
+									"type": "inlineCode",
+									"value": "get_errors"
+								},
+								{
+									"type": "text",
+									"value": " through "
+								},
+								{
+									"type": "inlineCode",
+									"value": "nextjs_call"
+								},
+								{
+									"type": "text",
+									"value": " to retrieve the current errors"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Analyze the errors and suggest fixes"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "<details>\n<summary>Agent response (click to expand)</summary>"
+		},
+		{
+			"type": "code",
+			"lang": "txt",
+			"meta": null,
+			"value": "> fix errors on the page\n\n⏺ I'll check which errors the running app reports before changing anything.\n\n⏺ next-devtools - nextjs_index (MCP)\n⏺ next-devtools - nextjs_call (MCP)(port: 3000, toolName: \"get_errors\")\n  ⎿ # Found errors in 1 browser session(s)\n\n    ## Session: /about\n\n    **1 error(s) found**\n\n    ### Runtime Errors\n\n    #### Error 1 (Type: recoverable)\n\n    **Error**: Hydration failed because the server rendered text didn't match the client.\n\n⏺ The /about page renders \"server\" on the server and \"client\" in the browser,\n  which causes a hydration mismatch. I'll fix the component and check again."
+		},
+		{
+			"type": "html",
+			"value": "</details>"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Concepts and best practices"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Ask conceptual questions:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "prompt",
+			"meta": null,
+			"value": "When should I use 'use client' in the App Router?"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The agent reads the version-matched Next.js docs bundled with your project and answers with examples from your codebase."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "How it works"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The Next.js 16+ development server runs a built-in MCP endpoint at "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/_next/mcp"
+				},
+				{
+					"type": "text",
+					"value": ". The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next-devtools-mcp"
+				},
+				{
+					"type": "text",
+					"value": " package discovers these endpoints and communicates with them, so it can:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Connect to multiple Next.js instances running on different ports"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Forward tool calls to the right Next.js dev server"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Give agents one set of tools for every instance"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Agents that connect through "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next-devtools-mcp"
+				},
+				{
+					"type": "text",
+					"value": " use the same setup across Next.js projects and versions."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The endpoint is enabled by default. To disable it, set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.mcpServer"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Troubleshooting"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "MCP server not connecting"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Use Next.js 16 or later"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Verify "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next-devtools-mcp"
+								},
+								{
+									"type": "text",
+									"value": " is configured in your agent client, for example in "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".mcp.json"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Check that "
+								},
+								{
+									"type": "inlineCode",
+									"value": "experimental.mcpServer"
+								},
+								{
+									"type": "text",
+									"value": " is not set to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next.config"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Start your development server with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "npm run dev"
+								},
+								{
+									"type": "text",
+									"value": ", or restart it if it was already running"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Check that your coding agent has loaded the MCP server configuration"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

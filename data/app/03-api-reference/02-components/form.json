@@ -1,0 +1,1922 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Form Component\ndescription: Learn how to use the `<Form>` component to handle form submissions and search params updates with client-side navigation."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Form>"
+				},
+				{
+					"type": "text",
+					"value": " component extends the HTML "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<form>"
+				},
+				{
+					"type": "text",
+					"value": " element to provide "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/linking-and-navigating#prefetching",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "prefetching"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " of "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/loading",
+					"children": [
+						{
+							"type": "text",
+							"value": "loading UI"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "client-side navigation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " on submission, and "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "progressive enhancement"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "It's useful for forms that update URL search params as it reduces the boilerplate code needed to achieve the above."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Basic usage:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"/app/ui/search.tsx\" switcher",
+			"value": "import Form from 'next/form'\n\nexport default function Page() {\n\treturn (\n\t\t<Form action=\"/search\">\n\t\t\t{/* On submission, the input value will be appended to\n          the URL, e.g. /search?query=abc */}\n\t\t\t<input name=\"query\" />\n\t\t\t<button type=\"submit\">Submit</button>\n\t\t</Form>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"/app/ui/search.js\" switcher",
+			"value": "import Form from 'next/form'\n\nexport default function Search() {\n\treturn (\n\t\t<Form action=\"/search\">\n\t\t\t{/* On submission, the input value will be appended to\n          the URL, e.g. /search?query=abc */}\n\t\t\t<input name=\"query\" />\n\t\t\t<button type=\"submit\">Submit</button>\n\t\t</Form>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The behavior of the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Form>"
+				},
+				{
+					"type": "text",
+					"value": " component depends on whether the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "action"
+				},
+				{
+					"type": "text",
+					"value": " prop is passed a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "string"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "function"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "When "
+								},
+								{
+									"type": "inlineCode",
+									"value": "action"
+								},
+								{
+									"type": "text",
+									"value": " is a "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "string"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Form>"
+								},
+								{
+									"type": "text",
+									"value": " behaves like a native HTML form that uses a "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "GET"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " method. The form data is encoded into the URL as search params, and when the form is submitted, it navigates to the specified URL. In addition, Next.js:"
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "link",
+													"title": null,
+													"url": "/docs/app/getting-started/linking-and-navigating#prefetching",
+													"children": [
+														{
+															"type": "text",
+															"value": "Prefetches"
+														}
+													]
+												},
+												{
+													"type": "text",
+													"value": " the path when the form becomes visible, this preloads shared UI (e.g. "
+												},
+												{
+													"type": "inlineCode",
+													"value": "layout.js"
+												},
+												{
+													"type": "text",
+													"value": " and "
+												},
+												{
+													"type": "inlineCode",
+													"value": "loading.js"
+												},
+												{
+													"type": "text",
+													"value": "), resulting in faster navigation."
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Performs a "
+												},
+												{
+													"type": "link",
+													"title": null,
+													"url": "/docs/app/getting-started/linking-and-navigating#client-side-transitions",
+													"children": [
+														{
+															"type": "text",
+															"value": "client-side navigation"
+														}
+													]
+												},
+												{
+													"type": "text",
+													"value": " instead of a full page reload when the form is submitted. This retains shared UI and client-side state."
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "When "
+								},
+								{
+									"type": "inlineCode",
+									"value": "action"
+								},
+								{
+									"type": "text",
+									"value": " is a "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "function"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (Server Action), "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Form>"
+								},
+								{
+									"type": "text",
+									"value": " behaves like a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react-dom/components/form",
+									"children": [
+										{
+											"type": "text",
+											"value": "React form"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", executing the action when the form is submitted."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "action"
+				},
+				{
+					"type": "text",
+					"value": " (string) Props"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "inlineCode",
+					"value": "action"
+				},
+				{
+					"type": "text",
+					"value": " is a string, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Form>"
+				},
+				{
+					"type": "text",
+					"value": " component supports the following props:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prop"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Example"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Required"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "action"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "action=\"/search\""
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string"
+								},
+								{
+									"type": "text",
+									"value": " (URL or relative path)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "replace"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "replace={false}"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "boolean"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "-"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "scroll"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "scroll={true}"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "boolean"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "-"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "prefetch"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "prefetch={true}"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "boolean"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "-"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "action"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": The URL or path to navigate to when the form is submitted."
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "An empty string "
+												},
+												{
+													"type": "inlineCode",
+													"value": "\"\""
+												},
+												{
+													"type": "text",
+													"value": " will navigate to the same route with updated search params."
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "replace"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Replaces the current history state instead of pushing a new one to the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/en-US/docs/Web/API/History_API",
+									"children": [
+										{
+											"type": "text",
+											"value": "browser's history"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " stack. Default is "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "scroll"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Controls the scroll behavior during navigation. Defaults to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": ", this means it will scroll to the top of the new route, and maintain the scroll position for backwards and forwards navigation."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "prefetch"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Controls whether the path should be prefetched when the form becomes visible in the user's viewport. Defaults to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "action"
+				},
+				{
+					"type": "text",
+					"value": " (function) Props"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "inlineCode",
+					"value": "action"
+				},
+				{
+					"type": "text",
+					"value": " is a function, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Form>"
+				},
+				{
+					"type": "text",
+					"value": " component supports the following prop:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prop"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Example"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Required"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "action"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "action={myAction}"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "function"
+								},
+								{
+									"type": "text",
+									"value": " (Server Action)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "action"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": The Server Action to be called when the form is submitted. See the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react-dom/components/form#props",
+									"children": [
+										{
+											"type": "text",
+											"value": "React docs"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for more."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": When "
+						},
+						{
+							"type": "inlineCode",
+							"value": "action"
+						},
+						{
+							"type": "text",
+							"value": " is a function, the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "replace"
+						},
+						{
+							"type": "text",
+							"value": " and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "scroll"
+						},
+						{
+							"type": "text",
+							"value": " props are ignored."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Caveats"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": true,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "formAction"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Can be used in a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<button>"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<input type=\"submit\">"
+								},
+								{
+									"type": "text",
+									"value": " fields to override the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "action"
+								},
+								{
+									"type": "text",
+									"value": " prop. Next.js will perform a client-side navigation, however, this approach doesn't support prefetching."
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "When using "
+												},
+												{
+													"type": "link",
+													"title": null,
+													"url": "/docs/app/api-reference/config/next-config-js/basePath",
+													"children": [
+														{
+															"type": "inlineCode",
+															"value": "basePath"
+														}
+													]
+												},
+												{
+													"type": "text",
+													"value": ", you must also include it in the "
+												},
+												{
+													"type": "inlineCode",
+													"value": "formAction"
+												},
+												{
+													"type": "text",
+													"value": " path. e.g. "
+												},
+												{
+													"type": "inlineCode",
+													"value": "formAction=\"/base-path/search\""
+												},
+												{
+													"type": "text",
+													"value": "."
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "key"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Passing a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "key"
+								},
+								{
+									"type": "text",
+									"value": " prop to a string "
+								},
+								{
+									"type": "inlineCode",
+									"value": "action"
+								},
+								{
+									"type": "text",
+									"value": " is not supported. If you'd like to trigger a re-render or perform a mutation, consider using a function "
+								},
+								{
+									"type": "inlineCode",
+									"value": "action"
+								},
+								{
+									"type": "text",
+									"value": " instead."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "onSubmit"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Can be used to handle form submission logic. However, calling "
+								},
+								{
+									"type": "inlineCode",
+									"value": "event.preventDefault()"
+								},
+								{
+									"type": "text",
+									"value": " will override "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Form>"
+								},
+								{
+									"type": "text",
+									"value": " behavior such as navigating to the specified URL."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#method",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "method"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ", "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#enctype",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "encType"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ", "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#target",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "target"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Are not supported as they override "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Form>"
+								},
+								{
+									"type": "text",
+									"value": " behavior."
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Similarly, "
+												},
+												{
+													"type": "inlineCode",
+													"value": "formMethod"
+												},
+												{
+													"type": "text",
+													"value": ", "
+												},
+												{
+													"type": "inlineCode",
+													"value": "formEncType"
+												},
+												{
+													"type": "text",
+													"value": ", and "
+												},
+												{
+													"type": "inlineCode",
+													"value": "formTarget"
+												},
+												{
+													"type": "text",
+													"value": " can be used to override the "
+												},
+												{
+													"type": "inlineCode",
+													"value": "method"
+												},
+												{
+													"type": "text",
+													"value": ", "
+												},
+												{
+													"type": "inlineCode",
+													"value": "encType"
+												},
+												{
+													"type": "text",
+													"value": ", and "
+												},
+												{
+													"type": "inlineCode",
+													"value": "target"
+												},
+												{
+													"type": "text",
+													"value": " props respectively, and using them will fallback to native browser behavior."
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "If you need to use these props, use the HTML "
+												},
+												{
+													"type": "inlineCode",
+													"value": "<form>"
+												},
+												{
+													"type": "text",
+													"value": " element instead."
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "<input type=\"file\">"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Using this input type when the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "action"
+								},
+								{
+									"type": "text",
+									"value": " is a string will match browser behavior by submitting the filename instead of the file object."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Search form that leads to a search result page"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can create a search form that navigates to a search results page by passing the path as an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "action"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"/app/page.tsx\" switcher",
+			"value": "import Form from 'next/form'\n\nexport default function Page() {\n\treturn (\n\t\t<Form action=\"/search\">\n\t\t\t<input name=\"query\" />\n\t\t\t<button type=\"submit\">Submit</button>\n\t\t</Form>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"/app/page.js\" switcher",
+			"value": "import Form from 'next/form'\n\nexport default function Page() {\n\treturn (\n\t\t<Form action=\"/search\">\n\t\t\t<input name=\"query\" />\n\t\t\t<button type=\"submit\">Submit</button>\n\t\t</Form>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When the user updates the query input field and submits the form, the form data will be encoded into the URL as search params, e.g. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/search?query=abc"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": If you pass an empty string "
+						},
+						{
+							"type": "inlineCode",
+							"value": "\"\""
+						},
+						{
+							"type": "text",
+							"value": " to "
+						},
+						{
+							"type": "inlineCode",
+							"value": "action"
+						},
+						{
+							"type": "text",
+							"value": ", the form will navigate to the same route with updated search params."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "On the results page, you can access the query using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/page#searchparams-optional",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "searchParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.js"
+				},
+				{
+					"type": "text",
+					"value": " prop and use it to fetch data from an external source."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"/app/search/page.tsx\" switcher",
+			"value": "import { getSearchResults } from '@/lib/search'\n\nexport default async function SearchPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {\n\tconst results = await getSearchResults((await searchParams).query)\n\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"/app/search/page.js\" switcher",
+			"value": "import { getSearchResults } from '@/lib/search'\n\nexport default async function SearchPage({ searchParams }) {\n\tconst results = await getSearchResults((await searchParams).query)\n\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Form>"
+				},
+				{
+					"type": "text",
+					"value": " becomes visible in the user's viewport, shared UI (such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout.js"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": ") on the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/search"
+				},
+				{
+					"type": "text",
+					"value": " page will be prefetched. On submission, the form will immediately navigate to the new route and show loading UI while the results are being fetched. You can design the fallback UI using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/loading",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "loading.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"/app/search/loading.tsx\" switcher",
+			"value": "export default function Loading() {\n\treturn <div>Loading...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"/app/search/loading.js\" switcher",
+			"value": "export default function Loading() {\n\treturn <div>Loading...</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To cover cases when shared UI hasn't yet loaded, you can show instant feedback to the user using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react-dom/hooks/useFormStatus",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useFormStatus"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "First, create a component that displays a loading state when the form is pending:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"/app/ui/search-button.tsx\" switcher",
+			"value": "'use client'\nimport { useFormStatus } from 'react-dom'\n\nexport default function SearchButton() {\n\tconst status = useFormStatus()\n\treturn <button type=\"submit\">{status.pending ? 'Searching...' : 'Search'}</button>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"/app/ui/search-button.js\" switcher",
+			"value": "'use client'\nimport { useFormStatus } from 'react-dom'\n\nexport default function SearchButton() {\n\tconst status = useFormStatus()\n\treturn <button type=\"submit\">{status.pending ? 'Searching...' : 'Search'}</button>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, update the search form page to use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "SearchButton"
+				},
+				{
+					"type": "text",
+					"value": " component:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"/app/page.tsx\" switcher",
+			"value": "import Form from 'next/form'\nimport { SearchButton } from '@/ui/search-button'\n\nexport default function Page() {\n\treturn (\n\t\t<Form action=\"/search\">\n\t\t\t<input name=\"query\" />\n\t\t\t<SearchButton />\n\t\t</Form>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"/app/page.js\" switcher",
+			"value": "import Form from 'next/form'\nimport { SearchButton } from '@/ui/search-button'\n\nexport default function Page() {\n\treturn (\n\t\t<Form action=\"/search\">\n\t\t\t<input name=\"query\" />\n\t\t\t<SearchButton />\n\t\t</Form>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Mutations with Server Actions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can perform mutations by passing a function to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "action"
+				},
+				{
+					"type": "text",
+					"value": " prop."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"/app/posts/create/page.tsx\" switcher",
+			"value": "import Form from 'next/form'\nimport { createPost } from '@/posts/actions'\n\nexport default function Page() {\n\treturn (\n\t\t<Form action={createPost}>\n\t\t\t<input name=\"title\" />\n\t\t\t{/* ... */}\n\t\t\t<button type=\"submit\">Create Post</button>\n\t\t</Form>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"/app/posts/create/page.js\" switcher",
+			"value": "import Form from 'next/form'\nimport { createPost } from '@/posts/actions'\n\nexport default function Page() {\n\treturn (\n\t\t<Form action={createPost}>\n\t\t\t<input name=\"title\" />\n\t\t\t{/* ... */}\n\t\t\t<button type=\"submit\">Create Post</button>\n\t\t</Form>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After a mutation, it's common to redirect to the new resource. You can use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/redirecting",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "redirect"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " function from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/navigation"
+				},
+				{
+					"type": "text",
+					"value": " to navigate to the new post page."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Since the \"destination\" of the form submission is not known until the action is executed, "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<Form>"
+						},
+						{
+							"type": "text",
+							"value": " cannot automatically prefetch shared UI."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"/app/posts/actions.ts\" switcher",
+			"value": "'use server'\nimport { redirect } from 'next/navigation'\n\nexport async function createPost(formData: FormData) {\n\t// Create a new post\n\t// ...\n\n\t// Redirect to the new post\n\tredirect(`/posts/${data.id}`)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"/app/posts/actions.js\" switcher",
+			"value": "'use server'\nimport { redirect } from 'next/navigation'\n\nexport async function createPost(formData) {\n\t// Create a new post\n\t// ...\n\n\t// Redirect to the new post\n\tredirect(`/posts/${data.id}`)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, in the new page, you can fetch data using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " prop:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"/app/posts/[id]/page.tsx\" switcher",
+			"value": "import { getPost } from '@/posts/data'\n\nexport default async function PostPage({ params }: { params: Promise<{ id: string }> }) {\n\tconst { id } = await params\n\tconst data = await getPost(id)\n\n\treturn (\n\t\t<div>\n\t\t\t<h1>{data.title}</h1>\n\t\t\t{/* ... */}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"/app/posts/[id]/page.js\" switcher",
+			"value": "import { getPost } from '@/posts/data'\n\nexport default async function PostPage({ params }) {\n\tconst { id } = await params\n\tconst data = await getPost(id)\n\n\treturn (\n\t\t<div>\n\t\t\t<h1>{data.title}</h1>\n\t\t\t{/* ... */}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/mutating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Mutating data"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more examples."
+				}
+			]
+		}
+	]
+}

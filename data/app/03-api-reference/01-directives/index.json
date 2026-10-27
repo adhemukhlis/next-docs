@@ -1,0 +1,719 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Directives\ndescription: Learn how React and Next.js directives define client entry points, Server Functions, and cached output."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Directives are string literals that tell the compiler and bundler how to treat the code around them. On their own, directives look like plain strings, but Next.js and React read them as instructions that transform the code they cover. A directive can create a client entry point or a Server Function, or cache a function's or component's output."
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Directive"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Defined by"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Effect"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/directives/use-client",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'use client'"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "React"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Creates a client entry point from Server Components"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/directives/use-server",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'use server'"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "React"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Exposes server-side functions as Server Functions"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/directives/use-cache",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'use cache'"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Next.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Caches and reuses output based on the code's inputs"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache'"
+				},
+				{
+					"type": "text",
+					"value": " directive also has "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache-remote",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "'use cache: remote'"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache-private",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "'use cache: private'"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " variants. Configure custom "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheHandlers",
+					"children": [
+						{
+							"type": "text",
+							"value": "cache handlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to control where cached entries are stored."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Next.js applies directives during compilation in both development and production."
+						}
+					]
+				},
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "The error overlay, indicators, and stack traces point to your source file and line rather than the generated output."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Where to place a directive"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use client'"
+				},
+				{
+					"type": "text",
+					"value": " directive must appear at the top of a file, before any imports. It applies to the entire module and defines a file-wide boundary because the module is bundled and shipped to the browser. You cannot use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use client'"
+				},
+				{
+					"type": "text",
+					"value": " inline."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Place "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use server'"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache'"
+				},
+				{
+					"type": "text",
+					"value": " at the top of a file to apply the directive to every export. Place either directive at the top of a function to apply it only to that function."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/data.ts\" switcher",
+			"value": "// File-level: applies to every export\n'use cache'\n\nexport async function getUser(id: string) {\n\treturn { id }\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/data.js\" switcher",
+			"value": "// File-level: applies to every export\n'use cache'\n\nexport async function getUser(id) {\n\treturn { id }\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/user.tsx\" switcher",
+			"value": "// Function-level: applies to this function only\nexport async function User() {\n\t'use cache'\n\treturn <p>User</p>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/user.js\" switcher",
+			"value": "// Function-level: applies to this function only\nexport async function User() {\n\t'use cache'\n\treturn <p>User</p>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Declare "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use server'"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache'"
+				},
+				{
+					"type": "text",
+					"value": " in server modules, not in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use client'"
+				},
+				{
+					"type": "text",
+					"value": " module."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To import a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use server'"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache'"
+				},
+				{
+					"type": "text",
+					"value": " function into a Client Component, place the directive at the top of the server module. The Client Component receives a reference that invokes the function on the server."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Place the directive inside a function when it should apply only to that function or component. When it should apply to several exported functions, place it at the top of the file instead of repeating it."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Every exported function covered by a file-level "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use server'"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache'"
+				},
+				{
+					"type": "text",
+					"value": " directive must be "
+				},
+				{
+					"type": "inlineCode",
+					"value": "async"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "What each directive requires"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A directive imposes rules on the code it covers:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'use client'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " marks its exports as the boundary between server and client. Client Component props that cross the boundary must be "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/rsc/use-client#serializable-types",
+									"children": [
+										{
+											"type": "text",
+											"value": "serializable"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". Ordinary functions, such as event handlers, cannot cross, but Server Functions can cross as references."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'use server'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " marks the functions it covers as "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/glossary#server-function",
+									"children": [
+										{
+											"type": "text",
+											"value": "Server Functions"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". Server Functions must be "
+								},
+								{
+									"type": "inlineCode",
+									"value": "async"
+								},
+								{
+									"type": "text",
+									"value": ". When invoked from a Client Component, their arguments and return values are serialized across the network. The Client Component receives a reference that invokes the function on the server, not the function's code."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'use cache'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " caches the output of the functions or components it covers based on their inputs. Cached functions and components must be "
+								},
+								{
+									"type": "inlineCode",
+									"value": "async"
+								},
+								{
+									"type": "text",
+									"value": ". Their arguments and return values must be serializable, except for non-serializable values that the cached code passes through without inspecting. Cached code cannot read request-time APIs like "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cookies()"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "headers()"
+								},
+								{
+									"type": "text",
+									"value": ", or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "searchParams"
+								},
+								{
+									"type": "text",
+									"value": " directly."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache'"
+				},
+				{
+					"type": "text",
+					"value": " at the top of a page or layout file, exported functions such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " must be "
+				},
+				{
+					"type": "inlineCode",
+					"value": "async"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Placement decides what you cache"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache'"
+				},
+				{
+					"type": "text",
+					"value": ", placement determines the scope of a cache entry. A directive at the top of a page caches the page's output and the components it imports. The same directive inside a data function caches only that function's result. When one data request performs the expensive work, cache that function instead of the page."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache-remote",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "'use cache: remote'"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", a remote cache handler stores entries. Larger entries can increase storage and network costs."
+				}
+			]
+		}
+	]
+}

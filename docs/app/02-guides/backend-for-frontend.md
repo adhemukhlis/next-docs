@@ -41,6 +41,7 @@ To implement this pattern, use:
 
 - [Route Handlers](/docs/app/api-reference/file-conventions/route)
 - [`proxy`](/docs/app/api-reference/file-conventions/proxy)
+- In Pages Router, [API Routes](/docs/pages/building-your-application/routing/api-routes)
 
 ## Public Endpoints
 
@@ -706,12 +707,12 @@ export function proxy(request) {
 }
 ```
 
-You can also proxy requests using `proxy`:
+You can also proxy requests using `proxy`. This example reads `request.nextUrl`, so `request` is typed as [`NextRequest`](#nextrequest-and-nextresponse):
 
 ```ts filename="proxy.ts" switcher
-import { NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 
-export function proxy(request: Request) {
+export function proxy(request: NextRequest) {
 	if (request.nextUrl.pathname === '/proxy-this-path') {
 		const rewriteUrl = new URL('https://nextjs.org')
 		return NextResponse.rewrite(rewriteUrl)
@@ -733,9 +734,9 @@ export function proxy(request) {
 Another type of response `proxy` can produce are redirects:
 
 ```ts filename="proxy.ts" switcher
-import { NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 
-export function proxy(request: Request) {
+export function proxy(request: NextRequest) {
 	if (request.nextUrl.pathname === '/v1/docs') {
 		request.nextUrl.pathname = '/v2/docs'
 		return NextResponse.redirect(request.nextUrl)
@@ -830,9 +831,7 @@ Community libraries often use the factory pattern for Route Handlers.
 ```ts filename="/app/api/[...path]/route.ts"
 import { createHandler } from 'third-party-library'
 
-const handler = createHandler({
-	/* library-specific options */
-})
+const handler = createHandler({/* library-specific options */})
 
 export const GET = handler
 // or

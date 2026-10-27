@@ -1,0 +1,990 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to set up Cypress with Next.js\nnav_title: Cypress\ndescription: Learn how to set up Cypress with Next.js for End-to-End (E2E) and Component Testing."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.cypress.io/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cypress"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is a test runner used for "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "End-to-End (E2E)"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Component Testing"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This page will show you how to set up Cypress with Next.js and write your first tests."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Warning:"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Cypress versions below 13.6.3 do not support "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://github.com/cypress-io/cypress/issues/27731",
+											"children": [
+												{
+													"type": "text",
+													"value": "TypeScript version 5"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " with "
+										},
+										{
+											"type": "inlineCode",
+											"value": "moduleResolution:\"bundler\""
+										},
+										{
+											"type": "text",
+											"value": ". However, this issue has been resolved in Cypress version 13.6.3 and later. "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://docs.cypress.io/guides/references/changelog#13-6-3",
+											"children": [
+												{
+													"type": "text",
+													"value": "cypress v13.6.3"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Quickstart"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "create-next-app"
+				},
+				{
+					"type": "text",
+					"value": " with the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/tree/canary/examples/with-cypress",
+					"children": [
+						{
+							"type": "text",
+							"value": "with-cypress example"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to quickly get started."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm create next-app --example with-cypress with-cypress-app"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npx create-next-app@latest --example with-cypress with-cypress-app"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn create next-app --example with-cypress with-cypress-app"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun create next-app --example with-cypress with-cypress-app"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Manual setup"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To manually set up Cypress, install "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cypress"
+				},
+				{
+					"type": "text",
+					"value": " as a dev dependency:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add -D cypress"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install -D cypress"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add -D cypress"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add -D cypress"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Add the Cypress "
+				},
+				{
+					"type": "inlineCode",
+					"value": "open"
+				},
+				{
+					"type": "text",
+					"value": " command to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "package.json"
+				},
+				{
+					"type": "text",
+					"value": " scripts field:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"package.json\"",
+			"value": "{\n\t\"scripts\": {\n\t\t\"dev\": \"next dev\",\n\t\t\"build\": \"next build\",\n\t\t\"start\": \"next start\",\n\t\t\"lint\": \"eslint\",\n\t\t\"cypress:open\": \"cypress open\"\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Run Cypress for the first time to open the Cypress testing suite:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm cypress:open"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm run cypress:open"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn cypress:open"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun run cypress:open"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can choose to configure "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "E2E Testing"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and/or "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Component Testing"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Selecting any of these options will automatically create a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cypress.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file and a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cypress"
+				},
+				{
+					"type": "text",
+					"value": " folder in your project."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Creating your first Cypress E2E test"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Ensure your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cypress.config"
+				},
+				{
+					"type": "text",
+					"value": " file has the following configuration:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"cypress.config.ts\" switcher",
+			"value": "import { defineConfig } from 'cypress'\n\nexport default defineConfig({\n\te2e: {\n\t\tsetupNodeEvents(on, config) {},\n\t},\n})"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"cypress.config.js\" switcher",
+			"value": "const { defineConfig } = require('cypress')\n\nmodule.exports = defineConfig({\n\te2e: {\n\t\tsetupNodeEvents(on, config) {},\n\t},\n})"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, create two new Next.js files:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\"",
+			"value": "import Link from 'next/link'\n\nexport default function Page() {\n\treturn (\n\t\t<div>\n\t\t\t<h1>Home</h1>\n\t\t\t<Link href=\"/about\">About</Link>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/about/page.js\"",
+			"value": "import Link from 'next/link'\n\nexport default function Page() {\n\treturn (\n\t\t<div>\n\t\t\t<h1>About</h1>\n\t\t\t<Link href=\"/\">Home</Link>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Add a test to check your navigation is working correctly:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"cypress/e2e/app.cy.js\"",
+			"value": "describe('Navigation', () => {\n\tit('should navigate to the about page', () => {\n\t\t// Start from the index page\n\t\tcy.visit('http://localhost:3000/')\n\n\t\t// Find a link with an href attribute containing \"about\" and click it\n\t\tcy.get('a[href*=\"about\"]').click()\n\n\t\t// The new url should include \"/about\"\n\t\tcy.url().should('include', '/about')\n\n\t\t// The new page should contain an h1 with \"About\"\n\t\tcy.get('h1').contains('About')\n\t})\n})"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Running E2E Tests"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Cypress will simulate a user navigating your application, this requires your Next.js server to be running. We recommend running your tests against your production code to more closely resemble how your application will behave."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "npm run build && npm run start"
+				},
+				{
+					"type": "text",
+					"value": " to build your Next.js application, then run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "npm run cypress:open"
+				},
+				{
+					"type": "text",
+					"value": " in another terminal window to start Cypress and run your E2E Testing suite."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "You can use "
+										},
+										{
+											"type": "inlineCode",
+											"value": "cy.visit(\"/\")"
+										},
+										{
+											"type": "text",
+											"value": " instead of "
+										},
+										{
+											"type": "inlineCode",
+											"value": "cy.visit(\"http://localhost:3000/\")"
+										},
+										{
+											"type": "text",
+											"value": " by adding "
+										},
+										{
+											"type": "inlineCode",
+											"value": "baseUrl: 'http://localhost:3000'"
+										},
+										{
+											"type": "text",
+											"value": " to the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "cypress.config.js"
+										},
+										{
+											"type": "text",
+											"value": " configuration file."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Alternatively, you can install the "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://www.npmjs.com/package/start-server-and-test",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "start-server-and-test"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " package to run the Next.js production server in conjunction with Cypress. After installation, add "
+										},
+										{
+											"type": "inlineCode",
+											"value": "\"test\": \"start-server-and-test start http://localhost:3000 cypress\""
+										},
+										{
+											"type": "text",
+											"value": " to your "
+										},
+										{
+											"type": "inlineCode",
+											"value": "package.json"
+										},
+										{
+											"type": "text",
+											"value": " scripts field. Remember to rebuild your application after new changes."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Creating your first Cypress component test"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Component tests build and mount a specific component without having to bundle your whole application or start a server."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Select "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Component Testing"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in the Cypress app, then select "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " as your front-end framework. A "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cypress/component"
+				},
+				{
+					"type": "text",
+					"value": " folder will be created in your project, and a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cypress.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file will be updated to enable Component Testing."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Ensure your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cypress.config"
+				},
+				{
+					"type": "text",
+					"value": " file has the following configuration:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"cypress.config.ts\" switcher",
+			"value": "import { defineConfig } from 'cypress'\n\nexport default defineConfig({\n\tcomponent: {\n\t\tdevServer: {\n\t\t\tframework: 'next',\n\t\t\tbundler: 'webpack',\n\t\t},\n\t},\n})"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"cypress.config.js\" switcher",
+			"value": "const { defineConfig } = require('cypress')\n\nmodule.exports = defineConfig({\n\tcomponent: {\n\t\tdevServer: {\n\t\t\tframework: 'next',\n\t\t\tbundler: 'webpack',\n\t\t},\n\t},\n})"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Assuming the same components from the previous section, add a test to validate a component is rendering the expected output:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"cypress/component/about.cy.tsx\"",
+			"value": "import Page from '../../app/page'\n\ndescribe('<Page />', () => {\n\tit('should render and display expected content', () => {\n\t\t// Mount the React component for the Home page\n\t\tcy.mount(<Page />)\n\n\t\t// The new page should contain an h1 with \"Home\"\n\t\tcy.get('h1').contains('Home')\n\n\t\t// Validate that a link with the expected URL is present\n\t\t// Following the link is better suited to an E2E test\n\t\tcy.get('a[href=\"/about\"]').should('be.visible')\n\t})\n})"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Cypress currently doesn't support Component Testing for "
+										},
+										{
+											"type": "inlineCode",
+											"value": "async"
+										},
+										{
+											"type": "text",
+											"value": " Server Components. We recommend using E2E testing."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Since component tests do not require a Next.js server, features like "
+										},
+										{
+											"type": "inlineCode",
+											"value": "<Image />"
+										},
+										{
+											"type": "text",
+											"value": " that rely on a server being available may not function out-of-the-box."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Running Component Tests"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "npm run cypress:open"
+				},
+				{
+					"type": "text",
+					"value": " in your terminal to start Cypress and run your Component Testing suite."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Continuous Integration (CI)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In addition to interactive testing, you can also run Cypress headlessly using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cypress run"
+				},
+				{
+					"type": "text",
+					"value": " command, which is better suited for CI environments:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"package.json\"",
+			"value": "{\n\t\"scripts\": {\n\t\t//...\n\t\t\"e2e\": \"start-server-and-test dev http://localhost:3000 \\\"cypress open --e2e\\\"\",\n\t\t\"e2e:headless\": \"start-server-and-test dev http://localhost:3000 \\\"cypress run --e2e\\\"\",\n\t\t\"component\": \"cypress open --component\",\n\t\t\"component:headless\": \"cypress run --component\"\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can learn more about Cypress and Continuous Integration from these resources:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel/next.js/tree/canary/examples/with-cypress",
+									"children": [
+										{
+											"type": "text",
+											"value": "Next.js with Cypress example"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://docs.cypress.io/guides/continuous-integration/introduction",
+									"children": [
+										{
+											"type": "text",
+											"value": "Cypress Continuous Integration Docs"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://on.cypress.io/github-actions",
+									"children": [
+										{
+											"type": "text",
+											"value": "Cypress GitHub Actions Guide"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/cypress-io/github-action",
+									"children": [
+										{
+											"type": "text",
+											"value": "Official Cypress GitHub Action"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://discord.com/invite/cypress",
+									"children": [
+										{
+											"type": "text",
+											"value": "Cypress Discord"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

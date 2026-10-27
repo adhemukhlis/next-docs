@@ -1,0 +1,89 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Creating an Adapter\ndescription: Create an adapter module that implements the `NextAdapter` interface."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "An adapter is a module that exports an object implementing the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NextAdapter"
+				},
+				{
+					"type": "text",
+					"value": " interface."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The interface can be imported from the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next"
+				},
+				{
+					"type": "text",
+					"value": " package:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "typescript",
+			"meta": null,
+			"value": "import type { NextAdapter } from 'next'"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The interface is defined as follows:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "typescript",
+			"meta": null,
+			"value": "type Route = {\n\tsource?: string\n\tsourceRegex: string\n\tdestination?: string\n\theaders?: Record<string, string>\n\thas?: RouteHas[]\n\tmissing?: RouteHas[]\n\tstatus?: number\n\tpriority?: boolean\n}\n\nexport interface AdapterOutputs {\n\tpages: Array<AdapterOutput['PAGES']>\n\tmiddleware?: AdapterOutput['MIDDLEWARE']\n\tappPages: Array<AdapterOutput['APP_PAGE']>\n\tpagesApi: Array<AdapterOutput['PAGES_API']>\n\tappRoutes: Array<AdapterOutput['APP_ROUTE']>\n\tprerenders: Array<AdapterOutput['PRERENDER']>\n\tstaticFiles: Array<AdapterOutput['STATIC_FILE']>\n}\n\nexport interface NextAdapter {\n\tname: string\n\tmodifyConfig?: (\n\t\tconfig: NextConfigComplete,\n\t\tctx: {\n\t\t\tphase: PHASE_TYPE\n\t\t\tnextVersion: string\n\t\t\tprojectDir: string\n\t\t},\n\t) => Promise<NextConfigComplete> | NextConfigComplete\n\tonBuildComplete?: (ctx: {\n\t\trouting: {\n\t\t\tbeforeMiddleware: Array<Route>\n\t\t\tmiddlewareMatchers: Array<Route>\n\t\t\tbeforeFiles: Array<Route>\n\t\t\tafterFiles: Array<Route>\n\t\t\tdynamicRoutes: Array<Route>\n\t\t\tonMatch: Array<Route>\n\t\t\tfallback: Array<Route>\n\t\t\tshouldNormalizeNextData: boolean\n\t\t\trsc: RoutesManifest['rsc']\n\t\t}\n\t\toutputs: AdapterOutputs\n\t\tprojectDir: string\n\t\trepoRoot: string\n\t\tdistDir: string\n\t\tconfig: NextConfigComplete\n\t\tnextVersion: string\n\t\tbuildId: string\n\t}) => Promise<void> | void\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Basic Adapter Structure"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Here's a minimal adapter example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"my-adapter.js\"",
+			"value": "/** @type {import('next').NextAdapter} */\nconst adapter = {\n\tname: 'my-custom-adapter',\n\n\tasync modifyConfig(config, { phase }) {\n\t\t// Modify the Next.js config based on the build phase\n\t\tif (phase === 'phase-production-build') {\n\t\t\treturn {\n\t\t\t\t...config,\n\t\t\t\t// Add your modifications\n\t\t\t}\n\t\t}\n\t\treturn config\n\t},\n\n\tasync onBuildComplete({ routing, outputs, projectDir, repoRoot, distDir, config, nextVersion, buildId }) {\n\t\t// Process the build output\n\t\tconsole.log('Build completed with', outputs.pages.length, 'pages')\n\t\tconsole.log('Build ID:', buildId)\n\t\tconsole.log('Dynamic routes:', routing.dynamicRoutes.length)\n\n\t\t// Access emitted output entries\n\t\tfor (const page of outputs.pages) {\n\t\t\tconsole.log('Page:', page.pathname, 'at', page.filePath)\n\t\t}\n\n\t\tfor (const apiRoute of outputs.pagesApi) {\n\t\t\tconsole.log('API Route:', apiRoute.pathname, 'at', apiRoute.filePath)\n\t\t}\n\n\t\tfor (const appPage of outputs.appPages) {\n\t\t\tconsole.log('App Page:', appPage.pathname, 'at', appPage.filePath)\n\t\t}\n\n\t\tfor (const prerender of outputs.prerenders) {\n\t\t\tconsole.log('Prerendered:', prerender.pathname)\n\t\t}\n\t},\n}\n\nmodule.exports = adapter"
+		}
+	]
+}

@@ -1,0 +1,1978 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Prefetching\ndescription: Learn how to configure prefetching in Next.js"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Prefetching makes navigating between routes feel instant. By default, Next.js prefetches routes based on the links in your application code."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This guide explains how prefetching works, what Next.js prefetches for you, and how to control it:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#how-does-prefetching-work",
+									"children": [
+										{
+											"type": "text",
+											"value": "How does prefetching work?"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#what-nextjs-prefetches-automatically",
+									"children": [
+										{
+											"type": "text",
+											"value": "What Next.js prefetches automatically"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#controlling-prefetching",
+									"children": [
+										{
+											"type": "text",
+											"value": "Controlling prefetching"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#troubleshooting",
+									"children": [
+										{
+											"type": "text",
+											"value": "Troubleshooting"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Using Partial Prefetching?"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " With "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/config/next-config-js/partialPrefetching",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "partialPrefetching"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " enabled, "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<Link>"
+						},
+						{
+							"type": "text",
+							"value": " defaults to prefetching a per-route "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/glossary#app-shell",
+							"children": [
+								{
+									"type": "text",
+									"value": "App Shell"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " rather than the full page. See "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "#partial-prefetching",
+							"children": [
+								{
+									"type": "text",
+									"value": "Partial Prefetching"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " below and "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/adopting-partial-prefetching",
+							"children": [
+								{
+									"type": "text",
+									"value": "Adopting Partial Prefetching"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for the adoption path."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "How does prefetching work?"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When navigating between routes, the browser requests assets for the page like HTML and JavaScript files. Prefetching is the process of fetching these resources "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "ahead"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " of time, before you navigate to a new route."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js automatically splits your application into smaller JavaScript chunks based on routes. Instead of loading all the code upfront like traditional SPAs, only the code needed for the current route is loaded. This reduces the initial load time while other parts of the app are loaded in the background. By the time you click the link, the resources for the new route have already been loaded into the browser cache."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When navigating to the new page, there's no full page reload or browser loading spinner. Instead, Next.js performs a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/linking-and-navigating#client-side-transitions",
+					"children": [
+						{
+							"type": "text",
+							"value": "client-side transition"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", making the page navigation feel instant."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "What Next.js prefetches automatically"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js prefetches automatically in production. As each "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " enters the viewport, Next.js prefetches the route behind it and schedules the work so a page full of links doesn't flood the network. How much of each route it prefetches depends on whether the route is static or dynamic, and changes when "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#partial-prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is enabled."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Prefetching static vs. dynamic routes"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Without Cache Components, a static route is prefetched in full, while a dynamic route is skipped unless it has a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/loading",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "loading.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " boundary."
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": []
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Static page"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Dynamic page"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Prefetched"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes, full route"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No, unless "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/loading",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "loading.js"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/glossary#client-cache",
+									"children": [
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "text",
+													"value": "Client Cache TTL"
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "5 min (default)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Off, unless "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/staleTimes",
+									"children": [
+										{
+											"type": "text",
+											"value": "enabled"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Server roundtrip on click"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes, streamed after "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/caching",
+									"children": [
+										{
+											"type": "text",
+											"value": "shell"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " During the initial navigation, the browser fetches the HTML, JavaScript, and React Server Components (RSC) Payload. For subsequent navigations, the browser will fetch the RSC Payload for Server Components and JS bundle for Client Components."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Automatic prefetch"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/nav-link.tsx\" switcher",
+			"value": "import Link from 'next/link'\n\nexport default function NavLink() {\n\treturn <Link href=\"/about\">About</Link>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/nav-link.js\" switcher",
+			"value": "import Link from 'next/link'\n\nexport default function NavLink() {\n\treturn <Link href=\"/about\">About</Link>\n}"
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Context"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Prefetched payload"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Client Cache TTL"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No "
+								},
+								{
+									"type": "inlineCode",
+									"value": "loading.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Entire page"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "5 min ("
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/staleTimes",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "staleTimes.static"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ")"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "With "
+								},
+								{
+									"type": "inlineCode",
+									"value": "loading.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Layout to first loading boundary"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Off by default ("
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/staleTimes",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "staleTimes.dynamic"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ")"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Automatic prefetching runs only in production. Disable with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch={false}"
+				},
+				{
+					"type": "text",
+					"value": " or use the wrapper in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#disabled-prefetch",
+					"children": [
+						{
+							"type": "text",
+							"value": "Disabled Prefetch"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Prefetch scheduling"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js maintains a small task queue, which prefetches in the following order:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Links in the viewport"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Links showing user intent (hover or touch)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Newer links replace older ones"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Links scrolled off-screen are discarded"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The scheduler prioritizes likely navigations while minimizing unused downloads."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": With the "
+						},
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "experimental"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/offline-support",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "useOffline"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " config enabled, pending prefetches resume through this queue when the app recovers from a connectivity drop."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Client cache"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js stores prefetched React Server Component payloads in memory, keyed by route segments. When navigating between sibling routes (e.g. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/dashboard/settings"
+				},
+				{
+					"type": "text",
+					"value": " → "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/dashboard/analytics"
+				},
+				{
+					"type": "text",
+					"value": "), Next.js reuses the parent layout and only fetches the updated leaf page."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Partial Prefetching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#partial-prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " enabled via the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/partialPrefetching",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "partialPrefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " config (which requires "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "), prefetching switches from the all-or-nothing model above to a per-route "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#app-shell",
+					"children": [
+						{
+							"type": "text",
+							"value": "App Shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "One shell per route, shared across links."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Link>"
+								},
+								{
+									"type": "text",
+									"value": " prefetches the route's App Shell, which holds its static and session output. Any number of links to the same route reuse that one shell, fetched once as the first link enters the viewport, so a page with many links makes fewer prefetch requests than prefetching each route in full."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "The rest streams in."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Uncached data streams in after navigation, behind the shell's "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Suspense>"
+								},
+								{
+									"type": "text",
+									"value": " boundaries. A link can also resolve its URL data ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "searchParams"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "params"
+								},
+								{
+									"type": "text",
+									"value": ") at prefetch time with "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/optimizing-prefetching",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "prefetch={true}"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Invalidations refresh prefetches."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Data invalidations ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidateTag"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidatePath"
+								},
+								{
+									"type": "text",
+									"value": ") silently refresh associated prefetches."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/adopting-partial-prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Adopting Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the behavior change and the recommended adoption path. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/optimizing-prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Optimizing prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to resolve cached URL-specific content before navigation with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch={true}"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Controlling prefetching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js prefetches with defaults you can tune per link when they don't fit your resource budget or navigation patterns."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Manual prefetch"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To prefetch manually, import the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useRouter"
+				},
+				{
+					"type": "text",
+					"value": " hook from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/navigation"
+				},
+				{
+					"type": "text",
+					"value": ", then call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "router.prefetch()"
+				},
+				{
+					"type": "text",
+					"value": " to warm routes outside the viewport or in response to analytics, hover, or scroll."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#partial-prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "router.prefetch(href)"
+				},
+				{
+					"type": "text",
+					"value": " requests the same App Shell as a default "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": ". Pass "
+				},
+				{
+					"type": "inlineCode",
+					"value": "{ kind: 'full' }"
+				},
+				{
+					"type": "text",
+					"value": " to also request the per-link stage, matching "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link prefetch={true}>"
+				},
+				{
+					"type": "text",
+					"value": ". The per-link stage can include cacheable content below "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/prefetch",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "await prefetch()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "'use client'\n\nimport { useRouter } from 'next/navigation'\nimport { CustomLink } from '@components/link'\n\nexport function PricingCard() {\n\tconst router = useRouter()\n\n\treturn (\n\t\t<div onMouseEnter={() => router.prefetch('/pricing', { kind: 'full' })}>\n\t\t\t{/* other UI elements */}\n\t\t\t<CustomLink href=\"/pricing\">View Pricing</CustomLink>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To prefetch a URL when a component loads, see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#extending-or-ejecting-link",
+					"children": [
+						{
+							"type": "text",
+							"value": "Extending or ejecting link"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Hover-triggered prefetch"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Proceed with caution:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Extending "
+						},
+						{
+							"type": "inlineCode",
+							"value": "Link"
+						},
+						{
+							"type": "text",
+							"value": " opts you into maintaining prefetching, cache invalidation, and accessibility concerns. Do this only when the defaults are insufficient."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " prefetches when it enters the viewport. To prefetch only the links a user is likely to visit, defer prefetching until they hover over a link:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "'use client'\n\nimport Link from 'next/link'\nimport { useState } from 'react'\n\nexport function HoverPrefetchLink({ href, children }: { href: string; children: React.ReactNode }) {\n\tconst [active, setActive] = useState(false)\n\n\treturn (\n\t\t<Link\n\t\t\thref={href}\n\t\t\tprefetch={active ? null : false}\n\t\t\tonMouseEnter={() => setActive(true)}>\n\t\t\t{children}\n\t\t</Link>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "prefetch={null}"
+				},
+				{
+					"type": "text",
+					"value": " restores default prefetching once the user shows intent."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/adopting-partial-prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch={active ? true : 'auto'}"
+				},
+				{
+					"type": "text",
+					"value": " instead. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'auto'"
+				},
+				{
+					"type": "text",
+					"value": " value keeps the shared App Shell prefetched before the user shows intent, while "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": " resolves cached URL-specific content before navigation after they do. Using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " before intent disables the App Shell prefetch."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Extending or ejecting link"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can extend the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " component to create your own custom prefetching strategy. For example, using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://foresightjs.com/docs/integrations/nextjs",
+					"children": [
+						{
+							"type": "text",
+							"value": "ForesightJS"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " library which prefetches links by predicting the direction of the user's cursor."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Alternatively, you can use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-router",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useRouter"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to recreate some of the native "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " behavior. However, be aware this opts you into maintaining prefetching and cache invalidation."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "'use client'\n\nimport { useRouter } from 'next/navigation'\nimport { useEffect } from 'react'\n\nfunction ManualPrefetchLink({ href, children }: { href: string; children: React.ReactNode }) {\n\tconst router = useRouter()\n\n\tuseEffect(() => {\n\t\tlet cancelled = false\n\t\tconst poll = () => {\n\t\t\tif (!cancelled) router.prefetch(href, { onInvalidate: poll })\n\t\t}\n\t\tpoll()\n\t\treturn () => {\n\t\t\tcancelled = true\n\t\t}\n\t}, [href, router])\n\n\treturn (\n\t\t<a\n\t\t\thref={href}\n\t\t\tonClick={(event) => {\n\t\t\t\tevent.preventDefault()\n\t\t\t\trouter.push(href)\n\t\t\t}}>\n\t\t\t{children}\n\t\t</a>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js invokes "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-router#userouter",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "onInvalidate"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when it suspects cached data is stale, so you can refresh the prefetch."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " An "
+						},
+						{
+							"type": "inlineCode",
+							"value": "a"
+						},
+						{
+							"type": "text",
+							"value": " tag triggers a full page navigation. Use "
+						},
+						{
+							"type": "inlineCode",
+							"value": "onClick"
+						},
+						{
+							"type": "text",
+							"value": " to prevent it, then call "
+						},
+						{
+							"type": "inlineCode",
+							"value": "router.push"
+						},
+						{
+							"type": "text",
+							"value": " to navigate on the client."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Disabled prefetch"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can fully disable prefetching for certain routes for more fine-grained control over resource consumption."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "'use client'\n\nimport Link, { LinkProps } from 'next/link'\n\nfunction NoPrefetchLink({ prefetch, ...rest }: LinkProps & { children: React.ReactNode }) {\n\treturn (\n\t\t<Link\n\t\t\t{...rest}\n\t\t\tprefetch={false}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, you may still want to have consistent usage of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " in your application, but links in your footer might not need to be prefetched when entering the viewport."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Troubleshooting"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Triggering unwanted side-effects during prefetching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If your layouts or pages are not "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/learn/keeping-components-pure#purity-components-as-formulas",
+					"children": [
+						{
+							"type": "text",
+							"value": "pure"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and have side-effects (e.g. tracking analytics), Next.js might run them when the route is prefetched, not when the user visits the page."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To avoid this, move side-effects to a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useEffect"
+				},
+				{
+					"type": "text",
+					"value": " hook or a Server Action triggered from a Client Component."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Before"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/layout.tsx\" switcher",
+			"value": "import { trackPageView } from '@/lib/analytics'\n\nexport default function Layout({ children }: { children: React.ReactNode }) {\n\t// This runs during prefetch\n\ttrackPageView()\n\n\treturn <div>{children}</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/layout.js\" switcher",
+			"value": "import { trackPageView } from '@/lib/analytics'\n\nexport default function Layout({ children }) {\n\t// This runs during prefetch\n\ttrackPageView()\n\n\treturn <div>{children}</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "After"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/analytics-tracker.tsx\" switcher",
+			"value": "'use client'\n\nimport { useEffect } from 'react'\nimport { trackPageView } from '@/lib/analytics'\n\nexport function AnalyticsTracker() {\n\tuseEffect(() => {\n\t\ttrackPageView()\n\t}, [])\n\n\treturn null\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/analytics-tracker.js\" switcher",
+			"value": "'use client'\n\nimport { useEffect } from 'react'\nimport { trackPageView } from '@/lib/analytics'\n\nexport function AnalyticsTracker() {\n\tuseEffect(() => {\n\t\ttrackPageView()\n\t}, [])\n\n\treturn null\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/layout.tsx\" switcher",
+			"value": "import { AnalyticsTracker } from '@/app/ui/analytics-tracker'\n\nexport default function Layout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<div>\n\t\t\t<AnalyticsTracker />\n\t\t\t{children}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/layout.js\" switcher",
+			"value": "import { AnalyticsTracker } from '@/app/ui/analytics-tracker'\n\nexport default function Layout({ children }) {\n\treturn (\n\t\t<div>\n\t\t\t<AnalyticsTracker />\n\t\t\t{children}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Preventing too many prefetches"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js automatically prefetches links in the viewport when using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " component."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You might want to prevent this to avoid unnecessary resource usage, such as when rendering a large list of links (e.g. an infinite scroll table)."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can disable prefetching by setting the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch"
+				},
+				{
+					"type": "text",
+					"value": " prop of the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " component to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/no-prefetch-link.tsx\" switcher",
+			"value": "<Link\n\tprefetch={false}\n\thref={`/blog/${post.id}`}>\n\t{post.title}\n</Link>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "However, this means static routes will only be fetched on click, and dynamic routes will wait for the server to render before navigating."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To reduce resource usage without disabling prefetch entirely, you can defer prefetching until the user hovers over a link. This targets only links the user is likely to visit."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/hover-prefetch-link.tsx\" switcher",
+			"value": "'use client'\n\nimport Link from 'next/link'\nimport { useState } from 'react'\n\nexport function HoverPrefetchLink({ href, children }: { href: string; children: React.ReactNode }) {\n\tconst [active, setActive] = useState(false)\n\n\treturn (\n\t\t<Link\n\t\t\thref={href}\n\t\t\tprefetch={active ? null : false}\n\t\t\tonMouseEnter={() => setActive(true)}>\n\t\t\t{children}\n\t\t</Link>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/hover-prefetch-link.js\" switcher",
+			"value": "'use client'\n\nimport Link from 'next/link'\nimport { useState } from 'react'\n\nexport function HoverPrefetchLink({ href, children }) {\n\tconst [active, setActive] = useState(false)\n\n\treturn (\n\t\t<Link\n\t\t\thref={href}\n\t\t\tprefetch={active ? null : false}\n\t\t\tonMouseEnter={() => setActive(true)}>\n\t\t\t{children}\n\t\t</Link>\n\t)\n}"
+		}
+	]
+}

@@ -1,0 +1,1175 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: fetch\ndescription: API reference for the extended fetch function."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js extends the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/Fetch_API",
+					"children": [
+						{
+							"type": "text",
+							"value": "Web "
+						},
+						{
+							"type": "inlineCode",
+							"value": "fetch()"
+						},
+						{
+							"type": "text",
+							"value": " API"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to allow each request on the server to set its own persistent caching and revalidation semantics."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the browser, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cache"
+				},
+				{
+					"type": "text",
+					"value": " option indicates how a fetch request will interact with the "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "browser's"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " HTTP cache. With this extension, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cache"
+				},
+				{
+					"type": "text",
+					"value": " indicates how a "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "server-side"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " fetch request will interact with the framework's persistent cache."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "async"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await"
+				},
+				{
+					"type": "text",
+					"value": " directly within Server Components."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "export default async function Page() {\n\tlet data = await fetch('https://api.vercel.app/blog')\n\tlet posts = await data.json()\n\treturn (\n\t\t<ul>\n\t\t\t{posts.map((post) => (\n\t\t\t\t<li key={post.id}>{post.title}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "export default async function Page() {\n\tlet data = await fetch('https://api.vercel.app/blog')\n\tlet posts = await data.json()\n\treturn (\n\t\t<ul>\n\t\t\t{posts.map((post) => (\n\t\t\t\t<li key={post.id}>{post.title}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "fetch(url, options)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since Next.js extends the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/Fetch_API",
+					"children": [
+						{
+							"type": "text",
+							"value": "Web "
+						},
+						{
+							"type": "inlineCode",
+							"value": "fetch()"
+						},
+						{
+							"type": "text",
+							"value": " API"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", you can use any of the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/fetch#parameters",
+					"children": [
+						{
+							"type": "text",
+							"value": "native options available"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "options.cache"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Configure how the request should interact with Next.js "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "caching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "fetch(`https://...`, { cache: 'force-cache' | 'no-store' })"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "auto no cache"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (default): Next.js fetches the resource from the remote server on every request in development, but will fetch once during "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next build"
+								},
+								{
+									"type": "text",
+									"value": " because the route will be statically prerendered. If "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/glossary#request-time-apis",
+									"children": [
+										{
+											"type": "text",
+											"value": "Request-time APIs"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " are detected on the route, Next.js will fetch the resource on every request."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "no-store"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Next.js fetches the resource from the remote server on every request, even if Request-time APIs are not detected on the route."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "force-cache"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Next.js looks for a matching request in its server-side cache. A request matches on its URL, method, headers, and body, so requests that differ in any of these are cached separately."
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "If there is a match and it is fresh, it will be returned from the cache."
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "If there is no match or a stale match, Next.js fetches the resource from the remote server and updates the cache with the downloaded resource. Only responses with a "
+												},
+												{
+													"type": "inlineCode",
+													"value": "200"
+												},
+												{
+													"type": "text",
+													"value": " HTTP status code are stored."
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Caching is opt-in. Set "
+						},
+						{
+							"type": "inlineCode",
+							"value": "cache: 'force-cache'"
+						},
+						{
+							"type": "text",
+							"value": " to cache any request, including "
+						},
+						{
+							"type": "inlineCode",
+							"value": "POST"
+						},
+						{
+							"type": "text",
+							"value": " and requests that send "
+						},
+						{
+							"type": "inlineCode",
+							"value": "authorization"
+						},
+						{
+							"type": "text",
+							"value": " or "
+						},
+						{
+							"type": "inlineCode",
+							"value": "cookie"
+						},
+						{
+							"type": "text",
+							"value": " headers. "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/draft-mode",
+							"children": [
+								{
+									"type": "text",
+									"value": "Draft Mode"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " bypasses the cache entirely (no read or write)."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "options.next.revalidate"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "fetch(`https://...`, { next: { revalidate: false | 0 | number } })"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Set the cache lifetime of a resource (in seconds)."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "false"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - Cache the resource indefinitely. Semantically equivalent to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidate: Infinity"
+								},
+								{
+									"type": "text",
+									"value": ". The HTTP cache may evict older resources over time."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "0"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - Prevent the resource from being cached."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "number"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - (in seconds) Specify the resource should have a cache lifetime of at most "
+								},
+								{
+									"type": "inlineCode",
+									"value": "n"
+								},
+								{
+									"type": "text",
+									"value": " seconds."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "If an individual "
+										},
+										{
+											"type": "inlineCode",
+											"value": "fetch()"
+										},
+										{
+											"type": "text",
+											"value": " request sets a "
+										},
+										{
+											"type": "inlineCode",
+											"value": "revalidate"
+										},
+										{
+											"type": "text",
+											"value": " number lower than the "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/guides/caching-without-cache-components#route-segment-config-revalidate",
+											"children": [
+												{
+													"type": "text",
+													"value": "default "
+												},
+												{
+													"type": "inlineCode",
+													"value": "revalidate"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " of a route, the whole route revalidation interval will be decreased."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "If two fetch requests with the same URL in the same route have different "
+										},
+										{
+											"type": "inlineCode",
+											"value": "revalidate"
+										},
+										{
+											"type": "text",
+											"value": " values, the lower value will be used."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Conflicting options such as "
+										},
+										{
+											"type": "inlineCode",
+											"value": "{ revalidate: 3600, cache: 'no-store' }"
+										},
+										{
+											"type": "text",
+											"value": " are not allowed, both will be ignored, and in development mode a warning will be printed to the terminal."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "options.next.tags"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "fetch(`https://...`, { next: { tags: ['collection'] } })"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Set the cache tags of a resource. Data can then be revalidated on-demand using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". The max length for a custom tag is 256 characters and the max tag items is 128."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Memoization"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " requests using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GET"
+				},
+				{
+					"type": "text",
+					"value": " with the same URL and options are automatically "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#memoization",
+					"children": [
+						{
+							"type": "text",
+							"value": "memoized"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " during a server render pass. If you call the same "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " in multiple Server Components, layouts, pages, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateViewport"
+				},
+				{
+					"type": "text",
+					"value": ", Next.js executes it only once and shares the result. This is separate from persistent "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "caching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ": memoization lasts only for a single render pass, while cached responses persist across requests."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To opt out, pass an "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/API/AbortController",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "AbortController"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " signal to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "const { signal } = new AbortController()\nfetch(url, { signal })"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Memoization does not apply in "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/file-conventions/route",
+							"children": [
+								{
+									"type": "text",
+									"value": "Route Handlers"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", since they are not part of the React component tree."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Troubleshooting"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Fetch default "
+				},
+				{
+					"type": "inlineCode",
+					"value": "auto no cache"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cache: 'no-store'"
+				},
+				{
+					"type": "text",
+					"value": " not showing fresh data in development"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js caches "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " responses in Server Components across Hot Module Replacement (HMR) in local development for faster responses and to reduce costs for billed API calls."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/serverComponentsHmrCache",
+					"children": [
+						{
+							"type": "text",
+							"value": "HMR cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " applies to all fetch requests, including those with the default "
+				},
+				{
+					"type": "inlineCode",
+					"value": "auto no cache"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cache: 'no-store'"
+				},
+				{
+					"type": "text",
+					"value": " option. This means uncached requests will not show fresh data between HMR refreshes. However, the cache will be cleared on navigation or full-page reloads."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/serverComponentsHmrCache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "serverComponentsHmrCache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " docs for more information."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Hard refresh and caching in development"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In development mode, if the request includes the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cache-control: no-cache"
+				},
+				{
+					"type": "text",
+					"value": " header, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "options.cache"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "options.next.revalidate"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "options.next.tags"
+				},
+				{
+					"type": "text",
+					"value": " are ignored, and the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " request is served from the source."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Browsers typically include "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cache-control: no-cache"
+				},
+				{
+					"type": "text",
+					"value": " when the cache is disabled in developer tools or during a hard refresh."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

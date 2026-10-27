@@ -1,0 +1,1748 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How Next.js preserves UI state with Activity\nnav_title: Preserving UI state\ndescription: Learn how React's Activity component preserves UI state across navigations in Next.js and how to control what resets.\nrelated:\n title: Related\n description: Learn more about Cache Components and preserving UI state.\n links:\n  - app/getting-started/caching\n  - app/guides/migrating-to-cache-components"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " This guide assumes "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/getting-started/caching",
+							"children": [
+								{
+									"type": "text",
+									"value": "Cache Components"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " is enabled. Enable it by setting "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "cacheComponents: true"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " in your Next config file."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Before Cache Components, preserving page-level state across navigations required workarounds like hoisting state to a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/layouts-and-pages#nesting-layouts",
+					"children": [
+						{
+							"type": "text",
+							"value": "shared layout"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or using an external store. With Cache Components, Next.js preserves state and DOM out of the box."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Instead of unmounting pages on navigation, Next.js hides them using React's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Activity",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Activity>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " component. Activity keeps the DOM in the document (hidden with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "display: none"
+				},
+				{
+					"type": "text",
+					"value": "), so both React state and DOM state are preserved: form drafts, scroll positions, expanded "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<details>"
+				},
+				{
+					"type": "text",
+					"value": " elements, video playback progress, and more."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js preserves up to 3 routes. Beyond that, the oldest route is evicted and will re-render fresh."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Use "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/use-router#bfcacheid",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "useRouter().bfcacheId"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " as a "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://react.dev/learn/preserving-and-resetting-state#option-2-resetting-state-with-a-key",
+							"children": [
+								{
+									"type": "text",
+									"value": "React "
+								},
+								{
+									"type": "inlineCode",
+									"value": "key"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": a single "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<Fragment key={bfcacheId}>"
+						},
+						{
+							"type": "text",
+							"value": " resets an entire subtree on push or replace navigations (including "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<Link>"
+						},
+						{
+							"type": "text",
+							"value": " clicks and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "router.push"
+						},
+						{
+							"type": "text",
+							"value": " / "
+						},
+						{
+							"type": "inlineCode",
+							"value": "router.replace"
+						},
+						{
+							"type": "text",
+							"value": ") while still restoring state on browser back/forward. "
+						},
+						{
+							"type": "inlineCode",
+							"value": "bfcacheId"
+						},
+						{
+							"type": "text",
+							"value": " is mainly a migration tool. For new code, prefer the per-pattern resets below."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Choosing what to preserve"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Activity preserves all component state and DOM state by default. For each piece of state, you decide whether that's the right behavior for your UI. The patterns below show common scenarios and how to handle both sides."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Expandable UI (dropdowns, accordions, panels)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When a user navigates away and returns, Activity preserves the open/closed state of expandable elements."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "When to keep it:"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " A sidebar with expanded sections, a FAQ accordion, or a filters panel. The user set up their view intentionally, and restoring it avoids re-doing that work."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "When to reset it:"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " A dropdown menu or popover triggered by a button click. These are transient interactions, not persistent view state. Returning to a page with a dropdown already open is not user friendly."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To reset transient open/closed state, close it in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useLayoutEffect"
+				},
+				{
+					"type": "text",
+					"value": " cleanup function:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "highlight={8-13}",
+			"value": "'use client'\n\nimport { useState, useLayoutEffect } from 'react'\n\nfunction SettingsDropdown() {\n\tconst [isOpen, setIsOpen] = useState(false)\n\n\t// Close dropdown when this component becomes hidden\n\tuseLayoutEffect(() => {\n\t\treturn () => {\n\t\t\tsetIsOpen(false)\n\t\t}\n\t}, [])\n\n\treturn (\n\t\t<div>\n\t\t\t<button onClick={() => setIsOpen((o) => !o)}>Options</button>\n\t\t\t{isOpen && (\n\t\t\t\t<ul>\n\t\t\t\t\t<li>\n\t\t\t\t\t\t<button>Edit Profile</button>\n\t\t\t\t\t</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\t<button>Change Password</button>\n\t\t\t\t\t</li>\n\t\t\t\t</ul>\n\t\t\t)}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When Activity hides this component, the cleanup function runs and resets "
+				},
+				{
+					"type": "inlineCode",
+					"value": "isOpen"
+				},
+				{
+					"type": "text",
+					"value": ". When the page becomes visible again, the dropdown is closed. Using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useLayoutEffect"
+				},
+				{
+					"type": "text",
+					"value": " ensures the cleanup runs synchronously before the component is hidden, avoiding any flash of stale state."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Link"
+				},
+				{
+					"type": "text",
+					"value": "'s "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/link#onnavigate",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "onNavigate"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " callback to close dropdowns immediately when a navigation link is clicked."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Dialog and initialization logic"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Activity preserves dialog open/closed state. This also affects Effects that run based on that state."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "When to keep it:"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " A multi-step wizard or a settings panel that the user was actively working in. Preserving the step and input state avoids losing progress."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "When to reset it:"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " A dialog that runs initialization logic (like focusing an input) each time it opens. If the user navigated away while the dialog was open, Activity preserves "
+				},
+				{
+					"type": "inlineCode",
+					"value": "isDialogOpen: true"
+				},
+				{
+					"type": "text",
+					"value": ". Opening it again sets it to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": " when it's already "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": ", so no state change happens and the Effect doesn't re-run."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Consider this example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "'use client'\n\nimport { useState, useRef, useEffect } from 'react'\n\nfunction ProductTab() {\n\tconst [isDialogOpen, setIsDialogOpen] = useState(false)\n\tconst inputRef = useRef<HTMLInputElement>(null)\n\n\tuseEffect(() => {\n\t\tif (isDialogOpen) {\n\t\t\tinputRef.current?.focus()\n\t\t}\n\t}, [isDialogOpen])\n\n\t// ...\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If the user navigated away while the dialog was open, returning and opening the dialog won't trigger the focus Effect because "
+				},
+				{
+					"type": "inlineCode",
+					"value": "isDialogOpen"
+				},
+				{
+					"type": "text",
+					"value": " was already "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To fix this, derive the dialog state from something outside the preserved component state like a search param:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "highlight={3,7-9,20,25}",
+			"value": "'use client'\n\nimport { useSearchParams, useRouter } from 'next/navigation'\nimport { useEffect, useRef } from 'react'\n\nfunction ProductTab() {\n\tconst searchParams = useSearchParams()\n\tconst router = useRouter()\n\tconst isDialogOpen = searchParams.get('edit') === 'true'\n\tconst inputRef = useRef<HTMLInputElement>(null)\n\n\tuseEffect(() => {\n\t\tif (isDialogOpen) {\n\t\t\tinputRef.current?.focus()\n\t\t}\n\t}, [isDialogOpen])\n\n\treturn (\n\t\t<div>\n\t\t\t<button onClick={() => router.push('?edit=true')}>Edit Product</button>\n\n\t\t\t{isDialogOpen && (\n\t\t\t\t<dialog open>\n\t\t\t\t\t<input\n\t\t\t\t\t\tref={inputRef}\n\t\t\t\t\t\tplaceholder=\"Product name\"\n\t\t\t\t\t/>\n\t\t\t\t\t<button onClick={() => router.replace('?', { scroll: false })}>Close</button>\n\t\t\t\t</dialog>\n\t\t\t)}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With this approach, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "isDialogOpen"
+				},
+				{
+					"type": "text",
+					"value": " derives from the URL rather than component state. When navigating away and returning, the search param is cleared (the URL changed), so "
+				},
+				{
+					"type": "inlineCode",
+					"value": "isDialogOpen"
+				},
+				{
+					"type": "text",
+					"value": " becomes "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": ". Opening the dialog sets the param, which changes "
+				},
+				{
+					"type": "inlineCode",
+					"value": "isDialogOpen"
+				},
+				{
+					"type": "text",
+					"value": " and triggers the Effect."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Forms, inputs, and state"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Activity preserves form input values (text fields, selected options, checkbox states), submission results, and status messages across navigations."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "When to keep it:"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " A search page with filters, a draft the user was composing, or a settings form with unsaved changes. Preserving input state is one of the biggest UX wins because the user doesn't lose work."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "When to reset it:"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " A \"new transaction\" flow where each visit should start fresh, or a form where stale success/error messages would be confusing in a new context."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Resetting form state on submit"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Consider a page where the user creates a new item. After submitting, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "router.push"
+				},
+				{
+					"type": "text",
+					"value": " navigates to the new record. Since Activity preserves the page, navigating back shows the previous name still in the form. Reset state in the event handler to keep the form fresh:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/new/page.tsx\" highlight={13}",
+			"value": "'use client'\n\nimport { useState } from 'react'\nimport { useRouter } from 'next/navigation'\n\nexport default function NewItemPage() {\n\tconst [name, setName] = useState('')\n\tconst router = useRouter()\n\n\tasync function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {\n\t\te.preventDefault()\n\t\tconst item = await createItem({ name })\n\t\tsetName('')\n\t\trouter.push(`/items/${item.id}`)\n\t}\n\n\treturn (\n\t\t<form onSubmit={handleSubmit}>\n\t\t\t<input\n\t\t\t\tvalue={name}\n\t\t\t\tonChange={(e) => setName(e.target.value)}\n\t\t\t/>\n\t\t\t<button type=\"submit\">Create</button>\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Resetting stale status messages"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If after submitting you set a status into state to render a feedback message, there's often not a reliable user-initiated event to clear it."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The user might navigate via "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/link"
+				},
+				{
+					"type": "text",
+					"value": " elements out of your control, or via browser controls."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Navigating back to the form shows a stale message. In this case, you may use a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useLayoutEffect"
+				},
+				{
+					"type": "text",
+					"value": " cleanup to reset the form and state:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "highlight={17-26}",
+			"value": "'use client'\n\nimport { useState, useRef, useLayoutEffect } from 'react'\n\nfunction ContactForm() {\n\tconst [name, setName] = useState('')\n\tconst [status, setStatus] = useState<'idle' | 'success'>('idle')\n\tconst shouldReset = useRef(false)\n\n\tasync function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {\n\t\te.preventDefault()\n\t\tawait sendMessage({ name })\n\t\tsetStatus('success')\n\t\tshouldReset.current = true\n\t}\n\n\t// Reset stale success message when Activity hides this component\n\tuseLayoutEffect(() => {\n\t\treturn () => {\n\t\t\tif (shouldReset.current) {\n\t\t\t\tshouldReset.current = false\n\t\t\t\tsetStatus('idle')\n\t\t\t\tsetName('')\n\t\t\t}\n\t\t}\n\t}, [])\n\n\treturn (\n\t\t<form onSubmit={handleSubmit}>\n\t\t\t<input\n\t\t\t\tvalue={name}\n\t\t\t\tonChange={(e) => setName(e.target.value)}\n\t\t\t/>\n\t\t\t<button type=\"submit\">Send</button>\n\t\t\t{status === 'success' && <p>Message sent!</p>}\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "shouldReset"
+				},
+				{
+					"type": "text",
+					"value": " ref ensures the cleanup only runs after a successful submission. If the user navigates away mid-draft without submitting, their input is preserved."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/useActionState",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useActionState"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", the same approach applies. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/useActionState#reset-state",
+					"children": [
+						{
+							"type": "text",
+							"value": "Reset state"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in the React docs for how to add a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "RESET"
+				},
+				{
+					"type": "text",
+					"value": " action to your reducer. For more on building responsive interactions with these hooks, see the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/interactive-apps",
+					"children": [
+						{
+							"type": "text",
+							"value": "Building interactive apps"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " guide."
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "<details>\n<summary>Resetting all form fields with a callback ref</summary>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use a callback ref to call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "form.reset()"
+				},
+				{
+					"type": "text",
+					"value": " when Activity hides the component:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "<form\n\tref={(form) => {\n\t\treturn () => form?.reset()\n\t}}>\n\t<input name=\"email\" />\n\t<input name=\"message\" />\n\t<button type=\"submit\">Send</button>\n</form>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This resets all fields whenever the user navigates away."
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "</details>"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "State and authentication"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Activity preserves local component state ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "useState"
+				},
+				{
+					"type": "text",
+					"value": ", DOM input values) across navigations, including authentication changes. This is standard React behavior: props changing (such as receiving a new user) triggers a re-render but does not reset existing state. A draft composed by one user shouldn't be visible to another."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For logout flows, using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "window.location.href"
+				},
+				{
+					"type": "text",
+					"value": " instead of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "router.push"
+				},
+				{
+					"type": "text",
+					"value": " triggers a full page reload, clearing all client-side state."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To reset specific state when the user changes without a full reload:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "'use client'\n\nimport { useState, useEffect, useRef } from 'react'\n\nfunction UserScopedForm({ userId }: { userId: string | null }) {\n\tconst [draft, setDraft] = useState('')\n\tconst lastUserIdRef = useRef<string | null>(null)\n\n\tuseEffect(() => {\n\t\tif (lastUserIdRef.current !== null && lastUserIdRef.current !== userId) {\n\t\t\tsetDraft('') // Reset on user change\n\t\t}\n\t\tlastUserIdRef.current = userId\n\t}, [userId])\n\n\treturn (\n\t\t<textarea\n\t\t\tvalue={draft}\n\t\t\tonChange={(e) => setDraft(e.target.value)}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Alternatively, key components by user ID to let React handle the reset: "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Form key={userId} />"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Global styles"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Page-level styles (CSS variables, z-index, global classes) can affect visible pages when the originating component is hidden by Activity. You likely want to disable them when hidden: a hidden page's accent color or z-index overrides shouldn't leak into the visible page."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use a callback ref to toggle the stylesheet's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "media"
+				},
+				{
+					"type": "text",
+					"value": " attribute:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "<style\n\tref={(style) => {\n\t\tif (style) style.media = '' // Enable when visible\n\t\treturn () => {\n\t\t\tif (style) style.media = 'not all' // Disable when hidden\n\t\t}\n\t}}>\n\t{`:root { --page-accent: blue; }`}\n</style>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Or use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useLayoutEffect"
+				},
+				{
+					"type": "text",
+					"value": " when managing multiple style elements or more complex cleanup:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "'use client'\n\nimport { useLayoutEffect, useRef } from 'react'\n\nfunction PageWithStyles() {\n\tconst styleRef = useRef<HTMLStyleElement>(null)\n\n\tuseLayoutEffect(() => {\n\t\tif (styleRef.current) styleRef.current.media = ''\n\t\treturn () => {\n\t\t\tif (styleRef.current) styleRef.current.media = 'not all'\n\t\t}\n\t}, [])\n\n\treturn <style ref={styleRef}>{`:root { --page-accent: blue; }`}</style>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When Activity hides the component, the cleanup sets "
+				},
+				{
+					"type": "inlineCode",
+					"value": "media=\"not all\""
+				},
+				{
+					"type": "text",
+					"value": ", which disables the stylesheet. When visible again, the effect re-runs and resets "
+				},
+				{
+					"type": "inlineCode",
+					"value": "media"
+				},
+				{
+					"type": "text",
+					"value": " to enable it."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": ":has"
+				},
+				{
+					"type": "text",
+					"value": " selector"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:has",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": ":root:has(...)"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " rule applies styles based on its selector. Neither the selected element nor the matched element knows about the relationship. It's valid CSS, but it bypasses React's data flow and couples unrelated components."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For global state, prefer a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "data-*"
+				},
+				{
+					"type": "text",
+					"value": " attribute that React owns:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "<html data-modal-open={modalOpen ? \"true\" : undefined}>"
+		},
+		{
+			"type": "code",
+			"lang": "css",
+			"meta": null,
+			"value": "html[data-modal-open='true'] {\n\toverflow: hidden;\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Reserve "
+				},
+				{
+					"type": "inlineCode",
+					"value": ":has()"
+				},
+				{
+					"type": "text",
+					"value": " for local parent/child styling within a component:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "css",
+			"meta": null,
+			"value": ".card:has(img) {\n\tpadding-top: 0;\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This isn't only a React data-flow or Next.js concern. Broad "
+				},
+				{
+					"type": "inlineCode",
+					"value": ":has()"
+				},
+				{
+					"type": "text",
+					"value": " selectors are a real performance bottleneck. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:has#performance_considerations",
+					"children": [
+						{
+							"type": "text",
+							"value": "Performance considerations"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " on MDN."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " If the hidden component itself defines the global "
+						},
+						{
+							"type": "inlineCode",
+							"value": ":has"
+						},
+						{
+							"type": "text",
+							"value": " rule, the toggle from the section above disables it along with the component's other styles."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Testing"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Hidden Activity content has "
+				},
+				{
+					"type": "inlineCode",
+					"value": "display: none"
+				},
+				{
+					"type": "text",
+					"value": " but remains in the document. This applies both to routes preserved by Cache Components and to content you hide with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Activity>"
+				},
+				{
+					"type": "text",
+					"value": " directly. It affects end-to-end testing with tools like Playwright, Cypress, or Puppeteer:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "DOM queries can find hidden elements."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Selectors may match elements regardless of visibility."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Interactions with hidden elements fail or time out."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Most tools wait for an element to become visible before interacting, but waiting doesn't narrow a query that matches both a visible and a hidden element. Playwright reports this as a strict mode violation."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Assertions may match hidden content."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Be explicit about visibility when asserting element presence."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Use visibility-aware selectors"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Prefer locators that query the accessibility tree, which leaves out hidden elements, or filter matches by visibility before acting on them. In Playwright, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getByRole"
+				},
+				{
+					"type": "text",
+					"value": " queries exclude hidden elements by default:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "// Good - getByRole excludes hidden elements by default\nawait page.getByRole('button', { name: 'Submit' }).click()\nawait page.getByRole('textbox', { name: 'Email' }).fill('test@example.com')"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Other locators, including "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getByLabel"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getByPlaceholder"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".locator()"
+				},
+				{
+					"type": "text",
+					"value": ", can match hidden elements. Filter them by visibility explicitly:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "// Filter by visibility explicitly\nawait page.getByLabel('Email').filter({ visible: true }).fill('test@example.com')\nawait page.getByPlaceholder('Search...').filter({ visible: true }).fill('query')\nawait page.locator('.product-card').filter({ visible: true }).first().click()\nawait page.locator('[data-testid=\"timer\"]').filter({ visible: true }).textContent()\n\n// Avoid - may match hidden elements in Activity boundaries\nawait page.getByLabel('Email').fill('test@example.com')\nawait page.locator('.product-card').first().click()"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "getByRole"
+				},
+				{
+					"type": "text",
+					"value": " is robust to Activity, tabbed navigation, accordions, and any other pattern that keeps hidden content in the DOM. It queries the accessibility tree, which excludes hidden elements. Which locators match hidden elements varies between testing tools and their versions, so check your tool's documentation for its locators and test helpers to confirm."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using Activity in your components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache Components uses Activity automatically at the route level, but you can also use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Activity>"
+				},
+				{
+					"type": "text",
+					"value": " directly in your own components. This is useful for tabs, expandable panels, or any UI where you want to hide content without unmounting it."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Prerendering hidden content"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Activity can prerender content the user hasn't seen yet. Hidden boundaries render at lower priority. Combined with Suspense, this lets you prefetch data for content the user is likely to view next."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A Server Component can start fetching data immediately and pass the promise to a client component. The client component uses Activity to hide the content until the user requests it, and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use()"
+				},
+				{
+					"type": "text",
+					"value": " to resolve the promise when rendering:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\"",
+			"value": "import { Suspense } from 'react'\nimport { ExpandableComments } from './expandable-comments'\n\nasync function getCommentsData() {\n\treturn db.comments.findMany()\n}\n\nexport default function Page() {\n\tconst commentsPromise = getCommentsData()\n\n\treturn (\n\t\t<article>\n\t\t\t<h1>Post Title</h1>\n\t\t\t<p>Main content visible immediately...</p>\n\n\t\t\t<ExpandableComments commentsPromise={commentsPromise} />\n\t\t</article>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/expandable-comments.tsx\"",
+			"value": "'use client'\n\nimport { Activity, Suspense, useState, use } from 'react'\n\ntype Comment = { id: string; text: string; author: string }\n\nexport function ExpandableComments({ commentsPromise }: { commentsPromise: Promise<Comment[]> }) {\n\tconst [expanded, setExpanded] = useState(false)\n\n\treturn (\n\t\t<>\n\t\t\t<button onClick={() => setExpanded((e) => !e)}>{expanded ? 'Hide Comments' : 'Show Comments'}</button>\n\n\t\t\t<Activity mode={expanded ? 'visible' : 'hidden'}>\n\t\t\t\t<Suspense fallback={<CommentsSkeleton />}>\n\t\t\t\t\t<Comments commentsPromise={commentsPromise} />\n\t\t\t\t</Suspense>\n\t\t\t</Activity>\n\t\t</>\n\t)\n}\n\nfunction Comments({ commentsPromise }: { commentsPromise: Promise<Comment[]> }) {\n\tconst comments = use(commentsPromise)\n\treturn (\n\t\t<ul>\n\t\t\t{comments.map((c) => (\n\t\t\t\t<li key={c.id}>{c.text}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}\n\nfunction CommentsSkeleton() {\n\treturn <div>Loading comments...</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The Server Component starts fetching comments immediately and passes the promise down. While hidden, the data streams at lower priority. When the user clicks \"Show Comments\", the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Comments"
+				},
+				{
+					"type": "text",
+					"value": " component resolves the promise with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use()"
+				},
+				{
+					"type": "text",
+					"value": " and the content appears instantly."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Effect and media cleanup"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When Activity hides content, React runs effect cleanup functions just like it does on unmount. This means timers, subscriptions, and media playback pause automatically if you have proper cleanup:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "'use client'\n\nimport { useEffect, useState } from 'react'\n\nfunction LiveTimer() {\n\tconst [count, setCount] = useState(0)\n\n\tuseEffect(() => {\n\t\tconst id = setInterval(() => setCount((c) => c + 1), 1000)\n\t\treturn () => clearInterval(id) // Pauses when hidden\n\t}, [])\n\n\treturn <p>Count: {count}</p>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For media elements like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<video>"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<audio>"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "display: none"
+				},
+				{
+					"type": "text",
+					"value": " does not stop playback. Add explicit cleanup with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useLayoutEffect"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "'use client'\n\nimport { useLayoutEffect, useRef } from 'react'\n\nfunction VideoPlayer({ src }: { src: string }) {\n\tconst videoRef = useRef<HTMLVideoElement>(null)\n\n\tuseLayoutEffect(() => {\n\t\tconst video = videoRef.current\n\t\treturn () => {\n\t\t\tvideo?.pause() // Pauses when hidden, preserves playback position\n\t\t}\n\t}, [])\n\n\treturn (\n\t\t<video\n\t\t\tref={videoRef}\n\t\t\tsrc={src}\n\t\t\tcontrols\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When the component becomes visible again, effects re-run and playback position is preserved since the DOM node was never removed."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Distinguishing first mount from re-show"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Effects run on every hide-to-visible transition, not just the initial mount. If you need to distinguish the first mount from subsequent visibility changes, use a ref:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "'use client'\n\nimport { useEffect, useRef } from 'react'\n\nfunction TrackedComponent() {\n\tconst hasMountedRef = useRef(false)\n\n\tuseEffect(() => {\n\t\tif (!hasMountedRef.current) {\n\t\t\thasMountedRef.current = true\n\t\t\tconsole.log('First mount')\n\t\t} else {\n\t\t\tconsole.log('Became visible again')\n\t\t}\n\t}, [])\n\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The ref persists across hide/show cycles (refs aren't cleaned up), so "
+				},
+				{
+					"type": "inlineCode",
+					"value": "hasMountedRef.current"
+				},
+				{
+					"type": "text",
+					"value": " stays "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": " after the first mount. Each time Activity becomes visible, the Effect runs again, but now it takes the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "else"
+				},
+				{
+					"type": "text",
+					"value": " branch."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react-activity-patterns.labs.vercel.dev",
+					"children": [
+						{
+							"type": "text",
+							"value": "Activity Patterns Demo"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " ("
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/nextjs/react-activity-patterns",
+					"children": [
+						{
+							"type": "text",
+							"value": "source"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ") is a Next.js app with Cache Components enabled and three routes. Navigate between them to see state preservation in action:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Data"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " — sortable table and selectable list that keep their state across navigations, plus a reviews section that prerenders in the background"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Forms"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " — filter panel with DOM state ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "<details>"
+								},
+								{
+									"type": "text",
+									"value": ", checkboxes, text inputs) that persists, and a newsletter form that resets after submission using "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useLayoutEffect"
+								},
+								{
+									"type": "text",
+									"value": " cleanup"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Side Effects"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " — a live timer that pauses when you navigate away and resumes when you return, and a video player that auto-pauses with playback position preserved"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

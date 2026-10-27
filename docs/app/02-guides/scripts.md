@@ -185,7 +185,7 @@ Event handlers can be used with the Script component to execute additional code 
 - `onReady`: Execute code after the script has finished loading and every time the component is mounted.
 - `onError`: Execute code if the script fails to load.
 
-These handlers will only work when `next/script` is imported and used inside of a [Client Component](/docs/app/getting-started/server-and-client-components) where `"use client"` is defined as the first line of code:
+These handlers will only work when `next/script` is imported and used inside of a [Client Component](/docs/app/getting-started/server-and-client-components). To create a client entry point, add `"use client"` at the top of the file, before any imports:
 
 ```tsx filename="app/page.tsx" switcher
 'use client'

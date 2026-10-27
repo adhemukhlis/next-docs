@@ -1,0 +1,483 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Invoking Entrypoints\ndescription: Invoke Node.js and Edge build entrypoints with adapter runtime context."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Build output entrypoints use a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "handler(..., ctx)"
+				},
+				{
+					"type": "text",
+					"value": " interface, with runtime-specific request/response types."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Node.js runtime ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "runtime: 'nodejs'"
+				},
+				{
+					"type": "text",
+					"value": ")"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Node.js entrypoints use the following interface:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "typescript",
+			"meta": null,
+			"value": "handler(\n  req: IncomingMessage,\n  res: ServerResponse,\n  ctx: {\n    waitUntil?: (promise: Promise<void>) => void\n    requestMeta?: RequestMeta\n  }\n): Promise<void>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When invoking Node.js entrypoints directly, adapters can pass helpers directly on "
+				},
+				{
+					"type": "inlineCode",
+					"value": "requestMeta"
+				},
+				{
+					"type": "text",
+					"value": " instead of relying on internals. Some of the supported fields are "
+				},
+				{
+					"type": "inlineCode",
+					"value": "hostname"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "render404"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "await handler(req, res, {\n\trequestMeta: {\n\t\t// Relative path from process.cwd() to the Next.js project directory.\n\t\trelativeProjectDir: '.',\n\t\t// Optional hostname used by route handlers when constructing absolute URLs.\n\t\thostname: '127.0.0.1',\n\t\t// Optional internal revalidate function to avoid revalidating over the network\n\t\trevalidate: async ({ urlPath, headers, opts }) => {\n\t\t\t// platform-specific revalidate implementation\n\t\t},\n\t\t// Optional function to render the 404 page for pages router `notFound: true`\n\t\trender404: async (req, res, parsedUrl, setHeaders) => {\n\t\t\t// platform-specific 404 rendering implementation\n\t\t},\n\t},\n})"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Relevant files in the Next.js core:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel/next.js/blob/canary/packages/next/src/build/templates/app-page.ts",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "packages/next/src/build/templates/app-page.ts"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel/next.js/blob/canary/packages/next/src/build/templates/app-route.ts",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "packages/next/src/build/templates/app-route.ts"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "and "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel/next.js/blob/canary/packages/next/src/build/templates/pages-api.ts",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "packages/next/src/build/templates/pages-api.ts"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Edge runtime ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "runtime: 'edge'"
+				},
+				{
+					"type": "text",
+					"value": ") (deprecated)"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "The Edge Runtime is "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/messages/edge-runtime-deprecated",
+							"children": [
+								{
+									"type": "text",
+									"value": "deprecated"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ". New routes should use the Node.js runtime."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Edge entrypoints use the following interface:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "typescript",
+			"meta": null,
+			"value": "handler(\n  request: Request,\n  ctx: {\n    waitUntil?: (prom: Promise<void>) => void\n    signal?: AbortSignal\n    requestMeta?: RequestMeta\n  }\n): Promise<Response>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The shape is aligned around "
+				},
+				{
+					"type": "inlineCode",
+					"value": "handler(..., ctx)"
+				},
+				{
+					"type": "text",
+					"value": ", but Node.js and Edge runtimes use different request/response primitives."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For outputs with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "runtime: 'edge'"
+				},
+				{
+					"type": "text",
+					"value": ", Next.js also provides "
+				},
+				{
+					"type": "inlineCode",
+					"value": "output.edgeRuntime"
+				},
+				{
+					"type": "text",
+					"value": " with the canonical metadata needed to invoke the entrypoint:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "typescript",
+			"meta": null,
+			"value": "{\n\tmodulePath: string // Absolute path to the module registered in the edge runtime\n\tentryKey: string // Canonical key used by the edge entry registry\n\thandlerExport: string // Export name to invoke, currently 'handler'\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After your edge runtime loads and evaluates the chunks for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "modulePath"
+				},
+				{
+					"type": "text",
+					"value": ", use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "entryKey"
+				},
+				{
+					"type": "text",
+					"value": " to read the registered entry from the global edge entry registry ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "globalThis._ENTRIES"
+				},
+				{
+					"type": "text",
+					"value": "), then invoke "
+				},
+				{
+					"type": "inlineCode",
+					"value": "handlerExport"
+				},
+				{
+					"type": "text",
+					"value": " from that entry:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "const entry = await globalThis._ENTRIES[output.edgeRuntime.entryKey]\nconst handler = entry[output.edgeRuntime.handlerExport]\nawait handler(request, ctx)"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "edgeRuntime"
+				},
+				{
+					"type": "text",
+					"value": " instead of deriving registry keys or handler names from filenames."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Relevant files in the Next.js core:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel/next.js/blob/canary/packages/next/src/build/templates/edge-ssr.ts",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "packages/next/src/build/templates/edge-ssr.ts"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel/next.js/blob/canary/packages/next/src/build/templates/edge-app-route.ts",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "packages/next/src/build/templates/edge-app-route.ts"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel/next.js/blob/canary/packages/next/src/build/templates/pages-edge-api.ts",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "packages/next/src/build/templates/pages-edge-api.ts"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "and "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel/next.js/blob/canary/packages/next/src/build/templates/middleware.ts",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "packages/next/src/build/templates/middleware.ts"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,494 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: devIndicators\ndescription: Configuration options for the on-screen indicator that gives context about the current route you're viewing during development."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "devIndicators"
+				},
+				{
+					"type": "text",
+					"value": " allows you to configure the on-screen indicator that gives context about the current route you're viewing during development."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Open "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": " and set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "position"
+				},
+				{
+					"type": "text",
+					"value": " to choose where the indicator renders. The default is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "bottom-left"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tdevIndicators: {\n\t\tposition: 'bottom-right', // 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right'\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To hide the indicator entirely, set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "devIndicators"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": ". Next.js will still surface any compile or runtime errors that were encountered."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "const nextConfig: NextConfig = {\n\tdevIndicators: false,\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Troubleshooting"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Indicator not marking a route as static"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you expect a route to be static and the indicator has marked it as dynamic, it's likely the route has opted out of prerendering."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can confirm if a route is "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#prerendering",
+					"children": [
+						{
+							"type": "text",
+							"value": "prerendered"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#dynamic-rendering",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamically rendered"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " by building your application using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build --debug"
+				},
+				{
+					"type": "text",
+					"value": ", and checking the output in your terminal. Static (or prerendered) routes will display a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "○"
+				},
+				{
+					"type": "text",
+					"value": " symbol, whereas dynamic routes will display a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ƒ"
+				},
+				{
+					"type": "text",
+					"value": " symbol. For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Build Output\"",
+			"value": "Route (app)\n┌ ○ /_not-found\n└ ƒ /products/[id]\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There are two reasons a route might opt out of prerendering:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The presence of "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/glossary#request-time-apis",
+									"children": [
+										{
+											"type": "text",
+											"value": "Request-time APIs"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " which rely on request information."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "An "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/fetching-data",
+									"children": [
+										{
+											"type": "text",
+											"value": "uncached data request"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", like a call to an ORM or database driver."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Check your route for any of these conditions, and if you are not able to statically render the route, then consider using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/loading",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "loading.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Suspense",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Suspense />"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to leverage "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/linking-and-navigating#streaming",
+					"children": [
+						{
+							"type": "text",
+							"value": "streaming"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "appIsrStatus"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "buildActivity"
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "buildActivityPosition"
+								},
+								{
+									"type": "text",
+									"value": " options have been removed."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.2.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Improved on-screen indicator with new "
+								},
+								{
+									"type": "inlineCode",
+									"value": "position"
+								},
+								{
+									"type": "text",
+									"value": " option. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "appIsrStatus"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "buildActivity"
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "buildActivityPosition"
+								},
+								{
+									"type": "text",
+									"value": " options have been deprecated."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Static on-screen indicator added with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "appIsrStatus"
+								},
+								{
+									"type": "text",
+									"value": " option."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

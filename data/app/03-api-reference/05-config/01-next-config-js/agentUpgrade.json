@@ -1,0 +1,626 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: agentUpgrade\ndescription: Configure coding agent upgrades and reminders.\nversion: experimental\nrelated:\n links:\n  - app/guides/upgrading/agent-upgrade\n  - app/guides/ai-agents\n  - app/api-reference/cli/next"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.agentUpgrade"
+				},
+				{
+					"type": "text",
+					"value": " option selects the default policy for "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/agent-upgrade",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next upgrade --agent"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and controls upgrade reminders during "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ". It uses the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "security"
+				},
+				{
+					"type": "text",
+					"value": " policy by default."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher highlight={5}",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\texperimental: {\n\t\tagentUpgrade: 'latest',\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher highlight={4}",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\texperimental: {\n\t\tagentUpgrade: 'latest',\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The option accepts these values:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Value"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Behavior"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Disables upgrade reminders."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "security"
+								},
+								{
+									"type": "text",
+									"value": " (default)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Checks stable installations for security advisories and recommends a safe upgrade when one is available."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "latest"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Recommends a newer major or minor release on the app's current stable or canary channel."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "experimental-future"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Uses the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "latest"
+								},
+								{
+									"type": "text",
+									"value": " policy and also recommends applicable "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/upgrading/agent-upgrade#adopt-future-defaults",
+									"children": [
+										{
+											"type": "text",
+											"value": "Future Defaults"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The option does not upgrade the app automatically. It only controls reminders and the policy used when "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next upgrade --agent"
+				},
+				{
+					"type": "text",
+					"value": " does not include a value."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reminder behavior"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In an interactive terminal, an eligible reminder during "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " offers these actions. The command continues behind the prompt and buffers its output while you decide."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Upgrade now"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " stops the current command and starts "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next upgrade --agent"
+								},
+								{
+									"type": "text",
+									"value": " with the configured policy."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Skip"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " returns to the running command and replays its buffered output."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Skip until next version"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " saves the dismissal for the installed version and policy."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you don't choose within ten seconds, or the buffered output grows past about 10 MiB, the reminder skips automatically."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When a coding agent runs "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ", the first eligible reminder stops the command with instructions to report the upgrade. Retrying the same command promptly continues the original task with a warning."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " detects a coding agent, it also writes a separate managed upgrade block to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "AGENTS.md"
+				},
+				{
+					"type": "text",
+					"value": ". This block delegates handling of the installed CLI's reminders:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "md",
+			"meta": "filename=\"AGENTS.md\"",
+			"value": "<!-- BEGIN:nextjs-agent-upgrade -->\n\n## Next.js upgrade reminders\n\nUpgrade reminders emitted by this project's installed Next.js CLI during `next dev` or `next build` are part of the `experimental.agentUpgrade` workflow. Follow these reminders' instructions while respecting user instructions declining upgrades.\n\n<!-- END:nextjs-agent-upgrade -->"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Setting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.agentUpgrade: false"
+				},
+				{
+					"type": "text",
+					"value": " removes this block on the next "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " run, even when no agent is detected. Documentation rules ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "agentRules"
+				},
+				{
+					"type": "text",
+					"value": ") and feedback instructions ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.agentFeedback"
+				},
+				{
+					"type": "text",
+					"value": ") remain independent. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "create-next-app"
+				},
+				{
+					"type": "text",
+					"value": " includes the upgrade block for new apps using the default "
+				},
+				{
+					"type": "inlineCode",
+					"value": "security"
+				},
+				{
+					"type": "text",
+					"value": " policy."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Reminders require the installed Next.js version to support "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.agentUpgrade"
+				},
+				{
+					"type": "text",
+					"value": ". Running the current canary upgrade CLI does not add reminders to an older installation."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "During "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": ", Next.js DevTools can also show a "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Vulnerability Insight"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when the installed version is affected by a known security vulnerability. The insight provides a copyable prompt for starting a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "security"
+				},
+				{
+					"type": "text",
+					"value": " upgrade with a coding agent."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.4.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "experimental.agentUpgrade"
+								},
+								{
+									"type": "text",
+									"value": " configuration option added."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

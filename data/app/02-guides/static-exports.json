@@ -1,0 +1,1284 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to create a static export of your Next.js application\nnav_title: Static Exports\ndescription: Next.js enables starting as a static site or Single-Page Application (SPA), then later optionally upgrading to use features that require a server."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js enables starting as a static site or Single-Page Application (SPA), then later optionally upgrading to use features that require a server."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When running "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ", Next.js generates an HTML file per route. By breaking a strict SPA into individual HTML files, Next.js can avoid loading unnecessary JavaScript code on the client-side, reducing the bundle size and enabling faster page loads."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since Next.js supports this static export, it can be deployed and hosted on any web server that can serve HTML/CSS/JS static assets."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Configuration"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To enable a static export, change the output mode inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" highlight={5}",
+			"value": "/**\n * @type {import('next').NextConfig}\n */\nconst nextConfig = {\n\toutput: 'export',\n\n\t// Optional: Change links `/me` -> `/me/` and emit `/me.html` -> `/me/index.html`\n\t// trailingSlash: true,\n\n\t// Optional: Prevent automatic `/me` -> `/me/`, instead preserve `href`\n\t// skipTrailingSlashRedirect: true,\n\n\t// Optional: Change the output directory `out` -> `dist`\n\t// distDir: 'dist',\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After running "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ", Next.js will create an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "out"
+				},
+				{
+					"type": "text",
+					"value": " folder with the HTML/CSS/JS assets for your application."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Supported Features"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The core of Next.js has been designed to support static exports."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When you run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " to generate a static export, Server Components consumed inside the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory will run during the build, similar to traditional static-site generation."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The resulting component will be rendered into static HTML for the initial page load and a static payload for client navigation between routes. No changes are required for your Server Components when using the static export, unless they consume "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#unsupported-features",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamic server functions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "export default async function Page() {\n\t// This fetch will run on the server during `next build`\n\tconst res = await fetch('https://api.example.com/...')\n\tconst data = await res.json()\n\n\treturn <main>...</main>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Client Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you want to perform data fetching on the client, you can use a Client Component with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/swr",
+					"children": [
+						{
+							"type": "text",
+							"value": "SWR"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to memoize requests."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/other/page.tsx\" switcher",
+			"value": "'use client'\n\nimport useSWR from 'swr'\n\nconst fetcher = (url: string) => fetch(url).then((r) => r.json())\n\nexport default function Page() {\n\tconst { data, error } = useSWR(`https://jsonplaceholder.typicode.com/posts/1`, fetcher)\n\tif (error) return 'Failed to load'\n\tif (!data) return 'Loading...'\n\n\treturn data.title\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/other/page.js\" switcher",
+			"value": "'use client'\n\nimport useSWR from 'swr'\n\nconst fetcher = (url) => fetch(url).then((r) => r.json())\n\nexport default function Page() {\n\tconst { data, error } = useSWR(`https://jsonplaceholder.typicode.com/posts/1`, fetcher)\n\tif (error) return 'Failed to load'\n\tif (!data) return 'Loading...'\n\n\treturn data.title\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since route transitions happen client-side, this behaves like a traditional SPA. For example, the following index route allows you to navigate to different posts on the client:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import Link from 'next/link'\n\nexport default function Page() {\n\treturn (\n\t\t<>\n\t\t\t<h1>Index Page</h1>\n\t\t\t<hr />\n\t\t\t<ul>\n\t\t\t\t<li>\n\t\t\t\t\t<Link href=\"/post/1\">Post 1</Link>\n\t\t\t\t</li>\n\t\t\t\t<li>\n\t\t\t\t\t<Link href=\"/post/2\">Post 2</Link>\n\t\t\t\t</li>\n\t\t\t</ul>\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import Link from 'next/link'\n\nexport default function Page() {\n\treturn (\n\t\t<>\n\t\t\t<h1>Index Page</h1>\n\t\t\t<p>\n\t\t\t\t<Link href=\"/other\">Other Page</Link>\n\t\t\t</p>\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Image Optimization"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image",
+					"children": [
+						{
+							"type": "text",
+							"value": "Image Optimization"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " through "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/image"
+				},
+				{
+					"type": "text",
+					"value": " can be used with a static export by defining a custom image loader in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ". For example, you can optimize images with a service like Cloudinary:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\toutput: 'export',\n\timages: {\n\t\tloader: 'custom',\n\t\tloaderFile: './my-loader.ts',\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This custom loader will define how to fetch images from a remote source. For example, the following loader will construct the URL for Cloudinary:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"my-loader.ts\" switcher",
+			"value": "export default function cloudinaryLoader({ src, width, quality }: { src: string; width: number; quality?: number }) {\n\tconst params = ['f_auto', 'c_limit', `w_${width}`, `q_${quality || 'auto'}`]\n\treturn `https://res.cloudinary.com/demo/image/upload/${params.join(',')}${src}`\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"my-loader.js\" switcher",
+			"value": "export default function cloudinaryLoader({ src, width, quality }) {\n\tconst params = ['f_auto', 'c_limit', `w_${width}`, `q_${quality || 'auto'}`]\n\treturn `https://res.cloudinary.com/demo/image/upload/${params.join(',')}${src}`\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can then use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/image"
+				},
+				{
+					"type": "text",
+					"value": " in your application, defining relative paths to the image in Cloudinary:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import Image from 'next/image'\n\nexport default function Page() {\n\treturn (\n\t\t<Image\n\t\t\talt=\"turtles\"\n\t\t\tsrc=\"/turtles.jpg\"\n\t\t\twidth={300}\n\t\t\theight={300}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import Image from 'next/image'\n\nexport default function Page() {\n\treturn (\n\t\t<Image\n\t\t\talt=\"turtles\"\n\t\t\tsrc=\"/turtles.jpg\"\n\t\t\twidth={300}\n\t\t\theight={300}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Handlers"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Handlers will render a static response when running "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ". Only the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GET"
+				},
+				{
+					"type": "text",
+					"value": " HTTP verb is supported. This can be used to generate static HTML, JSON, TXT, or other files from cached or uncached data. To ensure Route Handlers are prerendered, you must explicitly mark the handler as static by adding "
+				},
+				{
+					"type": "inlineCode",
+					"value": "export const dynamic = 'force-static'"
+				},
+				{
+					"type": "text",
+					"value": " when a static export is enabled. For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/data.json/route.ts\" switcher",
+			"value": "export const dynamic = 'force-static'\n\nexport async function GET() {\n\treturn Response.json({ name: 'Lee' })\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/data.json/route.js\" switcher",
+			"value": "export const dynamic = 'force-static'\n\nexport async function GET() {\n\treturn Response.json({ name: 'Lee' })\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The above file "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/data.json/route.ts"
+				},
+				{
+					"type": "text",
+					"value": " will render to a static file during "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ", producing "
+				},
+				{
+					"type": "inlineCode",
+					"value": "data.json"
+				},
+				{
+					"type": "text",
+					"value": " containing "
+				},
+				{
+					"type": "inlineCode",
+					"value": "{ name: 'Lee' }"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you need to read dynamic values from the incoming request, you cannot use a static export."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Browser APIs"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Client Components are prerendered to HTML during "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ". Because "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API",
+					"children": [
+						{
+							"type": "text",
+							"value": "Web APIs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "window"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "localStorage"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "navigator"
+				},
+				{
+					"type": "text",
+					"value": " are not available on the server, you need to safely access these APIs only when running in the browser. For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "'use client';\n\nimport { useEffect } from 'react';\n\nexport default function ClientComponent() {\n  useEffect(() => {\n    // You now have access to `window`\n    console.log(window.innerHeight);\n  }, [])\n\n  return ...;\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Unsupported Features"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Features that require a Node.js server, or dynamic logic that cannot be computed during the build process, are "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "not"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " supported:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/dynamic-routes",
+									"children": [
+										{
+											"type": "text",
+											"value": "Dynamic Routes"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "dynamicParams: true"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/dynamic-routes",
+									"children": [
+										{
+											"type": "text",
+											"value": "Dynamic Routes"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " without "
+								},
+								{
+									"type": "inlineCode",
+									"value": "generateStaticParams()"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/route",
+									"children": [
+										{
+											"type": "text",
+											"value": "Route Handlers"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " that rely on Request"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/cookies",
+									"children": [
+										{
+											"type": "text",
+											"value": "Cookies"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/rewrites",
+									"children": [
+										{
+											"type": "text",
+											"value": "Rewrites"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/redirects",
+									"children": [
+										{
+											"type": "text",
+											"value": "Redirects"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/headers",
+									"children": [
+										{
+											"type": "text",
+											"value": "Headers"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/proxy",
+									"children": [
+										{
+											"type": "text",
+											"value": "Proxy"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/incremental-static-regeneration",
+									"children": [
+										{
+											"type": "text",
+											"value": "Incremental Static Regeneration"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/components/image",
+									"children": [
+										{
+											"type": "text",
+											"value": "Image Optimization"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " with the default "
+								},
+								{
+									"type": "inlineCode",
+									"value": "loader"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/draft-mode",
+									"children": [
+										{
+											"type": "text",
+											"value": "Draft Mode"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/mutating-data",
+									"children": [
+										{
+											"type": "text",
+											"value": "Server Actions"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/intercepting-routes",
+									"children": [
+										{
+											"type": "text",
+											"value": "Intercepting Routes"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Attempting to use any of these features with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " will result in an error, similar to setting the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/caching-without-cache-components#dynamic",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "dynamic"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " option to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "error"
+				},
+				{
+					"type": "text",
+					"value": " in the root layout."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "export const dynamic = 'error'"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Deploying"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With a static export, Next.js can be deployed and hosted on any web server that can serve HTML/CSS/JS static assets."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When running "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ", Next.js generates the static export into the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "out"
+				},
+				{
+					"type": "text",
+					"value": " folder. For example, let's say you have the following routes:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/blog/[id]"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After running "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ", Next.js will generate the following files:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/out/index.html"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/out/404.html"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/out/blog/post-1.html"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/out/blog/post-2.html"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you are using a static host like Nginx, you can configure rewrites from incoming requests to the correct files:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "nginx",
+			"meta": "filename=\"nginx.conf\"",
+			"value": "server {\n  listen 80;\n  server_name acme.com;\n\n  root /var/www/out;\n\n  location / {\n      try_files $uri $uri.html $uri/ =404;\n  }\n\n  # This is necessary when `trailingSlash: false`.\n  # You can omit this when `trailingSlash: true`.\n  location /blog/ {\n      rewrite ^/blog/(.*)$ /blog/$1.html break;\n  }\n\n  error_page 404 /404.html;\n  location = /404.html {\n      internal;\n  }\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To deploy to GitHub Pages, use our "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/nextjs/deploy-github-pages",
+					"children": [
+						{
+							"type": "text",
+							"value": "template"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to create a new project or as a reference for configuring an existing project."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v14.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next export"
+								},
+								{
+									"type": "text",
+									"value": " has been removed in favor of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"output\": \"export\""
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.4.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "App Router (Stable) adds enhanced static export support, including using React Server Components and Route Handlers."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next export"
+								},
+								{
+									"type": "text",
+									"value": " is deprecated and replaced with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"output\": \"export\""
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

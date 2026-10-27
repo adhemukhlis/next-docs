@@ -1,0 +1,2533 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Adopting Partial Prefetching\nnav_title: Adopting Partial Prefetching\ndescription: Learn how to enable Partial Prefetching and what changes for `<Link>`.\nrelated:\n title: Next Steps\n description: Learn more about prefetching and instant navigations.\n links:\n  - app/guides/instant-navigation\n  - app/guides/optimizing-prefetching\n  - app/api-reference/config/next-config-js/partialPrefetching\n  - app/api-reference/file-conventions/route-segment-config/prefetch"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#partial-prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " changes what a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " downloads for a Cache Components route. With Partial Prefetching enabled, a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " prefetches the route's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#app-shell",
+					"children": [
+						{
+							"type": "text",
+							"value": "App Shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ": its static content and the cached content that doesn't depend on the URL. Next.js builds one App Shell per route and reuses it for every link to that route, rather than prefetching each link separately as it did before."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To prefetch more than the App Shell, a link can opt into "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/optimizing-prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "per-link prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/link#prefetch",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Link prefetch={true}>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". The prefetch can then resolve cached URL-specific content that depends on "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": ", or the full URL."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Along the way, Next.js surfaces "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/instant-navigation",
+					"children": [
+						{
+							"type": "text",
+							"value": "instant navigation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " insights in development, naming the link or route to change."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Partial Prefetching only works when "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "cacheComponents"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " is enabled."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Use the adoption skill (recommended)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/ai-agents#next-partial-prefetching-adoption",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next-partial-prefetching-adoption"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " skill drives this adoption with a coding agent. It reviews your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link prefetch={true}>"
+				},
+				{
+					"type": "text",
+					"value": " calls, captures the prefetched UI to preserve with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#verify-prefetched-ui-with-tests",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "instant()"
+						},
+						{
+							"type": "text",
+							"value": " tests"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when a production test rig is available, then enables the flag and checks each route for the insights this guide covers."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Install the skill:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx skills add vercel/next.js --skill next-partial-prefetching-adoption"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then give the agent this prompt:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "prompt",
+			"meta": null,
+			"value": "Adopt Partial Prefetching in this project using the next-partial-prefetching-adoption skill."
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Or adopt by hand"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To adopt an existing app by hand:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#migrate-existing-full-prefetches",
+									"children": [
+										{
+											"type": "text",
+											"value": "Review existing full prefetches"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and choose which part of each destination should continue to be prefetched. You can use "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#verify-prefetched-ui-with-tests",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "instant()"
+										},
+										{
+											"type": "text",
+											"value": " tests"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to add regression coverage."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#enable-partial-prefetching",
+									"children": [
+										{
+											"type": "text",
+											"value": "Enable "
+										},
+										{
+											"type": "inlineCode",
+											"value": "partialPrefetching"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". For larger migrations, you can "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#adopting-incrementally",
+									"children": [
+										{
+											"type": "text",
+											"value": "adopt incrementally"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " with the global flag off. The "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/instant-link-prefetch-partial",
+									"children": [
+										{
+											"type": "text",
+											"value": "dynamic data during prefetching"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " insight identifies each destination that still uses the legacy full prefetch."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#move-url-data-behind-suspense",
+									"children": [
+										{
+											"type": "text",
+											"value": "Move URL data behind Suspense"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", resolving the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/instant-shell-url-data",
+									"children": [
+										{
+											"type": "text",
+											"value": "URL data outside of Suspense"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " insight."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optionally, "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#prefetching-url-data",
+									"children": [
+										{
+											"type": "text",
+											"value": "prefetch URL data"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " on the routes where streaming in after navigation isn't enough."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Both insights are development-only and never block the build. They appear in the dev overlay with fix cards that link the docs page for each fix. If a route isn't ready to adopt, export "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config/instant",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "instant = false"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " from its page or layout to opt the route out of instant-navigation validation, and return to it later."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Enable Partial Prefetching"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": In an existing app, review the UI delivered by "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "#migrate-existing-full-prefetches",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<Link prefetch={true}>"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " before enabling Partial Prefetching. These links use the legacy full prefetch, and enabling Partial Prefetching changes their behavior."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Enable "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/partialPrefetching",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "partialPrefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" highlight={5}",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tcacheComponents: true,\n\tpartialPrefetching: true,\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After enabling the flag, links using the default behavior, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch=\"auto\""
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch={true}"
+				},
+				{
+					"type": "text",
+					"value": " prefetch the destination's App Shell. A link with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch={true}"
+				},
+				{
+					"type": "text",
+					"value": " can also resolve cached URL-specific content, but it no longer includes uncached dynamic content from the legacy full prefetch. New projects can enable the flag without this audit because they have no legacy full prefetches to migrate."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": When "
+						},
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents"
+						},
+						{
+							"type": "text",
+							"value": " is enabled without a "
+						},
+						{
+							"type": "inlineCode",
+							"value": "partialPrefetching"
+						},
+						{
+							"type": "text",
+							"value": " value, Next.js logs a warning asking you to set it to "
+						},
+						{
+							"type": "inlineCode",
+							"value": "true"
+						},
+						{
+							"type": "text",
+							"value": " or "
+						},
+						{
+							"type": "inlineCode",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"value": ". Set "
+						},
+						{
+							"type": "inlineCode",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"value": " only to keep the previous prefetch behavior while you work through this guide. Both features will be enabled everywhere in the next major release, and the options will be removed."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "What changes for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<Link>"
+								},
+								{
+									"type": "text",
+									"value": " prop"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Before (Cache Components default)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "After Partial Prefetching"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<Link href=\"/x\">"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prefetched the cached page render."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prefetches the shared App Shell for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "/x"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<Link href=\"/x\" prefetch>"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prefetched the cached page render "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "and"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " any dynamic content."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prefetches the App Shell, plus cached URL-specific content through "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/optimizing-prefetching",
+									"children": [
+										{
+											"type": "text",
+											"value": "per-link prefetching"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " when "
+								},
+								{
+									"type": "inlineCode",
+									"value": "/x"
+								},
+								{
+									"type": "text",
+									"value": " reads it."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<Link href=\"/x\" prefetch={false}>"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Disabled prefetching for this link."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Unchanged. Still disabled."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The App Shell is shared across every link to a given route, regardless of dynamic params, so rendering many "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": "s to the same destination doesn't multiply the work."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Migrate existing full prefetches"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Before Partial Prefetching, a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " whose effective "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch"
+				},
+				{
+					"type": "text",
+					"value": " value is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": " prefetches the complete destination, including uncached dynamic content. This includes "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch={true}"
+				},
+				{
+					"type": "text",
+					"value": ", the bare "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch"
+				},
+				{
+					"type": "text",
+					"value": " prop, and wrapper or conditional props that resolve to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": ". The default value, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch=\"auto\""
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch={false}"
+				},
+				{
+					"type": "text",
+					"value": " don't use the legacy full prefetch."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A legacy full prefetch can include more UI than the navigation needs. In most cases, the primary content at the top of the destination should be available before navigation, while secondary or frequently changing content can stream afterward."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": "cookies()"
+						},
+						{
+							"type": "text",
+							"value": " and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "headers()"
+						},
+						{
+							"type": "text",
+							"value": " don't tie a prefetch to a URL. They vary per session, not per link, so the App Shell still carries session content. Only "
+						},
+						{
+							"type": "inlineCode",
+							"value": "params"
+						},
+						{
+							"type": "text",
+							"value": " and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "searchParams"
+						},
+						{
+							"type": "text",
+							"value": " are "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/glossary#url-data",
+							"children": [
+								{
+									"type": "text",
+									"value": "URL data"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", which varies per link and can't be included in the shared App Shell."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Verify prefetched UI with tests"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To verify the migration programmatically, an "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/instant-navigation#prevent-regressions-with-e2e-tests",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "instant()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " test can capture the UI that should stay available from an existing full prefetch. Test the exact source link because different links to the same destination can use different prefetch settings:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"e2e/product-navigation.test.ts\" highlight={7-16}",
+			"value": "import { expect, test } from '@playwright/test'\nimport { instant } from '@next/playwright'\n\ntest('preserves the prefetched product summary', async ({ page }) => {\n\tawait page.goto('/products')\n\n\tawait instant(page, async () => {\n\t\tconst link = page.getByRole('link', { name: 'Baseball Cap' })\n\t\tawait expect(link).toBeVisible()\n\t\tawait link.click()\n\t\tawait page.waitForURL((url) => url.pathname === '/products/baseball-cap')\n\n\t\tawait expect(page.getByRole('heading', { name: 'Baseball Cap' })).toBeVisible()\n\t\tawait expect(page.getByTestId('product-summary')).toBeVisible()\n\t})\n})"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Run this baseline against a production build with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "partialPrefetching"
+				},
+				{
+					"type": "text",
+					"value": " disabled because automatic prefetching doesn't run in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": ". Then rerun the same test after adopting the destination. If it fails, the selected UI is no longer prefetched. Cache the reusable data or subtree that should stay available, then keep the passing test as regression coverage."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Static or cached content"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The output is already in the App Shell. Remove the now-redundant "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch={true}"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/nav.tsx\"",
+			"value": "// Before\n<Link href=\"/about\" prefetch={true}>About</Link>\n// After\n<Link href=\"/about\">About</Link>"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Uncached content"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache it with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " so it gets included in the App Shell, then remove "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch={true}"
+				},
+				{
+					"type": "text",
+					"value": " from the links:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/page.tsx\" switcher",
+			"value": "// Before\nexport default async function Page() {\n\tconst res = await fetch('https://api.example.com/products')\n\treturn <ProductList products={await res.json()} />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/products/page.js\" switcher",
+			"value": "// Before\nexport default async function Page() {\n\tconst res = await fetch('https://api.example.com/products')\n\treturn <ProductList products={await res.json()} />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/page.tsx\" switcher",
+			"value": "// After - cached, so the App Shell carries it\nasync function getProducts() {\n\t'use cache'\n\tconst res = await fetch('https://api.example.com/products')\n\treturn res.json()\n}\n\nexport default async function Page() {\n\treturn <ProductList products={await getProducts()} />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/products/page.js\" switcher",
+			"value": "// After - cached, so the App Shell carries it\nasync function getProducts() {\n\t'use cache'\n\tconst res = await fetch('https://api.example.com/products')\n\treturn res.json()\n}\n\nexport default async function Page() {\n\treturn <ProductList products={await getProducts()} />\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": The App Shell carries cached content whose "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/cacheLife#stale",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "stale"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " time is at least 5 minutes, which holds for the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "default"
+						},
+						{
+							"type": "text",
+							"value": " profile used above and every preset except "
+						},
+						{
+							"type": "inlineCode",
+							"value": "seconds"
+						},
+						{
+							"type": "text",
+							"value": ". Shorter-lived content streams in after the navigation instead. See "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/cacheLife#prerendering-behavior",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prerendering behavior"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Session content"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Content behind "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cookies",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cookies()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/headers",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "headers()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " varies per session, not per link, and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/optimizing-prefetching#include-session-data-in-the-shell",
+					"children": [
+						{
+							"type": "text",
+							"value": "session data resolves in the App Shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", so cached session content still gets included. Read the session value outside the cached function and pass it in, then remove "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch={true}"
+				},
+				{
+					"type": "text",
+					"value": " from the links:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/page.tsx\" switcher",
+			"value": "// Before\nimport { Suspense } from 'react'\nimport { cookies } from 'next/headers'\n\nasync function TeamTopics() {\n\tconst team = (await cookies()).get('team')?.value\n\tconst topics = await db.topics.forTeam(team)\n\treturn <TopicList topics={topics} />\n}\n\nexport default function Page() {\n\treturn (\n\t\t<Suspense fallback={<Skeleton />}>\n\t\t\t<TeamTopics />\n\t\t</Suspense>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/page.js\" switcher",
+			"value": "// Before\nimport { Suspense } from 'react'\nimport { cookies } from 'next/headers'\n\nasync function TeamTopics() {\n\tconst team = (await cookies()).get('team')?.value\n\tconst topics = await db.topics.forTeam(team)\n\treturn <TopicList topics={topics} />\n}\n\nexport default function Page() {\n\treturn (\n\t\t<Suspense fallback={<Skeleton />}>\n\t\t\t<TeamTopics />\n\t\t</Suspense>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/page.tsx\" switcher",
+			"value": "// After - the lookup is cached behind the session value\nimport { Suspense } from 'react'\nimport { cookies } from 'next/headers'\n\nasync function getTopics(team: string | undefined) {\n\t'use cache'\n\treturn db.topics.forTeam(team)\n}\n\nasync function TeamTopics() {\n\tconst team = (await cookies()).get('team')?.value\n\treturn <TopicList topics={await getTopics(team)} />\n}\n\nexport default function Page() {\n\treturn (\n\t\t<Suspense fallback={<Skeleton />}>\n\t\t\t<TeamTopics />\n\t\t</Suspense>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/page.js\" switcher",
+			"value": "// After - the lookup is cached behind the session value\nimport { Suspense } from 'react'\nimport { cookies } from 'next/headers'\n\nasync function getTopics(team) {\n\t'use cache'\n\treturn db.topics.forTeam(team)\n}\n\nasync function TeamTopics() {\n\tconst team = (await cookies()).get('team')?.value\n\treturn <TopicList topics={await getTopics(team)} />\n}\n\nexport default function Page() {\n\treturn (\n\t\t<Suspense fallback={<Skeleton />}>\n\t\t\t<TeamTopics />\n\t\t</Suspense>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "URL data"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#url-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "URL data"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": ") varies per link, so content that depends on it can't be included in the shared App Shell and streams in after navigation from behind its "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary. The links keep "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch={true}"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#prefetching-url-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Prefetching URL data"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " covers prefetching the content ahead of the click."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Real-time content"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A prefetch of real-time content would be stale by the click, so there is nothing to preserve. Remove "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch={true}"
+				},
+				{
+					"type": "text",
+					"value": " and let the content stream in from behind its "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary."
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Destination"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Recommendation"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#static-or-cached-content",
+									"children": [
+										{
+											"type": "text",
+											"value": "Fully static, or content already cached"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Remove the now-redundant "
+								},
+								{
+									"type": "inlineCode",
+									"value": "prefetch={true}"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#uncached-content",
+									"children": [
+										{
+											"type": "text",
+											"value": "Delivered uncached content you want kept ahead of the click"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Cache it with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "use cache"
+								},
+								{
+									"type": "text",
+									"value": ", then remove "
+								},
+								{
+									"type": "inlineCode",
+									"value": "prefetch={true}"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#session-content",
+									"children": [
+										{
+											"type": "text",
+											"value": "Delivered content that depends on "
+										},
+										{
+											"type": "inlineCode",
+											"value": "cookies()"
+										},
+										{
+											"type": "text",
+											"value": " or "
+										},
+										{
+											"type": "inlineCode",
+											"value": "headers()"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Cache the lookup behind the session value, then remove "
+								},
+								{
+									"type": "inlineCode",
+									"value": "prefetch={true}"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#url-data",
+									"children": [
+										{
+											"type": "text",
+											"value": "Reads URL data, or has cached content that depends on it"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Keep "
+								},
+								{
+									"type": "inlineCode",
+									"value": "prefetch={true}"
+								},
+								{
+									"type": "text",
+									"value": " to resolve the content ahead of the click."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#real-time-content",
+									"children": [
+										{
+											"type": "text",
+											"value": "Delivers real-time content that must stay fresh per request"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Remove "
+								},
+								{
+									"type": "inlineCode",
+									"value": "prefetch={true}"
+								},
+								{
+									"type": "text",
+									"value": " and let the content stream in."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Adopting incrementally"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Adoption doesn't have to happen in one change. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config/prefetch",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "prefetch = 'partial'"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is the global flag scoped to one route, so with the global flag still off, you can adopt and deploy each destination on its own."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Before a destination opts into Partial Prefetching, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch={true}"
+				},
+				{
+					"type": "text",
+					"value": " performs the legacy full prefetch. Navigating through one of these links in development surfaces the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/instant-link-prefetch-partial",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamic data during prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " insight, naming the destination and pointing at its fixes:"
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "<FixCardGrid>\n  <FixCard\n    group=\"upgrade\"\n    title=\"Opt into Partial Prefetching\"\n    href=\"/docs/messages/instant-link-prefetch-partial#opt-into-partial-prefetching\"\n    snippets={[\n      { text: '// page.tsx or layout.tsx' },\n      { text: \"export const prefetch = 'partial'\", highlight: true },\n    ]}\n  />\n  <FixCard\n    group=\"disable\"\n    title=\"Use the default prefetch\"\n    href=\"/docs/messages/instant-link-prefetch-partial#use-the-default-prefetch\"\n    snippets={[\n      { text: '<Link href=\"/dashboard\">', highlight: true },\n      { text: '  Dashboard' },\n      { text: '</Link>' },\n    ]}\n  />\n</FixCardGrid>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each card is clickable and opens a page with patterns, code samples, and trade-offs."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": true,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": true,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Start with one destination. Preserve the intended prefetched UI and update its "
+								},
+								{
+									"type": "inlineCode",
+									"value": "prefetch={true}"
+								},
+								{
+									"type": "text",
+									"value": " links using the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#migrate-existing-full-prefetches",
+									"children": [
+										{
+											"type": "text",
+											"value": "patterns above"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". Then add "
+								},
+								{
+									"type": "inlineCode",
+									"value": "export const prefetch = 'partial'"
+								},
+								{
+									"type": "text",
+									"value": " to its page or layout, which clears the insight for every link pointing at the route:"
+								}
+							]
+						},
+						{
+							"type": "code",
+							"lang": "tsx",
+							"meta": "filename=\"app/dashboard/page.tsx\" switcher",
+							"value": "// Before\nexport default function Page() {\n\treturn <Dashboard />\n}"
+						},
+						{
+							"type": "code",
+							"lang": "jsx",
+							"meta": "filename=\"app/dashboard/page.js\" switcher",
+							"value": "// Before\nexport default function Page() {\n\treturn <Dashboard />\n}"
+						},
+						{
+							"type": "code",
+							"lang": "tsx",
+							"meta": "filename=\"app/dashboard/page.tsx\" switcher",
+							"value": "// After - adopted without the global flag\nexport const prefetch = 'partial'\n\nexport default function Page() {\n\treturn <Dashboard />\n}"
+						},
+						{
+							"type": "code",
+							"lang": "jsx",
+							"meta": "filename=\"app/dashboard/page.js\" switcher",
+							"value": "// After - adopted without the global flag\nexport const prefetch = 'partial'\n\nexport default function Page() {\n\treturn <Dashboard />\n}"
+						},
+						{
+							"type": "blockquote",
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "text",
+													"value": "Good to know"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ": If the page or layout already calls "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/functions/prefetch",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "prefetch()"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ", import it under another name, for example "
+										},
+										{
+											"type": "inlineCode",
+											"value": "import { prefetch as prefetchStage } from 'next/cache'"
+										},
+										{
+											"type": "text",
+											"value": ", so it doesn't collide with the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "prefetch"
+										},
+										{
+											"type": "text",
+											"value": " export."
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Deploy the change. Links to the adopted destination load the App Shell, and the insight keeps surfacing for the destinations you haven't reached."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Repeat until every destination in scope is adopted, then "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#enable-partial-prefetching",
+									"children": [
+										{
+											"type": "text",
+											"value": "enable the flag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The per-route "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch = 'partial'"
+				},
+				{
+					"type": "text",
+					"value": " exports are now redundant. Remove them in one pass with the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/codemods#remove-partial-prefetch",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "remove-partial-prefetch"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " codemod, which strips "
+				},
+				{
+					"type": "inlineCode",
+					"value": "export const prefetch = 'partial'"
+				},
+				{
+					"type": "text",
+					"value": " from every "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod@canary remove-partial-prefetch ./app"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Pass "
+						},
+						{
+							"type": "inlineCode",
+							"value": "./src/app"
+						},
+						{
+							"type": "text",
+							"value": " in a "
+						},
+						{
+							"type": "inlineCode",
+							"value": "src/"
+						},
+						{
+							"type": "text",
+							"value": " project. A wrong path reports "
+						},
+						{
+							"type": "inlineCode",
+							"value": "0 ok"
+						},
+						{
+							"type": "text",
+							"value": " instead of failing, so check the file count."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The codemod removes only the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'partial'"
+				},
+				{
+					"type": "text",
+					"value": " value and leaves other values such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch = 'force-disabled'"
+				},
+				{
+					"type": "text",
+					"value": " in place."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Move URL data behind Suspense"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With the flag enabled, Next.js validates each App Shell as you navigate in development. The App Shell is shared across every link to a route, so it can't contain data that belongs to a single URL. Reading "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/page#params-optional",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "params"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/page#searchparams-optional",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "searchParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " outside a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Suspense",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " boundary ties the shell to the link's URL and surfaces the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/instant-shell-url-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "URL data outside of Suspense"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " insight, naming the route and pointing at its fixes:"
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "<FixCardGrid>\n  <FixCard\n    group=\"stream\"\n    title=\"Wrap in or move into Suspense\"\n    href=\"/docs/messages/instant-shell-url-data#wrap-in-or-move-into-suspense\"\n    snippets={[\n      { text: '<Suspense fallback={…}>', highlight: true },\n      { text: '  <Details params={params} />' },\n      { text: '</Suspense>', highlight: true },\n    ]}\n  />\n  <FixCard\n    group=\"block\"\n    title=\"Allow blocking route\"\n    href=\"/docs/messages/instant-shell-url-data#allow-blocking-route\"\n    snippets={[\n      { text: '// page.tsx or layout.tsx' },\n      { text: 'export const instant = false', highlight: true },\n    ]}\n  />\n</FixCardGrid>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The insight never blocks the build, so this pass can happen any time after the flag is on. Load every route in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " to check for it."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The fix is to keep the URL-independent parts of the route outside the boundary and move the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": " read into a child wrapped in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/[slug]/page.tsx\" switcher",
+			"value": "// Before - awaiting params at the top ties the App Shell to one URL\nexport default async function Page({ params }: PageProps<'/products/[slug]'>) {\n\tconst { slug } = await params\n\tconst product = await getProduct(slug)\n\treturn (\n\t\t<ProductLayout>\n\t\t\t<Details product={product} />\n\t\t</ProductLayout>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/products/[slug]/page.js\" switcher",
+			"value": "// Before - awaiting params at the top ties the App Shell to one URL\nexport default async function Page({ params }) {\n\tconst { slug } = await params\n\tconst product = await getProduct(slug)\n\treturn (\n\t\t<ProductLayout>\n\t\t\t<Details product={product} />\n\t\t</ProductLayout>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/[slug]/page.tsx\" switcher",
+			"value": "// After - pass the promise down without awaiting it\nimport { Suspense } from 'react'\nimport { ProductDetails } from './product-details'\n\nexport default function Page({ params }: PageProps<'/products/[slug]'>) {\n\treturn (\n\t\t<ProductLayout>\n\t\t\t<Suspense fallback={<DetailsSkeleton />}>\n\t\t\t\t<ProductDetails params={params} />\n\t\t\t</Suspense>\n\t\t</ProductLayout>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/products/[slug]/page.js\" switcher",
+			"value": "// After - pass the promise down without awaiting it\nimport { Suspense } from 'react'\nimport { ProductDetails } from './product-details'\n\nexport default function Page({ params }) {\n\treturn (\n\t\t<ProductLayout>\n\t\t\t<Suspense fallback={<DetailsSkeleton />}>\n\t\t\t\t<ProductDetails params={params} />\n\t\t\t</Suspense>\n\t\t</ProductLayout>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The child awaits the promise inside the boundary:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/[slug]/product-details.tsx\" switcher",
+			"value": "export async function ProductDetails({ params }: Pick<PageProps<'/products/[slug]'>, 'params'>) {\n\tconst { slug } = await params\n\tconst product = await getProduct(slug)\n\treturn <Details product={product} />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/products/[slug]/product-details.js\" switcher",
+			"value": "export async function ProductDetails({ params }) {\n\tconst { slug } = await params\n\tconst product = await getProduct(slug)\n\treturn <Details product={product} />\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Everything outside the boundary stays in the shared App Shell, and only the URL-specific region renders per navigation. Load or navigate to the route again to confirm the insight is gone and the page still paints meaningful UI."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": A "
+						},
+						{
+							"type": "inlineCode",
+							"value": "params"
+						},
+						{
+							"type": "text",
+							"value": " or "
+						},
+						{
+							"type": "inlineCode",
+							"value": "searchParams"
+						},
+						{
+							"type": "text",
+							"value": " read inside "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/generate-metadata",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "generateMetadata"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " surfaces as "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/messages/blocking-prerender-metadata-runtime",
+							"children": [
+								{
+									"type": "text",
+									"value": "URL data in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "generateMetadata()"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " instead."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Prefetching URL data"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Content that depends on "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#url-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "URL data"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": ") can't be included in the shared App Shell, so it streams in after navigation. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/optimizing-prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Per-link prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " resolves it ahead of the click for links with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch={true}"
+				},
+				{
+					"type": "text",
+					"value": ", at the cost of a server invocation per prefetchable link. To make the content resolvable at prefetch time, cache it behind the read with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". For a search page that reads "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/search/page.tsx\" switcher",
+			"value": "// Before - the results stream in after navigation\nimport { Suspense } from 'react'\n\nasync function getResults(query: string) {\n\tconst res = await fetch(`https://api.example.com/search?q=${query}`)\n\treturn res.json()\n}\n\nasync function Results({ searchParams }: Pick<PageProps<'/search'>, 'searchParams'>) {\n\tconst { q } = await searchParams\n\treturn <ResultList results={await getResults(q)} />\n}\n\nexport default function Page({ searchParams }: PageProps<'/search'>) {\n\treturn (\n\t\t<Suspense fallback={<Skeleton />}>\n\t\t\t<Results searchParams={searchParams} />\n\t\t</Suspense>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/search/page.js\" switcher",
+			"value": "// Before - the results stream in after navigation\nimport { Suspense } from 'react'\n\nasync function getResults(query) {\n\tconst res = await fetch(`https://api.example.com/search?q=${query}`)\n\treturn res.json()\n}\n\nasync function Results({ searchParams }) {\n\tconst { q } = await searchParams\n\treturn <ResultList results={await getResults(q)} />\n}\n\nexport default function Page({ searchParams }) {\n\treturn (\n\t\t<Suspense fallback={<Skeleton />}>\n\t\t\t<Results searchParams={searchParams} />\n\t\t</Suspense>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/search/page.tsx\" switcher",
+			"value": "// After - the results are cached and prefetched behind the resolved searchParams\nimport { Suspense } from 'react'\n\nasync function getResults(query: string) {\n\t'use cache'\n\tconst res = await fetch(`https://api.example.com/search?q=${query}`)\n\treturn res.json()\n}\n\nasync function Results({ searchParams }: Pick<PageProps<'/search'>, 'searchParams'>) {\n\tconst { q } = await searchParams\n\treturn <ResultList results={await getResults(q)} />\n}\n\nexport default function Page({ searchParams }: PageProps<'/search'>) {\n\treturn (\n\t\t<Suspense fallback={<Skeleton />}>\n\t\t\t<Results searchParams={searchParams} />\n\t\t</Suspense>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/search/page.js\" switcher",
+			"value": "// After - the results are cached and prefetched behind the resolved searchParams\nimport { Suspense } from 'react'\n\nasync function getResults(query) {\n\t'use cache'\n\tconst res = await fetch(`https://api.example.com/search?q=${query}`)\n\treturn res.json()\n}\n\nasync function Results({ searchParams }) {\n\tconst { q } = await searchParams\n\treturn <ResultList results={await getResults(q)} />\n}\n\nexport default function Page({ searchParams }) {\n\treturn (\n\t\t<Suspense fallback={<Skeleton />}>\n\t\t\t<Results searchParams={searchParams} />\n\t\t</Suspense>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/optimizing-prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Optimizing prefetching guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " covers when the cost pays off and the caching patterns behind runtime reads."
+				}
+			]
+		}
+	]
+}

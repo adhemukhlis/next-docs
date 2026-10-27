@@ -1,0 +1,788 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: sitemap.xml\ndescription: API Reference for the sitemap.xml file.\nrelated:\n title: Next Steps\n description: Learn how to use the generateSitemaps function.\n links:\n  - app/api-reference/functions/generate-sitemaps"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "sitemap.(xml|js|ts)"
+				},
+				{
+					"type": "text",
+					"value": " is a special file that matches the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.sitemaps.org/protocol.html",
+					"children": [
+						{
+							"type": "text",
+							"value": "Sitemaps XML format"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to help search engine crawlers index your site more efficiently."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Sitemap files (.xml)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For smaller applications, you can create a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "sitemap.xml"
+				},
+				{
+					"type": "text",
+					"value": " file and place it in the root of your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "xml",
+			"meta": "filename=\"app/sitemap.xml\"",
+			"value": "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n  <url>\n    <loc>https://acme.com</loc>\n    <lastmod>2023-04-06T15:02:24.021Z</lastmod>\n    <changefreq>yearly</changefreq>\n    <priority>1</priority>\n  </url>\n  <url>\n    <loc>https://acme.com/about</loc>\n    <lastmod>2023-04-06T15:02:24.021Z</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n  </url>\n  <url>\n    <loc>https://acme.com/blog</loc>\n    <lastmod>2023-04-06T15:02:24.021Z</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.5</priority>\n  </url>\n</urlset>"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Generating a sitemap using code (.js, .ts)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "sitemap.(js|ts)"
+				},
+				{
+					"type": "text",
+					"value": " file convention to programmatically "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "generate"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " a sitemap by exporting a default function that returns an array of URLs. If using TypeScript, a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#returns",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Sitemap"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " type is available."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": "sitemap.js"
+						},
+						{
+							"type": "text",
+							"value": " is a special Route Handler that is cached by default unless it uses a "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/glossary#request-time-apis",
+							"children": [
+								{
+									"type": "text",
+									"value": "Request-time API"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " or "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/caching-without-cache-components#dynamic",
+							"children": [
+								{
+									"type": "text",
+									"value": "dynamic config"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " option."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/sitemap.ts\" switcher",
+			"value": "import type { MetadataRoute } from 'next'\n\nexport default function sitemap(): MetadataRoute.Sitemap {\n\treturn [\n\t\t{\n\t\t\turl: 'https://acme.com',\n\t\t\tlastModified: new Date(),\n\t\t\tchangeFrequency: 'yearly',\n\t\t\tpriority: 1,\n\t\t},\n\t\t{\n\t\t\turl: 'https://acme.com/about',\n\t\t\tlastModified: new Date(),\n\t\t\tchangeFrequency: 'monthly',\n\t\t\tpriority: 0.8,\n\t\t},\n\t\t{\n\t\t\turl: 'https://acme.com/blog',\n\t\t\tlastModified: new Date(),\n\t\t\tchangeFrequency: 'weekly',\n\t\t\tpriority: 0.5,\n\t\t},\n\t]\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/sitemap.js\" switcher",
+			"value": "export default function sitemap() {\n\treturn [\n\t\t{\n\t\t\turl: 'https://acme.com',\n\t\t\tlastModified: new Date(),\n\t\t\tchangeFrequency: 'yearly',\n\t\t\tpriority: 1,\n\t\t},\n\t\t{\n\t\t\turl: 'https://acme.com/about',\n\t\t\tlastModified: new Date(),\n\t\t\tchangeFrequency: 'monthly',\n\t\t\tpriority: 0.8,\n\t\t},\n\t\t{\n\t\t\turl: 'https://acme.com/blog',\n\t\t\tlastModified: new Date(),\n\t\t\tchangeFrequency: 'weekly',\n\t\t\tpriority: 0.5,\n\t\t},\n\t]\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Output:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "xml",
+			"meta": "filename=\"acme.com/sitemap.xml\"",
+			"value": "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n  <url>\n    <loc>https://acme.com</loc>\n    <lastmod>2023-04-06T15:02:24.021Z</lastmod>\n    <changefreq>yearly</changefreq>\n    <priority>1</priority>\n  </url>\n  <url>\n    <loc>https://acme.com/about</loc>\n    <lastmod>2023-04-06T15:02:24.021Z</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n  </url>\n  <url>\n    <loc>https://acme.com/blog</loc>\n    <lastmod>2023-04-06T15:02:24.021Z</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.5</priority>\n  </url>\n</urlset>"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Image Sitemaps"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "images"
+				},
+				{
+					"type": "text",
+					"value": " property to create image sitemaps. Learn more details in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developers.google.com/search/docs/crawling-indexing/sitemaps/image-sitemaps",
+					"children": [
+						{
+							"type": "text",
+							"value": "Google Developer Docs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/sitemap.ts\" switcher",
+			"value": "import type { MetadataRoute } from 'next'\n\nexport default function sitemap(): MetadataRoute.Sitemap {\n\treturn [\n\t\t{\n\t\t\turl: 'https://example.com',\n\t\t\tlastModified: '2021-01-01',\n\t\t\tchangeFrequency: 'weekly',\n\t\t\tpriority: 0.5,\n\t\t\timages: ['https://example.com/image.jpg'],\n\t\t},\n\t]\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Output:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "xml",
+			"meta": "filename=\"acme.com/sitemap.xml\"",
+			"value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset\n  xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\n  xmlns:image=\"http://www.google.com/schemas/sitemap-image/1.1\"\n>\n  <url>\n    <loc>https://example.com</loc>\n    <image:image>\n      <image:loc>https://example.com/image.jpg</image:loc>\n    </image:image>\n    <lastmod>2021-01-01</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.5</priority>\n  </url>\n</urlset>"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Video Sitemaps"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "videos"
+				},
+				{
+					"type": "text",
+					"value": " property to create video sitemaps. Learn more details in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developers.google.com/search/docs/crawling-indexing/sitemaps/video-sitemaps",
+					"children": [
+						{
+							"type": "text",
+							"value": "Google Developer Docs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/sitemap.ts\" switcher",
+			"value": "import type { MetadataRoute } from 'next'\n\nexport default function sitemap(): MetadataRoute.Sitemap {\n\treturn [\n\t\t{\n\t\t\turl: 'https://example.com',\n\t\t\tlastModified: '2021-01-01',\n\t\t\tchangeFrequency: 'weekly',\n\t\t\tpriority: 0.5,\n\t\t\tvideos: [\n\t\t\t\t{\n\t\t\t\t\ttitle: 'example',\n\t\t\t\t\tthumbnail_loc: 'https://example.com/image.jpg',\n\t\t\t\t\tdescription: 'this is the description',\n\t\t\t\t},\n\t\t\t],\n\t\t},\n\t]\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Output:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "xml",
+			"meta": "filename=\"acme.com/sitemap.xml\"",
+			"value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset\n  xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\n  xmlns:video=\"http://www.google.com/schemas/sitemap-video/1.1\"\n>\n  <url>\n    <loc>https://example.com</loc>\n    <video:video>\n      <video:title>example</video:title>\n      <video:thumbnail_loc>https://example.com/image.jpg</video:thumbnail_loc>\n      <video:description>this is the description</video:description>\n    </video:video>\n    <lastmod>2021-01-01</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.5</priority>\n  </url>\n</urlset>"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Generate a localized Sitemap"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/sitemap.ts\" switcher",
+			"value": "import type { MetadataRoute } from 'next'\n\nexport default function sitemap(): MetadataRoute.Sitemap {\n\treturn [\n\t\t{\n\t\t\turl: 'https://acme.com',\n\t\t\tlastModified: new Date(),\n\t\t\talternates: {\n\t\t\t\tlanguages: {\n\t\t\t\t\tes: 'https://acme.com/es',\n\t\t\t\t\tde: 'https://acme.com/de',\n\t\t\t\t},\n\t\t\t},\n\t\t},\n\t\t{\n\t\t\turl: 'https://acme.com/about',\n\t\t\tlastModified: new Date(),\n\t\t\talternates: {\n\t\t\t\tlanguages: {\n\t\t\t\t\tes: 'https://acme.com/es/about',\n\t\t\t\t\tde: 'https://acme.com/de/about',\n\t\t\t\t},\n\t\t\t},\n\t\t},\n\t\t{\n\t\t\turl: 'https://acme.com/blog',\n\t\t\tlastModified: new Date(),\n\t\t\talternates: {\n\t\t\t\tlanguages: {\n\t\t\t\t\tes: 'https://acme.com/es/blog',\n\t\t\t\t\tde: 'https://acme.com/de/blog',\n\t\t\t\t},\n\t\t\t},\n\t\t},\n\t]\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/sitemap.js\" switcher",
+			"value": "export default function sitemap() {\n\treturn [\n\t\t{\n\t\t\turl: 'https://acme.com',\n\t\t\tlastModified: new Date(),\n\t\t\talternates: {\n\t\t\t\tlanguages: {\n\t\t\t\t\tes: 'https://acme.com/es',\n\t\t\t\t\tde: 'https://acme.com/de',\n\t\t\t\t},\n\t\t\t},\n\t\t},\n\t\t{\n\t\t\turl: 'https://acme.com/about',\n\t\t\tlastModified: new Date(),\n\t\t\talternates: {\n\t\t\t\tlanguages: {\n\t\t\t\t\tes: 'https://acme.com/es/about',\n\t\t\t\t\tde: 'https://acme.com/de/about',\n\t\t\t\t},\n\t\t\t},\n\t\t},\n\t\t{\n\t\t\turl: 'https://acme.com/blog',\n\t\t\tlastModified: new Date(),\n\t\t\talternates: {\n\t\t\t\tlanguages: {\n\t\t\t\t\tes: 'https://acme.com/es/blog',\n\t\t\t\t\tde: 'https://acme.com/de/blog',\n\t\t\t\t},\n\t\t\t},\n\t\t},\n\t]\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Output:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "xml",
+			"meta": "filename=\"acme.com/sitemap.xml\"",
+			"value": "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">\n  <url>\n    <loc>https://acme.com</loc>\n    <xhtml:link\n      rel=\"alternate\"\n      hreflang=\"es\"\n      href=\"https://acme.com/es\"/>\n    <xhtml:link\n      rel=\"alternate\"\n      hreflang=\"de\"\n      href=\"https://acme.com/de\"/>\n    <lastmod>2023-04-06T15:02:24.021Z</lastmod>\n  </url>\n  <url>\n    <loc>https://acme.com/about</loc>\n    <xhtml:link\n      rel=\"alternate\"\n      hreflang=\"es\"\n      href=\"https://acme.com/es/about\"/>\n    <xhtml:link\n      rel=\"alternate\"\n      hreflang=\"de\"\n      href=\"https://acme.com/de/about\"/>\n    <lastmod>2023-04-06T15:02:24.021Z</lastmod>\n  </url>\n  <url>\n    <loc>https://acme.com/blog</loc>\n    <xhtml:link\n      rel=\"alternate\"\n      hreflang=\"es\"\n      href=\"https://acme.com/es/blog\"/>\n    <xhtml:link\n      rel=\"alternate\"\n      hreflang=\"de\"\n      href=\"https://acme.com/de/blog\"/>\n    <lastmod>2023-04-06T15:02:24.021Z</lastmod>\n  </url>\n</urlset>"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Generating multiple sitemaps"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "While a single sitemap will work for most applications. For large web applications, you may need to split a sitemap into multiple files."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There are two ways you can create multiple sitemaps:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "By nesting "
+								},
+								{
+									"type": "inlineCode",
+									"value": "sitemap.(xml|js|ts)"
+								},
+								{
+									"type": "text",
+									"value": " inside multiple route segments e.g. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/sitemap.xml"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/products/sitemap.xml"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "By using the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/generate-sitemaps",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "generateSitemaps"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " function."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, to split a sitemap using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateSitemaps"
+				},
+				{
+					"type": "text",
+					"value": ", return an array of objects with the sitemap "
+				},
+				{
+					"type": "inlineCode",
+					"value": "id"
+				},
+				{
+					"type": "text",
+					"value": ". Then, use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "id"
+				},
+				{
+					"type": "text",
+					"value": " to generate the unique sitemaps."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/product/sitemap.ts\" switcher",
+			"value": "import type { MetadataRoute } from 'next'\nimport { BASE_URL } from '@/app/lib/constants'\n\nexport async function generateSitemaps() {\n\t// Fetch the total number of products and calculate the number of sitemaps needed\n\treturn [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }]\n}\n\nexport default async function sitemap(props: { id: Promise<string> }): Promise<MetadataRoute.Sitemap> {\n\tconst id = await props.id\n\t// Google's limit is 50,000 URLs per sitemap\n\tconst start = id * 50000\n\tconst end = start + 50000\n\tconst products = await getProducts(`SELECT id, date FROM products WHERE id BETWEEN ${start} AND ${end}`)\n\treturn products.map((product) => ({\n\t\turl: `${BASE_URL}/product/${product.id}`,\n\t\tlastModified: product.date,\n\t}))\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/product/sitemap.js\" switcher",
+			"value": "import { BASE_URL } from '@/app/lib/constants'\n\nexport async function generateSitemaps() {\n\t// Fetch the total number of products and calculate the number of sitemaps needed\n\treturn [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }]\n}\n\nexport default async function sitemap(props) {\n\tconst id = await props.id\n\t// Google's limit is 50,000 URLs per sitemap\n\tconst start = id * 50000\n\tconst end = start + 50000\n\tconst products = await getProducts(`SELECT id, date FROM products WHERE id BETWEEN ${start} AND ${end}`)\n\treturn products.map((product) => ({\n\t\turl: `${BASE_URL}/product/${product.id}`,\n\t\tlastModified: product.date,\n\t}))\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Your generated sitemaps will be available at "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/.../sitemap/[id].xml"
+				},
+				{
+					"type": "text",
+					"value": ". For example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/product/sitemap/1.xml"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-sitemaps",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateSitemaps"
+						},
+						{
+							"type": "text",
+							"value": " API reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more information."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The default function exported from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "sitemap.(xml|ts|js)"
+				},
+				{
+					"type": "text",
+					"value": " should return an array of objects with the following properties:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "type Sitemap = Array<{\n\turl: string\n\tlastModified?: string | Date\n\tchangeFrequency?: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never'\n\tpriority?: number\n\talternates?: {\n\t\tlanguages?: Languages<string>\n\t}\n\timages?: string[]\n\tvideos?: Videos[]\n}>"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "id"
+								},
+								{
+									"type": "text",
+									"value": " is now a promise that resolves to a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "string"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v14.2.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Add localizations support."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.4.14"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Add "
+								},
+								{
+									"type": "inlineCode",
+									"value": "changeFrequency"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "priority"
+								},
+								{
+									"type": "text",
+									"value": " attributes to sitemaps."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "sitemap"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

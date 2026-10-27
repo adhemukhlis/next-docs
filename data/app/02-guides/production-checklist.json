@@ -1,0 +1,2047 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to optimize your Next.js application for production\nnav_title: Production\ndescription: Recommendations to ensure the best performance and user experience before taking your Next.js application to production."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Before taking your Next.js application to production, there are some optimizations and patterns you should consider implementing for the best user experience, performance, and security."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This page provides best practices that you can use as a reference when "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#during-development",
+					"children": [
+						{
+							"type": "text",
+							"value": "building your application"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#before-going-to-production",
+					"children": [
+						{
+							"type": "text",
+							"value": "before going to production"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", as well as the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#automatic-optimizations",
+					"children": [
+						{
+							"type": "text",
+							"value": "automatic Next.js optimizations"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " you should be aware of."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Automatic optimizations"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "These Next.js optimizations are enabled by default and require no configuration:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/getting-started/server-and-client-components",
+											"children": [
+												{
+													"type": "text",
+													"value": "Server Components"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Next.js uses Server Components by default. Server Components run on the server, and don't require JavaScript to render on the client. As such, they have no impact on the size of your client-side JavaScript bundles. You can then use "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/server-and-client-components",
+									"children": [
+										{
+											"type": "text",
+											"value": "Client Components"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " as needed for interactivity."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/getting-started/linking-and-navigating#how-navigation-works",
+											"children": [
+												{
+													"type": "text",
+													"value": "Code-splitting"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Server Components enable automatic code-splitting by route segments. You may also consider "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/lazy-loading",
+									"children": [
+										{
+											"type": "text",
+											"value": "lazy loading"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Client Components and third-party libraries, where appropriate."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/getting-started/linking-and-navigating#prefetching",
+											"children": [
+												{
+													"type": "text",
+													"value": "Prefetching"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " When a link to a new route enters the user's viewport, Next.js prefetches the route in background. This makes navigation to new routes almost instant. You can opt out of prefetching, where appropriate."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/glossary#prerendering",
+											"children": [
+												{
+													"type": "text",
+													"value": "Prerendering"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Next.js prerenders Server and Client Components on the server at build time and caches the rendered result to improve your application's performance. You can opt into "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/glossary#dynamic-rendering",
+									"children": [
+										{
+											"type": "text",
+											"value": "Dynamic Rendering"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for specific routes, where appropriate."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/getting-started/caching",
+											"children": [
+												{
+													"type": "text",
+													"value": "Caching"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Next.js caches data requests, the rendered result of Server and Client Components, static assets, and more, to reduce the number of network requests to your server, database, and backend services. You may opt out of caching, where appropriate."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "These defaults aim to improve your application's performance, and reduce the cost and amount of data transferred on each network request."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "During development"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "While building your application, we recommend using the following features to ensure the best performance and user experience:"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Routing and rendering"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/layout",
+											"children": [
+												{
+													"type": "text",
+													"value": "Layouts"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Use layouts to share UI across pages and enable "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/linking-and-navigating#client-side-transitions",
+									"children": [
+										{
+											"type": "text",
+											"value": "partial rendering"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " on navigation."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/components/link",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "<Link>"
+												},
+												{
+													"type": "text",
+													"value": " component"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Use the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Link>"
+								},
+								{
+									"type": "text",
+									"value": " component for "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/linking-and-navigating#how-navigation-works",
+									"children": [
+										{
+											"type": "text",
+											"value": "client-side navigation and prefetching"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/getting-started/error-handling",
+											"children": [
+												{
+													"type": "text",
+													"value": "Error Handling"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Gracefully handle "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/error-handling",
+									"children": [
+										{
+											"type": "text",
+											"value": "catch-all errors"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/not-found",
+									"children": [
+										{
+											"type": "text",
+											"value": "404 errors"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " in production by creating custom error pages."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/getting-started/server-and-client-components#examples",
+											"children": [
+												{
+													"type": "text",
+													"value": "Client and Server Components"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Follow the recommended composition patterns for Server and Client Components, and check the placement of your "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/server-and-client-components#reducing-js-bundle-size",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "\"use client\""
+										},
+										{
+											"type": "text",
+											"value": " boundaries"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to avoid unnecessarily increasing your client-side JavaScript bundle."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Request-time APIs:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Be aware that Request-time APIs like "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/cookies",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cookies"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/page#searchparams-optional",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "searchParams"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " prop will opt the entire route into "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/glossary#dynamic-rendering",
+									"children": [
+										{
+											"type": "text",
+											"value": "Dynamic Rendering"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (or your whole application if used in the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/layout#root-layout",
+									"children": [
+										{
+											"type": "text",
+											"value": "Root Layout"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "). Ensure Request-time API usage is intentional and wrap them in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Suspense>"
+								},
+								{
+									"type": "text",
+									"value": " boundaries where appropriate."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/blog/next-14#partial-prerendering-preview",
+							"children": [
+								{
+									"type": "text",
+									"value": "Partial Prerendering (experimental)"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " will allow parts of a route to be dynamic without opting the whole route into dynamic rendering."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Data fetching and caching"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/getting-started/fetching-data",
+											"children": [
+												{
+													"type": "text",
+													"value": "Server Components"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Leverage the benefits of fetching data on the server using Server Components."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/route",
+											"children": [
+												{
+													"type": "text",
+													"value": "Route Handlers"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Use Route Handlers to access your backend resources from Client Components. But do not call Route Handlers from Server Components to avoid an additional server request."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/loading",
+											"children": [
+												{
+													"type": "text",
+													"value": "Streaming"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Use Loading UI and React Suspense to progressively send UI from the server to the client, and prevent the whole route from blocking while data is being fetched."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/getting-started/fetching-data#parallel-data-fetching",
+											"children": [
+												{
+													"type": "text",
+													"value": "Parallel Data Fetching"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Reduce network waterfalls by fetching data in parallel, where appropriate."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/getting-started/caching",
+											"children": [
+												{
+													"type": "text",
+													"value": "Data Caching"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Verify whether your data requests are being cached or not, and opt into caching, where appropriate. Ensure requests that don't use "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " are "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/unstable_cache",
+									"children": [
+										{
+											"type": "text",
+											"value": "cached"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/public-folder",
+											"children": [
+												{
+													"type": "text",
+													"value": "Static Images"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Use the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "public"
+								},
+								{
+									"type": "text",
+									"value": " directory to automatically cache your application's static assets, e.g. images."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "UI and accessibility"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": true,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/guides/forms",
+											"children": [
+												{
+													"type": "text",
+													"value": "Forms and Validation"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Use Server Actions to handle form submissions, server-side validation, and handle errors."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/error#global-error",
+											"children": [
+												{
+													"type": "text",
+													"value": "Global Error UI"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Add "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/global-error.tsx"
+								},
+								{
+									"type": "text",
+									"value": " to provide consistent, accessible fallback UI and recovery for uncaught errors across your app."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/not-found#global-not-foundjs-experimental",
+											"children": [
+												{
+													"type": "text",
+													"value": "Global 404"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Add "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/global-not-found.tsx"
+								},
+								{
+									"type": "text",
+									"value": " to serve an accessible 404 for unmatched routes across your app."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/components/font",
+											"children": [
+												{
+													"type": "text",
+													"value": "Font Module"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Optimize fonts by using the Font Module, which automatically hosts your font files with other static assets, removes external network requests, and reduces "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://web.dev/articles/cls",
+									"children": [
+										{
+											"type": "text",
+											"value": "layout shift"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/components/image",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "<Image>"
+												},
+												{
+													"type": "text",
+													"value": " Component"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Optimize images by using the Image Component, which automatically optimizes images, prevents layout shift, and serves them in modern formats like WebP."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/guides/scripts",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "<Script>"
+												},
+												{
+													"type": "text",
+													"value": " Component"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Optimize third-party scripts by using the Script Component, which automatically defers scripts and prevents them from blocking the main thread."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/architecture/accessibility#linting",
+											"children": [
+												{
+													"type": "text",
+													"value": "ESLint"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Use the built-in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "eslint-plugin-jsx-a11y"
+								},
+								{
+									"type": "text",
+									"value": " plugin to catch accessibility issues early."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Security"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": true,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/config/next-config-js/taint",
+											"children": [
+												{
+													"type": "text",
+													"value": "Tainting"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Prevent sensitive data from being exposed to the client by tainting data objects and/or specific values."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/getting-started/mutating-data",
+											"children": [
+												{
+													"type": "text",
+													"value": "Server Actions"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Verify authentication and authorization inside each action. Do not rely on Proxy or layout or page level checks alone. Move database access to a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "server-only"
+								},
+								{
+									"type": "text",
+									"value": " "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/data-security#data-access-layer",
+									"children": [
+										{
+											"type": "text",
+											"value": "Data Access Layer"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and consider "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/backend-for-frontend#rate-limiting",
+									"children": [
+										{
+											"type": "text",
+											"value": "rate limiting"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for expensive operations. Review the recommended "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/blog/security-nextjs-server-components-actions",
+									"children": [
+										{
+											"type": "text",
+											"value": "security practices"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/guides/environment-variables",
+											"children": [
+												{
+													"type": "text",
+													"value": "Environment Variables"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Ensure your "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".env.*"
+								},
+								{
+									"type": "text",
+									"value": " files are added to "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".gitignore"
+								},
+								{
+									"type": "text",
+									"value": " and only public variables are prefixed with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "NEXT_PUBLIC_"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/guides/content-security-policy",
+											"children": [
+												{
+													"type": "text",
+													"value": "Content Security Policy"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Consider adding a Content Security Policy to protect your application against various security threats such as cross-site scripting, clickjacking, and other code injection attacks."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Metadata and SEO"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/getting-started/metadata-and-og-images",
+											"children": [
+												{
+													"type": "text",
+													"value": "Metadata API"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Use the Metadata API to improve your application's Search Engine Optimization (SEO) by adding page titles, descriptions, and more."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/metadata/opengraph-image",
+											"children": [
+												{
+													"type": "text",
+													"value": "Open Graph (OG) images"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Create OG images to prepare your application for social sharing."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/functions/generate-sitemaps",
+											"children": [
+												{
+													"type": "text",
+													"value": "Sitemaps"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " and "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/metadata/robots",
+											"children": [
+												{
+													"type": "text",
+													"value": "Robots"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Help Search Engines crawl and index your pages by generating sitemaps and robots files."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Type safety"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "TypeScript and "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/config/typescript",
+											"children": [
+												{
+													"type": "text",
+													"value": "TS Plugin"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Use TypeScript and the TypeScript plugin for better type-safety, and to help you catch errors early."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Before going to production"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Before going to production, you can run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " to build your application locally and catch any build errors, then run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next start"
+				},
+				{
+					"type": "text",
+					"value": " to measure the performance of your application in a production-like environment."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Core Web Vitals"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": true,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://developers.google.com/web/tools/lighthouse",
+											"children": [
+												{
+													"type": "text",
+													"value": "Lighthouse"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Run lighthouse in incognito to gain a better understanding of how your users will experience your site, and to identify areas for improvement. This is a simulated test and should be paired with looking at field data (such as Core Web Vitals)."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/functions/use-report-web-vitals",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "useReportWebVitals"
+												},
+												{
+													"type": "text",
+													"value": " hook"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ":"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Use this hook to send "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://web.dev/articles/vitals",
+									"children": [
+										{
+											"type": "text",
+											"value": "Core Web Vitals"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " data to analytics tools."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Analyzing bundles"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/package-bundling#nextbundle-analyzer-for-webpack",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "@next/bundle-analyzer"
+						},
+						{
+							"type": "text",
+							"value": " plugin"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to analyze the size of your JavaScript bundles and identify large modules and dependencies that might be impacting your application's performance."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Additionally, the following tools can help you understand the impact of adding new dependencies to your application:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://marketplace.visualstudio.com/items?itemName=wix.vscode-import-cost",
+									"children": [
+										{
+											"type": "text",
+											"value": "Import Cost"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://packagephobia.com/",
+									"children": [
+										{
+											"type": "text",
+											"value": "Package Phobia"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://bundlephobia.com/",
+									"children": [
+										{
+											"type": "text",
+											"value": "Bundle Phobia"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://bundlejs.com/",
+									"children": [
+										{
+											"type": "text",
+											"value": "bundlejs"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,6243 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: generateMetadata\ndescription: Learn how to add Metadata to your Next.js application for improved search engine optimization (SEO) and web shareability.\nrelated:\n title: Next Steps\n description: View all the Metadata API options.\n links:\n  - app/api-reference/file-conventions/metadata\n  - app/api-reference/functions/generate-viewport\n  - app/getting-started/caching\n  - app/api-reference/config/next-config-js/cacheComponents"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "metadata"
+				},
+				{
+					"type": "text",
+					"value": " object or the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata"
+				},
+				{
+					"type": "text",
+					"value": " function to define metadata."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "metadata"
+				},
+				{
+					"type": "text",
+					"value": " object"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To define static metadata, export a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#metadata-fields",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Metadata"
+						},
+						{
+							"type": "text",
+							"value": " object"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " from a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout.js"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.js"
+				},
+				{
+					"type": "text",
+					"value": " file."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"layout.tsx | page.tsx\" switcher",
+			"value": "import type { Metadata } from 'next'\n\nexport const metadata: Metadata = {\n\ttitle: '...',\n\tdescription: '...',\n}\n\nexport default function Page() {}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\" switcher",
+			"value": "export const metadata = {\n\ttitle: '...',\n\tdescription: '...',\n}\n\nexport default function Page() {}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "See the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "#metadata-fields",
+							"children": [
+								{
+									"type": "text",
+									"value": "Metadata Fields"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for a complete list of supported options."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata"
+				},
+				{
+					"type": "text",
+					"value": " function"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Dynamic metadata depends on "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamic information"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", such as the current route parameters, external data, or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "metadata"
+				},
+				{
+					"type": "text",
+					"value": " in parent segments, can be set by exporting a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata"
+				},
+				{
+					"type": "text",
+					"value": " function that returns a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#metadata-fields",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Metadata"
+						},
+						{
+							"type": "text",
+							"value": " object"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Resolving "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata"
+				},
+				{
+					"type": "text",
+					"value": " is part of rendering the page. If the page can be prerendered and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata"
+				},
+				{
+					"type": "text",
+					"value": " doesn't introduce dynamic behavior, the resulting metadata is included in the page's initial HTML."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Otherwise the metadata resolved from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata"
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-metadata#streaming-metadata",
+					"children": [
+						{
+							"type": "text",
+							"value": "can be streamed"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " after sending the initial UI."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/[id]/page.tsx\" switcher",
+			"value": "import type { Metadata, ResolvingMetadata } from 'next'\n\ntype Props = {\n\tparams: Promise<{ id: string }>\n\tsearchParams: Promise<{ [key: string]: string | string[] | undefined }>\n}\n\nexport async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {\n\t// read route params\n\tconst { id } = await params\n\n\t// fetch data\n\tconst product = await fetch(`https://.../${id}`).then((res) => res.json())\n\n\t// optionally access and extend (rather than replace) parent metadata\n\tconst previousImages = (await parent).openGraph?.images || []\n\n\treturn {\n\t\ttitle: product.title,\n\t\topenGraph: {\n\t\t\timages: ['/some-specific-page-image.jpg', ...previousImages],\n\t\t},\n\t}\n}\n\nexport default function Page({ params, searchParams }: Props) {}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/products/[id]/page.js\" switcher",
+			"value": "export async function generateMetadata({ params, searchParams }, parent) {\n\t// read route params\n\tconst { id } = await params\n\n\t// fetch data\n\tconst product = await fetch(`https://.../${id}`).then((res) => res.json())\n\n\t// optionally access and extend (rather than replace) parent metadata\n\tconst previousImages = (await parent).openGraph?.images || []\n\n\treturn {\n\t\ttitle: product.title,\n\t\topenGraph: {\n\t\t\timages: ['/some-specific-page-image.jpg', ...previousImages],\n\t\t},\n\t}\n}\n\nexport default function Page({ params, searchParams }) {}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For type completion of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": ", you can type the first argument with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/page#page-props-helper",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "PageProps<'/route'>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout#layout-props-helper",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "LayoutProps<'/route'>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for pages and layouts respectively."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Metadata can be added to "
+										},
+										{
+											"type": "inlineCode",
+											"value": "layout.js"
+										},
+										{
+											"type": "text",
+											"value": " and "
+										},
+										{
+											"type": "inlineCode",
+											"value": "page.js"
+										},
+										{
+											"type": "text",
+											"value": " files."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Next.js will automatically resolve the metadata, and create the relevant "
+										},
+										{
+											"type": "inlineCode",
+											"value": "<head>"
+										},
+										{
+											"type": "text",
+											"value": " tags for the page."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The "
+										},
+										{
+											"type": "inlineCode",
+											"value": "metadata"
+										},
+										{
+											"type": "text",
+											"value": " object and "
+										},
+										{
+											"type": "inlineCode",
+											"value": "generateMetadata"
+										},
+										{
+											"type": "text",
+											"value": " function exports are "
+										},
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "text",
+													"value": "only supported in Server Components"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "You cannot export both the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "metadata"
+										},
+										{
+											"type": "text",
+											"value": " object and "
+										},
+										{
+											"type": "inlineCode",
+											"value": "generateMetadata"
+										},
+										{
+											"type": "text",
+											"value": " function from the same route segment."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "fetch"
+										},
+										{
+											"type": "text",
+											"value": " requests inside "
+										},
+										{
+											"type": "inlineCode",
+											"value": "generateMetadata"
+										},
+										{
+											"type": "text",
+											"value": " are automatically "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/glossary#memoization",
+											"children": [
+												{
+													"type": "text",
+													"value": "memoized"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " for the same data across "
+										},
+										{
+											"type": "inlineCode",
+											"value": "generateMetadata"
+										},
+										{
+											"type": "text",
+											"value": ", "
+										},
+										{
+											"type": "inlineCode",
+											"value": "generateStaticParams"
+										},
+										{
+											"type": "text",
+											"value": ", Layouts, Pages, and Server Components."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "React "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://react.dev/reference/react/cache",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "cache"
+												},
+												{
+													"type": "text",
+													"value": " can be used"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " if "
+										},
+										{
+											"type": "inlineCode",
+											"value": "fetch"
+										},
+										{
+											"type": "text",
+											"value": " is unavailable."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/metadata",
+											"children": [
+												{
+													"type": "text",
+													"value": "File-based metadata"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " has the higher priority and will override the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "metadata"
+										},
+										{
+											"type": "text",
+											"value": " object and "
+										},
+										{
+											"type": "inlineCode",
+											"value": "generateMetadata"
+										},
+										{
+											"type": "text",
+											"value": " function."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Why "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata"
+				},
+				{
+					"type": "text",
+					"value": " is Server Component only"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata"
+				},
+				{
+					"type": "text",
+					"value": " and the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "metadata"
+				},
+				{
+					"type": "text",
+					"value": " export are only supported in Server Components because metadata must be resolved on the server before the page component is rendered. This allows Next.js to include the metadata in the initial HTML response."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you need to use Client Component features, keep your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.tsx"
+				},
+				{
+					"type": "text",
+					"value": " as a Server Component and move the Client Component logic to a separate file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import type { Metadata } from 'next'\nimport { InteractiveComponent } from './interactive-component'\n\nexport const metadata: Metadata = {\n\ttitle: 'My Page',\n}\n\nexport default function Page() {\n\treturn <InteractiveComponent />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import { InteractiveComponent } from './interactive-component'\n\nexport const metadata = {\n\ttitle: 'My Page',\n}\n\nexport default function Page() {\n\treturn <InteractiveComponent />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/interactive-component.tsx\" switcher",
+			"value": "'use client'\n\nexport function InteractiveComponent() {\n\t// Client-side interactivity (hooks, event handlers, etc.)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/interactive-component.js\" switcher",
+			"value": "'use client'\n\nexport function InteractiveComponent() {\n\t// Client-side interactivity (hooks, event handlers, etc.)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parameters"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata"
+				},
+				{
+					"type": "text",
+					"value": " function accepts the following parameters:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": true,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "props"
+								},
+								{
+									"type": "text",
+									"value": " - An object containing the parameters of the current route:"
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": true,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": true,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "params"
+												},
+												{
+													"type": "text",
+													"value": " - An object containing the "
+												},
+												{
+													"type": "link",
+													"title": null,
+													"url": "/docs/app/api-reference/file-conventions/dynamic-routes",
+													"children": [
+														{
+															"type": "text",
+															"value": "dynamic route parameters"
+														}
+													]
+												},
+												{
+													"type": "text",
+													"value": " object from the root segment down to the segment "
+												},
+												{
+													"type": "inlineCode",
+													"value": "generateMetadata"
+												},
+												{
+													"type": "text",
+													"value": " is called from. Examples:"
+												}
+											]
+										},
+										{
+											"type": "table",
+											"align": [
+												null,
+												null,
+												null
+											],
+											"children": [
+												{
+													"type": "tableRow",
+													"children": [
+														{
+															"type": "tableCell",
+															"children": [
+																{
+																	"type": "text",
+																	"value": "Route"
+																}
+															]
+														},
+														{
+															"type": "tableCell",
+															"children": [
+																{
+																	"type": "text",
+																	"value": "URL"
+																}
+															]
+														},
+														{
+															"type": "tableCell",
+															"children": [
+																{
+																	"type": "inlineCode",
+																	"value": "params"
+																}
+															]
+														}
+													]
+												},
+												{
+													"type": "tableRow",
+													"children": [
+														{
+															"type": "tableCell",
+															"children": [
+																{
+																	"type": "inlineCode",
+																	"value": "app/shop/[slug]/page.js"
+																}
+															]
+														},
+														{
+															"type": "tableCell",
+															"children": [
+																{
+																	"type": "inlineCode",
+																	"value": "/shop/1"
+																}
+															]
+														},
+														{
+															"type": "tableCell",
+															"children": [
+																{
+																	"type": "inlineCode",
+																	"value": "{ slug: '1' }"
+																}
+															]
+														}
+													]
+												},
+												{
+													"type": "tableRow",
+													"children": [
+														{
+															"type": "tableCell",
+															"children": [
+																{
+																	"type": "inlineCode",
+																	"value": "app/shop/[tag]/[item]/page.js"
+																}
+															]
+														},
+														{
+															"type": "tableCell",
+															"children": [
+																{
+																	"type": "inlineCode",
+																	"value": "/shop/1/2"
+																}
+															]
+														},
+														{
+															"type": "tableCell",
+															"children": [
+																{
+																	"type": "inlineCode",
+																	"value": "{ tag: '1', item: '2' }"
+																}
+															]
+														}
+													]
+												},
+												{
+													"type": "tableRow",
+													"children": [
+														{
+															"type": "tableCell",
+															"children": [
+																{
+																	"type": "inlineCode",
+																	"value": "app/shop/[...slug]/page.js"
+																}
+															]
+														},
+														{
+															"type": "tableCell",
+															"children": [
+																{
+																	"type": "inlineCode",
+																	"value": "/shop/1/2"
+																}
+															]
+														},
+														{
+															"type": "tableCell",
+															"children": [
+																{
+																	"type": "inlineCode",
+																	"value": "{ slug: ['1', '2'] }"
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": true,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "searchParams"
+												},
+												{
+													"type": "text",
+													"value": " - An object containing the current URL's "
+												},
+												{
+													"type": "link",
+													"title": null,
+													"url": "https://developer.mozilla.org/docs/Learn/Common_questions/What_is_a_URL#parameters",
+													"children": [
+														{
+															"type": "text",
+															"value": "search params"
+														}
+													]
+												},
+												{
+													"type": "text",
+													"value": ". Examples:"
+												}
+											]
+										},
+										{
+											"type": "table",
+											"align": [
+												null,
+												null
+											],
+											"children": [
+												{
+													"type": "tableRow",
+													"children": [
+														{
+															"type": "tableCell",
+															"children": [
+																{
+																	"type": "text",
+																	"value": "URL"
+																}
+															]
+														},
+														{
+															"type": "tableCell",
+															"children": [
+																{
+																	"type": "inlineCode",
+																	"value": "searchParams"
+																}
+															]
+														}
+													]
+												},
+												{
+													"type": "tableRow",
+													"children": [
+														{
+															"type": "tableCell",
+															"children": [
+																{
+																	"type": "inlineCode",
+																	"value": "/shop?a=1"
+																}
+															]
+														},
+														{
+															"type": "tableCell",
+															"children": [
+																{
+																	"type": "inlineCode",
+																	"value": "{ a: '1' }"
+																}
+															]
+														}
+													]
+												},
+												{
+													"type": "tableRow",
+													"children": [
+														{
+															"type": "tableCell",
+															"children": [
+																{
+																	"type": "inlineCode",
+																	"value": "/shop?a=1&b=2"
+																}
+															]
+														},
+														{
+															"type": "tableCell",
+															"children": [
+																{
+																	"type": "inlineCode",
+																	"value": "{ a: '1', b: '2' }"
+																}
+															]
+														}
+													]
+												},
+												{
+													"type": "tableRow",
+													"children": [
+														{
+															"type": "tableCell",
+															"children": [
+																{
+																	"type": "inlineCode",
+																	"value": "/shop?a=1&a=2"
+																}
+															]
+														},
+														{
+															"type": "tableCell",
+															"children": [
+																{
+																	"type": "inlineCode",
+																	"value": "{ a: ['1', '2'] }"
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "parent"
+								},
+								{
+									"type": "text",
+									"value": " - A promise of the resolved metadata from parent route segments."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata"
+				},
+				{
+					"type": "text",
+					"value": " should return a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#metadata-fields",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Metadata"
+						},
+						{
+							"type": "text",
+							"value": " object"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " containing one or more metadata fields."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "If metadata doesn't depend on request information, it should be defined using the static "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "#the-metadata-object",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "metadata"
+												},
+												{
+													"type": "text",
+													"value": " object"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " rather than "
+										},
+										{
+											"type": "inlineCode",
+											"value": "generateMetadata"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "fetch"
+										},
+										{
+											"type": "text",
+											"value": " requests are automatically memoized for the same data across "
+										},
+										{
+											"type": "inlineCode",
+											"value": "generateMetadata"
+										},
+										{
+											"type": "text",
+											"value": ", "
+										},
+										{
+											"type": "inlineCode",
+											"value": "generateStaticParams"
+										},
+										{
+											"type": "text",
+											"value": ", Layouts, Pages, and Server Components. React "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://react.dev/reference/react/cache",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "cache"
+												},
+												{
+													"type": "text",
+													"value": " can be used"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " if "
+										},
+										{
+											"type": "inlineCode",
+											"value": "fetch"
+										},
+										{
+											"type": "text",
+											"value": " is unavailable."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "searchParams"
+										},
+										{
+											"type": "text",
+											"value": " are only available in "
+										},
+										{
+											"type": "inlineCode",
+											"value": "page.js"
+										},
+										{
+											"type": "text",
+											"value": " segments."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/functions/redirect",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "redirect()"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " and "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/functions/not-found",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "notFound()"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " Next.js methods can also be used inside "
+										},
+										{
+											"type": "inlineCode",
+											"value": "generateMetadata"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Metadata Fields"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The following fields are supported:"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "title"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "title"
+				},
+				{
+					"type": "text",
+					"value": " attribute is used to set the title of the document. It can be defined as a simple "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#string",
+					"children": [
+						{
+							"type": "text",
+							"value": "string"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or an optional "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#template",
+					"children": [
+						{
+							"type": "text",
+							"value": "template object"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "text",
+					"value": "String"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\ttitle: 'Next.js',\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<title>Next.js</title>"
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "default"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "title.default"
+				},
+				{
+					"type": "text",
+					"value": " can be used to provide a "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "fallback title"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to child route segments that don't define a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "title"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\"",
+			"value": "import type { Metadata } from 'next'\n\nexport const metadata: Metadata = {\n\ttitle: {\n\t\tdefault: 'Acme',\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/about/page.tsx\"",
+			"value": "import type { Metadata } from 'next'\n\nexport const metadata: Metadata = {}\n\n// Output: <title>Acme</title>"
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "template"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "title.template"
+				},
+				{
+					"type": "text",
+					"value": " can be used to add a prefix or a suffix to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "titles"
+				},
+				{
+					"type": "text",
+					"value": " defined in "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "child"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " route segments."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import type { Metadata } from 'next'\n\nexport const metadata: Metadata = {\n\ttitle: {\n\t\ttemplate: '%s | Acme',\n\t\tdefault: 'Acme', // a default is required when creating a template\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "export const metadata = {\n\ttitle: {\n\t\ttemplate: '%s | Acme',\n\t\tdefault: 'Acme', // a default is required when creating a template\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/about/page.tsx\" switcher",
+			"value": "import type { Metadata } from 'next'\n\nexport const metadata: Metadata = {\n\ttitle: 'About',\n}\n\n// Output: <title>About | Acme</title>"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/about/page.js\" switcher",
+			"value": "export const metadata = {\n\ttitle: 'About',\n}\n\n// Output: <title>About | Acme</title>"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "title.template"
+										},
+										{
+											"type": "text",
+											"value": " applies to "
+										},
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "text",
+													"value": "child"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " route segments and "
+										},
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "text",
+													"value": "not"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " the segment it's defined in. This means:"
+										}
+									]
+								},
+								{
+									"type": "list",
+									"ordered": false,
+									"start": null,
+									"spread": false,
+									"children": [
+										{
+											"type": "listItem",
+											"spread": false,
+											"checked": null,
+											"children": [
+												{
+													"type": "paragraph",
+													"children": [
+														{
+															"type": "inlineCode",
+															"value": "title.default"
+														},
+														{
+															"type": "text",
+															"value": " is "
+														},
+														{
+															"type": "strong",
+															"children": [
+																{
+																	"type": "text",
+																	"value": "required"
+																}
+															]
+														},
+														{
+															"type": "text",
+															"value": " when you add a "
+														},
+														{
+															"type": "inlineCode",
+															"value": "title.template"
+														},
+														{
+															"type": "text",
+															"value": "."
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "listItem",
+											"spread": false,
+											"checked": null,
+											"children": [
+												{
+													"type": "paragraph",
+													"children": [
+														{
+															"type": "inlineCode",
+															"value": "title.template"
+														},
+														{
+															"type": "text",
+															"value": " defined in "
+														},
+														{
+															"type": "inlineCode",
+															"value": "layout.js"
+														},
+														{
+															"type": "text",
+															"value": " will not apply to a "
+														},
+														{
+															"type": "inlineCode",
+															"value": "title"
+														},
+														{
+															"type": "text",
+															"value": " defined in a "
+														},
+														{
+															"type": "inlineCode",
+															"value": "page.js"
+														},
+														{
+															"type": "text",
+															"value": " of the same route segment."
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "listItem",
+											"spread": false,
+											"checked": null,
+											"children": [
+												{
+													"type": "paragraph",
+													"children": [
+														{
+															"type": "inlineCode",
+															"value": "title.template"
+														},
+														{
+															"type": "text",
+															"value": " defined in "
+														},
+														{
+															"type": "inlineCode",
+															"value": "page.js"
+														},
+														{
+															"type": "text",
+															"value": " has no effect because a page is always the terminating segment (it doesn't have any children route segments)."
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "title.template"
+										},
+										{
+											"type": "text",
+											"value": " has "
+										},
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "text",
+													"value": "no effect"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " if a route has not defined a "
+										},
+										{
+											"type": "inlineCode",
+											"value": "title"
+										},
+										{
+											"type": "text",
+											"value": " or "
+										},
+										{
+											"type": "inlineCode",
+											"value": "title.default"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "absolute"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "title.absolute"
+				},
+				{
+					"type": "text",
+					"value": " can be used to provide a title that "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "ignores"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "inlineCode",
+					"value": "title.template"
+				},
+				{
+					"type": "text",
+					"value": " set in parent segments."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import type { Metadata } from 'next'\n\nexport const metadata: Metadata = {\n\ttitle: {\n\t\ttemplate: '%s | Acme',\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "export const metadata = {\n\ttitle: {\n\t\ttemplate: '%s | Acme',\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/about/page.tsx\" switcher",
+			"value": "import type { Metadata } from 'next'\n\nexport const metadata: Metadata = {\n\ttitle: {\n\t\tabsolute: 'About',\n\t},\n}\n\n// Output: <title>About</title>"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/about/page.js\" switcher",
+			"value": "export const metadata = {\n\ttitle: {\n\t\tabsolute: 'About',\n\t},\n}\n\n// Output: <title>About</title>"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "layout.js"
+										}
+									]
+								},
+								{
+									"type": "list",
+									"ordered": false,
+									"start": null,
+									"spread": false,
+									"children": [
+										{
+											"type": "listItem",
+											"spread": false,
+											"checked": null,
+											"children": [
+												{
+													"type": "paragraph",
+													"children": [
+														{
+															"type": "inlineCode",
+															"value": "title"
+														},
+														{
+															"type": "text",
+															"value": " (string) and "
+														},
+														{
+															"type": "inlineCode",
+															"value": "title.default"
+														},
+														{
+															"type": "text",
+															"value": " define the default title for child segments (that do not define their own "
+														},
+														{
+															"type": "inlineCode",
+															"value": "title"
+														},
+														{
+															"type": "text",
+															"value": "). It will augment "
+														},
+														{
+															"type": "inlineCode",
+															"value": "title.template"
+														},
+														{
+															"type": "text",
+															"value": " from the closest parent segment if it exists."
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "listItem",
+											"spread": false,
+											"checked": null,
+											"children": [
+												{
+													"type": "paragraph",
+													"children": [
+														{
+															"type": "inlineCode",
+															"value": "title.absolute"
+														},
+														{
+															"type": "text",
+															"value": " defines the default title for child segments. It ignores "
+														},
+														{
+															"type": "inlineCode",
+															"value": "title.template"
+														},
+														{
+															"type": "text",
+															"value": " from parent segments."
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "listItem",
+											"spread": false,
+											"checked": null,
+											"children": [
+												{
+													"type": "paragraph",
+													"children": [
+														{
+															"type": "inlineCode",
+															"value": "title.template"
+														},
+														{
+															"type": "text",
+															"value": " defines a new title template for child segments."
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "page.js"
+										}
+									]
+								},
+								{
+									"type": "list",
+									"ordered": false,
+									"start": null,
+									"spread": false,
+									"children": [
+										{
+											"type": "listItem",
+											"spread": false,
+											"checked": null,
+											"children": [
+												{
+													"type": "paragraph",
+													"children": [
+														{
+															"type": "text",
+															"value": "If a page does not define its own title the closest parents resolved title will be used."
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "listItem",
+											"spread": false,
+											"checked": null,
+											"children": [
+												{
+													"type": "paragraph",
+													"children": [
+														{
+															"type": "inlineCode",
+															"value": "title"
+														},
+														{
+															"type": "text",
+															"value": " (string) defines the routes title. It will augment "
+														},
+														{
+															"type": "inlineCode",
+															"value": "title.template"
+														},
+														{
+															"type": "text",
+															"value": " from the closest parent segment if it exists."
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "listItem",
+											"spread": false,
+											"checked": null,
+											"children": [
+												{
+													"type": "paragraph",
+													"children": [
+														{
+															"type": "inlineCode",
+															"value": "title.absolute"
+														},
+														{
+															"type": "text",
+															"value": " defines the route title. It ignores "
+														},
+														{
+															"type": "inlineCode",
+															"value": "title.template"
+														},
+														{
+															"type": "text",
+															"value": " from parent segments."
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "listItem",
+											"spread": false,
+											"checked": null,
+											"children": [
+												{
+													"type": "paragraph",
+													"children": [
+														{
+															"type": "inlineCode",
+															"value": "title.template"
+														},
+														{
+															"type": "text",
+															"value": " has no effect in "
+														},
+														{
+															"type": "inlineCode",
+															"value": "page.js"
+														},
+														{
+															"type": "text",
+															"value": " because a page is always the terminating segment of a route."
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "description"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\tdescription: 'The React Framework for the Web',\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<meta\n\tname=\"description\"\n\tcontent=\"The React Framework for the Web\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Other fields"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\tgenerator: 'Next.js',\n\tapplicationName: 'Next.js',\n\treferrer: 'origin-when-cross-origin',\n\tkeywords: ['Next.js', 'React', 'JavaScript'],\n\tauthors: [{ name: 'Seb' }, { name: 'Josh', url: 'https://nextjs.org' }],\n\tcreator: 'Jiachi Liu',\n\tpublisher: 'Sebastian Markbåge',\n\tformatDetection: {\n\t\temail: false,\n\t\taddress: false,\n\t\ttelephone: false,\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<meta\n\tname=\"application-name\"\n\tcontent=\"Next.js\" />\n<meta\n\tname=\"author\"\n\tcontent=\"Seb\" />\n<link\n\trel=\"author\"\n\thref=\"https://nextjs.org\" />\n<meta\n\tname=\"author\"\n\tcontent=\"Josh\" />\n<meta\n\tname=\"generator\"\n\tcontent=\"Next.js\" />\n<meta\n\tname=\"keywords\"\n\tcontent=\"Next.js,React,JavaScript\" />\n<meta\n\tname=\"referrer\"\n\tcontent=\"origin-when-cross-origin\" />\n<meta\n\tname=\"creator\"\n\tcontent=\"Jiachi Liu\" />\n<meta\n\tname=\"publisher\"\n\tcontent=\"Sebastian Markbåge\" />\n<meta\n\tname=\"format-detection\"\n\tcontent=\"telephone=no, address=no, email=no\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "metadataBase"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "metadataBase"
+				},
+				{
+					"type": "text",
+					"value": " is a convenience option to set a base URL prefix for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "metadata"
+				},
+				{
+					"type": "text",
+					"value": " fields that require a fully qualified URL."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "metadataBase"
+								},
+								{
+									"type": "text",
+									"value": " allows URL-based "
+								},
+								{
+									"type": "inlineCode",
+									"value": "metadata"
+								},
+								{
+									"type": "text",
+									"value": " fields defined in the "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "current route segment and below"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to use a "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "relative path"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " instead of an otherwise required absolute URL."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The field's relative path will be composed with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "metadataBase"
+								},
+								{
+									"type": "text",
+									"value": " to form a fully qualified URL."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\tmetadataBase: new URL('https://acme.com'),\n\talternates: {\n\t\tcanonical: '/',\n\t\tlanguages: {\n\t\t\t'en-US': '/en-US',\n\t\t\t'de-DE': '/de-DE',\n\t\t},\n\t},\n\topenGraph: {\n\t\timages: '/og-image.png',\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<link\n\trel=\"canonical\"\n\thref=\"https://acme.com\" />\n<link\n\trel=\"alternate\"\n\threflang=\"en-US\"\n\thref=\"https://acme.com/en-US\" />\n<link\n\trel=\"alternate\"\n\threflang=\"de-DE\"\n\thref=\"https://acme.com/de-DE\" />\n<meta\n\tproperty=\"og:image\"\n\tcontent=\"https://acme.com/og-image.png\" />"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "metadataBase"
+										},
+										{
+											"type": "text",
+											"value": " is typically set in root "
+										},
+										{
+											"type": "inlineCode",
+											"value": "app/layout.js"
+										},
+										{
+											"type": "text",
+											"value": " to apply to URL-based "
+										},
+										{
+											"type": "inlineCode",
+											"value": "metadata"
+										},
+										{
+											"type": "text",
+											"value": " fields across all routes."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "When "
+										},
+										{
+											"type": "inlineCode",
+											"value": "generateMetadata"
+										},
+										{
+											"type": "text",
+											"value": " uses "
+										},
+										{
+											"type": "inlineCode",
+											"value": "'use cache'"
+										},
+										{
+											"type": "text",
+											"value": ", its return value must be serializable. "
+										},
+										{
+											"type": "inlineCode",
+											"value": "URL"
+										},
+										{
+											"type": "text",
+											"value": " instances are not supported by Cache Functions, so values such as "
+										},
+										{
+											"type": "inlineCode",
+											"value": "metadataBase"
+										},
+										{
+											"type": "text",
+											"value": " should be returned as strings (for example, "
+										},
+										{
+											"type": "inlineCode",
+											"value": "url.toString()"
+										},
+										{
+											"type": "text",
+											"value": "). See "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/directives/use-cache#serialization",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "use cache"
+												},
+												{
+													"type": "text",
+													"value": " serialization requirements"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "All URL-based "
+										},
+										{
+											"type": "inlineCode",
+											"value": "metadata"
+										},
+										{
+											"type": "text",
+											"value": " fields that require absolute URLs can be configured with a "
+										},
+										{
+											"type": "inlineCode",
+											"value": "metadataBase"
+										},
+										{
+											"type": "text",
+											"value": " option."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "metadataBase"
+										},
+										{
+											"type": "text",
+											"value": " can contain a subdomain e.g. "
+										},
+										{
+											"type": "inlineCode",
+											"value": "https://app.acme.com"
+										},
+										{
+											"type": "text",
+											"value": " or base path e.g. "
+										},
+										{
+											"type": "inlineCode",
+											"value": "https://acme.com/start/from/here"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "If a "
+										},
+										{
+											"type": "inlineCode",
+											"value": "metadata"
+										},
+										{
+											"type": "text",
+											"value": " field provides an absolute URL, "
+										},
+										{
+											"type": "inlineCode",
+											"value": "metadataBase"
+										},
+										{
+											"type": "text",
+											"value": " will be ignored."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Using a relative path in a URL-based "
+										},
+										{
+											"type": "inlineCode",
+											"value": "metadata"
+										},
+										{
+											"type": "text",
+											"value": " field without configuring a "
+										},
+										{
+											"type": "inlineCode",
+											"value": "metadataBase"
+										},
+										{
+											"type": "text",
+											"value": " will cause a build error."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Next.js will normalize duplicate slashes between "
+										},
+										{
+											"type": "inlineCode",
+											"value": "metadataBase"
+										},
+										{
+											"type": "text",
+											"value": " (e.g. "
+										},
+										{
+											"type": "inlineCode",
+											"value": "https://acme.com/"
+										},
+										{
+											"type": "text",
+											"value": ") and a relative field (e.g. "
+										},
+										{
+											"type": "inlineCode",
+											"value": "/path"
+										},
+										{
+											"type": "text",
+											"value": ") to a single slash (e.g. "
+										},
+										{
+											"type": "inlineCode",
+											"value": "https://acme.com/path"
+										},
+										{
+											"type": "text",
+											"value": ")"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "URL Composition"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "URL composition favors developer intent over default directory traversal semantics."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Trailing slashes between "
+								},
+								{
+									"type": "inlineCode",
+									"value": "metadataBase"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "metadata"
+								},
+								{
+									"type": "text",
+									"value": " fields are normalized."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "An \"absolute\" path in a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "metadata"
+								},
+								{
+									"type": "text",
+									"value": " field (that typically would replace the whole URL path) is treated as a \"relative\" path (starting from the end of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "metadataBase"
+								},
+								{
+									"type": "text",
+									"value": ")."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, given the following "
+				},
+				{
+					"type": "inlineCode",
+					"value": "metadataBase"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import type { Metadata } from 'next'\n\nexport const metadata: Metadata = {\n\tmetadataBase: new URL('https://acme.com'),\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "export const metadata = {\n\tmetadataBase: new URL('https://acme.com'),\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Any "
+				},
+				{
+					"type": "inlineCode",
+					"value": "metadata"
+				},
+				{
+					"type": "text",
+					"value": " fields that inherit the above "
+				},
+				{
+					"type": "inlineCode",
+					"value": "metadataBase"
+				},
+				{
+					"type": "text",
+					"value": " and set their own value will be resolved as follows:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "metadata"
+								},
+								{
+									"type": "text",
+									"value": " field"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Resolved URL"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "https://acme.com"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "./"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "https://acme.com"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "payments"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "https://acme.com/payments"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/payments"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "https://acme.com/payments"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "./payments"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "https://acme.com/payments"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "../payments"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "https://acme.com/payments"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "https://beta.acme.com/payments"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "https://beta.acme.com/payments"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "openGraph"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\topenGraph: {\n\t\ttitle: 'Next.js',\n\t\tdescription: 'The React Framework for the Web',\n\t\turl: 'https://nextjs.org',\n\t\tsiteName: 'Next.js',\n\t\timages: [\n\t\t\t{\n\t\t\t\turl: 'https://nextjs.org/og.png', // Must be an absolute URL\n\t\t\t\twidth: 800,\n\t\t\t\theight: 600,\n\t\t\t},\n\t\t\t{\n\t\t\t\turl: 'https://nextjs.org/og-alt.png', // Must be an absolute URL\n\t\t\t\twidth: 1800,\n\t\t\t\theight: 1600,\n\t\t\t\talt: 'My custom alt',\n\t\t\t},\n\t\t],\n\t\tvideos: [\n\t\t\t{\n\t\t\t\turl: 'https://nextjs.org/video.mp4', // Must be an absolute URL\n\t\t\t\twidth: 800,\n\t\t\t\theight: 600,\n\t\t\t},\n\t\t],\n\t\taudio: [\n\t\t\t{\n\t\t\t\turl: 'https://nextjs.org/audio.mp3', // Must be an absolute URL\n\t\t\t},\n\t\t],\n\t\tlocale: 'en_US',\n\t\ttype: 'website',\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<meta\n\tproperty=\"og:title\"\n\tcontent=\"Next.js\" />\n<meta\n\tproperty=\"og:description\"\n\tcontent=\"The React Framework for the Web\" />\n<meta\n\tproperty=\"og:url\"\n\tcontent=\"https://nextjs.org/\" />\n<meta\n\tproperty=\"og:site_name\"\n\tcontent=\"Next.js\" />\n<meta\n\tproperty=\"og:locale\"\n\tcontent=\"en_US\" />\n<meta\n\tproperty=\"og:image\"\n\tcontent=\"https://nextjs.org/og.png\" />\n<meta\n\tproperty=\"og:image:width\"\n\tcontent=\"800\" />\n<meta\n\tproperty=\"og:image:height\"\n\tcontent=\"600\" />\n<meta\n\tproperty=\"og:image\"\n\tcontent=\"https://nextjs.org/og-alt.png\" />\n<meta\n\tproperty=\"og:image:width\"\n\tcontent=\"1800\" />\n<meta\n\tproperty=\"og:image:height\"\n\tcontent=\"1600\" />\n<meta\n\tproperty=\"og:image:alt\"\n\tcontent=\"My custom alt\" />\n<meta\n\tproperty=\"og:video\"\n\tcontent=\"https://nextjs.org/video.mp4\" />\n<meta\n\tproperty=\"og:video:width\"\n\tcontent=\"800\" />\n<meta\n\tproperty=\"og:video:height\"\n\tcontent=\"600\" />\n<meta\n\tproperty=\"og:audio\"\n\tcontent=\"https://nextjs.org/audio.mp3\" />\n<meta\n\tproperty=\"og:type\"\n\tcontent=\"website\" />"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\topenGraph: {\n\t\ttitle: 'Next.js',\n\t\tdescription: 'The React Framework for the Web',\n\t\ttype: 'article',\n\t\tpublishedTime: '2023-01-01T00:00:00.000Z',\n\t\tauthors: ['Seb', 'Josh'],\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<meta\n\tproperty=\"og:title\"\n\tcontent=\"Next.js\" />\n<meta\n\tproperty=\"og:description\"\n\tcontent=\"The React Framework for the Web\" />\n<meta\n\tproperty=\"og:type\"\n\tcontent=\"article\" />\n<meta\n\tproperty=\"article:published_time\"\n\tcontent=\"2023-01-01T00:00:00.000Z\" />\n<meta\n\tproperty=\"article:author\"\n\tcontent=\"Seb\" />\n<meta\n\tproperty=\"article:author\"\n\tcontent=\"Josh\" />"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "It may be more convenient to use the "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/metadata/opengraph-image#image-files-jpg-png-gif",
+											"children": [
+												{
+													"type": "text",
+													"value": "file-based Metadata API"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " for Open Graph images. Rather than having to sync the config export with actual files, the file-based API will automatically generate the correct metadata for you."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "robots"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"layout.tsx | page.tsx\"",
+			"value": "import type { Metadata } from 'next'\n\nexport const metadata: Metadata = {\n\trobots: {\n\t\tindex: true,\n\t\tfollow: true,\n\t\tnocache: false,\n\t\tgoogleBot: {\n\t\t\tindex: true,\n\t\t\tfollow: true,\n\t\t\tnoimageindex: false,\n\t\t\t'max-video-preview': -1,\n\t\t\t'max-image-preview': 'large',\n\t\t\t'max-snippet': -1,\n\t\t},\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<meta\n\tname=\"robots\"\n\tcontent=\"index, follow\" />\n<meta\n\tname=\"googlebot\"\n\tcontent=\"index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "icons"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": We recommend using the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/file-conventions/metadata/app-icons#image-files-ico-jpg-png",
+							"children": [
+								{
+									"type": "text",
+									"value": "file-based Metadata API"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for icons where possible. Rather than having to sync the config export with actual files, the file-based API will automatically generate the correct metadata for you."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\ticons: {\n\t\ticon: '/icon.png',\n\t\tshortcut: '/shortcut-icon.png',\n\t\tapple: '/apple-icon.png',\n\t\tother: {\n\t\t\trel: 'apple-touch-icon-precomposed',\n\t\t\turl: '/apple-touch-icon-precomposed.png',\n\t\t},\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<link\n\trel=\"shortcut icon\"\n\thref=\"/shortcut-icon.png\" />\n<link\n\trel=\"icon\"\n\thref=\"/icon.png\" />\n<link\n\trel=\"apple-touch-icon\"\n\thref=\"/apple-icon.png\" />\n<link\n\trel=\"apple-touch-icon-precomposed\"\n\thref=\"/apple-touch-icon-precomposed.png\" />"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\ticons: {\n\t\ticon: [{ url: '/icon.png' }, new URL('/icon.png', 'https://example.com'), { url: '/icon-dark.png', media: '(prefers-color-scheme: dark)' }],\n\t\tshortcut: ['/shortcut-icon.png'],\n\t\tapple: [{ url: '/apple-icon.png' }, { url: '/apple-icon-x3.png', sizes: '180x180', type: 'image/png' }],\n\t\tother: [\n\t\t\t{\n\t\t\t\trel: 'apple-touch-icon-precomposed',\n\t\t\t\turl: '/apple-touch-icon-precomposed.png',\n\t\t\t},\n\t\t],\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<link\n\trel=\"shortcut icon\"\n\thref=\"/shortcut-icon.png\" />\n<link\n\trel=\"icon\"\n\thref=\"/icon.png\" />\n<link\n\trel=\"icon\"\n\thref=\"https://example.com/icon.png\" />\n<link\n\trel=\"icon\"\n\thref=\"/icon-dark.png\"\n\tmedia=\"(prefers-color-scheme: dark)\" />\n<link\n\trel=\"apple-touch-icon\"\n\thref=\"/apple-icon.png\" />\n<link\n\trel=\"apple-touch-icon-precomposed\"\n\thref=\"/apple-touch-icon-precomposed.png\" />\n<link\n\trel=\"apple-touch-icon\"\n\thref=\"/apple-icon-x3.png\"\n\tsizes=\"180x180\"\n\ttype=\"image/png\" />"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": The "
+						},
+						{
+							"type": "inlineCode",
+							"value": "msapplication-*"
+						},
+						{
+							"type": "text",
+							"value": " meta tags are no longer supported in Chromium builds of Microsoft Edge, and thus no longer needed."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "themeColor"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Deprecated"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": The "
+						},
+						{
+							"type": "inlineCode",
+							"value": "themeColor"
+						},
+						{
+							"type": "text",
+							"value": " option in "
+						},
+						{
+							"type": "inlineCode",
+							"value": "metadata"
+						},
+						{
+							"type": "text",
+							"value": " is deprecated as of Next.js 14. Please use the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/generate-viewport",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "viewport"
+								},
+								{
+									"type": "text",
+									"value": " configuration"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " instead."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "colorScheme"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Deprecated"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": The "
+						},
+						{
+							"type": "inlineCode",
+							"value": "colorScheme"
+						},
+						{
+							"type": "text",
+							"value": " option in "
+						},
+						{
+							"type": "inlineCode",
+							"value": "metadata"
+						},
+						{
+							"type": "text",
+							"value": " is deprecated as of Next.js 14. Please use the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/generate-viewport",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "viewport"
+								},
+								{
+									"type": "text",
+									"value": " configuration"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " instead."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "manifest"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A web application manifest, as defined in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/Manifest",
+					"children": [
+						{
+							"type": "text",
+							"value": "Web Application Manifest specification"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\tmanifest: 'https://nextjs.org/manifest.json',\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<link\n\trel=\"manifest\"\n\thref=\"https://nextjs.org/manifest.json\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "twitter"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The Twitter specification is (surprisingly) used for more than just X (formerly known as Twitter)."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn more about the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.x.com/en/docs/twitter-for-websites/cards/overview/markup",
+					"children": [
+						{
+							"type": "text",
+							"value": "Twitter Card markup reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\ttwitter: {\n\t\tcard: 'summary_large_image',\n\t\ttitle: 'Next.js',\n\t\tdescription: 'The React Framework for the Web',\n\t\tsiteId: '1467726470533754880',\n\t\tcreator: '@nextjs',\n\t\tcreatorId: '1467726470533754880',\n\t\timages: ['https://nextjs.org/og.png'], // Must be an absolute URL\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<meta\n\tname=\"twitter:card\"\n\tcontent=\"summary_large_image\" />\n<meta\n\tname=\"twitter:site:id\"\n\tcontent=\"1467726470533754880\" />\n<meta\n\tname=\"twitter:creator\"\n\tcontent=\"@nextjs\" />\n<meta\n\tname=\"twitter:creator:id\"\n\tcontent=\"1467726470533754880\" />\n<meta\n\tname=\"twitter:title\"\n\tcontent=\"Next.js\" />\n<meta\n\tname=\"twitter:description\"\n\tcontent=\"The React Framework for the Web\" />\n<meta\n\tname=\"twitter:image\"\n\tcontent=\"https://nextjs.org/og.png\" />"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\ttwitter: {\n\t\tcard: 'app',\n\t\ttitle: 'Next.js',\n\t\tdescription: 'The React Framework for the Web',\n\t\tsiteId: '1467726470533754880',\n\t\tcreator: '@nextjs',\n\t\tcreatorId: '1467726470533754880',\n\t\timages: {\n\t\t\turl: 'https://nextjs.org/og.png',\n\t\t\talt: 'Next.js Logo',\n\t\t},\n\t\tapp: {\n\t\t\tname: 'twitter_app',\n\t\t\tid: {\n\t\t\t\tiphone: 'twitter_app://iphone',\n\t\t\t\tipad: 'twitter_app://ipad',\n\t\t\t\tgoogleplay: 'twitter_app://googleplay',\n\t\t\t},\n\t\t\turl: {\n\t\t\t\tiphone: 'https://iphone_url',\n\t\t\t\tipad: 'https://ipad_url',\n\t\t\t},\n\t\t},\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<meta\n\tname=\"twitter:site:id\"\n\tcontent=\"1467726470533754880\" />\n<meta\n\tname=\"twitter:creator\"\n\tcontent=\"@nextjs\" />\n<meta\n\tname=\"twitter:creator:id\"\n\tcontent=\"1467726470533754880\" />\n<meta\n\tname=\"twitter:title\"\n\tcontent=\"Next.js\" />\n<meta\n\tname=\"twitter:description\"\n\tcontent=\"The React Framework for the Web\" />\n<meta\n\tname=\"twitter:card\"\n\tcontent=\"app\" />\n<meta\n\tname=\"twitter:image\"\n\tcontent=\"https://nextjs.org/og.png\" />\n<meta\n\tname=\"twitter:image:alt\"\n\tcontent=\"Next.js Logo\" />\n<meta\n\tname=\"twitter:app:name:iphone\"\n\tcontent=\"twitter_app\" />\n<meta\n\tname=\"twitter:app:id:iphone\"\n\tcontent=\"twitter_app://iphone\" />\n<meta\n\tname=\"twitter:app:id:ipad\"\n\tcontent=\"twitter_app://ipad\" />\n<meta\n\tname=\"twitter:app:id:googleplay\"\n\tcontent=\"twitter_app://googleplay\" />\n<meta\n\tname=\"twitter:app:url:iphone\"\n\tcontent=\"https://iphone_url\" />\n<meta\n\tname=\"twitter:app:url:ipad\"\n\tcontent=\"https://ipad_url\" />\n<meta\n\tname=\"twitter:app:name:ipad\"\n\tcontent=\"twitter_app\" />\n<meta\n\tname=\"twitter:app:name:googleplay\"\n\tcontent=\"twitter_app\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "viewport"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Deprecated"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": The "
+						},
+						{
+							"type": "inlineCode",
+							"value": "viewport"
+						},
+						{
+							"type": "text",
+							"value": " option in "
+						},
+						{
+							"type": "inlineCode",
+							"value": "metadata"
+						},
+						{
+							"type": "text",
+							"value": " is deprecated as of Next.js 14. Please use the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/generate-viewport",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "viewport"
+								},
+								{
+									"type": "text",
+									"value": " configuration"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " instead."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "verification"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\tverification: {\n\t\tgoogle: 'google',\n\t\tyandex: 'yandex',\n\t\tyahoo: 'yahoo',\n\t\tother: {\n\t\t\tme: ['my-email', 'my-link'],\n\t\t},\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<meta\n\tname=\"google-site-verification\"\n\tcontent=\"google\" />\n<meta\n\tname=\"y_key\"\n\tcontent=\"yahoo\" />\n<meta\n\tname=\"yandex-verification\"\n\tcontent=\"yandex\" />\n<meta\n\tname=\"me\"\n\tcontent=\"my-email\" />\n<meta\n\tname=\"me\"\n\tcontent=\"my-link\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "appleWebApp"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\titunes: {\n\t\tappId: 'myAppStoreID',\n\t\tappArgument: 'myAppArgument',\n\t},\n\tappleWebApp: {\n\t\ttitle: 'Apple Web App',\n\t\tstatusBarStyle: 'black-translucent',\n\t\tstartupImage: [\n\t\t\t'/assets/startup/apple-touch-startup-image-768x1004.png',\n\t\t\t{\n\t\t\t\turl: '/assets/startup/apple-touch-startup-image-1536x2008.png',\n\t\t\t\tmedia: '(device-width: 768px) and (device-height: 1024px)',\n\t\t\t},\n\t\t],\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<meta\n\tname=\"apple-itunes-app\"\n\tcontent=\"app-id=myAppStoreID, app-argument=myAppArgument\" />\n<meta\n\tname=\"mobile-web-app-capable\"\n\tcontent=\"yes\" />\n<meta\n\tname=\"apple-mobile-web-app-title\"\n\tcontent=\"Apple Web App\" />\n<link\n\thref=\"/assets/startup/apple-touch-startup-image-768x1004.png\"\n\trel=\"apple-touch-startup-image\" />\n<link\n\thref=\"/assets/startup/apple-touch-startup-image-1536x2008.png\"\n\tmedia=\"(device-width: 768px) and (device-height: 1024px)\"\n\trel=\"apple-touch-startup-image\" />\n<meta\n\tname=\"apple-mobile-web-app-status-bar-style\"\n\tcontent=\"black-translucent\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "alternates"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\talternates: {\n\t\tcanonical: 'https://nextjs.org',\n\t\tlanguages: {\n\t\t\t'en-US': 'https://nextjs.org/en-US',\n\t\t\t'de-DE': 'https://nextjs.org/de-DE',\n\t\t},\n\t\tmedia: {\n\t\t\t'only screen and (max-width: 600px)': 'https://nextjs.org/mobile',\n\t\t},\n\t\ttypes: {\n\t\t\t'application/rss+xml': 'https://nextjs.org/rss',\n\t\t},\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<link\n\trel=\"canonical\"\n\thref=\"https://nextjs.org\" />\n<link\n\trel=\"alternate\"\n\threflang=\"en-US\"\n\thref=\"https://nextjs.org/en-US\" />\n<link\n\trel=\"alternate\"\n\threflang=\"de-DE\"\n\thref=\"https://nextjs.org/de-DE\" />\n<link\n\trel=\"alternate\"\n\tmedia=\"only screen and (max-width: 600px)\"\n\thref=\"https://nextjs.org/mobile\" />\n<link\n\trel=\"alternate\"\n\ttype=\"application/rss+xml\"\n\thref=\"https://nextjs.org/rss\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "appLinks"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\tappLinks: {\n\t\tios: {\n\t\t\turl: 'https://nextjs.org/ios',\n\t\t\tapp_store_id: 'app_store_id',\n\t\t},\n\t\tandroid: {\n\t\t\tpackage: 'com.example.android/package',\n\t\t\tapp_name: 'app_name_android',\n\t\t},\n\t\tweb: {\n\t\t\turl: 'https://nextjs.org/web',\n\t\t\tshould_fallback: true,\n\t\t},\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<meta\n\tproperty=\"al:ios:url\"\n\tcontent=\"https://nextjs.org/ios\" />\n<meta\n\tproperty=\"al:ios:app_store_id\"\n\tcontent=\"app_store_id\" />\n<meta\n\tproperty=\"al:android:package\"\n\tcontent=\"com.example.android/package\" />\n<meta\n\tproperty=\"al:android:app_name\"\n\tcontent=\"app_name_android\" />\n<meta\n\tproperty=\"al:web:url\"\n\tcontent=\"https://nextjs.org/web\" />\n<meta\n\tproperty=\"al:web:should_fallback\"\n\tcontent=\"true\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "archives"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Describes a collection of records, documents, or other materials of historical interest ("
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.w3.org/TR/2011/WD-html5-20110113/links.html#rel-archives",
+					"children": [
+						{
+							"type": "text",
+							"value": "source"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ")."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\tarchives: ['https://nextjs.org/13'],\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<link\n\trel=\"archives\"\n\thref=\"https://nextjs.org/13\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "assets"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\tassets: ['https://nextjs.org/assets'],\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<link\n\trel=\"assets\"\n\thref=\"https://nextjs.org/assets\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "bookmarks"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\tbookmarks: ['https://nextjs.org/13'],\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<link\n\trel=\"bookmarks\"\n\thref=\"https://nextjs.org/13\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "pagination"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Describes the previous and next pages in a paginated sequence."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\tpagination: {\n\t\tprevious: 'https://nextjs.org/blog?page=1',\n\t\tnext: 'https://nextjs.org/blog?page=3',\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<link\n\trel=\"prev\"\n\thref=\"https://nextjs.org/blog?page=1\" />\n<link\n\trel=\"next\"\n\thref=\"https://nextjs.org/blog?page=3\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "category"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\tcategory: 'technology',\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<meta\n\tname=\"category\"\n\tcontent=\"technology\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "facebook"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can connect a Facebook app or Facebook account to your webpage for certain Facebook Social Plugins "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developers.facebook.com/docs/plugins/comments/#moderation-setup-instructions",
+					"children": [
+						{
+							"type": "text",
+							"value": "Facebook Documentation"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": You can specify either appId or admins, but not both."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\tfacebook: {\n\t\tappId: '12345678',\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<meta\n\tproperty=\"fb:app_id\"\n\tcontent=\"12345678\" />"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\tfacebook: {\n\t\tadmins: '12345678',\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<meta\n\tproperty=\"fb:admins\"\n\tcontent=\"12345678\" />"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you want to generate multiple fb:admins meta tags you can use array value."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\tfacebook: {\n\t\tadmins: ['12345678', '87654321'],\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<meta\n\tproperty=\"fb:admins\"\n\tcontent=\"12345678\" />\n<meta\n\tproperty=\"fb:admins\"\n\tcontent=\"87654321\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "pinterest"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can enable or disable "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developers.pinterest.com/docs/web-features/rich-pins-overview/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Pinterest Rich Pins"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " on your webpage."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\tpinterest: {\n\t\trichPin: true,\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<meta\n\tname=\"pinterest-rich-pin\"\n\tcontent=\"true\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "other"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "All metadata options should be covered using the built-in support. However, there may be custom metadata tags specific to your site, or brand new metadata tags just released. You can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "other"
+				},
+				{
+					"type": "text",
+					"value": " option to render any custom metadata tag."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\tother: {\n\t\tcustom: 'meta',\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<meta\n\tname=\"custom\"\n\tcontent=\"meta\" />"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you want to generate multiple same key meta tags you can use array value."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "export const metadata = {\n\tother: {\n\t\tcustom: ['meta1', 'meta2'],\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<meta\n\tname=\"custom\"\n\tcontent=\"meta1\" />\n<meta\n\tname=\"custom\"\n\tcontent=\"meta2\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Types"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can add type safety to your metadata by using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Metadata"
+				},
+				{
+					"type": "text",
+					"value": " type. If you are using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/typescript",
+					"children": [
+						{
+							"type": "text",
+							"value": "built-in TypeScript plugin"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in your IDE, you do not need to manually add the type, but you can still explicitly add it if you want."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "metadata"
+				},
+				{
+					"type": "text",
+					"value": " object"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"layout.tsx | page.tsx\"",
+			"value": "import type { Metadata } from 'next'\n\nexport const metadata: Metadata = {\n\ttitle: 'Next.js',\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata"
+				},
+				{
+					"type": "text",
+					"value": " function"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "text",
+					"value": "Regular function"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"layout.tsx | page.tsx\"",
+			"value": "import type { Metadata } from 'next'\n\nexport function generateMetadata(): Metadata {\n\treturn {\n\t\ttitle: 'Next.js',\n\t}\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "text",
+					"value": "Async function"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"layout.tsx | page.tsx\"",
+			"value": "import type { Metadata } from 'next'\n\nexport async function generateMetadata(): Promise<Metadata> {\n\treturn {\n\t\ttitle: 'Next.js',\n\t}\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "text",
+					"value": "With segment props"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"layout.tsx | page.tsx\"",
+			"value": "import type { Metadata } from 'next'\n\ntype Props = {\n\tparams: Promise<{ id: string }>\n\tsearchParams: Promise<{ [key: string]: string | string[] | undefined }>\n}\n\nexport function generateMetadata({ params, searchParams }: Props): Metadata {\n\treturn {\n\t\ttitle: 'Next.js',\n\t}\n}\n\nexport default function Page({ params, searchParams }: Props) {}"
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "text",
+					"value": "With parent metadata"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"layout.tsx | page.tsx\"",
+			"value": "import type { Metadata, ResolvingMetadata } from 'next'\n\nexport async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {\n\treturn {\n\t\ttitle: 'Next.js',\n\t}\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "text",
+					"value": "JavaScript Projects"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For JavaScript projects, you can use JSDoc to add type safety."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"layout.js | page.js\"",
+			"value": "/** @type {import(\"next\").Metadata} */\nexport const metadata = {\n\ttitle: 'Next.js',\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Unsupported Metadata"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The following metadata types do not currently have built-in support. However, they can still be rendered in the layout or page itself."
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Metadata"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Recommendation"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<meta http-equiv=\"...\">"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Use appropriate HTTP Headers via "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/redirect",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "redirect()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/proxy#nextresponse",
+									"children": [
+										{
+											"type": "text",
+											"value": "Proxy"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/headers",
+									"children": [
+										{
+											"type": "text",
+											"value": "Security Headers"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<base>"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Render the tag in the layout or page itself."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<noscript>"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Render the tag in the layout or page itself."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<style>"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Learn more about "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/css",
+									"children": [
+										{
+											"type": "text",
+											"value": "styling in Next.js"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<script>"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Learn more about "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/scripts",
+									"children": [
+										{
+											"type": "text",
+											"value": "using scripts"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<link rel=\"stylesheet\" />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "import"
+								},
+								{
+									"type": "text",
+									"value": " stylesheets directly in the layout or page itself."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<link rel=\"preload\" />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Use "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#link-relpreload",
+									"children": [
+										{
+											"type": "text",
+											"value": "ReactDOM preload method"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<link rel=\"preconnect\" />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Use "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#link-relpreconnect",
+									"children": [
+										{
+											"type": "text",
+											"value": "ReactDOM preconnect method"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<link rel=\"dns-prefetch\" />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Use "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#link-reldns-prefetch",
+									"children": [
+										{
+											"type": "text",
+											"value": "ReactDOM prefetchDNS method"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Resource hints"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<link>"
+				},
+				{
+					"type": "text",
+					"value": " element has a number of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "rel"
+				},
+				{
+					"type": "text",
+					"value": " keywords that can be used to hint to the browser that an external resource is likely to be needed. The browser uses this information to apply preloading optimizations depending on the keyword."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "While the Metadata API doesn't directly support these hints, you can use new "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/facebook/react/pull/26237",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "ReactDOM"
+						},
+						{
+							"type": "text",
+							"value": " methods"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to safely insert them into the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<head>"
+				},
+				{
+					"type": "text",
+					"value": " of the document."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/preload-resources.tsx\" switcher",
+			"value": "'use client'\n\nimport ReactDOM from 'react-dom'\n\nexport function PreloadResources() {\n\tReactDOM.preload('...', { as: '...' })\n\tReactDOM.preconnect('...', { crossOrigin: '...' })\n\tReactDOM.prefetchDNS('...')\n\n\treturn '...'\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/preload-resources.js\" switcher",
+			"value": "'use client'\n\nimport ReactDOM from 'react-dom'\n\nexport function PreloadResources() {\n\tReactDOM.preload('...', { as: '...' })\n\tReactDOM.preconnect('...', { crossOrigin: '...' })\n\tReactDOM.prefetchDNS('...')\n\n\treturn '...'\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "<link rel=\"preload\">"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Start loading a resource early in the page rendering (browser) lifecycle. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/HTML/Attributes/rel/preload",
+					"children": [
+						{
+							"type": "text",
+							"value": "MDN Docs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "ReactDOM.preload(href: string, options: { as: string })"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<link\n\trel=\"preload\"\n\thref=\"...\"\n\tas=\"...\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "<link rel=\"preconnect\">"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Preemptively initiate a connection to an origin. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/HTML/Attributes/rel/preconnect",
+					"children": [
+						{
+							"type": "text",
+							"value": "MDN Docs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "ReactDOM.preconnect(href: string, options?: { crossOrigin?: string })"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<link\n\trel=\"preconnect\"\n\thref=\"...\"\n\tcrossorigin />"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "<link rel=\"dns-prefetch\">"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Attempt to resolve a domain name before resources get requested. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/HTML/Attributes/rel/dns-prefetch",
+					"children": [
+						{
+							"type": "text",
+							"value": "MDN Docs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "ReactDOM.prefetchDNS(href: string)"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"<head> output\" hideLineNumbers",
+			"value": "<link\n\trel=\"dns-prefetch\"\n\thref=\"...\" />"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "These methods are currently only supported in Client Components, which are still Server Side Rendered on initial page load."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Next.js in-built features such as "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next/font"
+										},
+										{
+											"type": "text",
+											"value": ", "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next/image"
+										},
+										{
+											"type": "text",
+											"value": " and "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next/script"
+										},
+										{
+											"type": "text",
+											"value": " automatically handle relevant resource hints."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Behavior"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Default Fields"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There are two default "
+				},
+				{
+					"type": "inlineCode",
+					"value": "meta"
+				},
+				{
+					"type": "text",
+					"value": " tags that are always added even if a route doesn't define metadata:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/docs/Web/HTML/Element/meta#attr-charset",
+									"children": [
+										{
+											"type": "text",
+											"value": "meta charset tag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " sets the character encoding for the website."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/docs/Web/HTML/Viewport_meta_tag",
+									"children": [
+										{
+											"type": "text",
+											"value": "meta viewport tag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " sets the viewport width and scale for the website to adjust for different devices."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": null,
+			"value": "<meta charset=\"utf-8\" />\n<meta\n\tname=\"viewport\"\n\tcontent=\"width=device-width, initial-scale=1\" />"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": You can overwrite the default "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/generate-metadata#viewport",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "viewport"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " meta tag."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Streaming metadata"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Streaming metadata allows Next.js to render and send the initial UI to the browser, without waiting for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata"
+				},
+				{
+					"type": "text",
+					"value": " to complete."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata"
+				},
+				{
+					"type": "text",
+					"value": " resolves, the resulting metadata tags are appended to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<body>"
+				},
+				{
+					"type": "text",
+					"value": " tag. We have verified that metadata is interpreted correctly by bots that execute JavaScript and inspect the full DOM (e.g. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Googlebot"
+				},
+				{
+					"type": "text",
+					"value": ")."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "HTML-limited bots"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " that can’t execute JavaScript (e.g. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "facebookexternalhit"
+				},
+				{
+					"type": "text",
+					"value": "), metadata continues to block page rendering. The resulting metadata will be available in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<head>"
+				},
+				{
+					"type": "text",
+					"value": " tag."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js automatically detects "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "HTML-limited bots"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " by looking at the User Agent header. You can use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/htmlLimitedBots",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "htmlLimitedBots"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " option in your Next.js config file to override the default "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/blob/canary/packages/next/src/shared/lib/router/utils/html-bots.ts",
+					"children": [
+						{
+							"type": "text",
+							"value": "User Agent list"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To fully disable streaming metadata:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst config: NextConfig = {\n\thtmlLimitedBots: /.*/,\n}\n\nexport default config"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "module.exports = {\n\thtmlLimitedBots: /.*/,\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Streaming metadata improves perceived performance by reducing "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Glossary/Time_to_first_byte",
+					"children": [
+						{
+							"type": "text",
+							"value": "TTFB"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and can help lowering "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Glossary/Largest_contentful_paint",
+					"children": [
+						{
+							"type": "text",
+							"value": "LCP"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " time."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Overriding "
+				},
+				{
+					"type": "inlineCode",
+					"value": "htmlLimitedBots"
+				},
+				{
+					"type": "text",
+					"value": " could lead to longer response times. Streaming metadata is an advanced feature, and the default should be sufficient for most cases."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "With Cache Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is enabled, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata"
+				},
+				{
+					"type": "text",
+					"value": " follows the same rules as other components. If metadata accesses runtime data ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": ") or performs uncached data fetching, it defers to request time."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "How Next.js handles this depends on the rest of your page:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "If other parts also defer to request time"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Prerendering generates a static shell, and metadata streams in with other deferred content."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "If the page or layout is otherwise fully prerenderable"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Next.js requires an explicit choice: cache the data if possible, or signal that deferred rendering is intentional."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Streaming metadata at runtime while the rest of the page is fully prerenderable is not common. To ensure this behavior is intentional, an error is raised indicating which page or layout needs to be handled."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To resolve this, you have two options. If metadata depends on external data but not runtime data, use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" highlight={2}",
+			"value": "export async function generateMetadata() {\n\t'use cache'\n\tconst { title, description } = await db.query('site-metadata')\n\treturn { title, description }\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If metadata genuinely requires runtime data, add a dynamic marker component to your page:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" highlight={11-14,19,31}",
+			"value": "import { Suspense } from 'react'\nimport { cookies } from 'next/headers'\nimport { connection } from 'next/server'\n\nexport async function generateMetadata() {\n\tconst token = (await cookies()).get('token')?.value\n\t// ... use token to fetch personalized metadata\n\treturn { title: 'Personalized Title' }\n}\n\nconst Connection = async () => {\n\tawait connection()\n\treturn null\n}\n\nasync function DynamicMarker() {\n\treturn (\n\t\t<Suspense>\n\t\t\t<Connection />\n\t\t</Suspense>\n\t)\n}\n\nexport default function Page() {\n\t// DO NOT place await connection() here\n\t// doing so prevents the article tag content from\n\t// being included in the static shell\n\treturn (\n\t\t<>\n\t\t\t<article>Static content</article>\n\t\t\t<DynamicMarker />\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "DynamicMarker"
+				},
+				{
+					"type": "text",
+					"value": " component renders nothing but tells Next.js the page has intentional dynamic content. By wrapping it in Suspense, the static content still prerenders normally."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/blocking-prerender-metadata-runtime",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js encountered runtime data in "
+						},
+						{
+							"type": "inlineCode",
+							"value": "generateMetadata()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/blocking-prerender-metadata-dynamic",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js encountered uncached data in "
+						},
+						{
+							"type": "inlineCode",
+							"value": "generateMetadata()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for full fix options and trade-offs."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Ordering"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Metadata is evaluated in order, starting from the root segment down to the segment closest to the final "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.js"
+				},
+				{
+					"type": "text",
+					"value": " segment. For example:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/layout.tsx"
+								},
+								{
+									"type": "text",
+									"value": " (Root Layout)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/blog/layout.tsx"
+								},
+								{
+									"type": "text",
+									"value": " (Nested Blog Layout)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/blog/[slug]/page.tsx"
+								},
+								{
+									"type": "text",
+									"value": " (Blog Page)"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Merging"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Following the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#ordering",
+					"children": [
+						{
+							"type": "text",
+							"value": "evaluation order"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", Metadata objects exported from multiple segments in the same route are "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "shallowly"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " merged together to form the final metadata output of a route. Duplicate keys are "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "replaced"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " based on their ordering."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This means metadata with nested fields such as "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-metadata#opengraph",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "openGraph"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-metadata#robots",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "robots"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " that are defined in an earlier segment are "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "overwritten"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " by the last segment to define them."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Overwriting fields"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\"",
+			"value": "export const metadata = {\n\ttitle: 'Acme',\n\topenGraph: {\n\t\ttitle: 'Acme',\n\t\tdescription: 'Acme is a...',\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/page.js\"",
+			"value": "export const metadata = {\n\ttitle: 'Blog',\n\topenGraph: {\n\t\ttitle: 'Blog',\n\t},\n}\n\n// Output:\n// <title>Blog</title>\n// <meta property=\"og:title\" content=\"Blog\" />"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the example above:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "title"
+								},
+								{
+									"type": "text",
+									"value": " from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/layout.js"
+								},
+								{
+									"type": "text",
+									"value": " is "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "replaced"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " by "
+								},
+								{
+									"type": "inlineCode",
+									"value": "title"
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/blog/page.js"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "All "
+								},
+								{
+									"type": "inlineCode",
+									"value": "openGraph"
+								},
+								{
+									"type": "text",
+									"value": " fields from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/layout.js"
+								},
+								{
+									"type": "text",
+									"value": " are "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "replaced"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/blog/page.js"
+								},
+								{
+									"type": "text",
+									"value": " because "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/blog/page.js"
+								},
+								{
+									"type": "text",
+									"value": " sets "
+								},
+								{
+									"type": "inlineCode",
+									"value": "openGraph"
+								},
+								{
+									"type": "text",
+									"value": " metadata. Note the absence of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "openGraph.description"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you'd like to share some nested fields between segments while overwriting others, you can pull them out into a separate variable:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/shared-metadata.js\"",
+			"value": "export const openGraphImage = { images: ['http://...'] }"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\"",
+			"value": "import { openGraphImage } from './shared-metadata'\n\nexport const metadata = {\n\topenGraph: {\n\t\t...openGraphImage,\n\t\ttitle: 'Home',\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/about/page.js\"",
+			"value": "import { openGraphImage } from '../shared-metadata'\n\nexport const metadata = {\n\topenGraph: {\n\t\t...openGraphImage,\n\t\ttitle: 'About',\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the example above, the OG image is shared between "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/layout.js"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/about/page.js"
+				},
+				{
+					"type": "text",
+					"value": " while the titles are different."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Inheriting fields"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\"",
+			"value": "export const metadata = {\n\ttitle: 'Acme',\n\topenGraph: {\n\t\ttitle: 'Acme',\n\t\tdescription: 'Acme is a...',\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/about/page.js\"",
+			"value": "export const metadata = {\n\ttitle: 'About',\n}\n\n// Output:\n// <title>About</title>\n// <meta property=\"og:title\" content=\"Acme\" />\n// <meta property=\"og:description\" content=\"Acme is a...\" />"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Notes"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "title"
+								},
+								{
+									"type": "text",
+									"value": " from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/layout.js"
+								},
+								{
+									"type": "text",
+									"value": " is "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "replaced"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " by "
+								},
+								{
+									"type": "inlineCode",
+									"value": "title"
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/about/page.js"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "All "
+								},
+								{
+									"type": "inlineCode",
+									"value": "openGraph"
+								},
+								{
+									"type": "text",
+									"value": " fields from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/layout.js"
+								},
+								{
+									"type": "text",
+									"value": " are "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "inherited"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/about/page.js"
+								},
+								{
+									"type": "text",
+									"value": " because "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/about/page.js"
+								},
+								{
+									"type": "text",
+									"value": " doesn't set "
+								},
+								{
+									"type": "inlineCode",
+									"value": "openGraph"
+								},
+								{
+									"type": "text",
+									"value": " metadata."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.2.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Introduced streaming support to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "generateMetadata"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v14.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "viewport"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "themeColor"
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "colorScheme"
+								},
+								{
+									"type": "text",
+									"value": " deprecated in favor of the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/generate-viewport",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "viewport"
+										},
+										{
+											"type": "text",
+											"value": " configuration"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.2.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "metadata"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "generateMetadata"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

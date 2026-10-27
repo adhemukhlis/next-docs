@@ -1,0 +1,263 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to implement JSON-LD in your Next.js application\nnav_title: JSON-LD\ndescription: Learn how to add JSON-LD to your Next.js application to describe your content to search engines and AI."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://json-ld.org/",
+					"children": [
+						{
+							"type": "text",
+							"value": "JSON-LD"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is a format for structured data that can be used by search engines and AI to help them understand the structure of the page beyond pure content. For example, you can use it to describe a person, an event, an organization, a movie, a book, a recipe, and many other types of entities."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Our current recommendation for JSON-LD is to render structured data as a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<script>"
+				},
+				{
+					"type": "text",
+					"value": " tag in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout.js"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.js"
+				},
+				{
+					"type": "text",
+					"value": " components."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The following snippet uses "
+				},
+				{
+					"type": "inlineCode",
+					"value": "JSON.stringify"
+				},
+				{
+					"type": "text",
+					"value": ", which does not sanitize malicious strings used in XSS injection. To prevent this type of vulnerability, you can scrub "
+				},
+				{
+					"type": "inlineCode",
+					"value": "HTML"
+				},
+				{
+					"type": "text",
+					"value": " tags from the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "JSON-LD"
+				},
+				{
+					"type": "text",
+					"value": " payload, for example, by replacing the character, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<"
+				},
+				{
+					"type": "text",
+					"value": ", with its unicode equivalent, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\\u003c"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Review your organization's recommended approach to sanitize potentially dangerous strings, or use community maintained alternatives for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "JSON.stringify"
+				},
+				{
+					"type": "text",
+					"value": " such as, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.npmjs.com/package/serialize-javascript",
+					"children": [
+						{
+							"type": "text",
+							"value": "serialize-javascript"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/[id]/page.tsx\" switcher",
+			"value": "export default async function Page({ params }) {\n\tconst { id } = await params\n\tconst product = await getProduct(id)\n\n\tconst jsonLd = {\n\t\t'@context': 'https://schema.org',\n\t\t'@type': 'Product',\n\t\tname: product.name,\n\t\timage: product.image,\n\t\tdescription: product.description,\n\t}\n\n\treturn (\n\t\t<section>\n\t\t\t{/* Add JSON-LD to your page */}\n\t\t\t<script\n\t\t\t\ttype=\"application/ld+json\"\n\t\t\t\tdangerouslySetInnerHTML={{\n\t\t\t\t\t__html: JSON.stringify(jsonLd).replace(/</g, '\\\\u003c'),\n\t\t\t\t}}\n\t\t\t/>\n\t\t\t{/* ... */}\n\t\t</section>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/products/[id]/page.js\" switcher",
+			"value": "export default async function Page({ params }) {\n\tconst { id } = await params\n\tconst product = await getProduct(id)\n\n\tconst jsonLd = {\n\t\t'@context': 'https://schema.org',\n\t\t'@type': 'Product',\n\t\tname: product.name,\n\t\timage: product.image,\n\t\tdescription: product.description,\n\t}\n\n\treturn (\n\t\t<section>\n\t\t\t{/* Add JSON-LD to your page */}\n\t\t\t<script\n\t\t\t\ttype=\"application/ld+json\"\n\t\t\t\tdangerouslySetInnerHTML={{\n\t\t\t\t\t__html: JSON.stringify(jsonLd).replace(/</g, '\\\\u003c'),\n\t\t\t\t}}\n\t\t\t/>\n\t\t\t{/* ... */}\n\t\t</section>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can validate and test your structured data with the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://search.google.com/test/rich-results",
+					"children": [
+						{
+							"type": "text",
+							"value": "Rich Results Test"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for Google or the generic "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://validator.schema.org/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Schema Markup Validator"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can type your JSON-LD with TypeScript using community packages like "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.npmjs.com/package/schema-dts",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "schema-dts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "import { Product, WithContext } from 'schema-dts'\n\nconst jsonLd: WithContext<Product> = {\n\t'@context': 'https://schema.org',\n\t'@type': 'Product',\n\tname: 'Next.js Sticker',\n\timage: 'https://nextjs.org/imgs/sticker.png',\n\tdescription: 'Dynamic at the speed of static.',\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": The "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next/script"
+						},
+						{
+							"type": "text",
+							"value": " component is optimized for loading and executing JavaScript. Since JSON-LD is structured data, not executable code, a native "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<script>"
+						},
+						{
+							"type": "text",
+							"value": " tag is the right choice here."
+						}
+					]
+				}
+			]
+		}
+	]
+}

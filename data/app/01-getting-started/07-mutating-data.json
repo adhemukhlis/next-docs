@@ -1,0 +1,1451 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Mutating Data\ndescription: Learn how to mutate data using Server Functions and Server Actions in Next.js.\nrelated:\n title: Next steps\n description: Learn more about Server Actions and the APIs mentioned in this page.\n links:\n  - app/guides/server-actions\n  - app/api-reference/functions/revalidatePath\n  - app/api-reference/functions/revalidateTag\n  - app/api-reference/functions/redirect"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can mutate data in Next.js using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/rsc/server-functions",
+					"children": [
+						{
+							"type": "text",
+							"value": "React Server Functions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This page will go through how you can "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#creating-server-functions",
+					"children": [
+						{
+							"type": "text",
+							"value": "create"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#invoking-server-functions",
+					"children": [
+						{
+							"type": "text",
+							"value": "invoke"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " Server Functions. For Next.js-specific behaviors (single-roundtrip response, sequential dispatch, security, deployment), see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/server-actions",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Actions and Mutations"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "What are Server Functions?"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Function"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is an asynchronous function that runs on the server. You can call them from the client through a network request, which is why they must be asynchronous."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "action"
+				},
+				{
+					"type": "text",
+					"value": " or mutation context, they are also called "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Actions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By convention, a Server Action is an async function used with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/startTransition",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "startTransition"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This happens automatically when the function is:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Passed to a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<form>"
+								},
+								{
+									"type": "text",
+									"value": " using the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "action"
+								},
+								{
+									"type": "text",
+									"value": " prop."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Passed to a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<button>"
+								},
+								{
+									"type": "text",
+									"value": " using the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "formAction"
+								},
+								{
+									"type": "text",
+									"value": " prop."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When an action is invoked, Next.js can return both the updated UI and new data in a single server roundtrip."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Behind the scenes, actions use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "POST"
+				},
+				{
+					"type": "text",
+					"value": " method, and only this HTTP method can invoke them."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "[!WARNING] Server Functions are reachable via direct POST requests, not just through your application's UI. Always verify authentication and authorization inside every Server Function. See the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/data-security#authentication-and-authorization",
+							"children": [
+								{
+									"type": "text",
+									"value": "Data Security guide"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for recommended patterns."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " A Server Action is a Server Function used in a specific way (for handling form submissions and mutations). Server Function is the broader term."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Creating Server Functions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A Server Function can be defined by using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/rsc/use-server",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use server"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " directive. You can place the directive at the top of an "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "asynchronous"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " function to mark the function as a Server Function, or at the top of a separate file to mark all exports of that file."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/lib/actions.ts\" switcher",
+			"value": "import { auth } from '@/lib/auth'\n\nexport async function createPost(formData: FormData) {\n\t'use server'\n\tconst session = await auth()\n\tif (!session?.user) {\n\t\tthrow new Error('Unauthorized')\n\t}\n\n\tconst title = formData.get('title')\n\tconst content = formData.get('content')\n\n\t// Mutate data\n\t// Revalidate cache\n}\n\nexport async function deletePost(formData: FormData) {\n\t'use server'\n\tconst session = await auth()\n\tif (!session?.user) {\n\t\tthrow new Error('Unauthorized')\n\t}\n\n\tconst id = formData.get('id')\n\n\t// Verify the user owns this resource before deleting\n\t// Mutate data\n\t// Revalidate cache\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/lib/actions.js\" switcher",
+			"value": "import { auth } from '@/lib/auth'\n\nexport async function createPost(formData) {\n\t'use server'\n\tconst session = await auth()\n\tif (!session?.user) {\n\t\tthrow new Error('Unauthorized')\n\t}\n\n\tconst title = formData.get('title')\n\tconst content = formData.get('content')\n\n\t// Mutate data\n\t// Revalidate cache\n}\n\nexport async function deletePost(formData) {\n\t'use server'\n\tconst session = await auth()\n\tif (!session?.user) {\n\t\tthrow new Error('Unauthorized')\n\t}\n\n\tconst id = formData.get('id')\n\n\t// Verify the user owns this resource before deleting\n\t// Mutate data\n\t// Revalidate cache\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Functions can be inlined in Server Components by adding the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"use server\""
+				},
+				{
+					"type": "text",
+					"value": " directive to the top of the function body:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "export default function Page() {\n\t// Server Action\n\tasync function createPost(formData: FormData) {\n\t\t'use server'\n\t\t// ...\n\t}\n\n\treturn <></>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "export default function Page() {\n\t// Server Action\n\tasync function createPost(formData) {\n\t\t'use server'\n\t\t// ...\n\t}\n\n\treturn <></>\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Server Components support progressive enhancement by default, meaning forms that call Server Actions will be submitted even if JavaScript hasn't loaded yet or is disabled."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Client Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "It's not possible to define Server Functions in Client Components. However, you can invoke them in Client Components by importing them from a file that has the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"use server\""
+				},
+				{
+					"type": "text",
+					"value": " directive at the top of it:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/actions.ts\" switcher",
+			"value": "'use server'\n\nexport async function createPost() {}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/actions.js\" switcher",
+			"value": "'use server'\n\nexport async function createPost() {}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/button.tsx\" switcher",
+			"value": "'use client'\n\nimport { createPost } from '@/app/actions'\n\nexport function Button() {\n\treturn <button formAction={createPost}>Create</button>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/button.js\" switcher",
+			"value": "'use client'\n\nimport { createPost } from '@/app/actions'\n\nexport function Button() {\n\treturn <button formAction={createPost}>Create</button>\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " In Client Components, forms invoking Server Actions will queue submissions if JavaScript isn't loaded yet, and will be prioritized for hydration. After hydration, the browser does not refresh on form submission."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Passing actions as props"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also pass an action to a Client Component as a prop:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "<ClientComponent updateItemAction={updateItem} />"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/client-component.tsx\" switcher",
+			"value": "'use client'\n\nexport default function ClientComponent({ updateItemAction }: { updateItemAction: (formData: FormData) => void }) {\n\treturn <form action={updateItemAction}>{/* ... */}</form>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/client-component.js\" switcher",
+			"value": "'use client'\n\nexport default function ClientComponent({ updateItemAction }) {\n\treturn <form action={updateItemAction}>{/* ... */}</form>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Invoking Server Functions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There are two main ways you can invoke a Server Function:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#forms",
+									"children": [
+										{
+											"type": "text",
+											"value": "Forms"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " in Server and Client Components"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#event-handlers",
+									"children": [
+										{
+											"type": "text",
+											"value": "Event Handlers"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#useeffect",
+									"children": [
+										{
+											"type": "text",
+											"value": "useEffect"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " in Client Components"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Server Functions are designed for server-side mutations. The client dispatches and awaits them one at a time. See "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/server-actions#sequential-dispatch-on-the-client",
+							"children": [
+								{
+									"type": "text",
+									"value": "Sequential dispatch on the client"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ". If you need parallel data fetching, use "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/getting-started/fetching-data#server-components",
+							"children": [
+								{
+									"type": "text",
+									"value": "data fetching"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " in Server Components, or perform parallel work inside a single Server Function or "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/backend-for-frontend#manipulating-data",
+							"children": [
+								{
+									"type": "text",
+									"value": "Route Handler"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Forms"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "React extends the HTML "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react-dom/components/form",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<form>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " element to allow a Server Function to be invoked with the HTML "
+				},
+				{
+					"type": "inlineCode",
+					"value": "action"
+				},
+				{
+					"type": "text",
+					"value": " prop."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When invoked in a form, the function automatically receives the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/FormData/FormData",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "FormData"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " object. You can extract the data using the native "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/API/FormData#instance_methods",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "FormData"
+						},
+						{
+							"type": "text",
+							"value": " methods"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/form.tsx\" switcher",
+			"value": "import { createPost } from '@/app/actions'\n\nexport function Form() {\n\treturn (\n\t\t<form action={createPost}>\n\t\t\t<input\n\t\t\t\ttype=\"text\"\n\t\t\t\tname=\"title\"\n\t\t\t/>\n\t\t\t<input\n\t\t\t\ttype=\"text\"\n\t\t\t\tname=\"content\"\n\t\t\t/>\n\t\t\t<button type=\"submit\">Create</button>\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/form.js\" switcher",
+			"value": "import { createPost } from '@/app/actions'\n\nexport function Form() {\n\treturn (\n\t\t<form action={createPost}>\n\t\t\t<input\n\t\t\t\ttype=\"text\"\n\t\t\t\tname=\"title\"\n\t\t\t/>\n\t\t\t<input\n\t\t\t\ttype=\"text\"\n\t\t\t\tname=\"content\"\n\t\t\t/>\n\t\t\t<button type=\"submit\">Create</button>\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/actions.ts\" switcher",
+			"value": "'use server'\n\nimport { auth } from '@/lib/auth'\n\nexport async function createPost(formData: FormData) {\n\tconst session = await auth()\n\tif (!session?.user) {\n\t\tthrow new Error('Unauthorized')\n\t}\n\n\tconst title = formData.get('title')\n\tconst content = formData.get('content')\n\n\t// Mutate data\n\t// Revalidate cache\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/actions.js\" switcher",
+			"value": "'use server'\n\nimport { auth } from '@/lib/auth'\n\nexport async function createPost(formData) {\n\tconst session = await auth()\n\tif (!session?.user) {\n\t\tthrow new Error('Unauthorized')\n\t}\n\n\tconst title = formData.get('title')\n\tconst content = formData.get('content')\n\n\t// Mutate data\n\t// Revalidate cache\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Event Handlers"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can invoke a Server Function in a Client Component by using event handlers such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "onClick"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/like-button.tsx\" switcher",
+			"value": "'use client'\n\nimport { incrementLike } from './actions'\nimport { useState } from 'react'\n\nexport default function LikeButton({ initialLikes }: { initialLikes: number }) {\n\tconst [likes, setLikes] = useState(initialLikes)\n\n\treturn (\n\t\t<>\n\t\t\t<p>Total Likes: {likes}</p>\n\t\t\t<button\n\t\t\t\tonClick={async () => {\n\t\t\t\t\tconst updatedLikes = await incrementLike()\n\t\t\t\t\tsetLikes(updatedLikes)\n\t\t\t\t}}>\n\t\t\t\tLike\n\t\t\t</button>\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/like-button.js\" switcher",
+			"value": "'use client'\n\nimport { incrementLike } from './actions'\nimport { useState } from 'react'\n\nexport default function LikeButton({ initialLikes }) {\n\tconst [likes, setLikes] = useState(initialLikes)\n\n\treturn (\n\t\t<>\n\t\t\t<p>Total Likes: {likes}</p>\n\t\t\t<button\n\t\t\t\tonClick={async () => {\n\t\t\t\t\tconst updatedLikes = await incrementLike()\n\t\t\t\t\tsetLikes(updatedLikes)\n\t\t\t\t}}>\n\t\t\t\tLike\n\t\t\t</button>\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Showing a pending state"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "While executing a Server Function, you can show a loading indicator with React's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/useActionState",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useActionState"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " hook. This hook returns a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pending"
+				},
+				{
+					"type": "text",
+					"value": " boolean:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/button.tsx\" switcher",
+			"value": "'use client'\n\nimport { useActionState, startTransition } from 'react'\nimport { createPost } from '@/app/actions'\nimport { LoadingSpinner } from '@/app/ui/loading-spinner'\n\nexport function Button() {\n\tconst [state, action, pending] = useActionState(createPost, false)\n\n\treturn <button onClick={() => startTransition(action)}>{pending ? <LoadingSpinner /> : 'Create Post'}</button>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/button.js\" switcher",
+			"value": "'use client'\n\nimport { useActionState, startTransition } from 'react'\nimport { createPost } from '@/app/actions'\nimport { LoadingSpinner } from '@/app/ui/loading-spinner'\n\nexport function Button() {\n\tconst [state, action, pending] = useActionState(createPost, false)\n\n\treturn <button onClick={() => startTransition(action)}>{pending ? <LoadingSpinner /> : 'Create Post'}</button>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/interactive-apps",
+					"children": [
+						{
+							"type": "text",
+							"value": "Building interactive apps"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " guide for a deeper walkthrough of responsive interactions, including pending feedback, optimistic UI, transitions, and error handling."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": With the "
+						},
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "experimental"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/offline-support",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "useOffline"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " config enabled, a Server Action interrupted by a connectivity drop stays pending and completes when the network returns."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Refresh data"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After a mutation, you may want to refresh the current page to show the latest data. You can do this by calling "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/refresh",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "refresh"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/cache"
+				},
+				{
+					"type": "text",
+					"value": " in a Server Action:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/lib/actions.ts\" switcher",
+			"value": "'use server'\n\nimport { auth } from '@/lib/auth'\nimport { refresh } from 'next/cache'\n\nexport async function updatePost(formData: FormData) {\n\tconst session = await auth()\n\tif (!session?.user) {\n\t\tthrow new Error('Unauthorized')\n\t}\n\t// Mutate data\n\t// ...\n\n\trefresh()\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/lib/actions.js\" switcher",
+			"value": "'use server'\n\nimport { auth } from '@/lib/auth'\nimport { refresh } from 'next/cache'\n\nexport async function updatePost(formData) {\n\tconst session = await auth()\n\tif (!session?.user) {\n\t\tthrow new Error('Unauthorized')\n\t}\n\t// Mutate data\n\t// ...\n\n\trefresh()\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This refreshes the client router, ensuring the UI reflects the latest state. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "refresh()"
+				},
+				{
+					"type": "text",
+					"value": " function does not revalidate tagged data. To revalidate tagged data, use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/updateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "updateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " instead."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Revalidate data"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After performing a mutation, you can revalidate the Next.js cache and show the updated data by calling "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidatePath",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidatePath"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " within the Server Function:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/lib/actions.ts\" switcher",
+			"value": "import { auth } from '@/lib/auth'\nimport { revalidatePath } from 'next/cache'\n\nexport async function createPost(formData: FormData) {\n\t'use server'\n\tconst session = await auth()\n\tif (!session?.user) {\n\t\tthrow new Error('Unauthorized')\n\t}\n\t// Mutate data\n\t// ...\n\n\trevalidatePath('/posts')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/lib/actions.js\" switcher",
+			"value": "import { auth } from '@/lib/auth'\nimport { revalidatePath } from 'next/cache'\n\nexport async function createPost(formData) {\n\t'use server'\n\tconst session = await auth()\n\tif (!session?.user) {\n\t\tthrow new Error('Unauthorized')\n\t}\n\t// Mutate data\n\t// ...\n\trevalidatePath('/posts')\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Redirect after a mutation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You may want to redirect the user to a different page after a mutation. You can do this by calling "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/redirect",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "redirect"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " within the Server Function."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/lib/actions.ts\" switcher",
+			"value": "'use server'\n\nimport { auth } from '@/lib/auth'\nimport { revalidatePath } from 'next/cache'\nimport { redirect } from 'next/navigation'\n\nexport async function createPost(formData: FormData) {\n\tconst session = await auth()\n\tif (!session?.user) {\n\t\tthrow new Error('Unauthorized')\n\t}\n\t// Mutate data\n\t// ...\n\n\trevalidatePath('/posts')\n\tredirect('/posts')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/lib/actions.js\" switcher",
+			"value": "'use server'\n\nimport { auth } from '@/lib/auth'\nimport { revalidatePath } from 'next/cache'\nimport { redirect } from 'next/navigation'\n\nexport async function createPost(formData) {\n\tconst session = await auth()\n\tif (!session?.user) {\n\t\tthrow new Error('Unauthorized')\n\t}\n\t// Mutate data\n\t// ...\n\n\trevalidatePath('/posts')\n\tredirect('/posts')\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Calling "
+				},
+				{
+					"type": "inlineCode",
+					"value": "redirect"
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/redirect#behavior",
+					"children": [
+						{
+							"type": "text",
+							"value": "throws"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " a framework handled control-flow exception. Any code after it won't execute. If you need fresh data, call "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidatePath",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidatePath"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " beforehand."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Cookies"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can "
+				},
+				{
+					"type": "inlineCode",
+					"value": "get"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "set"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "delete"
+				},
+				{
+					"type": "text",
+					"value": " cookies inside a Server Action using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cookies",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cookies"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " API."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When you "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cookies#understanding-cookie-behavior-in-server-functions",
+					"children": [
+						{
+							"type": "text",
+							"value": "set or delete"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " a cookie in a Server Action, Next.js re-renders the current page and its layouts on the server so the "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "UI reflects the new cookie value"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": The server update applies to the current React tree, re-rendering, mounting, or unmounting components, as needed. Client state is preserved for re-rendered components, and effects re-run if their dependencies changed."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/actions.ts\" switcher",
+			"value": "'use server'\n\nimport { cookies } from 'next/headers'\n\nexport async function exampleAction() {\n\tconst cookieStore = await cookies()\n\n\t// Get cookie\n\tcookieStore.get('name')?.value\n\n\t// Set cookie\n\tcookieStore.set('name', 'Delba')\n\n\t// Delete cookie\n\tcookieStore.delete('name')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/actions.js\" switcher",
+			"value": "'use server'\n\nimport { cookies } from 'next/headers'\n\nexport async function exampleAction() {\n\t// Get cookie\n\tconst cookieStore = await cookies()\n\n\t// Get cookie\n\tcookieStore.get('name')?.value\n\n\t// Set cookie\n\tcookieStore.set('name', 'Delba')\n\n\t// Delete cookie\n\tcookieStore.delete('name')\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "useEffect"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use the React "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/useEffect",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useEffect"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " hook to invoke a Server Action when the component mounts or a dependency changes. This is useful for mutations that depend on global events or need to be triggered automatically. For example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "onKeyDown"
+				},
+				{
+					"type": "text",
+					"value": " for app shortcuts, an intersection observer hook for infinite scrolling, or when the component mounts to update a view count:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/view-count.tsx\" switcher",
+			"value": "'use client'\n\nimport { incrementViews } from './actions'\nimport { useState, useEffect, useTransition } from 'react'\n\nexport default function ViewCount({ initialViews }: { initialViews: number }) {\n\tconst [views, setViews] = useState(initialViews)\n\tconst [isPending, startTransition] = useTransition()\n\n\tuseEffect(() => {\n\t\tstartTransition(async () => {\n\t\t\tconst updatedViews = await incrementViews()\n\t\t\tsetViews(updatedViews)\n\t\t})\n\t}, [])\n\n\t// You can use `isPending` to give users feedback\n\treturn <p>Total Views: {views}</p>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/view-count.js\" switcher",
+			"value": "'use client'\n\nimport { incrementViews } from './actions'\nimport { useState, useEffect, useTransition } from 'react'\n\nexport default function ViewCount({ initialViews }) {\n\tconst [views, setViews] = useState(initialViews)\n\tconst [isPending, startTransition] = useTransition()\n\n\tuseEffect(() => {\n\t\tstartTransition(async () => {\n\t\t\tconst updatedViews = await incrementViews()\n\t\t\tsetViews(updatedViews)\n\t\t})\n\t}, [])\n\n\t// You can use `isPending` to give users feedback\n\treturn <p>Total Views: {views}</p>\n}"
+		}
+	]
+}

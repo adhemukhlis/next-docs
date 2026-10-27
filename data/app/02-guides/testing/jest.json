@@ -1,0 +1,1151 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to set up Jest with Next.js\nnav_title: Jest\ndescription: Learn how to set up Jest with Next.js for Unit Testing and Snapshot Testing."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Jest and React Testing Library are frequently used together for "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Unit Testing"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Snapshot Testing"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This guide will show you how to set up Jest with Next.js and write your first tests."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Since "
+						},
+						{
+							"type": "inlineCode",
+							"value": "async"
+						},
+						{
+							"type": "text",
+							"value": " Server Components are new to the React ecosystem, Jest currently does not support them. While you can still run "
+						},
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "unit tests"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for synchronous Server and Client Components, we recommend using an "
+						},
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "E2E tests"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for "
+						},
+						{
+							"type": "inlineCode",
+							"value": "async"
+						},
+						{
+							"type": "text",
+							"value": " components."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Quickstart"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "create-next-app"
+				},
+				{
+					"type": "text",
+					"value": " with the Next.js "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/tree/canary/examples/with-jest",
+					"children": [
+						{
+							"type": "text",
+							"value": "with-jest"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " example to quickly get started:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm create next-app --example with-jest with-jest-app"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npx create-next-app@latest --example with-jest with-jest-app"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn create next-app --example with-jest with-jest-app"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun create next-app --example with-jest with-jest-app"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Manual setup"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since the release of "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nextjs.org/blog/next-12",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js 12"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", Next.js now has built-in configuration for Jest."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To set up Jest, install "
+				},
+				{
+					"type": "inlineCode",
+					"value": "jest"
+				},
+				{
+					"type": "text",
+					"value": " and the following packages as dev dependencies:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add -D jest jest-environment-jsdom @testing-library/react @testing-library/dom @testing-library/jest-dom ts-node @types/jest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install -D jest jest-environment-jsdom @testing-library/react @testing-library/dom @testing-library/jest-dom ts-node @types/jest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add -D jest jest-environment-jsdom @testing-library/react @testing-library/dom @testing-library/jest-dom ts-node @types/jest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add -D jest jest-environment-jsdom @testing-library/react @testing-library/dom @testing-library/jest-dom ts-node @types/jest"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Generate a basic Jest configuration file by running the following command:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm create jest@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm init jest@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn create jest@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun create jest@latest"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This will take you through a series of prompts to set up Jest for your project, including automatically creating a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "jest.config.ts|js"
+				},
+				{
+					"type": "text",
+					"value": " file."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Update your config file to use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/jest"
+				},
+				{
+					"type": "text",
+					"value": ". This transformer has all the necessary configuration options for Jest to work with Next.js:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"jest.config.ts\" switcher",
+			"value": "import type { Config } from 'jest'\nimport nextJest from 'next/jest.js'\n\nconst createJestConfig = nextJest({\n\t// Provide the path to your Next.js app to load next.config.js and .env files in your test environment\n\tdir: './',\n})\n\n// Add any custom config to be passed to Jest\nconst config: Config = {\n\tcoverageProvider: 'v8',\n\ttestEnvironment: 'jsdom',\n\t// Add more setup options before each test is run\n\t// setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],\n}\n\n// createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async\nexport default createJestConfig(config)"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"jest.config.js\" switcher",
+			"value": "const nextJest = require('next/jest')\n\n/** @type {import('jest').Config} */\nconst createJestConfig = nextJest({\n\t// Provide the path to your Next.js app to load next.config.js and .env files in your test environment\n\tdir: './',\n})\n\n// Add any custom config to be passed to Jest\nconst config = {\n\tcoverageProvider: 'v8',\n\ttestEnvironment: 'jsdom',\n\t// Add more setup options before each test is run\n\t// setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],\n}\n\n// createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async\nmodule.exports = createJestConfig(config)"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Under the hood, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/jest"
+				},
+				{
+					"type": "text",
+					"value": " is automatically configuring Jest for you, including:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Setting up "
+								},
+								{
+									"type": "inlineCode",
+									"value": "transform"
+								},
+								{
+									"type": "text",
+									"value": " using the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/architecture/nextjs-compiler",
+									"children": [
+										{
+											"type": "text",
+											"value": "Next.js Compiler"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Auto mocking stylesheets ("
+								},
+								{
+									"type": "inlineCode",
+									"value": ".css"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".module.css"
+								},
+								{
+									"type": "text",
+									"value": ", and their scss variants), image imports and "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/components/font",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "next/font"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Loading "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".env"
+								},
+								{
+									"type": "text",
+									"value": " (and all variants) into "
+								},
+								{
+									"type": "inlineCode",
+									"value": "process.env"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Ignoring "
+								},
+								{
+									"type": "inlineCode",
+									"value": "node_modules"
+								},
+								{
+									"type": "text",
+									"value": " from test resolving and transforms."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Ignoring "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".next"
+								},
+								{
+									"type": "text",
+									"value": " from test resolving."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Loading "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next.config.js"
+								},
+								{
+									"type": "text",
+									"value": " for flags that enable SWC transforms."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": To test environment variables directly, load them manually in a separate setup script or in your "
+						},
+						{
+							"type": "inlineCode",
+							"value": "jest.config.ts"
+						},
+						{
+							"type": "text",
+							"value": " file. For more information, please see "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/environment-variables#test-environment-variables",
+							"children": [
+								{
+									"type": "text",
+									"value": "Test Environment Variables"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Optional: Handling Absolute Imports and Module Path Aliases"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If your project is using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/installation#set-up-absolute-imports-and-module-path-aliases",
+					"children": [
+						{
+							"type": "text",
+							"value": "Module Path Aliases"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", you will need to configure Jest to resolve the imports by matching the paths option in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "jsconfig.json"
+				},
+				{
+					"type": "text",
+					"value": " file with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "moduleNameMapper"
+				},
+				{
+					"type": "text",
+					"value": " option in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "jest.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file. For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"tsconfig.json or jsconfig.json\"",
+			"value": "{\n\t\"compilerOptions\": {\n\t\t\"module\": \"esnext\",\n\t\t\"moduleResolution\": \"bundler\",\n\t\t\"baseUrl\": \"./\",\n\t\t\"paths\": {\n\t\t\t\"@/components/*\": [\"components/*\"]\n\t\t}\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"jest.config.js\"",
+			"value": "moduleNameMapper: {\n  // ...\n  '^@/components/(.*)$': '<rootDir>/components/$1',\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Optional: Extend Jest with custom matchers"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "@testing-library/jest-dom"
+				},
+				{
+					"type": "text",
+					"value": " includes a set of convenient "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/testing-library/jest-dom#custom-matchers",
+					"children": [
+						{
+							"type": "text",
+							"value": "custom matchers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".toBeInTheDocument()"
+				},
+				{
+					"type": "text",
+					"value": " making it easier to write tests. You can import the custom matchers for every test by adding the following option to the Jest configuration file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"jest.config.ts\" switcher",
+			"value": "setupFilesAfterEnv: ['<rootDir>/jest.setup.ts']"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"jest.config.js\" switcher",
+			"value": "setupFilesAfterEnv: ['<rootDir>/jest.setup.js']"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "jest.setup"
+				},
+				{
+					"type": "text",
+					"value": ", add the following import:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"jest.setup.ts\" switcher",
+			"value": "import '@testing-library/jest-dom'"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"jest.setup.js\" switcher",
+			"value": "import '@testing-library/jest-dom'"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://github.com/testing-library/jest-dom/releases/tag/v6.0.0",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "extend-expect"
+								},
+								{
+									"type": "text",
+									"value": " was removed in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "v6.0"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", so if you are using "
+						},
+						{
+							"type": "inlineCode",
+							"value": "@testing-library/jest-dom"
+						},
+						{
+							"type": "text",
+							"value": " before version 6, you will need to import "
+						},
+						{
+							"type": "inlineCode",
+							"value": "@testing-library/jest-dom/extend-expect"
+						},
+						{
+							"type": "text",
+							"value": " instead."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you need to add more setup options before each test, you can add them to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "jest.setup"
+				},
+				{
+					"type": "text",
+					"value": " file above."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Add a test script to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "package.json"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Finally, add a Jest "
+				},
+				{
+					"type": "inlineCode",
+					"value": "test"
+				},
+				{
+					"type": "text",
+					"value": " script to your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "package.json"
+				},
+				{
+					"type": "text",
+					"value": " file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"package.json\" highlight={6-7}",
+			"value": "{\n\t\"scripts\": {\n\t\t\"dev\": \"next dev\",\n\t\t\"build\": \"next build\",\n\t\t\"start\": \"next start\",\n\t\t\"test\": \"jest\",\n\t\t\"test:watch\": \"jest --watch\"\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "jest --watch"
+				},
+				{
+					"type": "text",
+					"value": " will re-run tests when a file is changed. For more Jest CLI options, please refer to the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://jestjs.io/docs/cli#reference",
+					"children": [
+						{
+							"type": "text",
+							"value": "Jest Docs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Creating your first test"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Your project is now ready to run tests. Create a folder called "
+				},
+				{
+					"type": "inlineCode",
+					"value": "__tests__"
+				},
+				{
+					"type": "text",
+					"value": " in your project's root directory."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, we can add a test to check if the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Page />"
+				},
+				{
+					"type": "text",
+					"value": " component successfully renders a heading:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\"",
+			"value": "import Link from 'next/link'\n\nexport default function Page() {\n\treturn (\n\t\t<div>\n\t\t\t<h1>Home</h1>\n\t\t\t<Link href=\"/about\">About</Link>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"__tests__/page.test.jsx\"",
+			"value": "import '@testing-library/jest-dom'\nimport { render, screen } from '@testing-library/react'\nimport Page from '../app/page'\n\ndescribe('Page', () => {\n\tit('renders a heading', () => {\n\t\trender(<Page />)\n\n\t\tconst heading = screen.getByRole('heading', { level: 1 })\n\n\t\texpect(heading).toBeInTheDocument()\n\t})\n})"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Optionally, add a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://jestjs.io/docs/snapshot-testing",
+					"children": [
+						{
+							"type": "text",
+							"value": "snapshot test"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to keep track of any unexpected changes in your component:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"__tests__/snapshot.js\"",
+			"value": "import { render } from '@testing-library/react'\nimport Page from '../app/page'\n\nit('renders homepage unchanged', () => {\n\tconst { container } = render(<Page />)\n\texpect(container).toMatchSnapshot()\n})"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Running your tests"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, run the following command to run your tests:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm test"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm run test"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn test"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun run test"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Additional Resources"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For further reading, you may find these resources helpful:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel/next.js/tree/canary/examples/with-jest",
+									"children": [
+										{
+											"type": "text",
+											"value": "Next.js with Jest example"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://jestjs.io/docs/getting-started",
+									"children": [
+										{
+											"type": "text",
+											"value": "Jest Docs"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://testing-library.com/docs/react-testing-library/intro/",
+									"children": [
+										{
+											"type": "text",
+											"value": "React Testing Library Docs"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://testing-playground.com/",
+									"children": [
+										{
+											"type": "text",
+											"value": "Testing Playground"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " - use good testing practices to match elements."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

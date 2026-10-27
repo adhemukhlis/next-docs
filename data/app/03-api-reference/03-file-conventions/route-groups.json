@@ -1,0 +1,327 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Route Groups\ndescription: Route Groups can be used to partition your Next.js application into different sections."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Groups are a folder convention that let you organize routes by category or team."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Convention"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A route group can be created by wrapping a folder's name in parenthesis: "
+				},
+				{
+					"type": "inlineCode",
+					"value": "(folderName)"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This convention indicates the folder is for organizational purposes and should "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "not be included"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in the route's URL path."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"An example folder structure using route groups\"\nsrcLight=\"/docs/light/project-organization-route-groups.png\"\nsrcDark=\"/docs/dark/project-organization-route-groups.png\"\nwidth=\"1600\"\nheight=\"849\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Use cases"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Organizing routes by team, concern, or feature."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Defining multiple "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/layout#root-layout",
+									"children": [
+										{
+											"type": "text",
+											"value": "root layouts"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Opting specific route segments into sharing a layout, while keeping others out."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Caveats"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Full page load"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": If you navigate between routes that use different root layouts, it'll trigger a full page reload. For example, navigating from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "/cart"
+								},
+								{
+									"type": "text",
+									"value": " that uses "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/(shop)/layout.js"
+								},
+								{
+									"type": "text",
+									"value": " to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "/blog"
+								},
+								{
+									"type": "text",
+									"value": " that uses "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/(marketing)/layout.js"
+								},
+								{
+									"type": "text",
+									"value": ". This "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "only"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " applies to multiple root layouts."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Conflicting paths"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Routes in different groups should not resolve to the same URL path. For example, "
+								},
+								{
+									"type": "inlineCode",
+									"value": "(marketing)/about/page.js"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "(shop)/about/page.js"
+								},
+								{
+									"type": "text",
+									"value": " would both resolve to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "/about"
+								},
+								{
+									"type": "text",
+									"value": " and cause an error."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Top-level root layout"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": If you use multiple root layouts without a top-level "
+								},
+								{
+									"type": "inlineCode",
+									"value": "layout.js"
+								},
+								{
+									"type": "text",
+									"value": " file, make sure your home route (/) is defined within one of the route groups, e.g. app/(marketing)/page.js."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

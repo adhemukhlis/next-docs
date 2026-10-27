@@ -1,0 +1,1052 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: useSelectedLayoutSegment\ndescription: API Reference for the useSelectedLayoutSegment hook."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "useSelectedLayoutSegment"
+				},
+				{
+					"type": "text",
+					"value": " is a "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client Component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " hook that lets you read the active route segment "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "one level below"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " the Layout it is called from."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "It is useful for navigation UI, such as tabs inside a parent layout that change style depending on the active child segment."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/example-client-component.tsx\" switcher",
+			"value": "'use client'\n\nimport { useSelectedLayoutSegment } from 'next/navigation'\n\nexport default function ExampleClientComponent() {\n\tconst segment = useSelectedLayoutSegment()\n\n\treturn <p>Active segment: {segment}</p>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/example-client-component.js\" switcher",
+			"value": "'use client'\n\nimport { useSelectedLayoutSegment } from 'next/navigation'\n\nexport default function ExampleClientComponent() {\n\tconst segment = useSelectedLayoutSegment()\n\n\treturn <p>Active segment: {segment}</p>\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Since "
+										},
+										{
+											"type": "inlineCode",
+											"value": "useSelectedLayoutSegment"
+										},
+										{
+											"type": "text",
+											"value": " is a "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/getting-started/server-and-client-components",
+											"children": [
+												{
+													"type": "text",
+													"value": "Client Component"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " hook, and Layouts are "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/getting-started/server-and-client-components",
+											"children": [
+												{
+													"type": "text",
+													"value": "Server Components"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " by default, "
+										},
+										{
+											"type": "inlineCode",
+											"value": "useSelectedLayoutSegment"
+										},
+										{
+											"type": "text",
+											"value": " is usually called via a Client Component that is imported into a Layout."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "useSelectedLayoutSegment"
+										},
+										{
+											"type": "text",
+											"value": " only returns the segment one level down. To return all active segments, see "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/functions/use-selected-layout-segments",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "useSelectedLayoutSegments"
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "For "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/dynamic-routes#catch-all-segments",
+											"children": [
+												{
+													"type": "text",
+													"value": "catch-all"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " routes, the matched segments are returned as a single joined string. For example, given "
+										},
+										{
+											"type": "inlineCode",
+											"value": "app/blog/[...slug]/page.js"
+										},
+										{
+											"type": "text",
+											"value": ", calling from "
+										},
+										{
+											"type": "inlineCode",
+											"value": "app/blog/layout.js"
+										},
+										{
+											"type": "text",
+											"value": " when visiting "
+										},
+										{
+											"type": "inlineCode",
+											"value": "/blog/a/b/c"
+										},
+										{
+											"type": "text",
+											"value": " returns "
+										},
+										{
+											"type": "inlineCode",
+											"value": "'a/b/c'"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parameters"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "const segment = useSelectedLayoutSegment(parallelRouteKey?: string)"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "useSelectedLayoutSegment"
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "optionally"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " accepts a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/parallel-routes#with-useselectedlayoutsegments",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "parallelRouteKey"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", which allows you to read the active route segment within that slot."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "useSelectedLayoutSegment"
+				},
+				{
+					"type": "text",
+					"value": " returns a string of the active segment or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "null"
+				},
+				{
+					"type": "text",
+					"value": " if one doesn't exist."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, given the Layouts and URLs below, the returned segment would be:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Layout"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Visited URL"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Returned Segment"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/layout.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "null"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/layout.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/dashboard"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'dashboard'"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/dashboard/layout.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/dashboard"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "null"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/dashboard/layout.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/dashboard/settings"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'settings'"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/dashboard/layout.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/dashboard/analytics"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'analytics'"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/dashboard/layout.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/dashboard/analytics/monthly"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'analytics'"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For catch-all routes ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "[...slug]"
+				},
+				{
+					"type": "text",
+					"value": "), the returned segment contains all matched path segments joined as a single string:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Layout"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Visited URL"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Returned Segment"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/blog/layout.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/blog/a/b/c"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'a/b/c'"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Behavior"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is enabled, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useSelectedLayoutSegment"
+				},
+				{
+					"type": "text",
+					"value": " may require a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Suspense",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Suspense"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " boundary. This depends on whether the active segment can be resolved during prerendering."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Static routes and routes with "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/functions/generate-static-params",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "generateStaticParams"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": every route segment, including dynamic params, is known at build time. The active segment can be resolved during prerendering, so "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useSelectedLayoutSegment"
+								},
+								{
+									"type": "text",
+									"value": " resolves on the server and no "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Suspense"
+								},
+								{
+									"type": "text",
+									"value": " boundary is required."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Routes with dynamic params not covered by "
+										},
+										{
+											"type": "inlineCode",
+											"value": "generateStaticParams"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": the param is a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/generate-static-params#all-paths-at-build-time",
+									"children": [
+										{
+											"type": "text",
+											"value": "fallback param"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " that is not known until request time. The active segment cannot be resolved during prerendering, so "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useSelectedLayoutSegment"
+								},
+								{
+									"type": "text",
+									"value": " suspends. Wrap the component (or a parent) in a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Suspense"
+								},
+								{
+									"type": "text",
+									"value": " boundary so its fallback can be rendered during prerendering; otherwise, the build fails."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This applies even when the component that calls "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useSelectedLayoutSegment"
+				},
+				{
+					"type": "text",
+					"value": " is itself static. For example, a tab bar rendered in a parent layout suspends on any page below it that has an unknown dynamic param. To keep the rest of the layout prerendered, wrap the component that calls "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useSelectedLayoutSegment"
+				},
+				{
+					"type": "text",
+					"value": " (or a parent) in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Suspense"
+				},
+				{
+					"type": "text",
+					"value": " boundary with a fallback."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/blocking-prerender-client-hook",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js encountered URL data in a Client Component outside of Suspense"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for full fix options and trade-offs."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Creating an active link component"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useSelectedLayoutSegment"
+				},
+				{
+					"type": "text",
+					"value": " to create an active link component that changes style depending on the active segment. For example, a featured posts list in the sidebar of a blog:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/blog-nav-link.tsx\" switcher",
+			"value": "'use client'\n\nimport Link from 'next/link'\nimport { useSelectedLayoutSegment } from 'next/navigation'\n\n// This *client* component will be imported into a blog layout\nexport default function BlogNavLink({ slug, children }: { slug: string; children: React.ReactNode }) {\n\t// Navigating to `/blog/hello-world` will return 'hello-world'\n\t// for the selected layout segment\n\tconst segment = useSelectedLayoutSegment()\n\tconst isActive = slug === segment\n\n\treturn (\n\t\t<Link\n\t\t\thref={`/blog/${slug}`}\n\t\t\t// Change style depending on whether the link is active\n\t\t\tstyle={{ fontWeight: isActive ? 'bold' : 'normal' }}>\n\t\t\t{children}\n\t\t</Link>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/blog-nav-link.js\" switcher",
+			"value": "'use client'\n\nimport Link from 'next/link'\nimport { useSelectedLayoutSegment } from 'next/navigation'\n\n// This *client* component will be imported into a blog layout\nexport default function BlogNavLink({ slug, children }) {\n\t// Navigating to `/blog/hello-world` will return 'hello-world'\n\t// for the selected layout segment\n\tconst segment = useSelectedLayoutSegment()\n\tconst isActive = slug === segment\n\n\treturn (\n\t\t<Link\n\t\t\thref={`/blog/${slug}`}\n\t\t\t// Change style depending on whether the link is active\n\t\t\tstyle={{ fontWeight: isActive ? 'bold' : 'normal' }}>\n\t\t\t{children}\n\t\t</Link>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/layout.tsx\" switcher",
+			"value": "// Import the Client Component into a parent Layout (Server Component)\nimport { BlogNavLink } from './blog-nav-link'\nimport getFeaturedPosts from './get-featured-posts'\n\nexport default async function Layout({ children }: { children: React.ReactNode }) {\n\tconst featuredPosts = await getFeaturedPosts()\n\treturn (\n\t\t<div>\n\t\t\t{featuredPosts.map((post) => (\n\t\t\t\t<div key={post.id}>\n\t\t\t\t\t<BlogNavLink slug={post.slug}>{post.title}</BlogNavLink>\n\t\t\t\t</div>\n\t\t\t))}\n\t\t\t<div>{children}</div>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/layout.js\" switcher",
+			"value": "// Import the Client Component into a parent Layout (Server Component)\nimport { BlogNavLink } from './blog-nav-link'\nimport getFeaturedPosts from './get-featured-posts'\n\nexport default async function Layout({ children }) {\n\tconst featuredPosts = await getFeaturedPosts()\n\treturn (\n\t\t<div>\n\t\t\t{featuredPosts.map((post) => (\n\t\t\t\t<div key={post.id}>\n\t\t\t\t\t<BlogNavLink slug={post.slug}>{post.title}</BlogNavLink>\n\t\t\t\t</div>\n\t\t\t))}\n\t\t\t<div>{children}</div>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "useSelectedLayoutSegment"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

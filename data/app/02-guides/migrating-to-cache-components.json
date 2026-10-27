@@ -1,0 +1,5118 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Migrating to Cache Components\nnav_title: Migrating to Cache Components\ndescription: Learn how to migrate from route segment configs to Cache Components in Next.js.\nrelated:\n title: Next Steps\n description: Learn about other behavior changes when Cache Components is enabled.\n links:\n  - app/guides/optimizing-the-static-shell\n  - app/guides/instant-navigation\n  - app/guides/preserving-ui-state\n  - app/guides/incremental-static-regeneration-cache-components\n  - app/getting-started/caching"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is enabled, route segment configs like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "dynamic"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetchCache"
+				},
+				{
+					"type": "text",
+					"value": " are replaced by "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The migration is driven by "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "instant navigation validation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". With Cache Components enabled, Next.js validates in development whether navigating into each route renders instantly, and surfaces the code that would block it as an error or insight."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Use the adoption skill (recommended)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/ai-agents#next-cache-components-adoption",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next-cache-components-adoption"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " skill drives this migration with a coding agent, one feature at a time, checking in at every feature boundary. It supports two modes:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Incremental."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Opens a single mechanical PR that opts every route out of validation, then ships each feature as a follow-up PR. This automates the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#adopting-incrementally",
+									"children": [
+										{
+											"type": "text",
+											"value": "Adopting incrementally"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " flow below."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Direct."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Adopts every route in place on one branch."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Install the skill:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx skills add vercel/next.js --skill next-cache-components-adoption"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then give the agent this prompt:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "prompt",
+			"meta": null,
+			"value": "Adopt Cache Components in this project using the next-cache-components-adoption skill."
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Or migrate by hand"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Migrating an existing app by hand follows a few steps, in order:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#enable-cache-components",
+									"children": [
+										{
+											"type": "text",
+											"value": "Enable Cache Components"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next.config.ts"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Decide your approach: convert every route now, or "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#adopting-incrementally",
+									"children": [
+										{
+											"type": "text",
+											"value": "adopt incrementally"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " by "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#opting-out-of-validation",
+									"children": [
+										{
+											"type": "text",
+											"value": "opting routes out of validation"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " first and converting one at a time."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#following-validation",
+									"children": [
+										{
+											"type": "text",
+											"value": "Follow the validation errors and insights"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " it surfaces, replacing each route segment config with its Cache Components equivalent and caching uncached data with "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/directives/use-cache",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "use cache"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " or wrapping runtime data in "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react/Suspense",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "<Suspense>"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". The per-key sections below cover each config and API."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Your existing "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "unstable_cache"
+				},
+				{
+					"type": "text",
+					"value": " caching keeps working. Migrating "
+				},
+				{
+					"type": "inlineCode",
+					"value": "unstable_cache"
+				},
+				{
+					"type": "text",
+					"value": " is optional and can happen later."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Some surfaces have their own steps:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "For routes with dynamic params, follow the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#generatestaticparams-and-dynamicparams",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "generateStaticParams"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " guidance."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "For metadata, follow the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#generatemetadata-and-generateviewport",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "generateMetadata"
+										},
+										{
+											"type": "text",
+											"value": " and "
+										},
+										{
+											"type": "inlineCode",
+											"value": "generateViewport"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " guidance."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The sections below cover each config and API and what to do with it under Cache Components."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Enable Cache Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache Components requires Next.js 16. If you're on Next.js 15 or earlier, upgrade first by following the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/version-16",
+					"children": [
+						{
+							"type": "text",
+							"value": "version 16 upgrade guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Coming from an older version, work through the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading",
+					"children": [
+						{
+							"type": "text",
+							"value": "upgrade guides"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to reach 16 before continuing."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then enable the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " flag in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tcacheComponents: true,\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " If you were using "
+						},
+						{
+							"type": "inlineCode",
+							"value": "experimental.dynamicIO"
+						},
+						{
+							"type": "text",
+							"value": " or "
+						},
+						{
+							"type": "inlineCode",
+							"value": "experimental.useCache"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents"
+						},
+						{
+							"type": "text",
+							"value": " replaces them. See the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/upgrading/version-16#experimentaldynamicio-and-experimentalusecache",
+							"children": [
+								{
+									"type": "text",
+									"value": "version 16 upgrade guide"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After enabling the flag, route segments that still export "
+				},
+				{
+					"type": "inlineCode",
+					"value": "dynamic"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetchCache"
+				},
+				{
+					"type": "text",
+					"value": " will error. Start by replacing those configs. The sections below explain what to do for each one."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Opting out of validation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A validation insight or error tells you a route won't render instantly. Resolve it by following the recommendation: cache the data with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or wrap it in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Suspense",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". If you're not ready to address it yet, set the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config/instant",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "instant"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " config to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " on the segment that raised it (a layout, page, or parallel slot), then come back to it later."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/layout.tsx\"",
+			"value": "export const instant = false"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": "instant = false"
+						},
+						{
+							"type": "text",
+							"value": " marks a segment as "
+						},
+						{
+							"type": "emphasis",
+							"children": [
+								{
+									"type": "text",
+									"value": "allowed to block"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ". It does not force the route to be dynamic, so a genuinely prerenderable route still ships a static shell. It also does not clear synchronous IO build errors: calls like "
+						},
+						{
+							"type": "inlineCode",
+							"value": "new Date()"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": "Math.random()"
+						},
+						{
+							"type": "text",
+							"value": ", and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "crypto.randomUUID()"
+						},
+						{
+							"type": "text",
+							"value": " still fail the prerender. See "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "#adopting-incrementally",
+							"children": [
+								{
+									"type": "text",
+									"value": "Adopting incrementally"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Adopting incrementally"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You don't have to migrate every route at once. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instant = false"
+				},
+				{
+					"type": "text",
+					"value": " lets you get the whole app building and running first, then convert routes one at a time:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": true,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Enable the flag and migrate each route segment config."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Follow the relevant sections below for "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#dynamic--force-dynamic",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "dynamic = \"force-dynamic\""
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#dynamic--force-static",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "dynamic = \"force-static\""
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#dynamic--error",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "dynamic = \"error\""
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#revalidate",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidate"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#fetchcache",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "fetchCache"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". For routes with dynamic params, also follow the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#generatestaticparams-and-dynamicparams",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "generateStaticParams"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " guidance. Routes that still render instantly need no further work."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": true,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Opt out the routes that aren't ready."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Where an insight or error appears, set "
+								},
+								{
+									"type": "inlineCode",
+									"value": "instant = false"
+								},
+								{
+									"type": "text",
+									"value": " on the segment that raised it. To do this in one pass across the whole app, run the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/upgrading/codemods#cache-components-instant-false",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cache-components-instant-false"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " codemod, which adds the opt-out to every "
+								},
+								{
+									"type": "inlineCode",
+									"value": "page"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "layout"
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "default"
+								},
+								{
+									"type": "text",
+									"value": " that doesn't already declare "
+								},
+								{
+									"type": "inlineCode",
+									"value": "instant"
+								},
+								{
+									"type": "text",
+									"value": ":"
+								}
+							]
+						},
+						{
+							"type": "code",
+							"lang": "bash",
+							"meta": "filename=\"Terminal\"",
+							"value": "npx @next/codemod@canary cache-components-instant-false ./app"
+						},
+						{
+							"type": "blockquote",
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "text",
+													"value": "Good to know"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ": Pass "
+										},
+										{
+											"type": "inlineCode",
+											"value": "./src/app"
+										},
+										{
+											"type": "text",
+											"value": " in a "
+										},
+										{
+											"type": "inlineCode",
+											"value": "src/"
+										},
+										{
+											"type": "text",
+											"value": " project. A wrong path reports "
+										},
+										{
+											"type": "inlineCode",
+											"value": "0 ok"
+										},
+										{
+											"type": "text",
+											"value": " instead of failing, so check the file count."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The app keeps building and serving, now with validation deferred for the opted-out routes."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Fix synchronous IO. It can't be deferred."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Calls like "
+								},
+								{
+									"type": "inlineCode",
+									"value": "new Date()"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Date.now()"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Math.random()"
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "crypto.randomUUID()"
+								},
+								{
+									"type": "text",
+									"value": " during prerender throw a build error that "
+								},
+								{
+									"type": "inlineCode",
+									"value": "instant = false"
+								},
+								{
+									"type": "text",
+									"value": " does not clear, so a route that uses them won't build until you address it, opt-out or not. Move the call out of the prerendered shell so it runs at request time: wrap the part that needs it in "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react/Suspense",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "<Suspense>"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and call "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/connection",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "connection()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " before the call, or move it into a Client Component."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Convert one route at a time."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Remove "
+								},
+								{
+									"type": "inlineCode",
+									"value": "instant = false"
+								},
+								{
+									"type": "text",
+									"value": " from a route, then resolve its insights by caching data with "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/directives/use-cache",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "use cache"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " or wrapping runtime data in "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react/Suspense",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "<Suspense>"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". Repeat until no routes opt out."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Following validation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache Components validates your routes in development and surfaces errors and insights in the dev overlay. Some look like this, naming the affected component and pointing at a fix:"
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "<FixCardGrid>\n  <FixCard\n    group=\"cache\"\n    title=\"Cache the component or data\"\n    href=\"/docs/messages/blocking-prerender-dynamic#cache-the-component-or-data\"\n    snippets={[\n      { text: 'async function Posts() {' },\n      { text: '  \"use cache\"', highlight: true },\n      { text: '  return <List items={…} />' },\n      { text: '}' },\n    ]}\n  />\n  <FixCard\n    group=\"stream\"\n    title=\"Wrap in or move into Suspense\"\n    href=\"/docs/messages/blocking-prerender-dynamic#wrap-in-or-move-into-suspense\"\n    snippets={[\n      { text: '<Suspense fallback={…}>', highlight: true },\n      { text: '  <DataChild />' },\n      { text: '</Suspense>', highlight: true },\n    ]}\n  />\n</FixCardGrid>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each card is clickable and opens a page with patterns, code samples, and trade-offs. Work through the insights and errors until they're gone. For the full validation workflow, the DevTools, and CI testing, see the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/instant-navigation",
+					"children": [
+						{
+							"type": "text",
+							"value": "instant navigation guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Insights don't show up in the HTTP response. An offending route still returns "
+				},
+				{
+					"type": "inlineCode",
+					"value": "200"
+				},
+				{
+					"type": "text",
+					"value": " with rendered HTML in dev. The insight only appears in the dev overlay, the dev-server log, or the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/mcp",
+					"children": [
+						{
+							"type": "text",
+							"value": "MCP "
+						},
+						{
+							"type": "inlineCode",
+							"value": "get_errors"
+						},
+						{
+							"type": "text",
+							"value": " tool"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". To see them, read the overlay (or query the MCP)."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "dynamic = \"force-dynamic\""
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Remove the config."
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " Without Cache Components, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "dynamic = 'force-dynamic'"
+				},
+				{
+					"type": "text",
+					"value": " rendered the entire route for every request and made its "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " requests uncached. With Cache Components, uncached data and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#request-time-apis",
+					"children": [
+						{
+							"type": "text",
+							"value": "Request-time APIs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " already run at request time. Next.js prerenders any static or cached UI around them."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After removing the config, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#following-validation",
+					"children": [
+						{
+							"type": "text",
+							"value": "follow any validation errors or insights"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " that appear."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "// Before\nexport const dynamic = 'force-dynamic'\n\nexport default function Page() {\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "// Before\nexport const dynamic = 'force-dynamic'\n\nexport default function Page() {\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "// After\nexport default function Page() {\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "// After\nexport default function Page() {\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "dynamic = \"force-static\""
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Remove the config, then make its caching explicit."
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " Without Cache Components, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "dynamic = 'force-static'"
+				},
+				{
+					"type": "text",
+					"value": " forced the route to prerender, cached its data, and made "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers()"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useSearchParams()"
+				},
+				{
+					"type": "text",
+					"value": " return empty values."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache data that should be reused with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and a suitable "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". After removing the config, Request-time APIs read actual request values. Remove those dependencies if the route must remain fully prerendered."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "// Before\nexport const dynamic = 'force-static'\n\nexport default async function Page() {\n\tconst data = await fetch('https://api.example.com/data')\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "// Before\nexport const dynamic = 'force-static'\n\nexport default async function Page() {\n\tconst data = await fetch('https://api.example.com/data')\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import { cacheLife } from 'next/cache'\n\n// After\nexport default async function Page() {\n\t'use cache'\n\tcacheLife('max')\n\tconst data = await fetch('https://api.example.com/data')\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import { cacheLife } from 'next/cache'\n\n// After\nexport default async function Page() {\n\t'use cache'\n\tcacheLife('max')\n\tconst data = await fetch('https://api.example.com/data')\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Enforce static output"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": "ensureStatic"
+						},
+						{
+							"type": "text",
+							"value": " is available in Next.js 16.4 and later. This step is optional. Add it only if the route still has a static output requirement after the migration."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To require a completely static route, add "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config/ensureStatic#navigation",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "ensureStatic = 'navigation'"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " after migrating its caching:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "export const ensureStatic = 'navigation'"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "export const ensureStatic = 'navigation'"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Unlike "
+				},
+				{
+					"type": "inlineCode",
+					"value": "dynamic = 'force-static'"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ensureStatic"
+				},
+				{
+					"type": "text",
+					"value": " does not make Request-time APIs return empty values. It reports an error if request-specific server work prevents the route from being prerendered. If only the App Shell or per-link prefetch must stay static, choose a less restrictive level. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/keeping-pages-static",
+					"children": [
+						{
+							"type": "text",
+							"value": "Keeping pages static"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "dynamic = \"error\""
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Remove the config."
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " Without Cache Components, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "dynamic = 'error'"
+				},
+				{
+					"type": "text",
+					"value": " required the route to prerender and treated "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " requests as cached by default. It raised an error only when uncached data or a Request-time API prevented prerendering."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After removing the config, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " no longer inherits that cached default. To preserve the route's existing caching behavior, wrap those requests in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and set their lifetime with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". If the route did not rely on the default, no replacement is needed."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Enforce static validation"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": "ensureStatic"
+						},
+						{
+							"type": "text",
+							"value": " is available in Next.js 16.4 and later. This step is optional. Add it only if the route still has a static output requirement after the migration."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To require a completely static route, add "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config/ensureStatic#navigation",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "ensureStatic = 'navigation'"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " after making the route's caching explicit:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "export const ensureStatic = 'navigation'"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "export const ensureStatic = 'navigation'"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use a less restrictive level when only the App Shell or per-link prefetch must stay static. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/keeping-pages-static",
+					"children": [
+						{
+							"type": "text",
+							"value": "Keeping pages static"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for how to choose a level."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Replace revalidation times greater than zero with "
+						},
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " Without Cache Components, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				},
+				{
+					"type": "text",
+					"value": " set the default revalidation time for an entire route. With Cache Components, place "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " around the data or UI that should be cached, then set its lifetime with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "// Before\nexport const revalidate = 3600 // 1 hour\n\nexport default async function Page() {\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "// Before\nexport const revalidate = 3600 // 1 hour\n\nexport default async function Page() {\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "// After\nimport { cacheLife } from 'next/cache'\n\nexport default async function Page() {\n\t'use cache'\n\tcacheLife('hours')\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "// After\nimport { cacheLife } from 'next/cache'\n\nexport default async function Page() {\n\t'use cache'\n\tcacheLife('hours')\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": If your "
+						},
+						{
+							"type": "inlineCode",
+							"value": "revalidate"
+						},
+						{
+							"type": "text",
+							"value": " value doesn't match a built-in "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/cacheLife",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "cacheLife"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " profile ("
+						},
+						{
+							"type": "inlineCode",
+							"value": "'seconds'"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": "'minutes'"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": "'hours'"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": "'days'"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": "'weeks'"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": "'max'"
+						},
+						{
+							"type": "text",
+							"value": "), pick the closest one or define a "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/cacheLife#custom-cache-profiles",
+							"children": [
+								{
+									"type": "text",
+									"value": "custom profile"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " to match your conventions. You can also "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/cacheLife#overriding-the-default-cache-profiles",
+							"children": [
+								{
+									"type": "text",
+									"value": "redefine a built-in profile"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", including "
+						},
+						{
+							"type": "inlineCode",
+							"value": "default"
+						},
+						{
+							"type": "text",
+							"value": ", when its timings don't match your application's caching needs."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate = 0"
+				},
+				{
+					"type": "text",
+					"value": ", remove the config. Uncached data already runs at request time with Cache Components. Keep data outside a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " scope when it must run for every request."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "fetchCache"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Remove the config and set caching at the data source."
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " Without Cache Components, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetchCache"
+				},
+				{
+					"type": "text",
+					"value": " changed or restricted the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cache"
+				},
+				{
+					"type": "text",
+					"value": " option for every "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " request in a route. With Cache Components, fetches are uncached unless they run inside a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " scope."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default-cache"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "only-cache"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "force-cache"
+				},
+				{
+					"type": "text",
+					"value": ", wrap the data that should remain cached in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". For "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default-no-store"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "only-no-store"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "force-no-store"
+				},
+				{
+					"type": "text",
+					"value": ", leave the data outside a cache scope. If "
+				},
+				{
+					"type": "inlineCode",
+					"value": "force-no-store"
+				},
+				{
+					"type": "text",
+					"value": " previously overrode an explicit cache option, remove that option as well."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "// Before\nexport const fetchCache = 'force-cache'"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "// Before\nexport const fetchCache = 'force-cache'"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "// After\nexport default async function Page() {\n\t'use cache'\n\t// All fetches here are cached\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "// After\nexport default async function Page() {\n\t'use cache'\n\t// All fetches here are cached\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " cache options"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Move "
+						},
+						{
+							"type": "inlineCode",
+							"value": "cache"
+						},
+						{
+							"type": "text",
+							"value": " and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next"
+						},
+						{
+							"type": "text",
+							"value": " options to "
+						},
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Without Cache Components, you cache a request with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cache: 'force-cache'"
+				},
+				{
+					"type": "text",
+					"value": " and tune it with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next: { revalidate, tags }"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With Cache Components, wrap the fetch in a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " function. Fetches inside that scope are cached automatically, and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tags"
+				},
+				{
+					"type": "text",
+					"value": " become "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "// Before\nexport default async function Page() {\n\tconst res = await fetch('https://api.example.com/data', {\n\t\tcache: 'force-cache',\n\t\tnext: { revalidate: 3600, tags: ['data'] },\n\t})\n\tconst data = await res.json()\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "// Before\nexport default async function Page() {\n\tconst res = await fetch('https://api.example.com/data', {\n\t\tcache: 'force-cache',\n\t\tnext: { revalidate: 3600, tags: ['data'] },\n\t})\n\tconst data = await res.json()\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "// After\nimport { cacheLife, cacheTag } from 'next/cache'\n\nasync function getData() {\n\t'use cache'\n\tcacheLife('hours')\n\tcacheTag('data')\n\tconst res = await fetch('https://api.example.com/data')\n\treturn res.json()\n}\n\nexport default async function Page() {\n\tconst data = await getData()\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "// After\nimport { cacheLife, cacheTag } from 'next/cache'\n\nasync function getData() {\n\t'use cache'\n\tcacheLife('hours')\n\tcacheTag('data')\n\tconst res = await fetch('https://api.example.com/data')\n\treturn res.json()\n}\n\nexport default async function Page() {\n\tconst data = await getData()\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Note the persistence difference. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " Data Cache persists cached responses across deployments and across serverless instances."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " defaults to in-memory storage, so its entries are discarded when the serverless instance is destroyed and are scoped to a single deployment. Use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache-remote",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache: remote"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheHandlers",
+					"children": [
+						{
+							"type": "text",
+							"value": "cache handler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for storage that survives instance teardown. Even with durable storage, expect cached values to recompute after a new deployment."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "unstable_cache"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "No change required."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "unstable_cache"
+				},
+				{
+					"type": "text",
+					"value": " continues to work with Cache Components. You can leave it in place and migrate it later."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you choose to migrate it, turn the wrapped function into a function with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache'"
+				},
+				{
+					"type": "text",
+					"value": " directive. The cache key is derived automatically from the arguments, so the key-parts array is no longer needed, and the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "options"
+				},
+				{
+					"type": "text",
+					"value": " object maps to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/lib/data.ts\" switcher",
+			"value": "// Before\nimport { unstable_cache } from 'next/cache'\nimport { db } from '@/lib/db'\n\nexport const getUser = unstable_cache(\n\tasync (id: string) => {\n\t\treturn db.query.users.findFirst({ where: eq(users.id, id) })\n\t},\n\t['user'], // cache key prefix\n\t{ tags: ['users'], revalidate: 3600 },\n)"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/lib/data.js\" switcher",
+			"value": "// Before\nimport { unstable_cache } from 'next/cache'\nimport { db } from '@/lib/db'\n\nexport const getUser = unstable_cache(\n\tasync (id) => {\n\t\treturn db.query.users.findFirst({ where: eq(users.id, id) })\n\t},\n\t['user'], // cache key prefix\n\t{ tags: ['users'], revalidate: 3600 },\n)"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/lib/data.ts\" switcher",
+			"value": "// After\nimport { cacheLife, cacheTag } from 'next/cache'\nimport { db } from '@/lib/db'\n\nexport async function getUser(id: string) {\n\t'use cache'\n\tcacheLife('hours')\n\tcacheTag('users')\n\treturn db.query.users.findFirst({ where: eq(users.id, id) })\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/lib/data.js\" switcher",
+			"value": "// After\nimport { cacheLife, cacheTag } from 'next/cache'\nimport { db } from '@/lib/db'\n\nexport async function getUser(id) {\n\t'use cache'\n\tcacheLife('hours')\n\tcacheTag('users')\n\treturn db.query.users.findFirst({ where: eq(users.id, id) })\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Like the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " Data Cache, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "unstable_cache"
+				},
+				{
+					"type": "text",
+					"value": " persists cached values across deployments and serverless instances, while "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " does not. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#fetch-cache-options",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "fetch"
+						},
+						{
+							"type": "text",
+							"value": " cache options"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " above for the storage details."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "React.cache"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Usually no change."
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "inlineCode",
+					"value": "React.cache"
+				},
+				{
+					"type": "text",
+					"value": " continues to deduplicate matching calls within a React render."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "However, each Cache Function has an isolated React cache scope. Calls from separate Cache Functions do not share a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "React.cache"
+				},
+				{
+					"type": "text",
+					"value": " result, such as when one Cache Function preloads data and another consumes it."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When a helper reads request data and matching calls need to share work across Cache Function scopes, replace the React wrapper with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache-private",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "'use cache: private'"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". If the function only needs request-scoped deduplication, use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife({ stale: Infinity })"
+				},
+				{
+					"type": "text",
+					"value": " so it does not lower the route's stale time. Private Cache Function results are not stored in a server cache across production requests."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "On-demand revalidation ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidateTag"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidatePath"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "updateTag"
+				},
+				{
+					"type": "text",
+					"value": ")"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "On-demand invalidation still works by tagging cached data and expiring it after an event. Tag data with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " inside a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " function instead of the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.tags"
+				},
+				{
+					"type": "text",
+					"value": " option, then choose the invalidation API by the behavior you want:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/updateTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "updateTag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": for mutations whose result the user must see immediately (read-your-own-writes). Called from a Server Action, it expires the tag so the next request waits for fresh data instead of serving stale content."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/revalidateTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidateTag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": for stale-while-revalidate. A cache profile is "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "required"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " as the second argument, for example use "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'max'"
+								},
+								{
+									"type": "text",
+									"value": " to serve cached data while it refreshes in the background. Works in Server Actions and Route Handlers."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/revalidatePath",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidatePath"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": unchanged from the previous caching model."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "updateTag"
+				},
+				{
+					"type": "text",
+					"value": " isn't exclusive to Cache Components (it also works with the previous caching model), but migrating is a good time to adopt it. After a mutation in a Server Action, reach for it when the user should see their own change right away."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/actions.ts\" switcher",
+			"value": "'use server'\nimport { updateTag } from 'next/cache'\n\nexport async function createPost(formData: FormData) {\n\t// Create the post, then show it immediately on the next request\n\tupdateTag('posts')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/actions.js\" switcher",
+			"value": "'use server'\nimport { updateTag } from 'next/cache'\n\nexport async function createPost(formData) {\n\t// Create the post, then show it immediately on the next request\n\tupdateTag('posts')\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " "
+						},
+						{
+							"type": "inlineCode",
+							"value": "updateTag"
+						},
+						{
+							"type": "text",
+							"value": " can only be called from a Server Action; calling it elsewhere throws. In Route Handlers or webhooks, use "
+						},
+						{
+							"type": "inlineCode",
+							"value": "revalidateTag"
+						},
+						{
+							"type": "text",
+							"value": " instead with a cache profile."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Pass "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'max'"
+				},
+				{
+					"type": "text",
+					"value": " as the second argument to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidateTag"
+				},
+				{
+					"type": "text",
+					"value": " to expire the tag with stale-while-revalidate semantics:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/api/webhook/route.ts\" switcher",
+			"value": "// Before\nimport { revalidateTag } from 'next/cache'\n\nexport async function POST() {\n\trevalidateTag('posts')\n\treturn Response.json({ ok: true })\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/webhook/route.js\" switcher",
+			"value": "// Before\nimport { revalidateTag } from 'next/cache'\n\nexport async function POST() {\n\trevalidateTag('posts')\n\treturn Response.json({ ok: true })\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/api/webhook/route.ts\" switcher",
+			"value": "// After - Pass a cache profile\nimport { revalidateTag } from 'next/cache'\n\nexport async function POST() {\n\trevalidateTag('posts', 'max')\n\treturn Response.json({ ok: true })\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/webhook/route.js\" switcher",
+			"value": "// After - Pass a cache profile\nimport { revalidateTag } from 'next/cache'\n\nexport async function POST() {\n\trevalidateTag('posts', 'max')\n\treturn Response.json({ ok: true })\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "unstable_noStore"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Not needed."
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "inlineCode",
+					"value": "unstable_noStore"
+				},
+				{
+					"type": "text",
+					"value": " ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "noStore()"
+				},
+				{
+					"type": "text",
+					"value": ") opts a component out of caching. With Cache Components, nothing is cached unless you add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": ", so you can remove it. If a component must run at request time, call "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/connection",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "connection()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " before the work and wrap it in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "// Before\nimport { unstable_noStore as noStore } from 'next/cache'\n\nexport default async function Page() {\n\tnoStore()\n\tconst data = await db.query('...')\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "// Before\nimport { unstable_noStore as noStore } from 'next/cache'\n\nexport default async function Page() {\n\tnoStore()\n\tconst data = await db.query('...')\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "// After - uncached by default, just remove noStore()\nexport default async function Page() {\n\tconst data = await db.query('...')\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "// After - uncached by default, just remove noStore()\nexport default async function Page() {\n\tconst data = await db.query('...')\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "dynamicParams"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache Components changes how "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/dynamic-routes",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamic routes"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " handle params."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " must return at least one param"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Returning an empty array now errors."
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " Without Cache Components, returning "
+				},
+				{
+					"type": "inlineCode",
+					"value": "[]"
+				},
+				{
+					"type": "text",
+					"value": " defers every path to the first runtime visit. With Cache Components, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-static-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " must return at least one param so Next.js can prerender the route and validate it produces a non-empty "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#static-shell",
+					"children": [
+						{
+							"type": "text",
+							"value": "static shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". An empty array raises "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/empty-generate-static-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "empty-generate-static-params"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Keep "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " and return at least one real param. Removing the export opts the route out of ISR, so Next.js renders it on every request, even when it uses "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " for data. Read "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/incremental-static-regeneration-cache-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "ISR with Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to learn how "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " prerenders dynamic routes and how unlisted paths behave."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" switcher",
+			"value": "// Before - defer all paths to runtime\nexport async function generateStaticParams() {\n\treturn []\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\" switcher",
+			"value": "// Before - defer all paths to runtime\nexport async function generateStaticParams() {\n\treturn []\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" switcher",
+			"value": "// After - return at least one param to prerender\nexport async function generateStaticParams() {\n\tconst posts = await fetch('https://.../posts').then((res) => res.json())\n\treturn posts.slice(0, 1).map((post) => ({ slug: post.slug }))\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\" switcher",
+			"value": "// After - return at least one param to prerender\nexport async function generateStaticParams() {\n\tconst posts = await fetch('https://.../posts').then((res) => res.json())\n\treturn posts.slice(0, 1).map((post) => ({ slug: post.slug }))\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Paths you don't return are still served at request time."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " When you use "
+						},
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						},
+						{
+							"type": "text",
+							"value": " without Partial Prefetching, await "
+						},
+						{
+							"type": "inlineCode",
+							"value": "params"
+						},
+						{
+							"type": "text",
+							"value": " outside "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						},
+						{
+							"type": "text",
+							"value": " to preserve ISR for unlisted paths. To serve a fallback while an unlisted path renders, enable "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/config/next-config-js/partialPrefetching",
+							"children": [
+								{
+									"type": "text",
+									"value": "Partial Prefetching"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " and await "
+						},
+						{
+							"type": "inlineCode",
+							"value": "params"
+						},
+						{
+							"type": "text",
+							"value": " inside "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						},
+						{
+							"type": "text",
+							"value": ". See "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/incremental-static-regeneration-cache-components",
+							"children": [
+								{
+									"type": "text",
+									"value": "ISR with Cache Components"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for details."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "dynamicParams"
+				},
+				{
+					"type": "text",
+					"value": " is not supported"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Delete the export."
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " With Cache Components enabled, exporting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "dynamicParams"
+				},
+				{
+					"type": "text",
+					"value": " fails the build with this error message:"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route segment config \"dynamicParams\" is not compatible with "
+						},
+						{
+							"type": "inlineCode",
+							"value": "nextConfig.cacheComponents"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Params not returned by "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " are rendered on request. If you used "
+				},
+				{
+					"type": "inlineCode",
+					"value": "dynamicParams: false"
+				},
+				{
+					"type": "text",
+					"value": " to reject them, call "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/not-found",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "notFound()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in the page when the param doesn't resolve to real data."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Await "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For routes that don't use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": ", pass the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " promise into a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/loading",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " boundary instead of awaiting it at the top of the component. This lets Next.js prerender a static shell while the params remain unknown. For routes that use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": ", follow the ISR guidance above."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" switcher",
+			"value": "// Before - awaiting params at the top blocks the shell\nexport default async function Page({ params }: { params: Promise<{ slug: string }> }) {\n\tconst { slug } = await params\n\treturn <Post slug={slug} />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\" switcher",
+			"value": "// Before - awaiting params at the top blocks the shell\nexport default async function Page({ params }) {\n\tconst { slug } = await params\n\treturn <Post slug={slug} />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" switcher",
+			"value": "import { Suspense } from 'react'\n\n// After - await inside Suspense so the shell can prerender\nexport default function Page({ params }: PageProps<'/blog/[slug]'>) {\n\treturn (\n\t\t<Suspense fallback={<div>Loading...</div>}>\n\t\t\t<Post params={params} />\n\t\t</Suspense>\n\t)\n}\n\nasync function Post({ params }: Pick<PageProps<'/blog/[slug]'>, 'params'>) {\n\tconst { slug } = await params\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\" switcher",
+			"value": "import { Suspense } from 'react'\n\n// After - await inside Suspense so the shell can prerender\nexport default function Page({ params }) {\n\treturn (\n\t\t<Suspense fallback={<div>Loading...</div>}>\n\t\t\t<Post params={params} />\n\t\t</Suspense>\n\t)\n}\n\nasync function Post({ params }) {\n\tconst { slug } = await params\n\t// ...\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Client hooks that read the route follow the same Suspense pattern. When the route's pathname is fully known, they resolve during prerendering and need no boundary. When the pathname depends on dynamic params not yet known, the hooks suspend wherever the component sits. A nav or breadcrumb in a shared layout, for instance, suspends while Next.js generates the static shell for any route below it that has dynamic params. Wrap the component that reads the hook in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " (push the read down to the smallest leaf so the rest stays prerendered), or the build fails:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/use-pathname",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "usePathname"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/use-params",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "useParams"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/use-selected-layout-segment",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "useSelectedLayoutSegment"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/use-selected-layout-segments",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "useSelectedLayoutSegments"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-search-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useSearchParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " hook always needs a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary, since search params are only known at request time. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/blocking-prerender-client-hook",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js encountered URL data in a Client Component outside of Suspense"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for fixes."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "cookies"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Wrap runtime data access in "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " Without Cache Components, reading "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cookies",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cookies()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/headers",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "headers()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/page#searchparams-optional",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "searchParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " opts the whole route into dynamic rendering. With Cache Components, accessing them outside a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Suspense",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " boundary surfaces the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/blocking-prerender-runtime",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "blocking-prerender-runtime"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " insight"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Move the access into a component wrapped in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " so the rest of the page prerenders as a static shell and the dynamic part streams in at request time."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import { cookies } from 'next/headers'\n\n// Before - reading cookies at the top makes the whole route dynamic\nexport default async function Page() {\n\tconst theme = (await cookies()).get('theme')?.value\n\treturn <Dashboard theme={theme} />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import { cookies } from 'next/headers'\n\n// Before - reading cookies at the top makes the whole route dynamic\nexport default async function Page() {\n\tconst theme = (await cookies()).get('theme')?.value\n\treturn <Dashboard theme={theme} />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import { cookies } from 'next/headers'\nimport { Suspense } from 'react'\n\n// After - the page prerenders; only Dashboard streams at request time\nexport default function Page() {\n\treturn (\n\t\t<Suspense fallback={<p>Loading...</p>}>\n\t\t\t<Dashboard />\n\t\t</Suspense>\n\t)\n}\n\nasync function Dashboard() {\n\tconst theme = (await cookies()).get('theme')?.value\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import { cookies } from 'next/headers'\nimport { Suspense } from 'react'\n\n// After - the page prerenders; only Dashboard streams at request time\nexport default function Page() {\n\treturn (\n\t\t<Suspense fallback={<p>Loading...</p>}>\n\t\t\t<Dashboard />\n\t\t</Suspense>\n\t)\n}\n\nasync function Dashboard() {\n\tconst theme = (await cookies()).get('theme')?.value\n\t// ...\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Your page receives "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": " as props, and both are promises. Apply the same pattern: pass the promise straight through to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": "-wrapped component as a prop and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await"
+				},
+				{
+					"type": "text",
+					"value": " it there, rather than at the top of the page. You can also unwrap the promise inline with "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".then()"
+				},
+				{
+					"type": "text",
+					"value": " and pass a plain value down; see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/streaming#push-dynamic-access-down",
+					"children": [
+						{
+							"type": "text",
+							"value": "Streaming"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for a similar pattern."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import { Suspense } from 'react'\n\nexport default function Page({ searchParams }: PageProps<'/'>) {\n\treturn (\n\t\t<Suspense fallback={<p>Loading...</p>}>\n\t\t\t<Results searchParams={searchParams} />\n\t\t</Suspense>\n\t)\n}\n\nasync function Results({ searchParams }: Pick<PageProps<'/'>, 'searchParams'>) {\n\tconst { query } = await searchParams\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import { Suspense } from 'react'\n\nexport default function Page({ searchParams }) {\n\treturn (\n\t\t<Suspense fallback={<p>Loading...</p>}>\n\t\t\t<Results searchParams={searchParams} />\n\t\t</Suspense>\n\t)\n}\n\nasync function Results({ searchParams }) {\n\tconst { query } = await searchParams\n\t// ...\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": When a cookie or header value drives an attribute on the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<html>"
+						},
+						{
+							"type": "text",
+							"value": " element in the root layout ("
+						},
+						{
+							"type": "inlineCode",
+							"value": "lang"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": "dir"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": "data-theme"
+						},
+						{
+							"type": "text",
+							"value": ", etc.), reading it on the server makes the whole subtree request-bound, so there's no child to wrap in "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						},
+						{
+							"type": "text",
+							"value": ". An inline "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<script>"
+						},
+						{
+							"type": "text",
+							"value": " in "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<head>"
+						},
+						{
+							"type": "text",
+							"value": " that sets the attribute before paint keeps the shell static; see "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/preventing-flash-before-hydration",
+							"children": [
+								{
+									"type": "text",
+									"value": "Preventing flash before hydration"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for the pattern."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Handlers ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "GET"
+				},
+				{
+					"type": "text",
+					"value": ")"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Replace "
+						},
+						{
+							"type": "inlineCode",
+							"value": "dynamic = 'force-static'"
+						},
+						{
+							"type": "text",
+							"value": " with "
+						},
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Without Cache Components, a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GET"
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is dynamic unless you opt into caching with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "export const dynamic = 'force-static'"
+				},
+				{
+					"type": "text",
+					"value": ". With Cache Components, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GET"
+				},
+				{
+					"type": "text",
+					"value": " handlers follow the same model as pages: they prerender when they don't access uncached or runtime data, and you cache uncached data with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": ". Remove the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "dynamic"
+				},
+				{
+					"type": "text",
+					"value": " config and move the data access into a separate function marked with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": ". The directive can't be applied to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GET"
+				},
+				{
+					"type": "text",
+					"value": " export itself, so the handler calls a cached helper."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/products/route.ts\" switcher",
+			"value": "// Before\nexport const dynamic = 'force-static'\n\nexport async function GET() {\n\tconst products = await db.query('SELECT * FROM products')\n\treturn Response.json(products)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/products/route.js\" switcher",
+			"value": "// Before\nexport const dynamic = 'force-static'\n\nexport async function GET() {\n\tconst products = await db.query('SELECT * FROM products')\n\treturn Response.json(products)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/products/route.ts\" switcher",
+			"value": "// After\nimport { cacheLife } from 'next/cache'\n\nexport async function GET() {\n\tconst products = await getProducts()\n\treturn Response.json(products)\n}\n\nasync function getProducts() {\n\t'use cache'\n\tcacheLife('hours')\n\treturn db.query('SELECT * FROM products')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/products/route.js\" switcher",
+			"value": "// After\nimport { cacheLife } from 'next/cache'\n\nexport async function GET() {\n\tconst products = await getProducts()\n\treturn Response.json(products)\n}\n\nasync function getProducts() {\n\t'use cache'\n\tcacheLife('hours')\n\treturn db.query('SELECT * FROM products')\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Reading uncached or runtime data in a "
+						},
+						{
+							"type": "inlineCode",
+							"value": "GET"
+						},
+						{
+							"type": "text",
+							"value": " handler bails out of prerendering by "
+						},
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "throwing"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ". A "
+						},
+						{
+							"type": "inlineCode",
+							"value": "try/catch"
+						},
+						{
+							"type": "text",
+							"value": " you already have around other operations will catch that bail-out. If the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "catch"
+						},
+						{
+							"type": "text",
+							"value": " block logs the error, it adds noise to the build output. Set "
+						},
+						{
+							"type": "inlineCode",
+							"value": "experimental.hideLogsAfterAbort: true"
+						},
+						{
+							"type": "text",
+							"value": " to hide logs emitted after a bail-out."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateViewport"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache external data with "
+						},
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						},
+						{
+							"type": "text",
+							"value": ", or mark intentionally dynamic pages."
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " Under Cache Components, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-metadata",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateMetadata"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-viewport",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateViewport"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " follow the same rules as components. If they read runtime data ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": ") or fetch uncached data while the rest of the page is otherwise prerenderable, Next.js raises an error so the choice is explicit. If the metadata depends on external but not runtime data, add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "// Before\nexport async function generateMetadata() {\n\tconst { title, description } = await db.query('site-metadata')\n\treturn { title, description }\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "// After - cache external data\nexport async function generateMetadata() {\n\t'use cache'\n\tconst { title, description } = await db.query('site-metadata')\n\treturn { title, description }\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If the metadata genuinely needs runtime data, you can't wrap "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata"
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": ". Instead, add a dynamic marker component to the page so the static content still prerenders while the metadata streams in."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { connection } from 'next/server'\n\nexport async function generateMetadata() {\n\t// reads runtime data\n\treturn { title: 'Personalized Title' }\n}\n\nasync function DynamicMarker() {\n\treturn (\n\t\t<Suspense>\n\t\t\t<Connection />\n\t\t</Suspense>\n\t)\n}\n\nasync function Connection() {\n\tawait connection()\n\treturn null\n}\n\nexport default function Page() {\n\treturn (\n\t\t<>\n\t\t\t<article>Static content</article>\n\t\t\t<DynamicMarker />\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-metadata#with-cache-components",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateMetadata"
+						},
+						{
+							"type": "text",
+							"value": " with Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-viewport#with-cache-components",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateViewport"
+						},
+						{
+							"type": "text",
+							"value": " with Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the full set of fix options and trade-offs."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "runtime = 'edge'"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Remove the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "runtime"
+						},
+						{
+							"type": "text",
+							"value": " export."
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " Cache Components requires the Node.js runtime, which is the default, and does not support the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config/runtime",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "runtime"
+						},
+						{
+							"type": "text",
+							"value": " route segment config"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Remove the export even when it is set to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "runtime = 'nodejs'"
+				},
+				{
+					"type": "text",
+					"value": ". If a route uses the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/edge-runtime-deprecated",
+					"children": [
+						{
+							"type": "text",
+							"value": "deprecated"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "inlineCode",
+					"value": "runtime = 'edge'"
+				},
+				{
+					"type": "text",
+					"value": " export, remove it and use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/proxy",
+					"children": [
+						{
+							"type": "text",
+							"value": "Proxy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when you need edge behavior."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "experimental_ppr"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Removed. Enable "
+						},
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents"
+						},
+						{
+							"type": "text",
+							"value": " instead."
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " Next.js 16 removes the experimental Partial Prerendering flag ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.ppr"
+				},
+				{
+					"type": "text",
+					"value": ") and the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental_ppr"
+				},
+				{
+					"type": "text",
+					"value": " route segment config. Partial Prerendering is now part of "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", so remove "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.ppr"
+				},
+				{
+					"type": "text",
+					"value": " from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental_ppr"
+				},
+				{
+					"type": "text",
+					"value": " from your segments. A "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/codemods#remove-experimental_ppr-route-segment-config-from-app-router-pages-and-layouts",
+					"children": [
+						{
+							"type": "text",
+							"value": "codemod"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " removes the segment config for you."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "// Before - no longer needed\nexport const experimental_ppr = true\n\nexport default function Page() {\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "// Before - no longer needed\nexport const experimental_ppr = true\n\nexport default function Page() {\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "// After - remove it; cacheComponents enables Partial Prerendering\nexport default function Page() {\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "// After - remove it; cacheComponents enables Partial Prerendering\nexport default function Page() {\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "UI state preservation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Component state now persists across navigations."
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " With Cache Components, Next.js preserves routes using React's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Activity",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Activity>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " component in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Activity#activity",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "\"hidden\""
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " mode instead of unmounting them. Effects clean up and re-run normally, but "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useState"
+				},
+				{
+					"type": "text",
+					"value": " values, form inputs, and scroll position are no longer reset when navigating away and back."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If your code relied on unmounting to clear state, you may need to add explicit reset logic:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Dropdowns and popovers"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": stay open when navigating back. Close them in a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useLayoutEffect"
+								},
+								{
+									"type": "text",
+									"value": " cleanup function."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Dialogs with initialization logic"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Effects that depend on dialog state (like focusing an input) won't re-fire if the state was preserved. Derive dialog state from the URL instead."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Forms after submission"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": input values and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useActionState"
+								},
+								{
+									"type": "text",
+									"value": " results (success/error messages) persist when returning. Reset in the submit handler or user action when possible, otherwise use a cleanup effect."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/preserving-ui-state",
+					"children": [
+						{
+							"type": "text",
+							"value": "Preserving UI state across navigations"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for detailed examples of each pattern."
+				}
+			]
+		}
+	]
+}

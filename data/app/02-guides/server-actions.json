@@ -1,0 +1,1508 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Server Actions and Mutations\nnav_title: Server Actions\ndescription: How Server Actions work in Next.js, including the single-roundtrip response model, sequential dispatch, security, and caching integration.\nrelated:\n title: Next steps\n description: Learn more about creating, securing, and configuring Server Actions.\n links:\n  - app/getting-started/mutating-data\n  - app/guides/forms\n  - app/guides/data-security\n  - app/api-reference/directives/use-server\n  - app/api-reference/functions/revalidatePath\n  - app/api-reference/functions/revalidateTag\n  - app/api-reference/functions/redirect\n  - app/api-reference/functions/refresh\n  - app/api-reference/config/next-config-js/serverActions"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Action"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/rsc/server-functions",
+					"children": [
+						{
+							"type": "text",
+							"value": "React Server Function"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " invoked through React's action mechanisms, such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<form action>"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<button formAction>"
+				},
+				{
+					"type": "text",
+					"value": ", or a client-side transition."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You create one by adding the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-server",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "'use server'"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " directive, then invoke it from a form, or from an event handler or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useEffect"
+				},
+				{
+					"type": "text",
+					"value": " wrapped in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "startTransition"
+				},
+				{
+					"type": "text",
+					"value": ". For the basics of creating and invoking Server Functions, see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/mutating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Mutating data"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/forms",
+					"children": [
+						{
+							"type": "text",
+							"value": "Forms guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This page covers the parts of Server Actions that are specific to Next.js: how they commonly map to mutations, how the response carries both returned data and re-rendered UI, how the client dispatches them, the security boundary the framework enforces, and the configuration available."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Sequential dispatch on the client"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js dispatches Server Actions one at a time per client. If a user triggers three actions in quick succession, the second waits for the first to finish, then the third waits for the second. This keeps the re-rendered server tree consistent with the action result that produced it."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A consequence: do not rely on "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Promise.all"
+				},
+				{
+					"type": "text",
+					"value": " to parallelize Server Actions from the client. If you need parallel work, do it inside a single Server Action, fetch in parallel from a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/fetching-data#server-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", or use a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/backend-for-frontend#manipulating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for non-mutation requests."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " This is a property of the client dispatcher, not of Server Functions in general. The server does not queue Server Actions. Each one runs in its own request as it arrives, and can do anything an async function can do."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "A single response carries data and UI"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When a Server Action triggers an immediate revalidation, Next.js does the work inside one HTTP request: it runs the action, then re-renders the current route server-side. The response that comes back contains both pieces in the same Flight stream:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The action's return value, consumed by "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useActionState"
+								},
+								{
+									"type": "text",
+									"value": " or the awaited promise on the client."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "A newly rendered "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/glossary#rsc-payload",
+									"children": [
+										{
+											"type": "text",
+											"value": "RSC Payload"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for the current route, which the client commits as a seeded navigation."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Your application code does not need a follow-up fetch to see the updated UI for the current page."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A re-render is included in the same response when the action does any of these:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Calls "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/updateTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "updateTag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/revalidatePath",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidatePath"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to immediately invalidate cached data."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Calls "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/refresh",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "refresh"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to refetch the current route's RSC Payload."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Mutates cookies through "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/cookies#understanding-cookie-behavior-in-server-functions",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cookies()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". Setting or deleting a cookie automatically re-renders the current page so the UI reflects the new value."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Calls "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/redirect",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "redirect"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". The response navigates the router and streams the destination's RSC Payload."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/posts/actions.ts\"",
+			"value": "'use server'\n\nimport { revalidatePath } from 'next/cache'\nimport { auth } from '@/lib/auth'\nimport { db } from '@/lib/db'\n\nexport async function createPost(formData: FormData) {\n\tconst session = await auth()\n\tif (!session?.user) throw new Error('Unauthorized')\n\n\tawait db.post.create({\n\t\tdata: {\n\t\t\ttitle: String(formData.get('title')),\n\t\t\tauthorId: session.user.id,\n\t\t},\n\t})\n\n\trevalidatePath('/posts')\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The mutation, the cache invalidation, and the page re-render all complete in a single roundtrip. Because "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/redirect#behavior",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "redirect"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " throws a control-flow exception, any code after it does not run. Place revalidation calls before "
+				},
+				{
+					"type": "inlineCode",
+					"value": "redirect"
+				},
+				{
+					"type": "text",
+					"value": " if the destination needs the fresh data."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with a stale-while-revalidate profile is the exception: it marks the tag for background refresh and does "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "not"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " include a re-render in the action response. The page reflects the change on a later read. An action that does none of the above carries only its return value, and the current route is not re-rendered."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Security"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A Server Action runs as a POST request against the page that invokes it. At build time, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use server'"
+				},
+				{
+					"type": "text",
+					"value": " directive tells the compiler to swap the function's implementation in client bundles for a reference (an action ID plus a dispatcher) that POSTs back to the server. The implementation stays on the server, but the route is reachable to anyone who can send the same POST. Treat every action as an untrusted entry point."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js enforces a few framework-level protections:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "CSRF check."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " The request's "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Origin"
+								},
+								{
+									"type": "text",
+									"value": " is compared to the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Host"
+								},
+								{
+									"type": "text",
+									"value": " (or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "X-Forwarded-Host"
+								},
+								{
+									"type": "text",
+									"value": "). Mismatches are rejected. Configure "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/serverActions#allowedorigins",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "serverActions.allowedOrigins"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for proxy or CDN domains."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Body size limit."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Action requests are capped at 1MB by default. Configure "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/serverActions#bodysizelimit",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "serverActions.bodySizeLimit"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " when accepting larger payloads."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Encrypted action IDs and dead code elimination."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Action references are encrypted at build time, and unused Server Functions are stripped from client bundles so they have no public endpoint. See "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/data-security#built-in-server-actions-security-features",
+									"children": [
+										{
+											"type": "text",
+											"value": "Built-in Server Actions security features"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Closure variable encryption."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Variables captured by an inline action are encrypted before being sent to the client. For multi-instance and self-hosted deployments, set "
+								},
+								{
+									"type": "inlineCode",
+									"value": "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY"
+								},
+								{
+									"type": "text",
+									"value": " to a stable key shared across instances. See "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/data-security#closures-and-encryption",
+									"children": [
+										{
+											"type": "text",
+											"value": "Closures and encryption"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Framework protections are not a substitute for application-level checks. Inside every action:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Authenticate and authorize."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Render-time gating (only rendering a form on an authenticated page) is not a security boundary, because requests can be sent without going through the UI."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Validate inputs."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Treat "
+								},
+								{
+									"type": "inlineCode",
+									"value": "FormData"
+								},
+								{
+									"type": "text",
+									"value": ", query parameters, and headers as untrusted."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Constrain return values."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Action returns are serialized to the client. Shape them to what the UI renders, not raw database records."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For end-to-end patterns including a Data Access Layer, return-value tainting, and rate limiting, see the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/data-security#mutating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Data Security guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Destructive operations like deletes may warrant stronger handling, such as elevated session checks or re-authentication, and a loud failure when those checks miss."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/posts/actions.ts\" highlight={6,7,8}",
+			"value": "'use server'\n\nimport { auth } from '@/lib/auth'\n\nexport async function deletePost(postId: string) {\n\tconst session = await auth()\n\tif (!session?.user) throw new Error('Unauthorized')\n\tif (!(await canDelete(session.user, postId))) throw new Error('Forbidden')\n\n\tawait db.post.delete({ where: { id: postId } })\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you've enabled the experimental "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/authInterrupts",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "authInterrupts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " flag, you can throw "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/unauthorized",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "unauthorized()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/forbidden",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "forbidden()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/navigation"
+				},
+				{
+					"type": "text",
+					"value": " instead, so Next.js renders the corresponding "
+				},
+				{
+					"type": "inlineCode",
+					"value": "unauthorized.tsx"
+				},
+				{
+					"type": "text",
+					"value": " / "
+				},
+				{
+					"type": "inlineCode",
+					"value": "forbidden.tsx"
+				},
+				{
+					"type": "text",
+					"value": " UI segment automatically."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, a client legitimately tells the server "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "which"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " item to act on, but it should not supply the row's contents or ownership. Send a reference (typically an ID) plus the user's change, and re-read the rest from a trusted source using the session. Schema validation (zod or similar) only checks the "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "shape"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " of the input. A well-formed "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Item"
+				},
+				{
+					"type": "text",
+					"value": " object can still refer to a row the caller does not own."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/items/actions.ts\"",
+			"value": "'use server'\n\nimport { auth } from '@/lib/auth'\nimport { db } from '@/lib/db'\n\n// Unsafe: no auth, no ownership check. The whole item, including its id, comes\n// from the client, so anyone who can POST here can mark any item complete.\nexport async function completeItemUnsafe(item: Item) {\n\tawait db.item.update({ where: { id: item.id }, data: { completed: true } })\n}\n\n// Safe: take only the change, derive identity from the session, look up by ownership.\nexport async function completeItem(itemId: string) {\n\tconst session = await auth()\n\tif (!session?.user) return\n\n\tconst item = await db.item.findFirst({\n\t\twhere: { id: itemId, ownerId: session.user.id },\n\t})\n\tif (!item) return\n\n\tawait db.item.update({ where: { id: item.id }, data: { completed: true } })\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Choosing a cache update"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After mutating data, on-demand revalidation updates the server cache, the client router, or both. Choose based on what needs to change:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/updateTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "updateTag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": immediate expiration of a tag. The next read (including the route re-render that ships with the action's response) waits for fresh data. Use when the action needs "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "read-your-own-writes"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " so the user immediately sees their change. Server Actions only."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/revalidateTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidateTag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": stale-while-revalidate refresh of a tag with a cache-life profile. Subsequent reads get the stale value while a fresh fetch happens in the background, so the action's own re-render does "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "not"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " wait for the new data."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/revalidatePath",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidatePath"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": invalidate by URL path. Use when one route is affected and tagging is overkill."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/refresh",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "refresh"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": refetch the current route's RSC Payload without invalidating cached data. Use when the view depends on state outside the cache that the action just changed."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "inlineCode",
+					"value": "updateTag"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidatePath"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "refresh"
+				},
+				{
+					"type": "text",
+					"value": " runs, Next.js re-renders the current route server-side and includes a newly rendered "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#rsc-payload",
+					"children": [
+						{
+							"type": "text",
+							"value": "RSC Payload"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in the action's response, so the page reflects the change in the same roundtrip. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidateTag"
+				},
+				{
+					"type": "text",
+					"value": " with a stale-while-revalidate profile intentionally skips that immediate re-render."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Unlike "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/redirect",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "redirect"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", none of these throw, so an action can call them and still return a value to the caller. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/how-revalidation-works",
+					"children": [
+						{
+							"type": "text",
+							"value": "How revalidation works"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the underlying model."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Configuration"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/serverActions",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "serverActions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " option in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " controls framework-level behavior:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "/** @type {import('next').NextConfig} */\nmodule.exports = {\n\texperimental: {\n\t\tserverActions: {\n\t\t\tallowedOrigins: ['my-proxy.com', '*.my-proxy.com'],\n\t\t\tbodySizeLimit: '2mb',\n\t\t},\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For the closure encryption key, set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY"
+				},
+				{
+					"type": "text",
+					"value": " in the deployment environment. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/self-hosting#server-functions-encryption-key",
+					"children": [
+						{
+							"type": "text",
+							"value": "Self-hosting: Server Functions encryption key"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for deployment-specific guidance."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Deployment considerations"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each Server Action is identified by the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#security",
+					"children": [
+						{
+							"type": "text",
+							"value": "action ID"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " that is part of its build artifacts. New deployments typically generate new IDs (Next.js rotates them at most every 14 days, even when the source is unchanged), so a client still running the previous build may invoke an action ID that no longer exists. The error surfaces as \""
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nextjs.org/docs/messages/failed-to-find-server-action",
+					"children": [
+						{
+							"type": "text",
+							"value": "Failed to find Server Action"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "\"."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To minimize disruption:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prefer rolling deployments over abrupt cutovers when active users are likely to be mid-mutation."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Keep "
+								},
+								{
+									"type": "inlineCode",
+									"value": "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY"
+								},
+								{
+									"type": "text",
+									"value": " stable across instances so action references remain decryptable everywhere."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Surface the error as a retry path in the UI rather than a hard failure, so a refresh recovers the user."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

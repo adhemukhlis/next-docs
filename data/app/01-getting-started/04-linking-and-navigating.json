@@ -1,0 +1,2011 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Linking and Navigating\ndescription: Learn how the built-in navigation optimizations work, including prefetching, prerendering, and client-side navigation, and how to optimize navigation for dynamic routes and slow networks.\nrelated:\n links:\n  - app/api-reference/components/link\n  - app/api-reference/file-conventions/loading\n  - app/guides/optimizing-prefetching\n  - app/guides/prefetching"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In Next.js, routes are rendered on the server by default. This often means the client has to wait for a server response before a new route can be shown. Next.js comes with built-in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#streaming",
+					"children": [
+						{
+							"type": "text",
+							"value": "streaming"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#client-side-transitions",
+					"children": [
+						{
+							"type": "text",
+							"value": "client-side transitions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " ensuring navigation stays fast and responsive."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This guide explains how navigation works in Next.js and how you can optimize it for "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#dynamic-routes-without-loadingtsx",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamic routes"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#slow-networks",
+					"children": [
+						{
+							"type": "text",
+							"value": "slow networks"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "How navigation works"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To understand how navigation works in Next.js, it helps to be familiar with the following concepts:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#server-rendering",
+									"children": [
+										{
+											"type": "text",
+											"value": "Server Rendering"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#prefetching",
+									"children": [
+										{
+											"type": "text",
+											"value": "Prefetching"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#streaming",
+									"children": [
+										{
+											"type": "text",
+											"value": "Streaming"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#client-side-transitions",
+									"children": [
+										{
+											"type": "text",
+											"value": "Client-side transitions"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Rendering"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In Next.js, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/layouts-and-pages",
+					"children": [
+						{
+							"type": "text",
+							"value": "Layouts and Pages"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " are "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/rsc/server-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "React Server Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " by default. On initial and subsequent navigations, the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components#how-do-server-and-client-components-work-in-nextjs",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Component Payload"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is generated on the server before being sent to the client."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There are two types of server rendering, based on "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "when"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " it happens:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Prerendering"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " happens at build time or during "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/revalidating",
+									"children": [
+										{
+											"type": "text",
+											"value": "revalidation"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and the result is cached."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Dynamic Rendering"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " happens at request time in response to a client request."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The trade-off of server rendering is that the client must wait for the server to respond before the new route can be shown. Next.js addresses this delay by "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " routes the user is likely to visit and performing "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#client-side-transitions",
+					"children": [
+						{
+							"type": "text",
+							"value": "client-side transitions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": HTML is also generated for the initial visit."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Prefetching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Prefetching is the process of loading a route in the background before the user navigates to it. This makes navigation between routes in your application feel instant, because by the time a user clicks on a link, the data to render the next route is already available client side."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js automatically prefetches routes linked with the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/link",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Link>"
+						},
+						{
+							"type": "text",
+							"value": " component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when they enter the user's viewport."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import Link from 'next/link'\n\nexport default function Layout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html>\n\t\t\t<body>\n\t\t\t\t<nav>\n\t\t\t\t\t{/* Prefetched when the link is hovered or enters the viewport */}\n\t\t\t\t\t<Link href=\"/blog\">Blog</Link>\n\t\t\t\t\t{/* No prefetching */}\n\t\t\t\t\t<a href=\"/contact\">Contact</a>\n\t\t\t\t</nav>\n\t\t\t\t{children}\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "import Link from 'next/link'\n\nexport default function Layout({ children }) {\n\treturn (\n\t\t<html>\n\t\t\t<body>\n\t\t\t\t<nav>\n\t\t\t\t\t{/* Prefetched when the link is hovered or enters the viewport */}\n\t\t\t\t\t<Link href=\"/blog\">Blog</Link>\n\t\t\t\t\t{/* No prefetching */}\n\t\t\t\t\t<a href=\"/contact\">Contact</a>\n\t\t\t\t</nav>\n\t\t\t\t{children}\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "How much of the route is prefetched depends on whether it's static or dynamic:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Static Route"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": the full route is prefetched."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Dynamic Route"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": prefetching is skipped, or the route is partially prefetched if "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/loading",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "loading.tsx"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " is present."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By skipping or partially prefetching dynamic routes, Next.js avoids unnecessary work on the server for routes the users may never visit. However, waiting for a server response before navigation can give the users the impression that the app is not responding."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"Server Rendering without Streaming\"\nsrcLight=\"/docs/light/server-rendering-without-streaming.png\"\nsrcDark=\"/docs/dark/server-rendering-without-streaming.png\"\nwidth=\"1600\"\nheight=\"748\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " See the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/prefetching",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prefetching guide"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for the full behavior, including how to control prefetching per link and how it changes when you adopt "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/adopting-partial-prefetching",
+							"children": [
+								{
+									"type": "text",
+									"value": "Partial Prefetching"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ". To include URL-dependent content in a link's prefetch, see "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/optimizing-prefetching",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optimizing prefetching"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To improve the navigation experience to dynamic routes, you can use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#streaming",
+					"children": [
+						{
+							"type": "text",
+							"value": "streaming"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Streaming"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Streaming allows the server to send parts of a dynamic route to the client as soon as they're ready, rather than waiting for the entire route to be rendered. This means users see something sooner, even if parts of the page are still loading. See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/streaming",
+					"children": [
+						{
+							"type": "text",
+							"value": "Streaming guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for a deep dive into how streaming works in Next.js."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For dynamic routes, it means they can be "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "partially prefetched"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". That is, shared layouts and loading skeletons can be requested ahead of time."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"How Server Rendering with Streaming Works\"\nsrcLight=\"/docs/light/server-rendering-with-streaming.png\"\nsrcDark=\"/docs/dark/server-rendering-with-streaming.png\"\nwidth=\"1600\"\nheight=\"785\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use streaming, create a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.tsx"
+				},
+				{
+					"type": "text",
+					"value": " in your route folder:"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"loading.js special file\"\nsrcLight=\"/docs/light/loading-special-file.png\"\nsrcDark=\"/docs/dark/loading-special-file.png\"\nwidth=\"1600\"\nheight=\"606\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/loading.tsx\" switcher",
+			"value": "export default function Loading() {\n\t// Add fallback UI that will be shown while the route is loading.\n\treturn <LoadingSkeleton />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/loading.js\" switcher",
+			"value": "export default function Loading() {\n\t// Add fallback UI that will be shown while the route is loading.\n\treturn <LoadingSkeleton />\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Behind the scenes, Next.js will automatically wrap the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.tsx"
+				},
+				{
+					"type": "text",
+					"value": " contents in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary. The prefetched fallback UI will be shown while the route is loading, and swapped for the actual content once ready."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": You can also use "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://react.dev/reference/react/Suspense",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<Suspense>"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " to create loading UI for nested components."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Benefits of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.tsx"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Immediate navigation and visual feedback for the user."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Shared layouts remain interactive and navigation is interruptible."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Improved Core Web Vitals: "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://web.dev/articles/ttfb",
+									"children": [
+										{
+											"type": "text",
+											"value": "TTFB"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://web.dev/articles/fcp",
+									"children": [
+										{
+											"type": "text",
+											"value": "FCP"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://web.dev/articles/tti",
+									"children": [
+										{
+											"type": "text",
+											"value": "TTI"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To further improve the navigation experience, Next.js performs a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#client-side-transitions",
+					"children": [
+						{
+							"type": "text",
+							"value": "client-side transition"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " component."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Client-side transitions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Traditionally, navigation to a server-rendered page triggers a full page load. This clears state, resets scroll position, and blocks interactivity."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js avoids this with client-side transitions using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " component. Instead of reloading the page, it updates the content dynamically by:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Keeping any shared layouts and UI."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Replacing the current page with the prefetched loading state or a new page if available."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Client-side transitions make server-rendered apps "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "feel"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " like client-rendered apps. And when paired with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#streaming",
+					"children": [
+						{
+							"type": "text",
+							"value": "streaming"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", they enable fast transitions, even for dynamic routes."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js also handles "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/link#scroll",
+					"children": [
+						{
+							"type": "text",
+							"value": "scrolling to the top of the page"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " during client-side transitions. If content scrolls behind a sticky or fixed header after navigation, you can fix this with CSS "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/link#scroll-offset-with-sticky-headers",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "scroll-padding-top"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "What can make transitions slow?"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "These Next.js optimizations make navigation fast and responsive. However, under certain conditions, transitions can still "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "feel"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " slow. Here are some common causes and how to improve the user experience:"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Dynamic routes without "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.tsx"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When navigating to a dynamic route, the client must wait for the server response before showing the result. This can give the users the impression that the app is not responding."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We recommend adding "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.tsx"
+				},
+				{
+					"type": "text",
+					"value": " to dynamic routes to enable partial prefetching, trigger immediate navigation, and display a loading UI while the route renders."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/loading.tsx\" switcher",
+			"value": "export default function Loading() {\n\treturn <LoadingSkeleton />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/loading.js\" switcher",
+			"value": "export default function Loading() {\n\treturn <LoadingSkeleton />\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": In development mode, you can use the Next.js Devtools to identify if the route is static or dynamic. See "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/config/next-config-js/devIndicators",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "devIndicators"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for more information."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Dynamic segments without "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/dynamic-routes",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamic segment"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " could be prerendered but isn't because it's missing "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-static-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", the route will fallback to dynamic rendering at request time."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Ensure the route is statically generated at build time by adding "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" switcher",
+			"value": "export async function generateStaticParams() {\n\tconst posts = await fetch('https://.../posts').then((res) => res.json())\n\n\treturn posts.map((post) => ({\n\t\tslug: post.slug,\n\t}))\n}\n\nexport default async function Page({ params }: { params: Promise<{ slug: string }> }) {\n\tconst { slug } = await params\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\" switcher",
+			"value": "export async function generateStaticParams() {\n\tconst posts = await fetch('https://.../posts').then((res) => res.json())\n\n\treturn posts.map((post) => ({\n\t\tslug: post.slug,\n\t}))\n}\n\nexport default async function Page({ params }) {\n\tconst { slug } = await params\n\t// ...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Slow networks"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "On slow or unstable networks, prefetching may not finish before the user clicks a link. This can affect both static and dynamic routes. In these cases, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": " fallback may not appear immediately because it hasn't been prefetched yet."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To improve perceived performance, you can use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-link-status",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useLinkStatus"
+						},
+						{
+							"type": "text",
+							"value": " hook"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to show immediate feedback while the transition is in progress."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/loading-indicator.tsx\" switcher",
+			"value": "'use client'\n\nimport { useLinkStatus } from 'next/link'\n\nexport default function LoadingIndicator() {\n\tconst { pending } = useLinkStatus()\n\treturn (\n\t\t<span\n\t\t\taria-hidden\n\t\t\tclassName={`link-hint ${pending ? 'is-pending' : ''}`}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/loading-indicator.js\" switcher",
+			"value": "'use client'\n\nimport { useLinkStatus } from 'next/link'\n\nexport default function LoadingIndicator() {\n\tconst { pending } = useLinkStatus()\n\treturn (\n\t\t<span\n\t\t\taria-hidden\n\t\t\tclassName={`link-hint ${pending ? 'is-pending' : ''}`}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can \"debounce\" the hint by adding an initial animation delay (e.g. 100ms) and starting as invisible (e.g. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "opacity: 0"
+				},
+				{
+					"type": "text",
+					"value": "). This means the loading indicator will only be shown if the navigation takes longer than the specified delay. See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-link-status#gracefully-handling-fast-navigation",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useLinkStatus"
+						},
+						{
+							"type": "text",
+							"value": " reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for a CSS example."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": An "
+						},
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "experimental"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/config/next-config-js/useOffline",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "useOffline"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " hook can keep prefetched routes navigable during connectivity drops. See the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/offline-support",
+							"children": [
+								{
+									"type": "text",
+									"value": "offline support guide"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": You can use other visual feedback patterns like a progress bar. View an example "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://github.com/vercel/react-transition-progress",
+							"children": [
+								{
+									"type": "text",
+									"value": "here"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Disabling prefetching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can opt out of prefetching by setting the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch"
+				},
+				{
+					"type": "text",
+					"value": " prop to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " on the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " component. This is useful to avoid unnecessary usage of resources when rendering large lists of links (e.g. an infinite scroll table)."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "<Link\n\tprefetch={false}\n\thref=\"/blog\">\n\tBlog\n</Link>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "However, disabling prefetching comes with trade-offs:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Static routes"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " will only be fetched when the user clicks the link."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Dynamic routes"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " will need to be rendered on the server first before the client can navigate to it."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To reduce resource usage without fully disabling prefetch, you can prefetch only on hover. This limits prefetching to routes the user is more "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "likely"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to visit, rather than all links in the viewport."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/hover-prefetch-link.tsx\" switcher",
+			"value": "'use client'\n\nimport Link from 'next/link'\nimport { useState } from 'react'\n\nfunction HoverPrefetchLink({ href, children }: { href: string; children: React.ReactNode }) {\n\tconst [active, setActive] = useState(false)\n\n\treturn (\n\t\t<Link\n\t\t\thref={href}\n\t\t\tprefetch={active ? null : false}\n\t\t\tonMouseEnter={() => setActive(true)}>\n\t\t\t{children}\n\t\t</Link>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/hover-prefetch-link.js\" switcher",
+			"value": "'use client'\n\nimport Link from 'next/link'\nimport { useState } from 'react'\n\nfunction HoverPrefetchLink({ href, children }) {\n\tconst [active, setActive] = useState(false)\n\n\treturn (\n\t\t<Link\n\t\t\thref={href}\n\t\t\tprefetch={active ? null : false}\n\t\t\tonMouseEnter={() => setActive(true)}>\n\t\t\t{children}\n\t\t</Link>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Hydration not completed"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " is a Client Component and must be hydrated before it can prefetch routes. On the initial visit, large JavaScript bundles can delay hydration, preventing prefetching from starting right away."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "React mitigates this with Selective Hydration and you can further improve this by:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Using the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/package-bundling#nextbundle-analyzer-for-webpack",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "@next/bundle-analyzer"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " plugin to identify and reduce bundle size by removing large dependencies."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Moving logic from the client to the server where possible. See the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/server-and-client-components",
+									"children": [
+										{
+											"type": "text",
+											"value": "Server and Client Components"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " docs for guidance."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Native History API"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js allows you to use the native "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/API/History/pushState",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "window.history.pushState"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/API/History/replaceState",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "window.history.replaceState"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " methods to update the browser's history stack without reloading the page."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "pushState"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "replaceState"
+				},
+				{
+					"type": "text",
+					"value": " calls integrate into the Next.js Router, allowing you to sync with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-pathname",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "usePathname"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-search-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useSearchParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "window.history.pushState"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use it to add a new entry to the browser's history stack. The user can navigate back to the previous state. For example, to sort a list of products:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "fileName=\"app/ui/sort-products.tsx\" switcher",
+			"value": "'use client'\n\nimport { useSearchParams } from 'next/navigation'\n\nexport default function SortProducts() {\n\tconst searchParams = useSearchParams()\n\n\tfunction updateSorting(sortOrder: string) {\n\t\tconst params = new URLSearchParams(searchParams.toString())\n\t\tparams.set('sort', sortOrder)\n\t\twindow.history.pushState(null, '', `?${params.toString()}`)\n\t}\n\n\treturn (\n\t\t<>\n\t\t\t<button onClick={() => updateSorting('asc')}>Sort Ascending</button>\n\t\t\t<button onClick={() => updateSorting('desc')}>Sort Descending</button>\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "fileName=\"app/ui/sort-products.js\" switcher",
+			"value": "'use client'\n\nimport { useSearchParams } from 'next/navigation'\n\nexport default function SortProducts() {\n\tconst searchParams = useSearchParams()\n\n\tfunction updateSorting(sortOrder) {\n\t\tconst params = new URLSearchParams(searchParams.toString())\n\t\tparams.set('sort', sortOrder)\n\t\twindow.history.pushState(null, '', `?${params.toString()}`)\n\t}\n\n\treturn (\n\t\t<>\n\t\t\t<button onClick={() => updateSorting('asc')}>Sort Ascending</button>\n\t\t\t<button onClick={() => updateSorting('desc')}>Sort Descending</button>\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "window.history.replaceState"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use it to replace the current entry on the browser's history stack. The user is not able to navigate back to the previous state. For example, to switch the application's locale:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "fileName=\"app/ui/locale-switcher.tsx\" switcher",
+			"value": "'use client'\n\nimport { usePathname } from 'next/navigation'\n\nexport function LocaleSwitcher() {\n\tconst pathname = usePathname()\n\n\tfunction switchLocale(locale: string) {\n\t\t// e.g. '/en/about' or '/fr/contact'\n\t\tconst newPath = `/${locale}${pathname}`\n\t\twindow.history.replaceState(null, '', newPath)\n\t}\n\n\treturn (\n\t\t<>\n\t\t\t<button onClick={() => switchLocale('en')}>English</button>\n\t\t\t<button onClick={() => switchLocale('fr')}>French</button>\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "fileName=\"app/ui/locale-switcher.js\" switcher",
+			"value": "'use client'\n\nimport { usePathname } from 'next/navigation'\n\nexport function LocaleSwitcher() {\n\tconst pathname = usePathname()\n\n\tfunction switchLocale(locale) {\n\t\t// e.g. '/en/about' or '/fr/contact'\n\t\tconst newPath = `/${locale}${pathname}`\n\t\twindow.history.replaceState(null, '', newPath)\n\t}\n\n\treturn (\n\t\t<>\n\t\t\t<button onClick={() => switchLocale('en')}>English</button>\n\t\t\t<button onClick={() => switchLocale('fr')}>French</button>\n\t\t</>\n\t)\n}"
+		}
+	]
+}

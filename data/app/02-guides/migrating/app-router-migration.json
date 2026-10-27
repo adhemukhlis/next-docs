@@ -1,0 +1,6237 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to migrate from Pages to the App Router\nnav_title: App Router\ndescription: Learn how to upgrade your existing Next.js application from the Pages Router to the App Router."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This guide will help you:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#nextjs-version",
+									"children": [
+										{
+											"type": "text",
+											"value": "Update your Next.js application from version 12 to version 13"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#upgrading-new-features",
+									"children": [
+										{
+											"type": "text",
+											"value": "Upgrade features that work in both the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "pages"
+										},
+										{
+											"type": "text",
+											"value": " and the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "app"
+										},
+										{
+											"type": "text",
+											"value": " directories"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#migrating-from-pages-to-app",
+									"children": [
+										{
+											"type": "text",
+											"value": "Incrementally migrate your existing application from "
+										},
+										{
+											"type": "inlineCode",
+											"value": "pages"
+										},
+										{
+											"type": "text",
+											"value": " to "
+										},
+										{
+											"type": "inlineCode",
+											"value": "app"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Upgrading"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Node.js Version"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The minimum Node.js version is now "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "v18.17"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nodejs.org/docs/latest-v18.x/api/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Node.js documentation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more information."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js Version"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To update to Next.js version 13, run the following command using your preferred package manager:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add next@latest react@latest react-dom@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install next@latest react@latest react-dom@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add next@latest react@latest react-dom@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add next@latest react@latest react-dom@latest"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "ESLint Version"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you're using ESLint, you need to upgrade your ESLint version:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add -D eslint-config-next@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install -D eslint-config-next@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add -D eslint-config-next@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add -D eslint-config-next@latest"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": You may need to restart the ESLint server in VS Code for the ESLint changes to take effect. Open the Command Palette ("
+						},
+						{
+							"type": "inlineCode",
+							"value": "cmd+shift+p"
+						},
+						{
+							"type": "text",
+							"value": " on Mac; "
+						},
+						{
+							"type": "inlineCode",
+							"value": "ctrl+shift+p"
+						},
+						{
+							"type": "text",
+							"value": " on Windows) and search for "
+						},
+						{
+							"type": "inlineCode",
+							"value": "ESLint: Restart ESLint Server"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Next Steps"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After you've updated, see the following sections for next steps:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#upgrading-new-features",
+									"children": [
+										{
+											"type": "text",
+											"value": "Upgrade new features"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": A guide to help you upgrade to new features such as the improved Image and Link Components."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#migrating-from-pages-to-app",
+									"children": [
+										{
+											"type": "text",
+											"value": "Migrate from the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "pages"
+										},
+										{
+											"type": "text",
+											"value": " to "
+										},
+										{
+											"type": "inlineCode",
+											"value": "app"
+										},
+										{
+											"type": "text",
+											"value": " directory"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": A step-by-step guide to help you incrementally migrate from the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pages"
+								},
+								{
+									"type": "text",
+									"value": " to the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": " directory."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Upgrading New Features"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js 13 introduced the new "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app",
+					"children": [
+						{
+							"type": "text",
+							"value": "App Router"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with new features and conventions. The new Router is available in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory and co-exists with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " directory."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Upgrading to Next.js 13 does "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "not"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " require using the App Router. You can continue using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " with new features that work in both directories, such as the updated "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#image-component",
+					"children": [
+						{
+							"type": "text",
+							"value": "Image component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#link-component",
+					"children": [
+						{
+							"type": "text",
+							"value": "Link component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#script-component",
+					"children": [
+						{
+							"type": "text",
+							"value": "Script component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#font-optimization",
+					"children": [
+						{
+							"type": "text",
+							"value": "Font optimization"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "<Image/>"
+				},
+				{
+					"type": "text",
+					"value": " Component"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js 12 introduced new improvements to the Image Component with a temporary import: "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/future/image"
+				},
+				{
+					"type": "text",
+					"value": ". These improvements included less client-side JavaScript, easier ways to extend and style images, better accessibility, and native browser lazy loading."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In version 13, this new behavior is now the default for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/image"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There are two codemods to help you migrate to the new Image Component:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/upgrading/codemods#next-image-to-legacy-image",
+									"children": [
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "next-image-to-legacy-image"
+												},
+												{
+													"type": "text",
+													"value": " codemod"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Safely and automatically renames "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/image"
+								},
+								{
+									"type": "text",
+									"value": " imports to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/legacy/image"
+								},
+								{
+									"type": "text",
+									"value": ". Existing components will maintain the same behavior."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/upgrading/codemods#next-image-experimental",
+									"children": [
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "next-image-experimental"
+												},
+												{
+													"type": "text",
+													"value": " codemod"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Dangerously adds inline styles and removes unused props. This will change the behavior of existing components to match the new defaults. To use this codemod, you need to run the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next-image-to-legacy-image"
+								},
+								{
+									"type": "text",
+									"value": " codemod first."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " Component"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/link",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Link>"
+						},
+						{
+							"type": "text",
+							"value": " Component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " no longer requires manually adding an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<a>"
+				},
+				{
+					"type": "text",
+					"value": " tag as a child. This behavior was added as an experimental option in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nextjs.org/blog/next-12-2",
+					"children": [
+						{
+							"type": "text",
+							"value": "version 12.2"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and is now the default. In Next.js 13, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " always renders "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<a>"
+				},
+				{
+					"type": "text",
+					"value": " and allows you to forward props to the underlying tag."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "import Link from 'next/link'\n\n// Next.js 12: `<a>` has to be nested otherwise it's excluded\n<Link href=\"/about\">\n  <a>About</a>\n</Link>\n\n// Next.js 13: `<Link>` always renders `<a>` under the hood\n<Link href=\"/about\">\n  About\n</Link>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To upgrade your links to Next.js 13, you can use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/codemods#new-link",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "new-link"
+						},
+						{
+							"type": "text",
+							"value": " codemod"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "<Script>"
+				},
+				{
+					"type": "text",
+					"value": " Component"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The behavior of "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/script",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next/script"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " has been updated to support both "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": ", but some changes need to be made to ensure a smooth migration:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Move any "
+								},
+								{
+									"type": "inlineCode",
+									"value": "beforeInteractive"
+								},
+								{
+									"type": "text",
+									"value": " scripts you previously included in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "_document.js"
+								},
+								{
+									"type": "text",
+									"value": " to a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/layout#root-layout",
+									"children": [
+										{
+											"type": "text",
+											"value": "root layout"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", such as "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/layout.tsx"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/[locale]/layout.tsx"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The experimental "
+								},
+								{
+									"type": "inlineCode",
+									"value": "worker"
+								},
+								{
+									"type": "text",
+									"value": " strategy does not yet work in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": " and scripts denoted with this strategy will either have to be removed or modified to use a different strategy (e.g. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "lazyOnload"
+								},
+								{
+									"type": "text",
+									"value": ")."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "onLoad"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "onReady"
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "onError"
+								},
+								{
+									"type": "text",
+									"value": " handlers will not work in Server Components so make sure to move them to a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/server-and-client-components",
+									"children": [
+										{
+											"type": "text",
+											"value": "Client Component"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " or remove them altogether."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Font Optimization"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Previously, Next.js helped you optimize fonts by "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/font",
+					"children": [
+						{
+							"type": "text",
+							"value": "inlining font CSS"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Version 13 introduces the new "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/font",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next/font"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " module which gives you the ability to customize your font loading experience while still ensuring great performance and privacy. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font"
+				},
+				{
+					"type": "text",
+					"value": " is supported in both the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directories."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "While "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/font",
+					"children": [
+						{
+							"type": "text",
+							"value": "inlining CSS"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " still works in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": ", it does not work in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": ". You should use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/font",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next/font"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " instead."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/font",
+					"children": [
+						{
+							"type": "text",
+							"value": "Font Optimization"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " page to learn how to use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Migrating from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "🎥 Watch:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Learn how to incrementally adopt the App Router → "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://www.youtube.com/watch?v=YQMSietiFm0",
+							"children": [
+								{
+									"type": "text",
+									"value": "YouTube (16 minutes)"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Moving to the App Router may be the first time using React features that Next.js builds on top of such as Server Components, Suspense, and more. When combined with new Next.js features such as "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions",
+					"children": [
+						{
+							"type": "text",
+							"value": "special files"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout",
+					"children": [
+						{
+							"type": "text",
+							"value": "layouts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", migration means new concepts, mental models, and behavioral changes to learn."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We recommend reducing the combined complexity of these updates by breaking down your migration into smaller steps. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory is intentionally designed to work simultaneously with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " directory to allow for incremental page-by-page migration."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": " directory supports nested routes "
+								},
+								{
+									"type": "emphasis",
+									"children": [
+										{
+											"type": "text",
+											"value": "and"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " layouts. "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/layouts-and-pages",
+									"children": [
+										{
+											"type": "text",
+											"value": "Learn more"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Use nested folders to define routes and a special "
+								},
+								{
+									"type": "inlineCode",
+									"value": "page.js"
+								},
+								{
+									"type": "text",
+									"value": " file to make a route segment publicly accessible. "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#step-4-migrating-pages",
+									"children": [
+										{
+											"type": "text",
+											"value": "Learn more"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions",
+									"children": [
+										{
+											"type": "text",
+											"value": "Special file conventions"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " are used to create UI for each route segment. The most common special files are "
+								},
+								{
+									"type": "inlineCode",
+									"value": "page.js"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "layout.js"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Use "
+												},
+												{
+													"type": "inlineCode",
+													"value": "page.js"
+												},
+												{
+													"type": "text",
+													"value": " to define UI unique to a route."
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Use "
+												},
+												{
+													"type": "inlineCode",
+													"value": "layout.js"
+												},
+												{
+													"type": "text",
+													"value": " to define UI that is shared across multiple routes."
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": ".js"
+												},
+												{
+													"type": "text",
+													"value": ", "
+												},
+												{
+													"type": "inlineCode",
+													"value": ".jsx"
+												},
+												{
+													"type": "text",
+													"value": ", or "
+												},
+												{
+													"type": "inlineCode",
+													"value": ".tsx"
+												},
+												{
+													"type": "text",
+													"value": " file extensions can be used for special files."
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "You can colocate other files inside the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": " directory such as components, styles, tests, and more. "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app",
+									"children": [
+										{
+											"type": "text",
+											"value": "Learn more"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Data fetching functions like "
+								},
+								{
+									"type": "inlineCode",
+									"value": "getServerSideProps"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "getStaticProps"
+								},
+								{
+									"type": "text",
+									"value": " have been replaced with "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/fetching-data",
+									"children": [
+										{
+											"type": "text",
+											"value": "a new API"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " inside "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": ". "
+								},
+								{
+									"type": "inlineCode",
+									"value": "getStaticPaths"
+								},
+								{
+									"type": "text",
+									"value": " has been replaced with "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/generate-static-params",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "generateStaticParams"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "pages/_app.js"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pages/_document.js"
+								},
+								{
+									"type": "text",
+									"value": " have been replaced with a single "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/layout.js"
+								},
+								{
+									"type": "text",
+									"value": " root layout. "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/layout#root-layout",
+									"children": [
+										{
+											"type": "text",
+											"value": "Learn more"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "pages/_error.js"
+								},
+								{
+									"type": "text",
+									"value": " has been replaced with more granular "
+								},
+								{
+									"type": "inlineCode",
+									"value": "error.js"
+								},
+								{
+									"type": "text",
+									"value": " special files. "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/error-handling",
+									"children": [
+										{
+											"type": "text",
+											"value": "Learn more"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "pages/404.js"
+								},
+								{
+									"type": "text",
+									"value": " has been replaced with the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/not-found",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "not-found.js"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " file."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "pages/api/*"
+								},
+								{
+									"type": "text",
+									"value": " API Routes have been replaced with the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/route",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "route.js"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (Route Handler) special file."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 1: Creating the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Update to the latest Next.js version (requires 13.4 or greater):"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add next@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install next@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add next@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add next@latest"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, create a new "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory at the root of your project (or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src/"
+				},
+				{
+					"type": "text",
+					"value": " directory)."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 2: Creating a Root Layout"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Create a new "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/layout.tsx"
+				},
+				{
+					"type": "text",
+					"value": " file inside the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory. This is a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout#root-layout",
+					"children": [
+						{
+							"type": "text",
+							"value": "root layout"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " that will apply to all routes inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "export default function RootLayout({\n\t// Layouts must accept a children prop.\n\t// This will be populated with nested layouts or pages\n\tchildren,\n}: {\n\tchildren: React.ReactNode\n}) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "export default function RootLayout({\n\t// Layouts must accept a children prop.\n\t// This will be populated with nested layouts or pages\n\tchildren,\n}) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": " directory "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "must"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " include a root layout."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The root layout must define "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<html>"
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<body>"
+								},
+								{
+									"type": "text",
+									"value": " tags since Next.js does not automatically create them"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The root layout replaces the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pages/_app.tsx"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pages/_document.tsx"
+								},
+								{
+									"type": "text",
+									"value": " files."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": ".js"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".jsx"
+								},
+								{
+									"type": "text",
+									"value": ", or "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".tsx"
+								},
+								{
+									"type": "text",
+									"value": " extensions can be used for layout files."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To manage "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<head>"
+				},
+				{
+					"type": "text",
+					"value": " HTML elements, you can use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/metadata-and-og-images",
+					"children": [
+						{
+							"type": "text",
+							"value": "built-in SEO support"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import type { Metadata } from 'next'\n\nexport const metadata: Metadata = {\n\ttitle: 'Home',\n\tdescription: 'Welcome to Next.js',\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "export const metadata = {\n\ttitle: 'Home',\n\tdescription: 'Welcome to Next.js',\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Migrating "
+				},
+				{
+					"type": "inlineCode",
+					"value": "_document.js"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "_app.js"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you have an existing "
+				},
+				{
+					"type": "inlineCode",
+					"value": "_app"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "_document"
+				},
+				{
+					"type": "text",
+					"value": " file, you can copy the contents (e.g. global styles) to the root layout ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/layout.tsx"
+				},
+				{
+					"type": "text",
+					"value": "). Styles in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/layout.tsx"
+				},
+				{
+					"type": "text",
+					"value": " will "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "not"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " apply to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages/*"
+				},
+				{
+					"type": "text",
+					"value": ". You should keep "
+				},
+				{
+					"type": "inlineCode",
+					"value": "_app"
+				},
+				{
+					"type": "text",
+					"value": "/"
+				},
+				{
+					"type": "inlineCode",
+					"value": "_document"
+				},
+				{
+					"type": "text",
+					"value": " while migrating to prevent your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages/*"
+				},
+				{
+					"type": "text",
+					"value": " routes from breaking. Once fully migrated, you can then safely delete them."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you are using any React Context providers, they will need to be moved to a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client Component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Migrating the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getLayout()"
+				},
+				{
+					"type": "text",
+					"value": " pattern to Layouts (Optional)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js recommended adding a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/pages/building-your-application/routing/pages-and-layouts#layout-pattern",
+					"children": [
+						{
+							"type": "text",
+							"value": "property to Page components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to achieve per-page layouts in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " directory. This pattern can be replaced with native support for "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout",
+					"children": [
+						{
+							"type": "text",
+							"value": "nested layouts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory."
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "<details>\n  <summary>See before and after example</summary>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Before"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"components/DashboardLayout.js\"",
+			"value": "export default function DashboardLayout({ children }) {\n\treturn (\n\t\t<div>\n\t\t\t<h2>My Dashboard</h2>\n\t\t\t{children}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"pages/dashboard/index.js\"",
+			"value": "import DashboardLayout from '../components/DashboardLayout'\n\nexport default function Page() {\n\treturn <p>My Page</p>\n}\n\nPage.getLayout = function getLayout(page) {\n\treturn <DashboardLayout>{page}</DashboardLayout>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "After"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": true,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": true,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Remove the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Page.getLayout"
+								},
+								{
+									"type": "text",
+									"value": " property from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pages/dashboard/index.js"
+								},
+								{
+									"type": "text",
+									"value": " and follow the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#step-4-migrating-pages",
+									"children": [
+										{
+											"type": "text",
+											"value": "steps for migrating pages"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": " directory."
+								}
+							]
+						},
+						{
+							"type": "code",
+							"lang": "jsx",
+							"meta": "filename=\"app/dashboard/page.js\"",
+							"value": "export default function Page() {\n\treturn <p>My Page</p>\n}"
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": true,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Move the contents of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "DashboardLayout"
+								},
+								{
+									"type": "text",
+									"value": " into a new "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/server-and-client-components",
+									"children": [
+										{
+											"type": "text",
+											"value": "Client Component"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to retain "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pages"
+								},
+								{
+									"type": "text",
+									"value": " directory behavior."
+								}
+							]
+						},
+						{
+							"type": "code",
+							"lang": "jsx",
+							"meta": "filename=\"app/dashboard/DashboardLayout.js\"",
+							"value": "'use client' // this directive should be at top of the file, before any imports.\n\n// This is a Client Component\nexport default function DashboardLayout({ children }) {\n\treturn (\n\t\t<div>\n\t\t\t<h2>My Dashboard</h2>\n\t\t\t{children}\n\t\t</div>\n\t)\n}"
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": true,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Import the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "DashboardLayout"
+								},
+								{
+									"type": "text",
+									"value": " into a new "
+								},
+								{
+									"type": "inlineCode",
+									"value": "layout.js"
+								},
+								{
+									"type": "text",
+									"value": " file inside the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": " directory."
+								}
+							]
+						},
+						{
+							"type": "code",
+							"lang": "jsx",
+							"meta": "filename=\"app/dashboard/layout.js\"",
+							"value": "import DashboardLayout from './DashboardLayout'\n\n// This is a Server Component\nexport default function Layout({ children }) {\n\treturn <DashboardLayout>{children}</DashboardLayout>\n}"
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "You can incrementally move non-interactive parts of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "DashboardLayout.js"
+								},
+								{
+									"type": "text",
+									"value": " (Client Component) into "
+								},
+								{
+									"type": "inlineCode",
+									"value": "layout.js"
+								},
+								{
+									"type": "text",
+									"value": " (Server Component) to reduce the amount of component JavaScript you send to the client."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "</details>"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 3: Migrating "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/head"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " directory, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/head"
+				},
+				{
+					"type": "text",
+					"value": " React component is used to manage "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<head>"
+				},
+				{
+					"type": "text",
+					"value": " HTML elements such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "title"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "meta"
+				},
+				{
+					"type": "text",
+					"value": " . In the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/head"
+				},
+				{
+					"type": "text",
+					"value": " is replaced with the new "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/metadata-and-og-images",
+					"children": [
+						{
+							"type": "text",
+							"value": "built-in SEO support"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Before:"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"pages/index.tsx\" switcher",
+			"value": "import Head from 'next/head'\n\nexport default function Page() {\n\treturn (\n\t\t<>\n\t\t\t<Head>\n\t\t\t\t<title>My page title</title>\n\t\t\t</Head>\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"pages/index.js\" switcher",
+			"value": "import Head from 'next/head'\n\nexport default function Page() {\n\treturn (\n\t\t<>\n\t\t\t<Head>\n\t\t\t\t<title>My page title</title>\n\t\t\t</Head>\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "After:"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import type { Metadata } from 'next'\n\nexport const metadata: Metadata = {\n\ttitle: 'My Page Title',\n}\n\nexport default function Page() {\n\treturn '...'\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "export const metadata = {\n\ttitle: 'My Page Title',\n}\n\nexport default function Page() {\n\treturn '...'\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-metadata",
+					"children": [
+						{
+							"type": "text",
+							"value": "See all metadata options"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 4: Migrating Pages"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Pages in the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "app"
+										},
+										{
+											"type": "text",
+											"value": " directory"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " are "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/server-and-client-components",
+									"children": [
+										{
+											"type": "text",
+											"value": "Server Components"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " by default. This is different from the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pages"
+								},
+								{
+									"type": "text",
+									"value": " directory where pages are "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/server-and-client-components",
+									"children": [
+										{
+											"type": "text",
+											"value": "Client Components"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/fetching-data",
+									"children": [
+										{
+											"type": "text",
+											"value": "Data fetching"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " has changed in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": ". "
+								},
+								{
+									"type": "inlineCode",
+									"value": "getServerSideProps"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "getStaticProps"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "getInitialProps"
+								},
+								{
+									"type": "text",
+									"value": " have been replaced with a simpler API."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": " directory uses nested folders to define routes and a special "
+								},
+								{
+									"type": "inlineCode",
+									"value": "page.js"
+								},
+								{
+									"type": "text",
+									"value": " file to make a route segment publicly accessible."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "table",
+							"align": [
+								null,
+								null,
+								null
+							],
+							"children": [
+								{
+									"type": "tableRow",
+									"children": [
+										{
+											"type": "tableCell",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "pages"
+												},
+												{
+													"type": "text",
+													"value": " Directory"
+												}
+											]
+										},
+										{
+											"type": "tableCell",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "app"
+												},
+												{
+													"type": "text",
+													"value": " Directory"
+												}
+											]
+										},
+										{
+											"type": "tableCell",
+											"children": [
+												{
+													"type": "text",
+													"value": "Route"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "tableRow",
+									"children": [
+										{
+											"type": "tableCell",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "index.js"
+												}
+											]
+										},
+										{
+											"type": "tableCell",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "page.js"
+												}
+											]
+										},
+										{
+											"type": "tableCell",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "/"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "tableRow",
+									"children": [
+										{
+											"type": "tableCell",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "about.js"
+												}
+											]
+										},
+										{
+											"type": "tableCell",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "about/page.js"
+												}
+											]
+										},
+										{
+											"type": "tableCell",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "/about"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "tableRow",
+									"children": [
+										{
+											"type": "tableCell",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "blog/[slug].js"
+												}
+											]
+										},
+										{
+											"type": "tableCell",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "blog/[slug]/page.js"
+												}
+											]
+										},
+										{
+											"type": "tableCell",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "/blog/post-1"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We recommend breaking down the migration of a page into two main steps:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Step 1: Move the default exported Page Component into a new Client Component."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Step 2: Import the new Client Component into a new "
+								},
+								{
+									"type": "inlineCode",
+									"value": "page.js"
+								},
+								{
+									"type": "text",
+									"value": " file inside the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": " directory."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": This is the easiest migration path because it has the most comparable behavior to the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "pages"
+						},
+						{
+							"type": "text",
+							"value": " directory."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Step 1: Create a new Client Component"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Create a new separate file inside the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": " directory (i.e. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/home-page.tsx"
+								},
+								{
+									"type": "text",
+									"value": " or similar) that exports a Client Component. To define Client Components, add the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'use client'"
+								},
+								{
+									"type": "text",
+									"value": " directive to the top of the file (before any imports)."
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Similar to the Pages Router, there is an "
+												},
+												{
+													"type": "link",
+													"title": null,
+													"url": "/docs/app/getting-started/server-and-client-components#on-the-client-first-load",
+													"children": [
+														{
+															"type": "text",
+															"value": "optimization step"
+														}
+													]
+												},
+												{
+													"type": "text",
+													"value": " to prerender Client Components to static HTML on the initial page load."
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Move the default exported page component from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pages/index.js"
+								},
+								{
+									"type": "text",
+									"value": " to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/home-page.tsx"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/home-page.tsx\" switcher",
+			"value": "'use client'\n\n// This is a Client Component (same as components in the `pages` directory)\n// It receives data as props, has access to state and effects, and is\n// prerendered on the server during the initial page load.\nexport default function HomePage({ recentPosts }) {\n\treturn (\n\t\t<div>\n\t\t\t{recentPosts.map((post) => (\n\t\t\t\t<div key={post.id}>{post.title}</div>\n\t\t\t))}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/home-page.js\" switcher",
+			"value": "'use client'\n\n// This is a Client Component. It receives data as props and\n// has access to state and effects just like Page components\n// in the `pages` directory.\nexport default function HomePage({ recentPosts }) {\n\treturn (\n\t\t<div>\n\t\t\t{recentPosts.map((post) => (\n\t\t\t\t<div key={post.id}>{post.title}</div>\n\t\t\t))}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Step 2: Create a new page"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": true,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Create a new "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/page.tsx"
+								},
+								{
+									"type": "text",
+									"value": " file inside the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": " directory. This is a Server Component by default."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Import the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "home-page.tsx"
+								},
+								{
+									"type": "text",
+									"value": " Client Component into the page."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": true,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If you were fetching data in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pages/index.js"
+								},
+								{
+									"type": "text",
+									"value": ", move the data fetching logic directly into the Server Component using the new "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/fetching-data",
+									"children": [
+										{
+											"type": "text",
+											"value": "data fetching APIs"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". See the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#step-6-migrating-data-fetching-methods",
+									"children": [
+										{
+											"type": "text",
+											"value": "data fetching upgrade guide"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for more details."
+								}
+							]
+						},
+						{
+							"type": "code",
+							"lang": "tsx",
+							"meta": "filename=\"app/page.tsx\" switcher",
+							"value": "// Import your Client Component\nimport HomePage from './home-page'\n\nasync function getPosts() {\n\tconst res = await fetch('https://...')\n\tconst posts = await res.json()\n\treturn posts\n}\n\nexport default async function Page() {\n\t// Fetch data directly in a Server Component\n\tconst recentPosts = await getPosts()\n\t// Forward fetched data to your Client Component\n\treturn <HomePage recentPosts={recentPosts} />\n}"
+						},
+						{
+							"type": "code",
+							"lang": "jsx",
+							"meta": "filename=\"app/page.js\" switcher",
+							"value": "// Import your Client Component\nimport HomePage from './home-page'\n\nasync function getPosts() {\n\tconst res = await fetch('https://...')\n\tconst posts = await res.json()\n\treturn posts\n}\n\nexport default async function Page() {\n\t// Fetch data directly in a Server Component\n\tconst recentPosts = await getPosts()\n\t// Forward fetched data to your Client Component\n\treturn <HomePage recentPosts={recentPosts} />\n}"
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If your previous page used "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useRouter"
+								},
+								{
+									"type": "text",
+									"value": ", you'll need to update to the new routing hooks. "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/use-router",
+									"children": [
+										{
+											"type": "text",
+											"value": "Learn more"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Start your development server and visit "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "http://localhost:3000",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "http://localhost:3000"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". You should see your existing index route, now served through the app directory."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 5: Migrating Routing Hooks"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A new router has been added to support the new behavior in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": ", you should use the three new hooks imported from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/navigation"
+				},
+				{
+					"type": "text",
+					"value": ": "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-router",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useRouter()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-pathname",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "usePathname()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-search-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useSearchParams()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The new "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useRouter"
+								},
+								{
+									"type": "text",
+									"value": " hook is imported from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/navigation"
+								},
+								{
+									"type": "text",
+									"value": " and has different behavior to the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useRouter"
+								},
+								{
+									"type": "text",
+									"value": " hook in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pages"
+								},
+								{
+									"type": "text",
+									"value": " which is imported from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/router"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "The "
+												},
+												{
+													"type": "link",
+													"title": null,
+													"url": "/docs/pages/api-reference/functions/use-router",
+													"children": [
+														{
+															"type": "inlineCode",
+															"value": "useRouter"
+														},
+														{
+															"type": "text",
+															"value": " hook imported from "
+														},
+														{
+															"type": "inlineCode",
+															"value": "next/router"
+														}
+													]
+												},
+												{
+													"type": "text",
+													"value": " is not supported in the "
+												},
+												{
+													"type": "inlineCode",
+													"value": "app"
+												},
+												{
+													"type": "text",
+													"value": " directory but can continue to be used in the "
+												},
+												{
+													"type": "inlineCode",
+													"value": "pages"
+												},
+												{
+													"type": "text",
+													"value": " directory."
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The new "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useRouter"
+								},
+								{
+									"type": "text",
+									"value": " does not return the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pathname"
+								},
+								{
+									"type": "text",
+									"value": " string. Use the separate "
+								},
+								{
+									"type": "inlineCode",
+									"value": "usePathname"
+								},
+								{
+									"type": "text",
+									"value": " hook instead."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The new "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useRouter"
+								},
+								{
+									"type": "text",
+									"value": " does not return the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "query"
+								},
+								{
+									"type": "text",
+									"value": " object. Search parameters and dynamic route parameters are now separate. Use the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useSearchParams"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useParams"
+								},
+								{
+									"type": "text",
+									"value": " hooks instead."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "You can use "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useSearchParams"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "usePathname"
+								},
+								{
+									"type": "text",
+									"value": " together to listen to page changes. See the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/use-router#router-events",
+									"children": [
+										{
+											"type": "text",
+											"value": "Router Events"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " section for more details."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "These new hooks are only supported in Client Components. They cannot be used in Server Components."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/example-client-component.tsx\" switcher",
+			"value": "'use client'\n\nimport { useRouter, usePathname, useSearchParams } from 'next/navigation'\n\nexport default function ExampleClientComponent() {\n\tconst router = useRouter()\n\tconst pathname = usePathname()\n\tconst searchParams = useSearchParams()\n\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/example-client-component.js\" switcher",
+			"value": "'use client'\n\nimport { useRouter, usePathname, useSearchParams } from 'next/navigation'\n\nexport default function ExampleClientComponent() {\n\tconst router = useRouter()\n\tconst pathname = usePathname()\n\tconst searchParams = useSearchParams()\n\n\t// ...\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In addition, the new "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useRouter"
+				},
+				{
+					"type": "text",
+					"value": " hook has the following changes:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "isFallback"
+								},
+								{
+									"type": "text",
+									"value": " has been removed because "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fallback"
+								},
+								{
+									"type": "text",
+									"value": " has "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#replacing-fallback",
+									"children": [
+										{
+											"type": "text",
+											"value": "been replaced"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "inlineCode",
+									"value": "locale"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "locales"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "defaultLocale"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "domainLocales"
+								},
+								{
+									"type": "text",
+									"value": " values have been removed because built-in i18n Next.js features are no longer necessary in the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": " directory. "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/internationalization",
+									"children": [
+										{
+											"type": "text",
+											"value": "Learn more about i18n"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "basePath"
+								},
+								{
+									"type": "text",
+									"value": " has been removed. The alternative will not be part of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useRouter"
+								},
+								{
+									"type": "text",
+									"value": ". It has not yet been implemented."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "asPath"
+								},
+								{
+									"type": "text",
+									"value": " has been removed because the concept of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "as"
+								},
+								{
+									"type": "text",
+									"value": " has been removed from the new router."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "isReady"
+								},
+								{
+									"type": "text",
+									"value": " has been removed because it is no longer necessary. During "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/glossary#prerendering",
+									"children": [
+										{
+											"type": "text",
+											"value": "prerendering"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", any component that uses the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/use-search-params",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "useSearchParams()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " hook will skip the prerendering step and instead be rendered on the client at runtime."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "route"
+								},
+								{
+									"type": "text",
+									"value": " has been removed. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "usePathname"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useSelectedLayoutSegments()"
+								},
+								{
+									"type": "text",
+									"value": " provide an alternative."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "router.push()"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "router.replace()"
+								},
+								{
+									"type": "text",
+									"value": " no longer return a Promise. They queue the route change as a React Transition and return right away. To show a pending state, call them inside the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "startTransition"
+								},
+								{
+									"type": "text",
+									"value": " returned by "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react/useTransition",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "useTransition"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and read "
+								},
+								{
+									"type": "inlineCode",
+									"value": "isPending"
+								},
+								{
+									"type": "text",
+									"value": ". See "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/interactive-apps#step-3-filter-with-pending-feedback",
+									"children": [
+										{
+											"type": "text",
+											"value": "Filter with pending feedback"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for an example."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-router",
+					"children": [
+						{
+							"type": "text",
+							"value": "View the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "useRouter()"
+						},
+						{
+							"type": "text",
+							"value": " API reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Sharing components between "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To keep components compatible between the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " routers, refer to the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/pages/api-reference/functions/use-router#the-nextcompatrouter-export",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useRouter"
+						},
+						{
+							"type": "text",
+							"value": " hook from "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next/compat/router"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This is the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useRouter"
+				},
+				{
+					"type": "text",
+					"value": " hook from the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " directory, but intended to be used while sharing components between routers. Once you are ready to use it only on the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " router, update to the new "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-router",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useRouter"
+						},
+						{
+							"type": "text",
+							"value": " from "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next/navigation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 6: Migrating Data Fetching Methods"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " directory uses "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getServerSideProps"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getStaticProps"
+				},
+				{
+					"type": "text",
+					"value": " to fetch data for pages. Inside the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory, these previous data fetching functions are replaced with a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/fetching-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "simpler API"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " built on top of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch()"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "async"
+				},
+				{
+					"type": "text",
+					"value": " React Server Components."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "export default async function Page() {\n\t// Opt into the Next.js Data Cache for this request.\n\t// The cached response can be reused across requests and revalidated on demand.\n\t// Similar to `getStaticProps`.\n\tconst cachedData = await fetch('https://...', { cache: 'force-cache' })\n\n\t// Opt out of caching for this request.\n\t// Next.js fetches this from the data source on every request.\n\t// This is the default fetch behavior.\n\t// Similar to `getServerSideProps`.\n\tconst uncachedData = await fetch('https://...', { cache: 'no-store' })\n\n\t// Cache this request, but revalidate it at most every 10 seconds.\n\t// Similar to `getStaticProps` with the `revalidate` option.\n\tconst revalidatedData = await fetch('https://...', {\n\t\tnext: { revalidate: 10 },\n\t})\n\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "export default async function Page() {\n\t// Opt into the Next.js Data Cache for this request.\n\t// The cached response can be reused across requests and revalidated on demand.\n\t// Similar to `getStaticProps`.\n\tconst cachedData = await fetch('https://...', { cache: 'force-cache' })\n\n\t// Opt out of caching for this request.\n\t// Next.js fetches this from the data source on every request.\n\t// This is the default fetch behavior.\n\t// Similar to `getServerSideProps`.\n\tconst uncachedData = await fetch('https://...', { cache: 'no-store' })\n\n\t// Cache this request, but revalidate it at most every 10 seconds.\n\t// Similar to `getStaticProps` with the `revalidate` option.\n\tconst revalidatedData = await fetch('https://...', {\n\t\tnext: { revalidate: 10 },\n\t})\n\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Server-side Rendering ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "getServerSideProps"
+				},
+				{
+					"type": "text",
+					"value": ")"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " directory, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getServerSideProps"
+				},
+				{
+					"type": "text",
+					"value": " is used to fetch data on the server and forward props to the default exported React component in the file. The initial HTML for the page is prerendered from the server, followed by \"hydrating\" the page in the browser (making it interactive)."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"pages/dashboard.js\"",
+			"value": "// `pages` directory\n\nexport async function getServerSideProps() {\n\tconst res = await fetch(`https://...`)\n\tconst projects = await res.json()\n\n\treturn { props: { projects } }\n}\n\nexport default function Dashboard({ projects }) {\n\treturn (\n\t\t<ul>\n\t\t\t{projects.map((project) => (\n\t\t\t\t<li key={project.id}>{project.name}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the App Router, we can colocate our data fetching inside our React components using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This allows us to send less JavaScript to the client, while maintaining the rendered HTML from the server."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By setting the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cache"
+				},
+				{
+					"type": "text",
+					"value": " option to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "no-store"
+				},
+				{
+					"type": "text",
+					"value": ", we can indicate that the fetched data should "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/fetching-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "never be cached"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This is similar to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getServerSideProps"
+				},
+				{
+					"type": "text",
+					"value": " in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " directory."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/page.tsx\" switcher",
+			"value": "// `app` directory\n\n// This function can be named anything\nasync function getProjects() {\n\tconst res = await fetch(`https://...`, { cache: 'no-store' })\n\tconst projects = await res.json()\n\n\treturn projects\n}\n\nexport default async function Dashboard() {\n\tconst projects = await getProjects()\n\n\treturn (\n\t\t<ul>\n\t\t\t{projects.map((project) => (\n\t\t\t\t<li key={project.id}>{project.name}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/page.js\" switcher",
+			"value": "// `app` directory\n\n// This function can be named anything\nasync function getProjects() {\n\tconst res = await fetch(`https://...`, { cache: 'no-store' })\n\tconst projects = await res.json()\n\n\treturn projects\n}\n\nexport default async function Dashboard() {\n\tconst projects = await getProjects()\n\n\treturn (\n\t\t<ul>\n\t\t\t{projects.map((project) => (\n\t\t\t\t<li key={project.id}>{project.name}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Accessing Request Object"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " directory, you can retrieve request-based data based on the Node.js HTTP API."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, you can retrieve the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "req"
+				},
+				{
+					"type": "text",
+					"value": " object from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getServerSideProps"
+				},
+				{
+					"type": "text",
+					"value": " and use it to retrieve the request's cookies and headers."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"pages/index.js\"",
+			"value": "// `pages` directory\n\nexport async function getServerSideProps({ req, query }) {\n  const authHeader = req.getHeaders()['authorization'];\n  const theme = req.cookies['theme'];\n\n  return { props: { ... }}\n}\n\nexport default function Page(props) {\n  return ...\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory exposes new read-only functions to retrieve request data:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/headers",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "headers"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Based on the Web Headers API, and can be used inside "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/server-and-client-components",
+									"children": [
+										{
+											"type": "text",
+											"value": "Server Components"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to retrieve request headers."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/cookies",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cookies"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Based on the Web Cookies API, and can be used inside "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/server-and-client-components",
+									"children": [
+										{
+											"type": "text",
+											"value": "Server Components"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to retrieve cookies."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "// `app` directory\nimport { cookies, headers } from 'next/headers'\n\nasync function getData() {\n\tconst authHeader = (await headers()).get('authorization')\n\n\treturn '...'\n}\n\nexport default async function Page() {\n\t// You can use `cookies` or `headers` inside Server Components\n\t// directly or in your data fetching function\n\tconst theme = (await cookies()).get('theme')\n\tconst data = await getData()\n\treturn '...'\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "// `app` directory\nimport { cookies, headers } from 'next/headers'\n\nasync function getData() {\n\tconst authHeader = (await headers()).get('authorization')\n\n\treturn '...'\n}\n\nexport default async function Page() {\n\t// You can use `cookies` or `headers` inside Server Components\n\t// directly or in your data fetching function\n\tconst theme = (await cookies()).get('theme')\n\tconst data = await getData()\n\treturn '...'\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Static Site Generation ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "getStaticProps"
+				},
+				{
+					"type": "text",
+					"value": ")"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " directory, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getStaticProps"
+				},
+				{
+					"type": "text",
+					"value": " function is used to prerender a page at build time. This function can be used to fetch data from an external API or directly from a database, and pass this data down to the entire page as it's being generated during the build."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"pages/index.js\"",
+			"value": "// `pages` directory\n\nexport async function getStaticProps() {\n\tconst res = await fetch(`https://...`)\n\tconst projects = await res.json()\n\n\treturn { props: { projects } }\n}\n\nexport default function Index({ projects }) {\n\treturn projects.map((project) => <div>{project.name}</div>)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory, data fetching with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/fetch",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "fetch()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " will default to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cache: 'force-cache'"
+				},
+				{
+					"type": "text",
+					"value": ", which will cache the request data until manually invalidated. This is similar to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getStaticProps"
+				},
+				{
+					"type": "text",
+					"value": " in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " directory."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\"",
+			"value": "// `app` directory\n\n// This function can be named anything\nasync function getProjects() {\n\tconst res = await fetch(`https://...`)\n\tconst projects = await res.json()\n\n\treturn projects\n}\n\nexport default async function Index() {\n\tconst projects = await getProjects()\n\n\treturn projects.map((project) => <div>{project.name}</div>)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Dynamic paths ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "getStaticPaths"
+				},
+				{
+					"type": "text",
+					"value": ")"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " directory, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getStaticPaths"
+				},
+				{
+					"type": "text",
+					"value": " function is used to define the dynamic paths that should be prerendered at build time."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"pages/posts/[id].js\"",
+			"value": "// `pages` directory\nimport PostLayout from '@/components/post-layout'\n\nexport async function getStaticPaths() {\n\treturn {\n\t\tpaths: [{ params: { id: '1' } }, { params: { id: '2' } }],\n\t}\n}\n\nexport async function getStaticProps({ params }) {\n\tconst res = await fetch(`https://.../posts/${params.id}`)\n\tconst post = await res.json()\n\n\treturn { props: { post } }\n}\n\nexport default function Post({ post }) {\n\treturn <PostLayout post={post} />\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getStaticPaths"
+				},
+				{
+					"type": "text",
+					"value": " is replaced with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-static-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-static-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " behaves similarly to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getStaticPaths"
+				},
+				{
+					"type": "text",
+					"value": ", but has a simplified API for returning route parameters and can be used inside "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout",
+					"children": [
+						{
+							"type": "text",
+							"value": "layouts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". The return shape of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " is an array of segments instead of an array of nested "
+				},
+				{
+					"type": "inlineCode",
+					"value": "param"
+				},
+				{
+					"type": "text",
+					"value": " objects or a string of resolved paths."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/posts/[id]/page.js\"",
+			"value": "// `app` directory\nimport PostLayout from '@/components/post-layout'\n\nexport async function generateStaticParams() {\n\treturn [{ id: '1' }, { id: '2' }]\n}\n\nasync function getPost(params) {\n\tconst res = await fetch(`https://.../posts/${(await params).id}`)\n\tconst post = await res.json()\n\n\treturn post\n}\n\nexport default async function Post({ params }) {\n\tconst post = await getPost(params)\n\n\treturn <PostLayout post={post} />\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Using the name "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " is more appropriate than "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getStaticPaths"
+				},
+				{
+					"type": "text",
+					"value": " for the new model in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "get"
+				},
+				{
+					"type": "text",
+					"value": " prefix is replaced with a more descriptive "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generate"
+				},
+				{
+					"type": "text",
+					"value": ", which sits better alone now that "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getStaticProps"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getServerSideProps"
+				},
+				{
+					"type": "text",
+					"value": " are no longer necessary. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Paths"
+				},
+				{
+					"type": "text",
+					"value": " suffix is replaced by "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Params"
+				},
+				{
+					"type": "text",
+					"value": ", which is more appropriate for nested routing with multiple dynamic segments."
+				}
+			]
+		},
+		{
+			"type": "thematicBreak"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Replacing "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fallback"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " directory, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fallback"
+				},
+				{
+					"type": "text",
+					"value": " property returned from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getStaticPaths"
+				},
+				{
+					"type": "text",
+					"value": " is used to define the behavior of a page that isn't prerendered at build time. This property can be set to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": " to show a fallback page while the page is being generated, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " to show a 404 page, or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "blocking"
+				},
+				{
+					"type": "text",
+					"value": " to generate the page at request time."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"pages/posts/[id].js\"",
+			"value": "// `pages` directory\n\nexport async function getStaticPaths() {\n  return {\n    paths: [],\n    fallback: 'blocking'\n  };\n}\n\nexport async function getStaticProps({ params }) {\n  ...\n}\n\nexport default function Post({ post }) {\n  return ...\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config/dynamicParams",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "config.dynamicParams"
+						},
+						{
+							"type": "text",
+							"value": " property"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " controls how params outside of "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-static-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " are handled:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "true"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": (default) Dynamic segments not included in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "generateStaticParams"
+								},
+								{
+									"type": "text",
+									"value": " are generated on demand."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "false"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Dynamic segments not included in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "generateStaticParams"
+								},
+								{
+									"type": "text",
+									"value": " will return a 404."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This replaces the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fallback: true | false | 'blocking'"
+				},
+				{
+					"type": "text",
+					"value": " option of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getStaticPaths"
+				},
+				{
+					"type": "text",
+					"value": " in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " directory. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fallback: 'blocking'"
+				},
+				{
+					"type": "text",
+					"value": " option is not included in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "dynamicParams"
+				},
+				{
+					"type": "text",
+					"value": " because the difference between "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'blocking'"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": " is negligible with streaming."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/posts/[id]/page.js\"",
+			"value": "// `app` directory\n\nexport const dynamicParams = true;\n\nexport async function generateStaticParams() {\n  return [...]\n}\n\nasync function getPost(params) {\n  ...\n}\n\nexport default async function Post({ params }) {\n  const post = await getPost(params);\n\n  return ...\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config/dynamicParams",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "dynamicParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " set to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": " (the default), when a route segment is requested that hasn't been generated, it will be server-rendered and cached."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Incremental Static Regeneration ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "getStaticProps"
+				},
+				{
+					"type": "text",
+					"value": " with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				},
+				{
+					"type": "text",
+					"value": ")"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " directory, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getStaticProps"
+				},
+				{
+					"type": "text",
+					"value": " function allows you to add a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				},
+				{
+					"type": "text",
+					"value": " field to automatically regenerate a page after a certain amount of time."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"pages/index.js\"",
+			"value": "// `pages` directory\n\nexport async function getStaticProps() {\n\tconst res = await fetch(`https://.../posts`)\n\tconst posts = await res.json()\n\n\treturn {\n\t\tprops: { posts },\n\t\trevalidate: 60,\n\t}\n}\n\nexport default function Index({ posts }) {\n\treturn (\n\t\t<Layout>\n\t\t\t<PostList posts={posts} />\n\t\t</Layout>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory, data fetching with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/fetch",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "fetch()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				},
+				{
+					"type": "text",
+					"value": ", which will cache the request for the specified amount of seconds."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\"",
+			"value": "// `app` directory\n\nasync function getPosts() {\n\tconst res = await fetch(`https://.../posts`, { next: { revalidate: 60 } })\n\tconst data = await res.json()\n\n\treturn data.posts\n}\n\nexport default async function PostList() {\n\tconst posts = await getPosts()\n\n\treturn posts.map((post) => <div>{post.name}</div>)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "API Routes"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "API Routes continue to work in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages/api"
+				},
+				{
+					"type": "text",
+					"value": " directory without any changes. However, they have been replaced by "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Handlers allow you to create custom request handlers for a given route using the Web "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/Request",
+					"children": [
+						{
+							"type": "text",
+							"value": "Request"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/Response",
+					"children": [
+						{
+							"type": "text",
+							"value": "Response"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " APIs."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/route.ts\" switcher",
+			"value": "export async function GET(request: Request) {}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/route.js\" switcher",
+			"value": "export async function GET(request) {}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": If you previously used API routes to call an external API from the client, you can now use "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/getting-started/server-and-client-components",
+							"children": [
+								{
+									"type": "text",
+									"value": "Server Components"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " instead to securely fetch data. Learn more about "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/getting-started/fetching-data",
+							"children": [
+								{
+									"type": "text",
+									"value": "data fetching"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Single-Page Applications"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you are also migrating to Next.js from a Single-Page Application (SPA) at the same time, see our "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/single-page-applications",
+					"children": [
+						{
+							"type": "text",
+							"value": "documentation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to learn more."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 7: Styling"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " directory, global stylesheets are restricted to only "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages/_app.js"
+				},
+				{
+					"type": "text",
+					"value": ". With the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory, this restriction has been lifted. Global styles can be added to any layout, page, or component."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/css#css-modules",
+									"children": [
+										{
+											"type": "text",
+											"value": "CSS Modules"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/css#tailwind-css",
+									"children": [
+										{
+											"type": "text",
+											"value": "Tailwind CSS"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/css#global-css",
+									"children": [
+										{
+											"type": "text",
+											"value": "Global Styles"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/css-in-js",
+									"children": [
+										{
+											"type": "text",
+											"value": "CSS-in-JS"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/css#external-stylesheets",
+									"children": [
+										{
+											"type": "text",
+											"value": "External Stylesheets"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/sass",
+									"children": [
+										{
+											"type": "text",
+											"value": "Sass"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Tailwind CSS"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you're using Tailwind CSS, you'll need to add the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory to your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tailwind.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"tailwind.config.js\"",
+			"value": "module.exports = {\n\tcontent: [\n\t\t'./app/**/*.{js,ts,jsx,tsx,mdx}', // <-- Add this line\n\t\t'./pages/**/*.{js,ts,jsx,tsx,mdx}',\n\t\t'./components/**/*.{js,ts,jsx,tsx,mdx}',\n\t],\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You'll also need to import your global styles in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/layout.js"
+				},
+				{
+					"type": "text",
+					"value": " file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\"",
+			"value": "import '../styles/globals.css'\n\nexport default function RootLayout({ children }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn more about "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/css#tailwind-css",
+					"children": [
+						{
+							"type": "text",
+							"value": "styling with Tailwind CSS"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using App Router together with Pages Router"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When navigating between routes served by the different Next.js routers, there will be a hard navigation. Automatic link prefetching with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/link"
+				},
+				{
+					"type": "text",
+					"value": " will not prefetch across routers."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Instead, you can "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://vercel.com/guides/optimizing-hard-navigations",
+					"children": [
+						{
+							"type": "text",
+							"value": "optimize navigations"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " between App Router and Pages Router to retain the prefetched and fast page transitions. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://vercel.com/guides/optimizing-hard-navigations",
+					"children": [
+						{
+							"type": "text",
+							"value": "Learn more"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Codemods"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js provides Codemod transformations to help upgrade your codebase when a feature is deprecated. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/codemods",
+					"children": [
+						{
+							"type": "text",
+							"value": "Codemods"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more information."
+				}
+			]
+		}
+	]
+}

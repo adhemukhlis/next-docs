@@ -1,0 +1,2842 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to set up instrumentation with OpenTelemetry\nnav_title: OpenTelemetry\ndescription: Learn how to instrument your Next.js app with OpenTelemetry."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Observability is crucial for understanding and optimizing the behavior and performance of your Next.js app."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "As applications become more complex, it becomes increasingly difficult to identify and diagnose issues that may arise. By leveraging observability tools, such as logging and metrics, developers can gain insights into their application's behavior and identify areas for optimization. With observability, developers can proactively address issues before they become major problems and provide a better user experience. Therefore, it is highly recommended to use observability in your Next.js applications to improve performance, optimize resources, and enhance user experience."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We recommend using OpenTelemetry for instrumenting your apps. It's a platform-agnostic way to instrument apps that allows you to change your observability provider without changing your code. Read "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://opentelemetry.io/docs/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Official OpenTelemetry docs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more information about OpenTelemetry and how it works."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This documentation uses terms like "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "Span"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "Trace"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "Exporter"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " throughout this doc, all of which can be found in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://opentelemetry.io/docs/concepts/observability-primer/",
+					"children": [
+						{
+							"type": "text",
+							"value": "the OpenTelemetry Observability Primer"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js supports OpenTelemetry instrumentation out of the box, which means that we already instrumented Next.js itself."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Getting Started"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "OpenTelemetry is extensible but setting it up properly can be quite verbose. That's why we prepared a package "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@vercel/otel"
+				},
+				{
+					"type": "text",
+					"value": " that helps you get started quickly."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@vercel/otel"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To get started, install the following packages:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add @vercel/otel @opentelemetry/sdk-logs @opentelemetry/api-logs @opentelemetry/instrumentation"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install @vercel/otel @opentelemetry/sdk-logs @opentelemetry/api-logs @opentelemetry/instrumentation"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add @vercel/otel @opentelemetry/sdk-logs @opentelemetry/api-logs @opentelemetry/instrumentation"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add @vercel/otel @opentelemetry/sdk-logs @opentelemetry/api-logs @opentelemetry/instrumentation"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next, create a custom "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/instrumentation",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "instrumentation.ts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " (or "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".js"
+				},
+				{
+					"type": "text",
+					"value": ") file in the "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "root directory"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " of the project (or inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " folder if using one):"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"your-project/instrumentation.ts\" switcher",
+			"value": "import { registerOTel } from '@vercel/otel'\n\nexport function register() {\n\tregisterOTel({ serviceName: 'next-app' })\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"your-project/instrumentation.js\" switcher",
+			"value": "import { registerOTel } from '@vercel/otel'\n\nexport function register() {\n\tregisterOTel({ serviceName: 'next-app' })\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.npmjs.com/package/@vercel/otel",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "@vercel/otel"
+						},
+						{
+							"type": "text",
+							"value": " documentation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for additional configuration options."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The "
+										},
+										{
+											"type": "inlineCode",
+											"value": "instrumentation"
+										},
+										{
+											"type": "text",
+											"value": " file should be in the root of your project and not inside the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "app"
+										},
+										{
+											"type": "text",
+											"value": " or "
+										},
+										{
+											"type": "inlineCode",
+											"value": "pages"
+										},
+										{
+											"type": "text",
+											"value": " directory. If you're using the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "src"
+										},
+										{
+											"type": "text",
+											"value": " folder, then place the file inside "
+										},
+										{
+											"type": "inlineCode",
+											"value": "src"
+										},
+										{
+											"type": "text",
+											"value": " alongside "
+										},
+										{
+											"type": "inlineCode",
+											"value": "pages"
+										},
+										{
+											"type": "text",
+											"value": " and "
+										},
+										{
+											"type": "inlineCode",
+											"value": "app"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "If you use the "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/config/next-config-js/pageExtensions",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "pageExtensions"
+												},
+												{
+													"type": "text",
+													"value": " config option"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " to add a suffix, you will also need to update the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "instrumentation"
+										},
+										{
+											"type": "text",
+											"value": " filename to match."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "We have created a basic "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://github.com/vercel/next.js/tree/canary/examples/with-opentelemetry",
+											"children": [
+												{
+													"type": "text",
+													"value": "with-opentelemetry"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " example that you can use."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Manual OpenTelemetry configuration"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@vercel/otel"
+				},
+				{
+					"type": "text",
+					"value": " package provides many configuration options and should serve most of common use cases. But if it doesn't suit your needs, you can configure OpenTelemetry manually."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Firstly you need to install OpenTelemetry packages:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add @opentelemetry/sdk-node @opentelemetry/resources @opentelemetry/semantic-conventions @opentelemetry/sdk-trace-node @opentelemetry/exporter-trace-otlp-http"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install @opentelemetry/sdk-node @opentelemetry/resources @opentelemetry/semantic-conventions @opentelemetry/sdk-trace-node @opentelemetry/exporter-trace-otlp-http"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add @opentelemetry/sdk-node @opentelemetry/resources @opentelemetry/semantic-conventions @opentelemetry/sdk-trace-node @opentelemetry/exporter-trace-otlp-http"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add @opentelemetry/sdk-node @opentelemetry/resources @opentelemetry/semantic-conventions @opentelemetry/sdk-trace-node @opentelemetry/exporter-trace-otlp-http"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Now you can initialize "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NodeSDK"
+				},
+				{
+					"type": "text",
+					"value": " in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instrumentation.ts"
+				},
+				{
+					"type": "text",
+					"value": ". Unlike "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@vercel/otel"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NodeSDK"
+				},
+				{
+					"type": "text",
+					"value": " is not compatible with edge runtime, so you need to make sure that you are importing them only when "
+				},
+				{
+					"type": "inlineCode",
+					"value": "process.env.NEXT_RUNTIME === 'nodejs'"
+				},
+				{
+					"type": "text",
+					"value": ". We recommend creating a new file "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instrumentation.node.ts"
+				},
+				{
+					"type": "text",
+					"value": " which you conditionally import only when using node:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"instrumentation.ts\" switcher",
+			"value": "export async function register() {\n\tif (process.env.NEXT_RUNTIME === 'nodejs') {\n\t\tawait import('./instrumentation.node.ts')\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"instrumentation.js\" switcher",
+			"value": "export async function register() {\n\tif (process.env.NEXT_RUNTIME === 'nodejs') {\n\t\tawait import('./instrumentation.node.js')\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"instrumentation.node.ts\" switcher",
+			"value": "import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'\nimport { resourceFromAttributes } from '@opentelemetry/resources'\nimport { NodeSDK } from '@opentelemetry/sdk-node'\nimport { SimpleSpanProcessor } from '@opentelemetry/sdk-trace-node'\nimport { ATTR_SERVICE_NAME } from '@opentelemetry/semantic-conventions'\n\nconst sdk = new NodeSDK({\n\tresource: resourceFromAttributes({\n\t\t[ATTR_SERVICE_NAME]: 'next-app',\n\t}),\n\tspanProcessor: new SimpleSpanProcessor(new OTLPTraceExporter()),\n})\nsdk.start()"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"instrumentation.node.js\" switcher",
+			"value": "import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'\nimport { resourceFromAttributes } from '@opentelemetry/resources'\nimport { NodeSDK } from '@opentelemetry/sdk-node'\nimport { SimpleSpanProcessor } from '@opentelemetry/sdk-trace-node'\nimport { ATTR_SERVICE_NAME } from '@opentelemetry/semantic-conventions'\n\nconst sdk = new NodeSDK({\n\tresource: resourceFromAttributes({\n\t\t[ATTR_SERVICE_NAME]: 'next-app',\n\t}),\n\tspanProcessor: new SimpleSpanProcessor(new OTLPTraceExporter()),\n})\nsdk.start()"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Doing this is equivalent to using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@vercel/otel"
+				},
+				{
+					"type": "text",
+					"value": ", but it's possible to modify and extend some features that are not exposed by the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@vercel/otel"
+				},
+				{
+					"type": "text",
+					"value": ". If edge runtime support is necessary, you will have to use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@vercel/otel"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Testing your instrumentation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You need an OpenTelemetry collector with a compatible backend to test OpenTelemetry traces locally. We recommend using our "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/opentelemetry-collector-dev-setup",
+					"children": [
+						{
+							"type": "text",
+							"value": "OpenTelemetry dev environment"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If everything works well you should be able to see the root server span labeled as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GET /requested/pathname"
+				},
+				{
+					"type": "text",
+					"value": ". All other spans from that particular trace will be nested under it."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js traces more spans than are emitted by default. To see more spans, you must set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NEXT_OTEL_VERBOSE=1"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Deployment"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using OpenTelemetry Collector"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When you are deploying with OpenTelemetry Collector, you can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@vercel/otel"
+				},
+				{
+					"type": "text",
+					"value": ". It will work both on Vercel and when self-hosted."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Deploying on Vercel"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We made sure that OpenTelemetry works out of the box on Vercel."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Follow "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://vercel.com/docs/tracing/instrumentation",
+					"children": [
+						{
+							"type": "text",
+							"value": "Vercel documentation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to connect your project to an observability provider."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Self-hosting"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Deploying to other platforms is also straightforward. You will need to spin up your own OpenTelemetry Collector to receive and process the telemetry data from your Next.js app."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To do this, follow the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://opentelemetry.io/docs/collector/getting-started/",
+					"children": [
+						{
+							"type": "text",
+							"value": "OpenTelemetry Collector Getting Started guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", which will walk you through setting up the collector and configuring it to receive data from your Next.js app."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Once you have your collector up and running, you can deploy your Next.js app to your chosen platform following their respective deployment guides."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Custom Exporters"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "OpenTelemetry Collector is not necessary. You can use a custom OpenTelemetry exporter with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#using-vercelotel",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "@vercel/otel"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#manual-opentelemetry-configuration",
+					"children": [
+						{
+							"type": "text",
+							"value": "manual OpenTelemetry configuration"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Custom Spans"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can add a custom span with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://opentelemetry.io/docs/instrumentation/js/instrumentation",
+					"children": [
+						{
+							"type": "text",
+							"value": "OpenTelemetry APIs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add @opentelemetry/api"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install @opentelemetry/api"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add @opentelemetry/api"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add @opentelemetry/api"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The following example demonstrates a function that fetches GitHub stars and adds a custom "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetchGithubStars"
+				},
+				{
+					"type": "text",
+					"value": " span to track the fetch request's result:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "import { trace } from '@opentelemetry/api'\n\nexport async function fetchGithubStars() {\n\treturn await trace.getTracer('nextjs-example').startActiveSpan('fetchGithubStars', async (span) => {\n\t\ttry {\n\t\t\treturn await getValue()\n\t\t} finally {\n\t\t\tspan.end()\n\t\t}\n\t})\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "register"
+				},
+				{
+					"type": "text",
+					"value": " function will execute before your code runs in a new environment. After that, spans you create while handling a request are added to that request's trace."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Spans created while the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "instrumentation"
+						},
+						{
+							"type": "text",
+							"value": " file is loaded, or inside "
+						},
+						{
+							"type": "inlineCode",
+							"value": "register"
+						},
+						{
+							"type": "text",
+							"value": ", don't automatically join a request trace. Spans started before the tracer provider is installed (for example, at the top level of the file before "
+						},
+						{
+							"type": "inlineCode",
+							"value": "registerOTel"
+						},
+						{
+							"type": "text",
+							"value": " runs) are not recorded, and spans started inside "
+						},
+						{
+							"type": "inlineCode",
+							"value": "register"
+						},
+						{
+							"type": "text",
+							"value": " after "
+						},
+						{
+							"type": "inlineCode",
+							"value": "registerOTel"
+						},
+						{
+							"type": "text",
+							"value": " (or your OpenTelemetry SDK) has started typically become separate root traces. To trace work as part of a request, create the span in code that runs while handling the request, such as when rendering a page or in a Route Handler or API Route."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Default Spans in Next.js"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js automatically instruments several spans for you to provide useful insights into your application's performance."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Attributes on spans follow "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://opentelemetry.io/docs/reference/specification/trace/semantic_conventions/",
+					"children": [
+						{
+							"type": "text",
+							"value": "OpenTelemetry semantic conventions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". We also add some custom attributes under the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next"
+				},
+				{
+					"type": "text",
+					"value": " namespace:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_name"
+								},
+								{
+									"type": "text",
+									"value": " - duplicates span name"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_type"
+								},
+								{
+									"type": "text",
+									"value": " - each span type has a unique identifier"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.route"
+								},
+								{
+									"type": "text",
+									"value": " - The route pattern of the request (e.g., "
+								},
+								{
+									"type": "inlineCode",
+									"value": "/[param]/user"
+								},
+								{
+									"type": "text",
+									"value": ")."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.rsc"
+								},
+								{
+									"type": "text",
+									"value": " (true/false) - Whether the request is an RSC request, such as prefetch."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.page"
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "This is an internal value used by an app router."
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "You can think about it as a route to a special file (like "
+												},
+												{
+													"type": "inlineCode",
+													"value": "page.ts"
+												},
+												{
+													"type": "text",
+													"value": ", "
+												},
+												{
+													"type": "inlineCode",
+													"value": "layout.ts"
+												},
+												{
+													"type": "text",
+													"value": ", "
+												},
+												{
+													"type": "inlineCode",
+													"value": "loading.ts"
+												},
+												{
+													"type": "text",
+													"value": " and others)"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "It can be used as a unique identifier only when paired with "
+												},
+												{
+													"type": "inlineCode",
+													"value": "next.route"
+												},
+												{
+													"type": "text",
+													"value": " because "
+												},
+												{
+													"type": "inlineCode",
+													"value": "/layout"
+												},
+												{
+													"type": "text",
+													"value": " can be used to identify both "
+												},
+												{
+													"type": "inlineCode",
+													"value": "/(groupA)/layout.ts"
+												},
+												{
+													"type": "text",
+													"value": " and "
+												},
+												{
+													"type": "inlineCode",
+													"value": "/(groupB)/layout.ts"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "[http.method] [next.route]"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_type"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "BaseServer.handleRequest"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This span represents the root span for each incoming request to your Next.js application. It tracks the HTTP method, route, target, and status code of the request."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Attributes:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://opentelemetry.io/docs/reference/specification/trace/semantic_conventions/http/#common-attributes",
+									"children": [
+										{
+											"type": "text",
+											"value": "Common HTTP attributes"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "http.method"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "http.status_code"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://opentelemetry.io/docs/reference/specification/trace/semantic_conventions/http/#http-server-semantic-conventions",
+									"children": [
+										{
+											"type": "text",
+											"value": "Server HTTP attributes"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "http.route"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "http.target"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_name"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_type"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.route"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "render route (app) [next.route]"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_type"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "AppRender.getBodyResult"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This span represents the process of rendering a route in the app router."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Attributes:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_name"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_type"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.route"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "fetch [http.method] [http.url]"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_type"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "AppRender.fetch"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This span represents the fetch request executed in your code."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Attributes:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://opentelemetry.io/docs/reference/specification/trace/semantic_conventions/http/#common-attributes",
+									"children": [
+										{
+											"type": "text",
+											"value": "Common HTTP attributes"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "http.method"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://opentelemetry.io/docs/reference/specification/trace/semantic_conventions/http/#http-client",
+									"children": [
+										{
+											"type": "text",
+											"value": "Client HTTP attributes"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "http.url"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "net.peer.name"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "net.peer.port"
+												},
+												{
+													"type": "text",
+													"value": " (only if specified)"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_name"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_type"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This span can be turned off by setting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NEXT_OTEL_FETCH_DISABLED=1"
+				},
+				{
+					"type": "text",
+					"value": " in your environment. This is useful when you want to use a custom fetch instrumentation library."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "executing api route (app) [next.route]"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_type"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "AppRouteRouteHandlers.runHandler"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This span represents the execution of an API Route Handler in the app router."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Attributes:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_name"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_type"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.route"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "getServerSideProps [next.route]"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_type"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Render.getServerSideProps"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This span represents the execution of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getServerSideProps"
+				},
+				{
+					"type": "text",
+					"value": " for a specific route."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Attributes:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_name"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_type"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.route"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "getStaticProps [next.route]"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_type"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Render.getStaticProps"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This span represents the execution of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getStaticProps"
+				},
+				{
+					"type": "text",
+					"value": " for a specific route."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Attributes:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_name"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_type"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.route"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "render route (pages) [next.route]"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_type"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Render.renderDocument"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This span represents the process of rendering the document for a specific route."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Attributes:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_name"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_type"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.route"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata [next.page]"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_type"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "ResolveMetadata.generateMetadata"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This span represents the process of generating metadata for a specific page (a single route can have multiple of these spans)."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Attributes:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_name"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_type"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.page"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "resolve page components"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_type"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "NextNodeServer.findPageComponents"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This span represents the process of resolving page components for a specific page."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Attributes:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_name"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_type"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.route"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "resolve segment modules"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_type"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "NextNodeServer.getLayoutOrPageModule"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This span represents loading of code modules for a layout or a page."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Attributes:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_name"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_type"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.segment"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "start response"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next.span_type"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "NextNodeServer.startResponse"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This zero-length span represents the time when the first byte has been sent in the response."
+				}
+			]
+		}
+	]
+}

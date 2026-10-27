@@ -1,0 +1,1119 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: error.js\ndescription: API reference for the error.js special file.\nrelated:\n title: Learn more about error handling\n links:\n  - app/getting-started/error-handling"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "An "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "error"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " file allows you to handle unexpected runtime errors and display fallback UI."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"error.js special file\"\nsrcLight=\"/docs/light/error-special-file.png\"\nsrcDark=\"/docs/dark/error-special-file.png\"\nwidth=\"1600\"\nheight=\"606\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/error.tsx\" switcher",
+			"value": "'use client' // Error boundaries must be Client Components\n\nimport { useEffect } from 'react'\n\nexport default function Error({ error, retry }: { error: unknown; retry: () => void }) {\n\tuseEffect(() => {\n\t\t// Log the error to an error reporting service\n\t\tconsole.error(error)\n\t}, [error])\n\n\treturn (\n\t\t<div>\n\t\t\t<h2>Something went wrong!</h2>\n\t\t\t<button\n\t\t\t\tonClick={\n\t\t\t\t\t// Attempt to recover by re-fetching and re-rendering the segment\n\t\t\t\t\t() => retry()\n\t\t\t\t}>\n\t\t\t\tTry again\n\t\t\t</button>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/error.js\" switcher",
+			"value": "'use client' // Error boundaries must be Client Components\n\nimport { useEffect } from 'react'\n\nexport default function Error({ error, retry }) {\n\tuseEffect(() => {\n\t\t// Log the error to an error reporting service\n\t\tconsole.error(error)\n\t}, [error])\n\n\treturn (\n\t\t<div>\n\t\t\t<h2>Something went wrong!</h2>\n\t\t\t<button\n\t\t\t\tonClick={\n\t\t\t\t\t// Attempt to recover by re-fetching and re-rendering the segment\n\t\t\t\t\t() => retry()\n\t\t\t\t}>\n\t\t\t\tTry again\n\t\t\t</button>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "error.js"
+				},
+				{
+					"type": "text",
+					"value": " wraps a route segment and its nested children in a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary",
+					"children": [
+						{
+							"type": "text",
+							"value": "React Error Boundary"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". When an error throws within the boundary, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "error"
+				},
+				{
+					"type": "text",
+					"value": " component shows as the fallback UI."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"How error.js works\"\nsrcLight=\"/docs/light/error-overview.png\"\nsrcDark=\"/docs/dark/error-overview.png\"\nwidth=\"1600\"\nheight=\"903\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://react.dev/learn/react-developer-tools",
+											"children": [
+												{
+													"type": "text",
+													"value": "React DevTools"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " allow you to toggle error boundaries to test error states."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "If you want errors to bubble up to the parent error boundary, you can "
+										},
+										{
+											"type": "inlineCode",
+											"value": "throw"
+										},
+										{
+											"type": "text",
+											"value": " when rendering the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "error"
+										},
+										{
+											"type": "text",
+											"value": " component."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "For component-level error recovery that aren't tied to route segments like "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/error",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "error.js"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ", use the "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/functions/catchError",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "catchError"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " function."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/project-structure#component-hierarchy",
+					"children": [
+						{
+							"type": "text",
+							"value": "component hierarchy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "error.js"
+				},
+				{
+					"type": "text",
+					"value": " wraps "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "not-found.js"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.js"
+				},
+				{
+					"type": "text",
+					"value": ", and nested "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout.js"
+				},
+				{
+					"type": "text",
+					"value": " files in a React error boundary. It does "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "not"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " wrap the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout.js"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "template.js"
+				},
+				{
+					"type": "text",
+					"value": " above it in the same segment. To handle errors in the root layout, use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/error#global-error",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "global-error.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Props"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "error"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The value that was thrown, forwarded to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "error.js"
+				},
+				{
+					"type": "text",
+					"value": " Client Component. Errors from Server Components arrive as an "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Error"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " instance, while a value thrown in a Client Component is passed as-is and may not be an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Error"
+				},
+				{
+					"type": "text",
+					"value": ". Narrow it, for example with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instanceof Error"
+				},
+				{
+					"type": "text",
+					"value": ", before reading properties like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "message"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "digest"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " During development, the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "Error"
+						},
+						{
+							"type": "text",
+							"value": " object forwarded to the client will be serialized and include the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "message"
+						},
+						{
+							"type": "text",
+							"value": " of the original error for easier debugging. However, "
+						},
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "this behavior is different in production"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " to avoid leaking potentially sensitive details included in the error to the client."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "error.message"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Errors forwarded from Client Components show the original "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Error"
+								},
+								{
+									"type": "text",
+									"value": " message."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Errors forwarded from Server Components show a generic message with an identifier. This is to prevent leaking sensitive details. You can use the identifier, under "
+								},
+								{
+									"type": "inlineCode",
+									"value": "error.digest"
+								},
+								{
+									"type": "text",
+									"value": ", to match the corresponding server-side logs."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "error.digest"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "An automatically generated hash of the error thrown. It can be used to match the corresponding error in server-side logs."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "retry"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The cause of an error can sometimes be temporary. In these cases, trying again might resolve the issue."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "An error component can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "retry()"
+				},
+				{
+					"type": "text",
+					"value": " function to prompt the user to attempt to recover from the error. When executed, the function will try to re-fetch and re-render the error boundary's children. If successful, the fallback error component is replaced with the result of the re-render."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/error.tsx\" switcher",
+			"value": "'use client' // Error boundaries must be Client Components\n\nexport default function Error({ error, retry }: { error: unknown; retry: () => void }) {\n\treturn (\n\t\t<div>\n\t\t\t<h2>Something went wrong!</h2>\n\t\t\t<button onClick={() => retry()}>Try again</button>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/error.js\" switcher",
+			"value": "'use client' // Error boundaries must be Client Components\n\nexport default function Error({ error, retry }) {\n\treturn (\n\t\t<div>\n\t\t\t<h2>Something went wrong!</h2>\n\t\t\t<button onClick={() => retry()}>Try again</button>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "reset"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In most cases, you should use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#retry",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "retry()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " instead. However, if you have a specific reason to clear the error state and re-render the error boundary's children without re-fetching the contents, you can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "reset()"
+				},
+				{
+					"type": "text",
+					"value": " function."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Global Error"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "While less common, you can handle errors in the root layout or template using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "global-error.jsx"
+				},
+				{
+					"type": "text",
+					"value": ", located in the root app directory, even when leveraging "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/internationalization",
+					"children": [
+						{
+							"type": "text",
+							"value": "internationalization"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Global error UI must define its own "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<html>"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<body>"
+				},
+				{
+					"type": "text",
+					"value": " tags, global styles, fonts, or other dependencies that your error page requires. This file replaces the root layout or template when active."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": "global-error"
+						},
+						{
+							"type": "text",
+							"value": " and the built-in 500 page render their own document and do "
+						},
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "not"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " include your global styles, so an app-level theme toggle (a class or "
+						},
+						{
+							"type": "inlineCode",
+							"value": "data-theme"
+						},
+						{
+							"type": "text",
+							"value": " attribute) won't reach them. The default UI follows the OS color scheme; to match your app's theme, apply it inside your own "
+						},
+						{
+							"type": "inlineCode",
+							"value": "global-error"
+						},
+						{
+							"type": "text",
+							"value": " component."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Error boundaries must be "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/getting-started/server-and-client-components#using-client-components",
+							"children": [
+								{
+									"type": "text",
+									"value": "Client Components"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", which means that "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/getting-started/metadata-and-og-images",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "metadata"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "generateMetadata"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " exports are not supported in "
+						},
+						{
+							"type": "inlineCode",
+							"value": "global-error.jsx"
+						},
+						{
+							"type": "text",
+							"value": ". As an alternative, you can use the React "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://react.dev/reference/react-dom/components/title",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<title>"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " component."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/global-error.tsx\" switcher",
+			"value": "'use client' // Error boundaries must be Client Components\n\nexport default function GlobalError({ error, retry }: { error: unknown; retry: () => void }) {\n\treturn (\n\t\t// global-error must include html and body tags\n\t\t<html>\n\t\t\t<body>\n\t\t\t\t<h2>Something went wrong!</h2>\n\t\t\t\t<button onClick={() => retry()}>Try again</button>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/global-error.js\" switcher",
+			"value": "'use client' // Error boundaries must be Client Components\n\nexport default function GlobalError({ error, retry }) {\n\treturn (\n\t\t// global-error must include html and body tags\n\t\t<html>\n\t\t\t<body>\n\t\t\t\t<h2>Something went wrong!</h2>\n\t\t\t\t<button onClick={() => retry()}>Try again</button>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Graceful error recovery with a custom error boundary"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When rendering fails on the client, it can be useful to show the last known server rendered UI for a better user experience."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GracefullyDegradingErrorBoundary"
+				},
+				{
+					"type": "text",
+					"value": " is an example of a custom error boundary that captures and preserves the current HTML before an error occurs. If a rendering error happens, it re-renders the captured HTML and displays a persistent notification bar to inform the user."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/error.tsx\" switcher",
+			"value": "'use client'\n\nimport React, { Component, ErrorInfo, ReactNode } from 'react'\n\ninterface ErrorBoundaryProps {\n\tchildren: ReactNode\n\tonError?: (error: Error, errorInfo: ErrorInfo) => void\n}\n\ninterface ErrorBoundaryState {\n\thasError: boolean\n}\n\nexport class GracefullyDegradingErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {\n\tprivate contentRef: React.RefObject<HTMLDivElement | null>\n\n\tconstructor(props: ErrorBoundaryProps) {\n\t\tsuper(props)\n\t\tthis.state = { hasError: false }\n\t\tthis.contentRef = React.createRef()\n\t}\n\n\tstatic getDerivedStateFromError(_: Error): ErrorBoundaryState {\n\t\treturn { hasError: true }\n\t}\n\n\tcomponentDidCatch(error: Error, errorInfo: ErrorInfo) {\n\t\tif (this.props.onError) {\n\t\t\tthis.props.onError(error, errorInfo)\n\t\t}\n\t}\n\n\trender() {\n\t\tif (this.state.hasError) {\n\t\t\t// Render the current HTML content without hydration\n\t\t\treturn (\n\t\t\t\t<>\n\t\t\t\t\t<div\n\t\t\t\t\t\tref={this.contentRef}\n\t\t\t\t\t\tsuppressHydrationWarning\n\t\t\t\t\t\tdangerouslySetInnerHTML={{\n\t\t\t\t\t\t\t__html: this.contentRef.current?.innerHTML || '',\n\t\t\t\t\t\t}}\n\t\t\t\t\t/>\n\t\t\t\t\t<div className=\"fixed bottom-0 left-0 right-0 bg-red-600 text-white py-4 px-6 text-center\">\n\t\t\t\t\t\t<p className=\"font-semibold\">An error occurred during page rendering</p>\n\t\t\t\t\t</div>\n\t\t\t\t</>\n\t\t\t)\n\t\t}\n\n\t\treturn <div ref={this.contentRef}>{this.props.children}</div>\n\t}\n}\n\nexport default GracefullyDegradingErrorBoundary"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/error.js\" switcher",
+			"value": "'use client'\n\nimport React, { Component, createRef } from 'react'\n\nclass GracefullyDegradingErrorBoundary extends Component {\n\tconstructor(props) {\n\t\tsuper(props)\n\t\tthis.state = { hasError: false }\n\t\tthis.contentRef = createRef()\n\t}\n\n\tstatic getDerivedStateFromError(_) {\n\t\treturn { hasError: true }\n\t}\n\n\tcomponentDidCatch(error, errorInfo) {\n\t\tif (this.props.onError) {\n\t\t\tthis.props.onError(error, errorInfo)\n\t\t}\n\t}\n\n\trender() {\n\t\tif (this.state.hasError) {\n\t\t\t// Render the current HTML content without hydration\n\t\t\treturn (\n\t\t\t\t<>\n\t\t\t\t\t<div\n\t\t\t\t\t\tref={this.contentRef}\n\t\t\t\t\t\tsuppressHydrationWarning\n\t\t\t\t\t\tdangerouslySetInnerHTML={{\n\t\t\t\t\t\t\t__html: this.contentRef.current?.innerHTML || '',\n\t\t\t\t\t\t}}\n\t\t\t\t\t/>\n\t\t\t\t\t<div className=\"fixed bottom-0 left-0 right-0 bg-red-600 text-white py-4 px-6 text-center\">\n\t\t\t\t\t\t<p className=\"font-semibold\">An error occurred during page rendering</p>\n\t\t\t\t\t</div>\n\t\t\t\t</>\n\t\t\t)\n\t\t}\n\n\t\treturn <div ref={this.contentRef}>{this.props.children}</div>\n\t}\n}\n\nexport default GracefullyDegradingErrorBoundary"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "retry"
+								},
+								{
+									"type": "text",
+									"value": " prop became stable."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.2.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "unstable_retry"
+								},
+								{
+									"type": "text",
+									"value": " prop added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.2.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Also display "
+								},
+								{
+									"type": "inlineCode",
+									"value": "global-error"
+								},
+								{
+									"type": "text",
+									"value": " in development."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.1.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "global-error"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "error"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

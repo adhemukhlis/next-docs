@@ -1,0 +1,517 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: next.config.js\ndescription: Learn how to configure your application with next.config.js."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js can be configured through a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file in the root of your project directory (for example, by "
+				},
+				{
+					"type": "inlineCode",
+					"value": "package.json"
+				},
+				{
+					"type": "text",
+					"value": ") with a default export."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "// @ts-check\n\n/** @type {import('next').NextConfig} */\nconst nextConfig = {/* config options here */}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "ECMAScript Modules"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " is a regular Node.js module, not a JSON file. It gets used by the Next.js server and build phases, and it's not included in the browser build."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you need "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nodejs.org/api/esm.html",
+					"children": [
+						{
+							"type": "text",
+							"value": "ECMAScript modules"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", you can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.mjs"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.mjs\"",
+			"value": "// @ts-check\n\n/**\n * @type {import('next').NextConfig}\n */\nconst nextConfig = {/* config options here */}\n\nexport default nextConfig"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next.config"
+						},
+						{
+							"type": "text",
+							"value": " with the "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".cjs"
+						},
+						{
+							"type": "text",
+							"value": " or "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".cts"
+						},
+						{
+							"type": "text",
+							"value": " extensions are currently "
+						},
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "not"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " supported."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Configuration as a Function"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also use a function:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.mjs\"",
+			"value": "// @ts-check\n\nexport default (phase, { defaultConfig }) => {\n\t/**\n\t * @type {import('next').NextConfig}\n\t */\n\tconst nextConfig = {/* config options here */}\n\treturn nextConfig\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Async Configuration"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since Next.js 12.1.0, you can use an async function:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "// @ts-check\n\nmodule.exports = async (phase, { defaultConfig }) => {\n\t/**\n\t * @type {import('next').NextConfig}\n\t */\n\tconst nextConfig = {/* config options here */}\n\treturn nextConfig\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Phase"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "phase"
+				},
+				{
+					"type": "text",
+					"value": " is the current context in which the configuration is loaded. You can see the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/blob/5e6b008b561caf2710ab7be63320a3d549474a5b/packages/next/shared/lib/constants.ts#L19-L23",
+					"children": [
+						{
+							"type": "text",
+							"value": "available phases"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Phases can be imported from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/constants"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "// @ts-check\n\nconst { PHASE_DEVELOPMENT_SERVER } = require('next/constants')\n\nmodule.exports = (phase, { defaultConfig }) => {\n\tif (phase === PHASE_DEVELOPMENT_SERVER) {\n\t\treturn {/* development only config options here */}\n\t}\n\n\treturn {/* config options for all phases except development here */}\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "TypeScript"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you are using TypeScript in your project, you can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": " to use TypeScript in your configuration:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {/* config options here */}\n\nexport default nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The commented lines are the place where you can put the configs allowed by "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ", which are "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/blob/canary/packages/next/src/server/config-shared.ts",
+					"children": [
+						{
+							"type": "text",
+							"value": "defined in this file"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "However, none of the configs are required, and it's not necessary to understand what each config does. Instead, search for the features you need to enable or modify in this section and they will show you what to do."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Avoid using new JavaScript features not available in your target Node.js version. "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next.config.js"
+						},
+						{
+							"type": "text",
+							"value": " will not be parsed by Webpack or Babel."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This page documents all the available configuration options:"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Unit Testing (experimental)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Starting in Next.js 15.1, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/experimental/testing/server"
+				},
+				{
+					"type": "text",
+					"value": " package contains utilities to help unit test "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " files."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "unstable_getResponseFromNextConfig"
+				},
+				{
+					"type": "text",
+					"value": " function runs the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/headers",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "headers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/redirects",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "redirects"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/rewrites",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "rewrites"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " functions from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " with the provided request information and returns "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NextResponse"
+				},
+				{
+					"type": "text",
+					"value": " with the results of the routing."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "The response from "
+						},
+						{
+							"type": "inlineCode",
+							"value": "unstable_getResponseFromNextConfig"
+						},
+						{
+							"type": "text",
+							"value": " only considers "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next.config.js"
+						},
+						{
+							"type": "text",
+							"value": " fields and does not consider proxy or filesystem routes, so the result in production may be different than the unit test."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "import { getRedirectUrl, unstable_getResponseFromNextConfig } from 'next/experimental/testing/server'\n\nconst response = await unstable_getResponseFromNextConfig({\n\turl: 'https://nextjs.org/test',\n\tnextConfig: {\n\t\tasync redirects() {\n\t\t\treturn [{ source: '/test', destination: '/test2', permanent: false }]\n\t\t},\n\t},\n})\nexpect(response.status).toEqual(307)\nexpect(getRedirectUrl(response)).toEqual('https://nextjs.org/test2')"
+		}
+	]
+}

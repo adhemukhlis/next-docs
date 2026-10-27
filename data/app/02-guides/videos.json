@@ -1,0 +1,2714 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to use and optimize videos\nnav_title: Videos\ndescription: Recommendations and best practices for optimizing videos in your Next.js application."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This page outlines how to use videos with Next.js applications, showing how to store and display video files without affecting performance."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<video>"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<iframe>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Videos can be embedded on the page using the HTML "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<video>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " tag for direct video files and "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<iframe>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for external platform-hosted videos."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "<video>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The HTML "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<video>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " tag can embed self-hosted or directly served video content, allowing full control over the playback and appearance."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/video.jsx\"",
+			"value": "export function Video() {\n\treturn (\n\t\t<video\n\t\t\twidth=\"320\"\n\t\t\theight=\"240\"\n\t\t\tposter=\"/path/to/poster.jpg\"\n\t\t\tcontrols\n\t\t\tpreload=\"none\">\n\t\t\t<source\n\t\t\t\tsrc=\"/path/to/video.mp4\"\n\t\t\t\ttype=\"video/mp4\"\n\t\t\t/>\n\t\t\t<track\n\t\t\t\tsrc=\"/path/to/captions.vtt\"\n\t\t\t\tkind=\"subtitles\"\n\t\t\t\tsrcLang=\"en\"\n\t\t\t\tlabel=\"English\"\n\t\t\t/>\n\t\t\tYour browser does not support the video tag.\n\t\t</video>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Common "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<video>"
+				},
+				{
+					"type": "text",
+					"value": " tag attributes"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Attribute"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Example Value"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "src"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Specifies the source of the video file."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<video src=\"/path/to/video.mp4\" />"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "width"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Sets the width of the video player."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<video width=\"320\" />"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "height"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Sets the height of the video player."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<video height=\"240\" />"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "controls"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "If present, it displays the default set of playback controls."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<video controls />"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "autoPlay"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Automatically starts playing the video when the page loads. Note: Autoplay policies vary across browsers."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<video autoPlay />"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "loop"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Loops the video playback."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<video loop />"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "muted"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Mutes the audio by default. Often used with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "autoPlay"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<video muted />"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "poster"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "An image shown in the video's box until the first frame is available."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<video poster=\"/poster.jpg\" />"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "preload"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Specifies how the video is preloaded. Values: "
+								},
+								{
+									"type": "inlineCode",
+									"value": "none"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "metadata"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "auto"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<video preload=\"none\" />"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "playsInline"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enables inline playback on iOS devices, often necessary for autoplay to work on iOS Safari."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<video playsInline />"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": When using the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "autoPlay"
+						},
+						{
+							"type": "text",
+							"value": " attribute, it is important to also include the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "muted"
+						},
+						{
+							"type": "text",
+							"value": " attribute to ensure the video plays automatically in most browsers and the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "playsInline"
+						},
+						{
+							"type": "text",
+							"value": " attribute for compatibility with iOS devices."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For a comprehensive list of video attributes, refer to the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video#attributes",
+					"children": [
+						{
+							"type": "text",
+							"value": "MDN documentation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Video best practices"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Dimensions:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Set "
+								},
+								{
+									"type": "inlineCode",
+									"value": "width"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "height"
+								},
+								{
+									"type": "text",
+									"value": ", or a CSS "
+								},
+								{
+									"type": "inlineCode",
+									"value": "aspect-ratio"
+								},
+								{
+									"type": "text",
+									"value": ", so the browser reserves the box before the file loads. A video without dimensions collapses and then pushes the rest of the page down, which counts against "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://web.dev/articles/cls",
+									"children": [
+										{
+											"type": "text",
+											"value": "Cumulative Layout Shift"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Poster Image:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Use "
+								},
+								{
+									"type": "inlineCode",
+									"value": "poster"
+								},
+								{
+									"type": "text",
+									"value": " to fill that reserved box while the video loads, especially with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "preload=\"none\""
+								},
+								{
+									"type": "text",
+									"value": ", where no frame is fetched until playback starts."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Fallback Content:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " When using the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<video>"
+								},
+								{
+									"type": "text",
+									"value": " tag, include fallback content inside the tag for browsers that do not support video playback."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Subtitles or Captions:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Include subtitles or captions for users who are deaf or hard of hearing. Utilize the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/track",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "<track>"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " tag with your "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<video>"
+								},
+								{
+									"type": "text",
+									"value": " elements to specify caption file sources."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Accessible Controls:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Standard HTML5 video controls are recommended for keyboard navigation and screen reader compatibility. For advanced needs, consider third-party players like "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/cookpete/react-player",
+									"children": [
+										{
+											"type": "text",
+											"value": "react-player"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://videojs.com/",
+									"children": [
+										{
+											"type": "text",
+											"value": "video.js"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", which offer accessible controls and consistent browser experience."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "<iframe>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The HTML "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<iframe>"
+				},
+				{
+					"type": "text",
+					"value": " tag allows you to embed videos from external platforms like YouTube or Vimeo."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.jsx\"",
+			"value": "export default function Page() {\n\treturn (\n\t\t<iframe\n\t\t\tsrc=\"https://www.youtube.com/embed/19g66ezsKAg\"\n\t\t\tallowFullScreen\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Common "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<iframe>"
+				},
+				{
+					"type": "text",
+					"value": " tag attributes"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Attribute"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Example Value"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "src"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The URL of the page to embed."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<iframe src=\"https://example.com\" />"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "width"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Sets the width of the iframe."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<iframe width=\"500\" />"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "height"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Sets the height of the iframe."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<iframe height=\"300\" />"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "allowFullScreen"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Allows the iframe content to be displayed in full-screen mode."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<iframe allowFullScreen />"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "sandbox"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enables an extra set of restrictions on the content within the iframe."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<iframe sandbox />"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "loading"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optimize loading behavior (e.g., lazy loading)."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<iframe loading=\"lazy\" />"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "style"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Apply CSS, such as an "
+								},
+								{
+									"type": "inlineCode",
+									"value": "aspect-ratio"
+								},
+								{
+									"type": "text",
+									"value": " to keep the box a fixed shape."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<iframe style={{ border: 0 }} />"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "title"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Provides a title for the iframe to support accessibility."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<iframe title=\"Description\" />"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "An iframe without dimensions collapses until its content loads, the same as a video. Give it "
+				},
+				{
+					"type": "inlineCode",
+					"value": "width"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "height"
+				},
+				{
+					"type": "text",
+					"value": " or an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "aspect-ratio"
+				},
+				{
+					"type": "text",
+					"value": ", particularly with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading=\"lazy\""
+				},
+				{
+					"type": "text",
+					"value": ", where the embed can resolve long after the surrounding page has painted."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For a comprehensive list of iframe attributes, refer to the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#attributes",
+					"children": [
+						{
+							"type": "text",
+							"value": "MDN documentation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Choosing a video embedding method"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There are two ways you can embed videos in your Next.js application:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Self-hosted or direct video files:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Embed self-hosted videos using the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<video>"
+								},
+								{
+									"type": "text",
+									"value": " tag for scenarios requiring detailed control over the player's functionality and appearance. This integration method within Next.js allows for customization and control of your video content."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Using video hosting services (YouTube, Vimeo, etc.):"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " For video hosting services like YouTube or Vimeo, you'll embed their iframe-based players using the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<iframe>"
+								},
+								{
+									"type": "text",
+									"value": " tag. While this method limits some control over the player, it offers ease of use and features provided by these platforms."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Choose the embedding method that aligns with your application's requirements and the user experience you aim to deliver."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Embedding externally hosted videos"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To embed videos from external platforms, you can use Next.js to fetch the video information and React Suspense to handle the fallback state while loading."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "1. Create a Server Component for video embedding"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The first step is to create a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " that generates the appropriate iframe for embedding the video. This component will fetch the source URL for the video and render the iframe."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/video-component.jsx\"",
+			"value": "export default async function VideoComponent() {\n\tconst src = await getVideoSrc()\n\n\treturn (\n\t\t<iframe\n\t\t\tsrc={src}\n\t\t\tallowFullScreen\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "2. Stream the video component using React Suspense"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After creating the Server Component to embed the video, the next step is to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/loading",
+					"children": [
+						{
+							"type": "text",
+							"value": "stream"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " the component using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Suspense",
+					"children": [
+						{
+							"type": "text",
+							"value": "React Suspense"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.jsx\"",
+			"value": "import { Suspense } from 'react'\nimport VideoComponent from '../ui/VideoComponent.jsx'\n\nexport default function Page() {\n\treturn (\n\t\t<section>\n\t\t\t<Suspense fallback={<p>Loading video...</p>}>\n\t\t\t\t<VideoComponent />\n\t\t\t</Suspense>\n\t\t\t{/* Other content of the page */}\n\t\t</section>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": When embedding videos from external platforms, consider the following best practices:"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Ensure the video embeds are responsive. Use CSS to make the iframe or video player adapt to different screen sizes."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Implement "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://yoast.com/site-speed-tips-for-faster-video/",
+											"children": [
+												{
+													"type": "text",
+													"value": "strategies for loading videos"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " based on network conditions, especially for users with limited data plans."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This approach results in a better user experience as it prevents the page from blocking, meaning the user can interact with the page while the video component streams in."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For a more engaging and informative loading experience, consider using a loading skeleton as the fallback UI. So instead of showing a simple loading message, you can show a skeleton that resembles the video player like this:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.jsx\"",
+			"value": "import { Suspense } from 'react'\nimport VideoComponent from '../ui/VideoComponent.jsx'\nimport VideoSkeleton from '../ui/VideoSkeleton.jsx'\n\nexport default function Page() {\n\treturn (\n\t\t<section>\n\t\t\t<Suspense fallback={<VideoSkeleton />}>\n\t\t\t\t<VideoComponent />\n\t\t\t</Suspense>\n\t\t\t{/* Other content of the page */}\n\t\t</section>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Self-hosted videos"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Self-hosting videos may be preferable for several reasons:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Complete control and independence"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Self-hosting gives you direct management over your video content, from playback to appearance, ensuring full ownership and control, free from external platform constraints."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Customization for specific needs"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Ideal for unique requirements, like dynamic background videos, it allows for tailored customization to align with design and functional needs."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Performance and scalability considerations"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Choose storage solutions that are both high-performing and scalable, to support increasing traffic and content size effectively."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Cost and integration"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Balance the costs of storage and bandwidth with the need for easy integration into your Next.js framework and broader tech ecosystem."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using Vercel Blob for video hosting"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://vercel.com/docs/vercel-blob?utm_source=next-site&utm_medium=docs&utm_campaign=next-website",
+					"children": [
+						{
+							"type": "text",
+							"value": "Vercel Blob"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " offers an efficient way to host videos, providing a scalable cloud storage solution that works well with Next.js. Here's how you can host a video using Vercel Blob:"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "1. Uploading a video to Vercel Blob"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In your Vercel dashboard, navigate to the \"Storage\" tab and select your "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://vercel.com/docs/vercel-blob?utm_source=next-site&utm_medium=docs&utm_campaign=next-website",
+					"children": [
+						{
+							"type": "text",
+							"value": "Vercel Blob"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " store. In the Blob table's upper-right corner, find and click the \"Upload\" button. Then, choose the video file you wish to upload. After the upload completes, the video file will appear in the Blob table."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Alternatively, you can upload your video using a server action. For detailed instructions, refer to the Vercel documentation on "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://vercel.com/docs/vercel-blob/server-upload",
+					"children": [
+						{
+							"type": "text",
+							"value": "server-side uploads"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Vercel also supports "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://vercel.com/docs/vercel-blob/client-upload",
+					"children": [
+						{
+							"type": "text",
+							"value": "client-side uploads"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This method may be preferable for certain use cases."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "2. Displaying the video in Next.js"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Once the video is uploaded and stored, you can display it in your Next.js application. Here's an example of how to do this using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<video>"
+				},
+				{
+					"type": "text",
+					"value": " tag and React Suspense:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.jsx\"",
+			"value": "import { Suspense } from 'react'\nimport { list } from '@vercel/blob'\n\nexport default function Page() {\n\treturn (\n\t\t<Suspense fallback={<p>Loading video...</p>}>\n\t\t\t<VideoComponent fileName=\"my-video.mp4\" />\n\t\t</Suspense>\n\t)\n}\n\nasync function VideoComponent({ fileName }) {\n\tconst { blobs } = await list({\n\t\tprefix: fileName,\n\t\tlimit: 1,\n\t})\n\tconst { url } = blobs[0]\n\n\treturn (\n\t\t<video\n\t\t\tcontrols\n\t\t\tpreload=\"none\"\n\t\t\taria-label=\"Video player\">\n\t\t\t<source\n\t\t\t\tsrc={url}\n\t\t\t\ttype=\"video/mp4\"\n\t\t\t/>\n\t\t\tYour browser does not support the video tag.\n\t\t</video>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In this approach, the page uses the video's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@vercel/blob"
+				},
+				{
+					"type": "text",
+					"value": " URL to display the video using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "VideoComponent"
+				},
+				{
+					"type": "text",
+					"value": ". React Suspense is used to show a fallback until the video URL is fetched and the video is ready to be displayed."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Adding subtitles to your video"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you have subtitles for your video, you can easily add them using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<track>"
+				},
+				{
+					"type": "text",
+					"value": " element inside your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<video>"
+				},
+				{
+					"type": "text",
+					"value": " tag. You can fetch the subtitle file from "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://vercel.com/docs/vercel-blob?utm_source=next-site&utm_medium=docs&utm_campaign=next-website",
+					"children": [
+						{
+							"type": "text",
+							"value": "Vercel Blob"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in a similar way as the video file. Here's how you can update the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<VideoComponent>"
+				},
+				{
+					"type": "text",
+					"value": " to include subtitles."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.jsx\"",
+			"value": "async function VideoComponent({ fileName }) {\n\tconst { blobs } = await list({\n\t\tprefix: fileName,\n\t\tlimit: 2,\n\t})\n\tconst { url } = blobs[0]\n\tconst { url: captionsUrl } = blobs[1]\n\n\treturn (\n\t\t<video\n\t\t\tcontrols\n\t\t\tpreload=\"none\"\n\t\t\taria-label=\"Video player\">\n\t\t\t<source\n\t\t\t\tsrc={url}\n\t\t\t\ttype=\"video/mp4\"\n\t\t\t/>\n\t\t\t<track\n\t\t\t\tsrc={captionsUrl}\n\t\t\t\tkind=\"subtitles\"\n\t\t\t\tsrcLang=\"en\"\n\t\t\t\tlabel=\"English\"\n\t\t\t/>\n\t\t\tYour browser does not support the video tag.\n\t\t</video>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By following this approach, you can effectively self-host and integrate videos into your Next.js applications."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Resources"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To continue learning more about video optimization and best practices, please refer to the following resources:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Understanding video formats and codecs"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Choose the right format and codec, like MP4 for compatibility or WebM for web optimization, for your video needs. For more details, see "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Video_codecs",
+									"children": [
+										{
+											"type": "text",
+											"value": "Mozilla's guide on video codecs"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Video compression"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Use tools like FFmpeg to effectively compress videos, balancing quality with file size. Learn about compression techniques at "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://www.ffmpeg.org/",
+									"children": [
+										{
+											"type": "text",
+											"value": "FFmpeg's official website"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Resolution and bitrate adjustment"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Adjust "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://www.dacast.com/blog/bitrate-vs-resolution/#:~:text=The%20two%20measure%20different%20aspects,yield%20different%20qualities%20of%20video",
+									"children": [
+										{
+											"type": "text",
+											"value": "resolution and bitrate"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " based on the viewing platform, with lower settings for mobile devices."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Content Delivery Networks (CDNs)"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Utilize a CDN to enhance video delivery speed and manage high traffic. When using some storage solutions, such as Vercel Blob, CDN functionality is automatically handled for you. "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://vercel.com/docs/cdn?utm_source=next-site&utm_medium=docs&utm_campaign=next-website",
+									"children": [
+										{
+											"type": "text",
+											"value": "Learn more"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " about CDNs and their benefits."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Explore these video streaming platforms for integrating video into your Next.js projects:"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Open source "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next-video"
+				},
+				{
+					"type": "text",
+					"value": " component"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Provides a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Video>"
+								},
+								{
+									"type": "text",
+									"value": " component for Next.js, compatible with various hosting services including "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://vercel.com/docs/vercel-blob?utm_source=next-site&utm_medium=docs&utm_campaign=next-website",
+									"children": [
+										{
+											"type": "text",
+											"value": "Vercel Blob"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", S3, Backblaze, and Mux."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://next-video.dev/docs",
+									"children": [
+										{
+											"type": "text",
+											"value": "Detailed documentation"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for using "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next-video.dev"
+								},
+								{
+									"type": "text",
+									"value": " with different hosting services."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Cloudinary Integration"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Official "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://next.cloudinary.dev/",
+									"children": [
+										{
+											"type": "text",
+											"value": "documentation and integration guide"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for using Cloudinary with Next.js."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Includes a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<CldVideoPlayer>"
+								},
+								{
+									"type": "text",
+									"value": " component for "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://next.cloudinary.dev/cldvideoplayer/basic-usage",
+									"children": [
+										{
+											"type": "text",
+											"value": "drop-in video support"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Find "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/cloudinary-community/cloudinary-examples/?tab=readme-ov-file#nextjs",
+									"children": [
+										{
+											"type": "text",
+											"value": "examples"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " of integrating Cloudinary with Next.js including "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/cloudinary-community/cloudinary-examples/tree/main/examples/nextjs-cldvideoplayer-abr",
+									"children": [
+										{
+											"type": "text",
+											"value": "Adaptive Bitrate Streaming"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Other "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://cloudinary.com/documentation",
+									"children": [
+										{
+											"type": "text",
+											"value": "Cloudinary libraries"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " including a Node.js SDK are also available."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Mux Video API"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Mux provides a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/muxinc/video-course-starter-kit",
+									"children": [
+										{
+											"type": "text",
+											"value": "starter template"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for creating a video course with Mux and Next.js."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Learn about Mux's recommendations for embedding "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://www.mux.com/for/nextjs",
+									"children": [
+										{
+											"type": "text",
+											"value": "high-performance video for your Next.js application"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Explore an "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://with-mux-video.vercel.app/",
+									"children": [
+										{
+											"type": "text",
+											"value": "example project"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " demonstrating Mux with Next.js."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Fastly"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Learn more about integrating Fastly's solutions for "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://www.fastly.com/products/streaming-media/video-on-demand",
+									"children": [
+										{
+											"type": "text",
+											"value": "video on demand"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and streaming media into Next.js."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "ImageKit.io Integration"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Check out the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://imagekit.io/docs/integration/nextjs",
+									"children": [
+										{
+											"type": "text",
+											"value": "official quick start guide"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for integrating ImageKit with Next.js."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The integration provides an "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<IKVideo>"
+								},
+								{
+									"type": "text",
+									"value": " component, offering "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://imagekit.io/docs/integration/nextjs#rendering-videos",
+									"children": [
+										{
+											"type": "text",
+											"value": "seamless video support"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "You can also explore other "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://imagekit.io/docs",
+									"children": [
+										{
+											"type": "text",
+											"value": "ImageKit libraries"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", such as the Node.js SDK, which is also available."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

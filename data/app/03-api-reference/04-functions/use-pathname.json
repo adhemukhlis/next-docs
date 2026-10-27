@@ -1,0 +1,973 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: usePathname\ndescription: API Reference for the usePathname hook."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "usePathname"
+				},
+				{
+					"type": "text",
+					"value": " is a "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client Component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " hook that lets you read the current URL's "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "pathname"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/example-client-component.tsx\" switcher",
+			"value": "'use client'\n\nimport { usePathname } from 'next/navigation'\n\nexport default function ExampleClientComponent() {\n\tconst pathname = usePathname()\n\treturn <p>Current pathname: {pathname}</p>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/example-client-component.js\" switcher",
+			"value": "'use client'\n\nimport { usePathname } from 'next/navigation'\n\nexport default function ExampleClientComponent() {\n\tconst pathname = usePathname()\n\treturn <p>Current pathname: {pathname}</p>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "usePathname"
+				},
+				{
+					"type": "text",
+					"value": " intentionally requires using a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client Component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". It's important to note Client Components are not a de-optimization. They are an integral part of the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " architecture."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, a Client Component with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "usePathname"
+				},
+				{
+					"type": "text",
+					"value": " will be rendered into HTML on the initial page load. When navigating to a new route, this component does not need to be re-fetched. Instead, the component is downloaded once (in the client JavaScript bundle), and re-renders based on the current state."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Reading the current URL from a "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/getting-started/server-and-client-components",
+											"children": [
+												{
+													"type": "text",
+													"value": "Server Component"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " is not supported. This design is intentional to support layout state being preserved across page navigations."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "If your page is being statically prerendered and your app has "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/config/next-config-js/rewrites",
+											"children": [
+												{
+													"type": "text",
+													"value": "rewrites"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " in "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next.config"
+										},
+										{
+											"type": "text",
+											"value": " or a "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/proxy",
+											"children": [
+												{
+													"type": "text",
+													"value": "Proxy"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " file, reading the pathname with "
+										},
+										{
+											"type": "inlineCode",
+											"value": "usePathname()"
+										},
+										{
+											"type": "text",
+											"value": " can result in hydration mismatch errors, because the initial value comes from the server and may not match the actual browser pathname after routing. See our "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "#avoid-hydration-mismatch-with-rewrites",
+											"children": [
+												{
+													"type": "text",
+													"value": "example"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " for a way to mitigate this issue."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "<details>"
+		},
+		{
+			"type": "html",
+			"value": "<summary>Compatibility with Pages Router</summary>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you have components that use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "usePathname"
+				},
+				{
+					"type": "text",
+					"value": " and they are imported into routes within the Pages Router, be aware that "
+				},
+				{
+					"type": "inlineCode",
+					"value": "usePathname"
+				},
+				{
+					"type": "text",
+					"value": " may return "
+				},
+				{
+					"type": "inlineCode",
+					"value": "null"
+				},
+				{
+					"type": "text",
+					"value": " if the router is not yet initialized. This can occur in cases such as "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/pages/api-reference/functions/get-static-paths#fallback-true",
+					"children": [
+						{
+							"type": "text",
+							"value": "fallback routes"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or during "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/pages/building-your-application/rendering/automatic-static-optimization",
+					"children": [
+						{
+							"type": "text",
+							"value": "Automatic Static Optimization"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in the Pages Router."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To enhance compatibility between routing systems, if your project contains both an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " and a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " directory, Next.js will automatically adjust the return type of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "usePathname"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "</details>"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parameters"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "const pathname = usePathname()"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "usePathname"
+				},
+				{
+					"type": "text",
+					"value": " does not take any parameters."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "usePathname"
+				},
+				{
+					"type": "text",
+					"value": " returns a string of the current URL's pathname. For example:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "URL"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Returned value"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'/'"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/dashboard"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'/dashboard'"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/dashboard?v=2"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'/dashboard'"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/blog/hello-world"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'/blog/hello-world'"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Behavior"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is enabled, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "usePathname"
+				},
+				{
+					"type": "text",
+					"value": " may require a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Suspense",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Suspense"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " boundary. This depends on whether the pathname can be resolved during prerendering."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Static routes and routes with "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/functions/generate-static-params",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "generateStaticParams"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": every route segment, including dynamic params, is known at build time. The pathname can be resolved during prerendering, so "
+								},
+								{
+									"type": "inlineCode",
+									"value": "usePathname"
+								},
+								{
+									"type": "text",
+									"value": " resolves on the server and no "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Suspense"
+								},
+								{
+									"type": "text",
+									"value": " boundary is required."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Routes with dynamic params not covered by "
+										},
+										{
+											"type": "inlineCode",
+											"value": "generateStaticParams"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": the param is a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/generate-static-params#all-paths-at-build-time",
+									"children": [
+										{
+											"type": "text",
+											"value": "fallback param"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " that is not known until request time. The pathname cannot be resolved during prerendering, so "
+								},
+								{
+									"type": "inlineCode",
+									"value": "usePathname"
+								},
+								{
+									"type": "text",
+									"value": " suspends. Wrap the component (or a parent) in a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Suspense"
+								},
+								{
+									"type": "text",
+									"value": " boundary so its fallback can be rendered during prerendering; otherwise, the build fails."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This applies even when the component that calls "
+				},
+				{
+					"type": "inlineCode",
+					"value": "usePathname"
+				},
+				{
+					"type": "text",
+					"value": " is itself static. For example, a sidebar with active links rendered in a layout suspends on any page below it that has an unknown dynamic param. To keep the rest of the layout prerendered, wrap the component that calls "
+				},
+				{
+					"type": "inlineCode",
+					"value": "usePathname"
+				},
+				{
+					"type": "text",
+					"value": " (or a parent) in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Suspense"
+				},
+				{
+					"type": "text",
+					"value": " boundary with a fallback."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/blocking-prerender-client-hook",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js encountered URL data in a Client Component outside of Suspense"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for full fix options and trade-offs."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Do something in response to a route change"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/example-client-component.tsx\" switcher",
+			"value": "'use client'\n\nimport { useEffect } from 'react'\nimport { usePathname, useSearchParams } from 'next/navigation'\n\nfunction ExampleClientComponent() {\n\tconst pathname = usePathname()\n\tconst searchParams = useSearchParams()\n\tuseEffect(() => {\n\t\t// Do something here...\n\t}, [pathname, searchParams])\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/example-client-component.js\" switcher",
+			"value": "'use client'\n\nimport { useEffect } from 'react'\nimport { usePathname, useSearchParams } from 'next/navigation'\n\nfunction ExampleClientComponent() {\n\tconst pathname = usePathname()\n\tconst searchParams = useSearchParams()\n\tuseEffect(() => {\n\t\t// Do something here...\n\t}, [pathname, searchParams])\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Avoid hydration mismatch with rewrites"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When a page is prerendered, the HTML is generated for its path, such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/hello"
+				},
+				{
+					"type": "text",
+					"value": " for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/blog/[slug]/page.tsx"
+				},
+				{
+					"type": "text",
+					"value": ". If a rewrite in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Proxy"
+				},
+				{
+					"type": "text",
+					"value": " serves that page at a different URL, the browser keeps the URL it requested, and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "usePathname()"
+				},
+				{
+					"type": "text",
+					"value": " reads that browser URL on the client rather than the rewrite destination."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To avoid hydration mismatches, design the UI so that only a small, isolated part depends on the client pathname. Render a stable fallback on the server and update that part after mount. The deferred read shows a brief moment of the fallback before the real pathname appears; see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/preventing-flash-before-hydration",
+					"children": [
+						{
+							"type": "text",
+							"value": "Preventing flash before hydration"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for techniques that eliminate the visible flicker."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/example-client-component.tsx\" switcher",
+			"value": "'use client'\n\nimport { useEffect, useState } from 'react'\nimport { usePathname } from 'next/navigation'\n\nexport default function PathnameBadge() {\n\tconst pathname = usePathname()\n\tconst [clientPathname, setClientPathname] = useState('')\n\n\tuseEffect(() => {\n\t\tsetClientPathname(pathname)\n\t}, [pathname])\n\n\treturn (\n\t\t<p>\n\t\t\tCurrent pathname: <span>{clientPathname}</span>\n\t\t</p>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/example-client-component.js\" switcher",
+			"value": "'use client'\n\nimport { useEffect, useState } from 'react'\nimport { usePathname } from 'next/navigation'\n\nexport default function PathnameBadge() {\n\tconst pathname = usePathname()\n\tconst [clientPathname, setClientPathname] = useState('')\n\n\tuseEffect(() => {\n\t\tsetClientPathname(pathname)\n\t}, [pathname])\n\n\treturn (\n\t\t<p>\n\t\t\tCurrent pathname: <span>{clientPathname}</span>\n\t\t</p>\n\t)\n}"
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "usePathname"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

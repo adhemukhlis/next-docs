@@ -1,0 +1,1390 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to fetch client-side data with TanStack Query\nnav_title: TanStack Query\ndescription: Fetch client-side data with TanStack Query, optionally provide initial data from a Server Component, and coordinate server and client caches.\nrelated:\n description: Related guides and references.\n links:\n  - app/getting-started/fetching-data\n  - app/guides/single-page-applications\n  - app/getting-started/caching\n  - app/api-reference/directives/use-cache\n  - app/api-reference/file-conventions/route\n  - app/api-reference/functions/updateTag"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://tanstack.com/query",
+					"children": [
+						{
+							"type": "text",
+							"value": "TanStack Query"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to fetch data in Client Components, provide initial data from Server Components, and coordinate browser mutations with cached server data. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/client-side-data-fetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client-side data fetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to choose a pattern."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Set up the provider"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Wrap the routes that use TanStack Query in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "QueryClientProvider"
+				},
+				{
+					"type": "text",
+					"value": ". Create a new query client for each server render and reuse one query client in the browser:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/providers.tsx\"",
+			"value": "'use client'\n\nimport type { ReactNode } from 'react'\nimport { QueryClient, QueryClientProvider } from '@tanstack/react-query'\n\nlet browserQueryClient: QueryClient | undefined\n\nfunction getQueryClient() {\n\t// Keep server requests isolated and preserve the browser cache across renders.\n\tif (typeof window === 'undefined') return new QueryClient()\n\tbrowserQueryClient ??= new QueryClient()\n\treturn browserQueryClient\n}\n\nexport function Providers({ children }: { children: ReactNode }) {\n\treturn <QueryClientProvider client={getQueryClient()}>{children}</QueryClientProvider>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Render the provider from the nearest shared layout:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/layout.tsx\"",
+			"value": "import { Providers } from './providers'\n\nexport default function Layout({ children }: LayoutProps<'/products'>) {\n\treturn <Providers>{children}</Providers>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/nextjs/next-spa-patterns/tree/main/app/react-query",
+					"children": [
+						{
+							"type": "text",
+							"value": "complete provider setup in the demo source"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or learn about provider options in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr",
+					"children": [
+						{
+							"type": "text",
+							"value": "TanStack Query Advanced SSR guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Fetch data on the client"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "TanStack Query can fetch entirely in the browser when the initial view can wait for a browser request after hydration. Choose an "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/client-side-data-fetching#choose-a-client-fetching-pattern",
+					"children": [
+						{
+							"type": "text",
+							"value": "inline or Suspense loading state"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " based on where the loading UI should appear. In these examples, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "query"
+				},
+				{
+					"type": "text",
+					"value": " starts empty and updates from client state after hydration."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useQuery"
+				},
+				{
+					"type": "text",
+					"value": " when the component should render its own loading and error states. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "enabled"
+				},
+				{
+					"type": "text",
+					"value": " option delays the request until the interaction provides an input:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/product-autocomplete.tsx\"",
+			"value": "'use client'\n\nimport { useQuery } from '@tanstack/react-query'\n\ntype Product = { id: string; name: string }\n\nasync function searchProducts(query: string): Promise<Product[]> {\n\tconst response = await fetch(`/api/products?query=${encodeURIComponent(query)}`)\n\tif (!response.ok) throw new Error('Failed to fetch products')\n\treturn response.json()\n}\n\nexport function ProductAutocomplete({ query }: { query: string }) {\n\tconst {\n\t\tdata = [],\n\t\terror,\n\t\tisPending,\n\t} = useQuery({\n\t\tqueryKey: ['product-search', query],\n\t\tqueryFn: () => searchProducts(query),\n\t\tenabled: query.length > 0,\n\t})\n\n\tif (!query) return null\n\tif (error) return <p>Failed to load products.</p>\n\tif (isPending) return <p>Loading products...</p>\n\n\treturn (\n\t\t<ul>\n\t\t\t{data.map((product) => (\n\t\t\t\t<li key={product.id}>{product.name}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn more: "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://tanstack.com/query/latest/docs/framework/react/guides/queries",
+					"children": [
+						{
+							"type": "text",
+							"value": "TanStack Query queries"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Use Suspense for client data"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useSuspenseQuery"
+				},
+				{
+					"type": "text",
+					"value": " when the nearest Suspense boundary should define the loading UI. Keep the interactive shell outside the boundary so it remains available while the results load:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/product-autocomplete.tsx\"",
+			"value": "'use client'\n\nimport { useSuspenseQuery } from '@tanstack/react-query'\nimport { Suspense } from 'react'\n\ntype Product = { id: string; name: string }\n\nasync function searchProducts(query: string): Promise<Product[]> {\n\tconst response = await fetch(`/api/products?query=${encodeURIComponent(query)}`)\n\tif (!response.ok) throw new Error('Failed to fetch products')\n\treturn response.json()\n}\n\nexport function ProductAutocomplete({ query }: { query: string }) {\n\tif (!query) return null\n\n\treturn (\n\t\t<Suspense fallback={<p>Loading products...</p>}>\n\t\t\t<ProductResults query={query} />\n\t\t</Suspense>\n\t)\n}\n\nfunction ProductResults({ query }: { query: string }) {\n\tconst { data } = useSuspenseQuery({\n\t\tqueryKey: ['product-search', query],\n\t\tqueryFn: () => searchProducts(query),\n\t})\n\n\treturn (\n\t\t<ul>\n\t\t\t{data.map((product) => (\n\t\t\t\t<li key={product.id}>{product.name}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If the initial request fails, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useSuspenseQuery"
+				},
+				{
+					"type": "text",
+					"value": " propagates the error to the nearest "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/error-handling#nested-error-boundaries",
+					"children": [
+						{
+							"type": "text",
+							"value": "error boundary"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After a query has data, later refetches for the same query keep the cached data rendered instead of showing the Suspense fallback again. Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "isFetching"
+				},
+				{
+					"type": "text",
+					"value": " to provide background refresh feedback."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If the initial view needs the data, provide it from a Server Component as shown below."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Multiple "
+						},
+						{
+							"type": "inlineCode",
+							"value": "useSuspenseQuery"
+						},
+						{
+							"type": "text",
+							"value": " calls in one component run sequentially. Put independent queries in sibling components, or use "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://tanstack.com/query/latest/docs/framework/react/reference/useSuspenseQueries",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "useSuspenseQueries"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ". Learn more about "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://tanstack.com/query/latest/docs/framework/react/guides/request-waterfalls",
+							"children": [
+								{
+									"type": "text",
+									"value": "request waterfalls"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Provide initial data from a Server Component"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/client-side-data-fetching#choose-a-client-fetching-pattern",
+					"children": [
+						{
+							"type": "text",
+							"value": "server-provided data pattern"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when the initial render needs the data and TanStack Query should continue managing it in the browser. A Server Component can provide initial query data before the client takes over."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "TanStack Query 5.40.0 or later can dehydrate pending queries. Start "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetchQuery"
+				},
+				{
+					"type": "text",
+					"value": " without awaiting it, then pass the dehydrated state to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<HydrationBoundary>"
+				},
+				{
+					"type": "text",
+					"value": ". Override "
+				},
+				{
+					"type": "inlineCode",
+					"value": "queryFn"
+				},
+				{
+					"type": "text",
+					"value": " on the server because the Route Handler's relative URL only resolves in the browser:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/[id]/page.tsx\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { defaultShouldDehydrateQuery, dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'\nimport { getProduct } from './data'\nimport { productCache } from './product-cache'\nimport { ProductView } from './product-view'\n\nexport default function Page({ params }: PageProps<'/products/[id]'>) {\n\treturn (\n\t\t<Suspense fallback={<p>Loading…</p>}>\n\t\t\t{params.then(({ id }) => (\n\t\t\t\t<ProductData id={id} />\n\t\t\t))}\n\t\t</Suspense>\n\t)\n}\n\nfunction ProductData({ id }: { id: string }) {\n\tconst queryClient = new QueryClient()\n\n\t// Not awaited, so rendering is not blocked.\n\tvoid queryClient.prefetchQuery({\n\t\t...productCache.options(id),\n\t\tqueryFn: () => getProduct(id),\n\t})\n\n\treturn (\n\t\t<HydrationBoundary\n\t\t\tstate={dehydrate(queryClient, {\n\t\t\t\tshouldDehydrateQuery: (query) => defaultShouldDehydrateQuery(query) || query.state.status === 'pending',\n\t\t\t})}>\n\t\t\t<ProductView id={id} />\n\t\t</HydrationBoundary>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/products/[id]/page.js\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { defaultShouldDehydrateQuery, dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'\nimport { getProduct } from './data'\nimport { productCache } from './product-cache'\nimport { ProductView } from './product-view'\n\nexport default function Page({ params }) {\n\treturn (\n\t\t<Suspense fallback={<p>Loading…</p>}>\n\t\t\t{params.then(({ id }) => (\n\t\t\t\t<ProductData id={id} />\n\t\t\t))}\n\t\t</Suspense>\n\t)\n}\n\nfunction ProductData({ id }) {\n\tconst queryClient = new QueryClient()\n\n\t// Not awaited, so rendering is not blocked.\n\tvoid queryClient.prefetchQuery({\n\t\t...productCache.options(id),\n\t\tqueryFn: () => getProduct(id),\n\t})\n\n\treturn (\n\t\t<HydrationBoundary\n\t\t\tstate={dehydrate(queryClient, {\n\t\t\t\tshouldDehydrateQuery: (query) => defaultShouldDehydrateQuery(query) || query.state.status === 'pending',\n\t\t\t})}>\n\t\t\t<ProductView id={id} />\n\t\t</HydrationBoundary>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The server and Client Component must use the same query key. Keep the key and query options together so both call sites share the same identity:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/products/[id]/product-cache.ts\" switcher",
+			"value": "import { queryOptions } from '@tanstack/react-query'\n\nexport type Product = { id: string; name: string }\n\nexport const productCache = {\n\tkey: (id: string) => ['product', id] as const,\n\toptions: (id: string) =>\n\t\tqueryOptions({\n\t\t\tqueryKey: productCache.key(id),\n\t\t\tqueryFn: async (): Promise<Product> => {\n\t\t\t\tconst res = await fetch(`/api/products/${id}`)\n\t\t\t\tif (!res.ok) throw new Error('Failed to fetch product')\n\t\t\t\treturn res.json()\n\t\t\t},\n\t\t\tstaleTime: 30_000,\n\t\t}),\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/products/[id]/product-cache.js\" switcher",
+			"value": "import { queryOptions } from '@tanstack/react-query'\n\nexport const productCache = {\n\tkey: (id) => ['product', id],\n\toptions: (id) =>\n\t\tqueryOptions({\n\t\t\tqueryKey: productCache.key(id),\n\t\t\tqueryFn: async () => {\n\t\t\t\tconst res = await fetch(`/api/products/${id}`)\n\t\t\t\tif (!res.ok) throw new Error('Failed to fetch product')\n\t\t\t\treturn res.json()\n\t\t\t},\n\t\t\tstaleTime: 30_000,\n\t\t}),\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The query function fetches a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " so it can run on the client. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "staleTime"
+				},
+				{
+					"type": "text",
+					"value": " prevents an immediate client refetch by keeping the hydrated data fresh for 30 seconds. Choose a duration based on how quickly the data can change."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Larger features can place query options in a separate client-facing module as long as every caller imports the key from the same cache contract. Learn more about "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://tanstack.com/query/latest/docs/framework/react/guides/important-defaults",
+					"children": [
+						{
+							"type": "text",
+							"value": "TanStack Query defaults"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "As with SWR, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params.then()"
+				},
+				{
+					"type": "text",
+					"value": " resolves the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "id"
+				},
+				{
+					"type": "text",
+					"value": " inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ProductData"
+				},
+				{
+					"type": "text",
+					"value": " prefetches below the boundary."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The Client Component reads the same query key with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useSuspenseQuery"
+				},
+				{
+					"type": "text",
+					"value": " (or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useQuery"
+				},
+				{
+					"type": "text",
+					"value": " to render "
+				},
+				{
+					"type": "inlineCode",
+					"value": "isPending"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "error"
+				},
+				{
+					"type": "text",
+					"value": " states inline):"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/[id]/product-view.tsx\" switcher",
+			"value": "'use client'\n\nimport { useSuspenseQuery } from '@tanstack/react-query'\nimport { productCache } from './product-cache'\n\nexport function ProductView({ id }: { id: string }) {\n\tconst { data } = useSuspenseQuery(productCache.options(id))\n\n\treturn <h1>{data.name}</h1>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/products/[id]/product-view.js\" switcher",
+			"value": "'use client'\n\nimport { useSuspenseQuery } from '@tanstack/react-query'\nimport { productCache } from './product-cache'\n\nexport function ProductView({ id }) {\n\tconst { data } = useSuspenseQuery(productCache.options(id))\n\n\treturn <h1>{data.name}</h1>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn more: "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr",
+					"children": [
+						{
+							"type": "text",
+							"value": "TanStack Query Advanced SSR"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache server-provided data with Cache Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Enable "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": " before using this pattern. You can then cache the server data provided to TanStack Query. Add "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", choose a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " profile, and apply "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " so mutations can invalidate it:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/products/[id]/data.ts\" switcher",
+			"value": "import { cacheLife, cacheTag } from 'next/cache'\nimport type { Product } from './product-cache'\n\nexport async function getProduct(id: string): Promise<Product> {\n\t'use cache'\n\tcacheLife('max')\n\tcacheTag(`product:${id}`)\n\n\tconst product = await db.product.findUnique({ where: { id } })\n\tif (!product) throw new Error('Product not found')\n\treturn product\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/products/[id]/data.js\" switcher",
+			"value": "import { cacheLife, cacheTag } from 'next/cache'\n\nexport async function getProduct(id) {\n\t'use cache'\n\tcacheLife('max')\n\tcacheTag(`product:${id}`)\n\n\tconst product = await db.product.findUnique({ where: { id } })\n\tif (!product) throw new Error('Product not found')\n\treturn product\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This example uses "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife('max')"
+				},
+				{
+					"type": "text",
+					"value": " because writes invalidate the product tag. Within the cache profile, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "stale"
+				},
+				{
+					"type": "text",
+					"value": " controls how long the Next.js client cache can reuse a prefetched payload, while "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "expire"
+				},
+				{
+					"type": "text",
+					"value": " control the server cache. Choose a shorter profile when the server value should refresh with time."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "TanStack Query owns a separate browser cache, so its "
+				},
+				{
+					"type": "inlineCode",
+					"value": "staleTime"
+				},
+				{
+					"type": "text",
+					"value": " does not need to match "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With Cache Components enabled, Next.js also prerenders Client Components. Keep a query needed during the initial render behind "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/fetching-data#streaming",
+					"children": [
+						{
+							"type": "text",
+							"value": "Suspense"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". TanStack Query can read the current time while creating active query state, and the boundary lets Next.js defer that work instead of raising a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/blocking-prerender-current-time-client",
+					"children": [
+						{
+							"type": "text",
+							"value": "current-time prerender error"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When the same mutation updates the browser cache and invalidates cached server data, you may define both identities in one shared contract:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "diff",
+			"meta": "filename=\"app/products/[id]/product-cache.ts\" switcher",
+			"value": " export const productCache = {\n   key: (id: string) => ['product', id] as const,\n+  tag: (id: string) => `product:${id}`,\n   // ...\n }"
+		},
+		{
+			"type": "code",
+			"lang": "diff",
+			"meta": "filename=\"app/products/[id]/product-cache.js\" switcher",
+			"value": " export const productCache = {\n   key: (id) => ['product', id],\n+  tag: (id) => `product:${id}`,\n   // ...\n }"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The server function can then call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheTag(productCache.tag(id))"
+				},
+				{
+					"type": "text",
+					"value": ". Keep this contract free of server-only and client-only imports so both cache layers can reuse it."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " TanStack Query's "
+						},
+						{
+							"type": "inlineCode",
+							"value": "dehydrate()"
+						},
+						{
+							"type": "text",
+							"value": " reads the current time during Cache Components prerendering. Use the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "#build-a-prerenderable-hydration-state",
+							"children": [
+								{
+									"type": "text",
+									"value": "prerenderable hydration helper"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for cached initial data."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Coordinate server and client caches after mutations"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Hydration provides the initial client cache value. After hydration, TanStack Query owns the browser copy and its revalidation. For reused data, keep the query key and server tag in the same cache contract:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/activity/activity-cache.ts\" switcher",
+			"value": "export const activityCache = {\n\tkey: ['activity', 'unread'] as const,\n\ttag: (userId: string) => `activity:${userId}`,\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/activity/activity-cache.js\" switcher",
+			"value": "export const activityCache = {\n\tkey: ['activity', 'unread'],\n\ttag: (userId) => `activity:${userId}`,\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "On mutation, use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useMutation"
+				},
+				{
+					"type": "text",
+					"value": "'s "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://tanstack.com/query/latest/docs/framework/react/guides/optimistic-updates",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "onMutate"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " callback to update the cache immediately and restore the previous value in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "onError"
+				},
+				{
+					"type": "text",
+					"value": " if the write fails. This example keeps the optimistic value after the action succeeds because the final value is known:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/activity/mark-read-button.tsx\" switcher",
+			"value": "'use client'\n\nimport { useMutation, useQueryClient } from '@tanstack/react-query'\nimport { markActivityReadAction } from './actions'\nimport { activityCache } from './activity-cache'\n\nexport function MarkReadButton() {\n\tconst queryClient = useQueryClient()\n\tconst queryKey = activityCache.key\n\n\tconst markRead = useMutation({\n\t\tmutationFn: markActivityReadAction,\n\t\tonMutate: async () => {\n\t\t\tawait queryClient.cancelQueries({ queryKey })\n\t\t\tconst previous = queryClient.getQueryData(queryKey)\n\t\t\tqueryClient.setQueryData(queryKey, { count: 0 })\n\t\t\treturn { previous }\n\t\t},\n\t\tonError: (_error, _variables, context) => {\n\t\t\tqueryClient.setQueryData(queryKey, context?.previous)\n\t\t},\n\t})\n\n\treturn <button onClick={() => markRead.mutate()}>Mark read</button>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/activity/mark-read-button.js\" switcher",
+			"value": "'use client'\n\nimport { useMutation, useQueryClient } from '@tanstack/react-query'\nimport { markActivityReadAction } from './actions'\nimport { activityCache } from './activity-cache'\n\nexport function MarkReadButton() {\n\tconst queryClient = useQueryClient()\n\tconst queryKey = activityCache.key\n\n\tconst markRead = useMutation({\n\t\tmutationFn: markActivityReadAction,\n\t\tonMutate: async () => {\n\t\t\tawait queryClient.cancelQueries({ queryKey })\n\t\t\tconst previous = queryClient.getQueryData(queryKey)\n\t\t\tqueryClient.setQueryData(queryKey, { count: 0 })\n\t\t\treturn { previous }\n\t\t},\n\t\tonError: (_error, _variables, context) => {\n\t\t\tqueryClient.setQueryData(queryKey, context?.previous)\n\t\t},\n\t})\n\n\treturn <button onClick={() => markRead.mutate()}>Mark read</button>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The Server Action writes to the database and expires the tagged server data with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/updateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "updateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Tag the cached server query with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " so the tag matches:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/activity/actions.ts\" switcher",
+			"value": "'use server'\n\nimport { updateTag } from 'next/cache'\nimport { getCurrentUserId, markActivityRead as markActivityReadInDatabase } from './data'\nimport { activityCache } from './activity-cache'\n\nexport async function markActivityReadAction() {\n\tconst userId = await getCurrentUserId()\n\tawait markActivityReadInDatabase(userId)\n\tupdateTag(activityCache.tag(userId))\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/activity/actions.js\" switcher",
+			"value": "'use server'\n\nimport { updateTag } from 'next/cache'\nimport { getCurrentUserId, markActivityRead as markActivityReadInDatabase } from './data'\nimport { activityCache } from './activity-cache'\n\nexport async function markActivityReadAction() {\n\tconst userId = await getCurrentUserId()\n\tawait markActivityReadInDatabase(userId)\n\tupdateTag(activityCache.tag(userId))\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The optimistic query value updates the current screen. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "updateTag"
+				},
+				{
+					"type": "text",
+					"value": " ensures the next cached server read returns fresh activity."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Call "
+						},
+						{
+							"type": "inlineCode",
+							"value": "updateTag"
+						},
+						{
+							"type": "text",
+							"value": " when a Server Action changes a cached read that must reflect the write immediately. An uncached read does not have a server tag to update. See "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/client-side-data-fetching#coordinate-mutations",
+							"children": [
+								{
+									"type": "text",
+									"value": "Client-side data fetching"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for other invalidation behaviors."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Build a prerenderable hydration state"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The TanStack Query pattern above uses "
+				},
+				{
+					"type": "inlineCode",
+					"value": "dehydrate()"
+				},
+				{
+					"type": "text",
+					"value": " to create the hydration state. With Cache Components, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "dehydrate()"
+				},
+				{
+					"type": "text",
+					"value": " reads the current time ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "Date.now()"
+				},
+				{
+					"type": "text",
+					"value": ") while prerendering and causes a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/blocking-prerender-current-time",
+					"children": [
+						{
+							"type": "text",
+							"value": "current-time prerender error"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Instead, cache only that timestamp and build the dehydrated state by hand. Wrap the time read in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with the same tags as the data reads. When a mutation invalidates those tags, the data and its timestamp advance together, so "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<HydrationBoundary>"
+				},
+				{
+					"type": "text",
+					"value": " overwrites the client query on the next navigation:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/lib/hydrate.ts\" switcher",
+			"value": "import 'server-only'\n\nimport { cacheLife, cacheTag } from 'next/cache'\nimport { defaultShouldDehydrateQuery, QueryClient, type DehydratedState, type QueryKey } from '@tanstack/react-query'\n\ntype HydratedQuery = {\n\tqueryKey: QueryKey\n\tdata: unknown\n}\n\ntype HydrationOptions = {\n\ttags: string[]\n}\n\nasync function getHydrationUpdatedAt(tags: string[]) {\n\t'use cache'\n\tcacheTag(...tags)\n\tcacheLife('max')\n\treturn Date.now()\n}\n\nexport async function dehydrate(queries: HydratedQuery[], options: HydrationOptions): Promise<DehydratedState> {\n\tconst updatedAt = await getHydrationUpdatedAt(options.tags)\n\n\tconst queryClient = new QueryClient()\n\n\tfor (const query of queries) {\n\t\tqueryClient.setQueryData(query.queryKey, query.data, { updatedAt })\n\t}\n\n\treturn {\n\t\tmutations: [],\n\t\tqueries: queryClient\n\t\t\t.getQueryCache()\n\t\t\t.getAll()\n\t\t\t.filter((query) => defaultShouldDehydrateQuery(query))\n\t\t\t.map((query) => ({\n\t\t\t\tdehydratedAt: updatedAt,\n\t\t\t\tqueryHash: query.queryHash,\n\t\t\t\tqueryKey: query.queryKey,\n\t\t\t\tstate: query.state,\n\t\t\t\t...(query.meta ? { meta: query.meta } : {}),\n\t\t\t})),\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/lib/hydrate.js\" switcher",
+			"value": "import 'server-only'\n\nimport { cacheLife, cacheTag } from 'next/cache'\nimport { defaultShouldDehydrateQuery, QueryClient } from '@tanstack/react-query'\n\nasync function getHydrationUpdatedAt(tags) {\n\t'use cache'\n\tcacheTag(...tags)\n\tcacheLife('max')\n\treturn Date.now()\n}\n\nexport async function dehydrate(queries, options) {\n\tconst updatedAt = await getHydrationUpdatedAt(options.tags)\n\n\tconst queryClient = new QueryClient()\n\n\tfor (const query of queries) {\n\t\tqueryClient.setQueryData(query.queryKey, query.data, { updatedAt })\n\t}\n\n\treturn {\n\t\tmutations: [],\n\t\tqueries: queryClient\n\t\t\t.getQueryCache()\n\t\t\t.getAll()\n\t\t\t.filter((query) => defaultShouldDehydrateQuery(query))\n\t\t\t.map((query) => ({\n\t\t\t\tdehydratedAt: updatedAt,\n\t\t\t\tqueryHash: query.queryHash,\n\t\t\t\tqueryKey: query.queryKey,\n\t\t\t\tstate: query.state,\n\t\t\t\t...(query.meta ? { meta: query.meta } : {}),\n\t\t\t})),\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Await the helper in the segment that owns the data, passing the data and the same tags used on the underlying "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getProduct"
+				},
+				{
+					"type": "text",
+					"value": " read. Hand the result to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<HydrationBoundary>"
+				},
+				{
+					"type": "text",
+					"value": " inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ProductData"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/[id]/page.tsx\" switcher",
+			"value": "import { HydrationBoundary } from '@tanstack/react-query'\nimport { dehydrate } from '@/app/lib/hydrate'\nimport { getProduct } from './data'\nimport { productCache } from './product-cache'\nimport { ProductView } from './product-view'\n\nasync function ProductData({ id }: { id: string }) {\n\tconst product = await getProduct(id)\n\tconst state = await dehydrate([{ queryKey: productCache.key(id), data: product }], { tags: [productCache.tag(id)] })\n\n\treturn (\n\t\t<HydrationBoundary state={state}>\n\t\t\t<ProductView id={id} />\n\t\t</HydrationBoundary>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/products/[id]/page.js\" switcher",
+			"value": "import { HydrationBoundary } from '@tanstack/react-query'\nimport { dehydrate } from '@/app/lib/hydrate'\nimport { getProduct } from './data'\nimport { productCache } from './product-cache'\nimport { ProductView } from './product-view'\n\nasync function ProductData({ id }) {\n\tconst product = await getProduct(id)\n\tconst state = await dehydrate([{ queryKey: productCache.key(id), data: product }], { tags: [productCache.tag(id)] })\n\n\treturn (\n\t\t<HydrationBoundary state={state}>\n\t\t\t<ProductView id={id} />\n\t\t</HydrationBoundary>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " The timestamp must advance whenever the hydrated data changes. The helper suits tag-driven server data because both use the same tags. For time-driven server data, derive the data and hydration timestamp from the same cached snapshot instead of maintaining unrelated time windows."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://next-spa-patterns.labs.vercel.dev/react-query",
+					"children": [
+						{
+							"type": "text",
+							"value": "live "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next-spa-patterns"
+						},
+						{
+							"type": "text",
+							"value": " demo"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and its "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/nextjs/next-spa-patterns/tree/main/app/react-query",
+					"children": [
+						{
+							"type": "text",
+							"value": "source code"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Learn more about "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://tanstack.com/query/latest/docs/framework/react/guides/optimistic-updates",
+					"children": [
+						{
+							"type": "text",
+							"value": "TanStack Query optimistic updates"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://tanstack.com/query/latest/docs/framework/react/overview",
+					"children": [
+						{
+							"type": "text",
+							"value": "TanStack Query documentation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,3194 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to migrate from Create React App to Next.js\nnav_title: Create React App\ndescription: Learn how to migrate your existing React application from Create React App to Next.js."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This guide will help you migrate an existing Create React App (CRA) site to Next.js."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Why Switch?"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There are several reasons why you might want to switch from Create React App to Next.js:"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Slow initial page loading time"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Create React App uses purely client-side rendering. Client-side only applications, also known as "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/single-page-applications",
+					"children": [
+						{
+							"type": "text",
+							"value": "single-page applications (SPAs)"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", often experience slow initial page loading time. This happens due to a couple of reasons:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The browser needs to wait for the React code and your entire application bundle to download and run before your code is able to send requests to load data."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Your application code grows with every new feature and dependency you add."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "No automatic code splitting"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The previous issue of slow loading times can be somewhat mitigated with code splitting. However, if you try to do code splitting manually, you can inadvertently introduce network waterfalls. Next.js provides automatic code splitting and tree-shaking built into its router and build pipeline."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Network waterfalls"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A common cause of poor performance occurs when applications make sequential client-server requests to fetch data. One pattern for data fetching in a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/single-page-applications",
+					"children": [
+						{
+							"type": "text",
+							"value": "SPA"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is to render a placeholder, and then fetch data after the component has mounted. Unfortunately, a child component can only begin fetching data after its parent has finished loading its own data, resulting in a “waterfall” of requests."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "While client-side data fetching is supported in Next.js, Next.js also lets you move data fetching to the server. This often eliminates client-server waterfalls altogether."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Fast and intentional loading states"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With built-in support for "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/linking-and-navigating#streaming",
+					"children": [
+						{
+							"type": "text",
+							"value": "streaming through React Suspense"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", you can define which parts of your UI load first and in what order, without creating network waterfalls."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This enables you to build pages that are faster to load and eliminate "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://vercel.com/blog/how-core-web-vitals-affect-seo",
+					"children": [
+						{
+							"type": "text",
+							"value": "layout shifts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Choose the data fetching strategy"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Depending on your needs, Next.js allows you to choose your data fetching strategy on a page or component-level basis. For example, you could fetch data from your CMS and render blog posts at build time (SSG) for quick load speeds, or fetch data at request time (SSR) when necessary."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Proxy"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/proxy",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js Proxy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " allows you to run code on the server before a request is completed. For instance, you can avoid a flash of unauthenticated content by redirecting a user to a login page in the proxy for authenticated-only pages. You can also use it for features like A/B testing, experimentation, and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/internationalization",
+					"children": [
+						{
+							"type": "text",
+							"value": "internationalization"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Built-in Optimizations"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image",
+					"children": [
+						{
+							"type": "text",
+							"value": "Images"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/font",
+					"children": [
+						{
+							"type": "text",
+							"value": "fonts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/scripts",
+					"children": [
+						{
+							"type": "text",
+							"value": "third-party scripts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " often have a large impact on an application’s performance. Next.js includes specialized components and APIs that automatically optimize them for you."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Migration Steps"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Our goal is to get a working Next.js application as quickly as possible so that you can then adopt Next.js features incrementally. To begin with, we’ll treat your application as a purely client-side application ("
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/single-page-applications",
+					"children": [
+						{
+							"type": "text",
+							"value": "SPA"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ") without immediately replacing your existing router. This reduces complexity and merge conflicts."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Note"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": If you are using advanced CRA configurations such as a custom "
+						},
+						{
+							"type": "inlineCode",
+							"value": "homepage"
+						},
+						{
+							"type": "text",
+							"value": " field in your "
+						},
+						{
+							"type": "inlineCode",
+							"value": "package.json"
+						},
+						{
+							"type": "text",
+							"value": ", a custom service worker, or specific Babel/webpack tweaks, please see the "
+						},
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Additional Considerations"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " section at the end of this guide for tips on replicating or adapting these features in Next.js."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 1: Install the Next.js Dependency"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Install Next.js in your existing project:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add next@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install next@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add next@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add next@latest"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 2: Create the Next.js Configuration File"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Create a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": " at the root of your project (same level as your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "package.json"
+				},
+				{
+					"type": "text",
+					"value": "). This file holds your "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js configuration options"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n  output: 'export', // Outputs a Single-Page Application (SPA)\n  distDir: 'build', // Changes the build output directory to `build`\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Note"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Using "
+						},
+						{
+							"type": "inlineCode",
+							"value": "output: 'export'"
+						},
+						{
+							"type": "text",
+							"value": " means you’re doing a static export. You will "
+						},
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "not"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " have access to server-side features like SSR or APIs. You can remove this line to leverage Next.js server features."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 3: Create the Root Layout"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A Next.js "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app",
+					"children": [
+						{
+							"type": "text",
+							"value": "App Router"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " application must include a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout#root-layout",
+					"children": [
+						{
+							"type": "text",
+							"value": "root layout"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " file, which is a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "React Server Component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " that will wrap all your pages."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The closest equivalent of the root layout file in a CRA application is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "public/index.html"
+				},
+				{
+					"type": "text",
+					"value": ", which includes your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<html>"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<head>"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<body>"
+				},
+				{
+					"type": "text",
+					"value": " tags."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Create a new "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": " directory inside your "
+								},
+								{
+									"type": "inlineCode",
+									"value": "src"
+								},
+								{
+									"type": "text",
+									"value": " folder (or at your project root if you prefer "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": " at the root)."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Inside the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": " directory, create a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "layout.tsx"
+								},
+								{
+									"type": "text",
+									"value": " (or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "layout.js"
+								},
+								{
+									"type": "text",
+									"value": ") file:"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "export default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn '...'\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "export default function RootLayout({ children }) {\n\treturn '...'\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Now copy the content of your old "
+				},
+				{
+					"type": "inlineCode",
+					"value": "index.html"
+				},
+				{
+					"type": "text",
+					"value": " into this "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<RootLayout>"
+				},
+				{
+					"type": "text",
+					"value": " component. Replace "
+				},
+				{
+					"type": "inlineCode",
+					"value": "body div#root"
+				},
+				{
+					"type": "text",
+					"value": " (and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "body noscript"
+				},
+				{
+					"type": "text",
+					"value": ") with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<div id=\"root\">{children}</div>"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "export default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<head>\n\t\t\t\t<meta charSet=\"UTF-8\" />\n\t\t\t\t<link\n\t\t\t\t\trel=\"icon\"\n\t\t\t\t\thref=\"%PUBLIC_URL%/favicon.ico\"\n\t\t\t\t/>\n\t\t\t\t<meta\n\t\t\t\t\tname=\"viewport\"\n\t\t\t\t\tcontent=\"width=device-width, initial-scale=1\"\n\t\t\t\t/>\n\t\t\t\t<title>React App</title>\n\t\t\t\t<meta\n\t\t\t\t\tname=\"description\"\n\t\t\t\t\tcontent=\"Web site created...\"\n\t\t\t\t/>\n\t\t\t</head>\n\t\t\t<body>\n\t\t\t\t<div id=\"root\">{children}</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "export default function RootLayout({ children }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<head>\n\t\t\t\t<meta charset=\"UTF-8\" />\n\t\t\t\t<link\n\t\t\t\t\trel=\"icon\"\n\t\t\t\t\thref=\"%PUBLIC_URL%/favicon.ico\"\n\t\t\t\t/>\n\t\t\t\t<meta\n\t\t\t\t\tname=\"viewport\"\n\t\t\t\t\tcontent=\"width=device-width, initial-scale=1\"\n\t\t\t\t/>\n\t\t\t\t<title>React App</title>\n\t\t\t\t<meta\n\t\t\t\t\tname=\"description\"\n\t\t\t\t\tcontent=\"Web site created...\"\n\t\t\t\t/>\n\t\t\t</head>\n\t\t\t<body>\n\t\t\t\t<div id=\"root\">{children}</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Next.js ignores CRA’s "
+						},
+						{
+							"type": "inlineCode",
+							"value": "public/manifest.json"
+						},
+						{
+							"type": "text",
+							"value": ", additional iconography, and "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/testing",
+							"children": [
+								{
+									"type": "text",
+									"value": "testing configuration"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " by default. If you need these, Next.js has support with its "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/getting-started/metadata-and-og-images",
+							"children": [
+								{
+									"type": "text",
+									"value": "Metadata API"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " and "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/testing",
+							"children": [
+								{
+									"type": "text",
+									"value": "Testing"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " setup."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 4: Metadata"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js automatically includes the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<meta charset=\"UTF-8\" />"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />"
+				},
+				{
+					"type": "text",
+					"value": " tags, so you can remove them from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<head>"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "export default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<head>\n\t\t\t\t<link\n\t\t\t\t\trel=\"icon\"\n\t\t\t\t\thref=\"%PUBLIC_URL%/favicon.ico\"\n\t\t\t\t/>\n\t\t\t\t<title>React App</title>\n\t\t\t\t<meta\n\t\t\t\t\tname=\"description\"\n\t\t\t\t\tcontent=\"Web site created...\"\n\t\t\t\t/>\n\t\t\t</head>\n\t\t\t<body>\n\t\t\t\t<div id=\"root\">{children}</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "export default function RootLayout({ children }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<head>\n\t\t\t\t<link\n\t\t\t\t\trel=\"icon\"\n\t\t\t\t\thref=\"%PUBLIC_URL%/favicon.ico\"\n\t\t\t\t/>\n\t\t\t\t<title>React App</title>\n\t\t\t\t<meta\n\t\t\t\t\tname=\"description\"\n\t\t\t\t\tcontent=\"Web site created...\"\n\t\t\t\t/>\n\t\t\t</head>\n\t\t\t<body>\n\t\t\t\t<div id=\"root\">{children}</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Any "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/metadata-and-og-images#file-based-metadata",
+					"children": [
+						{
+							"type": "text",
+							"value": "metadata files"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "favicon.ico"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "icon.png"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "robots.txt"
+				},
+				{
+					"type": "text",
+					"value": " are automatically added to the application "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<head>"
+				},
+				{
+					"type": "text",
+					"value": " tag as long as you have them placed into the top level of the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory. After moving "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/metadata-and-og-images#file-based-metadata",
+					"children": [
+						{
+							"type": "text",
+							"value": "all supported files"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " into the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory you can safely delete their "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<link>"
+				},
+				{
+					"type": "text",
+					"value": " tags:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "export default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<head>\n\t\t\t\t<title>React App</title>\n\t\t\t\t<meta\n\t\t\t\t\tname=\"description\"\n\t\t\t\t\tcontent=\"Web site created...\"\n\t\t\t\t/>\n\t\t\t</head>\n\t\t\t<body>\n\t\t\t\t<div id=\"root\">{children}</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "export default function RootLayout({ children }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<head>\n\t\t\t\t<title>React App</title>\n\t\t\t\t<meta\n\t\t\t\t\tname=\"description\"\n\t\t\t\t\tcontent=\"Web site created...\"\n\t\t\t\t/>\n\t\t\t</head>\n\t\t\t<body>\n\t\t\t\t<div id=\"root\">{children}</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Finally, Next.js can manage your last "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<head>"
+				},
+				{
+					"type": "text",
+					"value": " tags with the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/metadata-and-og-images",
+					"children": [
+						{
+							"type": "text",
+							"value": "Metadata API"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Move your final metadata info into an exported "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-metadata#metadata-object",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "metadata"
+						},
+						{
+							"type": "text",
+							"value": " object"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import type { Metadata } from 'next'\n\nexport const metadata: Metadata = {\n\ttitle: 'React App',\n\tdescription: 'Web site created with Next.js.',\n}\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<body>\n\t\t\t\t<div id=\"root\">{children}</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "export const metadata = {\n\ttitle: 'React App',\n\tdescription: 'Web site created with Next.js.',\n}\n\nexport default function RootLayout({ children }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<body>\n\t\t\t\t<div id=\"root\">{children}</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With the above changes, you shifted from declaring everything in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "index.html"
+				},
+				{
+					"type": "text",
+					"value": " to using Next.js' convention-based approach built into the framework ("
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/metadata-and-og-images",
+					"children": [
+						{
+							"type": "text",
+							"value": "Metadata API"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "). This approach enables you to more easily improve your SEO and web shareability of your pages."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 5: Styles"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Like CRA, Next.js supports "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/css#css-modules",
+					"children": [
+						{
+							"type": "text",
+							"value": "CSS Modules"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " out of the box. It also supports "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/css#global-css",
+					"children": [
+						{
+							"type": "text",
+							"value": "global CSS imports"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you have a global CSS file, import it into your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/layout.tsx"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import '../index.css'\n\nexport const metadata = {\n\ttitle: 'React App',\n\tdescription: 'Web site created with Next.js.',\n}\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<body>\n\t\t\t\t<div id=\"root\">{children}</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you're using Tailwind CSS, see our "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/css#tailwind-css",
+					"children": [
+						{
+							"type": "text",
+							"value": "installation docs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 6: Create the Entrypoint Page"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Create React App uses "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src/index.tsx"
+				},
+				{
+					"type": "text",
+					"value": " (or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "index.js"
+				},
+				{
+					"type": "text",
+					"value": ") as the entry point. In Next.js (App Router), each folder inside the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory corresponds to a route, and each folder should have a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.tsx"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since we want to keep the app as an SPA for now and intercept "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "all"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " routes, we’ll use an "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/dynamic-routes#optional-catch-all-segments",
+					"children": [
+						{
+							"type": "text",
+							"value": "optional catch-all route"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Create a "
+										},
+										{
+											"type": "inlineCode",
+											"value": "[[...slug]]"
+										},
+										{
+											"type": "text",
+											"value": " directory inside "
+										},
+										{
+											"type": "inlineCode",
+											"value": "app"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": null,
+			"value": "app\n ┣ [[...slug]]\n ┃ ┗ page.tsx\n ┣ layout.tsx"
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 2,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Add the following to "
+										},
+										{
+											"type": "inlineCode",
+											"value": "page.tsx"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ":"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/[[...slug]]/page.tsx\" switcher",
+			"value": "export function generateStaticParams() {\n\treturn [{ slug: [''] }]\n}\n\nexport default function Page() {\n\treturn '...' // We'll update this\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/[[...slug]]/page.js\" switcher",
+			"value": "export function generateStaticParams() {\n\treturn [{ slug: [''] }]\n}\n\nexport default function Page() {\n\treturn '...' // We'll update this\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This tells Next.js to generate a single route for the empty slug ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "/"
+				},
+				{
+					"type": "text",
+					"value": "), effectively mapping "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "all"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " routes to the same page. This page is a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", prerendered into static HTML."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 7: Add a Client-Only Entrypoint"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next, we’ll embed your CRA’s root App component inside a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client Component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " so that all logic remains client-side. If this is your first time using Next.js, it's worth knowing that Client Components (by default) are still prerendered on the server. You can think about them as having the additional capability of running client-side JavaScript."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Create a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "client.tsx"
+				},
+				{
+					"type": "text",
+					"value": " (or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "client.js"
+				},
+				{
+					"type": "text",
+					"value": ") in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/[[...slug]]/"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/[[...slug]]/client.tsx\" switcher",
+			"value": "'use client'\n\nimport dynamic from 'next/dynamic'\n\nconst App = dynamic(() => import('../../App'), { ssr: false })\n\nexport function ClientOnly() {\n\treturn <App />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/[[...slug]]/client.js\" switcher",
+			"value": "'use client'\n\nimport dynamic from 'next/dynamic'\n\nconst App = dynamic(() => import('../../App'), { ssr: false })\n\nexport function ClientOnly() {\n\treturn <App />\n}"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'use client'"
+								},
+								{
+									"type": "text",
+									"value": " directive makes this file a "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Client Component"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "inlineCode",
+									"value": "dynamic"
+								},
+								{
+									"type": "text",
+									"value": " import with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "ssr: false"
+								},
+								{
+									"type": "text",
+									"value": " disables server-side rendering for the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<App />"
+								},
+								{
+									"type": "text",
+									"value": " component, making it truly client-only (SPA)."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Now update your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.tsx"
+				},
+				{
+					"type": "text",
+					"value": " (or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.js"
+				},
+				{
+					"type": "text",
+					"value": ") to use your new component:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/[[...slug]]/page.tsx\" switcher",
+			"value": "import { ClientOnly } from './client'\n\nexport function generateStaticParams() {\n\treturn [{ slug: [''] }]\n}\n\nexport default function Page() {\n\treturn <ClientOnly />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/[[...slug]]/page.js\" switcher",
+			"value": "import { ClientOnly } from './client'\n\nexport function generateStaticParams() {\n\treturn [{ slug: [''] }]\n}\n\nexport default function Page() {\n\treturn <ClientOnly />\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 8: Update Static Image Imports"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In CRA, importing an image file returns its public URL as a string:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "import image from './img.png'\n\nexport default function App() {\n\treturn <img src={image} />\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With Next.js, static image imports return an object. The object can then be used directly with the Next.js "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Image>"
+						},
+						{
+							"type": "text",
+							"value": " component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", or you can use the object's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " property with your existing "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<img>"
+				},
+				{
+					"type": "text",
+					"value": " tag."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Image>"
+				},
+				{
+					"type": "text",
+					"value": " component has the added benefits of "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image",
+					"children": [
+						{
+							"type": "text",
+							"value": "automatic image optimization"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Image>"
+				},
+				{
+					"type": "text",
+					"value": " component automatically sets the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "width"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "height"
+				},
+				{
+					"type": "text",
+					"value": " attributes of the resulting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<img>"
+				},
+				{
+					"type": "text",
+					"value": " based on the image's dimensions. This prevents layout shifts when the image loads. However, this can cause issues if your app contains images with only one of their dimensions being styled without the other styled to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "auto"
+				},
+				{
+					"type": "text",
+					"value": ". When not styled to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "auto"
+				},
+				{
+					"type": "text",
+					"value": ", the dimension will default to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<img>"
+				},
+				{
+					"type": "text",
+					"value": " dimension attribute's value, which can cause the image to appear distorted."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Keeping the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<img>"
+				},
+				{
+					"type": "text",
+					"value": " tag will reduce the amount of changes in your application and prevent the above issues. You can then optionally later migrate to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Image>"
+				},
+				{
+					"type": "text",
+					"value": " component to take advantage of optimizing images by "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image#loader",
+					"children": [
+						{
+							"type": "text",
+							"value": "configuring a loader"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", or moving to the default Next.js server which has automatic image optimization."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Convert absolute import paths for images imported from "
+						},
+						{
+							"type": "inlineCode",
+							"value": "/public"
+						},
+						{
+							"type": "text",
+							"value": " into relative imports:"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "// Before\nimport logo from '/logo.png'\n\n// After\nimport logo from '../public/logo.png'"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Pass the image "
+						},
+						{
+							"type": "inlineCode",
+							"value": "src"
+						},
+						{
+							"type": "text",
+							"value": " property instead of the whole image object to your "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<img>"
+						},
+						{
+							"type": "text",
+							"value": " tag:"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "// Before\n<img src={logo} />\n\n// After\n<img src={logo.src} />"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Alternatively, you can reference the public URL for the image asset based on the filename. For example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "public/logo.png"
+				},
+				{
+					"type": "text",
+					"value": " will serve the image at "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/logo.png"
+				},
+				{
+					"type": "text",
+					"value": " for your application, which would be the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " value."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Warning:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " If you're using TypeScript, you might encounter type errors when accessing the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "src"
+						},
+						{
+							"type": "text",
+							"value": " property. To fix them, you need to add "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next-env.d.ts"
+						},
+						{
+							"type": "text",
+							"value": " to the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://www.typescriptlang.org/tsconfig#include",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "include"
+								},
+								{
+									"type": "text",
+									"value": " array"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " of your "
+						},
+						{
+							"type": "inlineCode",
+							"value": "tsconfig.json"
+						},
+						{
+							"type": "text",
+							"value": " file. Next.js will automatically generate this file when you run your application on step 9."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 9: Migrate Environment Variables"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js supports "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/environment-variables",
+					"children": [
+						{
+							"type": "text",
+							"value": "environment variables"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " similarly to CRA but "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "requires"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NEXT_PUBLIC_"
+				},
+				{
+					"type": "text",
+					"value": " prefix for any variable you want to expose in the browser."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The main difference is the prefix used to expose environment variables on the client-side. Change all environment variables with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "REACT_APP_"
+				},
+				{
+					"type": "text",
+					"value": " prefix to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NEXT_PUBLIC_"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 10: Update Scripts in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "package.json"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Update your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "package.json"
+				},
+				{
+					"type": "text",
+					"value": " scripts to use Next.js commands. Also, add "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next-env.d.ts"
+				},
+				{
+					"type": "text",
+					"value": " to your "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".gitignore"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"package.json\"",
+			"value": "{\n\t\"scripts\": {\n\t\t\"dev\": \"next dev\",\n\t\t\"build\": \"next build\",\n\t\t\"start\": \"npx serve@latest ./build\"\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "txt",
+			"meta": "filename=\".gitignore\"",
+			"value": "# ...\n.next\nnext-env.d.ts"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Now you can run:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm dev"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm run dev"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn dev"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun dev"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Open "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "http://localhost:3000",
+					"children": [
+						{
+							"type": "text",
+							"value": "http://localhost:3000"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". You should see your application now running on Next.js (in SPA mode)."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 11: Clean Up"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can now remove artifacts that are specific to Create React App:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "public/index.html"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "src/index.tsx"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "src/react-app-env.d.ts"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "inlineCode",
+									"value": "reportWebVitals"
+								},
+								{
+									"type": "text",
+									"value": " setup"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "inlineCode",
+									"value": "react-scripts"
+								},
+								{
+									"type": "text",
+									"value": " dependency (uninstall it from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "package.json"
+								},
+								{
+									"type": "text",
+									"value": ")"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Additional Considerations"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using a Custom "
+				},
+				{
+					"type": "inlineCode",
+					"value": "homepage"
+				},
+				{
+					"type": "text",
+					"value": " in CRA"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you used the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "homepage"
+				},
+				{
+					"type": "text",
+					"value": " field in your CRA "
+				},
+				{
+					"type": "inlineCode",
+					"value": "package.json"
+				},
+				{
+					"type": "text",
+					"value": " to serve the app under a specific subpath, you can replicate that in Next.js using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/basePath",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "basePath"
+						},
+						{
+							"type": "text",
+							"value": " configuration"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tbasePath: '/my-subpath',\n\t// ...\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Handling a Custom "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Service Worker"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you used CRA’s service worker (e.g., "
+				},
+				{
+					"type": "inlineCode",
+					"value": "serviceWorker.js"
+				},
+				{
+					"type": "text",
+					"value": " from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "create-react-app"
+				},
+				{
+					"type": "text",
+					"value": "), you can register this service worker using the following syntax:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "await navigator.serviceWorker.register(new URL('../serviceWorker.js', import.meta.url), ...)"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn more about how to create "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/progressive-web-apps",
+					"children": [
+						{
+							"type": "text",
+							"value": "Progressive Web Applications (PWAs)"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with Next.js."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Proxying API Requests"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If your CRA app used the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "proxy"
+				},
+				{
+					"type": "text",
+					"value": " field in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "package.json"
+				},
+				{
+					"type": "text",
+					"value": " to forward requests to a backend server, you can replicate this with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/rewrites",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js rewrites"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tasync rewrites() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/api/:path*',\n\t\t\t\tdestination: 'https://your-backend.com/:path*',\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Custom Webpack"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you had a custom webpack or Babel configuration in CRA, you can extend Next.js’s config in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\twebpack: (config, { isServer }) => {\n\t\t// Modify the webpack config here\n\t\treturn config\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Note"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": This will require using Webpack by adding "
+						},
+						{
+							"type": "inlineCode",
+							"value": "--webpack"
+						},
+						{
+							"type": "text",
+							"value": " to your "
+						},
+						{
+							"type": "inlineCode",
+							"value": "dev"
+						},
+						{
+							"type": "text",
+							"value": " script."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "TypeScript Setup"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js automatically sets up TypeScript if you have a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tsconfig.json"
+				},
+				{
+					"type": "text",
+					"value": ". Make sure "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next-env.d.ts"
+				},
+				{
+					"type": "text",
+					"value": " is listed in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tsconfig.json"
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "inlineCode",
+					"value": "include"
+				},
+				{
+					"type": "text",
+					"value": " array:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": null,
+			"value": "{\n\t\"include\": [\"next-env.d.ts\", \"app/**/*\", \"src/**/*\"]\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Bundler Compatibility"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Create React App uses webpack for bundling. Next.js now defaults to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/turbopack",
+					"children": [
+						{
+							"type": "text",
+							"value": "Turbopack"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for faster local development:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": null,
+			"value": "next dev  # Uses Turbopack by default"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use Webpack instead (similar to CRA):"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": null,
+			"value": "next dev --webpack"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can still provide a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/webpack",
+					"children": [
+						{
+							"type": "text",
+							"value": "custom webpack configuration"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " if you need to migrate advanced webpack settings from CRA."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Next Steps"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If everything worked, you now have a functioning Next.js application running as a single-page application. You aren’t yet leveraging Next.js features like server-side rendering or file-based routing, but you can now do so incrementally:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Migrate from React Router"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app",
+									"children": [
+										{
+											"type": "text",
+											"value": "Next.js App Router"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for:"
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Automatic code splitting"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "link",
+													"title": null,
+													"url": "/docs/app/api-reference/file-conventions/loading",
+													"children": [
+														{
+															"type": "text",
+															"value": "Streaming server rendering"
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "link",
+													"title": null,
+													"url": "/docs/app/getting-started/server-and-client-components",
+													"children": [
+														{
+															"type": "text",
+															"value": "React Server Components"
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Optimize images"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " with the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/components/image",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "<Image>"
+										},
+										{
+											"type": "text",
+											"value": " component"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Optimize fonts"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " with "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/components/font",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "next/font"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Optimize third-party scripts"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " with the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/scripts",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "<Script>"
+										},
+										{
+											"type": "text",
+											"value": " component"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Enable ESLint"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " with Next.js "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/eslint#setup-eslint",
+									"children": [
+										{
+											"type": "text",
+											"value": "recommended rules"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Note"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Using a static export ("
+						},
+						{
+							"type": "inlineCode",
+							"value": "output: 'export'"
+						},
+						{
+							"type": "text",
+							"value": ") "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://github.com/vercel/next.js/issues/54393",
+							"children": [
+								{
+									"type": "text",
+									"value": "does not currently support"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "useParams"
+						},
+						{
+							"type": "text",
+							"value": " hook or other server features. To use all Next.js features, remove "
+						},
+						{
+							"type": "inlineCode",
+							"value": "output: 'export'"
+						},
+						{
+							"type": "text",
+							"value": " from your "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next.config.ts"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		}
+	]
+}

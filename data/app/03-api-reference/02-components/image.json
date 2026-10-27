@@ -1,0 +1,8102 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Image Component\ndescription: Optimize Images in your Next.js Application using the built-in `next/image` Component."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The Next.js Image component extends the HTML "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<img>"
+				},
+				{
+					"type": "text",
+					"value": " element for automatic image optimization."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\"",
+			"value": "import Image from 'next/image'\n\nexport default function Page() {\n\treturn (\n\t\t<Image\n\t\t\tsrc=\"/profile.png\"\n\t\t\twidth={500}\n\t\t\theight={500}\n\t\t\talt=\"Picture of the author\"\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Props"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The following props are available:"
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "<div style={{ overflowX: 'auto', width: '100%' }}>\n| Prop                                      | Example                                  | Type            | Status     |\n| ----------------------------------------- | ---------------------------------------- | --------------- | ---------- |\n| [`src`](#src)                             | `src=\"/profile.png\"`                     | String          | Required   |\n| [`alt`](#alt)                             | `alt=\"Picture of the author\"`            | String          | Required   |\n| [`width`](#width-and-height)                         | `width={500}`                            | Integer (px)    | -   |\n| [`height`](#width-and-height)                       | `height={500}`                           | Integer (px)    | -   |\n| [`fill`](#fill)                           | `fill={true}`                            | Boolean         | -          |\n| [`loader`](#loader)                       | `loader={imageLoader}`                   | Function        | -          |\n| [`sizes`](#sizes)                         | `sizes=\"(max-width: 768px) 100vw, 33vw\"` | String          | -          |\n| [`quality`](#quality)                     | `quality={80}`                           | Integer (1-100) | -          |\n| [`preload`](#preload)                     | `preload={true}`                         | Boolean         | -          |\n| [`placeholder`](#placeholder)             | `placeholder=\"blur\"`                     | String          | -          |\n| [`style`](#style)                         | `style={{objectFit: \"contain\"}}`         | Object          | -          |\n| [`onLoadingComplete`](#onloadingcomplete) | `onLoadingComplete={img => done())}`     | Function        | Deprecated |\n| [`onLoad`](#onload)                       | `onLoad={event => done())}`              | Function        | -          |\n| [`onError`](#onerror)                     | `onError(event => fail()}`               | Function        | -          |\n| [`loading`](#loading)                     | `loading=\"lazy\"`                         | String          | -          |\n| [`blurDataURL`](#blurdataurl)             | `blurDataURL=\"data:image/jpeg...\"`       | String          | -          |\n| [`unoptimized`](#unoptimized)             | `unoptimized={true}`                     | Boolean         | -          |\n| [`overrideSrc`](#overridesrc)             | `overrideSrc=\"/seo.png\"`                 | String          | -          |\n| [`decoding`](#decoding)                   | `decoding=\"async\"`                       | String          | -          |\n</div>"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "src"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The source of the image. Can be one of the following:"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "An internal path string."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "<Image src=\"/profile.png\" />"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "An absolute external URL (must be configured with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#remotepatterns",
+					"children": [
+						{
+							"type": "text",
+							"value": "remotePatterns"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ")."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "<Image src=\"https://example.com/profile.png\" />"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A static import."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "import profile from './profile.png'\n\nexport default function Page() {\n\treturn <Image src={profile} />\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": For security reasons, the Image Optimization API using the default "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "#loader",
+							"children": [
+								{
+									"type": "text",
+									"value": "loader"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " will "
+						},
+						{
+							"type": "emphasis",
+							"children": [
+								{
+									"type": "text",
+									"value": "not"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " forward headers when fetching the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "src"
+						},
+						{
+							"type": "text",
+							"value": " image. If the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "src"
+						},
+						{
+							"type": "text",
+							"value": " image requires authentication, consider using the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "#unoptimized",
+							"children": [
+								{
+									"type": "text",
+									"value": "unoptimized"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " property to disable Image Optimization."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "alt"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "alt"
+				},
+				{
+					"type": "text",
+					"value": " property is used to describe the image for screen readers and search engines. It is also the fallback text if images have been disabled or an error occurs while loading the image."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "It should contain text that could replace the image "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://html.spec.whatwg.org/multipage/images.html#general-guidelines",
+					"children": [
+						{
+							"type": "text",
+							"value": "without changing the meaning of the page"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". It is not meant to supplement the image and should not repeat information that is already provided in the captions above or below the image."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If the image is "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://html.spec.whatwg.org/multipage/images.html#a-purely-decorative-image-that-doesn't-add-any-information",
+					"children": [
+						{
+							"type": "text",
+							"value": "purely decorative"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://html.spec.whatwg.org/multipage/images.html#an-image-not-intended-for-the-user",
+					"children": [
+						{
+							"type": "text",
+							"value": "not intended for the user"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "alt"
+				},
+				{
+					"type": "text",
+					"value": " property should be an empty string ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "alt=\"\""
+				},
+				{
+					"type": "text",
+					"value": ")."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Learn more about "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://html.spec.whatwg.org/multipage/images.html#alt",
+							"children": [
+								{
+									"type": "text",
+									"value": "image accessibility guidelines"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "width"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "height"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "width"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "height"
+				},
+				{
+					"type": "text",
+					"value": " properties represent the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Glossary/Intrinsic_Size",
+					"children": [
+						{
+							"type": "text",
+							"value": "intrinsic"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " image size in pixels. This property is used to infer the correct "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "aspect ratio"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " used by browsers to reserve space for the image and avoid layout shift during loading. It does not determine the "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "rendered size"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " of the image, which is controlled by CSS."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "<Image\n\tsrc=\"/profile.png\"\n\twidth={500}\n\theight={500}\n/>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "must"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " set both "
+				},
+				{
+					"type": "inlineCode",
+					"value": "width"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "height"
+				},
+				{
+					"type": "text",
+					"value": " properties unless:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The image is statically imported."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The image has the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#fill",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "fill"
+										},
+										{
+											"type": "text",
+											"value": " property"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If the height and width are unknown, we recommend using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#fill",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "fill"
+						},
+						{
+							"type": "text",
+							"value": " property"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "fill"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A boolean that causes the image to expand to the size of the parent element."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "<Image\n\tsrc=\"/profile.png\"\n\tfill={true}\n/>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Positioning"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The parent element "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "must"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " assign "
+								},
+								{
+									"type": "inlineCode",
+									"value": "position: \"relative\""
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"fixed\""
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"absolute\""
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "By default, the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<img>"
+								},
+								{
+									"type": "text",
+									"value": " element uses "
+								},
+								{
+									"type": "inlineCode",
+									"value": "position: \"absolute\""
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Object Fit"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If no styles are applied to the image, the image will stretch to fit the container. You can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "objectFit"
+				},
+				{
+					"type": "text",
+					"value": " to control cropping and scaling."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "\"contain\""
+								},
+								{
+									"type": "text",
+									"value": ": The image will be scaled down to fit the container and preserve aspect ratio."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "\"cover\""
+								},
+								{
+									"type": "text",
+									"value": ": The image will fill the container and be cropped."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Learn more about "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/position",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "position"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " and "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://developer.mozilla.org/docs/Web/CSS/object-fit",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "object-fit"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "loader"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A custom function used to generate the image URL. The function receives the following parameters, and returns a URL string for the image:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#src",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "src"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#width-and-height",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "width"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#quality",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "quality"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "'use client'\n\nimport Image from 'next/image'\n\nconst imageLoader = ({ src, width, quality }) => {\n\treturn `https://example.com/${src}?w=${width}&q=${quality || 75}`\n}\n\nexport default function Page() {\n\treturn (\n\t\t<Image\n\t\t\tloader={imageLoader}\n\t\t\tsrc=\"me.png\"\n\t\t\talt=\"Picture of the author\"\n\t\t\twidth={500}\n\t\t\theight={500}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Using props like "
+						},
+						{
+							"type": "inlineCode",
+							"value": "onLoad"
+						},
+						{
+							"type": "text",
+							"value": ", which accept a function, requires using "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://react.dev/reference/rsc/use-client",
+							"children": [
+								{
+									"type": "text",
+									"value": "Client Components"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " to serialize the provided function."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Alternatively, you can use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#loaderfile",
+					"children": [
+						{
+							"type": "text",
+							"value": "loaderFile"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " configuration in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " to configure every instance of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/image"
+				},
+				{
+					"type": "text",
+					"value": " in your application, without passing a prop."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "sizes"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Define the sizes of the image at different breakpoints. Used by the browser to choose the most appropriate size from the generated "
+				},
+				{
+					"type": "inlineCode",
+					"value": "srcset"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "import Image from 'next/image'\n\nexport default function Page() {\n\treturn (\n\t\t<div className=\"grid-element\">\n\t\t\t<Image\n\t\t\t\tfill\n\t\t\t\tsrc=\"/example.png\"\n\t\t\t\tsizes=\"(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw\"\n\t\t\t/>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "sizes"
+				},
+				{
+					"type": "text",
+					"value": " should be used when:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The image is using the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#fill",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "fill"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " prop"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "CSS is used to make the image responsive"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If "
+				},
+				{
+					"type": "inlineCode",
+					"value": "sizes"
+				},
+				{
+					"type": "text",
+					"value": " is missing, the browser assumes the image will be as wide as the viewport ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "100vw"
+				},
+				{
+					"type": "text",
+					"value": "). This can cause unnecessarily large images to be downloaded."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In addition, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "sizes"
+				},
+				{
+					"type": "text",
+					"value": " affects how "
+				},
+				{
+					"type": "inlineCode",
+					"value": "srcset"
+				},
+				{
+					"type": "text",
+					"value": " is generated:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Without "
+								},
+								{
+									"type": "inlineCode",
+									"value": "sizes"
+								},
+								{
+									"type": "text",
+									"value": ", on an image with a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "width"
+								},
+								{
+									"type": "text",
+									"value": ": Next.js generates a limited "
+								},
+								{
+									"type": "inlineCode",
+									"value": "srcset"
+								},
+								{
+									"type": "text",
+									"value": " (e.g. 1x, 2x), suitable for fixed-size images."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Without "
+								},
+								{
+									"type": "inlineCode",
+									"value": "sizes"
+								},
+								{
+									"type": "text",
+									"value": ", on a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fill"
+								},
+								{
+									"type": "text",
+									"value": " image: Next.js generates a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "srcset"
+								},
+								{
+									"type": "text",
+									"value": " from "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#devicesizes",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "deviceSizes"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " only, as if the image spans the full viewport."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "With "
+								},
+								{
+									"type": "inlineCode",
+									"value": "sizes"
+								},
+								{
+									"type": "text",
+									"value": ": Next.js generates a full "
+								},
+								{
+									"type": "inlineCode",
+									"value": "srcset"
+								},
+								{
+									"type": "text",
+									"value": " (e.g. 640w, 750w, etc.), optimized for responsive layouts."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Learn more about "
+						},
+						{
+							"type": "inlineCode",
+							"value": "srcset"
+						},
+						{
+							"type": "text",
+							"value": " and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "sizes"
+						},
+						{
+							"type": "text",
+							"value": " on "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://web.dev/learn/design/responsive-images/#sizes",
+							"children": [
+								{
+									"type": "text",
+									"value": "web.dev"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " and "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://developer.mozilla.org/docs/Web/HTML/Element/img#sizes",
+							"children": [
+								{
+									"type": "text",
+									"value": "mdn"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "quality"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "An integer between "
+				},
+				{
+					"type": "inlineCode",
+					"value": "1"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "100"
+				},
+				{
+					"type": "text",
+					"value": " that sets the quality of the optimized image. Higher values increase file size and visual fidelity. Lower values reduce file size but may affect sharpness."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "// Default quality is 75\n<Image quality={75} />"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you’ve configured "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#qualities",
+					"children": [
+						{
+							"type": "text",
+							"value": "qualities"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ", a value outside that list is coerced to the closest allowed entry. For example, with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "qualities: [50, 75, 100]"
+				},
+				{
+					"type": "text",
+					"value": ", a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "quality"
+				},
+				{
+					"type": "text",
+					"value": " of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "80"
+				},
+				{
+					"type": "text",
+					"value": " is served as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "75"
+				},
+				{
+					"type": "text",
+					"value": ". Development logs a warning so you can add the value to the allowlist."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": If the original image is already low quality, setting a high quality value will increase the file size without improving appearance."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "style"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Allows passing CSS styles to the underlying image element."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "const imageStyle = {\n\tborderRadius: '50%',\n\tborder: '1px solid #fff',\n\twidth: '100px',\n\theight: 'auto',\n}\n\nexport default function ProfileImage() {\n\treturn (\n\t\t<Image\n\t\t\tsrc=\"...\"\n\t\t\tstyle={imageStyle}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": If you’re using the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "style"
+						},
+						{
+							"type": "text",
+							"value": " prop to set a custom width, be sure to also set "
+						},
+						{
+							"type": "inlineCode",
+							"value": "height: 'auto'"
+						},
+						{
+							"type": "text",
+							"value": " to preserve the image’s aspect ratio."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "preload"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A boolean that indicates if the image should be preloaded."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "// Default preload is false\n<Image preload={false} />"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://web.dev/preload-responsive-images/",
+									"children": [
+										{
+											"type": "text",
+											"value": "Preloads"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " the image by inserting a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<link>"
+								},
+								{
+									"type": "text",
+									"value": " in the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<head>"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": ": Does not preload the image."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "When to use it:"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The image is the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://nextjs.org/learn/seo/web-performance/lcp",
+									"children": [
+										{
+											"type": "text",
+											"value": "Largest Contentful Paint (LCP)"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " element."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The image is above the fold, typically the hero image."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "You want to begin loading the image in the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<head>"
+								},
+								{
+									"type": "text",
+									"value": ", before its discovered later in the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<body>"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "When not to use it:"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "When you have multiple images that could be considered the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://nextjs.org/learn/seo/web-performance/lcp",
+									"children": [
+										{
+											"type": "text",
+											"value": "Largest Contentful Paint (LCP)"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " element depending on the viewport."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "When the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "loading"
+								},
+								{
+									"type": "text",
+									"value": " property is used."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "When the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetchPriority"
+								},
+								{
+									"type": "text",
+									"value": " property is used."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In most cases, you should use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading=\"eager\""
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetchPriority=\"high\""
+				},
+				{
+					"type": "text",
+					"value": " instead of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "preload"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "priority"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Starting with Next.js 16, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "priority"
+				},
+				{
+					"type": "text",
+					"value": " property has been deprecated in favor of the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#preload",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "preload"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " property in order to make the behavior clear."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "loading"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Controls when the image should start loading."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "// Defaults to lazy\n<Image loading=\"lazy\" />"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "lazy"
+								},
+								{
+									"type": "text",
+									"value": ": Defer loading the image until it reaches a calculated distance from the viewport."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "eager"
+								},
+								{
+									"type": "text",
+									"value": ": Load the image immediately, regardless of its position in the page."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "eager"
+				},
+				{
+					"type": "text",
+					"value": " only when you want to ensure the image is loaded immediately."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Learn more about the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://developer.mozilla.org/docs/Web/HTML/Element/img#loading",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "loading"
+								},
+								{
+									"type": "text",
+									"value": " attribute"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "placeholder"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Specifies a placeholder to use while the image is loading, improving the perceived loading performance."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "// defaults to empty\n<Image placeholder=\"empty\" />"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "empty"
+								},
+								{
+									"type": "text",
+									"value": ": No placeholder while the image is loading."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "blur"
+								},
+								{
+									"type": "text",
+									"value": ": Use a blurred version of the image as a placeholder. Must be used with the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#blurdataurl",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "blurDataURL"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " property."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "data:image/..."
+								},
+								{
+									"type": "text",
+									"value": ": Uses the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/docs/Web/HTTP/Basics_of_HTTP/Data_URIs",
+									"children": [
+										{
+											"type": "text",
+											"value": "Data URL"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " as the placeholder."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Examples:"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://image-component.nextjs.gallery/placeholder",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "blur"
+										},
+										{
+											"type": "text",
+											"value": " placeholder"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://image-component.nextjs.gallery/shimmer",
+									"children": [
+										{
+											"type": "text",
+											"value": "Shimmer effect with data URL "
+										},
+										{
+											"type": "inlineCode",
+											"value": "placeholder"
+										},
+										{
+											"type": "text",
+											"value": " prop"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://image-component.nextjs.gallery/color",
+									"children": [
+										{
+											"type": "text",
+											"value": "Color effect with "
+										},
+										{
+											"type": "inlineCode",
+											"value": "blurDataURL"
+										},
+										{
+											"type": "text",
+											"value": " prop"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Learn more about the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://developer.mozilla.org/docs/Web/HTML/Element/img#placeholder",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "placeholder"
+								},
+								{
+									"type": "text",
+									"value": " attribute"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "blurDataURL"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/HTTP/Basics_of_HTTP/Data_URIs",
+					"children": [
+						{
+							"type": "text",
+							"value": "Data URL"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to be used as a placeholder image before the image successfully loads. Can be automatically set or used with the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#placeholder",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "placeholder=\"blur\""
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " property."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "<Image\n\tplaceholder=\"blur\"\n\tblurDataURL=\"...\"\n/>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The image is automatically enlarged and blurred, so a very small image (10px or less) is recommended."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Automatic"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " is a static import of a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "jpg"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "png"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "webp"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "avif"
+				},
+				{
+					"type": "text",
+					"value": " file, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "blurDataURL"
+				},
+				{
+					"type": "text",
+					"value": " is added automatically—unless the image is animated."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Manually set"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If the image is dynamic or remote, you must provide "
+				},
+				{
+					"type": "inlineCode",
+					"value": "blurDataURL"
+				},
+				{
+					"type": "text",
+					"value": " yourself. To generate one, you can use:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://png-pixel.com",
+									"children": [
+										{
+											"type": "text",
+											"value": "A online tool like png-pixel.com"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/joe-bell/plaiceholder",
+									"children": [
+										{
+											"type": "text",
+											"value": "A library like Plaiceholder"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A large blurDataURL may hurt performance. Keep it small and simple."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Examples:"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://image-component.nextjs.gallery/placeholder",
+									"children": [
+										{
+											"type": "text",
+											"value": "Default "
+										},
+										{
+											"type": "inlineCode",
+											"value": "blurDataURL"
+										},
+										{
+											"type": "text",
+											"value": " prop"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://image-component.nextjs.gallery/color",
+									"children": [
+										{
+											"type": "text",
+											"value": "Color effect with "
+										},
+										{
+											"type": "inlineCode",
+											"value": "blurDataURL"
+										},
+										{
+											"type": "text",
+											"value": " prop"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "onLoad"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A callback function that is invoked once the image is completely loaded and the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#placeholder",
+					"children": [
+						{
+							"type": "text",
+							"value": "placeholder"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " has been removed."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "<Image onLoad={(e) => console.log(e.target.naturalWidth)} />"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The callback function will be called with one argument, the event which has a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "target"
+				},
+				{
+					"type": "text",
+					"value": " that references the underlying "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<img>"
+				},
+				{
+					"type": "text",
+					"value": " element."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Using props like "
+						},
+						{
+							"type": "inlineCode",
+							"value": "onLoad"
+						},
+						{
+							"type": "text",
+							"value": ", which accept a function, requires using "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://react.dev/reference/rsc/use-client",
+							"children": [
+								{
+									"type": "text",
+									"value": "Client Components"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " to serialize the provided function."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "onError"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A callback function that is invoked if the image fails to load."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "<Image onError={(e) => console.error(e.target.id)} />"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Using props like "
+						},
+						{
+							"type": "inlineCode",
+							"value": "onError"
+						},
+						{
+							"type": "text",
+							"value": ", which accept a function, requires using "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://react.dev/reference/rsc/use-client",
+							"children": [
+								{
+									"type": "text",
+									"value": "Client Components"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " to serialize the provided function."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "unoptimized"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A boolean that indicates if the image should be optimized. This is useful for images that do not benefit from optimization such as small images (less than 1KB), vector images (SVG), or animated images (GIF)."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "import Image from 'next/image'\n\nconst UnoptimizedImage = (props) => {\n\t// Default is false\n\treturn (\n\t\t<Image\n\t\t\t{...props}\n\t\t\tunoptimized\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": ": The source image will be served as-is from the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "src"
+								},
+								{
+									"type": "text",
+									"value": " instead of changing quality, size, or format."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": ": The source image will be optimized."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since Next.js 12.3.0, this prop can be assigned to all images by updating "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " with the following configuration:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tunoptimized: true,\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "overrideSrc"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When providing the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " prop to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Image>"
+				},
+				{
+					"type": "text",
+					"value": " component, both the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "srcset"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " attributes are generated automatically for the resulting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<img>"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"input.js\"",
+			"value": "<Image src=\"/profile.jpg\" />"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"output.html\"",
+			"value": "<img\n\tsrcset=\"/_next/image?url=%2Fprofile.jpg&w=640&q=75 1x, /_next/image?url=%2Fprofile.jpg&w=828&q=75 2x\"\n\tsrc=\"/_next/image?url=%2Fprofile.jpg&w=828&q=75\" />"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In some cases, it is not desirable to have the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " attribute generated and you may wish to override it using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "overrideSrc"
+				},
+				{
+					"type": "text",
+					"value": " prop."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, when upgrading an existing website from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<img>"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Image>"
+				},
+				{
+					"type": "text",
+					"value": ", you may wish to maintain the same "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " attribute for SEO purposes such as image ranking or avoiding recrawl."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"input.js\"",
+			"value": "<Image\n\tsrc=\"/profile.jpg\"\n\toverrideSrc=\"/override.jpg\"\n/>"
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": "filename=\"output.html\"",
+			"value": "<img\n\tsrcset=\"/_next/image?url=%2Fprofile.jpg&w=640&q=75 1x, /_next/image?url=%2Fprofile.jpg&w=828&q=75 2x\"\n\tsrc=\"/override.jpg\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "decoding"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A hint to the browser indicating if it should wait for the image to be decoded before presenting other content updates or not."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "// Default is async\n<Image decoding=\"async\" />"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "async"
+								},
+								{
+									"type": "text",
+									"value": ": Asynchronously decode the image and allow other content to be rendered before it completes."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "sync"
+								},
+								{
+									"type": "text",
+									"value": ": Synchronously decode the image for atomic presentation with other content."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "auto"
+								},
+								{
+									"type": "text",
+									"value": ": No preference. The browser chooses the best approach."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Learn more about the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://developer.mozilla.org/docs/Web/HTML/Element/img#decoding",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "decoding"
+								},
+								{
+									"type": "text",
+									"value": " attribute"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Other Props"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Other properties on the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Image />"
+				},
+				{
+					"type": "text",
+					"value": " component will be passed to the underlying "
+				},
+				{
+					"type": "inlineCode",
+					"value": "img"
+				},
+				{
+					"type": "text",
+					"value": " element with the exception of the following:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "srcSet"
+								},
+								{
+									"type": "text",
+									"value": ": Use "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#devicesizes",
+									"children": [
+										{
+											"type": "text",
+											"value": "Device Sizes"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " instead."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Deprecated props"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "onLoadingComplete"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Warning"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Deprecated in Next.js 14, use "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "#onload",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "onLoad"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " instead."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A callback function that is invoked once the image is completely loaded and the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#placeholder",
+					"children": [
+						{
+							"type": "text",
+							"value": "placeholder"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " has been removed."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The callback function will be called with one argument, a reference to the underlying "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<img>"
+				},
+				{
+					"type": "text",
+					"value": " element."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "'use client'\n\n<Image onLoadingComplete={(img) => console.log(img.naturalWidth)} />"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Using props like "
+						},
+						{
+							"type": "inlineCode",
+							"value": "onLoadingComplete"
+						},
+						{
+							"type": "text",
+							"value": ", which accept a function, requires using "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://react.dev/reference/rsc/use-client",
+							"children": [
+								{
+									"type": "text",
+									"value": "Client Components"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " to serialize the provided function."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Configuration options"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can configure the Image Component in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ". The following options are available:"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "localPatterns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "localPatterns"
+				},
+				{
+					"type": "text",
+					"value": " in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file to allow images from specific local paths to be optimized and block all others."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tlocalPatterns: [\n\t\t\t{\n\t\t\t\tpathname: '/assets/images/**',\n\t\t\t\tsearch: '',\n\t\t\t},\n\t\t],\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The example above will ensure the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " property of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/image"
+				},
+				{
+					"type": "text",
+					"value": " must start with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/assets/images/"
+				},
+				{
+					"type": "text",
+					"value": " and must not have a query string. Attempting to optimize any other path will respond with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "400"
+				},
+				{
+					"type": "text",
+					"value": " Bad Request error."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Omitting the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "search"
+						},
+						{
+							"type": "text",
+							"value": " property allows all search parameters which could allow malicious actors to optimize URLs you did not intend. Try using a specific value like "
+						},
+						{
+							"type": "inlineCode",
+							"value": "search: '?v=2'"
+						},
+						{
+							"type": "text",
+							"value": " to ensure an exact match."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "remotePatterns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "remotePatterns"
+				},
+				{
+					"type": "text",
+					"value": " in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file to allow images from specific external paths and block all others. This ensures that only external images from your account can be served."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tremotePatterns: [new URL('https://example.com/account123/**')],\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also configure "
+				},
+				{
+					"type": "inlineCode",
+					"value": "remotePatterns"
+				},
+				{
+					"type": "text",
+					"value": " using the object:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tremotePatterns: [\n\t\t\t{\n\t\t\t\tprotocol: 'https',\n\t\t\t\thostname: 'example.com',\n\t\t\t\tport: '',\n\t\t\t\tpathname: '/account123/**',\n\t\t\t\tsearch: '',\n\t\t\t},\n\t\t],\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The example above will ensure the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " property of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/image"
+				},
+				{
+					"type": "text",
+					"value": " must start with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "https://example.com/account123/"
+				},
+				{
+					"type": "text",
+					"value": " and must not have a query string. Any other protocol, hostname, port, or unmatched path will respond with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "400"
+				},
+				{
+					"type": "text",
+					"value": " Bad Request."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Wildcard Patterns:"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Wildcard patterns can be used for both "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pathname"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "hostname"
+				},
+				{
+					"type": "text",
+					"value": " and have the following syntax:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "*"
+								},
+								{
+									"type": "text",
+									"value": " match a single path segment or subdomain"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "**"
+								},
+								{
+									"type": "text",
+									"value": " match any number of path segments at the end or subdomains at the beginning. This syntax does not work in the middle of the pattern."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tremotePatterns: [\n\t\t\t{\n\t\t\t\tprotocol: 'https',\n\t\t\t\thostname: '**.example.com',\n\t\t\t\tport: '',\n\t\t\t\tsearch: '',\n\t\t\t},\n\t\t],\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This allows subdomains like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "image.example.com"
+				},
+				{
+					"type": "text",
+					"value": ". Query strings and custom ports are still blocked."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": When omitting "
+						},
+						{
+							"type": "inlineCode",
+							"value": "protocol"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": "port"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": "pathname"
+						},
+						{
+							"type": "text",
+							"value": ", or "
+						},
+						{
+							"type": "inlineCode",
+							"value": "search"
+						},
+						{
+							"type": "text",
+							"value": " then the wildcard "
+						},
+						{
+							"type": "inlineCode",
+							"value": "**"
+						},
+						{
+							"type": "text",
+							"value": " is implied. This is not recommended because it may allow malicious actors to optimize urls you did not intend."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Query Strings"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also restrict query strings using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "search"
+				},
+				{
+					"type": "text",
+					"value": " property:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tremotePatterns: [\n\t\t\t{\n\t\t\t\tprotocol: 'https',\n\t\t\t\thostname: 'assets.example.com',\n\t\t\t\tsearch: '?v=1727111025337',\n\t\t\t},\n\t\t],\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The example above will ensure the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " property of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/image"
+				},
+				{
+					"type": "text",
+					"value": " must start with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "https://assets.example.com"
+				},
+				{
+					"type": "text",
+					"value": " and must have the exact query string "
+				},
+				{
+					"type": "inlineCode",
+					"value": "?v=1727111025337"
+				},
+				{
+					"type": "text",
+					"value": ". Any other protocol or query string will respond with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "400"
+				},
+				{
+					"type": "text",
+					"value": " Bad Request."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Note that any allowed "
+				},
+				{
+					"type": "inlineCode",
+					"value": "remotePatterns"
+				},
+				{
+					"type": "text",
+					"value": " that respond with a redirect will follow the redirect from the remote image server without validating "
+				},
+				{
+					"type": "inlineCode",
+					"value": "remotePatterns"
+				},
+				{
+					"type": "text",
+					"value": " again on the redirect location. You can reduce or disable redirects by configuring "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#maximumredirects",
+					"children": [
+						{
+							"type": "text",
+							"value": "maximumRedirects"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "loaderFile"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "loaderFile"
+				},
+				{
+					"type": "text",
+					"value": " allows you to use a custom image optimization service instead of Next.js."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tloader: 'custom',\n\t\tloaderFile: './my/image/loader.js',\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The path must be relative to the project root. The file must export a default function that returns a URL string:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"my/image/loader.js\"",
+			"value": "'use client'\n\nexport default function myImageLoader({ src, width, quality }) {\n\treturn `https://example.com/${src}?w=${width}&q=${quality || 75}`\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Example:"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/images#example-loader-configuration",
+									"children": [
+										{
+											"type": "text",
+											"value": "Custom Image Loader Configuration"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Alternatively, you can use the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "#loader",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "loader"
+								},
+								{
+									"type": "text",
+									"value": " prop"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " to configure each instance of "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next/image"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "path"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you want to change or prefix the default path for the Image Optimization API, you can do so with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "path"
+				},
+				{
+					"type": "text",
+					"value": " property. The default value for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "path"
+				},
+				{
+					"type": "text",
+					"value": " is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/_next/image"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tpath: '/my-prefix/_next/image',\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "deviceSizes"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "deviceSizes"
+				},
+				{
+					"type": "text",
+					"value": " allows you to specify a list of device width breakpoints. These widths are used when the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/image"
+				},
+				{
+					"type": "text",
+					"value": " component uses the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#sizes",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "sizes"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " prop, or the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#fill",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "fill"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " prop without "
+				},
+				{
+					"type": "inlineCode",
+					"value": "sizes"
+				},
+				{
+					"type": "text",
+					"value": ", to ensure the correct image is served for the user's device."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If no configuration is provided, the default below is used:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tdeviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "imageSizes"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "imageSizes"
+				},
+				{
+					"type": "text",
+					"value": " allows you to specify a list of image widths. These widths are concatenated with the array of "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#devicesizes",
+					"children": [
+						{
+							"type": "text",
+							"value": "device sizes"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to form the full array of sizes used to generate image "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/HTMLImageElement/srcset",
+					"children": [
+						{
+							"type": "text",
+							"value": "srcset"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If no configuration is provided, the default below is used:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\timageSizes: [32, 48, 64, 96, 128, 256, 384],\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "imageSizes"
+				},
+				{
+					"type": "text",
+					"value": " is only used for images which provide a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#sizes",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "sizes"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " prop, which indicates that the image is less than the full width of the screen. Therefore, the sizes in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "imageSizes"
+				},
+				{
+					"type": "text",
+					"value": " should all be smaller than the smallest size in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "deviceSizes"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "qualities"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "qualities"
+				},
+				{
+					"type": "text",
+					"value": " allows you to specify a list of image quality values."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If not configuration is provided, the default below is used:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tqualities: [75],\n\t},\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": This field is required starting with Next.js 16 because unrestricted access could allow malicious actors to optimize more qualities than you intended."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can add more image qualities to the allowlist, such as the following:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tqualities: [25, 50, 75, 100],\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the example above, only four qualities are allowed: 25, 50, 75, and 100."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#quality",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "quality"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " prop does not match a value in this array, the closest allowed value will be used."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If the REST API is visited directly with a quality that does not match a value in this array, the server will return a 400 Bad Request response."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "formats"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "formats"
+				},
+				{
+					"type": "text",
+					"value": " allows you to specify a list of image formats to be used."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\t// Default\n\t\tformats: ['image/webp'],\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js automatically detects the browser's supported image formats via the request's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Accept"
+				},
+				{
+					"type": "text",
+					"value": " header in order to determine the best output format."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Accept"
+				},
+				{
+					"type": "text",
+					"value": " header matches more than one of the configured formats, the first match in the array is used. Therefore, the array order matters. If there is no match (or the source image is animated), it will use the original image's format."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can enable AVIF support, which will fallback to the original format of the src image if the browser "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://caniuse.com/avif",
+					"children": [
+						{
+							"type": "text",
+							"value": "does not support AVIF"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tformats: ['image/avif'],\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also enable both AVIF and WebP formats together. AVIF will be preferred for browsers that support it, with WebP as a fallback:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tformats: ['image/avif', 'image/webp'],\n\t},\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "We still recommend using WebP for most use cases."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "AVIF generally takes 50% longer to encode but it compresses 20% smaller compared to WebP. This means that the first time an image is requested, it will typically be slower, but subsequent requests that are cached will be faster."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "When using multiple formats, Next.js will cache each format separately. This means increased storage requirements compared to using a single format, as both AVIF and WebP versions of images will be stored for different browser support."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "If you self-host with a Proxy/CDN in front of Next.js, you must configure the Proxy to forward the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "Accept"
+										},
+										{
+											"type": "text",
+											"value": " header."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "minimumCacheTTL"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "minimumCacheTTL"
+				},
+				{
+					"type": "text",
+					"value": " allows you to configure the Time to Live (TTL) in seconds for cached optimized images. In many cases, it's better to use a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/images#local-images",
+					"children": [
+						{
+							"type": "text",
+							"value": "Static Image Import"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " which will automatically hash the file contents and cache the image with a long-lived "
+				},
+				{
+					"type": "inlineCode",
+					"value": "immutable"
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Cache-Control"
+				},
+				{
+					"type": "text",
+					"value": " header."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If no configuration is provided, the default below is used."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tminimumCacheTTL: 14400, // 4 hours\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can increase the TTL to reduce the number of revalidations and potentially lower cost:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tminimumCacheTTL: 2678400, // 31 days\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The expiration (or rather Max Age) of the optimized image is defined by either the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "minimumCacheTTL"
+				},
+				{
+					"type": "text",
+					"value": " or the upstream image "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Cache-Control"
+				},
+				{
+					"type": "text",
+					"value": " header, whichever is larger."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you need to change the caching behavior per image, you can configure "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/headers",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "headers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to set the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Cache-Control"
+				},
+				{
+					"type": "text",
+					"value": " header on the upstream image (e.g. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/some-asset.jpg"
+				},
+				{
+					"type": "text",
+					"value": ", not "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/_next/image"
+				},
+				{
+					"type": "text",
+					"value": " itself)."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There is no mechanism to invalidate the cache at this time, so its best to keep "
+				},
+				{
+					"type": "inlineCode",
+					"value": "minimumCacheTTL"
+				},
+				{
+					"type": "text",
+					"value": " low. Otherwise you may need to manually change the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#src",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "src"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " prop or delete the cached file "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<distDir>/cache/images"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "disableStaticImages"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "disableStaticImages"
+				},
+				{
+					"type": "text",
+					"value": " allows you to disable static image imports."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The default behavior allows you to import static files such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "import icon from './icon.png'"
+				},
+				{
+					"type": "text",
+					"value": " and then pass that to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " property. In some cases, you may wish to disable this feature if it conflicts with other plugins that expect the import to behave differently."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can disable static image imports inside your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tdisableStaticImages: true,\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "maximumRedirects"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The default image optimization loader will follow HTTP redirects when fetching remote images up to 3 times."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tmaximumRedirects: 3,\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For your convenience, these redirects do not need to satisfy "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#remotepatterns",
+					"children": [
+						{
+							"type": "text",
+							"value": "remotePatterns"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can configure the number of redirects to follow when fetching remote images. Setting the value to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "0"
+				},
+				{
+					"type": "text",
+					"value": " will disable following redirects."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tmaximumRedirects: 0,\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "maximumDiskCacheSize"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The default image optimization loader will write optimized images to disk so subsequent requests can be served faster from the disk cache."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can configure the maximum disk cache size in bytes, for example 500 MB:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tmaximumDiskCacheSize: 500_000_000,\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also disable the disk cache entirely by setting the value to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "0"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tmaximumDiskCacheSize: 0,\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If no value is configured, the default behavior is to check the current available disk space once during startup and use 50%."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When the disk cache exceeds the configured size, the least recently used optimized images will be deleted until the cache is under the limit again."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Alternatively, you can implement your own cache handler using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/incrementalCacheHandlerPath",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheHandler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " which will ignore the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "maximumDiskCacheSize"
+				},
+				{
+					"type": "text",
+					"value": " configuration."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "maximumResponseBody"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The default image optimization loader will fetch source images up to 50 MB in size."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tmaximumResponseBody: 50_000_000,\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you know all your source images are small, you can protect memory constrained servers by reducing this to a smaller value such as 5 MB."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tmaximumResponseBody: 5_000_000,\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "dangerouslyAllowLocalIP"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In rare cases when self-hosting Next.js on a private network, you may want to allow optimizing images from local IP addresses on the same network. This is not recommended for most users because it could allow malicious users to access content on your internal network."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, the value is false."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tdangerouslyAllowLocalIP: false,\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you need to optimize remote images hosted elsewhere in your local network, you can set the value to true."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tdangerouslyAllowLocalIP: true,\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This might be necessary when hosting Next.js in a VPC with split-horizon DNS and you receive status 400 Bad Request. Only enable once you understand the SSRF risk."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "dangerouslyAllowSVG"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "dangerouslyAllowSVG"
+				},
+				{
+					"type": "text",
+					"value": " allows you to serve SVG images."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tdangerouslyAllowSVG: true,\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, Next.js does not optimize SVG images for a few reasons:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "SVG is a vector format meaning it can be resized losslessly."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "SVG has many of the same features as HTML/CSS, which can lead to vulnerabilities without proper "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/headers#content-security-policy",
+									"children": [
+										{
+											"type": "text",
+											"value": "Content Security Policy (CSP) headers"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We recommend using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#unoptimized",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "unoptimized"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " prop when the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#src",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "src"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " prop is known to be SVG. This happens automatically when "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " ends with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\".svg\""
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "<Image\n\tsrc=\"/my-image.svg\"\n\tunoptimized\n/>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In addition, it is strongly recommended to also set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "contentDispositionType"
+				},
+				{
+					"type": "text",
+					"value": " to force the browser to download the image, as well as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "contentSecurityPolicy"
+				},
+				{
+					"type": "text",
+					"value": " to prevent scripts embedded in the image from executing."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tdangerouslyAllowSVG: true,\n\t\tcontentDispositionType: 'attachment',\n\t\tcontentSecurityPolicy: \"default-src 'self'; script-src 'none'; sandbox;\",\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "contentDispositionType"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "contentDispositionType"
+				},
+				{
+					"type": "text",
+					"value": " allows you to configure the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition#as_a_response_header_for_the_main_body",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Content-Disposition"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " header."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tcontentDispositionType: 'inline',\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "contentSecurityPolicy"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "contentSecurityPolicy"
+				},
+				{
+					"type": "text",
+					"value": " allows you to configure the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Content-Security-Policy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " header for images. This is particularly important when using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#dangerouslyallowsvg",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "dangerouslyAllowSVG"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to prevent scripts embedded in the image from executing."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tcontentSecurityPolicy: \"default-src 'self'; script-src 'none'; sandbox;\",\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#loader",
+					"children": [
+						{
+							"type": "text",
+							"value": "loader"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " sets the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition#as_a_response_header_for_the_main_body",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Content-Disposition"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " header to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "attachment"
+				},
+				{
+					"type": "text",
+					"value": " for added protection since the API can serve arbitrary remote images."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The default value is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "attachment"
+				},
+				{
+					"type": "text",
+					"value": " which forces the browser to download the image when visiting directly. This is particularly important when "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#dangerouslyallowsvg",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "dangerouslyAllowSVG"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is true."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can optionally configure "
+				},
+				{
+					"type": "inlineCode",
+					"value": "inline"
+				},
+				{
+					"type": "text",
+					"value": " to allow the browser to render the image when visiting directly, without downloading it."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Deprecated configuration options"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "domains"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Warning"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Deprecated since Next.js 14 in favor of strict "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "#remotepatterns",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "remotePatterns"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " in order to protect your application from malicious users."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Similar to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#remotepatterns",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "remotePatterns"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "domains"
+				},
+				{
+					"type": "text",
+					"value": " configuration can be used to provide a list of allowed hostnames for external images. However, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "domains"
+				},
+				{
+					"type": "text",
+					"value": " configuration does not support wildcard pattern matching and it cannot restrict protocol, port, or pathname."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since most remote image servers are shared between multiple tenants, it's safer to use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "remotePatterns"
+				},
+				{
+					"type": "text",
+					"value": " to ensure only the intended images are optimized."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Below is an example of the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "domains"
+				},
+				{
+					"type": "text",
+					"value": " property in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tdomains: ['assets.acme.com'],\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Functions"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "getImageProps"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getImageProps"
+				},
+				{
+					"type": "text",
+					"value": " function can be used to get the props that would be passed to the underlying "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<img>"
+				},
+				{
+					"type": "text",
+					"value": " element, and instead pass them to another component, style, canvas, etc."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "import { getImageProps } from 'next/image'\n\nconst { props } = getImageProps({\n\tsrc: 'https://example.com/image.jpg',\n\talt: 'A scenic mountain view',\n\twidth: 1200,\n\theight: 800,\n})\n\nfunction ImageWithCaption() {\n\treturn (\n\t\t<figure>\n\t\t\t<img {...props} />\n\t\t\t<figcaption>A scenic mountain view</figcaption>\n\t\t</figure>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This also avoid calling React "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useState()"
+				},
+				{
+					"type": "text",
+					"value": " so it can lead to better performance, but it cannot be used with the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#placeholder",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "placeholder"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " prop because the placeholder will never be removed."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Known browser bugs"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/image"
+				},
+				{
+					"type": "text",
+					"value": " component uses browser native "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://caniuse.com/loading-lazy-attr",
+					"children": [
+						{
+							"type": "text",
+							"value": "lazy loading"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", which may fallback to eager loading for older browsers before Safari 15.4. When using the blur-up placeholder, older browsers before Safari 12 will fallback to empty placeholder. When using styles with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "width"
+				},
+				{
+					"type": "text",
+					"value": "/"
+				},
+				{
+					"type": "inlineCode",
+					"value": "height"
+				},
+				{
+					"type": "text",
+					"value": " of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "auto"
+				},
+				{
+					"type": "text",
+					"value": ", it is possible to cause "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://web.dev/cls/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Layout Shift"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " on older browsers before Safari 15 that don't "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://caniuse.com/mdn-html_elements_img_aspect_ratio_computed_from_attributes",
+					"children": [
+						{
+							"type": "text",
+							"value": "preserve the aspect ratio"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". For more details, see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.youtube.com/watch?v=4-d_SoCHeWE",
+					"children": [
+						{
+							"type": "text",
+							"value": "this MDN video"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://bugs.webkit.org/show_bug.cgi?id=243601",
+									"children": [
+										{
+											"type": "text",
+											"value": "Safari 15 - 16.3"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " display a gray border while loading. Safari 16.4 "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://webkit.org/blog/13966/webkit-features-in-safari-16-4/#:~:text=Now%20in%20Safari%2016.4%2C%20a%20gray%20line%20no%20longer%20appears%20to%20mark%20the%20space%20where%20a%20lazy%2Dloaded%20image%20will%20appear%20once%20it%E2%80%99s%20been%20loaded.",
+									"children": [
+										{
+											"type": "text",
+											"value": "fixed this issue"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". Possible solutions:"
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Use CSS "
+												},
+												{
+													"type": "inlineCode",
+													"value": "@supports (font: -apple-system-body) and (-webkit-appearance: none) { img[loading=\"lazy\"] { clip-path: inset(0.6px) } }"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Use "
+												},
+												{
+													"type": "link",
+													"title": null,
+													"url": "#loading",
+													"children": [
+														{
+															"type": "inlineCode",
+															"value": "loading=\"eager\""
+														}
+													]
+												},
+												{
+													"type": "text",
+													"value": " if the image is above the fold"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://bugzilla.mozilla.org/show_bug.cgi?id=1556156",
+									"children": [
+										{
+											"type": "text",
+											"value": "Firefox 67+"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " displays a white background while loading. Possible solutions:"
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Enable "
+												},
+												{
+													"type": "link",
+													"title": null,
+													"url": "#formats",
+													"children": [
+														{
+															"type": "text",
+															"value": "AVIF "
+														},
+														{
+															"type": "inlineCode",
+															"value": "formats"
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Use "
+												},
+												{
+													"type": "link",
+													"title": null,
+													"url": "#placeholder",
+													"children": [
+														{
+															"type": "inlineCode",
+															"value": "placeholder"
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Styling images"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Styling the Image component is similar to styling a normal "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<img>"
+				},
+				{
+					"type": "text",
+					"value": " element, but there are a few guidelines to keep in mind:"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "className"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "style"
+				},
+				{
+					"type": "text",
+					"value": ", not "
+				},
+				{
+					"type": "inlineCode",
+					"value": "styled-jsx"
+				},
+				{
+					"type": "text",
+					"value": ". In most cases, we recommend using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "className"
+				},
+				{
+					"type": "text",
+					"value": " prop. This can be an imported "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/css",
+					"children": [
+						{
+							"type": "text",
+							"value": "CSS Module"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/css#global-css",
+					"children": [
+						{
+							"type": "text",
+							"value": "global stylesheet"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", etc."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "import styles from './styles.module.css'\n\nexport default function MyImage() {\n\treturn (\n\t\t<Image\n\t\t\tclassName={styles.image}\n\t\t\tsrc=\"/my-image.png\"\n\t\t\talt=\"My Image\"\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "style"
+				},
+				{
+					"type": "text",
+					"value": " prop to assign inline styles."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "export default function MyImage() {\n\treturn (\n\t\t<Image\n\t\t\tstyle={{ borderRadius: '8px' }}\n\t\t\tsrc=\"/my-image.png\"\n\t\t\talt=\"My Image\"\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fill"
+				},
+				{
+					"type": "text",
+					"value": ", the parent element must be positioned, with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "position: relative"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fixed"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "absolute"
+				},
+				{
+					"type": "text",
+					"value": ". The image itself uses "
+				},
+				{
+					"type": "inlineCode",
+					"value": "position: absolute"
+				},
+				{
+					"type": "text",
+					"value": ", so it sizes against the nearest positioned ancestor."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "<div style={{ position: 'relative' }}>\n\t<Image\n\t\tfill\n\t\tsrc=\"/my-image.png\"\n\t\talt=\"My Image\"\n\t/>\n</div>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You cannot use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/css-in-js",
+					"children": [
+						{
+							"type": "text",
+							"value": "styled-jsx"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " because it's scoped to the current component (unless you mark the style as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "global"
+				},
+				{
+					"type": "text",
+					"value": ")."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Responsive images with a static export"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When you import a static image, Next.js automatically sets its width and height based on the file. You can make the image responsive by setting the style:"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"Responsive image filling the width and height of its parent container\"\nsrcLight=\"/docs/light/responsive-image.png\"\nsrcDark=\"/docs/dark/responsive-image.png\"\nwidth=\"1600\"\nheight=\"629\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "import Image from 'next/image'\nimport mountains from '../public/mountains.jpg'\n\nexport default function Responsive() {\n\treturn (\n\t\t<div style={{ display: 'flex', flexDirection: 'column' }}>\n\t\t\t<Image\n\t\t\t\talt=\"Mountains\"\n\t\t\t\t// Importing an image will\n\t\t\t\t// automatically set the width and height\n\t\t\t\tsrc={mountains}\n\t\t\t\tsizes=\"100vw\"\n\t\t\t\t// Make the image display full width\n\t\t\t\t// and preserve its aspect ratio\n\t\t\t\tstyle={{\n\t\t\t\t\twidth: '100%',\n\t\t\t\t\theight: 'auto',\n\t\t\t\t}}\n\t\t\t/>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Responsive images with a remote URL"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If the source image is a dynamic or a remote URL, you must provide the width and height props so Next.js can calculate the aspect ratio:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"components/page.js\"",
+			"value": "import Image from 'next/image'\n\nexport default function Page({ photoUrl }) {\n\treturn (\n\t\t<Image\n\t\t\tsrc={photoUrl}\n\t\t\talt=\"Picture of the author\"\n\t\t\tsizes=\"100vw\"\n\t\t\tstyle={{\n\t\t\t\twidth: '100%',\n\t\t\t\theight: 'auto',\n\t\t\t}}\n\t\t\twidth={500}\n\t\t\theight={300}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Try it out:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://image-component.nextjs.gallery/responsive",
+									"children": [
+										{
+											"type": "text",
+											"value": "Demo the image responsive to viewport"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Responsive image with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fill"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you don't know the aspect ratio of the image, you can add the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#fill",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "fill"
+						},
+						{
+							"type": "text",
+							"value": " prop"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "objectFit"
+				},
+				{
+					"type": "text",
+					"value": " prop set to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cover"
+				},
+				{
+					"type": "text",
+					"value": ". This will make the image fill the full width of its parent container."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"Grid of images filling parent container width\"\nsrcLight=\"/docs/light/fill-container.png\"\nsrcDark=\"/docs/dark/fill-container.png\"\nwidth=\"1600\"\nheight=\"529\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "import Image from 'next/image'\nimport mountains from '../public/mountains.jpg'\n\nexport default function Fill() {\n\treturn (\n\t\t<div\n\t\t\tstyle={{\n\t\t\t\tdisplay: 'grid',\n\t\t\t\tgridGap: '8px',\n\t\t\t\tgridTemplateColumns: 'repeat(auto-fit, minmax(400px, auto))',\n\t\t\t}}>\n\t\t\t<div style={{ position: 'relative', width: '400px' }}>\n\t\t\t\t<Image\n\t\t\t\t\talt=\"Mountains\"\n\t\t\t\t\tsrc={mountains}\n\t\t\t\t\tfill\n\t\t\t\t\tsizes=\"(min-width: 808px) 50vw, 100vw\"\n\t\t\t\t\tstyle={{\n\t\t\t\t\t\tobjectFit: 'cover', // cover, contain, none\n\t\t\t\t\t}}\n\t\t\t\t/>\n\t\t\t</div>\n\t\t\t{/* And more images in the grid... */}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Background Image"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fill"
+				},
+				{
+					"type": "text",
+					"value": " prop to make the image cover the entire screen area:"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"Background image taking full width and height of page\"\nsrcLight=\"/docs/light/background-image.png\"\nsrcDark=\"/docs/dark/background-image.png\"\nwidth=\"1600\"\nheight=\"427\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "import Image from 'next/image'\nimport mountains from '../public/mountains.jpg'\n\nexport default function Background() {\n\treturn (\n\t\t<Image\n\t\t\talt=\"Mountains\"\n\t\t\tsrc={mountains}\n\t\t\tplaceholder=\"blur\"\n\t\t\tquality={100}\n\t\t\tfill\n\t\t\tsizes=\"100vw\"\n\t\t\tstyle={{\n\t\t\t\tobjectFit: 'cover',\n\t\t\t}}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For examples of the Image component used with the various styles, see the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://image-component.nextjs.gallery",
+					"children": [
+						{
+							"type": "text",
+							"value": "Image Component Demo"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Remote images"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use a remote image, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " property should be a URL string."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\"",
+			"value": "import Image from 'next/image'\n\nexport default function Page() {\n\treturn (\n\t\t<Image\n\t\t\tsrc=\"https://s3.amazonaws.com/my-bucket/profile.png\"\n\t\t\talt=\"Picture of the author\"\n\t\t\twidth={500}\n\t\t\theight={500}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since Next.js does not have access to remote files during the build process, you'll need to provide the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image#width-and-height",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "width"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image#width-and-height",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "height"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and optional "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image#blurdataurl",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "blurDataURL"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " props manually."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "width"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "height"
+				},
+				{
+					"type": "text",
+					"value": " attributes are used to infer the correct aspect ratio of image and avoid layout shift from the image loading in. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "width"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "height"
+				},
+				{
+					"type": "text",
+					"value": " do "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "not"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " determine the rendered size of the image file."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To safely allow optimizing images, define a list of supported URL patterns in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ". Be as specific as possible to prevent malicious usage. For example, the following configuration will only allow images from a specific AWS S3 bucket:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tremotePatterns: [\n\t\t\t{\n\t\t\t\tprotocol: 'https',\n\t\t\t\thostname: 's3.amazonaws.com',\n\t\t\t\tport: '',\n\t\t\t\tpathname: '/my-bucket/**',\n\t\t\t\tsearch: '',\n\t\t\t},\n\t\t],\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Theme detection"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you want to display a different image for light and dark mode, you can create a new component that wraps two "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Image>"
+				},
+				{
+					"type": "text",
+					"value": " components and reveals the correct one based on a CSS media query."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "css",
+			"meta": "filename=\"components/theme-image.module.css\"",
+			"value": ".imgDark {\n\tdisplay: none;\n}\n\n@media (prefers-color-scheme: dark) {\n\t.imgLight {\n\t\tdisplay: none;\n\t}\n\t.imgDark {\n\t\tdisplay: unset;\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"components/theme-image.tsx\" switcher",
+			"value": "import styles from './theme-image.module.css'\nimport Image, { ImageProps } from 'next/image'\n\ntype Props = Omit<ImageProps, 'src' | 'preload' | 'loading'> & {\n\tsrcLight: string\n\tsrcDark: string\n}\n\nconst ThemeImage = (props: Props) => {\n\tconst { srcLight, srcDark, ...rest } = props\n\n\treturn (\n\t\t<>\n\t\t\t<Image\n\t\t\t\t{...rest}\n\t\t\t\tsrc={srcLight}\n\t\t\t\tclassName={styles.imgLight}\n\t\t\t/>\n\t\t\t<Image\n\t\t\t\t{...rest}\n\t\t\t\tsrc={srcDark}\n\t\t\t\tclassName={styles.imgDark}\n\t\t\t/>\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"components/theme-image.js\" switcher",
+			"value": "import styles from './theme-image.module.css'\nimport Image from 'next/image'\n\nconst ThemeImage = (props) => {\n\tconst { srcLight, srcDark, ...rest } = props\n\n\treturn (\n\t\t<>\n\t\t\t<Image\n\t\t\t\t{...rest}\n\t\t\t\tsrc={srcLight}\n\t\t\t\tclassName={styles.imgLight}\n\t\t\t/>\n\t\t\t<Image\n\t\t\t\t{...rest}\n\t\t\t\tsrc={srcDark}\n\t\t\t\tclassName={styles.imgDark}\n\t\t\t/>\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": The default behavior of "
+						},
+						{
+							"type": "inlineCode",
+							"value": "loading=\"lazy\""
+						},
+						{
+							"type": "text",
+							"value": " ensures that only the correct image is loaded. You cannot use "
+						},
+						{
+							"type": "inlineCode",
+							"value": "preload"
+						},
+						{
+							"type": "text",
+							"value": " or "
+						},
+						{
+							"type": "inlineCode",
+							"value": "loading=\"eager\""
+						},
+						{
+							"type": "text",
+							"value": " because that would cause both images to load. Instead, you can use "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://developer.mozilla.org/docs/Web/API/HTMLImageElement/fetchPriority",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "fetchPriority=\"high\""
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Try it out:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://image-component.nextjs.gallery/theme",
+									"children": [
+										{
+											"type": "text",
+											"value": "Demo light/dark mode theme detection"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Art direction"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you want to display a different image for mobile and desktop, sometimes called "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images#art_direction",
+					"children": [
+						{
+							"type": "text",
+							"value": "Art Direction"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", you can provide different "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "width"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "height"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "quality"
+				},
+				{
+					"type": "text",
+					"value": " props to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getImageProps()"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\"",
+			"value": "import { getImageProps } from 'next/image'\n\nexport default function Home() {\n\tconst common = { alt: 'Art Direction Example', sizes: '100vw' }\n\tconst {\n\t\tprops: { srcSet: desktop },\n\t} = getImageProps({\n\t\t...common,\n\t\twidth: 1440,\n\t\theight: 875,\n\t\tquality: 80,\n\t\tsrc: '/desktop.jpg',\n\t})\n\tconst {\n\t\tprops: { srcSet: mobile, ...rest },\n\t} = getImageProps({\n\t\t...common,\n\t\twidth: 750,\n\t\theight: 1334,\n\t\tquality: 70,\n\t\tsrc: '/mobile.jpg',\n\t})\n\n\treturn (\n\t\t<picture>\n\t\t\t<source\n\t\t\t\tmedia=\"(min-width: 1000px)\"\n\t\t\t\tsrcSet={desktop}\n\t\t\t/>\n\t\t\t<source\n\t\t\t\tmedia=\"(min-width: 500px)\"\n\t\t\t\tsrcSet={mobile}\n\t\t\t/>\n\t\t\t<img\n\t\t\t\t{...rest}\n\t\t\t\tstyle={{ width: '100%', height: 'auto' }}\n\t\t\t/>\n\t\t</picture>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Background CSS"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can even convert the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "srcSet"
+				},
+				{
+					"type": "text",
+					"value": " string to the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/image/image-set",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "image-set()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " CSS function to optimize a background image."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\"",
+			"value": "import { getImageProps } from 'next/image'\n\nfunction getBackgroundImage(srcSet = '') {\n\tconst imageSet = srcSet\n\t\t.split(', ')\n\t\t.map((str) => {\n\t\t\tconst [url, dpi] = str.split(' ')\n\t\t\treturn `url(\"${url}\") ${dpi}`\n\t\t})\n\t\t.join(', ')\n\treturn `image-set(${imageSet})`\n}\n\nexport default function Home() {\n\tconst {\n\t\tprops: { srcSet },\n\t} = getImageProps({ alt: '', width: 128, height: 128, src: '/img.png' })\n\tconst backgroundImage = getBackgroundImage(srcSet)\n\tconst style = { height: '100vh', width: '100vw', backgroundImage }\n\n\treturn (\n\t\t<main style={style}>\n\t\t\t<h1>Hello World</h1>\n\t\t</main>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.1.7"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "maximumDiskCacheSize"
+								},
+								{
+									"type": "text",
+									"value": " configuration added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.1.2"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "maximumResponseBody"
+								},
+								{
+									"type": "text",
+									"value": " configuration added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "qualities"
+								},
+								{
+									"type": "text",
+									"value": " default configuration changed to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "[75]"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "preload"
+								},
+								{
+									"type": "text",
+									"value": " prop added, "
+								},
+								{
+									"type": "inlineCode",
+									"value": "priority"
+								},
+								{
+									"type": "text",
+									"value": " prop deprecated, "
+								},
+								{
+									"type": "inlineCode",
+									"value": "dangerouslyAllowLocalIP"
+								},
+								{
+									"type": "text",
+									"value": " config added, "
+								},
+								{
+									"type": "inlineCode",
+									"value": "maximumRedirects"
+								},
+								{
+									"type": "text",
+									"value": " config added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "remotePatterns"
+								},
+								{
+									"type": "text",
+									"value": " added support for array of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "URL"
+								},
+								{
+									"type": "text",
+									"value": " objects."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "contentDispositionType"
+								},
+								{
+									"type": "text",
+									"value": " configuration default changed to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "attachment"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v14.2.23"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "qualities"
+								},
+								{
+									"type": "text",
+									"value": " configuration added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v14.2.15"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "decoding"
+								},
+								{
+									"type": "text",
+									"value": " prop added and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "localPatterns"
+								},
+								{
+									"type": "text",
+									"value": " configuration added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v14.2.14"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "remotePatterns.search"
+								},
+								{
+									"type": "text",
+									"value": " prop added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v14.2.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "overrideSrc"
+								},
+								{
+									"type": "text",
+									"value": " prop added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v14.1.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "getImageProps()"
+								},
+								{
+									"type": "text",
+									"value": " is stable."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v14.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "onLoadingComplete"
+								},
+								{
+									"type": "text",
+									"value": " prop and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "domains"
+								},
+								{
+									"type": "text",
+									"value": " config deprecated."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.4.14"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "placeholder"
+								},
+								{
+									"type": "text",
+									"value": " prop support for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "data:/image..."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.2.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "contentDispositionType"
+								},
+								{
+									"type": "text",
+									"value": " configuration added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.0.6"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "ref"
+								},
+								{
+									"type": "text",
+									"value": " prop added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/image"
+								},
+								{
+									"type": "text",
+									"value": " import was renamed to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/legacy/image"
+								},
+								{
+									"type": "text",
+									"value": ". The "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/future/image"
+								},
+								{
+									"type": "text",
+									"value": " import was renamed to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/image"
+								},
+								{
+									"type": "text",
+									"value": ". A "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/upgrading/codemods#next-image-to-legacy-image",
+									"children": [
+										{
+											"type": "text",
+											"value": "codemod is available"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to safely and automatically rename your imports. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<span>"
+								},
+								{
+									"type": "text",
+									"value": " wrapper removed. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "layout"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "objectFit"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "objectPosition"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "lazyBoundary"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "lazyRoot"
+								},
+								{
+									"type": "text",
+									"value": " props removed. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "alt"
+								},
+								{
+									"type": "text",
+									"value": " is required. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "onLoadingComplete"
+								},
+								{
+									"type": "text",
+									"value": " receives reference to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "img"
+								},
+								{
+									"type": "text",
+									"value": " element. Built-in loader config removed."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v12.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "remotePatterns"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "unoptimized"
+								},
+								{
+									"type": "text",
+									"value": " configuration is stable."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v12.2.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Experimental "
+								},
+								{
+									"type": "inlineCode",
+									"value": "remotePatterns"
+								},
+								{
+									"type": "text",
+									"value": " and experimental "
+								},
+								{
+									"type": "inlineCode",
+									"value": "unoptimized"
+								},
+								{
+									"type": "text",
+									"value": " configuration added. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "layout=\"raw\""
+								},
+								{
+									"type": "text",
+									"value": " removed."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v12.1.1"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "style"
+								},
+								{
+									"type": "text",
+									"value": " prop added. Experimental support for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "layout=\"raw\""
+								},
+								{
+									"type": "text",
+									"value": " added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v12.1.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "dangerouslyAllowSVG"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "contentSecurityPolicy"
+								},
+								{
+									"type": "text",
+									"value": " configuration added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v12.0.9"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "lazyRoot"
+								},
+								{
+									"type": "text",
+									"value": " prop added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v12.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "formats"
+								},
+								{
+									"type": "text",
+									"value": " configuration added."
+								},
+								{
+									"type": "html",
+									"value": "<br/>"
+								},
+								{
+									"type": "text",
+									"value": "AVIF support added."
+								},
+								{
+									"type": "html",
+									"value": "<br/>"
+								},
+								{
+									"type": "text",
+									"value": "Wrapper "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<div>"
+								},
+								{
+									"type": "text",
+									"value": " changed to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<span>"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v11.1.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "onLoadingComplete"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "lazyBoundary"
+								},
+								{
+									"type": "text",
+									"value": " props added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v11.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "src"
+								},
+								{
+									"type": "text",
+									"value": " prop support for static import."
+								},
+								{
+									"type": "html",
+									"value": "<br/>"
+								},
+								{
+									"type": "inlineCode",
+									"value": "placeholder"
+								},
+								{
+									"type": "text",
+									"value": " prop added."
+								},
+								{
+									"type": "html",
+									"value": "<br/>"
+								},
+								{
+									"type": "inlineCode",
+									"value": "blurDataURL"
+								},
+								{
+									"type": "text",
+									"value": " prop added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v10.0.5"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "loader"
+								},
+								{
+									"type": "text",
+									"value": " prop added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v10.0.1"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "layout"
+								},
+								{
+									"type": "text",
+									"value": " prop added."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v10.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next/image"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,1837 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Incremental Static Regeneration with Cache Components\ndescription: Learn how to prerender a subset of dynamic routes, serve App Shells for the rest, and upgrade them after the first visit.\nnav_title: ISR with Cache Components\nrelated:\n links:\n  - app/api-reference/config/next-config-js/cacheComponents\n  - app/api-reference/functions/generate-static-params\n  - app/api-reference/file-conventions/loading\n  - app/getting-started/caching"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#incremental-static-regeneration-isr",
+					"children": [
+						{
+							"type": "text",
+							"value": "Incremental Static Regeneration (ISR)"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/partialPrefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " gives every route an instant first visit, even for URLs that weren't included in the build."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "During build, Partial Prerendering splits each render into two parts:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "App Shell"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": the generic, reusable part of the page that doesn't depend on URL data"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The rest of the statically renderable content: the param-specific prerenders for the URLs you list in "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/generate-static-params",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "generateStaticParams"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For a visit to a URL whose params were included in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": ", Next.js serves the fully prerendered page from the cache. For a visit to a URL whose params weren't, Next.js serves the App Shell instantly, then upgrades it in the background with the now-known params. Subsequent visits to that URL get the upgraded result from the cache, skipping the App Shell entirely."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you have used "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/incremental-static-regeneration",
+					"children": [
+						{
+							"type": "text",
+							"value": "ISR"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nextjs.org/docs/pages/api-reference/functions/get-static-paths#fallback-true",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "fallback: true"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in the Pages Router, this is the Cache Components equivalent."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Enable both "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/partialPrefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache Components prerenders a static shell that can include fallback UI. For paths not returned by "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": ", Next.js can render the path on demand and store the completed result in the ISR cache."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Partial Prefetching determines whether the fallback is served before the URL-specific render completes:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "With Partial Prefetching:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " You can await "
+								},
+								{
+									"type": "inlineCode",
+									"value": "params"
+								},
+								{
+									"type": "text",
+									"value": " inside "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Suspense>"
+								},
+								{
+									"type": "text",
+									"value": ". Next.js can immediately serve the fallback for an unlisted path, render the URL-specific content, and store the completed result in the ISR cache."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Without Partial Prefetching:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " The first request for an unlisted path must wait for the URL-specific render to complete. Await "
+								},
+								{
+									"type": "inlineCode",
+									"value": "params"
+								},
+								{
+									"type": "text",
+									"value": " outside any "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Suspense>"
+								},
+								{
+									"type": "text",
+									"value": " boundary, including one created by "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/loading",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "loading.tsx"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", so Next.js creates an ISR entry for that URL."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Without Partial Prefetching, awaiting "
+						},
+						{
+							"type": "inlineCode",
+							"value": "params"
+						},
+						{
+							"type": "text",
+							"value": " inside "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						},
+						{
+							"type": "text",
+							"value": " causes Next.js to keep serving the shared fallback instead of creating a URL-specific ISR entry. Data fetched by the route can still be cached independently."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" highlight={4-5}",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tcacheComponents: true,\n\tpartialPrefetching: true,\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Example"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We'll build a product catalog with category layouts and product detail pages using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://next-recipe-api.vercel.dev/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Recipe API"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". You can find the resources used in this example here:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://partial-fallbacks.labs.vercel.dev/",
+									"children": [
+										{
+											"type": "text",
+											"value": "Demo"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/nextjs/partial-fallbacks",
+									"children": [
+										{
+											"type": "text",
+											"value": "Code"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Prepare your routes"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-static-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to define which param values to prerender. When rendering these routes, the param values are known at build time. The prerender process builds a static shell until it reaches a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#request-time-apis",
+					"children": [
+						{
+							"type": "text",
+							"value": "Request-time API"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or uncached data. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching#prerendering",
+					"children": [
+						{
+							"type": "text",
+							"value": "Prerendering"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more details."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The category layout prerenders two categories:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/[category]/layout.tsx\" highlight={5-8}",
+			"value": "import Link from 'next/link'\nimport { Suspense } from 'react'\nimport { getCategory, getTopCategories } from '../lib/data'\n\nexport async function generateStaticParams() {\n\tconst categories = await getTopCategories()\n\treturn categories.map((c) => ({ category: c.slug }))\n}\n\nasync function CategoryHeader({ params }: Pick<LayoutProps<'/[category]'>, 'params'>) {\n\tconst { category } = await params\n\tconst data = await getCategory(category)\n\n\treturn (\n\t\t<div>\n\t\t\t<Link href=\"/\">&larr; All categories</Link>\n\t\t\t<h1>{data?.name ?? 'Category'}</h1>\n\t\t\t{data?.description && <p>{data.description}</p>}\n\t\t</div>\n\t)\n}\n\nexport default function CategoryLayout(props: LayoutProps<'/[category]'>) {\n\treturn (\n\t\t<div>\n\t\t\t<Suspense fallback={<div>Loading...</div>}>\n\t\t\t\t<CategoryHeader params={props.params} />\n\t\t\t</Suspense>\n\t\t\t{props.children}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Notice that "
+				},
+				{
+					"type": "inlineCode",
+					"value": "CategoryLayout"
+				},
+				{
+					"type": "text",
+					"value": " does not "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await props.params"
+				},
+				{
+					"type": "text",
+					"value": " itself. Instead, it passes the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " promise to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "CategoryHeader"
+				},
+				{
+					"type": "text",
+					"value": " inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": ". The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await"
+				},
+				{
+					"type": "text",
+					"value": " happens inside the boundary, so for unknown categories Next.js can still generate the App Shell. Keep the read inside the boundary even for the categories "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " covers. A statically known param still belongs to one URL, so awaiting it above the Suspense boundary would tie this layout's App Shell to that URL. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/instant-navigation",
+					"children": [
+						{
+							"type": "text",
+							"value": "Instant navigation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for structuring routes this way."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The product page prerenders one product per category. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " receives the parent "
+				},
+				{
+					"type": "inlineCode",
+					"value": "category"
+				},
+				{
+					"type": "text",
+					"value": " param:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/[category]/[product]/page.tsx\" highlight={5-12}",
+			"value": "import { Suspense } from 'react'\nimport Link from 'next/link'\nimport { getProduct, getPopularProducts } from '../../lib/data'\n\nexport async function generateStaticParams({ params }: { params: { category: string } }) {\n\tconst products = await getPopularProducts(params.category)\n\treturn products.map((p) => ({ product: p.slug }))\n}\n\nasync function ProductDetails(props: PageProps<'/[category]/[product]'>) {\n\tconst { category, product } = await props.params\n\tconst data = await getProduct(category, product)\n\n\tif (!data) {\n\t\treturn <p>Product not found.</p>\n\t}\n\n\treturn (\n\t\t<>\n\t\t\t<Link\n\t\t\t\thref={`/${category}`}\n\t\t\t\tprefetch={true}>\n\t\t\t\t&larr; Back to products\n\t\t\t</Link>\n\t\t\t<h2>{data.name}</h2>\n\t\t\t<p>${data.price}</p>\n\t\t\t<p>{data.description}</p>\n\t\t</>\n\t)\n}\n\nexport default function ProductPage(props: PageProps<'/[category]/[product]'>) {\n\treturn (\n\t\t<div>\n\t\t\t<Suspense fallback={<div>Loading product...</div>}>\n\t\t\t\t<ProductDetails {...props} />\n\t\t\t</Suspense>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " You can also use "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/file-conventions/loading",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "loading.tsx"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " files instead of "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						},
+						{
+							"type": "text",
+							"value": " in JSX. "
+						},
+						{
+							"type": "inlineCode",
+							"value": "loading.tsx"
+						},
+						{
+							"type": "text",
+							"value": " puts the boundary at the segment edge, while inline "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						},
+						{
+							"type": "text",
+							"value": " lets you place it anywhere in the tree."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The data helpers use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache'"
+				},
+				{
+					"type": "text",
+					"value": " at the module level so all exported functions are cached. This lets their results be included in the static shell:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/lib/data.ts\" highlight={1}",
+			"value": "'use cache'\n\nconst API = 'https://next-recipe-api.vercel.dev'\n\nexport async function getCategory(slug: string) {\n\tconst res = await fetch(`${API}/categories/${slug}`)\n\tif (!res.ok) return null\n\treturn res.json()\n}\n\nexport async function getProduct(category: string, slug: string) {\n\tconst res = await fetch(`${API}/products/${category}/${slug}`)\n\tif (!res.ok) return null\n\treturn res.json()\n}\n\nexport async function getTopCategories() {\n\tconst res = await fetch(`${API}/categories`)\n\tconst categories = await res.json()\n\treturn categories.slice(0, 2)\n}\n\nexport async function getPopularProducts(category: string) {\n\tconst res = await fetch(`${API}/products?category=${category}`)\n\tconst products = await res.json()\n\treturn products.slice(0, 1)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If a component accesses a Request-time API such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers()"
+				},
+				{
+					"type": "text",
+					"value": ", wrap it in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": ". During prerendering, Next.js includes the nearest fallback in the static shell. To keep the component out of a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link prefetch={true}>"
+				},
+				{
+					"type": "text",
+					"value": " as well, await "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/navigation",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "navigation()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " before the request-time access. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/optimizing-prefetching#keep-the-prefetch-static",
+					"children": [
+						{
+							"type": "text",
+							"value": "Keep the prefetch static"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "At build time"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When you run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ", Next.js prerenders the layout for each known category ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "tops"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "shorts"
+				},
+				{
+					"type": "text",
+					"value": "), plus one render where "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await params"
+				},
+				{
+					"type": "text",
+					"value": " suspends, producing the App Shell for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "[category]"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "It also prerenders the page for each known product under each category ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "tee"
+				},
+				{
+					"type": "text",
+					"value": " under "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tops"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "joggers"
+				},
+				{
+					"type": "text",
+					"value": " under "
+				},
+				{
+					"type": "inlineCode",
+					"value": "shorts"
+				},
+				{
+					"type": "text",
+					"value": "), plus one render where "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await params"
+				},
+				{
+					"type": "text",
+					"value": " suspends, producing the App Shell for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "[product]"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "These are combined into:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/tops/tee"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "/shorts/joggers"
+								},
+								{
+									"type": "text",
+									"value": ": fully static pages, both params known"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/tops/[product]"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "/shorts/[product]"
+								},
+								{
+									"type": "text",
+									"value": ": category header rendered, product shows fallback"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/[category]/[product]"
+								},
+								{
+									"type": "text",
+									"value": ": both show fallback"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "At runtime"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A visitor navigates to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/tops/tee"
+				},
+				{
+					"type": "text",
+					"value": ". Both params were prerendered. They get a fully static page."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The first visit to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/tops/overshirt"
+				},
+				{
+					"type": "text",
+					"value": ". The product "
+				},
+				{
+					"type": "inlineCode",
+					"value": "overshirt"
+				},
+				{
+					"type": "text",
+					"value": " is unknown, but the category "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tops"
+				},
+				{
+					"type": "text",
+					"value": " was prerendered. Next.js serves the App Shell for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/tops/[product]"
+				},
+				{
+					"type": "text",
+					"value": " with the category header already rendered. The product streams in."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The first visit to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/shoes/basketball-shoes"
+				},
+				{
+					"type": "text",
+					"value": ". Neither param was prerendered. Next.js serves the generic App Shell for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/[category]/[product]"
+				},
+				{
+					"type": "text",
+					"value": ". Both the category and the product stream in."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After the first visit, Next.js renders these routes in the background with the now-known params. The next visitor to the same URLs gets the upgraded result."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/link#prefetch",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Link prefetch={true}>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to an unlisted URL enters the viewport, Next.js starts the background upgrade before the click, just as a first visit would, so navigation lands on the upgraded result."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Links to these pages need "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch={true}"
+				},
+				{
+					"type": "text",
+					"value": ". A default "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " prefetches only the App Shell, which links to the same route share."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": The App Shell for unlisted params is served from Next.js 16.3. Earlier versions wait for a full server render before sending the response."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Wait for complete static output"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For an unlisted parameter, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config/ensureStatic#navigation",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "ensureStatic = 'navigation'"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " makes the first request wait for the complete static page. Without this requirement, Next.js can return a prerendered fallback while it generates the page in the background. Next.js stores the completed page for later requests."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "What the upgrade produces"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After the first visit, Next.js renders the page in the background with the known params and tries to push the static boundary as far down the component tree as possible:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If every data access is cached and all params are resolved, the upgrade produces a "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "fully static page"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If all params are resolved but the render still reaches uncached data or Request-time APIs ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "cookies()"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "headers()"
+								},
+								{
+									"type": "text",
+									"value": ") wrapped in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Suspense>"
+								},
+								{
+									"type": "text",
+									"value": " boundaries, the upgrade produces a "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "cached page with those fallbacks"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". The uncached or request-specific parts stream in at request time."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Params are resolved in route order. A param value not returned by "
+								},
+								{
+									"type": "inlineCode",
+									"value": "generateStaticParams"
+								},
+								{
+									"type": "text",
+									"value": " stays unresolved and prevents any deeper params from upgrading."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Choosing what to prerender"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Not every route needs to be prerendered. Every page you prerender increases build work and produces output that has to be stored and deployed. Many routes may never be visited before your next deployment, making that work unnecessary."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Instead, use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-static-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to prerender the routes that benefit most from being ready ahead of time, such as popular pages or predictable content. Less frequently visited routes are generated on demand and upgraded after their first visit, so you don't spend build time and storage on pages that may never be requested."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Coming from the Pages Router"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you are migrating from the Pages Router:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "fallback: true"
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "getStaticPaths"
+								},
+								{
+									"type": "text",
+									"value": " maps to Cache Components with Partial Prefetching. Visitors get a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Suspense>"
+								},
+								{
+									"type": "text",
+									"value": " fallback instantly, and Next.js stores the completed route for subsequent visits."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://nextjs.org/docs/pages/api-reference/functions/get-static-paths#fallback-blocking",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "fallback: 'blocking'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " maps to Cache Components without Partial Prefetching. Await "
+								},
+								{
+									"type": "inlineCode",
+									"value": "params"
+								},
+								{
+									"type": "text",
+									"value": " outside "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Suspense>"
+								},
+								{
+									"type": "text",
+									"value": " so the first request waits for the completed route, which Next.js then stores for subsequent visits."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "router.isFallback"
+								},
+								{
+									"type": "text",
+									"value": " is not needed. The prerendering step generates a static shell, and you can grow it further with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'use cache'"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "getStaticProps"
+								},
+								{
+									"type": "text",
+									"value": " with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidate"
+								},
+								{
+									"type": "text",
+									"value": " maps to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'use cache'"
+								},
+								{
+									"type": "text",
+									"value": " with "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/cacheLife",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cacheLife"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "getStaticPaths"
+								},
+								{
+									"type": "text",
+									"value": " maps to "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/generate-static-params",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "generateStaticParams"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Next steps"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/caching",
+									"children": [
+										{
+											"type": "text",
+											"value": "Caching with Cache Components"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for the full caching model"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/generate-static-params",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "generateStaticParams"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for controlling which param combinations are prerendered"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/loading",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "loading.tsx"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for providing skeleton UI in App Shells"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/streaming",
+									"children": [
+										{
+											"type": "text",
+											"value": "Streaming"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to learn how to progressively render UI as data becomes available"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/self-hosting#caching-and-isr",
+									"children": [
+										{
+											"type": "text",
+											"value": "Self-hosting"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to keep an existing ISR "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/incrementalCacheHandlerPath",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cacheHandler"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " alongside "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/cacheHandlers",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cacheHandlers"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'use cache'"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

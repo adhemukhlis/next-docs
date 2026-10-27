@@ -1,0 +1,1721 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to build single-page applications with Next.js\nnav_title: SPAs\ndescription: Next.js fully supports building Single-Page Applications (SPAs).\nrelated:\n description: Related guides and references.\n links:\n  - app/guides/client-side-data-fetching\n  - app/guides/interactive-apps\n  - app/guides/server-actions\n  - app/guides/forms\n  - app/guides/streaming\n  - app/guides/static-exports"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Build Single-Page Applications (SPAs) with client-side navigation and data fetching. Next.js supports client and server patterns in the same app, and existing SPAs can migrate without a full rewrite."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "What is a Single-Page Application?"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The definition of a SPA varies. We'll define a \"strict SPA\" as:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Client-side rendering (CSR)"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": The app is served by one HTML file (e.g. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "index.html"
+								},
+								{
+									"type": "text",
+									"value": "). Every route, page transition, and data fetch is handled by JavaScript in the browser."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "No full-page reloads"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Rather than requesting a new document for each route, client-side JavaScript manipulates the current page's DOM and fetches data as needed."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Strict SPAs often require large amounts of JavaScript to load before the page can be interactive. Further, client data waterfalls can be challenging to manage. Building SPAs with Next.js can address these issues."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Why use Next.js for SPAs?"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js can automatically code split your JavaScript bundles, and generate multiple HTML entry points into different routes. This avoids loading unnecessary JavaScript code on the client-side, reducing the bundle size and enabling faster page loads."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/link",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next/link"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " component automatically "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/link#prefetch",
+					"children": [
+						{
+							"type": "text",
+							"value": "prefetches"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " routes, giving you the fast page transitions of a strict SPA, but with the advantage of persisting application routing state to the URL for linking and sharing."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js can start as a static site or even a strict SPA where everything is rendered client-side. If your project grows, you can progressively add more server features (e.g. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "React Server Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/server-actions",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Actions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and more) as needed."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Build common SPA patterns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The following examples cover common patterns for building an SPA with Next.js. The companion "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://next-spa-patterns.labs.vercel.dev",
+					"children": [
+						{
+							"type": "text",
+							"value": "demo"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " ("
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/nextjs/next-spa-patterns",
+					"children": [
+						{
+							"type": "text",
+							"value": "source"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ") shows each pattern in action."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using React's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use"
+				},
+				{
+					"type": "text",
+					"value": " within a Context Provider"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use React's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/use",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use"
+						},
+						{
+							"type": "text",
+							"value": " API"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to stream data from the server to a Client Component. Fetch the data in a Server Component (a parent or layout) and pass the Promise down. The Client Component unwraps it with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use()"
+				},
+				{
+					"type": "text",
+					"value": ", since it cannot "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await"
+				},
+				{
+					"type": "text",
+					"value": " during render."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Starting the request on the server, before the rest of the app renders, lets the response stream immediately and avoids client-side request waterfalls."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can pass a single Promise as a prop and unwrap it with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use()"
+				},
+				{
+					"type": "text",
+					"value": ", or pair it with a React context provider so any Client Component can read the value through a custom hook."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When a Client Component needs focus revalidation, polling, mutations, or request deduplication, use a library such as SWR or TanStack Query. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/client-side-data-fetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client-side data fetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for direct browser fetching, providing initial data from a Server Component, and coordinating the library cache with the Next.js server and client caches."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Start the request in a Server Component (here, the root layout) without awaiting it, and pass the Promise to the provider:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import { UserProvider } from './user-provider'\nimport { getUser } from './user' // some server-side function\n\nexport default function RootLayout({ children }: LayoutProps<'/'>) {\n\tlet userPromise = getUser() // do NOT await\n\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<body>\n\t\t\t\t<UserProvider userPromise={userPromise}>{children}</UserProvider>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "import { UserProvider } from './user-provider'\nimport { getUser } from './user' // some server-side function\n\nexport default function RootLayout({ children }) {\n\tlet userPromise = getUser() // do NOT await\n\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<body>\n\t\t\t\t<UserProvider userPromise={userPromise}>{children}</UserProvider>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Refetching a Promise set high in the tree re-runs the Server Component that set it, so for data only part of the app needs, place the provider on that subtree instead of the root layout. See React's "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://react.dev/reference/react/use#reading-a-promise-from-context",
+							"children": [
+								{
+									"type": "text",
+									"value": "caveat on reading a Promise from context"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If several components read the same data in one request, wrap "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getUser"
+				},
+				{
+					"type": "text",
+					"value": " in React's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " so they share a single call. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/fetching-data#reusing-data-with-reactcache",
+					"children": [
+						{
+							"type": "text",
+							"value": "Reusing data with "
+						},
+						{
+							"type": "inlineCode",
+							"value": "React.cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more on this pattern."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The provider forwards the Promise through context:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/user-provider.tsx\" switcher",
+			"value": "'use client'\n\nimport { createContext, useContext } from 'react'\n\ntype User = { id: string; name: string }\n\nconst UserContext = createContext<Promise<User> | null>(null)\n\nexport function useUser() {\n\tconst userPromise = useContext(UserContext)\n\tif (!userPromise) {\n\t\tthrow new Error('useUser must be used within a UserProvider')\n\t}\n\treturn userPromise\n}\n\nexport function UserProvider({ children, userPromise }: { children: React.ReactNode; userPromise: Promise<User> }) {\n\treturn <UserContext.Provider value={userPromise}>{children}</UserContext.Provider>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/user-provider.js\" switcher",
+			"value": "'use client'\n\nimport { createContext, useContext } from 'react'\n\nconst UserContext = createContext(null)\n\nexport function useUser() {\n\tconst userPromise = useContext(UserContext)\n\tif (!userPromise) {\n\t\tthrow new Error('useUser must be used within a UserProvider')\n\t}\n\treturn userPromise\n}\n\nexport function UserProvider({ children, userPromise }) {\n\treturn <UserContext.Provider value={userPromise}>{children}</UserContext.Provider>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Finally, call the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useUser()"
+				},
+				{
+					"type": "text",
+					"value": " hook in any Client Component and unwrap the Promise with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use()"
+				},
+				{
+					"type": "text",
+					"value": ", which suspends the component until the data is ready:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/profile.tsx\" switcher",
+			"value": "'use client'\n\nimport { use } from 'react'\nimport { useUser } from './user-provider'\n\nexport function Profile() {\n\tconst userPromise = useUser()\n\tconst user = use(userPromise)\n\n\treturn <p>{user.name}</p>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/profile.js\" switcher",
+			"value": "'use client'\n\nimport { use } from 'react'\nimport { useUser } from './user-provider'\n\nexport function Profile() {\n\tconst userPromise = useUser()\n\tconst user = use(userPromise)\n\n\treturn <p>{user.name}</p>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Wrap the consumer in a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Suspense",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " boundary to show a fallback while the Promise resolves:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { Profile } from './profile'\n\nexport default function Page() {\n\treturn (\n\t\t<Suspense fallback={<p>Loading…</p>}>\n\t\t\t<Profile />\n\t\t</Suspense>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { Profile } from './profile'\n\nexport default function Page() {\n\treturn (\n\t\t<Suspense fallback={<p>Loading…</p>}>\n\t\t\t<Profile />\n\t\t</Suspense>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The component that consumes the Promise (e.g. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Profile"
+				},
+				{
+					"type": "text",
+					"value": " above) suspends while the Promise resolves, so you see the streamed, prerendered HTML before JavaScript has finished loading."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://next-spa-patterns.labs.vercel.dev/use-context",
+					"children": [
+						{
+							"type": "text",
+							"value": "live demo"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and its "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/nextjs/next-spa-patterns/tree/main/app/use-context",
+					"children": [
+						{
+							"type": "text",
+							"value": "source code"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Rendering components only in the browser"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Client components are "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/reactwg/server-components/discussions/4",
+					"children": [
+						{
+							"type": "text",
+							"value": "prerendered"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " during "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ". If you want to disable prerendering for a Client Component and only load it in the browser environment, you can use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/lazy-loading#nextdynamic",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next/dynamic"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "import dynamic from 'next/dynamic'\n\nconst ClientOnlyComponent = dynamic(() => import('./component'), {\n\tssr: false,\n})"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This can be useful for third-party libraries that rely on browser APIs like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "window"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "document"
+				},
+				{
+					"type": "text",
+					"value": ". You can also add a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useEffect"
+				},
+				{
+					"type": "text",
+					"value": " that checks for the existence of these APIs, and if they do not exist, return "
+				},
+				{
+					"type": "inlineCode",
+					"value": "null"
+				},
+				{
+					"type": "text",
+					"value": " or a loading state which would be prerendered."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "React 19.3 includes the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react-dom/browser",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "browser"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " API. Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use(browser())"
+				},
+				{
+					"type": "text",
+					"value": " only when a Client Component's first browser render cannot match server-rendered HTML."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "During prerendering, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use(browser())"
+				},
+				{
+					"type": "text",
+					"value": " suspends to the closest "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary. The fallback becomes the component's initial HTML, so crawlers that don't execute JavaScript see the fallback instead of the component. Keep content that should be indexed outside the browser-only boundary."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, this editor reads a saved draft from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "localStorage"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/browser-only-editor.jsx\"",
+			"value": "'use client'\n\nimport { use, useState } from 'react'\nimport { browser } from 'react-dom'\n\nexport default function BrowserOnlyEditor() {\n\tuse(browser('The saved draft is stored in localStorage.'))\n\n\tconst [draft, setDraft] = useState(() => localStorage.getItem('draft') ?? '')\n\n\tfunction handleChange(event) {\n\t\tconst nextDraft = event.target.value\n\t\tsetDraft(nextDraft)\n\t\tlocalStorage.setItem('draft', nextDraft)\n\t}\n\n\treturn (\n\t\t<textarea\n\t\t\tvalue={draft}\n\t\t\tonChange={handleChange}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then wrap it in a Suspense boundary:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.jsx\"",
+			"value": "import { Suspense } from 'react'\nimport BrowserOnlyEditor from './browser-only-editor'\n\nexport default function Page() {\n\treturn (\n\t\t<Suspense fallback={<p>Loading editor…</p>}>\n\t\t\t<BrowserOnlyEditor />\n\t\t</Suspense>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the browser, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "browser()"
+				},
+				{
+					"type": "text",
+					"value": " returns "
+				},
+				{
+					"type": "inlineCode",
+					"value": "undefined"
+				},
+				{
+					"type": "text",
+					"value": ", and the editor renders with the saved draft."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See both approaches in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://next-spa-patterns.labs.vercel.dev/browser-only",
+					"children": [
+						{
+							"type": "text",
+							"value": "live demo"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/nextjs/next-spa-patterns/tree/main/app/browser-only",
+					"children": [
+						{
+							"type": "text",
+							"value": "demo source"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " contains the complete examples."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Shallow routing on the client"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you are migrating from a strict SPA like "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/migrating/from-create-react-app",
+					"children": [
+						{
+							"type": "text",
+							"value": "Create React App"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/migrating/from-vite",
+					"children": [
+						{
+							"type": "text",
+							"value": "Vite"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", you might have existing code which shallow routes to update the URL state. This can be useful for manual transitions between views in your application "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "without"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " using the default Next.js file-system routing."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js lets you use the native "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/API/History/pushState",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "window.history.pushState"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/API/History/replaceState",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "window.history.replaceState"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " methods to update the browser's history stack without reloading the page."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pushState"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "replaceState"
+				},
+				{
+					"type": "text",
+					"value": " calls integrate into the Next.js Router, allowing you to sync with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-pathname",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "usePathname"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-search-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useSearchParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/sort-products.tsx\" switcher",
+			"value": "'use client'\n\nimport { useSearchParams } from 'next/navigation'\n\nexport default function SortProducts() {\n\tconst searchParams = useSearchParams()\n\n\tfunction updateSorting(sortOrder: string) {\n\t\tconst urlSearchParams = new URLSearchParams(searchParams.toString())\n\t\turlSearchParams.set('sort', sortOrder)\n\t\twindow.history.pushState(null, '', `?${urlSearchParams.toString()}`)\n\t}\n\n\treturn (\n\t\t<>\n\t\t\t<button onClick={() => updateSorting('asc')}>Sort Ascending</button>\n\t\t\t<button onClick={() => updateSorting('desc')}>Sort Descending</button>\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/sort-products.js\" switcher",
+			"value": "'use client'\n\nimport { useSearchParams } from 'next/navigation'\n\nexport default function SortProducts() {\n\tconst searchParams = useSearchParams()\n\n\tfunction updateSorting(sortOrder) {\n\t\tconst urlSearchParams = new URLSearchParams(searchParams.toString())\n\t\turlSearchParams.set('sort', sortOrder)\n\t\twindow.history.pushState(null, '', `?${urlSearchParams.toString()}`)\n\t}\n\n\treturn (\n\t\t<>\n\t\t\t<button onClick={() => updateSorting('asc')}>Sort Ascending</button>\n\t\t\t<button onClick={() => updateSorting('desc')}>Sort Descending</button>\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn more about how "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/linking-and-navigating#how-navigation-works",
+					"children": [
+						{
+							"type": "text",
+							"value": "routing and navigation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " work in Next.js."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://next-spa-patterns.labs.vercel.dev/shallow-routing",
+					"children": [
+						{
+							"type": "text",
+							"value": "live demo"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and its "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/nextjs/next-spa-patterns/tree/main/app/shallow-routing",
+					"children": [
+						{
+							"type": "text",
+							"value": "source code"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Mutating data with Server Actions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Interactivity often requires writing data. A Client Component can call a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/server-actions",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Action"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to run the mutation on the server. A client data-fetching library can coordinate an optimistic browser update around the same Server Action, as shown in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/client-side-data-fetching#coordinate-mutations",
+					"children": [
+						{
+							"type": "text",
+							"value": "client-side data fetching guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". The rest of this section coordinates the Server Action with React's built-in state APIs."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A Server Action takes time and can fail. React has useful tools to keep the UI responsive while it runs, so a mutation can feel as instant as a client-rendered SPA: "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/useTransition",
+					"children": [
+						{
+							"type": "text",
+							"value": "transitions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/useOptimistic",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useOptimistic"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/useActionState",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useActionState"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react-dom/hooks/useFormStatus",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useFormStatus"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "At its simplest, a Client Component calls a Server Action inside a transition and uses the pending state for feedback:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/delete-post.tsx\" switcher",
+			"value": "'use client'\n\nimport { useTransition } from 'react'\nimport { deletePost } from './actions'\n\nexport function DeletePost({ id }: { id: string }) {\n\tconst [isPending, startTransition] = useTransition()\n\n\treturn (\n\t\t<button\n\t\t\tdisabled={isPending}\n\t\t\tonClick={() => startTransition(() => deletePost(id))}>\n\t\t\t{isPending ? 'Deleting…' : 'Delete'}\n\t\t</button>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/delete-post.js\" switcher",
+			"value": "'use client'\n\nimport { useTransition } from 'react'\nimport { deletePost } from './actions'\n\nexport function DeletePost({ id }) {\n\tconst [isPending, startTransition] = useTransition()\n\n\treturn (\n\t\t<button\n\t\t\tdisabled={isPending}\n\t\t\tonClick={() => startTransition(() => deletePost(id))}>\n\t\t\t{isPending ? 'Deleting…' : 'Delete'}\n\t\t</button>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For list-like state where each change should appear instantly, you can combine "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useActionState"
+				},
+				{
+					"type": "text",
+					"value": " with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useOptimistic"
+				},
+				{
+					"type": "text",
+					"value": ". The example below is a to-do list: a pure reducer defines how each action changes the list, so the client and server share one copy of that logic:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/todos-reducer.ts\" switcher",
+			"value": "export type Todo = { id: string; text: string; done: boolean }\n\nexport type TodoAction = { type: 'add'; id: string; text: string } | { type: 'toggle'; id: string } | { type: 'edit'; id: string; text: string } | { type: 'delete'; id: string }\n\nexport function todosReducer(todos: Todo[], action: TodoAction): Todo[] {\n\tswitch (action.type) {\n\t\tcase 'add':\n\t\t\treturn [...todos, { id: action.id, text: action.text, done: false }]\n\t\tcase 'toggle':\n\t\t\treturn todos.map((todo) => (todo.id === action.id ? { ...todo, done: !todo.done } : todo))\n\t\tcase 'edit':\n\t\t\treturn todos.map((todo) => (todo.id === action.id ? { ...todo, text: action.text } : todo))\n\t\tcase 'delete':\n\t\t\treturn todos.filter((todo) => todo.id !== action.id)\n\t\tdefault:\n\t\t\treturn todos\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/todos-reducer.js\" switcher",
+			"value": "export function todosReducer(todos, action) {\n\tswitch (action.type) {\n\t\tcase 'add':\n\t\t\treturn [...todos, { id: action.id, text: action.text, done: false }]\n\t\tcase 'toggle':\n\t\t\treturn todos.map((todo) => (todo.id === action.id ? { ...todo, done: !todo.done } : todo))\n\t\tcase 'edit':\n\t\t\treturn todos.map((todo) => (todo.id === action.id ? { ...todo, text: action.text } : todo))\n\t\tcase 'delete':\n\t\t\treturn todos.filter((todo) => todo.id !== action.id)\n\t\tdefault:\n\t\t\treturn todos\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The Server Action applies the reducer, persists the result, and returns the next list:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/actions.ts\" switcher",
+			"value": "'use server'\n\nimport { db } from './db'\nimport { todosReducer, type Todo, type TodoAction } from './todos-reducer'\n\nexport async function saveTodos(todos: Todo[], action: TodoAction): Promise<Todo[]> {\n\tconst next = todosReducer(todos, action)\n\tawait db.saveTodos(next)\n\treturn next\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/actions.js\" switcher",
+			"value": "'use server'\n\nimport { db } from './db'\nimport { todosReducer } from './todos-reducer'\n\nexport async function saveTodos(todos, action) {\n\tconst next = todosReducer(todos, action)\n\tawait db.saveTodos(next)\n\treturn next\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The client passes the same reducer to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useOptimistic"
+				},
+				{
+					"type": "text",
+					"value": ", so the optimistic update and the server compute the next state identically. A "
+				},
+				{
+					"type": "inlineCode",
+					"value": "runAction"
+				},
+				{
+					"type": "text",
+					"value": " helper applies the optimistic change and dispatches the Server Action in the same transition, so every change shows immediately:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/todo-list.tsx\" switcher",
+			"value": "'use client'\n\nimport { useActionState, useOptimistic, startTransition } from 'react'\nimport { saveTodos } from './actions'\nimport { todosReducer, type Todo, type TodoAction } from './todos-reducer'\n\nexport function TodoList({ initialTodos }: { initialTodos: Todo[] }) {\n\tconst [todos, dispatch, isPending] = useActionState(saveTodos, initialTodos)\n\tconst [optimisticTodos, addOptimistic] = useOptimistic(todos, todosReducer)\n\n\tfunction runAction(action: TodoAction) {\n\t\tstartTransition(() => {\n\t\t\taddOptimistic(action)\n\t\t\tdispatch(action)\n\t\t})\n\t}\n\n\treturn (\n\t\t<>\n\t\t\t<form\n\t\t\t\taction={(formData) =>\n\t\t\t\t\trunAction({\n\t\t\t\t\t\ttype: 'add',\n\t\t\t\t\t\tid: crypto.randomUUID(),\n\t\t\t\t\t\ttext: String(formData.get('text')),\n\t\t\t\t\t})\n\t\t\t\t}>\n\t\t\t\t<input name=\"text\" />\n\t\t\t\t<button>Add</button>\n\t\t\t</form>\n\t\t\t<ul>\n\t\t\t\t{optimisticTodos.map((todo) => (\n\t\t\t\t\t<li key={todo.id}>\n\t\t\t\t\t\t<input\n\t\t\t\t\t\t\ttype=\"checkbox\"\n\t\t\t\t\t\t\tchecked={todo.done}\n\t\t\t\t\t\t\tonChange={() => runAction({ type: 'toggle', id: todo.id })}\n\t\t\t\t\t\t/>\n\t\t\t\t\t\t<span style={{ textDecoration: todo.done ? 'line-through' : 'none' }}>{todo.text}</span>\n\t\t\t\t\t\t<button onClick={() => runAction({ type: 'delete', id: todo.id })}>Delete</button>\n\t\t\t\t\t</li>\n\t\t\t\t))}\n\t\t\t</ul>\n\t\t\t{isPending && <p>Syncing to server…</p>}\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/todo-list.js\" switcher",
+			"value": "'use client'\n\nimport { useActionState, useOptimistic, startTransition } from 'react'\nimport { saveTodos } from './actions'\nimport { todosReducer } from './todos-reducer'\n\nexport function TodoList({ initialTodos }) {\n\tconst [todos, dispatch, isPending] = useActionState(saveTodos, initialTodos)\n\tconst [optimisticTodos, addOptimistic] = useOptimistic(todos, todosReducer)\n\n\tfunction runAction(action) {\n\t\tstartTransition(() => {\n\t\t\taddOptimistic(action)\n\t\t\tdispatch(action)\n\t\t})\n\t}\n\n\treturn (\n\t\t<>\n\t\t\t<form\n\t\t\t\taction={(formData) =>\n\t\t\t\t\trunAction({\n\t\t\t\t\t\ttype: 'add',\n\t\t\t\t\t\tid: crypto.randomUUID(),\n\t\t\t\t\t\ttext: String(formData.get('text')),\n\t\t\t\t\t})\n\t\t\t\t}>\n\t\t\t\t<input name=\"text\" />\n\t\t\t\t<button>Add</button>\n\t\t\t</form>\n\t\t\t<ul>\n\t\t\t\t{optimisticTodos.map((todo) => (\n\t\t\t\t\t<li key={todo.id}>\n\t\t\t\t\t\t<input\n\t\t\t\t\t\t\ttype=\"checkbox\"\n\t\t\t\t\t\t\tchecked={todo.done}\n\t\t\t\t\t\t\tonChange={() => runAction({ type: 'toggle', id: todo.id })}\n\t\t\t\t\t\t/>\n\t\t\t\t\t\t<span style={{ textDecoration: todo.done ? 'line-through' : 'none' }}>{todo.text}</span>\n\t\t\t\t\t\t<button onClick={() => runAction({ type: 'delete', id: todo.id })}>Delete</button>\n\t\t\t\t\t</li>\n\t\t\t\t))}\n\t\t\t</ul>\n\t\t\t{isPending && <p>Syncing to server…</p>}\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The optimistic update shows instantly, while "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useActionState"
+				},
+				{
+					"type": "text",
+					"value": "'s pending flag lets you display a subtle indicator (such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Syncing to server…"
+				},
+				{
+					"type": "text",
+					"value": ") until the Server Action resolves."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://next-spa-patterns.labs.vercel.dev/mutations",
+					"children": [
+						{
+							"type": "text",
+							"value": "live demo"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and its "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/nextjs/next-spa-patterns/tree/main/app/mutations",
+					"children": [
+						{
+							"type": "text",
+							"value": "source code"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To learn more about adding interactivity on top of server-rendered apps so they feel like SPAs, see the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/interactive-apps",
+					"children": [
+						{
+							"type": "text",
+							"value": "Building interactive apps"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " guide and its runnable demo."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Static export (optional)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js also supports generating a fully "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/static-exports",
+					"children": [
+						{
+							"type": "text",
+							"value": "static site"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This has some advantages over strict SPAs:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Automatic code-splitting"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Instead of shipping a single "
+								},
+								{
+									"type": "inlineCode",
+									"value": "index.html"
+								},
+								{
+									"type": "text",
+									"value": ", Next.js will generate an HTML file per route, so your visitors get the content faster without waiting for the client JavaScript bundle."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Improved user experience:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Instead of a minimal skeleton for all routes, you get fully rendered pages for each route. When users navigate client side, transitions are still instant and SPA-like."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To enable a static export, update your configuration:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\toutput: 'export',\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After running "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ", Next.js will create an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "out"
+				},
+				{
+					"type": "text",
+					"value": " folder with the HTML/CSS/JS assets for your application."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Note:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Next.js server features are not supported with static exports. "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/static-exports#unsupported-features",
+							"children": [
+								{
+									"type": "text",
+									"value": "Learn more"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Migrating existing projects to Next.js"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can incrementally migrate to Next.js by following our guides:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/migrating/from-create-react-app",
+									"children": [
+										{
+											"type": "text",
+											"value": "Migrating from Create React App"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/migrating/from-vite",
+									"children": [
+										{
+											"type": "text",
+											"value": "Migrating from Vite"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you are already using a SPA with the Pages Router, you can learn how to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/migrating/app-router-migration",
+					"children": [
+						{
+							"type": "text",
+							"value": "incrementally adopt the App Router"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		}
+	]
+}

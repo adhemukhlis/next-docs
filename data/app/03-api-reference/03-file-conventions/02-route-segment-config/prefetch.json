@@ -1,0 +1,755 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: prefetch\nnav_title: prefetch config\ndescription: Configure how a route segment is prefetched during client navigation.\nrelated:\n title: Next Steps\n description: Learn how to use instant navigations in practice.\n links:\n  - app/guides/instant-navigation\n  - app/api-reference/file-conventions/route-segment-config/instant"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch"
+				},
+				{
+					"type": "text",
+					"value": " route segment config controls how a segment is prefetched during client-side navigation. By default, the framework manages the strategy based on the app's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/partialPrefetching",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "partialPrefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " setting. To override per segment, set this export to one of the values below."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The "
+										},
+										{
+											"type": "inlineCode",
+											"value": "prefetch"
+										},
+										{
+											"type": "text",
+											"value": " export only works when "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "cacheComponents"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " is enabled."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "prefetch"
+										},
+										{
+											"type": "text",
+											"value": " cannot be used when the segment is a Client Component."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The meaningful values to set are "
+										},
+										{
+											"type": "inlineCode",
+											"value": "'partial'"
+										},
+										{
+											"type": "text",
+											"value": " and "
+										},
+										{
+											"type": "inlineCode",
+											"value": "'force-disabled'"
+										},
+										{
+											"type": "text",
+											"value": ". "
+										},
+										{
+											"type": "inlineCode",
+											"value": "'auto'"
+										},
+										{
+											"type": "text",
+											"value": " is the default and is equivalent to omitting the export; don't write "
+										},
+										{
+											"type": "inlineCode",
+											"value": "prefetch = 'auto'"
+										},
+										{
+											"type": "text",
+											"value": " explicitly."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "A "
+										},
+										{
+											"type": "inlineCode",
+											"value": "page"
+										},
+										{
+											"type": "text",
+											"value": " or "
+										},
+										{
+											"type": "inlineCode",
+											"value": "layout"
+										},
+										{
+											"type": "text",
+											"value": " that also calls the "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/functions/prefetch",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "prefetch()"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " function needs to import it under another name, for example "
+										},
+										{
+											"type": "inlineCode",
+											"value": "import { prefetch as prefetchStage } from 'next/cache'"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"layout.tsx | page.tsx\" switcher",
+			"value": "export const prefetch = 'partial'\n\nexport default function Page() {\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js\" switcher",
+			"value": "export const prefetch = 'partial'\n\nexport default function Page() {\n\treturn <div>...</div>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Options"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "'partial'"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Opts the segment into "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/adopting-partial-prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " without enabling the global "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/partialPrefetching",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "partialPrefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " flag. A "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " pointing at a segment with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch = 'partial'"
+				},
+				{
+					"type": "text",
+					"value": " loads the per-route "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#app-shell",
+					"children": [
+						{
+							"type": "text",
+							"value": "App Shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " instead of the legacy full prefetch. Set this on the destination, not the link."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For links that opt into a wider prefetch with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/link#prefetch",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Link prefetch={true}>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", Next.js uses per-link prefetching. The server renders a fresh response that resolves URL data ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": ", and the full URL). On pages where all the content is statically renderable, Next.js serves prefetches from the static cache. If a page accesses non-static data, it's prefetched at runtime."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use this for incremental adoption when you can't enable "
+				},
+				{
+					"type": "inlineCode",
+					"value": "partialPrefetching"
+				},
+				{
+					"type": "text",
+					"value": " for the entire app at once. Once every route in scope has "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch = 'partial'"
+				},
+				{
+					"type": "text",
+					"value": ", enable the global flag and remove the per-route exports."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": When Next.js performs a per-link prefetch for a segment, all downstream segments are included in the same request. Segments deeper in the tree that are configured with "
+						},
+						{
+							"type": "inlineCode",
+							"value": "'force-disabled'"
+						},
+						{
+							"type": "text",
+							"value": " will still be prefetched as part of the response."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"page.tsx\"",
+			"value": "export const prefetch = 'partial'"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "'force-disabled'"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Never prefetch this segment. The client will not request segment data ahead of navigation. Use this for segments where prefetching would be wasteful, for example pages behind authentication that are rarely visited."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": "'force-disabled'"
+						},
+						{
+							"type": "text",
+							"value": " does not prevent Next.js from prefetching metadata about the route. However, the actual segment data for this segment and all deeper segments will be omitted from prefetching."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Relationship with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link prefetch>"
+				},
+				{
+					"type": "text",
+					"value": " prop"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A prefetch starts with a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " that expresses intent (should this destination be prefetched, and how eagerly), and ends at a segment that sets a cost ceiling (how much work is it OK to do ahead of time, for any link that points here)."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A destination can't know which links target it, so the segment config caps what any "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link prefetch={true}>"
+				},
+				{
+					"type": "text",
+					"value": " pulls:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#partial",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'partial'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": App Shell for default links; a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Link prefetch={true}>"
+								},
+								{
+									"type": "text",
+									"value": " additionally resolves URL data ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "params"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "searchParams"
+								},
+								{
+									"type": "text",
+									"value": ", and the full URL) and the cached content behind it."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#force-disabled",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'force-disabled'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": skip segment data entirely."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "<Link prefetch={false}>"
+				},
+				{
+					"type": "text",
+					"value": " skips prefetching at the link level regardless of how the destination is configured."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": On pages where all the content is statically renderable, Next.js serves prefetches from the static cache (or a CDN). If a page accesses non-static data like cookies or headers, it's prefetched at runtime with a fresh server render, which costs server CPU per page view."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "TypeScript"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "type Prefetch = 'auto' | 'partial' | 'force-disabled'\n\nexport const prefetch: Prefetch = 'partial'"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "prefetch"
+								},
+								{
+									"type": "text",
+									"value": " export stabilized, replacing "
+								},
+								{
+									"type": "inlineCode",
+									"value": "unstable_prefetch"
+								},
+								{
+									"type": "text",
+									"value": " (Cache Components only)."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

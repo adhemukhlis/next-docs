@@ -1,0 +1,556 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to set up Vitest with Next.js\nnav_title: Vitest\ndescription: Learn how to set up Vitest with Next.js for Unit Testing."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Vitest and React Testing Library are frequently used together for "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Unit Testing"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This guide will show you how to set up Vitest with Next.js and write your first tests."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Since "
+						},
+						{
+							"type": "inlineCode",
+							"value": "async"
+						},
+						{
+							"type": "text",
+							"value": " Server Components are new to the React ecosystem, Vitest currently does not support them. While you can still run "
+						},
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "unit tests"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for synchronous Server and Client Components, we recommend using "
+						},
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "E2E tests"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for "
+						},
+						{
+							"type": "inlineCode",
+							"value": "async"
+						},
+						{
+							"type": "text",
+							"value": " components."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Quickstart"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "create-next-app"
+				},
+				{
+					"type": "text",
+					"value": " with the Next.js "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/tree/canary/examples/with-vitest",
+					"children": [
+						{
+							"type": "text",
+							"value": "with-vitest"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " example to quickly get started:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm create next-app --example with-vitest with-vitest-app"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npx create-next-app@latest --example with-vitest with-vitest-app"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn create next-app --example with-vitest with-vitest-app"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun create next-app --example with-vitest with-vitest-app"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Manual Setup"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To manually set up Vitest, install "
+				},
+				{
+					"type": "inlineCode",
+					"value": "vitest"
+				},
+				{
+					"type": "text",
+					"value": " and the following packages as dev dependencies:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "# Using TypeScript\npnpm add -D vitest @vitejs/plugin-react jsdom @testing-library/react @testing-library/dom vite-tsconfig-paths\n# Using JavaScript\npnpm add -D vitest @vitejs/plugin-react jsdom @testing-library/react @testing-library/dom"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "# Using TypeScript\nnpm install -D vitest @vitejs/plugin-react jsdom @testing-library/react @testing-library/dom vite-tsconfig-paths\n# Using JavaScript\nnpm install -D vitest @vitejs/plugin-react jsdom @testing-library/react @testing-library/dom"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "# Using TypeScript\nyarn add -D vitest @vitejs/plugin-react jsdom @testing-library/react @testing-library/dom vite-tsconfig-paths\n# Using JavaScript\nyarn add -D vitest @vitejs/plugin-react jsdom @testing-library/react @testing-library/dom"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "# Using TypeScript\nbun add -D vitest @vitejs/plugin-react jsdom @testing-library/react @testing-library/dom vite-tsconfig-paths\n# Using JavaScript\nbun add -D vitest @vitejs/plugin-react jsdom @testing-library/react @testing-library/dom"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Create a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "vitest.config.mts|js"
+				},
+				{
+					"type": "text",
+					"value": " file in the root of your project, and add the following options:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"vitest.config.mts\" switcher",
+			"value": "import { defineConfig } from 'vitest/config'\nimport react from '@vitejs/plugin-react'\nimport tsconfigPaths from 'vite-tsconfig-paths'\n\nexport default defineConfig({\n\tplugins: [tsconfigPaths(), react()],\n\ttest: {\n\t\tenvironment: 'jsdom',\n\t},\n})"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"vitest.config.js\" switcher",
+			"value": "import { defineConfig } from 'vitest/config'\nimport react from '@vitejs/plugin-react'\n\nexport default defineConfig({\n\tplugins: [react()],\n\ttest: {\n\t\tenvironment: 'jsdom',\n\t},\n})"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For more information on configuring Vitest, please refer to the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://vitest.dev/config/#configuration",
+					"children": [
+						{
+							"type": "text",
+							"value": "Vitest Configuration"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " docs."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, add a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "test"
+				},
+				{
+					"type": "text",
+					"value": " script to your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "package.json"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"package.json\"",
+			"value": "{\n\t\"scripts\": {\n\t\t\"dev\": \"next dev\",\n\t\t\"build\": \"next build\",\n\t\t\"start\": \"next start\",\n\t\t\"test\": \"vitest\"\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When you run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "npm run test"
+				},
+				{
+					"type": "text",
+					"value": ", Vitest will "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "watch"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for changes in your project by default."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Creating your first Vitest Unit Test"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Check that everything is working by creating a test to check if the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Page />"
+				},
+				{
+					"type": "text",
+					"value": " component successfully renders a heading:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import Link from 'next/link'\n\nexport default function Page() {\n\treturn (\n\t\t<div>\n\t\t\t<h1>Home</h1>\n\t\t\t<Link href=\"/about\">About</Link>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.jsx\" switcher",
+			"value": "import Link from 'next/link'\n\nexport default function Page() {\n\treturn (\n\t\t<div>\n\t\t\t<h1>Home</h1>\n\t\t\t<Link href=\"/about\">About</Link>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"__tests__/page.test.tsx\" switcher",
+			"value": "import { expect, test } from 'vitest'\nimport { render, screen } from '@testing-library/react'\nimport Page from '../app/page'\n\ntest('Page', () => {\n\trender(<Page />)\n\texpect(screen.getByRole('heading', { level: 1, name: 'Home' })).toBeDefined()\n})"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"__tests__/page.test.jsx\" switcher",
+			"value": "import { expect, test } from 'vitest'\nimport { render, screen } from '@testing-library/react'\nimport Page from '../app/page'\n\ntest('Page', () => {\n\trender(<Page />)\n\texpect(screen.getByRole('heading', { level: 1, name: 'Home' })).toBeDefined()\n})"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": The example above uses the common "
+						},
+						{
+							"type": "inlineCode",
+							"value": "__tests__"
+						},
+						{
+							"type": "text",
+							"value": " convention, but test files can also be colocated inside the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "app"
+						},
+						{
+							"type": "text",
+							"value": " router."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Running your tests"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, run the following command to run your tests:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm test"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm run test"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn test"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun run test"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Additional Resources"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You may find these resources helpful:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel/next.js/tree/canary/examples/with-vitest",
+									"children": [
+										{
+											"type": "text",
+											"value": "Next.js with Vitest example"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://vitest.dev/guide/",
+									"children": [
+										{
+											"type": "text",
+											"value": "Vitest Docs"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://testing-library.com/docs/react-testing-library/intro/",
+									"children": [
+										{
+											"type": "text",
+											"value": "React Testing Library Docs"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

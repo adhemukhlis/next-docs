@@ -1,0 +1,720 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: io\ndescription: API Reference for the io function."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is enabled, Next.js needs you to decide whether to capture a synchronous value like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "new Date()"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Math.random()"
+				},
+				{
+					"type": "text",
+					"value": " once and reuse it for every visitor, or produce it fresh for each request."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To capture the value in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#static-shell",
+					"children": [
+						{
+							"type": "text",
+							"value": "static shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", wrap it in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "\"use cache\""
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". To keep it out of the static shell, use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await io()"
+				},
+				{
+					"type": "text",
+					"value": ", which suspends during prerendering."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "During a request, inside cached scopes, in the browser, and apps without Cache Components (including the Pages Router), calling "
+				},
+				{
+					"type": "inlineCode",
+					"value": "io()"
+				},
+				{
+					"type": "text",
+					"value": " resolves immediately."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Usage"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "io()"
+				},
+				{
+					"type": "text",
+					"value": " to inform Next.js that an IO operation follows."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In a Server Component, call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await io()"
+				},
+				{
+					"type": "text",
+					"value": " before reading a value like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "new Date()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Math.random()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "crypto.randomUUID()"
+				},
+				{
+					"type": "text",
+					"value": ", or a synchronous database driver such as "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nodejs.org/api/sqlite.html",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "node:sqlite"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" highlight={13} switcher",
+			"value": "import { Suspense } from 'react'\nimport { io } from 'next/cache'\n\nexport default function Page() {\n\treturn (\n\t\t<Suspense fallback={<p>Loading...</p>}>\n\t\t\t<CurrentTime />\n\t\t</Suspense>\n\t)\n}\n\nasync function CurrentTime() {\n\tawait io()\n\treturn <p>{new Date().toISOString()}</p>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" highlight={13} switcher",
+			"value": "import { Suspense } from 'react'\nimport { io } from 'next/cache'\n\nexport default function Page() {\n\treturn (\n\t\t<Suspense fallback={<p>Loading...</p>}>\n\t\t\t<CurrentTime />\n\t\t</Suspense>\n\t)\n}\n\nasync function CurrentTime() {\n\tawait io()\n\treturn <p>{new Date().toISOString()}</p>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In this route "
+				},
+				{
+					"type": "inlineCode",
+					"value": "CurrentTime"
+				},
+				{
+					"type": "text",
+					"value": " is wrapped in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary, during prerender, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await io()"
+				},
+				{
+					"type": "text",
+					"value": " suspends and the fallback ships in the static shell. If "
+				},
+				{
+					"type": "inlineCode",
+					"value": "CurrentTime"
+				},
+				{
+					"type": "text",
+					"value": " were rendered inside a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "\"use cache\""
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " scope instead, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "io()"
+				},
+				{
+					"type": "text",
+					"value": " would be a no-op, the value is captured into the static shell and no "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary is required."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In a Client Component, call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "io()"
+				},
+				{
+					"type": "text",
+					"value": " with React's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/use",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " hook before reading a synchronous source like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Date.now()"
+				},
+				{
+					"type": "text",
+					"value": ". Client Components prerender on the server during SSR, where the read would otherwise be included in the static shell:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/components.tsx\" highlight={6} switcher",
+			"value": "'use client'\nimport { use } from 'react'\nimport { io } from 'next/cache'\n\nexport function CurrentTime() {\n\tuse(io())\n\treturn <div>{Date.now()}</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/components.js\" highlight={6} switcher",
+			"value": "'use client'\nimport { use } from 'react'\nimport { io } from 'next/cache'\n\nexport function CurrentTime() {\n\tuse(io())\n\treturn <div>{Date.now()}</div>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "When you don't need "
+				},
+				{
+					"type": "inlineCode",
+					"value": "io()"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The component already uses a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/glossary#request-time-apis",
+									"children": [
+										{
+											"type": "text",
+											"value": "Request-time API"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " like "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cookies()"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "headers()"
+								},
+								{
+									"type": "text",
+									"value": ". The request-time API is itself the suspension point."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The data comes from an awaited "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " or async database query wrapped in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Suspense>"
+								},
+								{
+									"type": "text",
+									"value": ". The "
+								},
+								{
+									"type": "inlineCode",
+									"value": "await"
+								},
+								{
+									"type": "text",
+									"value": " is the suspension point."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "How "
+				},
+				{
+					"type": "inlineCode",
+					"value": "io()"
+				},
+				{
+					"type": "text",
+					"value": " differs from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "connection()"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/connection",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "connection()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " function excludes the code that follows it from the static shell, but it stays suspended until a full user navigation reaches the server, so it also blocks "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "prefetches"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". "
+				},
+				{
+					"type": "inlineCode",
+					"value": "io()"
+				},
+				{
+					"type": "text",
+					"value": " suspends like any other asynchronous function, so the code after it can be wrapped in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "\"use cache\""
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and prefetched and cached on the client. Prefer "
+				},
+				{
+					"type": "inlineCode",
+					"value": "io()"
+				},
+				{
+					"type": "text",
+					"value": " over "
+				},
+				{
+					"type": "inlineCode",
+					"value": "connection()"
+				},
+				{
+					"type": "text",
+					"value": ", and reach for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "connection()"
+				},
+				{
+					"type": "text",
+					"value": " only when you need to wait for a real user request."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Type"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "function io(): Promise<void>"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parameters"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The function does not accept any parameters."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Promise<void>"
+				},
+				{
+					"type": "text",
+					"value": ". With Cache Components enabled, awaiting this promise stops prerendering so the code that follows is excluded from the prerender output. In every other context (real requests, cache scopes, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-static-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", the browser, and routes without Cache Components), it resolves immediately."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "io"
+								},
+								{
+									"type": "text",
+									"value": " added."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

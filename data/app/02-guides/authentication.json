@@ -1,0 +1,3897 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to implement authentication in Next.js\nnav_title: Authentication\ndescription: Learn how to implement authentication in your Next.js application."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Understanding authentication is crucial for protecting your application's data. This page will guide you through what React and Next.js features to use to implement auth."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Before starting, it helps to break down the process into three concepts:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "#authentication",
+											"children": [
+												{
+													"type": "text",
+													"value": "Authentication"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Verifies if the user is who they say they are. It requires the user to prove their identity with something they have, such as a username and password."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "#session-management",
+											"children": [
+												{
+													"type": "text",
+													"value": "Session Management"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Tracks the user's auth state across requests."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "#authorization",
+											"children": [
+												{
+													"type": "text",
+													"value": "Authorization"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Decides what routes and data the user can access."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This diagram shows the authentication flow using React and Next.js features:"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"Diagram showing the authentication flow with React and Next.js features\"\nsrcLight=\"/docs/light/authentication-overview-new.png\"\nsrcDark=\"/docs/dark/authentication-overview-new.png\"\nwidth=\"1600\"\nheight=\"1383\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The examples on this page walk through basic username and password auth for educational purposes. While you can implement a custom auth solution, for increased security and simplicity, we recommend using an authentication library. These offer built-in solutions for authentication, session management, and authorization, as well as additional features such as social logins, multi-factor authentication, and role-based access control. You can find a list in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#auth-libraries",
+					"children": [
+						{
+							"type": "text",
+							"value": "Auth Libraries"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " section."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " With "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+							"children": [
+								{
+									"type": "text",
+									"value": "Cache Components"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " enabled, reading the session and caching per-user data follow specific rules. See "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/authentication-with-cache-components",
+							"children": [
+								{
+									"type": "text",
+									"value": "Authentication with Cache Components"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Authentication"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Sign-up and login functionality"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react-dom/components/form",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<form>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " element with React's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/mutating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Actions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useActionState"
+				},
+				{
+					"type": "text",
+					"value": " to capture user credentials, validate form fields, and call your Authentication Provider's API or database."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since Server Actions always execute on the server, they provide a secure environment for handling authentication logic."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Here are the steps to implement signup/login functionality:"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "1. Capture user credentials"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To capture user credentials, create a form that invokes a Server Action on submission. For example, a signup form that accepts the user's name, email, and password:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/signup-form.tsx\" switcher",
+			"value": "import { signup } from '@/app/actions/auth'\n\nexport function SignupForm() {\n\treturn (\n\t\t<form action={signup}>\n\t\t\t<div>\n\t\t\t\t<label htmlFor=\"name\">Name</label>\n\t\t\t\t<input\n\t\t\t\t\tid=\"name\"\n\t\t\t\t\tname=\"name\"\n\t\t\t\t\tplaceholder=\"Name\"\n\t\t\t\t/>\n\t\t\t</div>\n\t\t\t<div>\n\t\t\t\t<label htmlFor=\"email\">Email</label>\n\t\t\t\t<input\n\t\t\t\t\tid=\"email\"\n\t\t\t\t\tname=\"email\"\n\t\t\t\t\ttype=\"email\"\n\t\t\t\t\tplaceholder=\"Email\"\n\t\t\t\t/>\n\t\t\t</div>\n\t\t\t<div>\n\t\t\t\t<label htmlFor=\"password\">Password</label>\n\t\t\t\t<input\n\t\t\t\t\tid=\"password\"\n\t\t\t\t\tname=\"password\"\n\t\t\t\t\ttype=\"password\"\n\t\t\t\t/>\n\t\t\t</div>\n\t\t\t<button type=\"submit\">Sign Up</button>\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/signup-form.js\" switcher",
+			"value": "import { signup } from '@/app/actions/auth'\n\nexport function SignupForm() {\n\treturn (\n\t\t<form action={signup}>\n\t\t\t<div>\n\t\t\t\t<label htmlFor=\"name\">Name</label>\n\t\t\t\t<input\n\t\t\t\t\tid=\"name\"\n\t\t\t\t\tname=\"name\"\n\t\t\t\t\tplaceholder=\"Name\"\n\t\t\t\t/>\n\t\t\t</div>\n\t\t\t<div>\n\t\t\t\t<label htmlFor=\"email\">Email</label>\n\t\t\t\t<input\n\t\t\t\t\tid=\"email\"\n\t\t\t\t\tname=\"email\"\n\t\t\t\t\ttype=\"email\"\n\t\t\t\t\tplaceholder=\"Email\"\n\t\t\t\t/>\n\t\t\t</div>\n\t\t\t<div>\n\t\t\t\t<label htmlFor=\"password\">Password</label>\n\t\t\t\t<input\n\t\t\t\t\tid=\"password\"\n\t\t\t\t\tname=\"password\"\n\t\t\t\t\ttype=\"password\"\n\t\t\t\t/>\n\t\t\t</div>\n\t\t\t<button type=\"submit\">Sign Up</button>\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/actions/auth.ts\" switcher",
+			"value": "export async function signup(formData: FormData) {}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/actions/auth.js\" switcher",
+			"value": "export async function signup(formData) {}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "2. Validate form fields on the server"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use the Server Action to validate the form fields on the server. If your authentication provider doesn't provide form validation, you can use a schema validation library like "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://zod.dev/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Zod"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://valibot.dev/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Valibot"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/jquense/yup",
+					"children": [
+						{
+							"type": "text",
+							"value": "Yup"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Using Zod as an example, you can define a form schema with appropriate error messages:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/lib/definitions.ts\" switcher",
+			"value": "import * as z from 'zod'\n\nexport const SignupFormSchema = z.object({\n\tname: z.string().min(2, { error: 'Name must be at least 2 characters long.' }).trim(),\n\temail: z.email({ error: 'Please enter a valid email.' }).trim(),\n\tpassword: z\n\t\t.string()\n\t\t.min(8, { error: 'Be at least 8 characters long' })\n\t\t.regex(/[a-zA-Z]/, { error: 'Contain at least one letter.' })\n\t\t.regex(/[0-9]/, { error: 'Contain at least one number.' })\n\t\t.regex(/[^a-zA-Z0-9]/, {\n\t\t\terror: 'Contain at least one special character.',\n\t\t})\n\t\t.trim(),\n})\n\nexport type FormState =\n\t| {\n\t\t\terrors?: {\n\t\t\t\tname?: string[]\n\t\t\t\temail?: string[]\n\t\t\t\tpassword?: string[]\n\t\t\t}\n\t\t\tmessage?: string\n\t  }\n\t| undefined"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/lib/definitions.js\" switcher",
+			"value": "import * as z from 'zod'\n\nexport const SignupFormSchema = z.object({\n\tname: z.string().min(2, { error: 'Name must be at least 2 characters long.' }).trim(),\n\temail: z.email({ error: 'Please enter a valid email.' }).trim(),\n\tpassword: z\n\t\t.string()\n\t\t.min(8, { error: 'Be at least 8 characters long' })\n\t\t.regex(/[a-zA-Z]/, { error: 'Contain at least one letter.' })\n\t\t.regex(/[0-9]/, { error: 'Contain at least one number.' })\n\t\t.regex(/[^a-zA-Z0-9]/, {\n\t\t\terror: 'Contain at least one special character.',\n\t\t})\n\t\t.trim(),\n})"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To prevent unnecessary calls to your authentication provider's API or database, you can "
+				},
+				{
+					"type": "inlineCode",
+					"value": "return"
+				},
+				{
+					"type": "text",
+					"value": " early in the Server Action if any form fields do not match the defined schema."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/actions/auth.ts\" switcher",
+			"value": "import { SignupFormSchema, FormState } from '@/app/lib/definitions'\n\nexport async function signup(state: FormState, formData: FormData) {\n\t// Validate form fields\n\tconst validatedFields = SignupFormSchema.safeParse({\n\t\tname: formData.get('name'),\n\t\temail: formData.get('email'),\n\t\tpassword: formData.get('password'),\n\t})\n\n\t// If any form fields are invalid, return early\n\tif (!validatedFields.success) {\n\t\treturn {\n\t\t\terrors: validatedFields.error.flatten().fieldErrors,\n\t\t}\n\t}\n\n\t// Call the provider or db to create a user...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/actions/auth.js\" switcher",
+			"value": "import { SignupFormSchema } from '@/app/lib/definitions'\n\nexport async function signup(state, formData) {\n\t// Validate form fields\n\tconst validatedFields = SignupFormSchema.safeParse({\n\t\tname: formData.get('name'),\n\t\temail: formData.get('email'),\n\t\tpassword: formData.get('password'),\n\t})\n\n\t// If any form fields are invalid, return early\n\tif (!validatedFields.success) {\n\t\treturn {\n\t\t\terrors: validatedFields.error.flatten().fieldErrors,\n\t\t}\n\t}\n\n\t// Call the provider or db to create a user...\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Back in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<SignupForm />"
+				},
+				{
+					"type": "text",
+					"value": ", you can use React's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useActionState"
+				},
+				{
+					"type": "text",
+					"value": " hook to display validation errors while the form is submitting:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/signup-form.tsx\" switcher highlight={7,15,21,27-36}",
+			"value": "'use client'\n\nimport { signup } from '@/app/actions/auth'\nimport { useActionState } from 'react'\n\nexport default function SignupForm() {\n\tconst [state, action, pending] = useActionState(signup, undefined)\n\n\treturn (\n\t\t<form action={action}>\n\t\t\t<div>\n\t\t\t\t<label htmlFor=\"name\">Name</label>\n\t\t\t\t<input\n\t\t\t\t\tid=\"name\"\n\t\t\t\t\tname=\"name\"\n\t\t\t\t\tplaceholder=\"Name\"\n\t\t\t\t/>\n\t\t\t</div>\n\t\t\t{state?.errors?.name && <p>{state.errors.name}</p>}\n\n\t\t\t<div>\n\t\t\t\t<label htmlFor=\"email\">Email</label>\n\t\t\t\t<input\n\t\t\t\t\tid=\"email\"\n\t\t\t\t\tname=\"email\"\n\t\t\t\t\tplaceholder=\"Email\"\n\t\t\t\t/>\n\t\t\t</div>\n\t\t\t{state?.errors?.email && <p>{state.errors.email}</p>}\n\n\t\t\t<div>\n\t\t\t\t<label htmlFor=\"password\">Password</label>\n\t\t\t\t<input\n\t\t\t\t\tid=\"password\"\n\t\t\t\t\tname=\"password\"\n\t\t\t\t\ttype=\"password\"\n\t\t\t\t/>\n\t\t\t</div>\n\t\t\t{state?.errors?.password && (\n\t\t\t\t<div>\n\t\t\t\t\t<p>Password must:</p>\n\t\t\t\t\t<ul>\n\t\t\t\t\t\t{state.errors.password.map((error) => (\n\t\t\t\t\t\t\t<li key={error}>- {error}</li>\n\t\t\t\t\t\t))}\n\t\t\t\t\t</ul>\n\t\t\t\t</div>\n\t\t\t)}\n\t\t\t<button\n\t\t\t\tdisabled={pending}\n\t\t\t\ttype=\"submit\">\n\t\t\t\tSign Up\n\t\t\t</button>\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/signup-form.js\" switcher highlight={7,15,21,27-36}",
+			"value": "'use client'\n\nimport { signup } from '@/app/actions/auth'\nimport { useActionState } from 'react'\n\nexport default function SignupForm() {\n\tconst [state, action, pending] = useActionState(signup, undefined)\n\n\treturn (\n\t\t<form action={action}>\n\t\t\t<div>\n\t\t\t\t<label htmlFor=\"name\">Name</label>\n\t\t\t\t<input\n\t\t\t\t\tid=\"name\"\n\t\t\t\t\tname=\"name\"\n\t\t\t\t\tplaceholder=\"Name\"\n\t\t\t\t/>\n\t\t\t</div>\n\t\t\t{state?.errors?.name && <p>{state.errors.name}</p>}\n\n\t\t\t<div>\n\t\t\t\t<label htmlFor=\"email\">Email</label>\n\t\t\t\t<input\n\t\t\t\t\tid=\"email\"\n\t\t\t\t\tname=\"email\"\n\t\t\t\t\tplaceholder=\"Email\"\n\t\t\t\t/>\n\t\t\t</div>\n\t\t\t{state?.errors?.email && <p>{state.errors.email}</p>}\n\n\t\t\t<div>\n\t\t\t\t<label htmlFor=\"password\">Password</label>\n\t\t\t\t<input\n\t\t\t\t\tid=\"password\"\n\t\t\t\t\tname=\"password\"\n\t\t\t\t\ttype=\"password\"\n\t\t\t\t/>\n\t\t\t</div>\n\t\t\t{state?.errors?.password && (\n\t\t\t\t<div>\n\t\t\t\t\t<p>Password must:</p>\n\t\t\t\t\t<ul>\n\t\t\t\t\t\t{state.errors.password.map((error) => (\n\t\t\t\t\t\t\t<li key={error}>- {error}</li>\n\t\t\t\t\t\t))}\n\t\t\t\t\t</ul>\n\t\t\t\t</div>\n\t\t\t)}\n\t\t\t<button\n\t\t\t\tdisabled={pending}\n\t\t\t\ttype=\"submit\">\n\t\t\t\tSign Up\n\t\t\t</button>\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "In React 19, "
+										},
+										{
+											"type": "inlineCode",
+											"value": "useFormStatus"
+										},
+										{
+											"type": "text",
+											"value": " includes additional keys on the returned object, like data, method, and action. If you are not using React 19, only the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "pending"
+										},
+										{
+											"type": "text",
+											"value": " key is available."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Before mutating data, you should always ensure a user is also authorized to perform the action. See "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "#authorization",
+											"children": [
+												{
+													"type": "text",
+													"value": "Authentication and Authorization"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "3. Create a user or check user credentials"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After validating form fields, you can create a new user account or check if the user exists by calling your authentication provider's API or database."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Continuing from the previous example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/actions/auth.tsx\" switcher",
+			"value": "export async function signup(state: FormState, formData: FormData) {\n\t// 1. Validate form fields\n\t// ...\n\n\t// 2. Prepare data for insertion into database\n\tconst { name, email, password } = validatedFields.data\n\t// e.g. Hash the user's password before storing it\n\tconst hashedPassword = await bcrypt.hash(password, 10)\n\n\t// 3. Insert the user into the database or call an Auth Library's API\n\tconst data = await db\n\t\t.insert(users)\n\t\t.values({\n\t\t\tname,\n\t\t\temail,\n\t\t\tpassword: hashedPassword,\n\t\t})\n\t\t.returning({ id: users.id })\n\n\tconst user = data[0]\n\n\tif (!user) {\n\t\treturn {\n\t\t\tmessage: 'An error occurred while creating your account.',\n\t\t}\n\t}\n\n\t// TODO:\n\t// 4. Create user session\n\t// 5. Redirect user\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/actions/auth.js\" switcher",
+			"value": "export async function signup(state, formData) {\n\t// 1. Validate form fields\n\t// ...\n\n\t// 2. Prepare data for insertion into database\n\tconst { name, email, password } = validatedFields.data\n\t// e.g. Hash the user's password before storing it\n\tconst hashedPassword = await bcrypt.hash(password, 10)\n\n\t// 3. Insert the user into the database or call an Library API\n\tconst data = await db\n\t\t.insert(users)\n\t\t.values({\n\t\t\tname,\n\t\t\temail,\n\t\t\tpassword: hashedPassword,\n\t\t})\n\t\t.returning({ id: users.id })\n\n\tconst user = data[0]\n\n\tif (!user) {\n\t\treturn {\n\t\t\tmessage: 'An error occurred while creating your account.',\n\t\t}\n\t}\n\n\t// TODO:\n\t// 4. Create user session\n\t// 5. Redirect user\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After successfully creating the user account or verifying the user credentials, you can create a session to manage the user's auth state. Depending on your session management strategy, the session can be stored in a cookie or database, or both. Continue to the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#session-management",
+					"children": [
+						{
+							"type": "text",
+							"value": "Session Management"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " section to learn more."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Tips:"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The example above is verbose since it breaks down the authentication steps for the purpose of education. This highlights that implementing your own secure solution can quickly become complex. Consider using an "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "#auth-libraries",
+											"children": [
+												{
+													"type": "text",
+													"value": "Auth Library"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " to simplify the process."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "To improve the user experience, you may want to check for duplicate emails or usernames earlier in the registration flow. For example, as the user types in a username or the input field loses focus. This can help prevent unnecessary form submissions and provide immediate feedback to the user. You can debounce requests with libraries such as "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://www.npmjs.com/package/use-debounce",
+											"children": [
+												{
+													"type": "text",
+													"value": "use-debounce"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " to manage the frequency of these checks."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Session Management"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Session management ensures that the user's authenticated state is preserved across requests. It involves creating, storing, refreshing, and deleting sessions or tokens."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There are two types of sessions:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#stateless-sessions",
+									"children": [
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "text",
+													"value": "Stateless"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Session data (or a token) is stored in the browser's cookies. The cookie is sent with each request, allowing the session to be verified on the server. This method is simpler, but can be less secure if not implemented correctly."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#database-sessions",
+									"children": [
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "text",
+													"value": "Database"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Session data is stored in a database, with the user's browser only receiving the encrypted session ID. This method is more secure, but can be complex and use more server resources."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " While you can use either method, or both, we recommend using a session management library such as "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://github.com/vvo/iron-session",
+							"children": [
+								{
+									"type": "text",
+									"value": "iron-session"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " or "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://github.com/panva/jose",
+							"children": [
+								{
+									"type": "text",
+									"value": "Jose"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Stateless Sessions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To create and manage stateless sessions, there are a few steps you need to follow:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Generate a secret key, which will be used to sign your session, and store it as an "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/environment-variables",
+									"children": [
+										{
+											"type": "text",
+											"value": "environment variable"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Write logic to encrypt/decrypt session data using a session management library."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Manage cookies using the Next.js "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/cookies",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cookies"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " API."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In addition to the above, consider adding functionality to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#updating-or-refreshing-sessions",
+					"children": [
+						{
+							"type": "text",
+							"value": "update (or refresh)"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " the session when the user returns to the application, and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#deleting-the-session",
+					"children": [
+						{
+							"type": "text",
+							"value": "delete"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " the session when the user logs out."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Check if your "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "#auth-libraries",
+							"children": [
+								{
+									"type": "text",
+									"value": "auth library"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " includes session management."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "1. Generating a secret key"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There are a few ways you can generate secret key to sign your session. For example, you may choose to use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "openssl"
+				},
+				{
+					"type": "text",
+					"value": " command in your terminal:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"terminal\"",
+			"value": "openssl rand -base64 32"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This command generates a 32-character random string that you can use as your secret key and store in your "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/environment-variables",
+					"children": [
+						{
+							"type": "text",
+							"value": "environment variables file"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\".env\"",
+			"value": "SESSION_SECRET=your_secret_key"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can then reference this key in your session management logic:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/lib/session.js\"",
+			"value": "const secretKey = process.env.SESSION_SECRET"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "2. Encrypting and decrypting sessions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next, you can use your preferred "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#session-management-libraries",
+					"children": [
+						{
+							"type": "text",
+							"value": "session management library"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to encrypt and decrypt sessions. Continuing from the previous example, we'll use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.npmjs.com/package/jose",
+					"children": [
+						{
+							"type": "text",
+							"value": "Jose"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and React's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.npmjs.com/package/server-only",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "server-only"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " package to ensure that your session management logic is only executed on the server."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/lib/session.ts\" switcher",
+			"value": "import 'server-only'\nimport { SignJWT, jwtVerify } from 'jose'\nimport { SessionPayload } from '@/app/lib/definitions'\n\nconst secretKey = process.env.SESSION_SECRET\nconst encodedKey = new TextEncoder().encode(secretKey)\n\nexport async function encrypt(payload: SessionPayload) {\n\treturn new SignJWT(payload).setProtectedHeader({ alg: 'HS256' }).setIssuedAt().setExpirationTime('7d').sign(encodedKey)\n}\n\nexport async function decrypt(session: string | undefined = '') {\n\ttry {\n\t\tconst { payload } = await jwtVerify(session, encodedKey, {\n\t\t\talgorithms: ['HS256'],\n\t\t})\n\t\treturn payload\n\t} catch (error) {\n\t\tconsole.log('Failed to verify session')\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/lib/session.js\" switcher",
+			"value": "import 'server-only'\nimport { SignJWT, jwtVerify } from 'jose'\n\nconst secretKey = process.env.SESSION_SECRET\nconst encodedKey = new TextEncoder().encode(secretKey)\n\nexport async function encrypt(payload) {\n\treturn new SignJWT(payload).setProtectedHeader({ alg: 'HS256' }).setIssuedAt().setExpirationTime('7d').sign(encodedKey)\n}\n\nexport async function decrypt(session) {\n\ttry {\n\t\tconst { payload } = await jwtVerify(session, encodedKey, {\n\t\t\talgorithms: ['HS256'],\n\t\t})\n\t\treturn payload\n\t} catch (error) {\n\t\tconsole.log('Failed to verify session')\n\t}\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Tips"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The payload should contain the "
+										},
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "text",
+													"value": "minimum"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ", unique user data that'll be used in subsequent requests, such as the user's ID, role, etc. It should not contain personally identifiable information like phone number, email address, credit card information, etc, or sensitive data like passwords."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "3. Setting cookies (recommended options)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To store the session in a cookie, use the Next.js "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cookies",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cookies"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " API. The cookie should be set on the server, and include the recommended options:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "HttpOnly"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Prevents client-side JavaScript from accessing the cookie."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Secure"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Use https to send the cookie."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "SameSite"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Specify whether the cookie can be sent with cross-site requests."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Max-Age or Expires"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Delete the cookie after a certain period."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Path"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Define the URL path for the cookie."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Please refer to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies",
+					"children": [
+						{
+							"type": "text",
+							"value": "MDN"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more information on each of these options."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/lib/session.ts\" switcher",
+			"value": "import 'server-only'\nimport { cookies } from 'next/headers'\n\nexport async function createSession(userId: string) {\n\tconst expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)\n\tconst session = await encrypt({ userId, expiresAt })\n\tconst cookieStore = await cookies()\n\n\tcookieStore.set('session', session, {\n\t\thttpOnly: true,\n\t\tsecure: true,\n\t\texpires: expiresAt,\n\t\tsameSite: 'lax',\n\t\tpath: '/',\n\t})\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/lib/session.js\" switcher",
+			"value": "import 'server-only'\nimport { cookies } from 'next/headers'\n\nexport async function createSession(userId) {\n\tconst expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)\n\tconst session = await encrypt({ userId, expiresAt })\n\tconst cookieStore = await cookies()\n\n\tcookieStore.set('session', session, {\n\t\thttpOnly: true,\n\t\tsecure: true,\n\t\texpires: expiresAt,\n\t\tsameSite: 'lax',\n\t\tpath: '/',\n\t})\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Back in your Server Action, you can invoke the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "createSession()"
+				},
+				{
+					"type": "text",
+					"value": " function, and use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/redirecting",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "redirect()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " API to redirect the user to the appropriate page:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/actions/auth.ts\" switcher",
+			"value": "import { createSession } from '@/app/lib/session'\n\nexport async function signup(state: FormState, formData: FormData) {\n\t// Previous steps:\n\t// 1. Validate form fields\n\t// 2. Prepare data for insertion into database\n\t// 3. Insert the user into the database or call an Library API\n\n\t// Current steps:\n\t// 4. Create user session\n\tawait createSession(user.id)\n\t// 5. Redirect user\n\tredirect('/profile')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/actions/auth.js\" switcher",
+			"value": "import { createSession } from '@/app/lib/session'\n\nexport async function signup(state, formData) {\n\t// Previous steps:\n\t// 1. Validate form fields\n\t// 2. Prepare data for insertion into database\n\t// 3. Insert the user into the database or call an Library API\n\n\t// Current steps:\n\t// 4. Create user session\n\tawait createSession(user.id)\n\t// 5. Redirect user\n\tredirect('/profile')\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Tips"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "text",
+													"value": "Cookies should be set on the server"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " to prevent client-side tampering."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "🎥 Watch: Learn more about stateless sessions and authentication with Next.js → "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://www.youtube.com/watch?v=DJvM2lSPn6w",
+											"children": [
+												{
+													"type": "text",
+													"value": "YouTube (11 minutes)"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Updating (or refreshing) sessions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also extend the session's expiration time. This is useful for keeping the user logged in after they access the application again. For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/lib/session.ts\" switcher",
+			"value": "import 'server-only'\nimport { cookies } from 'next/headers'\nimport { decrypt } from '@/app/lib/session'\n\nexport async function updateSession() {\n\tconst session = (await cookies()).get('session')?.value\n\tconst payload = await decrypt(session)\n\n\tif (!session || !payload) {\n\t\treturn null\n\t}\n\n\tconst expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)\n\n\tconst cookieStore = await cookies()\n\tcookieStore.set('session', session, {\n\t\thttpOnly: true,\n\t\tsecure: true,\n\t\texpires: expires,\n\t\tsameSite: 'lax',\n\t\tpath: '/',\n\t})\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/lib/session.js\" switcher",
+			"value": "import 'server-only'\nimport { cookies } from 'next/headers'\nimport { decrypt } from '@/app/lib/session'\n\nexport async function updateSession() {\n\tconst cookieStore = await cookies()\n\tconst session = cookieStore.get('session')?.value\n\tconst payload = await decrypt(session)\n\n\tif (!session || !payload) {\n\t\treturn null\n\t}\n\n\tconst expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)\n\tcookieStore.set('session', session, {\n\t\thttpOnly: true,\n\t\tsecure: true,\n\t\texpires: expires,\n\t\tsameSite: 'lax',\n\t\tpath: '/',\n\t})\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Tip:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Check if your auth library supports refresh tokens, which can be used to extend the user's session."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Deleting the session"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To delete the session, you can delete the cookie:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/lib/session.ts\" switcher",
+			"value": "import 'server-only'\nimport { cookies } from 'next/headers'\n\nexport async function deleteSession() {\n\tconst cookieStore = await cookies()\n\tcookieStore.delete('session')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/lib/session.js\" switcher",
+			"value": "import 'server-only'\nimport { cookies } from 'next/headers'\n\nexport async function deleteSession() {\n\tconst cookieStore = await cookies()\n\tcookieStore.delete('session')\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then you can reuse the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "deleteSession()"
+				},
+				{
+					"type": "text",
+					"value": " function in your application, for example, on logout:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/actions/auth.ts\" switcher",
+			"value": "import { cookies } from 'next/headers'\nimport { deleteSession } from '@/app/lib/session'\n\nexport async function logout() {\n\tawait deleteSession()\n\tredirect('/login')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/actions/auth.js\" switcher",
+			"value": "import { cookies } from 'next/headers'\nimport { deleteSession } from '@/app/lib/session'\n\nexport async function logout() {\n\tawait deleteSession()\n\tredirect('/login')\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Database Sessions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To create and manage database sessions, you'll need to follow these steps:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Create a table in your database to store session and data (or check if your Auth Library handles this)."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Implement functionality to insert, update, and delete sessions"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Encrypt the session ID before storing it in the user's browser, and ensure the database and cookie stay in sync (this is optional, but recommended for optimistic auth checks in "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#optimistic-checks-with-proxy-optional",
+									"children": [
+										{
+											"type": "text",
+											"value": "Proxy"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ")."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/lib/session.ts\" switcher",
+			"value": "import { cookies } from 'next/headers'\nimport { db } from '@/app/lib/db'\nimport { encrypt } from '@/app/lib/session'\n\nexport async function createSession(id: number) {\n\tconst expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)\n\n\t// 1. Create a session in the database\n\tconst data = await db\n\t\t.insert(sessions)\n\t\t.values({\n\t\t\tuserId: id,\n\t\t\texpiresAt,\n\t\t})\n\t\t// Return the session ID\n\t\t.returning({ id: sessions.id })\n\n\tconst sessionId = data[0].id\n\n\t// 2. Encrypt the session ID\n\tconst session = await encrypt({ sessionId, expiresAt })\n\n\t// 3. Store the session in cookies for optimistic auth checks\n\tconst cookieStore = await cookies()\n\tcookieStore.set('session', session, {\n\t\thttpOnly: true,\n\t\tsecure: true,\n\t\texpires: expiresAt,\n\t\tsameSite: 'lax',\n\t\tpath: '/',\n\t})\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/lib/session.js\" switcher",
+			"value": "import { cookies } from 'next/headers'\nimport { db } from '@/app/lib/db'\nimport { encrypt } from '@/app/lib/session'\n\nexport async function createSession(id) {\n\tconst expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)\n\n\t// 1. Create a session in the database\n\tconst data = await db\n\t\t.insert(sessions)\n\t\t.values({\n\t\t\tuserId: id,\n\t\t\texpiresAt,\n\t\t})\n\t\t// Return the session ID\n\t\t.returning({ id: sessions.id })\n\n\tconst sessionId = data[0].id\n\n\t// 2. Encrypt the session ID\n\tconst session = await encrypt({ sessionId, expiresAt })\n\n\t// 3. Store the session in cookies for optimistic auth checks\n\tconst cookieStore = await cookies()\n\tcookieStore.set('session', session, {\n\t\thttpOnly: true,\n\t\tsecure: true,\n\t\texpires: expiresAt,\n\t\tsameSite: 'lax',\n\t\tpath: '/',\n\t})\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Tips"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "For faster access, you may consider adding server caching for the lifetime of the session. You can also keep the session data in your primary database, and combine data requests to reduce the number of queries."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "You may opt to use database sessions for more advanced use cases, such as keeping track of the last time a user logged in, or number of active devices, or give users the ability to log out of all devices."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After implementing session management, you'll need to add authorization logic to control what users can access and do within your application. Continue to the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#authorization",
+					"children": [
+						{
+							"type": "text",
+							"value": "Authorization"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " section to learn more."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Authorization"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Once a user is authenticated and a session is created, you can implement authorization to control what the user can access and do within your application."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There are two main types of authorization checks:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Optimistic"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Checks if the user is authorized to access a route or perform an action using the session data stored in the cookie. These checks are useful for quick operations, such as showing/hiding UI elements or redirecting users based on permissions or roles."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Secure"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Checks if the user is authorized to access a route or perform an action using the session data stored in the database. These checks are more secure and are used for operations that require access to sensitive data or actions."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For both cases, we recommend:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Creating a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#creating-a-data-access-layer-dal",
+									"children": [
+										{
+											"type": "text",
+											"value": "Data Access Layer"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to centralize your authorization logic"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Using "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#using-data-transfer-objects-dto",
+									"children": [
+										{
+											"type": "text",
+											"value": "Data Transfer Objects (DTO)"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to only return the necessary data"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optionally use "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#optimistic-checks-with-proxy-optional",
+									"children": [
+										{
+											"type": "text",
+											"value": "Proxy"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to perform optimistic checks."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Optimistic checks with Proxy (Optional)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There are some cases where you may want to use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/proxy",
+					"children": [
+						{
+							"type": "text",
+							"value": "Proxy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and redirect users based on permissions:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "To perform optimistic checks. Since Proxy runs on every route, it's a good way to centralize redirect logic and pre-filter unauthorized users."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "To protect static routes that share data between users (e.g. content behind a paywall)."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "However, since Proxy runs on every route, including "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/linking-and-navigating#prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "prefetched"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " routes, it's important to only read the session from the cookie (optimistic checks), and avoid database checks to prevent performance issues."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"proxy.ts\" switcher",
+			"value": "import { NextRequest, NextResponse } from 'next/server'\nimport { decrypt } from '@/app/lib/session'\nimport { cookies } from 'next/headers'\n\n// 1. Specify protected and public routes\nconst protectedRoutes = ['/dashboard']\nconst publicRoutes = ['/login', '/signup', '/']\n\nexport default async function proxy(req: NextRequest) {\n\t// 2. Check if the current route is protected or public\n\tconst path = req.nextUrl.pathname\n\tconst isProtectedRoute = protectedRoutes.includes(path)\n\tconst isPublicRoute = publicRoutes.includes(path)\n\n\t// 3. Decrypt the session from the cookie\n\tconst cookie = (await cookies()).get('session')?.value\n\tconst session = await decrypt(cookie)\n\n\t// 4. Redirect to /login if the user is not authenticated\n\tif (isProtectedRoute && !session?.userId) {\n\t\treturn NextResponse.redirect(new URL('/login', req.nextUrl))\n\t}\n\n\t// 5. Redirect to /dashboard if the user is authenticated\n\tif (isPublicRoute && session?.userId && !req.nextUrl.pathname.startsWith('/dashboard')) {\n\t\treturn NextResponse.redirect(new URL('/dashboard', req.nextUrl))\n\t}\n\n\treturn NextResponse.next()\n}\n\n// Routes Proxy should not run on\nexport const config = {\n\tmatcher: ['/((?!api|_next/static|_next/image|.*\\\\.png$).*)'],\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"proxy.js\" switcher",
+			"value": "import { NextResponse } from 'next/server'\nimport { decrypt } from '@/app/lib/session'\nimport { cookies } from 'next/headers'\n\n// 1. Specify protected and public routes\nconst protectedRoutes = ['/dashboard']\nconst publicRoutes = ['/login', '/signup', '/']\n\nexport default async function proxy(req) {\n\t// 2. Check if the current route is protected or public\n\tconst path = req.nextUrl.pathname\n\tconst isProtectedRoute = protectedRoutes.includes(path)\n\tconst isPublicRoute = publicRoutes.includes(path)\n\n\t// 3. Decrypt the session from the cookie\n\tconst cookie = (await cookies()).get('session')?.value\n\tconst session = await decrypt(cookie)\n\n\t// 5. Redirect to /login if the user is not authenticated\n\tif (isProtectedRoute && !session?.userId) {\n\t\treturn NextResponse.redirect(new URL('/login', req.nextUrl))\n\t}\n\n\t// 6. Redirect to /dashboard if the user is authenticated\n\tif (isPublicRoute && session?.userId && !req.nextUrl.pathname.startsWith('/dashboard')) {\n\t\treturn NextResponse.redirect(new URL('/dashboard', req.nextUrl))\n\t}\n\n\treturn NextResponse.next()\n}\n\n// Routes Proxy should not run on\nexport const config = {\n\tmatcher: ['/((?!api|_next/static|_next/image|.*\\\\.png$).*)'],\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "While Proxy can be useful for initial checks, it should not be your only line of defense in protecting your data. The majority of security checks should be performed as close as possible to your data source, see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#creating-a-data-access-layer-dal",
+					"children": [
+						{
+							"type": "text",
+							"value": "Data Access Layer"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more information."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Tips"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "In Proxy, you can also read cookies using "
+										},
+										{
+											"type": "inlineCode",
+											"value": "req.cookies.get('session')?.value"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Proxy uses the Node.js runtime, check if your Auth library and session management library are compatible."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "You can use the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "matcher"
+										},
+										{
+											"type": "text",
+											"value": " property in the Proxy to specify which routes Proxy should run on. Although, for auth, it's recommended Proxy runs on all routes."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Creating a Data Access Layer (DAL)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We recommend creating a DAL to centralize your data requests and authorization logic."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The DAL should include a function that verifies the user's session as they interact with your application. At the very least, the function should check if the session is valid, then redirect or return the user information needed to make further requests."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, create a separate file for your DAL that includes a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "verifySession()"
+				},
+				{
+					"type": "text",
+					"value": " function. Then use React's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/cache",
+					"children": [
+						{
+							"type": "text",
+							"value": "cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " API to memoize the return value of the function during a React render pass:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/lib/dal.ts\" switcher",
+			"value": "import 'server-only'\n\nimport { cache } from 'react'\nimport { cookies } from 'next/headers'\nimport { redirect } from 'next/navigation'\nimport { decrypt } from '@/app/lib/session'\n\nexport const verifySession = cache(async () => {\n\tconst cookie = (await cookies()).get('session')?.value\n\tconst session = await decrypt(cookie)\n\n\tif (!session?.userId) {\n\t\tredirect('/login')\n\t}\n\n\treturn { isAuth: true, userId: session.userId }\n})"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/lib/dal.js\" switcher",
+			"value": "import 'server-only'\n\nimport { cache } from 'react'\nimport { cookies } from 'next/headers'\nimport { redirect } from 'next/navigation'\nimport { decrypt } from '@/app/lib/session'\n\nexport const verifySession = cache(async () => {\n\tconst cookie = (await cookies()).get('session')?.value\n\tconst session = await decrypt(cookie)\n\n\tif (!session.userId) {\n\t\tredirect('/login')\n\t}\n\n\treturn { isAuth: true, userId: session.userId }\n})"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can then invoke the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "verifySession()"
+				},
+				{
+					"type": "text",
+					"value": " function in your data requests, Server Actions, and Route Handlers:"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": React's "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://react.dev/reference/react/cache",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "cache"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " deduplicates within a React render pass. Server Actions and Route Handlers are not part of a render pass, so the wrapper does nothing and every call runs the function."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/lib/dal.ts\" switcher",
+			"value": "export const getUser = cache(async () => {\n\tconst session = await verifySession()\n\tif (!session) return null\n\n\ttry {\n\t\tconst data = await db.query.users.findMany({\n\t\t\twhere: eq(users.id, session.userId),\n\t\t\t// Explicitly return the columns you need rather than the whole user object\n\t\t\tcolumns: {\n\t\t\t\tid: true,\n\t\t\t\tname: true,\n\t\t\t\temail: true,\n\t\t\t},\n\t\t})\n\n\t\tconst user = data[0]\n\n\t\treturn user\n\t} catch (error) {\n\t\tconsole.log('Failed to fetch user')\n\t\treturn null\n\t}\n})"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/lib/dal.js\" switcher",
+			"value": "export const getUser = cache(async () => {\n\tconst session = await verifySession()\n\tif (!session) return null\n\n\ttry {\n\t\tconst data = await db.query.users.findMany({\n\t\t\twhere: eq(users.id, session.userId),\n\t\t\t// Explicitly return the columns you need rather than the whole user object\n\t\t\tcolumns: {\n\t\t\t\tid: true,\n\t\t\t\tname: true,\n\t\t\t\temail: true,\n\t\t\t},\n\t\t})\n\n\t\tconst user = data[0]\n\n\t\treturn user\n\t} catch (error) {\n\t\tconsole.log('Failed to fetch user')\n\t\treturn null\n\t}\n})"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Tip"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "A DAL can be used to protect data fetched at request time. However, for static routes that share data between users, data will be fetched at build time and not at request time. Use "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "#optimistic-checks-with-proxy-optional",
+											"children": [
+												{
+													"type": "text",
+													"value": "Proxy"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " to protect static routes."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "For secure checks, you can check if the session is valid by comparing the session ID with your database. Use React's "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://react.dev/reference/react/cache",
+											"children": [
+												{
+													"type": "text",
+													"value": "cache"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " function to avoid unnecessary duplicate requests to the database during a render pass."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "You may wish to consolidate related data requests in a JavaScript class that runs "
+										},
+										{
+											"type": "inlineCode",
+											"value": "verifySession()"
+										},
+										{
+											"type": "text",
+											"value": " before any methods."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using Data Transfer Objects (DTO)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When retrieving data, it's recommended you return only the necessary data that will be used in your application, and not entire objects. For example, if you're fetching user data, you might only return the user's ID and name, rather than the entire user object which could contain passwords, phone numbers, etc."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "However, if you have no control over the returned data structure, or are working in a team where you want to avoid whole objects being passed to the client, you can use strategies such as specifying what fields are safe to be exposed to the client."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/lib/dto.ts\" switcher",
+			"value": "import 'server-only'\nimport { getUser } from '@/app/lib/dal'\n\nfunction canSeeUsername(viewer: User) {\n\treturn true\n}\n\nfunction canSeePhoneNumber(viewer: User, team: string) {\n\treturn viewer.isAdmin || team === viewer.team\n}\n\nexport async function getProfileDTO(slug: string) {\n\tconst data = await db.query.users.findMany({\n\t\twhere: eq(users.slug, slug),\n\t\t// Return specific columns here\n\t})\n\tconst user = data[0]\n\n\tconst currentUser = await getUser(user.id)\n\n\t// Or return only what's specific to the query here\n\treturn {\n\t\tusername: canSeeUsername(currentUser) ? user.username : null,\n\t\tphonenumber: canSeePhoneNumber(currentUser, user.team) ? user.phonenumber : null,\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/lib/dto.js\" switcher",
+			"value": "import 'server-only'\nimport { getUser } from '@/app/lib/dal'\n\nfunction canSeeUsername(viewer) {\n\treturn true\n}\n\nfunction canSeePhoneNumber(viewer, team) {\n\treturn viewer.isAdmin || team === viewer.team\n}\n\nexport async function getProfileDTO(slug) {\n\tconst data = await db.query.users.findMany({\n\t\twhere: eq(users.slug, slug),\n\t\t// Return specific columns here\n\t})\n\tconst user = data[0]\n\n\tconst currentUser = await getUser(user.id)\n\n\t// Or return only what's specific to the query here\n\treturn {\n\t\tusername: canSeeUsername(currentUser) ? user.username : null,\n\t\tphonenumber: canSeePhoneNumber(currentUser, user.team) ? user.phonenumber : null,\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By centralizing your data requests and authorization logic in a DAL and using DTOs, you can ensure that all data requests are secure and consistent, making it easier to maintain, audit, and debug as your application scales."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "There are a couple of different ways you can define a DTO, from using "
+										},
+										{
+											"type": "inlineCode",
+											"value": "toJSON()"
+										},
+										{
+											"type": "text",
+											"value": ", to individual functions like the example above, or JS classes. Since these are JavaScript patterns and not a React or Next.js feature, we recommend doing some research to find the best pattern for your application."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Learn more about security best practices in our "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/blog/security-nextjs-server-components-actions",
+											"children": [
+												{
+													"type": "text",
+													"value": "Security in Next.js article"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Auth check in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " are useful for role-based access. For example, to conditionally render components based on the user's role:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/page.tsx\" switcher",
+			"value": "import { verifySession } from '@/app/lib/dal'\n\nexport default async function Dashboard() {\n\tconst session = await verifySession()\n\tconst userRole = session?.role // Assuming 'role' is part of the session object\n\n\tif (userRole === 'admin') {\n\t\treturn <AdminDashboard />\n\t} else if (userRole === 'user') {\n\t\treturn <UserDashboard />\n\t} else {\n\t\tredirect('/login')\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/page.jsx\" switcher",
+			"value": "import { verifySession } from '@/app/lib/dal'\n\nexport default async function Dashboard() {\n\tconst session = await verifySession()\n\tconst userRole = session?.role // Assuming 'role' is part of the session object\n\n\tif (userRole === 'admin') {\n\t\treturn <AdminDashboard />\n\t} else if (userRole === 'user') {\n\t\treturn <UserDashboard />\n\t} else {\n\t\tredirect('/login')\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the example, we use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "verifySession()"
+				},
+				{
+					"type": "text",
+					"value": " function from our DAL to check for 'admin', 'user', and unauthorized roles. This pattern ensures that each user interacts only with components appropriate to their role."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Layouts and auth checks"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Due to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/linking-and-navigating#client-side-transitions",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Rendering"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", be cautious when doing checks in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout",
+					"children": [
+						{
+							"type": "text",
+							"value": "Layouts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " as these don't re-render on navigation, meaning the user session won't be checked on every route change."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A layout also does not control whether the rest of the route renders. Route segments and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/parallel-routes#conditional-routes",
+					"children": [
+						{
+							"type": "text",
+							"value": "parallel route slots"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " are rendered by the router, so a layout that hides or swaps them does not stop them from running or from appearing in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#rsc-payload",
+					"children": [
+						{
+							"type": "text",
+							"value": "RSC Payload"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Instead, you should do the checks close to your data source or the component that'll be conditionally rendered."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, consider a shared layout that fetches the user data and displays the user image in a nav. Instead of doing the auth check in the layout, you should fetch the user data ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "getUser()"
+				},
+				{
+					"type": "text",
+					"value": ") in the layout and do the auth check in your "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#creating-a-data-access-layer-dal",
+					"children": [
+						{
+							"type": "text",
+							"value": "DAL"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This guarantees that wherever "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getUser()"
+				},
+				{
+					"type": "text",
+					"value": " is called within your application, the auth check is performed, and prevents developers from forgetting to check that the user is authorized to access the data."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Auth and streaming"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Session and user data often appear in shell UI (header, nav) that repeats across routes. A top-level "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await"
+				},
+				{
+					"type": "text",
+					"value": " on "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers()"
+				},
+				{
+					"type": "text",
+					"value": ", or the DAL in a layout delays the first streamed chunk for that segment and holds "
+				},
+				{
+					"type": "inlineCode",
+					"value": "{children}"
+				},
+				{
+					"type": "text",
+					"value": " behind that work."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If only part of the shell needs session data (for example, a user menu), move the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await"
+				},
+				{
+					"type": "text",
+					"value": " into a nested Server Component and wrap it in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " so the rest of the page streams first. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/streaming#push-dynamic-access-down",
+					"children": [
+						{
+							"type": "text",
+							"value": "Push dynamic access down"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the pattern."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Client Components can't import the DAL. Run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "verifySession()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getUser()"
+				},
+				{
+					"type": "text",
+					"value": ", or similar in a parent Server Component, then pass data to client children as props or through a context provider. For that pattern, see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/single-page-applications#using-reacts-use-within-a-context-provider",
+					"children": [
+						{
+							"type": "text",
+							"value": "Using React's "
+						},
+						{
+							"type": "inlineCode",
+							"value": "use"
+						},
+						{
+							"type": "text",
+							"value": " within a Context Provider"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and use React's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/experimental_taintUniqueValue",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "taintUniqueValue"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " API to keep sensitive session fields from reaching the client."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Auth checks in page components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, in a dashboard page, you can verify the user session and fetch the user data:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/page.tsx\" switcher",
+			"value": "import { verifySession } from '@/app/lib/dal'\n\nexport default async function DashboardPage() {\n\tconst session = await verifySession()\n\n\t// Fetch user-specific data from your database or data source\n\tconst user = await getUserData(session.userId)\n\n\treturn (\n\t\t<div>\n\t\t\t<h1>Welcome, {user.name}</h1>\n\t\t\t{/* Dashboard content */}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/page.jsx\" switcher",
+			"value": "import { verifySession } from '@/app/lib/dal'\n\nexport default async function DashboardPage() {\n\tconst session = await verifySession()\n\n\t// Fetch user-specific data from your database or data source\n\tconst user = await getUserData(session.userId)\n\n\treturn (\n\t\t<div>\n\t\t\t<h1>Welcome, {user.name}</h1>\n\t\t\t{/* Dashboard content */}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Auth checks in leaf components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also perform auth checks in leaf components that conditionally render UI elements based on user permissions. For example, a component that displays admin-only actions:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/admin-actions.tsx\" switcher",
+			"value": "import { verifySession } from '@/app/lib/dal'\n\nexport default async function AdminActions() {\n\tconst session = await verifySession()\n\tconst userRole = session?.role\n\n\tif (userRole !== 'admin') {\n\t\treturn null\n\t}\n\n\treturn (\n\t\t<div>\n\t\t\t<button>Delete User</button>\n\t\t\t<button>Edit Settings</button>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/admin-actions.jsx\" switcher",
+			"value": "import { verifySession } from '@/app/lib/dal'\n\nexport default async function AdminActions() {\n\tconst session = await verifySession()\n\tconst userRole = session?.role\n\n\tif (userRole !== 'admin') {\n\t\treturn null\n\t}\n\n\treturn (\n\t\t<div>\n\t\t\t<button>Delete User</button>\n\t\t\t<button>Edit Settings</button>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This pattern allows you to show or hide UI elements based on user permissions while ensuring the auth check happens at render time in each component."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "A common pattern in SPAs is to "
+										},
+										{
+											"type": "inlineCode",
+											"value": "return null"
+										},
+										{
+											"type": "text",
+											"value": " in a layout or a top-level component if a user is not authorized. This pattern is "
+										},
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "text",
+													"value": "not recommended"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " since Next.js applications have multiple entry points, which will not prevent nested route segments and Server Actions from being accessed."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Ensure that any Server Actions called from these components also perform their own authorization checks, as client-side UI restrictions alone are not sufficient for security."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Actions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Treat "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/server-actions",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Actions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with the same security considerations as public-facing API endpoints, and verify if the user is allowed to perform a mutation."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the example below, we check the user's role before allowing the action to proceed:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/lib/actions.ts\" switcher",
+			"value": "'use server'\nimport { verifySession } from '@/app/lib/dal'\n\nexport async function serverAction(formData: FormData) {\n\tconst session = await verifySession()\n\tconst userRole = session?.role\n\n\t// Return early if user is not authorized to perform the action\n\tif (userRole !== 'admin') {\n\t\treturn null\n\t}\n\n\t// Proceed with the action for authorized users\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/lib/actions.js\" switcher",
+			"value": "'use server'\nimport { verifySession } from '@/app/lib/dal'\n\nexport async function serverAction() {\n\tconst session = await verifySession()\n\tconst userRole = session?.role\n\n\t// Return early if user is not authorized to perform the action\n\tif (userRole !== 'admin') {\n\t\treturn null\n\t}\n\n\t// Proceed with the action for authorized users\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Handlers"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Treat "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with the same security considerations as public-facing API endpoints, and verify if the user is allowed to access the Route Handler."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/route.ts\" switcher",
+			"value": "import { verifySession } from '@/app/lib/dal'\n\nexport async function GET() {\n\t// User authentication and role verification\n\tconst session = await verifySession()\n\n\t// Check if the user is authenticated\n\tif (!session) {\n\t\t// User is not authenticated\n\t\treturn new Response(null, { status: 401 })\n\t}\n\n\t// Check if the user has the 'admin' role\n\tif (session?.role !== 'admin') {\n\t\t// User is authenticated but does not have the right permissions\n\t\treturn new Response(null, { status: 403 })\n\t}\n\n\t// Continue for authorized users\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/route.js\" switcher",
+			"value": "import { verifySession } from '@/app/lib/dal'\n\nexport async function GET() {\n\t// User authentication and role verification\n\tconst session = await verifySession()\n\n\t// Check if the user is authenticated\n\tif (!session) {\n\t\t// User is not authenticated\n\t\treturn new Response(null, { status: 401 })\n\t}\n\n\t// Check if the user has the 'admin' role\n\tif (session?.role !== 'admin') {\n\t\t// User is authenticated but does not have the right permissions\n\t\treturn new Response(null, { status: 403 })\n\t}\n\n\t// Continue for authorized users\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The example above demonstrates a Route Handler with a two-tier security check. It first checks for an active session, and then verifies if the logged-in user is an 'admin'."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Resources"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Now that you've learned about authentication in Next.js, here are Next.js-compatible libraries and resources to help you implement secure authentication and session management:"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Auth Libraries"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://auth0.com/docs/quickstart/webapp/nextjs",
+									"children": [
+										{
+											"type": "text",
+											"value": "Auth0"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://www.better-auth.com/docs/integrations/next",
+									"children": [
+										{
+											"type": "text",
+											"value": "Better Auth"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://clerk.com/docs/quickstarts/nextjs",
+									"children": [
+										{
+											"type": "text",
+											"value": "Clerk"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://docs.descope.com/getting-started/nextjs",
+									"children": [
+										{
+											"type": "text",
+											"value": "Descope"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://kinde.com/docs/developer-tools/nextjs-sdk",
+									"children": [
+										{
+											"type": "text",
+											"value": "Kinde"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://docs.logto.io/quick-starts/next-app-router",
+									"children": [
+										{
+											"type": "text",
+											"value": "Logto"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://authjs.dev/getting-started/installation?framework=next.js",
+									"children": [
+										{
+											"type": "text",
+											"value": "NextAuth.js"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://www.ory.sh/docs/getting-started/integrate-auth/nextjs",
+									"children": [
+										{
+											"type": "text",
+											"value": "Ory"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://docs.stack-auth.com/getting-started/setup",
+									"children": [
+										{
+											"type": "text",
+											"value": "Stack Auth"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://supabase.com/docs/guides/getting-started/quickstarts/nextjs",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supabase"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://stytch.com/docs/guides/quickstarts/nextjs",
+									"children": [
+										{
+											"type": "text",
+											"value": "Stytch"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://workos.com/docs/user-management/nextjs",
+									"children": [
+										{
+											"type": "text",
+											"value": "WorkOS"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Session Management Libraries"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vvo/iron-session",
+									"children": [
+										{
+											"type": "text",
+											"value": "Iron Session"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/panva/jose",
+									"children": [
+										{
+											"type": "text",
+											"value": "Jose"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Further Reading"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To continue learning about authentication and security, check out the following resources:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/blog/security-nextjs-server-components-actions",
+									"children": [
+										{
+											"type": "text",
+											"value": "How to think about security in Next.js"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://vercel.com/guides/understanding-xss-attacks",
+									"children": [
+										{
+											"type": "text",
+											"value": "Understanding XSS Attacks"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://vercel.com/guides/understanding-csrf-attacks",
+									"children": [
+										{
+											"type": "text",
+											"value": "Understanding CSRF Attacks"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://thecopenhagenbook.com/",
+									"children": [
+										{
+											"type": "text",
+											"value": "The Copenhagen Book"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

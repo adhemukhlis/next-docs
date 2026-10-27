@@ -1,0 +1,825 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to set up a custom server in Next.js\nnav_title: Custom Server\ndescription: Start a Next.js app programmatically using a custom server."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js includes its own server with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next start"
+				},
+				{
+					"type": "text",
+					"value": " by default. If you have an existing backend, you can still use it with Next.js (this is not a custom server). A custom Next.js server allows you to programmatically start a server for custom patterns. The majority of the time, you will not need this approach. However, it's available if you need to eject."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Before deciding to use a custom server, keep in mind that it should only be used when the integrated router of Next.js can't meet your app requirements."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "When using standalone output mode, it does not trace custom server files. This mode outputs a separate minimal "
+										},
+										{
+											"type": "inlineCode",
+											"value": "server.js"
+										},
+										{
+											"type": "text",
+											"value": " file, instead. These cannot be used together."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Take a look at the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/tree/canary/examples/custom-server",
+					"children": [
+						{
+							"type": "text",
+							"value": "following example"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " of a custom server:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"server.ts\" switcher",
+			"value": "import { createServer } from 'http'\nimport next from 'next'\n\nconst port = parseInt(process.env.PORT || '3000', 10)\nconst dev = process.env.NODE_ENV !== 'production'\nconst app = next({ dev })\nconst handle = app.getRequestHandler()\n\napp.prepare().then(() => {\n\tcreateServer((req, res) => {\n\t\thandle(req, res)\n\t}).listen(port)\n\n\tconsole.log(`> Server listening at http://localhost:${port} as ${dev ? 'development' : process.env.NODE_ENV}`)\n})"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"server.js\" switcher",
+			"value": "import { createServer } from 'http'\nimport next from 'next'\n\nconst port = parseInt(process.env.PORT || '3000', 10)\nconst dev = process.env.NODE_ENV !== 'production'\nconst app = next({ dev })\nconst handle = app.getRequestHandler()\n\napp.prepare().then(() => {\n\tcreateServer((req, res) => {\n\t\thandle(req, res)\n\t}).listen(port)\n\n\tconsole.log(`> Server listening at http://localhost:${port} as ${dev ? 'development' : process.env.NODE_ENV}`)\n})"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Set your own response headers before calling "
+								},
+								{
+									"type": "inlineCode",
+									"value": "handle"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Next.js begins sending the response inside "
+						},
+						{
+							"type": "inlineCode",
+							"value": "handle(req, res)"
+						},
+						{
+							"type": "text",
+							"value": ", so by the time its promise resolves "
+						},
+						{
+							"type": "inlineCode",
+							"value": "res.headersSent"
+						},
+						{
+							"type": "text",
+							"value": " is already "
+						},
+						{
+							"type": "inlineCode",
+							"value": "true"
+						},
+						{
+							"type": "text",
+							"value": " and any later "
+						},
+						{
+							"type": "inlineCode",
+							"value": "res.setHeader()"
+						},
+						{
+							"type": "text",
+							"value": " call is silently discarded. Set headers you own, such as "
+						},
+						{
+							"type": "inlineCode",
+							"value": "Set-Cookie"
+						},
+						{
+							"type": "text",
+							"value": ", before handing the request to Next.js:"
+						}
+					]
+				},
+				{
+					"type": "code",
+					"lang": "js",
+					"meta": null,
+					"value": "res.setHeader('Set-Cookie', 'sessionId=abc123; Max-Age=2592000')\n\nawait handle(req, res)"
+				},
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "The same ordering applies when wrapping Next.js in another framework, for example "
+						},
+						{
+							"type": "inlineCode",
+							"value": "reply.raw"
+						},
+						{
+							"type": "text",
+							"value": " in Fastify or "
+						},
+						{
+							"type": "inlineCode",
+							"value": "res"
+						},
+						{
+							"type": "text",
+							"value": " in Express."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "server.js"
+						},
+						{
+							"type": "text",
+							"value": " does not run through the Next.js Compiler or bundling process. Make sure the syntax and source code this file requires are compatible with the current Node.js version you are using. "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://github.com/vercel/next.js/tree/canary/examples/custom-server",
+							"children": [
+								{
+									"type": "text",
+									"value": "View an example"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To run the custom server, you'll need to update the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "scripts"
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "package.json"
+				},
+				{
+					"type": "text",
+					"value": " like so:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"package.json\"",
+			"value": "{\n\t\"scripts\": {\n\t\t\"dev\": \"node server.js\",\n\t\t\"build\": \"next build\",\n\t\t\"start\": \"NODE_ENV=production node server.js\"\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Alternatively, you can set up "
+				},
+				{
+					"type": "inlineCode",
+					"value": "nodemon"
+				},
+				{
+					"type": "text",
+					"value": " ("
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/tree/canary/examples/custom-server",
+					"children": [
+						{
+							"type": "text",
+							"value": "example"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "). The custom server uses the following import to connect the server with the Next.js application:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "import next from 'next'\n\nconst app = next({})"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The above "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next"
+				},
+				{
+					"type": "text",
+					"value": " import is a function that receives an object with the following options:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Option"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "conf"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Object"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The same object you would use in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next.config.js"
+								},
+								{
+									"type": "text",
+									"value": ". Defaults to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "{}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "dev"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Boolean"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "("
+								},
+								{
+									"type": "emphasis",
+									"children": [
+										{
+											"type": "text",
+											"value": "Optional"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ") Whether or not to launch Next.js in dev mode. Defaults to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "dir"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "String"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "("
+								},
+								{
+									"type": "emphasis",
+									"children": [
+										{
+											"type": "text",
+											"value": "Optional"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ") Location of the Next.js project. Defaults to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'.'"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "quiet"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Boolean"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "("
+								},
+								{
+									"type": "emphasis",
+									"children": [
+										{
+											"type": "text",
+											"value": "Optional"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ") Hide error messages containing server information. Defaults to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "hostname"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "String"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "("
+								},
+								{
+									"type": "emphasis",
+									"children": [
+										{
+											"type": "text",
+											"value": "Optional"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ") The hostname the server is running behind"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "port"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Number"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "("
+								},
+								{
+									"type": "emphasis",
+									"children": [
+										{
+											"type": "text",
+											"value": "Optional"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ") The port the server is running behind"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "httpServer"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "node:http#Server"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "("
+								},
+								{
+									"type": "emphasis",
+									"children": [
+										{
+											"type": "text",
+											"value": "Optional"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ") The HTTP Server that Next.js is running behind"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "turbopack"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Boolean"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "("
+								},
+								{
+									"type": "emphasis",
+									"children": [
+										{
+											"type": "text",
+											"value": "Optional"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ") Enable Turbopack (enabled by default)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "webpack"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Boolean"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "("
+								},
+								{
+									"type": "emphasis",
+									"children": [
+										{
+											"type": "text",
+											"value": "Optional"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ") Enable webpack"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The returned "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " can then be used to let Next.js handle requests as required."
+				}
+			]
+		}
+	]
+}

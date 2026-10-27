@@ -1,0 +1,2202 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Installation\ndescription: Learn how to create a new Next.js application with the `create-next-app` CLI, and set up TypeScript, ESLint, and Module Path Aliases."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Create a new Next.js app and run it locally."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Quick start"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Create a new Next.js app named "
+								},
+								{
+									"type": "inlineCode",
+									"value": "my-app"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "cd my-app"
+								},
+								{
+									"type": "text",
+									"value": " and start the dev server."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Visit "
+								},
+								{
+									"type": "inlineCode",
+									"value": "http://localhost:3000"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm create next-app@latest my-app --yes\ncd my-app\npnpm dev"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npx create-next-app@latest my-app --yes\ncd my-app\nnpm run dev"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn create next-app@latest my-app --yes\ncd my-app\nyarn dev"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun create next-app@latest my-app --yes\ncd my-app\nbun dev"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "--yes"
+								},
+								{
+									"type": "text",
+									"value": " skips prompts using saved preferences or defaults. The default setup enables TypeScript, Tailwind CSS, ESLint, App Router, and Turbopack, with import alias "
+								},
+								{
+									"type": "inlineCode",
+									"value": "@/*"
+								},
+								{
+									"type": "text",
+									"value": ", and includes "
+								},
+								{
+									"type": "inlineCode",
+									"value": "AGENTS.md"
+								},
+								{
+									"type": "text",
+									"value": " to guide coding agents to write up-to-date Next.js code."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "System requirements"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Before you begin, make sure your development environment meets the following requirements:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Minimum Node.js version: "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://nodejs.org/",
+									"children": [
+										{
+											"type": "text",
+											"value": "20.9"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Operating systems: macOS, Windows (including WSL), and Linux."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Supported browsers"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js supports modern browsers with zero configuration."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Chrome 111+"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Edge 111+"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Firefox 111+"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Safari 16.4+"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn more about "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/architecture/supported-browsers",
+					"children": [
+						{
+							"type": "text",
+							"value": "browser support"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", including how to configure polyfills and target specific browsers."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Create with the CLI"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The quickest way to create a new Next.js app is using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/cli/create-next-app",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "create-next-app"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", which sets up everything automatically for you. To create a project, run:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm create next-app"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npx create-next-app@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn create next-app"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun create next-app"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "On installation, you'll see the following prompts:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "txt",
+			"meta": "filename=\"Terminal\"",
+			"value": "What is your project named? my-app\nWould you like to use the recommended Next.js defaults?\n    Yes, use recommended defaults - TypeScript, ESLint, No React Compiler, Tailwind CSS, No src/ directory, App Router, Cache Components, AGENTS.md\n    No, reuse previous settings\n    No, customize settings - Choose your own preferences"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you choose to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "customize settings"
+				},
+				{
+					"type": "text",
+					"value": ", you'll see the following prompts:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "txt",
+			"meta": "filename=\"Terminal\"",
+			"value": "Would you like to use TypeScript? No / Yes\nWhich linter would you like to use? ESLint / Biome / None\nWould you like to use React Compiler? No / Yes\nWould you like to use Tailwind CSS? No / Yes\nWould you like your code inside a `src/` directory? No / Yes\nWould you like to use App Router? (recommended) No / Yes\nWould you like to use Cache Components? No / Yes\nWould you like to customize the import alias (`@/*` by default)? No / Yes\nWhat import alias would you like configured? @/*\nWould you like to include AGENTS.md to guide coding agents to write up-to-date Next.js code? No / Yes"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After the prompts, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/cli/create-next-app",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "create-next-app"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " will create a folder with your project name and install the required dependencies."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Manual installation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To manually create a new Next.js app, install the required packages:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm i next@latest react@latest react-dom@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm i next@latest react@latest react-dom@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add next@latest react@latest react-dom@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add next@latest react@latest react-dom@latest"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The "
+										},
+										{
+											"type": "inlineCode",
+											"value": "App Router"
+										},
+										{
+											"type": "text",
+											"value": " uses "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://react.dev/blog/2023/05/03/react-canaries",
+											"children": [
+												{
+													"type": "text",
+													"value": "React canary releases"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " built-in, which include all the stable React 19 changes, as well as newer features being validated in frameworks, but you should still declare react and react-dom in package.json for tooling and ecosystem compatibility."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The "
+										},
+										{
+											"type": "inlineCode",
+											"value": "Pages Router"
+										},
+										{
+											"type": "text",
+											"value": " uses the React version from your "
+										},
+										{
+											"type": "inlineCode",
+											"value": "package.json"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, add the following scripts to your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "package.json"
+				},
+				{
+					"type": "text",
+					"value": " file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"package.json\"",
+			"value": "{\n\t\"scripts\": {\n\t\t\"dev\": \"next dev\",\n\t\t\"build\": \"next build\",\n\t\t\"start\": \"next start\",\n\t\t\"lint\": \"eslint\",\n\t\t\"lint:fix\": \"eslint --fix\"\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "These scripts refer to the different stages of developing an application:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next dev"
+								},
+								{
+									"type": "text",
+									"value": ": Starts the development server using Turbopack (default bundler)."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next build"
+								},
+								{
+									"type": "text",
+									"value": ": Builds the application for production."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next start"
+								},
+								{
+									"type": "text",
+									"value": ": Starts the production server."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "eslint"
+								},
+								{
+									"type": "text",
+									"value": ": Runs ESLint."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack is now the default bundler. To use Webpack run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev --webpack"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build --webpack"
+				},
+				{
+					"type": "text",
+					"value": ". See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/turbopack",
+					"children": [
+						{
+							"type": "text",
+							"value": "Turbopack docs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for configuration details."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Create the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js uses file-system routing, which means the routes in your application are determined by how you structure your files."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Create an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " folder. Then, inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": ", create a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout.tsx"
+				},
+				{
+					"type": "text",
+					"value": " file. This file is the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout#root-layout",
+					"children": [
+						{
+							"type": "text",
+							"value": "root layout"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". It's required and must contain the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<html>"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<body>"
+				},
+				{
+					"type": "text",
+					"value": " tags."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "export default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "export default function RootLayout({ children }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Create a home page "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/page.tsx"
+				},
+				{
+					"type": "text",
+					"value": " with some initial content:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "export default function Page() {\n\treturn <h1>Hello, Next.js!</h1>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "export default function Page() {\n\treturn <h1>Hello, Next.js!</h1>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Both "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout.tsx"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.tsx"
+				},
+				{
+					"type": "text",
+					"value": " will be rendered when the user visits the root of your application ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "/"
+				},
+				{
+					"type": "text",
+					"value": ")."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"App Folder Structure\"\nsrcLight=\"/docs/light/app-getting-started.png\"\nsrcDark=\"/docs/dark/app-getting-started.png\"\nwidth=\"1600\"\nheight=\"363\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "If you forget to create the root layout, Next.js will automatically create this file when running the development server with "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next dev"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "You can optionally use a "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/src-folder",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "src"
+												},
+												{
+													"type": "text",
+													"value": " folder"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " in the root of your project to separate your application's code from configuration files."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Create the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "public"
+				},
+				{
+					"type": "text",
+					"value": " folder (optional)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Create a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/public-folder",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "public"
+						},
+						{
+							"type": "text",
+							"value": " folder"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " at the root of your project to store static assets such as images, fonts, etc. Files inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "public"
+				},
+				{
+					"type": "text",
+					"value": " can then be referenced by your code starting from the base URL ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "/"
+				},
+				{
+					"type": "text",
+					"value": ")."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can then reference these assets using the root path ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "/"
+				},
+				{
+					"type": "text",
+					"value": "). For example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "public/profile.png"
+				},
+				{
+					"type": "text",
+					"value": " can be referenced as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/profile.png"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" highlight={4} switcher",
+			"value": "import Image from 'next/image'\n\nexport default function Page() {\n\treturn (\n\t\t<Image\n\t\t\tsrc=\"/profile.png\"\n\t\t\talt=\"Profile\"\n\t\t\twidth={100}\n\t\t\theight={100}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" highlight={4} switcher",
+			"value": "import Image from 'next/image'\n\nexport default function Page() {\n\treturn (\n\t\t<Image\n\t\t\tsrc=\"/profile.png\"\n\t\t\talt=\"Profile\"\n\t\t\twidth={100}\n\t\t\theight={100}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Run the development server"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Run "
+								},
+								{
+									"type": "inlineCode",
+									"value": "npm run dev"
+								},
+								{
+									"type": "text",
+									"value": " to start the development server."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Visit "
+								},
+								{
+									"type": "inlineCode",
+									"value": "http://localhost:3000"
+								},
+								{
+									"type": "text",
+									"value": " to view your application."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Edit the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/page.tsx"
+								},
+								{
+									"type": "text",
+									"value": " file and save it to see the updated result in your browser."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Set up TypeScript"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Minimum TypeScript version: "
+						},
+						{
+							"type": "inlineCode",
+							"value": "v5.1.0"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js comes with built-in TypeScript support. To add TypeScript to your project, rename a file to "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".ts"
+				},
+				{
+					"type": "text",
+					"value": " / "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".tsx"
+				},
+				{
+					"type": "text",
+					"value": " and run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": ". Next.js will automatically install the necessary dependencies and add a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tsconfig.json"
+				},
+				{
+					"type": "text",
+					"value": " file with the recommended config options."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "IDE Plugin"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js includes a custom TypeScript plugin and type checker, which VSCode and other code editors can use for advanced type-checking and auto-completion."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can enable the plugin in VS Code by:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Opening the command palette ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "Ctrl/⌘"
+								},
+								{
+									"type": "text",
+									"value": " + "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Shift"
+								},
+								{
+									"type": "text",
+									"value": " + "
+								},
+								{
+									"type": "inlineCode",
+									"value": "P"
+								},
+								{
+									"type": "text",
+									"value": ")"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Searching for \"TypeScript: Select TypeScript Version\""
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Selecting \"Use Workspace Version\""
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"TypeScript Command Palette\"\nsrcLight=\"/docs/light/typescript-command-palette.png\"\nsrcDark=\"/docs/dark/typescript-command-palette.png\"\nwidth=\"1600\"\nheight=\"637\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/typescript",
+					"children": [
+						{
+							"type": "text",
+							"value": "TypeScript reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " page for more information."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Set up your editor"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The App Router names files by convention, like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.tsx"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout.tsx"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "route.ts"
+				},
+				{
+					"type": "text",
+					"value": ", so your editor quickly fills with same-named tabs. Label each tab with its enclosing folders, like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "blog/[id]"
+				},
+				{
+					"type": "text",
+					"value": ", so you can tell them apart."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In VS Code 1.88+ or Cursor, add "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://code.visualstudio.com/updates/v1_88#_customize-editor-labels",
+					"children": [
+						{
+							"type": "text",
+							"value": "custom editor labels"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".vscode/settings.json"
+				},
+				{
+					"type": "text",
+					"value": ". Labeling two folders deep keeps dynamic routes like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "blog/[id]/page.tsx"
+				},
+				{
+					"type": "text",
+					"value": " from all collapsing to the same "
+				},
+				{
+					"type": "inlineCode",
+					"value": "[id]"
+				},
+				{
+					"type": "text",
+					"value": " label:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\".vscode/settings.json\"",
+			"value": "{\n\t\"workbench.editor.customLabels.patterns\": {\n\t\t\"**/app/**/page.tsx\": \"${dirname(1)}/${dirname} - page.tsx\",\n\t\t\"**/app/**/layout.tsx\": \"${dirname(1)}/${dirname} - layout.tsx\",\n\t\t\"**/app/**/loading.tsx\": \"${dirname(1)}/${dirname} - loading.tsx\",\n\t\t\"**/app/**/error.tsx\": \"${dirname(1)}/${dirname} - error.tsx\",\n\t\t\"**/app/**/not-found.tsx\": \"${dirname(1)}/${dirname} - not-found.tsx\",\n\t\t\"**/app/**/template.tsx\": \"${dirname(1)}/${dirname} - template.tsx\",\n\t\t\"**/app/**/default.tsx\": \"${dirname(1)}/${dirname} - default.tsx\",\n\t\t\"**/app/**/route.ts\": \"${dirname(1)}/${dirname} - route.ts\"\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Or copy this prompt to have your coding agent set it up:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "prompt",
+			"meta": null,
+			"value": "Set up custom editor labels so my Next.js App Router files are easy to tell apart. Read https://nextjs.org/docs/app/getting-started/installation#set-up-your-editor and add the workbench.editor.customLabels.patterns config shown there to my .vscode/settings.json, creating the file if it doesn't exist. Adjust the labels to taste. If I use a different editor, apply the equivalent setting or tell me it's automatic, and leave my other settings untouched."
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " JetBrains IDEs (WebStorm, IntelliJ) show the folder for same-named files automatically, so no setup is needed."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Set up linting"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js supports linting with either ESLint or Biome. Choose a linter and run it directly via "
+				},
+				{
+					"type": "inlineCode",
+					"value": "package.json"
+				},
+				{
+					"type": "text",
+					"value": " scripts."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Use "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "ESLint"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (comprehensive rules):"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"package.json\"",
+			"value": "{\n\t\"scripts\": {\n\t\t\"lint\": \"eslint\",\n\t\t\"lint:fix\": \"eslint --fix\"\n\t}\n}"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Or use "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Biome"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (fast linter + formatter):"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"package.json\"",
+			"value": "{\n\t\"scripts\": {\n\t\t\"lint\": \"biome check\",\n\t\t\"format\": \"biome format --write\"\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If your project previously used "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next lint"
+				},
+				{
+					"type": "text",
+					"value": ", migrate your scripts to the ESLint CLI with the codemod:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod@canary next-lint-to-eslint-cli ."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you use ESLint, create an explicit config (recommended "
+				},
+				{
+					"type": "inlineCode",
+					"value": "eslint.config.mjs"
+				},
+				{
+					"type": "text",
+					"value": "). ESLint supports both "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://eslint.org/docs/latest/use/configure/configuration-files#configuring-eslint",
+					"children": [
+						{
+							"type": "text",
+							"value": "the legacy "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".eslintrc.*"
+						},
+						{
+							"type": "text",
+							"value": " and the newer "
+						},
+						{
+							"type": "inlineCode",
+							"value": "eslint.config.mjs"
+						},
+						{
+							"type": "text",
+							"value": " formats"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/eslint#with-core-web-vitals",
+					"children": [
+						{
+							"type": "text",
+							"value": "ESLint API reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for a recommended setup."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Starting with Next.js 16, "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next build"
+						},
+						{
+							"type": "text",
+							"value": " no longer runs the linter automatically. Instead, you can run your linter through NPM scripts."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/eslint",
+					"children": [
+						{
+							"type": "text",
+							"value": "ESLint Plugin"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " page for more information."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Set up Absolute Imports and Module Path Aliases"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js has in-built support for the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"paths\""
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"baseUrl\""
+				},
+				{
+					"type": "text",
+					"value": " options of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tsconfig.json"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "jsconfig.json"
+				},
+				{
+					"type": "text",
+					"value": " files."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "These options allow you to alias project directories to absolute paths, making it easier and cleaner to import modules. For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "// Before\nimport { Button } from '../../../components/button'\n\n// After\nimport { Button } from '@/components/button'"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To configure absolute imports, add the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "baseUrl"
+				},
+				{
+					"type": "text",
+					"value": " configuration option to your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tsconfig.json"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "jsconfig.json"
+				},
+				{
+					"type": "text",
+					"value": " file. For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"tsconfig.json or jsconfig.json\"",
+			"value": "{\n\t\"compilerOptions\": {\n\t\t\"baseUrl\": \"src/\"\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In addition to configuring the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "baseUrl"
+				},
+				{
+					"type": "text",
+					"value": " path, you can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"paths\""
+				},
+				{
+					"type": "text",
+					"value": " option to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"alias\""
+				},
+				{
+					"type": "text",
+					"value": " module paths."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, the following configuration maps "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@/components/*"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "components/*"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"tsconfig.json or jsconfig.json\"",
+			"value": "{\n\t\"compilerOptions\": {\n\t\t\"baseUrl\": \"src/\",\n\t\t\"paths\": {\n\t\t\t\"@/styles/*\": [\"styles/*\"],\n\t\t\t\"@/components/*\": [\"components/*\"]\n\t\t}\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each of the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"paths\""
+				},
+				{
+					"type": "text",
+					"value": " are relative to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "baseUrl"
+				},
+				{
+					"type": "text",
+					"value": " location."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Upgrade your Next.js app"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Keep your Next.js version up to date. Each release ships security patches, bug fixes, and performance optimizations alongside new features, and staying current keeps every individual upgrade small. Run the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "upgrade"
+				},
+				{
+					"type": "text",
+					"value": " command:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm next upgrade"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npx next upgrade"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn next upgrade"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bunx next upgrade"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Upgrading also updates the documentation bundled inside the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next"
+				},
+				{
+					"type": "text",
+					"value": " package at "
+				},
+				{
+					"type": "inlineCode",
+					"value": "node_modules/next/dist/docs/"
+				},
+				{
+					"type": "text",
+					"value": ". New features arrive with their docs, and existing pages pick up new guidance and pitfalls discovered along the way. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/ai-agents",
+					"children": [
+						{
+							"type": "text",
+							"value": "AI coding agents"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in your project then work from the version you have installed rather than their training data."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To have a coding agent perform and verify the upgrade, run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "npx next@canary upgrade --agent=latest"
+				},
+				{
+					"type": "text",
+					"value": ". See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/agent-upgrade",
+					"children": [
+						{
+							"type": "text",
+							"value": "Upgrade with a coding agent"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for other policies."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/upgrading",
+					"children": [
+						{
+							"type": "text",
+							"value": "Upgrading"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for version guides and manual upgrade steps, or the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://preview.nextjs.org",
+					"children": [
+						{
+							"type": "text",
+							"value": "preview docs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to explore features before they ship in a stable version."
+				}
+			]
+		}
+	]
+}

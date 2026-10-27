@@ -1,0 +1,343 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: useTypeScriptCli\ndescription: Run the project-local TypeScript CLI for type checking during production builds.\nversion: experimental"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " runs the project-local "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tsc"
+				},
+				{
+					"type": "text",
+					"value": " command instead of loading the TypeScript JavaScript compiler API. This supports TypeScript 6 and enables "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/",
+					"children": [
+						{
+							"type": "text",
+							"value": "TypeScript 7"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " while its JavaScript API is unavailable."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Install TypeScript 7 in your project:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add -D typescript@^7"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install -D typescript@^7"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add -D typescript@^7"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add -D typescript@^7"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The CLI checker is enabled by default. To use the TypeScript JavaScript compiler API instead, set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.useTypeScriptCli"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\texperimental: {\n\t\tuseTypeScriptCli: false,\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\texperimental: {\n\t\tuseTypeScriptCli: false,\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you opt out while using TypeScript 7, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " exits because the TypeScript JavaScript compiler API is unavailable."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Behavior"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Next.js continues to generate "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next-env.d.ts"
+								},
+								{
+									"type": "text",
+									"value": " and route types and to apply its recommended "
+								},
+								{
+									"type": "inlineCode",
+									"value": "tsconfig"
+								},
+								{
+									"type": "text",
+									"value": " settings before running the checker."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "TypeScript diagnostics are printed directly from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "tsc"
+								},
+								{
+									"type": "text",
+									"value": ". Next.js-specific code frames and error rewriting are not applied."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The complete project selected by the configured "
+								},
+								{
+									"type": "inlineCode",
+									"value": "tsconfig"
+								},
+								{
+									"type": "text",
+									"value": " file is checked, including test files and "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".next/dev/types"
+								},
+								{
+									"type": "text",
+									"value": " when included. The "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/cli/next#next-build-options",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "--debug-build-paths"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " option does not limit this set and produces a warning when combined with the CLI checker."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/typescript#custom-tsconfig-path",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "typescript.tsconfigPath"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " selects the project passed to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "tsc"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/typescript#disabling-typescript-errors-in-production",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "typescript.ignoreBuildErrors"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " skips the type-checking step, including the CLI checker."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn more about "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/typescript#using-typescript-7",
+					"children": [
+						{
+							"type": "text",
+							"value": "using TypeScript 7 with Next.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		}
+	]
+}

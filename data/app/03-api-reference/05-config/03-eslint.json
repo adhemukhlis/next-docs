@@ -1,0 +1,2723 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: ESLint Plugin\nnav_title: ESLint\ndescription: Learn how to use and configure the ESLint plugin to catch common issues and problems in a Next.js application."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js provides an ESLint configuration package, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.npmjs.com/package/eslint-config-next",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "eslint-config-next"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", that makes it easy to catch common issues in your application. It includes the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.npmjs.com/package/@next/eslint-plugin-next",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "@next/eslint-plugin-next"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " plugin along with recommended rule-sets from "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.npmjs.com/package/eslint-plugin-react",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "eslint-plugin-react"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.npmjs.com/package/eslint-plugin-react-hooks",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "eslint-plugin-react-hooks"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The package provides two main configurations:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "eslint-config-next"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Base configuration with Next.js, React, and React Hooks rules. Supports both JavaScript and TypeScript files."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "eslint-config-next/core-web-vitals"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Includes everything from the base config, plus upgrades rules that impact "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://web.dev/vitals/",
+									"children": [
+										{
+											"type": "text",
+											"value": "Core Web Vitals"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " from warnings to errors. Recommended for most projects."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Additionally, for TypeScript projects:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "eslint-config-next/typescript"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Adds TypeScript-specific linting rules from "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://typescript-eslint.io/",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "typescript-eslint"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". Use this alongside the base or core-web-vitals config."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Setup ESLint"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Get linting working quickly with the ESLint CLI (flat config):"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": true,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": true,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Install ESLint and the Next.js config:"
+								}
+							]
+						},
+						{
+							"type": "code",
+							"lang": "bash",
+							"meta": "package=\"pnpm\"",
+							"value": "pnpm add -D eslint eslint-config-next"
+						},
+						{
+							"type": "code",
+							"lang": "bash",
+							"meta": "package=\"npm\"",
+							"value": "npm i -D eslint eslint-config-next"
+						},
+						{
+							"type": "code",
+							"lang": "bash",
+							"meta": "package=\"yarn\"",
+							"value": "yarn add --dev eslint eslint-config-next"
+						},
+						{
+							"type": "code",
+							"lang": "bash",
+							"meta": "package=\"bun\"",
+							"value": "bun add -d eslint eslint-config-next"
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": true,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Create "
+								},
+								{
+									"type": "inlineCode",
+									"value": "eslint.config.mjs"
+								},
+								{
+									"type": "text",
+									"value": " with the Next.js config:"
+								}
+							]
+						},
+						{
+							"type": "code",
+							"lang": "js",
+							"meta": "filename=\"eslint.config.mjs\"",
+							"value": "import { defineConfig, globalIgnores } from 'eslint/config'\nimport nextVitals from 'eslint-config-next/core-web-vitals'\n\nconst eslintConfig = defineConfig([\n\t...nextVitals,\n\t// Override default ignores of eslint-config-next.\n\tglobalIgnores([\n\t\t// Default ignores of eslint-config-next:\n\t\t'.next/**',\n\t\t'out/**',\n\t\t'build/**',\n\t\t'next-env.d.ts',\n\t]),\n])\n\nexport default eslintConfig"
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": true,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Run ESLint:"
+								}
+							]
+						},
+						{
+							"type": "code",
+							"lang": "bash",
+							"meta": "package=\"pnpm\"",
+							"value": "pnpm exec eslint ."
+						},
+						{
+							"type": "code",
+							"lang": "bash",
+							"meta": "package=\"npm\"",
+							"value": "npx eslint ."
+						},
+						{
+							"type": "code",
+							"lang": "bash",
+							"meta": "package=\"yarn\"",
+							"value": "yarn eslint ."
+						},
+						{
+							"type": "code",
+							"lang": "bash",
+							"meta": "package=\"bun\"",
+							"value": "bunx eslint ."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "eslint-config-next"
+										},
+										{
+											"type": "text",
+											"value": " supports ESLint 9 and ESLint 10. ESLint 10 requires Node.js "
+										},
+										{
+											"type": "inlineCode",
+											"value": "^20.19.0"
+										},
+										{
+											"type": "text",
+											"value": ", "
+										},
+										{
+											"type": "inlineCode",
+											"value": "^22.13.0"
+										},
+										{
+											"type": "text",
+											"value": ", or "
+										},
+										{
+											"type": "inlineCode",
+											"value": ">=24"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Starting with "
+										},
+										{
+											"type": "inlineCode",
+											"value": "eslint-config-next@16.4.0"
+										},
+										{
+											"type": "text",
+											"value": ", the default React version detection works with ESLint 10. You can remove a "
+										},
+										{
+											"type": "inlineCode",
+											"value": "settings.react.version"
+										},
+										{
+											"type": "text",
+											"value": " override added as a workaround for a "
+										},
+										{
+											"type": "inlineCode",
+											"value": "context.getFilename"
+										},
+										{
+											"type": "text",
+											"value": " error."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Some of the plugins included in "
+										},
+										{
+											"type": "inlineCode",
+											"value": "eslint-config-next"
+										},
+										{
+											"type": "text",
+											"value": " don't list ESLint 10 in their peer dependencies yet, so your package manager may show peer dependency warnings, or fail when strict peer dependencies are enabled."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "eslint-config-next"
+				},
+				{
+					"type": "text",
+					"value": " package includes the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "recommended"
+				},
+				{
+					"type": "text",
+					"value": " rule-sets from the following ESLint plugins:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://www.npmjs.com/package/eslint-plugin-react",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "eslint-plugin-react"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://www.npmjs.com/package/eslint-plugin-react-hooks",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "eslint-plugin-react-hooks"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://www.npmjs.com/package/@next/eslint-plugin-next",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "@next/eslint-plugin-next"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Rules"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@next/eslint-plugin-next"
+				},
+				{
+					"type": "text",
+					"value": " rules included are:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				"center",
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enabled in recommended config"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Rule"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/google-font-display",
+									"children": [
+										{
+											"type": "text",
+											"value": "@next/next/google-font-display"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enforce font-display behavior with Google Fonts."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/google-font-preconnect",
+									"children": [
+										{
+											"type": "text",
+											"value": "@next/next/google-font-preconnect"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Ensure "
+								},
+								{
+									"type": "inlineCode",
+									"value": "preconnect"
+								},
+								{
+									"type": "text",
+									"value": " is used with Google Fonts."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/inline-script-id",
+									"children": [
+										{
+											"type": "text",
+											"value": "@next/next/inline-script-id"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enforce "
+								},
+								{
+									"type": "inlineCode",
+									"value": "id"
+								},
+								{
+									"type": "text",
+									"value": " attribute on "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/script"
+								},
+								{
+									"type": "text",
+									"value": " components with inline content."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/next-script-for-ga",
+									"children": [
+										{
+											"type": "text",
+											"value": "@next/next/next-script-for-ga"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prefer "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/script"
+								},
+								{
+									"type": "text",
+									"value": " component when using the inline script for Google Analytics."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/no-assign-module-variable",
+									"children": [
+										{
+											"type": "text",
+											"value": "@next/next/no-assign-module-variable"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prevent assignment to the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "module"
+								},
+								{
+									"type": "text",
+									"value": " variable."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/no-async-client-component",
+									"children": [
+										{
+											"type": "text",
+											"value": "@next/next/no-async-client-component"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prevent Client Components from being async functions."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/no-before-interactive-script-outside-document",
+									"children": [
+										{
+											"type": "text",
+											"value": "@next/next/no-before-interactive-script-outside-document"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prevent usage of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/script"
+								},
+								{
+									"type": "text",
+									"value": "'s "
+								},
+								{
+									"type": "inlineCode",
+									"value": "beforeInteractive"
+								},
+								{
+									"type": "text",
+									"value": " strategy outside of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pages/_document.js"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/no-css-tags",
+									"children": [
+										{
+											"type": "text",
+											"value": "@next/next/no-css-tags"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prevent manual stylesheet tags."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/no-document-import-in-page",
+									"children": [
+										{
+											"type": "text",
+											"value": "@next/next/no-document-import-in-page"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prevent importing "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/document"
+								},
+								{
+									"type": "text",
+									"value": " outside of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pages/_document.js"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/no-duplicate-head",
+									"children": [
+										{
+											"type": "text",
+											"value": "@next/next/no-duplicate-head"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prevent duplicate usage of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Head>"
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pages/_document.js"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/no-head-element",
+									"children": [
+										{
+											"type": "text",
+											"value": "@next/next/no-head-element"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prevent usage of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<head>"
+								},
+								{
+									"type": "text",
+									"value": " element."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/no-head-import-in-document",
+									"children": [
+										{
+											"type": "text",
+											"value": "@next/next/no-head-import-in-document"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prevent usage of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/head"
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pages/_document.js"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/no-html-link-for-pages",
+									"children": [
+										{
+											"type": "text",
+											"value": "@next/next/no-html-link-for-pages"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prevent usage of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<a>"
+								},
+								{
+									"type": "text",
+									"value": " elements to navigate to internal Next.js pages."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/no-img-element",
+									"children": [
+										{
+											"type": "text",
+											"value": "@next/next/no-img-element"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prevent usage of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<img>"
+								},
+								{
+									"type": "text",
+									"value": " element due to slower LCP and higher bandwidth."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/no-page-custom-font",
+									"children": [
+										{
+											"type": "text",
+											"value": "@next/next/no-page-custom-font"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prevent page-only custom fonts."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/no-script-component-in-head",
+									"children": [
+										{
+											"type": "text",
+											"value": "@next/next/no-script-component-in-head"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prevent usage of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/script"
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/head"
+								},
+								{
+									"type": "text",
+									"value": " component."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/no-styled-jsx-in-document",
+									"children": [
+										{
+											"type": "text",
+											"value": "@next/next/no-styled-jsx-in-document"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prevent usage of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "styled-jsx"
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pages/_document.js"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/no-sync-scripts",
+									"children": [
+										{
+											"type": "text",
+											"value": "@next/next/no-sync-scripts"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prevent synchronous scripts."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/no-title-in-document-head",
+									"children": [
+										{
+											"type": "text",
+											"value": "@next/next/no-title-in-document-head"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prevent usage of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<title>"
+								},
+								{
+									"type": "text",
+									"value": " with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Head"
+								},
+								{
+									"type": "text",
+									"value": " component from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/document"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "@next/next/no-typos"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prevent common typos in "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/pages/building-your-application/data-fetching",
+									"children": [
+										{
+											"type": "text",
+											"value": "Next.js's data fetching functions"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "html",
+									"value": "<Check size={18} />"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/no-unwanted-polyfillio",
+									"children": [
+										{
+											"type": "text",
+											"value": "@next/next/no-unwanted-polyfillio"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Prevent duplicate polyfills from Polyfill.io."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We recommend using an appropriate "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://eslint.org/docs/user-guide/integrations#editors",
+					"children": [
+						{
+							"type": "text",
+							"value": "integration"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to view warnings and errors directly in your code editor during development."
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "<details>\n  <summary>`next lint` removal</summary>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Starting with Next.js 16, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next lint"
+				},
+				{
+					"type": "text",
+					"value": " is removed."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "As part of the removal, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "eslint"
+				},
+				{
+					"type": "text",
+					"value": " option in your Next config file is no longer needed and can be safely removed."
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "</details>"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Specifying a root directory within a monorepo"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you're using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@next/eslint-plugin-next"
+				},
+				{
+					"type": "text",
+					"value": " in a project where Next.js isn't installed in your root directory (such as a monorepo), you can tell "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@next/eslint-plugin-next"
+				},
+				{
+					"type": "text",
+					"value": " where to find your Next.js application using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "settings"
+				},
+				{
+					"type": "text",
+					"value": " property in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "eslint.config.mjs"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"eslint.config.mjs\"",
+			"value": "import { defineConfig } from 'eslint/config'\nimport eslintNextPlugin from '@next/eslint-plugin-next'\n\nconst eslintConfig = defineConfig([\n\t{\n\t\tfiles: ['**/*.{js,jsx,ts,tsx}'],\n\t\tplugins: {\n\t\t\t'@next/next': eslintNextPlugin,\n\t\t},\n\t\tsettings: {\n\t\t\tnext: {\n\t\t\t\trootDir: 'packages/my-app/',\n\t\t\t},\n\t\t},\n\t},\n])\n\nexport default eslintConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "rootDir"
+				},
+				{
+					"type": "text",
+					"value": " can be a path (relative or absolute), a glob (i.e. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"packages/*/\""
+				},
+				{
+					"type": "text",
+					"value": "), or an array of paths and/or globs."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Disabling rules"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you would like to modify or disable any rules provided by the supported plugins ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "react"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "react-hooks"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next"
+				},
+				{
+					"type": "text",
+					"value": "), you can directly change them using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "rules"
+				},
+				{
+					"type": "text",
+					"value": " property in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "eslint.config.mjs"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"eslint.config.mjs\"",
+			"value": "import { defineConfig, globalIgnores } from 'eslint/config'\nimport nextVitals from 'eslint-config-next/core-web-vitals'\n\nconst eslintConfig = defineConfig([\n\t...nextVitals,\n\t{\n\t\trules: {\n\t\t\t'react/no-unescaped-entities': 'off',\n\t\t\t'@next/next/no-page-custom-font': 'off',\n\t\t},\n\t},\n\t// Override default ignores of eslint-config-next.\n\tglobalIgnores([\n\t\t// Default ignores of eslint-config-next:\n\t\t'.next/**',\n\t\t'out/**',\n\t\t'build/**',\n\t\t'next-env.d.ts',\n\t]),\n])\n\nexport default eslintConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "With Core Web Vitals"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Enable the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "eslint-config-next/core-web-vitals"
+				},
+				{
+					"type": "text",
+					"value": " configuration in your ESLint config."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"eslint.config.mjs\"",
+			"value": "import { defineConfig, globalIgnores } from 'eslint/config'\nimport nextVitals from 'eslint-config-next/core-web-vitals'\n\nconst eslintConfig = defineConfig([\n\t...nextVitals,\n\t// Override default ignores of eslint-config-next.\n\tglobalIgnores([\n\t\t// Default ignores of eslint-config-next:\n\t\t'.next/**',\n\t\t'out/**',\n\t\t'build/**',\n\t\t'next-env.d.ts',\n\t]),\n])\n\nexport default eslintConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "eslint-config-next/core-web-vitals"
+				},
+				{
+					"type": "text",
+					"value": " upgrades certain lint rules in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@next/eslint-plugin-next"
+				},
+				{
+					"type": "text",
+					"value": " from warnings to errors to help improve your "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://web.dev/vitals/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Core Web Vitals"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " metrics."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "The "
+						},
+						{
+							"type": "inlineCode",
+							"value": "eslint-config-next/core-web-vitals"
+						},
+						{
+							"type": "text",
+							"value": " configuration is automatically included for new applications built with "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/cli/create-next-app",
+							"children": [
+								{
+									"type": "text",
+									"value": "Create Next App"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "With TypeScript"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In addition to the Next.js ESLint rules, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "create-next-app --typescript"
+				},
+				{
+					"type": "text",
+					"value": " will also add TypeScript-specific lint rules with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "eslint-config-next/typescript"
+				},
+				{
+					"type": "text",
+					"value": " to your config:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"eslint.config.mjs\"",
+			"value": "import { defineConfig, globalIgnores } from 'eslint/config'\nimport nextVitals from 'eslint-config-next/core-web-vitals'\nimport nextTs from 'eslint-config-next/typescript'\n\nconst eslintConfig = defineConfig([\n\t...nextVitals,\n\t...nextTs,\n\t// Override default ignores of eslint-config-next.\n\tglobalIgnores([\n\t\t// Default ignores of eslint-config-next:\n\t\t'.next/**',\n\t\t'out/**',\n\t\t'build/**',\n\t\t'next-env.d.ts',\n\t]),\n])\n\nexport default eslintConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Those rules are based on "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://typescript-eslint.io/linting/configs#recommended",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "plugin:@typescript-eslint/recommended"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://typescript-eslint.io/linting/configs",
+					"children": [
+						{
+							"type": "text",
+							"value": "typescript-eslint > Configs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more details."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "With Prettier"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "ESLint also contains code formatting rules, which can conflict with your existing "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://prettier.io/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Prettier"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " setup. We recommend including "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/prettier/eslint-config-prettier",
+					"children": [
+						{
+							"type": "text",
+							"value": "eslint-config-prettier"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in your ESLint config to make ESLint and Prettier work together."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "First, install the dependency:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add -D eslint-config-prettier"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm i -D eslint-config-prettier"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add --dev eslint-config-prettier"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add -d eslint-config-prettier"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prettier"
+				},
+				{
+					"type": "text",
+					"value": " to your existing ESLint config:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"eslint.config.mjs\"",
+			"value": "import { defineConfig, globalIgnores } from 'eslint/config'\nimport nextVitals from 'eslint-config-next/core-web-vitals'\nimport prettier from 'eslint-config-prettier/flat'\n\nconst eslintConfig = defineConfig([\n\t...nextVitals,\n\tprettier,\n\t// Override default ignores of eslint-config-next.\n\tglobalIgnores([\n\t\t// Default ignores of eslint-config-next:\n\t\t'.next/**',\n\t\t'out/**',\n\t\t'build/**',\n\t\t'next-env.d.ts',\n\t]),\n])\n\nexport default eslintConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Running lint on staged files"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you would like to use ESLint with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/okonet/lint-staged",
+					"children": [
+						{
+							"type": "text",
+							"value": "lint-staged"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to run the linter on staged git files, add the following to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".lintstagedrc.js"
+				},
+				{
+					"type": "text",
+					"value": " file in the root of your project:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\".lintstagedrc.js\"",
+			"value": "const path = require('path')\n\nconst buildEslintCommand = (filenames) => `eslint --fix ${filenames.map((f) => `\"${path.relative(process.cwd(), f)}\"`).join(' ')}`\n\nmodule.exports = {\n\t'*.{js,jsx,ts,tsx}': [buildEslintCommand],\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Migrating existing config"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you already have ESLint configured in your application, there are two approaches to integrate Next.js linting rules, depending on your setup."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using the plugin directly"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@next/eslint-plugin-next"
+				},
+				{
+					"type": "text",
+					"value": " directly if you have any of the following already configured:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Conflicting plugins installed separately or through another config (such as "
+								},
+								{
+									"type": "inlineCode",
+									"value": "airbnb"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "react-app"
+								},
+								{
+									"type": "text",
+									"value": "):"
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "react"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "react-hooks"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "jsx-a11y"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "import"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Custom "
+								},
+								{
+									"type": "inlineCode",
+									"value": "parserOptions"
+								},
+								{
+									"type": "text",
+									"value": " different from Next.js defaults (only if you have "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/pages/guides/babel",
+									"children": [
+										{
+											"type": "text",
+											"value": "customized your Babel configuration"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ")"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "eslint-plugin-import"
+								},
+								{
+									"type": "text",
+									"value": " with custom Node.js and/or TypeScript "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/benmosher/eslint-plugin-import#resolvers",
+									"children": [
+										{
+											"type": "text",
+											"value": "resolvers"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In these cases, use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@next/eslint-plugin-next"
+				},
+				{
+					"type": "text",
+					"value": " directly to avoid conflicts:"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "First, install the plugin:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add -D @next/eslint-plugin-next"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm i -D @next/eslint-plugin-next"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add --dev @next/eslint-plugin-next"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add -d @next/eslint-plugin-next"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then add it to your ESLint config:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"eslint.config.mjs\"",
+			"value": "import { defineConfig } from 'eslint/config'\nimport nextPlugin from '@next/eslint-plugin-next'\n\nconst eslintConfig = defineConfig([\n\t// Your other configurations...\n\t{\n\t\tfiles: ['**/*.{js,jsx,ts,tsx}'],\n\t\tplugins: {\n\t\t\t'@next/next': nextPlugin,\n\t\t},\n\t\trules: {\n\t\t\t...nextPlugin.configs.recommended.rules,\n\t\t},\n\t},\n])\n\nexport default eslintConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This approach eliminates the risk of collisions or errors that can occur when the same plugins or parsers are imported across multiple configurations."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Adding to existing config"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you're adding Next.js to an existing ESLint setup, spread the Next.js config into your array:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"eslint.config.mjs\"",
+			"value": "import nextConfig from 'eslint-config-next/core-web-vitals'\n// Your other config imports...\n\nconst eslintConfig = [\n\t// Your other configurations...\n\t...nextConfig,\n]\n\nexport default eslintConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When you spread "
+				},
+				{
+					"type": "inlineCode",
+					"value": "...nextConfig"
+				},
+				{
+					"type": "text",
+					"value": ", you're adding multiple config objects that include file patterns, plugins, rules, ignores, and parser settings. ESLint applies configs in order, so later rules can override earlier ones for matching files."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " This approach works well for straightforward setups. If you have a complex existing config with specific file patterns or plugin configurations that conflict, consider using the plugin directly (as shown above) for more granular control."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.4.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "eslint-config-next"
+								},
+								{
+									"type": "text",
+									"value": " added ESLint 10 compatibility, including support for default React version detection."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next lint"
+								},
+								{
+									"type": "text",
+									"value": " and the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "eslint"
+								},
+								{
+									"type": "text",
+									"value": " next.config.js option were removed in favor of the ESLint CLI. A "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/upgrading/codemods#migrate-from-next-lint-to-eslint-cli",
+									"children": [
+										{
+											"type": "text",
+											"value": "codemod"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " is available to help you migrate."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

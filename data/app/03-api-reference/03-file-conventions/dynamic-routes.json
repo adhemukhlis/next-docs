@@ -1,0 +1,1957 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Dynamic Route Segments\nnav_title: Dynamic Segments\ndescription: Use Dynamic Segments to read URL path params and generate routes from dynamic data.\nrelated:\n title: Next Steps\n description: For more information on what to do next, we recommend the following sections\n links:\n  - app/api-reference/functions/generate-static-params"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A URL path is a sequence of path segments. In the App Router, a segment may be "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "static"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " (a literal value matched exactly) or "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamic"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " (a placeholder that captures a value from the URL). When you don't know a segment's value ahead of time, define a Dynamic Segment to create routes from dynamic data. Next.js passes the captured values to your page via the path "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " prop, either filled in at request time or prerendered at build time."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Dynamic Segments are often referred to as path params, route params, or URL params."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Convention"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A Dynamic Segment can be created by wrapping a folder's name in square brackets: "
+				},
+				{
+					"type": "inlineCode",
+					"value": "[folderName]"
+				},
+				{
+					"type": "text",
+					"value": ". For example, a blog could include the following route "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/blog/[slug]/page.js"
+				},
+				{
+					"type": "text",
+					"value": " where "
+				},
+				{
+					"type": "inlineCode",
+					"value": "[slug]"
+				},
+				{
+					"type": "text",
+					"value": " is the Dynamic Segment for blog posts."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" switcher",
+			"value": "export default async function Page({ params }: { params: Promise<{ slug: string }> }) {\n\tconst { slug } = await params\n\treturn <div>My Post: {slug}</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\" switcher",
+			"value": "export default async function Page({ params }) {\n\tconst { slug } = await params\n\treturn <div>My Post: {slug}</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Dynamic Segments are passed as the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " prop to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "layout"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/page",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "page"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "route"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-metadata#generatemetadata-function",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateMetadata"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " functions."
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Route"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Example URL"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "params"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/blog/[slug]/page.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/blog/a"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "{ slug: 'a' }"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/blog/[slug]/page.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/blog/b"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "{ slug: 'b' }"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/blog/[slug]/page.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/blog/c"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "{ slug: 'c' }"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Dynamic segments that appear before the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout#root-layout",
+					"children": [
+						{
+							"type": "text",
+							"value": "root layout"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " are "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "root parameters"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", which can additionally be read from any Server Component with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/next-root-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next/root-params"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "In Client Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In a Client Component "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "page"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", dynamic segments from props can be accessed using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/use",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " API."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" switcher",
+			"value": "'use client'\nimport { use } from 'react'\n\nexport default function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {\n\tconst { slug } = use(params)\n\n\treturn (\n\t\t<div>\n\t\t\t<p>{slug}</p>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\" switcher",
+			"value": "'use client'\nimport { use } from 'react'\n\nexport default function BlogPostPage({ params }) {\n\tconst { slug } = use(params)\n\n\treturn (\n\t\t<div>\n\t\t\t<p>{slug}</p>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Alternatively Client Components can use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " hook to access the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " anywhere in the Client Component tree."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Catch-all Segments"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Dynamic Segments can be extended to "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "catch-all"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " subsequent segments by adding an ellipsis inside the brackets "
+				},
+				{
+					"type": "inlineCode",
+					"value": "[...folderName]"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/shop/[...slug]/page.js"
+				},
+				{
+					"type": "text",
+					"value": " will match "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/shop/clothes"
+				},
+				{
+					"type": "text",
+					"value": ", but also "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/shop/clothes/tops"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/shop/clothes/tops/t-shirts"
+				},
+				{
+					"type": "text",
+					"value": ", and so on."
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Route"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Example URL"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "params"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/shop/[...slug]/page.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/shop/a"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "{ slug: ['a'] }"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/shop/[...slug]/page.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/shop/a/b"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "{ slug: ['a', 'b'] }"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/shop/[...slug]/page.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/shop/a/b/c"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "{ slug: ['a', 'b', 'c'] }"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Optional Catch-all Segments"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Catch-all Segments can be made "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "optional"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " by including the parameter in double square brackets: "
+				},
+				{
+					"type": "inlineCode",
+					"value": "[[...folderName]]"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/shop/[[...slug]]/page.js"
+				},
+				{
+					"type": "text",
+					"value": " will "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "also"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " match "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/shop"
+				},
+				{
+					"type": "text",
+					"value": ", in addition to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/shop/clothes"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/shop/clothes/tops"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/shop/clothes/tops/t-shirts"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The difference between "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "catch-all"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "optional catch-all"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " segments is that with optional, the route without the parameter is also matched ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "/shop"
+				},
+				{
+					"type": "text",
+					"value": " in the example above)."
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Route"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Example URL"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "params"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/shop/[[...slug]]/page.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/shop"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "{ slug: undefined }"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/shop/[[...slug]]/page.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/shop/a"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "{ slug: ['a'] }"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/shop/[[...slug]]/page.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/shop/a/b"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "{ slug: ['a', 'b'] }"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/shop/[[...slug]]/page.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/shop/a/b/c"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "{ slug: ['a', 'b', 'c'] }"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "TypeScript"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using TypeScript, you can add types for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " depending on your configured route segment — use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/page#page-props-helper",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "PageProps<'/route'>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout#layout-props-helper",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "LayoutProps<'/route'>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route#route-context-helper",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "RouteContext<'/route'>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to type "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "route"
+				},
+				{
+					"type": "text",
+					"value": " respectively."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Route "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " values are typed as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "string"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "string[]"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "undefined"
+				},
+				{
+					"type": "text",
+					"value": " (for optional catch-all segments), because their values aren't known until runtime. Users can enter any URL into the address bar, and these broad types help ensure that your application code handles all these possible cases."
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Route"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "params"
+								},
+								{
+									"type": "text",
+									"value": " Type Definition"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/blog/[slug]/page.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "{ slug: string }"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/shop/[...slug]/page.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "{ slug: string[] }"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/shop/[[...slug]]/page.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "{ slug?: string[] }"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/[categoryId]/[itemId]/page.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "{ categoryId: string, itemId: string }"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you're working on a route where "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " can only have a fixed number of valid values, such as a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "[locale]"
+				},
+				{
+					"type": "text",
+					"value": " param with a known set of language codes, you can use runtime validation to handle any invalid params a user may enter, and let the rest of your application work with the narrower type from your known set."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"/app/[locale]/page.tsx\"",
+			"value": "import { notFound } from 'next/navigation'\nimport type { Locale } from '@i18n/types'\nimport { isValidLocale } from '@i18n/utils'\n\nfunction assertValidLocale(value: string): asserts value is Locale {\n\tif (!isValidLocale(value)) notFound()\n}\n\nexport default async function Page(props: PageProps<'/[locale]'>) {\n\tconst { locale } = await props.params // locale is typed as string\n\tassertValidLocale(locale)\n\t// locale is now typed as Locale\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Behavior"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Since the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "params"
+								},
+								{
+									"type": "text",
+									"value": " prop is a promise. You must use "
+								},
+								{
+									"type": "inlineCode",
+									"value": "async"
+								},
+								{
+									"type": "text",
+									"value": "/"
+								},
+								{
+									"type": "inlineCode",
+									"value": "await"
+								},
+								{
+									"type": "text",
+									"value": " or React's use function to access the values."
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "In version 14 and earlier, "
+												},
+												{
+													"type": "inlineCode",
+													"value": "params"
+												},
+												{
+													"type": "text",
+													"value": " was a synchronous prop. To help with backwards compatibility, you can still access it synchronously in Next.js 15, but this behavior will be deprecated in the future."
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "With Cache Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with dynamic route segments, how you handle params depends on whether you use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-static-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Without "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": ", param values are unknown during prerendering, making params runtime data. You must wrap param access in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundaries to provide fallback UI."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": ", you provide sample param values that can be used at build time. The build process validates that dynamic content and other runtime APIs are correctly handled, then generates static HTML files for the samples. Pages rendered with runtime params are saved to disk after a successful first request."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The sections below demonstrate both patterns."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Without "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "All params are runtime data. Param access must be wrapped by Suspense fallback UI. Next.js generates a static shell at build time, and content loads on each request."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "You can also use "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/loading",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "loading.tsx"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " for page-level fallback UI."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "In layouts, avoid awaiting "
+										},
+										{
+											"type": "inlineCode",
+											"value": "params"
+										},
+										{
+											"type": "text",
+											"value": " at the top level. Doing so prevents the layout from being prerendered. Instead, pass the params promise down to the component that needs it and await there. See "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/getting-started/caching#maximizing-the-static-shell",
+											"children": [
+												{
+													"type": "text",
+													"value": "Maximizing the static shell"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " for examples."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\"",
+			"value": "import { Suspense } from 'react'\n\nexport default function Page({ params }: PageProps<'/blog/[slug]'>) {\n\treturn (\n\t\t<div>\n\t\t\t<h1>Blog Post</h1>\n\t\t\t<Suspense fallback={<div>Loading...</div>}>\n\t\t\t\t{params.then(({ slug }) => (\n\t\t\t\t\t<Content slug={slug} />\n\t\t\t\t))}\n\t\t\t</Suspense>\n\t\t</div>\n\t)\n}\n\nasync function Content({ slug }: { slug: string }) {\n\tconst res = await fetch(`https://api.vercel.app/blog/${slug}`)\n\tconst post = await res.json()\n\n\treturn (\n\t\t<article>\n\t\t\t<h2>{post.title}</h2>\n\t\t\t<p>{post.content}</p>\n\t\t</article>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Provide params ahead of time to prerender pages at build time. You can prerender all routes or a subset depending on your needs."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "During the build process, the route is executed with each sample param to collect the HTML result. If dynamic content or runtime data are accessed incorrectly, the build will fail."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" highlight={3-5,8,19}",
+			"value": "import { Suspense } from 'react'\n\nexport async function generateStaticParams() {\n\treturn [{ slug: '1' }, { slug: '2' }, { slug: '3' }]\n}\n\nexport default async function Page({ params }: PageProps<'/blog/[slug]'>) {\n\tconst { slug } = await params\n\n\treturn (\n\t\t<div>\n\t\t\t<h1>Blog Post</h1>\n\t\t\t<Content slug={slug} />\n\t\t</div>\n\t)\n}\n\nasync function Content({ slug }: { slug: string }) {\n\tconst post = await getPost(slug)\n\treturn (\n\t\t<article>\n\t\t\t<h2>{post.title}</h2>\n\t\t\t<p>{post.content}</p>\n\t\t</article>\n\t)\n}\n\nasync function getPost(slug: string) {\n\t'use cache'\n\tconst res = await fetch(`https://api.vercel.app/blog/${slug}`)\n\treturn res.json()\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Build-time validation only covers code paths that execute with the sample params. If your route has conditional logic that accesses runtime APIs for certain param values not in your samples, those branches won't be validated at build time:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\"",
+			"value": "import { cookies } from 'next/headers'\n\nexport async function generateStaticParams() {\n\treturn [{ slug: 'public-post' }, { slug: 'hello-world' }]\n}\n\nexport default async function Page({ params }: PageProps<'/blog/[slug]'>) {\n\tconst { slug } = await params\n\n\tif (slug.startsWith('private-')) {\n\t\t// This branch is never executed at build time\n\t\t// Runtime requests for 'private-*' slugs will error\n\t\treturn <PrivatePost slug={slug} />\n\t}\n\n\treturn <PublicPost slug={slug} />\n}\n\nasync function PrivatePost({ slug }: { slug: string }) {\n\tconst token = (await cookies()).get('token')\n\t// ... fetch and render private post using token for auth\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For runtime params not returned by "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": ", validation occurs during the first request. In the example above, requests for slugs starting with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "private-"
+				},
+				{
+					"type": "text",
+					"value": " will fail because "
+				},
+				{
+					"type": "inlineCode",
+					"value": "PrivatePost"
+				},
+				{
+					"type": "text",
+					"value": " accesses "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": " without a Suspense boundary. Other runtime params that don't hit the conditional branch will render successfully and be saved to disk for subsequent requests."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To fix this, wrap "
+				},
+				{
+					"type": "inlineCode",
+					"value": "PrivatePost"
+				},
+				{
+					"type": "text",
+					"value": " with Suspense:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" highlight={13-15}",
+			"value": "import { Suspense } from 'react'\nimport { cookies } from 'next/headers'\n\nexport async function generateStaticParams() {\n\treturn [{ slug: 'public-post' }, { slug: 'hello-world' }]\n}\n\nexport default async function Page({ params }: PageProps<'/blog/[slug]'>) {\n\tconst { slug } = await params\n\n\tif (slug.startsWith('private-')) {\n\t\treturn (\n\t\t\t<Suspense fallback={<div>Loading...</div>}>\n\t\t\t\t<PrivatePost slug={slug} />\n\t\t\t</Suspense>\n\t\t)\n\t}\n\n\treturn <PublicPost slug={slug} />\n}\n\nasync function PrivatePost({ slug }: { slug: string }) {\n\tconst token = (await cookies()).get('token')\n\t// ... fetch and render private post using token for auth\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-static-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " function can be used to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#prerendering",
+					"children": [
+						{
+							"type": "text",
+							"value": "statically generate"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " routes at build time instead of on-demand at request time."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" switcher",
+			"value": "export async function generateStaticParams() {\n\tconst posts = await fetch('https://.../posts').then((res) => res.json())\n\n\treturn posts.map((post) => ({\n\t\tslug: post.slug,\n\t}))\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\" switcher",
+			"value": "export async function generateStaticParams() {\n\tconst posts = await fetch('https://.../posts').then((res) => res.json())\n\n\treturn posts.map((post) => ({\n\t\tslug: post.slug,\n\t}))\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " inside the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " function, the requests are "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#memoization",
+					"children": [
+						{
+							"type": "text",
+							"value": "automatically deduplicated"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This avoids multiple network calls for the same data Layouts, Pages, and other "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " functions, speeding up build time."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Dynamic GET Route Handlers with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " also works with dynamic "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to statically generate API responses at build time:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/posts/[id]/route.ts\" switcher",
+			"value": "export async function generateStaticParams() {\n\tconst posts: { id: number }[] = await fetch('https://api.vercel.app/blog').then((res) => res.json())\n\n\treturn posts.map((post) => ({\n\t\tid: `${post.id}`,\n\t}))\n}\n\nexport async function GET(request: Request, { params }: RouteContext<'/api/posts/[id]'>) {\n\tconst { id } = await params\n\tconst res = await fetch(`https://api.vercel.app/blog/${id}`)\n\n\tif (!res.ok) {\n\t\treturn Response.json({ error: 'Post not found' }, { status: 404 })\n\t}\n\n\tconst post = await res.json()\n\treturn Response.json(post)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/posts/[id]/route.js\" switcher",
+			"value": "export async function generateStaticParams() {\n\tconst posts = await fetch('https://api.vercel.app/blog').then((res) => res.json())\n\n\treturn posts.map((post) => ({\n\t\tid: `${post.id}`,\n\t}))\n}\n\nexport async function GET(request, { params }) {\n\tconst { id } = await params\n\tconst res = await fetch(`https://api.vercel.app/blog/${id}`)\n\n\tif (!res.ok) {\n\t\treturn Response.json({ error: 'Post not found' }, { status: 404 })\n\t}\n\n\tconst post = await res.json()\n\treturn Response.json(post)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In this example, route handlers for all blog post IDs returned by "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " will be statically generated at build time. Requests to other IDs will be handled dynamically at request time."
+				}
+			]
+		}
+	]
+}

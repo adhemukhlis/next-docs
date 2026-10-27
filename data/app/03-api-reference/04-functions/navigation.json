@@ -1,0 +1,1211 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: navigation\nnav_title: navigation\ndescription: Defer runtime work until the user navigates with the navigation function.\nrelated:\n links:\n  - app/guides/optimizing-prefetching\n  - app/guides/keeping-pages-static\n  - app/api-reference/functions/prefetch\n  - app/api-reference/functions/connection\n  - app/api-reference/config/next-config-js/partialPrefetching"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Calling "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await navigation()"
+				},
+				{
+					"type": "text",
+					"value": " keeps runtime work below it out of the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#app-shell",
+					"children": [
+						{
+							"type": "text",
+							"value": "App Shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and per-link prefetches. The work runs when the user navigates, while the fallback of the nearest "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Suspense",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " boundary renders in the prefetched output."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "navigation()"
+				},
+				{
+					"type": "text",
+					"value": " for reusable content that is expensive to generate and should wait until navigation. Static prerenders still include the content in their output, so it can appear in a static prefetch."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Usage"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The function requires "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and throws without it. It is meant for routes using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/partialPrefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", which you can enable globally or one route at a time by "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/adopting-partial-prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "adopting Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" highlight={4,5}",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tcacheComponents: true,\n\tpartialPrefetching: true,\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With Partial Prefetching enabled, Next.js loads server-rendered output in stages, before and during a client navigation. These are the route's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#navigation-stages",
+					"children": [
+						{
+							"type": "text",
+							"value": "navigation stages"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "A default "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Link>"
+								},
+								{
+									"type": "text",
+									"value": " loads the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/glossary#app-shell",
+									"children": [
+										{
+											"type": "text",
+											"value": "App Shell"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", which holds the part of the route that does not depend on the URL."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "An optional "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/components/link#prefetch",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "<Link prefetch={true}>"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " can also load content that depends on the link's URL."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "When the user follows the link, the navigation renders the rest of the route."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "During runtime rendering, awaiting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "navigation()"
+				},
+				{
+					"type": "text",
+					"value": " keeps content out of the App Shell and per-link prefetches, so it renders during navigation. Static prerenders can still include the content."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Without Partial Prefetching, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "navigation()"
+				},
+				{
+					"type": "text",
+					"value": " still defers the content for a default "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": ", but "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/link#prefetch",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Link prefetch={true}>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " fetches the whole route, deferred content included, the same as a navigation."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To keep content out of the App Shell while still including it in a per-link prefetch, use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/prefetch",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "prefetch()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": "navigation()"
+						},
+						{
+							"type": "text",
+							"value": " defers one subtree. To require a static App Shell and static per-link prefetches across the route, use "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/file-conventions/route-segment-config/ensureStatic#prefetch",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "ensureStatic = 'prefetch'"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ". See "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/keeping-pages-static",
+							"children": [
+								{
+									"type": "text",
+									"value": "Keeping pages static"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for a worked example."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Everything above "
+				},
+				{
+					"type": "inlineCode",
+					"value": "navigation()"
+				},
+				{
+					"type": "text",
+					"value": " can render in the App Shell or a per-link prefetch, while everything below waits for navigation. Deferral is scoped to the component that awaits it and the tree below: sibling branches keep their existing behavior. Place it above the code to defer, and wrap the component in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Suspense",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/post/[slug]/page.tsx\" highlight={20} switcher",
+			"value": "import { Suspense } from 'react'\nimport { cookies } from 'next/headers'\nimport { cacheLife, navigation } from 'next/cache'\n\nexport default function Page({ params }: PageProps<'/post/[slug]'>) {\n\treturn (\n\t\t<>\n\t\t\t<Suspense fallback={<p>Loading post...</p>}>\n\t\t\t\t<PostBody params={params} /> {/* in a per-link prefetch */}\n\t\t\t</Suspense>\n\t\t\t<Suspense fallback={<p>Loading comments...</p>}>\n\t\t\t\t{/* the fallback is in the prefetch, the comments are not */}\n\t\t\t\t<Comments params={params} />\n\t\t\t</Suspense>\n\t\t</>\n\t)\n}\n\nasync function Comments({ params }: { params: Promise<{ slug: string }> }) {\n\tawait navigation() // runtime work below renders on navigation\n\tconst { slug } = await params\n\tconst sort = (await cookies()).get('comment-sort')?.value ?? 'newest'\n\tconst items = await getComments(slug, sort)\n\treturn <CommentList items={items} />\n}\n\nasync function getComments(slug: string, sort: string) {\n\t'use cache'\n\tcacheLife('hours')\n\treturn db.comments.list({ slug, sort })\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/post/[slug]/page.js\" highlight={20} switcher",
+			"value": "import { Suspense } from 'react'\nimport { cookies } from 'next/headers'\nimport { cacheLife, navigation } from 'next/cache'\n\nexport default function Page({ params }) {\n\treturn (\n\t\t<>\n\t\t\t<Suspense fallback={<p>Loading post...</p>}>\n\t\t\t\t<PostBody params={params} /> {/* in a per-link prefetch */}\n\t\t\t</Suspense>\n\t\t\t<Suspense fallback={<p>Loading comments...</p>}>\n\t\t\t\t{/* the fallback is in the prefetch, the comments are not */}\n\t\t\t\t<Comments params={params} />\n\t\t\t</Suspense>\n\t\t</>\n\t)\n}\n\nasync function Comments({ params }) {\n\tawait navigation() // runtime work below renders on navigation\n\tconst { slug } = await params\n\tconst sort = (await cookies()).get('comment-sort')?.value ?? 'newest'\n\tconst items = await getComments(slug, sort)\n\treturn <CommentList items={items} />\n}\n\nasync function getComments(slug, sort) {\n\t'use cache'\n\tcacheLife('hours')\n\treturn db.comments.list({ slug, sort })\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Comments are fetched by slug, so prefetching them would take a per-link prefetch. Awaiting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "navigation()"
+				},
+				{
+					"type": "text",
+					"value": " before that data access keeps them out of the prefetch, so they render when the user navigates."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The slug and the cookie are both read below "
+				},
+				{
+					"type": "inlineCode",
+					"value": "navigation()"
+				},
+				{
+					"type": "text",
+					"value": " and passed as arguments, so "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getComments"
+				},
+				{
+					"type": "text",
+					"value": " caches per post and sort order rather than per visitor. The URL is resolved by the time the deferred content renders, so "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " is available below "
+				},
+				{
+					"type": "inlineCode",
+					"value": "navigation()"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Put the directive on a function called below it, as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getComments"
+				},
+				{
+					"type": "text",
+					"value": " does here. Awaiting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "navigation()"
+				},
+				{
+					"type": "text",
+					"value": " inside a cached scope, such as "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache-private",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache: private"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", is not allowed."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "How "
+				},
+				{
+					"type": "inlineCode",
+					"value": "navigation()"
+				},
+				{
+					"type": "text",
+					"value": " differs from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "connection()"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/connection",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "connection()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " function waits for a real request. It excludes the code that follows from prerendering and prefetching, making that work request-dependent."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Awaiting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "navigation()"
+				},
+				{
+					"type": "text",
+					"value": " excludes the code that follows from route prefetches. It resolves when the user navigates without making that work request-dependent. A function called after "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await navigation()"
+				},
+				{
+					"type": "text",
+					"value": " can therefore use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "\"use cache\""
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and keep its cache lifetime without generating its result during prefetching."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "connection()"
+				},
+				{
+					"type": "text",
+					"value": " when the work must run for a real request. Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "navigation()"
+				},
+				{
+					"type": "text",
+					"value": " when the work is reusable but should wait until the user navigates."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "When to use it"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "navigation()"
+				},
+				{
+					"type": "text",
+					"value": " when the content below it is expensive to produce and no prefetch should generate it."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Neither the runtime App Shell nor a runtime per-link prefetch runs that code, so its upstream requests are not issued until the user navigates."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Leaving content uncached also keeps it out of prefetches, but gives up its cache lifetime."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "inlineCode",
+					"value": "navigation()"
+				},
+				{
+					"type": "text",
+					"value": " the content can be cached with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", given a lifetime, and deferred to the navigation. Give it a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife#stale",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "stale"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " time of five minutes or more and the client-side router reuses it after the first time a user navigates into the route. Below that, a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife#prerendering-behavior",
+					"children": [
+						{
+							"type": "text",
+							"value": "short lifetime keeps it out of the App Shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", so each navigation fetches it again."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Keeping a route's prefetch static"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When every read of "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cookies",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cookies()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/headers",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "headers()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": " sits below "
+				},
+				{
+					"type": "inlineCode",
+					"value": "navigation()"
+				},
+				{
+					"type": "text",
+					"value": ", the prerender a prefetch would trigger cannot produce more than the static output the build already generated, so the prefetch is served from that output instead. Shaping a route this way is an optional optimization: a static response can be cached in a CDN, so a link into the route costs no server CPU at all."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/feed/page.tsx\" highlight={17}",
+			"value": "import { Suspense } from 'react'\nimport { cookies } from 'next/headers'\nimport { navigation } from 'next/cache'\n\nexport default function Page() {\n\treturn (\n\t\t<>\n\t\t\t<FeedHeader /> {/* static, and so is the whole prefetch */}\n\t\t\t<Suspense fallback={<p>Loading stories...</p>}>\n\t\t\t\t<Stories />\n\t\t\t</Suspense>\n\t\t</>\n\t)\n}\n\nasync function Stories() {\n\tawait navigation()\n\tconst topic = (await cookies()).get('topic')?.value ?? 'all'\n\treturn <StoryList items={await getStories(topic)} />\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Good to know"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The function has no effect on the initial load of a page."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Reading "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cookies()"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "headers()"
+								},
+								{
+									"type": "text",
+									"value": " below "
+								},
+								{
+									"type": "inlineCode",
+									"value": "navigation()"
+								},
+								{
+									"type": "text",
+									"value": " does not make the route's prefetches render per request, so they can still be served from static output. Those accesses are ignored, because they would not have resolved in a prefetch either."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "A call outside a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Suspense>"
+								},
+								{
+									"type": "text",
+									"value": " boundary surfaces an "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/instant-navigation-stage",
+									"children": [
+										{
+											"type": "text",
+											"value": "Instant Insight"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " in development. A fully prerendered route is unaffected, but the insight identifies that the call would defer content without a fallback if the route later requires runtime rendering."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Calling it inside "
+								},
+								{
+									"type": "inlineCode",
+									"value": "use cache"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "use cache: private"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/unstable_cache",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "unstable_cache()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/after",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "after()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/generate-static-params",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "generateStaticParams"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", or a Client Component throws."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Type"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "function navigation(): Promise<void>"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parameters"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The function does not accept any parameters."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Promise<void>"
+				},
+				{
+					"type": "text",
+					"value": ". It is not meant to be consumed."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.4.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "navigation"
+								},
+								{
+									"type": "text",
+									"value": " introduced, replacing the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "unstable_navigation"
+								},
+								{
+									"type": "text",
+									"value": " name used in earlier canary releases."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,576 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: API Reference\ndescription: Reference for `modifyConfig` and `onBuildComplete` in the `NextAdapter` interface."
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "async modifyConfig(config, context)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Called for any CLI command that loads the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file to allow modification of the configuration."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Parameters:"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "config"
+								},
+								{
+									"type": "text",
+									"value": ": The complete Next.js configuration object"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "context.phase"
+								},
+								{
+									"type": "text",
+									"value": ": The current build phase (see "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js#phase",
+									"children": [
+										{
+											"type": "text",
+											"value": "phases"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ")"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "context.nextVersion"
+								},
+								{
+									"type": "text",
+									"value": ": Version of Next.js being used"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "context.projectDir"
+								},
+								{
+									"type": "text",
+									"value": ": Absolute path to the Next.js project directory"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Returns:"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " The modified configuration object (can be async)"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "async onBuildComplete(context)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Called after the build process completes with detailed information about routes and outputs."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Parameters:"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "context.routing"
+								},
+								{
+									"type": "text",
+									"value": ": Object containing Next.js routing phases and metadata"
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "routing.beforeMiddleware"
+												},
+												{
+													"type": "text",
+													"value": ": Routes executed before middleware (includes header and redirect handling)"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "routing.middlewareMatchers"
+												},
+												{
+													"type": "text",
+													"value": ": Middleware matcher definitions for this build, used to decide whether middleware should be invoked for a given request"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "routing.beforeFiles"
+												},
+												{
+													"type": "text",
+													"value": ": Rewrite routes checked before filesystem route matching"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "routing.afterFiles"
+												},
+												{
+													"type": "text",
+													"value": ": Rewrite routes checked after filesystem route matching"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "routing.dynamicRoutes"
+												},
+												{
+													"type": "text",
+													"value": ": Dynamic route matching table"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "routing.onMatch"
+												},
+												{
+													"type": "text",
+													"value": ": Routes applied after a successful match (for example immutable static asset cache headers)"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "routing.fallback"
+												},
+												{
+													"type": "text",
+													"value": ": Final rewrite fallback routes"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "routing.shouldNormalizeNextData"
+												},
+												{
+													"type": "text",
+													"value": ": Whether "
+												},
+												{
+													"type": "inlineCode",
+													"value": "/_next/data/<buildId>/..."
+												},
+												{
+													"type": "text",
+													"value": " URLs should be normalized during matching"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "routing.rsc"
+												},
+												{
+													"type": "text",
+													"value": ": Route metadata used for React Server Components routing behavior"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "context.outputs"
+								},
+								{
+									"type": "text",
+									"value": ": Detailed information about all build outputs organized by type"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "context.projectDir"
+								},
+								{
+									"type": "text",
+									"value": ": Absolute path to the Next.js project directory"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "context.repoRoot"
+								},
+								{
+									"type": "text",
+									"value": ": Absolute path to the detected repository root"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "context.distDir"
+								},
+								{
+									"type": "text",
+									"value": ": Absolute path to the build output directory"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "context.config"
+								},
+								{
+									"type": "text",
+									"value": ": The final Next.js configuration (with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "modifyConfig"
+								},
+								{
+									"type": "text",
+									"value": " applied)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "context.nextVersion"
+								},
+								{
+									"type": "text",
+									"value": ": Version of Next.js being used"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "context.buildId"
+								},
+								{
+									"type": "text",
+									"value": ": Unique identifier for the current build"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,1201 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Implementing Partial Prerendering on your platform\nnav_title: PPR Platform Guide\ndescription: A guide for platform engineers on implementing PPR support, from basic origin rendering to optimized CDN integration.\nrelated:\n description: Related guides and references.\n links:\n  - app/guides/rendering-philosophy\n  - app/guides/streaming\n  - app/guides/deploying-to-platforms\n  - app/api-reference/config/next-config-js/adapterPath"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Partial Prerendering (PPR) combines static and dynamic rendering in a single route. At build time, Next.js generates a static HTML shell and a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "postponedState"
+				},
+				{
+					"type": "text",
+					"value": " blob for each PPR-enabled route. At request time, the shell is served immediately and dynamic portions are rendered and streamed to the client."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This page explains how platforms can implement PPR support at different levels of sophistication."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "How PPR Works"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Build time"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For each PPR route, Next.js produces:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "A "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "static HTML shell"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " containing all the content that can be prerendered, with "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/streaming#what-is-streaming",
+									"children": [
+										{
+											"type": "text",
+											"value": "Suspense"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " fallbacks where dynamic content will appear."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "A "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "postponedState"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " value: a serialized string. Treat it as opaque: pass it through without parsing or modifying it. Altering "
+								},
+								{
+									"type": "inlineCode",
+									"value": "postponedState"
+								},
+								{
+									"type": "text",
+									"value": " produces incorrect dynamic rendering output."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "An "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "RSC payload"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for the static portions of the page."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Request time"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When a request arrives for a PPR route:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The server sends the static HTML shell to the client immediately."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The server resumes rendering the dynamic portions using the postponed state."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Dynamic content is streamed to the client, allowing React to hydrate the deferred Suspense boundaries."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The client sees the static shell instantly, then dynamic content appears as it resolves."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Storing PPR Artifacts"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each PPR route requires two artifacts to be stored together:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The static HTML shell."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "inlineCode",
+									"value": "postponedState"
+								},
+								{
+									"type": "text",
+									"value": " blob."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "These must be stored and updated atomically. When a PPR route is revalidated (via "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/incremental-static-regeneration",
+					"children": [
+						{
+							"type": "text",
+							"value": "time-based"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidateTag",
+					"children": [
+						{
+							"type": "text",
+							"value": "on-demand revalidation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "), Next.js regenerates both the shell and the postponed state together. Serving a new shell with an old postponed state, or vice versa, will produce incorrect dynamic content."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/adapters/implementing-ppr-in-an-adapter",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "requestMeta.onCacheEntryV2"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in your adapter to observe cache updates and propagate them to your storage backend."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Origin-Only Implementation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "This is the simplest approach and works on every platform that supports streaming HTTP responses."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "All requests go directly to the Next.js server. The server reads the shell from its local cache, sends it, then renders and streams the dynamic content. This is what "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next start"
+				},
+				{
+					"type": "text",
+					"value": " does by default."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "No additional infrastructure is needed. If your platform supports streaming HTTP responses, it supports PPR."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "CDN Shell + Origin Compute"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For better TTFB, the static HTML shell can be cached at the CDN edge. When a request arrives:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The CDN serves the cached shell immediately (edge latency)."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The CDN sends a resume request to the origin server (ideally in parallel with streaming the shell)."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The origin server renders only the dynamic portions and streams them back."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The CDN concatenates the shell and dynamic content into a single streaming response to the client."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This requires the CDN to support a mechanism for combining cached and dynamic content in a single streaming response. The static shell TTFB drops to edge latency while dynamic content still streams from origin."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For the lowest possible latency, the shell can be served from edge storage (for example, a KV store populated during "
+				},
+				{
+					"type": "inlineCode",
+					"value": "onBuildComplete"
+				},
+				{
+					"type": "text",
+					"value": ") rather than from a CDN cache. This is a platform architecture decision and does not require any changes to the Next.js application."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "The Resume Protocol"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "resume protocol"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " tells the Next.js handler to skip the shell and render only the dynamic portions. It is used by CDN-to-origin architectures and adapter-based deployments that serve the shell separately."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In standard "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next start"
+				},
+				{
+					"type": "text",
+					"value": ", the server handles both the shell and dynamic render in a single pass automatically."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "CDN-to-origin"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When the CDN makes an HTTP request to a separate Next.js origin:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Send a "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "POST"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " request to the route with the header "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next-resume: 1"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Include the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "postponedState"
+								},
+								{
+									"type": "text",
+									"value": " blob as the "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "request body"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The server will render only the deferred Suspense boundaries and stream the result."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " When a POST request combines a Server Action with a PPR resume, the request body contains the postponed state followed by the action body. The "
+						},
+						{
+							"type": "inlineCode",
+							"value": "x-next-resume-state-length"
+						},
+						{
+							"type": "text",
+							"value": " header carries the byte length of the postponed state prefix so the handler can separate the two. For a pure PPR resume (the common case), the entire request body is the postponed state and this header is not needed."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Adapter-based"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When the platform invokes the handler function directly:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Call the entrypoint handler with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "req.method"
+								},
+								{
+									"type": "text",
+									"value": " set to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'POST'"
+								},
+								{
+									"type": "text",
+									"value": ", the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next-resume: 1"
+								},
+								{
+									"type": "text",
+									"value": " header on the request, and the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "postponedState"
+								},
+								{
+									"type": "text",
+									"value": " as the request body. (You can also pass "
+								},
+								{
+									"type": "inlineCode",
+									"value": "requestMeta: { postponed: postponedState }"
+								},
+								{
+									"type": "text",
+									"value": " as the third argument to the handler invocation, which is equivalent but bypasses the HTTP layer entirely.)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The handler renders only the deferred Suspense boundaries and streams the result to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "res"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "No HTTP round-trip is needed: the handler is invoked in-process."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Finding PPR routes in build output"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/adapters/output-types",
+					"children": [
+						{
+							"type": "text",
+							"value": "adapter output"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", PPR routes are identified by "
+				},
+				{
+					"type": "inlineCode",
+					"value": "renderingMode: 'PARTIALLY_STATIC'"
+				},
+				{
+					"type": "text",
+					"value": " in the prerenders array. Iterate "
+				},
+				{
+					"type": "inlineCode",
+					"value": "outputs.prerenders"
+				},
+				{
+					"type": "text",
+					"value": " to find these entries and read "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fallback.postponedState"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "pprChain.headers"
+				},
+				{
+					"type": "text",
+					"value": " contains the headers needed for the resume protocol: "
+				},
+				{
+					"type": "inlineCode",
+					"value": "{ 'next-resume': '1' }"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For detailed implementation with code examples, see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/adapters/implementing-ppr-in-an-adapter",
+					"children": [
+						{
+							"type": "text",
+							"value": "Implementing PPR in an Adapter"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Implementation Checklist"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": true,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Read PPR outputs at build time."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " In your adapter's "
+								},
+								{
+									"type": "inlineCode",
+									"value": "onBuildComplete"
+								},
+								{
+									"type": "text",
+									"value": ", identify prerenders with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "renderingMode: 'PARTIALLY_STATIC'"
+								},
+								{
+									"type": "text",
+									"value": ". Store the shell HTML and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "postponedState"
+								},
+								{
+									"type": "text",
+									"value": " in your cache."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Serve the shell at request time."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " For incoming requests to PPR routes, serve the cached shell immediately and begin streaming."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Resume dynamic rendering."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " For CDN-to-origin: send a POST request to the Next.js handler with the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next-resume: 1"
+								},
+								{
+									"type": "text",
+									"value": " header and the postponed state as the body. For adapter-based: call the handler directly with POST method and the postponed state in the request body (or pass "
+								},
+								{
+									"type": "inlineCode",
+									"value": "requestMeta: { postponed: postponedState }"
+								},
+								{
+									"type": "text",
+									"value": " to the handler). Stream the response back to the client."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Handle cache updates."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Use "
+								},
+								{
+									"type": "inlineCode",
+									"value": "requestMeta.onCacheEntryV2"
+								},
+								{
+									"type": "text",
+									"value": " to capture new shell + postponed state pairs after revalidation, and update your cache atomically."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Support graceful degradation."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " If the postponed state is unavailable or stale, fall back to a full server render. The user gets a complete page without the shell-first optimization."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For the complete adapter API reference and implementation examples, see the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/adapterPath",
+					"children": [
+						{
+							"type": "text",
+							"value": "Deployment Adapter API"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		}
+	]
+}

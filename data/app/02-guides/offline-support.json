@@ -1,0 +1,1234 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Handling connectivity drops\ndescription: How a Next.js app can recover when the network drops mid-fetch or mid-Server Action, and how to communicate that state to the user.\nnav_title: Offline support\nversion: experimental\nrelated:\n title: Learn more\n description: The hook and config flag used in this guide.\n links:\n  - app/api-reference/functions/use-offline\n  - app/api-reference/config/next-config-js/useOffline\n  - app/guides/progressive-web-apps"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Network failures during a soft navigation, a data fetch, or a mutation throw errors in the client. Without explicit handling, the UI either breaks or you have to build a fallback UI that asks the user to retry."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/useOffline",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "experimental.useOffline"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " enabled, a failed navigation, RSC data fetch, prefetch, or Server Action no longer throws when the network is down. Next.js keeps it pending and retries it once the connection returns."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "While the request is pending, the UI sits in its loading state (a Suspense fallback, or a pending transition for a Server Action), which looks the same as a slow server. Use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-offline",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useOffline"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " hook to give users feedback when the app is offline."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Requests you issue directly with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch()"
+				},
+				{
+					"type": "text",
+					"value": " inside a Client Component, or through a client-side data library like React Query or SWR, stay under that library's own retry policy. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/useOffline#how-retry-works",
+					"children": [
+						{
+							"type": "text",
+							"value": "How retry works"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the framework's detection and polling behavior."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Example"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We will build a live-metrics page that fetches fresh data on every request, plus a ping form that calls a Server Action."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Source: "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/nextjs/use-offline",
+									"children": [
+										{
+											"type": "text",
+											"value": "github.com/nextjs/use-offline"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Live demo: "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://use-offline.labs.vercel.dev",
+									"children": [
+										{
+											"type": "text",
+											"value": "use-offline.labs.vercel.dev"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The companion demo has two versions of this dashboard: "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/without-feedback"
+				},
+				{
+					"type": "text",
+					"value": " uses a generic loading fallback, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/with-feedback"
+				},
+				{
+					"type": "text",
+					"value": " uses a connectivity-aware one. The next sections of this guide walk through building each."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Enable offline detection and see the default behavior"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turn on "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.useOffline"
+				},
+				{
+					"type": "text",
+					"value": ". This guide also enables "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/partialPrefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Cache Components lets you place the Suspense boundary as close as possible to the uncached data, with the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#app-shell",
+					"children": [
+						{
+							"type": "text",
+							"value": "App Shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " rendered around it. Partial Prefetching makes that App Shell the unit a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " prefetches, so it is ready to render when a navigation happens offline."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Without Cache Components, a route-level "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/loading",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "loading.tsx"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " gives you the same offline behavior at the segment level. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#without-cache-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Without Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " below."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tcacheComponents: true,\n\tpartialPrefetching: true,\n\texperimental: {\n\t\tuseOffline: true,\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "module.exports = {\n\tcacheComponents: true,\n\tpartialPrefetching: true,\n\texperimental: {\n\t\tuseOffline: true,\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You also need a source page with a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " to the dashboard. Next.js prefetches the App Shell of any "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " that enters the viewport, and that prefetch is what makes the shell available offline."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import Link from 'next/link'\n\nexport default function Home() {\n\treturn (\n\t\t<nav>\n\t\t\t<Link href=\"/dashboard\">Dashboard</Link>\n\t\t</nav>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import Link from 'next/link'\n\nexport default function Home() {\n\treturn (\n\t\t<nav>\n\t\t\t<Link href=\"/dashboard\">Dashboard</Link>\n\t\t</nav>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then build the dashboard itself: a static shell and an uncached data section inside a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getLiveMetrics"
+				},
+				{
+					"type": "text",
+					"value": " is an uncached function that makes a fetch request to an endpoint; every call hits the network."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/page.tsx\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { getLiveMetrics } from '../lib/data'\n\nexport default function Dashboard() {\n\treturn (\n\t\t<section>\n\t\t\t<h1>Live metrics</h1>\n\t\t\t<Suspense fallback={<p>Loading...</p>}>\n\t\t\t\t<MetricsTable />\n\t\t\t</Suspense>\n\t\t</section>\n\t)\n}\n\nasync function MetricsTable() {\n\tconst { services } = await getLiveMetrics()\n\t// render services\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/page.js\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { getLiveMetrics } from '../lib/data'\n\nexport default function Dashboard() {\n\treturn (\n\t\t<section>\n\t\t\t<h1>Live metrics</h1>\n\t\t\t<Suspense fallback={<p>Loading...</p>}>\n\t\t\t\t<MetricsTable />\n\t\t\t</Suspense>\n\t\t</section>\n\t)\n}\n\nasync function MetricsTable() {\n\tconst { services } = await getLiveMetrics()\n\t// render services\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Load the home page. With the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " in the viewport, the dashboard's static shell is prefetched. Go offline (see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#testing",
+					"children": [
+						{
+							"type": "text",
+							"value": "Testing"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " below) and click through to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/dashboard"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The title and container render from the static shell. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Loading..."
+				},
+				{
+					"type": "text",
+					"value": " fallback stays on screen indefinitely because the uncached "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getLiveMetrics()"
+				},
+				{
+					"type": "text",
+					"value": " call cannot complete. The user sees the same spinner they would see for a slow server."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Toggle back to "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Online"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". The metrics table streams in automatically. Next.js retried the request on its own, no client code involved."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "[!NOTE] This feature only applies to soft navigations into prefetched routes and Server Action calls from the current page. A full page reload while offline still fails because the browser needs the network to deliver the HTML; full offline loads would need a service worker (see the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/progressive-web-apps",
+							"children": [
+								{
+									"type": "text",
+									"value": "Progressive Web Apps"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " guide)."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next, replace the generic fallback UI with one that reads the connectivity state."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Report connectivity inside the Suspense fallback"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "useOffline"
+				},
+				{
+					"type": "text",
+					"value": " returns "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": " when the browser fires an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "offline"
+				},
+				{
+					"type": "text",
+					"value": " event "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "or"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when a navigation, prefetch, or Server Action fetch fails. It flips back to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " when a background connectivity check succeeds. This is more reliable than "
+				},
+				{
+					"type": "inlineCode",
+					"value": "navigator.onLine"
+				},
+				{
+					"type": "text",
+					"value": ", which only reflects the OS network interface and still reports "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": " for a device on WiFi with no upstream internet."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Create a client component that picks its message based on the hook."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/connectivity-fallback.tsx\" switcher",
+			"value": "'use client'\n\nimport { useOffline } from 'next/offline'\n\nexport function ConnectivityFallback() {\n\tconst isOffline = useOffline()\n\n\treturn <p>{isOffline ? 'Waiting for connection to load this section...' : 'Loading...'}</p>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/connectivity-fallback.js\" switcher",
+			"value": "'use client'\n\nimport { useOffline } from 'next/offline'\n\nexport function ConnectivityFallback() {\n\tconst isOffline = useOffline()\n\n\treturn <p>{isOffline ? 'Waiting for connection to load this section...' : 'Loading...'}</p>\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "[!NOTE] "
+						},
+						{
+							"type": "inlineCode",
+							"value": "useOffline"
+						},
+						{
+							"type": "text",
+							"value": " returns "
+						},
+						{
+							"type": "inlineCode",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"value": " during server-side rendering and initial hydration. The first accurate value is whatever the browser reports after the app mounts."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Pass it as the Suspense fallback."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/page.tsx\" highlight={3,9} switcher",
+			"value": "import { Suspense } from 'react'\nimport { getLiveMetrics } from '../lib/data'\nimport { ConnectivityFallback } from './connectivity-fallback'\n\nexport default function Dashboard() {\n\treturn (\n\t\t<section>\n\t\t\t<h1>Live metrics</h1>\n\t\t\t<Suspense fallback={<ConnectivityFallback />}>\n\t\t\t\t<MetricsTable />\n\t\t\t</Suspense>\n\t\t</section>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/page.js\" highlight={3,9} switcher",
+			"value": "import { Suspense } from 'react'\nimport { getLiveMetrics } from '../lib/data'\nimport { ConnectivityFallback } from './connectivity-fallback'\n\nexport default function Dashboard() {\n\treturn (\n\t\t<section>\n\t\t\t<h1>Live metrics</h1>\n\t\t\t<Suspense fallback={<ConnectivityFallback />}>\n\t\t\t\t<MetricsTable />\n\t\t\t</Suspense>\n\t\t</section>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Navigating to the dashboard while offline, the fallback now reads \"Waiting for connection to load this section...\" Restore connectivity and the metrics stream in as the fallback disappears."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The fallback only shows on this page, and only while its Suspense boundary is waiting. In this app, we add a banner in the root layout so connectivity state is visible everywhere."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/offline-banner.tsx\" switcher",
+			"value": "'use client'\n\nimport { useOffline } from 'next/offline'\n\nexport function OfflineBanner() {\n\tconst isOffline = useOffline()\n\n\tif (!isOffline) {\n\t\treturn null\n\t}\n\n\treturn <div role=\"status\">Offline. Pending requests will retry once you are back online.</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/offline-banner.js\" switcher",
+			"value": "'use client'\n\nimport { useOffline } from 'next/offline'\n\nexport function OfflineBanner() {\n\tconst isOffline = useOffline()\n\n\tif (!isOffline) {\n\t\treturn null\n\t}\n\n\treturn <div role=\"status\">Offline. Pending requests will retry once you are back online.</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Add it to the root layout."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" highlight={1,7} switcher",
+			"value": "import { OfflineBanner } from './offline-banner'\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html>\n\t\t\t<body>\n\t\t\t\t<OfflineBanner />\n\t\t\t\t{children}\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" highlight={1,7} switcher",
+			"value": "import { OfflineBanner } from './offline-banner'\n\nexport default function RootLayout({ children }) {\n\treturn (\n\t\t<html>\n\t\t\t<body>\n\t\t\t\t<OfflineBanner />\n\t\t\t\t{children}\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The banner shows on every route while offline, and hides when connectivity returns."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For most apps, the pending loading state is enough. Add a banner in the root layout to communicate the connectivity state across the app. To surface that state right where the content is loading, make the route's Suspense fallback itself offline-aware with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useOffline"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The same pattern extends to parameterized routes. A route like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/chats/[id]"
+				},
+				{
+					"type": "text",
+					"value": " renders its shared "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#app-shell",
+					"children": [
+						{
+							"type": "text",
+							"value": "App Shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when you navigate to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/chats/42"
+				},
+				{
+					"type": "text",
+					"value": " offline, and the dynamic messages behind its "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary load when the connection returns."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If the route also prefetches its per-link URL data ahead of the click, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/chats/42"
+				},
+				{
+					"type": "text",
+					"value": " renders its messages from that prefetch immediately, even offline, instead of waiting for the connection to return. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/optimizing-prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Optimizing prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to learn more."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Retry Server Actions after the network returns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Without the flag, a Server Action called with no network throws a fetch error and the awaited promise rejects. Your form has to catch the rejection and decide what to do: show an error, retry, or queue it somewhere."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.useOffline"
+				},
+				{
+					"type": "text",
+					"value": " enabled, that failure never reaches your code. The call stays pending until the connection returns, the request runs again, and the awaited promise resolves with the server's response. No try/catch, no retry loop, no reconnection handler in the component."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The button is still going to sit there looking frozen, though. Combine "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useTransition"
+				},
+				{
+					"type": "text",
+					"value": " with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useOffline"
+				},
+				{
+					"type": "text",
+					"value": " to give it an offline-aware label."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/ping/actions.ts\" switcher",
+			"value": "'use server'\n\nexport async function ping(): Promise<string> {\n\treturn new Date().toISOString()\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/ping/actions.js\" switcher",
+			"value": "'use server'\n\nexport async function ping() {\n\treturn new Date().toISOString()\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ping/ping-form.tsx\" switcher",
+			"value": "'use client'\n\nimport { useState, useTransition } from 'react'\nimport { useOffline } from 'next/offline'\nimport { ping } from './actions'\n\nexport function PingForm() {\n\tconst [pongs, setPongs] = useState<string[]>([])\n\tconst [pending, startTransition] = useTransition()\n\tconst isOffline = useOffline()\n\n\tfunction handleSubmit() {\n\t\tstartTransition(async () => {\n\t\t\tconst pong = await ping()\n\t\t\tsetPongs((prev) => [pong, ...prev])\n\t\t})\n\t}\n\n\tconst label = pending ? (isOffline ? 'Pinging (offline, will retry)...' : 'Pinging...') : 'Ping'\n\n\treturn (\n\t\t<form action={handleSubmit}>\n\t\t\t<button\n\t\t\t\ttype=\"submit\"\n\t\t\t\tdisabled={pending}>\n\t\t\t\t{label}\n\t\t\t</button>\n\t\t\t<ul>\n\t\t\t\t{pongs.map((t) => (\n\t\t\t\t\t<li key={t}>{t}</li>\n\t\t\t\t))}\n\t\t\t</ul>\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ping/ping-form.js\" switcher",
+			"value": "'use client'\n\nimport { useState, useTransition } from 'react'\nimport { useOffline } from 'next/offline'\nimport { ping } from './actions'\n\nexport function PingForm() {\n\tconst [pongs, setPongs] = useState([])\n\tconst [pending, startTransition] = useTransition()\n\tconst isOffline = useOffline()\n\n\tfunction handleSubmit() {\n\t\tstartTransition(async () => {\n\t\t\tconst pong = await ping()\n\t\t\tsetPongs((prev) => [pong, ...prev])\n\t\t})\n\t}\n\n\tconst label = pending ? (isOffline ? 'Pinging (offline, will retry)...' : 'Pinging...') : 'Ping'\n\n\treturn (\n\t\t<form action={handleSubmit}>\n\t\t\t<button\n\t\t\t\ttype=\"submit\"\n\t\t\t\tdisabled={pending}>\n\t\t\t\t{label}\n\t\t\t</button>\n\t\t\t<ul>\n\t\t\t\t{pongs.map((t) => (\n\t\t\t\t\t<li key={t}>{t}</li>\n\t\t\t\t))}\n\t\t\t</ul>\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Clicking "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Ping"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " while offline disables the button and changes its label to \"Pinging (offline, will retry)...\". Restoring connectivity resolves the awaited "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ping()"
+				},
+				{
+					"type": "text",
+					"value": " call, appends the timestamp to the list, and reverts the label to \"Ping\". No second click, no client-side retry code."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "[!NOTE] While offline, clicking a link during a pending Server Action may appear to do nothing. The link's navigation also needs the network and queues behind the same connectivity signal as the action. Both resolve when the connection returns."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Testing"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Test this feature with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build && next start"
+				},
+				{
+					"type": "text",
+					"value": ". Dev mode is not a reliable reference for offline behavior."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In Chrome, use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.chrome.com/docs/devtools/network/reference#offline",
+					"children": [
+						{
+							"type": "text",
+							"value": "DevTools > Network > "
+						},
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Offline"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "; in Firefox, use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://firefox-source-docs.mozilla.org/devtools-user/network_monitor/throttling/index.html",
+					"children": [
+						{
+							"type": "text",
+							"value": "Network Monitor's throttling menu"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". For a real-world test, toggle airplane mode on your laptop or phone, disconnect WiFi, or unplug the network cable."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Without Cache Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A route-level "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/loading",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "loading.tsx"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " does the same job. It gives Next.js a boundary to prefetch as the route's shell, so the shell renders offline and the page resumes once the network returns. For how "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.tsx"
+				},
+				{
+					"type": "text",
+					"value": " prefetching works, see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useOffline"
+				},
+				{
+					"type": "text",
+					"value": " hook, banner, and Server Action retry all behave the same way."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Next steps"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/use-offline",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "useOffline"
+										},
+										{
+											"type": "text",
+											"value": " hook reference"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/useOffline",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "experimental.useOffline"
+										},
+										{
+											"type": "text",
+											"value": " config reference"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/loading",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "loading.tsx"
+										},
+										{
+											"type": "text",
+											"value": " file convention"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/progressive-web-apps",
+									"children": [
+										{
+											"type": "text",
+											"value": "Progressive Web Apps guide"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for service-worker-based offline caching"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

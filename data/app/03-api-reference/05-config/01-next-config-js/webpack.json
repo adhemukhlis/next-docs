@@ -1,0 +1,612 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Custom Webpack Config\nnav_title: webpack\ndescription: Learn how to customize the webpack config used by Next.js"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": changes to webpack config are not covered by semver so proceed at your own risk"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Before continuing to add custom webpack configuration to your application make sure Next.js doesn't already support your use-case:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/css",
+									"children": [
+										{
+											"type": "text",
+											"value": "CSS imports"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/css#css-modules",
+									"children": [
+										{
+											"type": "text",
+											"value": "CSS modules"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/sass",
+									"children": [
+										{
+											"type": "text",
+											"value": "Sass/SCSS imports"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/sass",
+									"children": [
+										{
+											"type": "text",
+											"value": "Sass/SCSS modules"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Some commonly asked for features are available as plugins:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel/next.js/tree/canary/packages/next-mdx",
+									"children": [
+										{
+											"type": "text",
+											"value": "@next/mdx"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel/next.js/tree/canary/packages/next-bundle-analyzer",
+									"children": [
+										{
+											"type": "text",
+											"value": "@next/bundle-analyzer"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In order to extend our usage of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "webpack"
+				},
+				{
+					"type": "text",
+					"value": ", you can define a function that extends its config inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ", like so:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\twebpack: (config, { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }) => {\n\t\t// Important: return the modified config\n\t\treturn config\n\t},\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "The "
+						},
+						{
+							"type": "inlineCode",
+							"value": "webpack"
+						},
+						{
+							"type": "text",
+							"value": " function is executed three times, twice for the server (nodejs / edge runtime) and once for the client. This allows you to distinguish between client and server configuration using the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "isServer"
+						},
+						{
+							"type": "text",
+							"value": " property."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The second argument to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "webpack"
+				},
+				{
+					"type": "text",
+					"value": " function is an object with the following properties:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "buildId"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "String"
+								},
+								{
+									"type": "text",
+									"value": " - The build id, used as a unique identifier between builds."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "dev"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Boolean"
+								},
+								{
+									"type": "text",
+									"value": " - Indicates if the compilation will be done in development."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "isServer"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Boolean"
+								},
+								{
+									"type": "text",
+									"value": " - It's "
+								},
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": " for server-side compilation, and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": " for client-side compilation."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "nextRuntime"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "String | undefined"
+								},
+								{
+									"type": "text",
+									"value": " - The target runtime for server-side compilation; either "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"edge\""
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"nodejs\""
+								},
+								{
+									"type": "text",
+									"value": ", it's "
+								},
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								},
+								{
+									"type": "text",
+									"value": " for client-side compilation."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "defaultLoaders"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Object"
+								},
+								{
+									"type": "text",
+									"value": " - Default loaders used internally by Next.js:"
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "babel"
+												},
+												{
+													"type": "text",
+													"value": ": "
+												},
+												{
+													"type": "inlineCode",
+													"value": "Object"
+												},
+												{
+													"type": "text",
+													"value": " - Default "
+												},
+												{
+													"type": "inlineCode",
+													"value": "babel-loader"
+												},
+												{
+													"type": "text",
+													"value": " configuration."
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Example usage of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "defaultLoaders.babel"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Example config for adding a loader that depends on babel-loader\n// This source was taken from the @next/mdx plugin source:\n// https://github.com/vercel/next.js/tree/canary/packages/next-mdx\nmodule.exports = {\n\twebpack: (config, options) => {\n\t\tconfig.module.rules.push({\n\t\t\ttest: /\\.mdx/,\n\t\t\tuse: [\n\t\t\t\toptions.defaultLoaders.babel,\n\t\t\t\t{\n\t\t\t\t\tloader: '@mdx-js/loader',\n\t\t\t\t\toptions: pluginOptions.options,\n\t\t\t\t},\n\t\t\t],\n\t\t})\n\n\t\treturn config\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "nextRuntime"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Notice that "
+				},
+				{
+					"type": "inlineCode",
+					"value": "isServer"
+				},
+				{
+					"type": "text",
+					"value": " is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": " when "
+				},
+				{
+					"type": "inlineCode",
+					"value": "nextRuntime"
+				},
+				{
+					"type": "text",
+					"value": " is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"edge\""
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"nodejs\""
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "nextRuntime"
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"edge\""
+				},
+				{
+					"type": "text",
+					"value": " is currently for proxy and Server Components in edge runtime only."
+				}
+			]
+		}
+	]
+}

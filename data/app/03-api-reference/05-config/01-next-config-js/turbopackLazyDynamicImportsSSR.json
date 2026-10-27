@@ -1,0 +1,292 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: turbopackLazyDynamicImportsSSR\ndescription: Compile dynamic imports when server rendering first reaches them during development.\nversion: experimental\nrelated:\n links:\n  - app/api-reference/config/next-config-js/turbopackLazyDynamicImports"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.turbopackLazyDynamicImportsSSR"
+				},
+				{
+					"type": "text",
+					"value": " option defers compiling dynamic imports until server rendering first reaches them during "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher highlight={5}",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\texperimental: {\n\t\tturbopackLazyDynamicImportsSSR: true,\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher highlight={4}",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\texperimental: {\n\t\tturbopackLazyDynamicImportsSSR: true,\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "How it works"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Client Components can use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/lazy",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "lazy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to load a component dynamically. With "
+				},
+				{
+					"type": "inlineCode",
+					"value": "turbopackLazyDynamicImportsSSR"
+				},
+				{
+					"type": "text",
+					"value": " enabled, Turbopack compiles the imported component when a server render first reaches it. A target that is not rendered remains uncompiled."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the following example, Turbopack compiles "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Preview"
+				},
+				{
+					"type": "text",
+					"value": " when "
+				},
+				{
+					"type": "inlineCode",
+					"value": "showPreview"
+				},
+				{
+					"type": "text",
+					"value": " is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": " during server rendering:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/preview.tsx\" switcher",
+			"value": "'use client'\n\nimport { lazy } from 'react'\n\nconst Preview = lazy(() => import('./preview-panel'))\n\nexport function MaybePreview({ showPreview }: { showPreview: boolean }) {\n\treturn showPreview ? <Preview /> : null\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/preview.js\" switcher",
+			"value": "'use client'\n\nimport { lazy } from 'react'\n\nconst Preview = lazy(() => import('./preview-panel'))\n\nexport function MaybePreview({ showPreview }) {\n\treturn showPreview ? <Preview /> : null\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The option defaults to "
+										},
+										{
+											"type": "inlineCode",
+											"value": "false"
+										},
+										{
+											"type": "text",
+											"value": " and only affects the Node.js runtime with Turbopack during "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next dev"
+										},
+										{
+											"type": "text",
+											"value": ". It does not change production builds."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "To defer client-side dynamic imports until the browser requests them, use "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/config/next-config-js/turbopackLazyDynamicImports",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "turbopackLazyDynamicImports"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.4.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "experimental.turbopackLazyDynamicImportsSSR"
+								},
+								{
+									"type": "text",
+									"value": " configuration option added."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

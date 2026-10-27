@@ -1,0 +1,582 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to set up Playwright with Next.js\nnav_title: Playwright\ndescription: Learn how to set up Playwright with Next.js for End-to-End (E2E) Testing.\nrelated:\n description: Learn more about testing instant navigations.\n links:\n  - app/guides/instant-navigation"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Playwright is a testing framework that lets you automate Chromium, Firefox, and WebKit with a single API. You can use it to write "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "End-to-End (E2E)"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " testing. This guide will show you how to set up Playwright with Next.js and write your first tests."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Quickstart"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The fastest way to get started is to use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "create-next-app"
+				},
+				{
+					"type": "text",
+					"value": " with the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/tree/canary/examples/with-playwright",
+					"children": [
+						{
+							"type": "text",
+							"value": "with-playwright example"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This will create a Next.js project complete with Playwright configured."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm create next-app --example with-playwright with-playwright-app"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npx create-next-app@latest --example with-playwright with-playwright-app"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn create next-app --example with-playwright with-playwright-app"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun create next-app --example with-playwright with-playwright-app"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Manual setup"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To install Playwright, run the following command:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm create playwright"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm init playwright"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn create playwright"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun create playwright"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This will take you through a series of prompts to set up and configure Playwright for your project, including adding a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "playwright.config.ts"
+				},
+				{
+					"type": "text",
+					"value": " file. Please refer to the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://playwright.dev/docs/intro#installation",
+					"children": [
+						{
+							"type": "text",
+							"value": "Playwright installation guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the step-by-step guide."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Creating your first Playwright E2E test"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Create two new Next.js pages:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\"",
+			"value": "import Link from 'next/link'\n\nexport default function Page() {\n\treturn (\n\t\t<div>\n\t\t\t<h1>Home</h1>\n\t\t\t<Link href=\"/about\">About</Link>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/about/page.tsx\"",
+			"value": "import Link from 'next/link'\n\nexport default function Page() {\n\treturn (\n\t\t<div>\n\t\t\t<h1>About</h1>\n\t\t\t<Link href=\"/\">Home</Link>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, add a test to verify that your navigation is working correctly:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"tests/example.spec.ts\"",
+			"value": "import { test, expect } from '@playwright/test'\n\ntest('should navigate to the about page', async ({ page }) => {\n\t// Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)\n\tawait page.goto('http://localhost:3000/')\n\t// Find an element with the text 'About' and click on it\n\tawait page.click('text=About')\n\t// The new URL should be \"/about\" (baseURL is used there)\n\tawait expect(page).toHaveURL('http://localhost:3000/about')\n\t// The new page should contain an h1 with \"About\"\n\tawait expect(page.locator('h1')).toContainText('About')\n})"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": You can use "
+						},
+						{
+							"type": "inlineCode",
+							"value": "page.goto(\"/\")"
+						},
+						{
+							"type": "text",
+							"value": " instead of "
+						},
+						{
+							"type": "inlineCode",
+							"value": "page.goto(\"http://localhost:3000/\")"
+						},
+						{
+							"type": "text",
+							"value": ", if you add "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://playwright.dev/docs/api/class-testoptions#test-options-base-url",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "\"baseURL\": \"http://localhost:3000\""
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " to the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "playwright.config.ts"
+						},
+						{
+							"type": "text",
+							"value": " "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://playwright.dev/docs/test-configuration",
+							"children": [
+								{
+									"type": "text",
+									"value": "configuration file"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Testing instant navigations"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you're using Cache Components, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instant()"
+				},
+				{
+					"type": "text",
+					"value": " helper from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@next/playwright"
+				},
+				{
+					"type": "text",
+					"value": " lets you assert what is visible immediately after a navigation, before any dynamic content streams in. See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/instant-navigation",
+					"children": [
+						{
+							"type": "text",
+							"value": "Instant navigation guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config/instant",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "instant"
+						},
+						{
+							"type": "text",
+							"value": " API reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for setup and examples."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Running your Playwright tests"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Playwright will simulate a user navigating your application using three browsers: Chromium, Firefox and WebKit, this requires your Next.js server to be running. We recommend running your tests against your production code to more closely resemble how your application will behave."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "npm run build"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "npm run start"
+				},
+				{
+					"type": "text",
+					"value": ", then run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "npx playwright test"
+				},
+				{
+					"type": "text",
+					"value": " in another terminal window to run the Playwright tests."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Alternatively, you can use the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://playwright.dev/docs/test-webserver/",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "webServer"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " feature to let Playwright start the development server and wait until it's fully available."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Running Playwright on Continuous Integration (CI)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Playwright will by default run your tests in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://playwright.dev/docs/ci#running-headed",
+					"children": [
+						{
+							"type": "text",
+							"value": "headless mode"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". To install all the Playwright dependencies, run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "npx playwright install-deps"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can learn more about Playwright and Continuous Integration from these resources:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel/next.js/tree/canary/examples/with-playwright",
+									"children": [
+										{
+											"type": "text",
+											"value": "Next.js with Playwright example"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://playwright.dev/docs/ci",
+									"children": [
+										{
+											"type": "text",
+											"value": "Playwright on your CI provider"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://discord.com/invite/playwright-807756831384403968",
+									"children": [
+										{
+											"type": "text",
+											"value": "Playwright Discord"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

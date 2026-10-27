@@ -1,0 +1,1350 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Metadata and OG images\ndescription: Learn how to add metadata to your pages and create dynamic OG images.\nrelated:\n title: API Reference\n description: Learn more about the Metadata APIs mentioned in this page.\n links:\n  - app/api-reference/functions/generate-metadata\n  - app/api-reference/functions/generate-viewport\n  - app/api-reference/functions/image-response\n  - app/api-reference/file-conventions/metadata\n  - app/api-reference/file-conventions/metadata/app-icons\n  - app/api-reference/file-conventions/metadata/opengraph-image\n  - app/api-reference/file-conventions/metadata/robots\n  - app/api-reference/file-conventions/metadata/sitemap\n  - app/api-reference/config/next-config-js/htmlLimitedBots"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The Metadata APIs can be used to define your application metadata for improved SEO and web shareability and include:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#static-metadata",
+									"children": [
+										{
+											"type": "text",
+											"value": "The static "
+										},
+										{
+											"type": "inlineCode",
+											"value": "metadata"
+										},
+										{
+											"type": "text",
+											"value": " object"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#generated-metadata",
+									"children": [
+										{
+											"type": "text",
+											"value": "The dynamic "
+										},
+										{
+											"type": "inlineCode",
+											"value": "generateMetadata"
+										},
+										{
+											"type": "text",
+											"value": " function"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Special "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/metadata",
+									"children": [
+										{
+											"type": "text",
+											"value": "file conventions"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " that can be used to add static or dynamically generated "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#favicons",
+									"children": [
+										{
+											"type": "text",
+											"value": "favicons"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#static-open-graph-images",
+									"children": [
+										{
+											"type": "text",
+											"value": "OG images"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With all the options above, Next.js will automatically generate the relevant "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<head>"
+				},
+				{
+					"type": "text",
+					"value": " tags for your page, which can be inspected in the browser's developer tools."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "metadata"
+				},
+				{
+					"type": "text",
+					"value": " object and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata"
+				},
+				{
+					"type": "text",
+					"value": " function exports are only supported in Server Components."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Default fields"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There are two default "
+				},
+				{
+					"type": "inlineCode",
+					"value": "meta"
+				},
+				{
+					"type": "text",
+					"value": " tags that are always added even if a route doesn't define metadata:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/docs/Web/HTML/Element/meta#attr-charset",
+									"children": [
+										{
+											"type": "text",
+											"value": "meta charset tag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " sets the character encoding for the website."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://developer.mozilla.org/docs/Web/HTML/Viewport_meta_tag",
+									"children": [
+										{
+											"type": "text",
+											"value": "meta viewport tag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " sets the viewport width and scale for the website to adjust for different devices."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": null,
+			"value": "<meta charset=\"utf-8\" />\n<meta\n\tname=\"viewport\"\n\tcontent=\"width=device-width, initial-scale=1\" />"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The other metadata fields can be defined with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Metadata"
+				},
+				{
+					"type": "text",
+					"value": " object (for "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#static-metadata",
+					"children": [
+						{
+							"type": "text",
+							"value": "static metadata"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ") or the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata"
+				},
+				{
+					"type": "text",
+					"value": " function (for "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#generated-metadata",
+					"children": [
+						{
+							"type": "text",
+							"value": "generated metadata"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ")."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Static metadata"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To define static metadata, export a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-metadata#metadata-object",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Metadata"
+						},
+						{
+							"type": "text",
+							"value": " object"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " from a static "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "layout.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/page",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "page.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " file. For example, to add a title and description to the blog route:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/layout.tsx\" switcher",
+			"value": "import type { Metadata } from 'next'\n\nexport const metadata: Metadata = {\n\ttitle: 'My Blog',\n\tdescription: '...',\n}\n\nexport default function Layout() {}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/layout.js\" switcher",
+			"value": "export const metadata = {\n\ttitle: 'My Blog',\n\tdescription: '...',\n}\n\nexport default function Layout() {}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can view a full list of available options, in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-metadata#metadata-fields",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateMetadata"
+						},
+						{
+							"type": "text",
+							"value": " documentation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Generated metadata"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-metadata",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateMetadata"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " function to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " metadata that depends on data. For example, to fetch the title and description for a specific blog post:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" switcher",
+			"value": "import type { Metadata, ResolvingMetadata } from 'next'\n\ntype Props = {\n\tparams: Promise<{ slug: string }>\n\tsearchParams: Promise<{ [key: string]: string | string[] | undefined }>\n}\n\nexport async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {\n\tconst slug = (await params).slug\n\n\t// fetch post information\n\tconst post = await fetch(`https://api.vercel.app/blog/${slug}`).then((res) => res.json())\n\n\treturn {\n\t\ttitle: post.title,\n\t\tdescription: post.description,\n\t}\n}\n\nexport default function Page({ params, searchParams }: Props) {}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\" switcher",
+			"value": "export async function generateMetadata({ params, searchParams }, parent) {\n\tconst slug = (await params).slug\n\n\t// fetch post information\n\tconst post = await fetch(`https://api.vercel.app/blog/${slug}`).then((res) => res.json())\n\n\treturn {\n\t\ttitle: post.title,\n\t\tdescription: post.description,\n\t}\n}\n\nexport default function Page({ params, searchParams }) {}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Streaming metadata"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For dynamically rendered pages, Next.js streams metadata separately, injecting it into the HTML once "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateMetadata"
+				},
+				{
+					"type": "text",
+					"value": " resolves, without blocking UI rendering."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Streaming metadata improves perceived performance by allowing visual content to stream first."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Streaming metadata is "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "disabled for bots and crawlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " that expect metadata to be in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<head>"
+				},
+				{
+					"type": "text",
+					"value": " tag (e.g. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Twitterbot"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Slackbot"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Bingbot"
+				},
+				{
+					"type": "text",
+					"value": "). These are detected by using the User Agent header from the incoming request."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can customize or "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "disable"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " streaming metadata completely, with the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/htmlLimitedBots#disabling",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "htmlLimitedBots"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " option in your Next.js config file."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Prerendered pages don’t use streaming since metadata is resolved at build time."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn more about "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-metadata#streaming-metadata",
+					"children": [
+						{
+							"type": "text",
+							"value": "streaming metadata"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Memoizing data requests"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There may be cases where you need to fetch the "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "same"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " data for metadata and the page itself. To avoid duplicate requests, you can use React's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cache"
+						},
+						{
+							"type": "text",
+							"value": " function"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to memoize the return value and only fetch the data once. For example, to fetch the blog post information for both the metadata and the page:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/lib/data.ts\" highlight={5} switcher",
+			"value": "import { cache } from 'react'\nimport { db } from '@/app/lib/db'\n\n// getPost will be used twice, but execute only once\nexport const getPost = cache(async (slug: string) => {\n\tconst res = await db.query.posts.findFirst({ where: eq(posts.slug, slug) })\n\treturn res\n})"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/lib/data.js\" highlight={5} switcher",
+			"value": "import { cache } from 'react'\nimport { db } from '@/app/lib/db'\n\n// getPost will be used twice, but execute only once\nexport const getPost = cache(async (slug) => {\n\tconst res = await db.query.posts.findFirst({ where: eq(posts.slug, slug) })\n\treturn res\n})"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" switcher",
+			"value": "import { getPost } from '@/app/lib/data'\n\nexport async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {\n\tconst { slug } = await params\n\tconst post = await getPost(slug)\n\treturn {\n\t\ttitle: post.title,\n\t\tdescription: post.description,\n\t}\n}\n\nexport default async function Page({ params }: { params: Promise<{ slug: string }> }) {\n\tconst { slug } = await params\n\tconst post = await getPost(slug)\n\treturn <div>{post.title}</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\" switcher",
+			"value": "import { getPost } from '@/app/lib/data'\n\nexport async function generateMetadata({ params }) {\n\tconst { slug } = await params\n\tconst post = await getPost(slug)\n\treturn {\n\t\ttitle: post.title,\n\t\tdescription: post.description,\n\t}\n}\n\nexport default async function Page({ params }) {\n\tconst { slug } = await params\n\tconst post = await getPost(slug)\n\treturn <div>{post.title}</div>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "File-based metadata"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The following special files are available for metadata:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/metadata/app-icons",
+									"children": [
+										{
+											"type": "text",
+											"value": "favicon.ico, apple-icon.jpg, and icon.jpg"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/metadata/opengraph-image",
+									"children": [
+										{
+											"type": "text",
+											"value": "opengraph-image.jpg and twitter-image.jpg"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/metadata/robots",
+									"children": [
+										{
+											"type": "text",
+											"value": "robots.txt"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/metadata/sitemap",
+									"children": [
+										{
+											"type": "text",
+											"value": "sitemap.xml"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use these for static metadata, or you can programmatically generate these files with code."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Favicons"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Favicons are small icons that represent your site in bookmarks and search results. To add a favicon to your application, create a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "favicon.ico"
+				},
+				{
+					"type": "text",
+					"value": " and add to the root of the app folder."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"Favicon Special File inside the App Folder with sibling layout and page files\"\nsrcLight=\"/docs/light/favicon-ico.png\"\nsrcDark=\"/docs/dark/favicon-ico.png\"\nwidth=\"1600\"\nheight=\"444\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "You can also programmatically generate favicons using code. See the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/file-conventions/metadata/app-icons",
+							"children": [
+								{
+									"type": "text",
+									"value": "favicon docs"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for more information."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Static Open Graph images"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Open Graph (OG) images are images that represent your site in social media. To add a static OG image to your application, create a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "opengraph-image.jpg"
+				},
+				{
+					"type": "text",
+					"value": " file in the root of the app folder."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"OG image special file inside the App folder with sibling layout and page files\"\nsrcLight=\"/docs/light/opengraph-image.png\"\nsrcDark=\"/docs/dark/opengraph-image.png\"\nwidth=\"1600\"\nheight=\"444\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also add OG images for specific routes by creating a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "opengraph-image.jpg"
+				},
+				{
+					"type": "text",
+					"value": " deeper down the folder structure. For example, to create an OG image specific to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog"
+				},
+				{
+					"type": "text",
+					"value": " route, add a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "opengraph-image.jpg"
+				},
+				{
+					"type": "text",
+					"value": " file inside the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "blog"
+				},
+				{
+					"type": "text",
+					"value": " folder."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"OG image special file inside the blog folder\"\nsrcLight=\"/docs/light/opengraph-image-blog.png\"\nsrcDark=\"/docs/dark/opengraph-image-blog.png\"\nwidth=\"1600\"\nheight=\"525\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The more specific image will take precedence over any OG images above it in the folder structure."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Other image formats such as "
+						},
+						{
+							"type": "inlineCode",
+							"value": "jpeg"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": "png"
+						},
+						{
+							"type": "text",
+							"value": ", and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "gif"
+						},
+						{
+							"type": "text",
+							"value": " are also supported. See the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/file-conventions/metadata/opengraph-image",
+							"children": [
+								{
+									"type": "text",
+									"value": "Open Graph Image docs"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for more information."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Generated Open Graph images"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/image-response",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "ImageResponse"
+						},
+						{
+							"type": "text",
+							"value": " constructor"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " allows you to generate dynamic images using JSX and CSS. This is useful for OG images that depend on data."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, to generate a unique OG image for each blog post, add an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "opengraph-image.tsx"
+				},
+				{
+					"type": "text",
+					"value": " file inside the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "blog/[slug]"
+				},
+				{
+					"type": "text",
+					"value": " folder, and import the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ImageResponse"
+				},
+				{
+					"type": "text",
+					"value": " constructor from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/og"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/opengraph-image.tsx\" switcher",
+			"value": "import { ImageResponse } from 'next/og'\nimport { getPost } from '@/app/lib/data'\n\n// Image metadata\nexport const size = {\n\twidth: 1200,\n\theight: 630,\n}\n\nexport const contentType = 'image/png'\n\n// Image generation\nexport default async function Image({ params }: { params: Promise<{ slug: string }> }) {\n\tconst { slug } = await params\n\tconst post = await getPost(slug)\n\n\treturn new ImageResponse(\n\t\t// ImageResponse JSX element\n\t\t<div\n\t\t\tstyle={{\n\t\t\t\tfontSize: 128,\n\t\t\t\tbackground: 'white',\n\t\t\t\twidth: '100%',\n\t\t\t\theight: '100%',\n\t\t\t\tdisplay: 'flex',\n\t\t\t\talignItems: 'center',\n\t\t\t\tjustifyContent: 'center',\n\t\t\t}}>\n\t\t\t{post.title}\n\t\t</div>,\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/opengraph-image.js\" switcher",
+			"value": "import { ImageResponse } from 'next/og'\nimport { getPost } from '@/app/lib/data'\n\n// Image metadata\nexport const size = {\n\twidth: 1200,\n\theight: 630,\n}\n\nexport const contentType = 'image/png'\n\n// Image generation\nexport default async function Image({ params }) {\n\tconst { slug } = await params\n\tconst post = await getPost(slug)\n\n\treturn new ImageResponse(\n\t\t// ImageResponse JSX element\n\t\t<div\n\t\t\tstyle={{\n\t\t\t\tfontSize: 128,\n\t\t\t\tbackground: 'white',\n\t\t\t\twidth: '100%',\n\t\t\t\theight: '100%',\n\t\t\t\tdisplay: 'flex',\n\t\t\t\talignItems: 'center',\n\t\t\t\tjustifyContent: 'center',\n\t\t\t}}>\n\t\t\t{post.title}\n\t\t</div>,\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "ImageResponse"
+				},
+				{
+					"type": "text",
+					"value": " supports common CSS properties including flexbox and absolute positioning, custom fonts, text wrapping, centering, and nested images. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/image-response",
+					"children": [
+						{
+							"type": "text",
+							"value": "See the full list of supported CSS properties"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Examples are available in the "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://og-playground.vercel.app/",
+											"children": [
+												{
+													"type": "text",
+													"value": "Vercel OG Playground"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "ImageResponse"
+										},
+										{
+											"type": "text",
+											"value": " uses "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://vercel.com/docs/og-image-generation",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "@vercel/og"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ", "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://github.com/vercel/satori",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "satori"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ", and "
+										},
+										{
+											"type": "inlineCode",
+											"value": "resvg"
+										},
+										{
+											"type": "text",
+											"value": " to convert HTML and CSS into PNG."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Only flexbox and a subset of CSS properties are supported. Advanced layouts (e.g. "
+										},
+										{
+											"type": "inlineCode",
+											"value": "display: grid"
+										},
+										{
+											"type": "text",
+											"value": ") will not work."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

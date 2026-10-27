@@ -1,0 +1,2942 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to use Next.js as a backend for your frontend\nnav_title: Backend for Frontend\ndescription: Learn how to use Next.js as a backend framework\nrelated:\n title: API Reference\n description: Learn more about Route Handlers, Proxy, and Rewrites\n links:\n  - app/api-reference/file-conventions/route\n  - app/api-reference/file-conventions/proxy\n  - app/api-reference/config/next-config-js/rewrites"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js supports the \"Backend for Frontend\" pattern. This lets you create public endpoints to handle HTTP requests and return any content type—not just HTML. You can also access data sources and perform side effects like updating remote data."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you are starting a new project, using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "create-next-app"
+				},
+				{
+					"type": "text",
+					"value": " with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "--api"
+				},
+				{
+					"type": "text",
+					"value": " flag automatically includes an example "
+				},
+				{
+					"type": "inlineCode",
+					"value": "route.ts"
+				},
+				{
+					"type": "text",
+					"value": " in your new project's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/"
+				},
+				{
+					"type": "text",
+					"value": " folder, demonstrating how to create an API endpoint."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm create next-app --api"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npx create-next-app@latest --api"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn create next-app --api"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun create next-app --api"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Next.js backend capabilities are not a full backend replacement. They serve as an API layer that:"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "is publicly reachable"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "handles any HTTP request"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "can return any content type"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To implement this pattern, use:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/route",
+									"children": [
+										{
+											"type": "text",
+											"value": "Route Handlers"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/proxy",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "proxy"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "In Pages Router, "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/pages/building-your-application/routing/api-routes",
+									"children": [
+										{
+											"type": "text",
+											"value": "API Routes"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Public Endpoints"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Handlers are public HTTP endpoints. Any client can access them."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Create a Route Handler using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "route.ts"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "route.js"
+				},
+				{
+					"type": "text",
+					"value": " file convention:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"/app/api/route.ts\" switcher",
+			"value": "export function GET(request: Request) {}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"/app/api/route.js\" switcher",
+			"value": "export function GET(request) {}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This handles "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GET"
+				},
+				{
+					"type": "text",
+					"value": " requests sent to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/api"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "try/catch"
+				},
+				{
+					"type": "text",
+					"value": " blocks for operations that may throw an exception:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"/app/api/route.ts\" switcher",
+			"value": "import { submit } from '@/lib/submit'\n\nexport async function POST(request: Request) {\n\ttry {\n\t\tawait submit(request)\n\t\treturn new Response(null, { status: 204 })\n\t} catch (reason) {\n\t\tconst message = reason instanceof Error ? reason.message : 'Unexpected error'\n\n\t\treturn new Response(message, { status: 500 })\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"/app/api/route.js\" switcher",
+			"value": "import { submit } from '@/lib/submit'\n\nexport async function POST(request) {\n\ttry {\n\t\tawait submit(request)\n\t\treturn new Response(null, { status: 204 })\n\t} catch (reason) {\n\t\tconst message = reason instanceof Error ? reason.message : 'Unexpected error'\n\n\t\treturn new Response(message, { status: 500 })\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Avoid exposing sensitive information in error messages sent to the client."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To restrict access, implement authentication and authorization. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/authentication",
+					"children": [
+						{
+							"type": "text",
+							"value": "Authentication"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Content types"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Handlers let you serve non-UI responses, including JSON, XML, images, files, and plain text."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js uses file conventions for common endpoints:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/metadata/sitemap",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "sitemap.xml"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/metadata/opengraph-image",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "opengraph-image.jpg"
+										},
+										{
+											"type": "text",
+											"value": ", "
+										},
+										{
+											"type": "inlineCode",
+											"value": "twitter-image"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/metadata/app-icons",
+									"children": [
+										{
+											"type": "text",
+											"value": "favicon, app icon, and apple-icon"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/metadata/manifest",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "manifest.json"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/metadata/robots",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "robots.txt"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also define custom ones, such as:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "llms.txt"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "rss.xml"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": ".well-known"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/rss.xml/route.ts"
+				},
+				{
+					"type": "text",
+					"value": " creates a Route Handler for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "rss.xml"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"/app/rss.xml/route.ts\" switcher",
+			"value": "export async function GET(request: Request) {\n\tconst rssResponse = await fetch(/* rss endpoint */)\n\tconst rssData = await rssResponse.json()\n\n\tconst rssFeed = `<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<rss version=\"2.0\">\n<channel>\n <title>${rssData.title}</title>\n <description>${rssData.description}</description>\n <link>${rssData.link}</link>\n <copyright>${rssData.copyright}</copyright>\n ${rssData.items.map((item) => {\n\t\treturn `<item>\n    <title>${item.title}</title>\n    <description>${item.description}</description>\n    <link>${item.link}</link>\n    <pubDate>${item.publishDate}</pubDate>\n    <guid isPermaLink=\"false\">${item.guid}</guid>\n </item>`\n\t})}\n</channel>\n</rss>`\n\n\tconst headers = new Headers({ 'content-type': 'application/xml' })\n\n\treturn new Response(rssFeed, { headers })\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"/app/rss.xml/route.js\" switcher",
+			"value": "export async function GET(request) {\n\tconst rssResponse = await fetch(/* rss endpoint */)\n\tconst rssData = await rssResponse.json()\n\n\tconst rssFeed = `<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<rss version=\"2.0\">\n<channel>\n <title>${rssData.title}</title>\n <description>${rssData.description}</description>\n <link>${rssData.link}</link>\n <copyright>${rssData.copyright}</copyright>\n ${rssData.items.map((item) => {\n\t\treturn `<item>\n    <title>${item.title}</title>\n    <description>${item.description}</description>\n    <link>${item.link}</link>\n    <pubDate>${item.publishDate}</pubDate>\n    <guid isPermaLink=\"false\">${item.guid}</guid>\n </item>`\n\t})}\n</channel>\n</rss>`\n\n\tconst headers = new Headers({ 'content-type': 'application/xml' })\n\n\treturn new Response(rssFeed, { headers })\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Sanitize any input used to generate markup."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Content negotiation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/rewrites",
+					"children": [
+						{
+							"type": "text",
+							"value": "rewrites"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with header matching to serve different content types from the same URL based on the request's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Accept"
+				},
+				{
+					"type": "text",
+					"value": " header. This is known as "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Content_negotiation",
+					"children": [
+						{
+							"type": "text",
+							"value": "content negotiation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, a documentation site might serve HTML pages to browsers and raw Markdown to AI agents from the same "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/docs/…"
+				},
+				{
+					"type": "text",
+					"value": " URLs."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "1. Configure a rewrite that matches the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "Accept"
+						},
+						{
+							"type": "text",
+							"value": " header:"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tasync rewrites() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/docs/:slug*',\n\t\t\t\tdestination: '/docs/md/:slug*',\n\t\t\t\thas: [\n\t\t\t\t\t{\n\t\t\t\t\t\ttype: 'header',\n\t\t\t\t\t\tkey: 'accept',\n\t\t\t\t\t\tvalue: '(.*)text/markdown(.*)',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When a request to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/docs/getting-started"
+				},
+				{
+					"type": "text",
+					"value": " includes "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Accept: text/markdown"
+				},
+				{
+					"type": "text",
+					"value": ", the rewrite routes it to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/docs/md/getting-started"
+				},
+				{
+					"type": "text",
+					"value": ". A Route Handler at that path returns the Markdown response. Clients that do not send "
+				},
+				{
+					"type": "inlineCode",
+					"value": "text/markdown"
+				},
+				{
+					"type": "text",
+					"value": " in their "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Accept"
+				},
+				{
+					"type": "text",
+					"value": " header continue to receive the normal HTML page."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "2. Create a Route Handler for the Markdown response:"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/docs/md/[...slug]/route.ts\" switcher",
+			"value": "import { getDocsMd, generateDocsStaticParams } from '@/lib/docs'\n\nexport async function generateStaticParams() {\n\treturn generateDocsStaticParams()\n}\n\nexport async function GET(_: Request, ctx: RouteContext<'/docs/md/[...slug]'>) {\n\tconst { slug } = await ctx.params\n\tconst mdDoc = await getDocsMd({ slug })\n\n\tif (mdDoc == null) {\n\t\treturn new Response(null, { status: 404 })\n\t}\n\n\treturn new Response(mdDoc, {\n\t\theaders: {\n\t\t\t'Content-Type': 'text/markdown; charset=utf-8',\n\t\t\tVary: 'Accept',\n\t\t},\n\t})\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/docs/md/[...slug]/route.js\" switcher",
+			"value": "import { getDocsMd, generateDocsStaticParams } from '@/lib/docs'\n\nexport async function generateStaticParams() {\n\treturn generateDocsStaticParams()\n}\n\nexport async function GET(_, { params }) {\n\tconst { slug } = await params\n\tconst mdDoc = await getDocsMd({ slug })\n\n\tif (mdDoc == null) {\n\t\treturn new Response(null, { status: 404 })\n\t}\n\n\treturn new Response(mdDoc, {\n\t\theaders: {\n\t\t\t'Content-Type': 'text/markdown; charset=utf-8',\n\t\t\tVary: 'Accept',\n\t\t},\n\t})\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Vary",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Vary: Accept"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " response header tells caches that the response body depends on the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Accept"
+				},
+				{
+					"type": "text",
+					"value": " request header. Without it, a shared cache could serve a cached Markdown response to a browser (or vice versa). Most hosting providers already include the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Accept"
+				},
+				{
+					"type": "text",
+					"value": " header in their cache key, but setting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Vary"
+				},
+				{
+					"type": "text",
+					"value": " explicitly ensures correct behavior across all CDNs and proxy caches."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " lets you pre-render the Markdown variants at build time so they can be served from the edge without hitting the origin server on every request."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "3. Test it with "
+						},
+						{
+							"type": "inlineCode",
+							"value": "curl"
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": null,
+			"value": "# Returns Markdown\ncurl -H \"Accept: text/markdown\" https://example.com/docs/getting-started\n\n# Returns the normal HTML page\ncurl https://example.com/docs/getting-started"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The "
+										},
+										{
+											"type": "inlineCode",
+											"value": "/docs/md/..."
+										},
+										{
+											"type": "text",
+											"value": " route is still directly accessible without the rewrite. If you want to restrict it to only serve via the rewrite, use "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/proxy",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "proxy"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " to block direct requests that don't include the expected "
+										},
+										{
+											"type": "inlineCode",
+											"value": "Accept"
+										},
+										{
+											"type": "text",
+											"value": " header."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "For more advanced negotiation logic, you can use "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/proxy",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "proxy"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " instead of rewrites for more flexibility."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Consuming request payloads"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use Request "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/API/Request#instance_methods",
+					"children": [
+						{
+							"type": "text",
+							"value": "instance methods"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " like "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".json()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".formData()"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".text()"
+				},
+				{
+					"type": "text",
+					"value": " to access the request body."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "GET"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "HEAD"
+				},
+				{
+					"type": "text",
+					"value": " requests don’t carry a body."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"/app/api/echo-body/route.ts\" switcher",
+			"value": "export async function POST(request: Request) {\n\tconst res = await request.json()\n\treturn Response.json({ res })\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"/app/api/echo-body/route.js\" switcher",
+			"value": "export async function POST(request) {\n\tconst res = await request.json()\n\treturn Response.json({ res })\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Validate data before passing it to other systems"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"/app/api/send-email/route.ts\" switcher",
+			"value": "import { sendMail, validateInputs } from '@/lib/email-transporter'\n\nexport async function POST(request: Request) {\n\tconst formData = await request.formData()\n\tconst email = formData.get('email')\n\tconst contents = formData.get('contents')\n\n\ttry {\n\t\tawait validateInputs({ email, contents })\n\t\tconst info = await sendMail({ email, contents })\n\n\t\treturn Response.json({ messageId: info.messageId })\n\t} catch (reason) {\n\t\tconst message = reason instanceof Error ? reason.message : 'Unexpected exception'\n\n\t\treturn new Response(message, { status: 500 })\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"/app/api/send-email/route.js\" switcher",
+			"value": "import { sendMail, validateInputs } from '@/lib/email-transporter'\n\nexport async function POST(request) {\n\tconst formData = await request.formData()\n\tconst email = formData.get('email')\n\tconst contents = formData.get('contents')\n\n\ttry {\n\t\tawait validateInputs({ email, contents })\n\t\tconst info = await sendMail({ email, contents })\n\n\t\treturn Response.json({ messageId: info.messageId })\n\t} catch (reason) {\n\t\tconst message = reason instanceof Error ? reason.message : 'Unexpected exception'\n\n\t\treturn new Response(message, { status: 500 })\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can only read the request body once. Clone the request if you need to read it again:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"/app/api/clone/route.ts\" switcher",
+			"value": "export async function POST(request: Request) {\n\ttry {\n\t\tconst clonedRequest = request.clone()\n\n\t\tawait request.text()\n\t\tawait clonedRequest.text()\n\t\tawait request.text() // Throws error\n\n\t\treturn new Response(null, { status: 204 })\n\t} catch {\n\t\treturn new Response(null, { status: 500 })\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"/app/api/clone/route.js\" switcher",
+			"value": "export async function POST(request) {\n\ttry {\n\t\tconst clonedRequest = request.clone()\n\n\t\tawait request.text()\n\t\tawait clonedRequest.text()\n\t\tawait request.text() // Throws error\n\n\t\treturn new Response(null, { status: 204 })\n\t} catch {\n\t\treturn new Response(null, { status: 500 })\n\t}\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Manipulating data"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Handlers can transform, filter, and aggregate data from one or more sources. This keeps logic out of the frontend and avoids exposing internal systems."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also offload heavy computations to the server and reduce client battery and data usage."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "file=\"/app/api/weather/route.ts\" switcher",
+			"value": "import { parseWeatherData } from '@/lib/weather'\n\nexport async function POST(request: Request) {\n\tconst body = await request.json()\n\tconst searchParams = new URLSearchParams({ lat: body.lat, lng: body.lng })\n\n\ttry {\n\t\tconst weatherResponse = await fetch(`${weatherEndpoint}?${searchParams}`)\n\n\t\tif (!weatherResponse.ok) {\n\t\t\t/* handle error */\n\t\t}\n\n\t\tconst weatherData = await weatherResponse.text()\n\t\tconst payload = parseWeatherData.asJSON(weatherData)\n\n\t\treturn new Response(payload, { status: 200 })\n\t} catch (reason) {\n\t\tconst message = reason instanceof Error ? reason.message : 'Unexpected exception'\n\n\t\treturn new Response(message, { status: 500 })\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "file=\"/app/api/weather/route.js\" switcher",
+			"value": "import { parseWeatherData } from '@/lib/weather'\n\nexport async function POST(request) {\n\tconst body = await request.json()\n\tconst searchParams = new URLSearchParams({ lat: body.lat, lng: body.lng })\n\n\ttry {\n\t\tconst weatherResponse = await fetch(`${weatherEndpoint}?${searchParams}`)\n\n\t\tif (!weatherResponse.ok) {\n\t\t\t/* handle error */\n\t\t}\n\n\t\tconst weatherData = await weatherResponse.text()\n\t\tconst payload = parseWeatherData.asJSON(weatherData)\n\n\t\treturn new Response(payload, { status: 200 })\n\t} catch (reason) {\n\t\tconst message = reason instanceof Error ? reason.message : 'Unexpected exception'\n\n\t\treturn new Response(message, { status: 500 })\n\t}\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": This example uses "
+						},
+						{
+							"type": "inlineCode",
+							"value": "POST"
+						},
+						{
+							"type": "text",
+							"value": " to avoid putting geo-location data in the URL. "
+						},
+						{
+							"type": "inlineCode",
+							"value": "GET"
+						},
+						{
+							"type": "text",
+							"value": " requests may be cached or logged, which could expose sensitive info."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Proxying to a backend"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use a Route Handler as a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "proxy"
+				},
+				{
+					"type": "text",
+					"value": " to another backend. Add validation logic before forwarding the request."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"/app/api/[...slug]/route.ts\" switcher",
+			"value": "import { isValidRequest } from '@/lib/utils'\n\nexport async function POST(request: Request, { params }) {\n\tconst clonedRequest = request.clone()\n\tconst isValid = await isValidRequest(clonedRequest)\n\n\tif (!isValid) {\n\t\treturn new Response(null, { status: 400, statusText: 'Bad Request' })\n\t}\n\n\tconst { slug } = await params\n\tconst pathname = slug.join('/')\n\tconst proxyURL = new URL(pathname, 'https://nextjs.org')\n\tconst proxyRequest = new Request(proxyURL, request)\n\n\ttry {\n\t\treturn fetch(proxyRequest)\n\t} catch (reason) {\n\t\tconst message = reason instanceof Error ? reason.message : 'Unexpected exception'\n\n\t\treturn new Response(message, { status: 500 })\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"/app/api/[...slug]/route.js\" switcher",
+			"value": "import { isValidRequest } from '@/lib/utils'\n\nexport async function POST(request, { params }) {\n\tconst clonedRequest = request.clone()\n\tconst isValid = await isValidRequest(clonedRequest)\n\n\tif (!isValid) {\n\t\treturn new Response(null, { status: 400, statusText: 'Bad Request' })\n\t}\n\n\tconst { slug } = await params\n\tconst pathname = slug.join('/')\n\tconst proxyURL = new URL(pathname, 'https://nextjs.org')\n\tconst proxyRequest = new Request(proxyURL, request)\n\n\ttry {\n\t\treturn fetch(proxyRequest)\n\t} catch (reason) {\n\t\tconst message = reason instanceof Error ? reason.message : 'Unexpected exception'\n\n\t\treturn new Response(message, { status: 500 })\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Or use:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "proxy"
+								},
+								{
+									"type": "text",
+									"value": " "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#proxy",
+									"children": [
+										{
+											"type": "text",
+											"value": "rewrites"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/rewrites",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "rewrites"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next.config.js"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "NextRequest and NextResponse"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js extends the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/API/Request",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Request"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/API/Response",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Response"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " Web APIs with methods that simplify common operations. These extensions are available in both Route Handlers and Proxy."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Both provide methods for reading and manipulating cookies."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "NextRequest"
+				},
+				{
+					"type": "text",
+					"value": " includes the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/next-request#nexturl",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "nextUrl"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " property, which exposes parsed values from the incoming request, for example, it makes it easier to access request pathname and search params."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "NextResponse"
+				},
+				{
+					"type": "text",
+					"value": " provides helpers like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "json()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "redirect()"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "rewrite()"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can pass "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NextRequest"
+				},
+				{
+					"type": "text",
+					"value": " to any function expecting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Request"
+				},
+				{
+					"type": "text",
+					"value": ". Likewise, you can return "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NextResponse"
+				},
+				{
+					"type": "text",
+					"value": " where a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Response"
+				},
+				{
+					"type": "text",
+					"value": " is expected."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"/app/echo-pathname/route.ts\" switcher",
+			"value": "import { type NextRequest, NextResponse } from 'next/server'\n\nexport async function GET(request: NextRequest) {\n\tconst nextUrl = request.nextUrl\n\n\tif (nextUrl.searchParams.get('redirect')) {\n\t\treturn NextResponse.redirect(new URL('/', request.url))\n\t}\n\n\tif (nextUrl.searchParams.get('rewrite')) {\n\t\treturn NextResponse.rewrite(new URL('/', request.url))\n\t}\n\n\treturn NextResponse.json({ pathname: nextUrl.pathname })\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"/app/echo-pathname/route.js\" switcher",
+			"value": "import { NextResponse } from 'next/server'\n\nexport async function GET(request) {\n\tconst nextUrl = request.nextUrl\n\n\tif (nextUrl.searchParams.get('redirect')) {\n\t\treturn NextResponse.redirect(new URL('/', request.url))\n\t}\n\n\tif (nextUrl.searchParams.get('rewrite')) {\n\t\treturn NextResponse.rewrite(new URL('/', request.url))\n\t}\n\n\treturn NextResponse.json({ pathname: nextUrl.pathname })\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn more about "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/next-request",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "NextRequest"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/next-response",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "NextResponse"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Webhooks and callback URLs"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use Route Handlers to receive event notifications from third-party applications."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, revalidate a route when content changes in a CMS. Configure the CMS to call a specific endpoint on changes."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"/app/webhook/route.ts\" switcher",
+			"value": "import { type NextRequest, NextResponse } from 'next/server'\n\nexport async function GET(request: NextRequest) {\n\tconst token = request.nextUrl.searchParams.get('token')\n\n\tif (token !== process.env.REVALIDATE_SECRET_TOKEN) {\n\t\treturn NextResponse.json({ success: false }, { status: 401 })\n\t}\n\n\tconst tag = request.nextUrl.searchParams.get('tag')\n\n\tif (!tag) {\n\t\treturn NextResponse.json({ success: false }, { status: 400 })\n\t}\n\n\trevalidateTag(tag, 'max')\n\n\treturn NextResponse.json({ success: true })\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"/app/webhook/route.js\" switcher",
+			"value": "import { NextResponse } from 'next/server'\n\nexport async function GET(request) {\n\tconst token = request.nextUrl.searchParams.get('token')\n\n\tif (token !== process.env.REVALIDATE_SECRET_TOKEN) {\n\t\treturn NextResponse.json({ success: false }, { status: 401 })\n\t}\n\n\tconst tag = request.nextUrl.searchParams.get('tag')\n\n\tif (!tag) {\n\t\treturn NextResponse.json({ success: false }, { status: 400 })\n\t}\n\n\trevalidateTag(tag, 'max')\n\n\treturn NextResponse.json({ success: true })\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Callback URLs are another use case. When a user completes a third-party flow, the third party sends them to a callback URL. Use a Route Handler to verify the response and decide where to redirect the user."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"/app/auth/callback/route.ts\" switcher",
+			"value": "import { type NextRequest, NextResponse } from 'next/server'\n\nexport async function GET(request: NextRequest) {\n\tconst token = request.nextUrl.searchParams.get('session_token')\n\tconst redirectUrl = request.nextUrl.searchParams.get('redirect_url')\n\n\tconst destination = new URL(redirectUrl ?? '/', request.url)\n\t// Prevent open redirects: only allow same-origin destinations\n\tif (destination.origin !== request.nextUrl.origin) {\n\t\treturn new Response('Invalid redirect', { status: 400 })\n\t}\n\n\tconst response = NextResponse.redirect(destination)\n\n\tresponse.cookies.set({\n\t\tvalue: token,\n\t\tname: '_token',\n\t\tpath: '/',\n\t\tsecure: true,\n\t\thttpOnly: true,\n\t\texpires: undefined, // session cookie\n\t})\n\n\treturn response\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"/app/auth/callback/route.js\" switcher",
+			"value": "import { NextResponse } from 'next/server'\n\nexport async function GET(request) {\n\tconst token = request.nextUrl.searchParams.get('session_token')\n\tconst redirectUrl = request.nextUrl.searchParams.get('redirect_url')\n\n\tconst destination = new URL(redirectUrl ?? '/', request.url)\n\t// Prevent open redirects: only allow same-origin destinations\n\tif (destination.origin !== request.nextUrl.origin) {\n\t\treturn new Response('Invalid redirect', { status: 400 })\n\t}\n\n\tconst response = NextResponse.redirect(destination)\n\n\tresponse.cookies.set({\n\t\tvalue: token,\n\t\tname: '_token',\n\t\tpath: '/',\n\t\tsecure: true,\n\t\thttpOnly: true,\n\t\texpires: undefined, // session cookie\n\t})\n\n\treturn response\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Redirects"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/route.ts\" switcher",
+			"value": "import { redirect } from 'next/navigation'\n\nexport async function GET(request: Request) {\n\tredirect('https://nextjs.org/')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/route.js\" switcher",
+			"value": "import { redirect } from 'next/navigation'\n\nexport async function GET(request) {\n\tredirect('https://nextjs.org/')\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn more about redirects in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/redirect",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "redirect"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/permanentRedirect",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "permanentRedirect"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Proxy"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Only one "
+				},
+				{
+					"type": "inlineCode",
+					"value": "proxy"
+				},
+				{
+					"type": "text",
+					"value": " file is allowed per project. Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "config.matcher"
+				},
+				{
+					"type": "text",
+					"value": " to target specific paths. Learn more about "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/proxy",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "proxy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "proxy"
+				},
+				{
+					"type": "text",
+					"value": " to generate a response before the request reaches a route path."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"proxy.ts\" switcher",
+			"value": "import { isAuthenticated } from '@lib/auth'\n\nexport const config = {\n\tmatcher: '/api/:function*',\n}\n\nexport function proxy(request: Request) {\n\tif (!isAuthenticated(request)) {\n\t\treturn Response.json({ success: false, message: 'authentication failed' }, { status: 401 })\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"proxy.js\" switcher",
+			"value": "import { isAuthenticated } from '@lib/auth'\n\nexport const config = {\n\tmatcher: '/api/:function*',\n}\n\nexport function proxy(request) {\n\tif (!isAuthenticated(request)) {\n\t\treturn Response.json({ success: false, message: 'authentication failed' }, { status: 401 })\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also proxy requests using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "proxy"
+				},
+				{
+					"type": "text",
+					"value": ". This example reads "
+				},
+				{
+					"type": "inlineCode",
+					"value": "request.nextUrl"
+				},
+				{
+					"type": "text",
+					"value": ", so "
+				},
+				{
+					"type": "inlineCode",
+					"value": "request"
+				},
+				{
+					"type": "text",
+					"value": " is typed as "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#nextrequest-and-nextresponse",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "NextRequest"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"proxy.ts\" switcher",
+			"value": "import { type NextRequest, NextResponse } from 'next/server'\n\nexport function proxy(request: NextRequest) {\n\tif (request.nextUrl.pathname === '/proxy-this-path') {\n\t\tconst rewriteUrl = new URL('https://nextjs.org')\n\t\treturn NextResponse.rewrite(rewriteUrl)\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"proxy.js\" switcher",
+			"value": "import { NextResponse } from 'next/server'\n\nexport function proxy(request) {\n\tif (request.nextUrl.pathname === '/proxy-this-path') {\n\t\tconst rewriteUrl = new URL('https://nextjs.org')\n\t\treturn NextResponse.rewrite(rewriteUrl)\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Another type of response "
+				},
+				{
+					"type": "inlineCode",
+					"value": "proxy"
+				},
+				{
+					"type": "text",
+					"value": " can produce are redirects:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"proxy.ts\" switcher",
+			"value": "import { type NextRequest, NextResponse } from 'next/server'\n\nexport function proxy(request: NextRequest) {\n\tif (request.nextUrl.pathname === '/v1/docs') {\n\t\trequest.nextUrl.pathname = '/v2/docs'\n\t\treturn NextResponse.redirect(request.nextUrl)\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"proxy.js\" switcher",
+			"value": "import { NextResponse } from 'next/server'\n\nexport function proxy(request) {\n\tif (request.nextUrl.pathname === '/v1/docs') {\n\t\trequest.nextUrl.pathname = '/v2/docs'\n\t\treturn NextResponse.redirect(request.nextUrl)\n\t}\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Security"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Working with headers"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Be deliberate about where headers go, and avoid directly passing incoming request headers to the outgoing response."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Upstream request headers"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": In Proxy, "
+								},
+								{
+									"type": "inlineCode",
+									"value": "NextResponse.next({ request: { headers } })"
+								},
+								{
+									"type": "text",
+									"value": " modifies the headers your server receives and does not expose them to the client."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Response headers"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "new Response(..., { headers })"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "NextResponse.json(..., { headers })"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "NextResponse.next({ headers })"
+								},
+								{
+									"type": "text",
+									"value": ", or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "response.headers.set(...)"
+								},
+								{
+									"type": "text",
+									"value": " send headers back to the client. If sensitive values were appended to these headers, they will be visible to clients."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn more in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/next-response#next",
+					"children": [
+						{
+							"type": "text",
+							"value": "NextResponse headers in Proxy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Rate limiting"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can implement rate limiting in your Next.js backend. In addition to code-based checks, enable any rate limiting features provided by your host."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"/app/resource/route.ts\" switcher",
+			"value": "import { NextResponse } from 'next/server'\nimport { checkRateLimit } from '@/lib/rate-limit'\n\nexport async function POST(request: Request) {\n\tconst { rateLimited } = await checkRateLimit(request)\n\n\tif (rateLimited) {\n\t\treturn NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 })\n\t}\n\n\treturn new Response(null, { status: 204 })\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"/app/resource/route.js\" switcher",
+			"value": "import { NextResponse } from 'next/server'\nimport { checkRateLimit } from '@/lib/rate-limit'\n\nexport async function POST(request) {\n\tconst { rateLimited } = await checkRateLimit(request)\n\n\tif (rateLimited) {\n\t\treturn NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 })\n\t}\n\n\treturn new Response(null, { status: 204 })\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Verify payloads"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Never trust incoming request data. Validate content type and size, and sanitize against XSS before use."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use timeouts to prevent abuse and protect server resources."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Store user-generated static assets in dedicated services. When possible, upload them from the browser and store the returned URI in your database to reduce request size."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Access to protected resources"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Always verify credentials before granting access. Do not rely on proxy alone for authentication and authorization."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Remove sensitive or unnecessary data from responses and backend logs."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Rotate credentials and API keys regularly."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Preflight Requests"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Preflight requests use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "OPTIONS"
+				},
+				{
+					"type": "text",
+					"value": " method to ask the server if a request is allowed based on origin, method, and headers."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If "
+				},
+				{
+					"type": "inlineCode",
+					"value": "OPTIONS"
+				},
+				{
+					"type": "text",
+					"value": " is not defined, Next.js adds it automatically and sets the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Allow"
+				},
+				{
+					"type": "text",
+					"value": " header based on the other defined methods."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/route#cors",
+									"children": [
+										{
+											"type": "text",
+											"value": "CORS"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Library patterns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Community libraries often use the factory pattern for Route Handlers."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"/app/api/[...path]/route.ts\"",
+			"value": "import { createHandler } from 'third-party-library'\n\nconst handler = createHandler({/* library-specific options */})\n\nexport const GET = handler\n// or\nexport { handler as POST }"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This creates a shared handler for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GET"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "POST"
+				},
+				{
+					"type": "text",
+					"value": " requests. The library customizes behavior based on the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "method"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pathname"
+				},
+				{
+					"type": "text",
+					"value": " in the request."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Libraries can also provide a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "proxy"
+				},
+				{
+					"type": "text",
+					"value": " factory."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"proxy.ts\"",
+			"value": "import { createMiddleware } from 'third-party-library'\n\nexport default createMiddleware()"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Third-party libraries may still refer to "
+						},
+						{
+							"type": "inlineCode",
+							"value": "proxy"
+						},
+						{
+							"type": "text",
+							"value": " as "
+						},
+						{
+							"type": "inlineCode",
+							"value": "middleware"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "More examples"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See more examples on using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route#examples",
+					"children": [
+						{
+							"type": "text",
+							"value": "Router Handlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/proxy#examples",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "proxy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " API references."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "These examples include, working with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route#cookies",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cookies"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route#headers",
+					"children": [
+						{
+							"type": "text",
+							"value": "Headers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route#streaming",
+					"children": [
+						{
+							"type": "text",
+							"value": "Streaming"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", Proxy "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/proxy#negative-matching",
+					"children": [
+						{
+							"type": "text",
+							"value": "negative matching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and other useful code snippets."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Caveats"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Fetch data in Server Components directly from its source, not via Route Handlers."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For Server Components prerendered at build time, using Route Handlers will fail the build step. This is because, while building there is no server listening for these requests."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For Server Components rendered on demand, fetching from Route Handlers is slower due to the extra HTTP round trip between the handler and the render process."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "A server side "
+						},
+						{
+							"type": "inlineCode",
+							"value": "fetch"
+						},
+						{
+							"type": "text",
+							"value": " request uses absolute URLs. This implies an HTTP round trip, to an external server. During development, your own development server acts as the external server. At build time there is no server, and at runtime, the server is available through your public facing domain."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Components cover most data-fetching needs. However, fetching data client side might be necessary for:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Data that depends on client-only Web APIs:"
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Geo-location API"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Storage API"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Audio API"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "File API"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Frequently polled data"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For these, use community libraries like "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://swr.vercel.app/",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "swr"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://tanstack.com/query/latest/docs/framework/react/overview",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "react-query"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Actions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/server-actions",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Actions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " let you run server-side code from the client. Their primary purpose is to mutate data from your frontend client."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Actions are queued. Using them for data fetching introduces sequential execution."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "export"
+				},
+				{
+					"type": "text",
+					"value": " mode"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "export"
+				},
+				{
+					"type": "text",
+					"value": " mode outputs a static site without a runtime server. Features that require the Next.js runtime are "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/static-exports#unsupported-features",
+					"children": [
+						{
+							"type": "text",
+							"value": "not supported"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", because this mode produces a static site, and no runtime server."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In "
+				},
+				{
+					"type": "inlineCode",
+					"value": "export mode"
+				},
+				{
+					"type": "text",
+					"value": ", only "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GET"
+				},
+				{
+					"type": "text",
+					"value": " Route Handlers are supported, in combination with the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/caching-without-cache-components#dynamic",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "dynamic"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " route segment config, set to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'force-static'"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This can be used to generate static HTML, JSON, TXT, or other files."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/hello-world/route.ts\"",
+			"value": "export const dynamic = 'force-static'\n\nexport function GET() {\n\treturn new Response('Hello World', { status: 200 })\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Deployment environment"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Some hosts deploy Route Handlers as lambda functions. This means:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Route Handlers cannot share data between requests."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The environment may not support writing to File System."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Long-running handlers may be terminated due to timeouts."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "WebSockets won’t work because the connection closes on timeout, or after the response is generated."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

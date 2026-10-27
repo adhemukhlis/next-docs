@@ -1,0 +1,812 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: generateImageMetadata\ndescription: Learn how to generate multiple images in a single Metadata API special file.\nrelated:\n title: Next Steps\n description: View all the Metadata API options.\n links:\n  - app/api-reference/file-conventions/metadata"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateImageMetadata"
+				},
+				{
+					"type": "text",
+					"value": " to generate different versions of one image or return multiple images for one route segment. This is useful for when you want to avoid hard-coding metadata values, such as for icons."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parameters"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "generateImageMetadata"
+				},
+				{
+					"type": "text",
+					"value": " function accepts the following parameters:"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " (optional)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "An object containing the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/dynamic-routes",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamic route parameters"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " object from the root segment down to the segment "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateImageMetadata"
+				},
+				{
+					"type": "text",
+					"value": " is called from."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"icon.tsx\" switcher",
+			"value": "export function generateImageMetadata({ params }: { params: { slug: string } }) {\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"icon.js\" switcher",
+			"value": "export function generateImageMetadata({ params }) {\n\t// ...\n}"
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Route"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "URL"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "params"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/shop/icon.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/shop"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/shop/[slug]/icon.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/shop/1"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "{ slug: '1' }"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/shop/[tag]/[item]/icon.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/shop/1/2"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "{ tag: '1', item: '2' }"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateImageMetadata"
+				},
+				{
+					"type": "text",
+					"value": " function should return an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "array"
+				},
+				{
+					"type": "text",
+					"value": " of objects containing the image's metadata such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "alt"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "size"
+				},
+				{
+					"type": "text",
+					"value": ". In addition, each item "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "must"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " include an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "id"
+				},
+				{
+					"type": "text",
+					"value": " value which will be passed as a promise to the props of the image generating function."
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Image Metadata Object"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "id"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string"
+								},
+								{
+									"type": "text",
+									"value": " (required)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "alt"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "size"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "{ width: number; height: number }"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "contentType"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"icon.tsx\" switcher",
+			"value": "import { ImageResponse } from 'next/og'\n\nexport function generateImageMetadata() {\n\treturn [\n\t\t{\n\t\t\tcontentType: 'image/png',\n\t\t\tsize: { width: 48, height: 48 },\n\t\t\tid: 'small',\n\t\t},\n\t\t{\n\t\t\tcontentType: 'image/png',\n\t\t\tsize: { width: 72, height: 72 },\n\t\t\tid: 'medium',\n\t\t},\n\t]\n}\n\nexport default async function Icon({ id }: { id: Promise<string | number> }) {\n\tconst iconId = await id\n\treturn new ImageResponse(\n\t\t<div\n\t\t\tstyle={{\n\t\t\t\twidth: '100%',\n\t\t\t\theight: '100%',\n\t\t\t\tdisplay: 'flex',\n\t\t\t\talignItems: 'center',\n\t\t\t\tjustifyContent: 'center',\n\t\t\t\tfontSize: 88,\n\t\t\t\tbackground: '#000',\n\t\t\t\tcolor: '#fafafa',\n\t\t\t}}>\n\t\t\tIcon {iconId}\n\t\t</div>,\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"icon.js\" switcher",
+			"value": "import { ImageResponse } from 'next/og'\n\nexport function generateImageMetadata() {\n\treturn [\n\t\t{\n\t\t\tcontentType: 'image/png',\n\t\t\tsize: { width: 48, height: 48 },\n\t\t\tid: 'small',\n\t\t},\n\t\t{\n\t\t\tcontentType: 'image/png',\n\t\t\tsize: { width: 72, height: 72 },\n\t\t\tid: 'medium',\n\t\t},\n\t]\n}\n\nexport default async function Icon({ id }) {\n\tconst iconId = await id\n\treturn new ImageResponse(\n\t\t<div\n\t\t\tstyle={{\n\t\t\t\twidth: '100%',\n\t\t\t\theight: '100%',\n\t\t\t\tdisplay: 'flex',\n\t\t\t\talignItems: 'center',\n\t\t\t\tjustifyContent: 'center',\n\t\t\t\tfontSize: 88,\n\t\t\t\tbackground: '#000',\n\t\t\t\tcolor: '#fafafa',\n\t\t\t}}>\n\t\t\tIcon {iconId}\n\t\t</div>,\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Image generation function props"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateImageMetadata"
+				},
+				{
+					"type": "text",
+					"value": ", the default export image generation function receives the following props:"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "id"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A promise that resolves to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "id"
+				},
+				{
+					"type": "text",
+					"value": " value from one of the items returned by "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateImageMetadata"
+				},
+				{
+					"type": "text",
+					"value": ". The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "id"
+				},
+				{
+					"type": "text",
+					"value": " will be a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "string"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "number"
+				},
+				{
+					"type": "text",
+					"value": " depending on what was returned from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateImageMetadata"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"icon.tsx\" switcher",
+			"value": "export default async function Icon({ id }: { id: Promise<string | number> }) {\n\tconst iconId = await id\n\t// Use iconId to generate the image\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"icon.js\" switcher",
+			"value": "export default async function Icon({ id }) {\n\tconst iconId = await id\n\t// Use iconId to generate the image\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " (optional)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A promise that resolves to an object containing the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/dynamic-routes",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamic route parameters"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " from the root segment down to the segment the image is colocated in."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"icon.tsx\" switcher",
+			"value": "export default async function Icon({ params }: { params: Promise<{ slug: string }> }) {\n\tconst { slug } = await params\n\t// Use slug to generate the image\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"icon.js\" switcher",
+			"value": "export default async function Icon({ params }) {\n\tconst { slug } = await params\n\t// Use slug to generate the image\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using external data"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This example uses the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " object and external data to generate multiple "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/metadata/opengraph-image",
+					"children": [
+						{
+							"type": "text",
+							"value": "Open Graph images"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for a route segment."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/[id]/opengraph-image.tsx\" switcher",
+			"value": "import { ImageResponse } from 'next/og'\nimport { getCaptionForImage, getOGImages } from '@/app/utils/images'\n\nexport async function generateImageMetadata({ params }: { params: { id: string } }) {\n\tconst images = await getOGImages(params.id)\n\n\treturn images.map((image, idx) => ({\n\t\tid: idx,\n\t\tsize: { width: 1200, height: 600 },\n\t\talt: image.text,\n\t\tcontentType: 'image/png',\n\t}))\n}\n\nexport default async function Image({ params, id }: { params: Promise<{ id: string }>; id: Promise<number> }) {\n\tconst productId = (await params).id\n\tconst imageId = await id\n\tconst text = await getCaptionForImage(productId, imageId)\n\n\treturn new ImageResponse(\n\t\t<div\n\t\t\tstyle={\n\t\t\t\t{\n\t\t\t\t\t// ...\n\t\t\t\t}\n\t\t\t}>\n\t\t\t{text}\n\t\t</div>,\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/products/[id]/opengraph-image.js\" switcher",
+			"value": "import { ImageResponse } from 'next/og'\nimport { getCaptionForImage, getOGImages } from '@/app/utils/images'\n\nexport async function generateImageMetadata({ params }) {\n\tconst images = await getOGImages(params.id)\n\n\treturn images.map((image, idx) => ({\n\t\tid: idx,\n\t\tsize: { width: 1200, height: 600 },\n\t\talt: image.text,\n\t\tcontentType: 'image/png',\n\t}))\n}\n\nexport default async function Image({ params, id }) {\n\tconst productId = (await params).id\n\tconst imageId = await id\n\tconst text = await getCaptionForImage(productId, imageId)\n\n\treturn new ImageResponse(\n\t\t<div\n\t\t\tstyle={\n\t\t\t\t{\n\t\t\t\t\t// ...\n\t\t\t\t}\n\t\t\t}>\n\t\t\t{text}\n\t\t</div>,\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "id"
+								},
+								{
+									"type": "text",
+									"value": " passed to the Image generation function is now a promise that resolves to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "string"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "number"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "params"
+								},
+								{
+									"type": "text",
+									"value": " passed to the Image generation function is now a promise that resolves to an object"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "generateImageMetadata"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

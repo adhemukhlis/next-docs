@@ -1,0 +1,842 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to optimize memory usage\nnav_title: Memory Usage\ndescription: Optimize memory used by your application in development and production."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "As applications grow and become more feature rich, they can demand more resources when developing locally or creating production builds."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Let's explore some strategies and techniques to optimize memory and address common memory issues in Next.js."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reduce number of dependencies"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Applications with a large amount of dependencies will use more memory."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/package-bundling",
+					"children": [
+						{
+							"type": "text",
+							"value": "Bundle Analyzer"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " can help you investigate large dependencies in your application that may be able to be removed to improve performance and memory usage."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Try "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.webpackMemoryOptimizations"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Starting in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "v15.0.0"
+				},
+				{
+					"type": "text",
+					"value": ", you can add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.webpackMemoryOptimizations: true"
+				},
+				{
+					"type": "text",
+					"value": " to your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file to change behavior in Webpack that reduces max memory usage but may increase compilation times by a slight amount."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": This feature is currently experimental to test on more projects first, but it is considered to be low-risk."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "--experimental-debug-memory-usage"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Starting in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "14.2.0"
+				},
+				{
+					"type": "text",
+					"value": ", you can run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build --experimental-debug-memory-usage"
+				},
+				{
+					"type": "text",
+					"value": " to run the build in a mode where Next.js will print out information about memory usage continuously throughout the build, such as heap usage and garbage collection statistics. Heap snapshots will also be taken automatically when memory usage gets close to the configured limit."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": This feature is not compatible with the Webpack build worker option which is auto-enabled unless you have custom webpack config."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Record a heap profile"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To look for memory issues, you can record a heap profile from Node.js and load it in Chrome DevTools to identify potential sources of memory leaks."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In your terminal, pass the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "--heap-prof"
+				},
+				{
+					"type": "text",
+					"value": " flag to Node.js when starting your Next.js build:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "sh",
+			"meta": null,
+			"value": "node --heap-prof node_modules/next/dist/bin/next build"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "At the end of the build, a "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".heapprofile"
+				},
+				{
+					"type": "text",
+					"value": " file will be created by Node.js."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In Chrome DevTools, you can open the Memory tab and click on the \"Load Profile\" button to visualize the file."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Analyze a snapshot of the heap"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use an inspector tool to analyze the memory usage of the application."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When running the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " command, add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NODE_OPTIONS=--inspect"
+				},
+				{
+					"type": "text",
+					"value": " to the beginning of the command. This will expose the inspector agent on the default port. If you wish to break before any user code starts, you can pass "
+				},
+				{
+					"type": "inlineCode",
+					"value": "--inspect-brk"
+				},
+				{
+					"type": "text",
+					"value": " instead. While the process is running, you can use a tool such as Chrome DevTools to connect to the debugging port to record and analyze a snapshot of the heap to see what memory is being retained."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Starting in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "14.2.0"
+				},
+				{
+					"type": "text",
+					"value": ", you can also run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "--experimental-debug-memory-usage"
+				},
+				{
+					"type": "text",
+					"value": " flag to make it easier to take heap snapshots."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "While running in this mode, you can send a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "SIGUSR2"
+				},
+				{
+					"type": "text",
+					"value": " signal to the process at any point, and the process will take a heap snapshot."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The heap snapshot will be saved to the project root of the Next.js application and can be loaded in any heap analyzer, such as Chrome DevTools, to see what memory is retained. This mode is not yet compatible with Webpack build workers."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.chrome.com/docs/devtools/memory-problems/heap-snapshots",
+					"children": [
+						{
+							"type": "text",
+							"value": "how to record and analyze heap snapshots"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more information."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Webpack build worker"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The Webpack build worker allows you to run Webpack compilations inside a separate Node.js worker which will decrease memory usage of your application during builds."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This option is enabled by default if your application does not have a custom Webpack configuration starting in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "v14.1.0"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you are using an older version of Next.js or you have a custom Webpack configuration, you can enable this option by setting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.webpackBuildWorker: true"
+				},
+				{
+					"type": "text",
+					"value": " inside your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": This feature may not be compatible with all custom Webpack plugins."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Disable Webpack cache"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://webpack.js.org/configuration/cache/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Webpack cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " saves generated Webpack modules in memory and/or to disk to improve the speed of builds. This can help with performance, but it will also increase the memory usage of your application to store the cached data."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can disable this behavior by adding a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/webpack",
+					"children": [
+						{
+							"type": "text",
+							"value": "custom Webpack configuration"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to your application:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.mjs\"",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\twebpack: (config, { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }) => {\n\t\tif (config.cache && !dev) {\n\t\t\tconfig.cache = Object.freeze({\n\t\t\t\ttype: 'memory',\n\t\t\t})\n\t\t}\n\t\t// Important: return the modified config\n\t\treturn config\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Disable static analysis"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Typechecking may require a lot of memory, especially in large projects. However, most projects have a dedicated CI runner that already handles these tasks. When the build produces out-of-memory issues during the \"Running TypeScript\" step, you can disable this task during builds:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.mjs\"",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\ttypescript: {\n\t\t// !! WARN !!\n\t\t// Dangerously allow production builds to successfully complete even if\n\t\t// your project has type errors.\n\t\t// !! WARN !!\n\t\tignoreBuildErrors: true,\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/typescript#disabling-typescript-errors-in-production",
+									"children": [
+										{
+											"type": "text",
+											"value": "Ignoring TypeScript Errors"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Keep in mind that this may produce faulty deploys due to type errors. We strongly recommend only promoting builds to production after static analysis has completed. If you deploy to Vercel, you can check out the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://vercel.com/docs/deployments/managing-deployments#staging-and-promoting-a-production-deployment",
+					"children": [
+						{
+							"type": "text",
+							"value": "guide for staging deployments"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to learn how to promote builds to production after custom tasks have succeeded."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Disable source maps"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Generating source maps consumes extra memory during the build process."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can disable source map generation by adding "
+				},
+				{
+					"type": "inlineCode",
+					"value": "productionBrowserSourceMaps: false"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.serverSourceMaps: false"
+				},
+				{
+					"type": "text",
+					"value": " to your Next.js configuration."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js will use source maps by default during the prerender phase of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ". If you consistently encounter memory issues during that phase (after \"Generating static pages\"), you can try disabling source maps in that phase by adding "
+				},
+				{
+					"type": "inlineCode",
+					"value": "enablePrerenderSourceMaps: false"
+				},
+				{
+					"type": "text",
+					"value": " to your Next.js configuration."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Some plugins may turn on source maps and may require custom configuration to disable."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Edge memory issues"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js "
+				},
+				{
+					"type": "inlineCode",
+					"value": "v14.1.3"
+				},
+				{
+					"type": "text",
+					"value": " fixed a memory issue when using the Edge runtime. Please update to this version (or later) to see if it addresses your issue."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Preloading Entries"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When the Next.js server starts, it preloads each page's JavaScript modules into memory, rather than at request time."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This optimization allows for faster response times, in exchange for a larger initial memory footprint."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To disable this optimization, set the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.preloadEntriesOnStart"
+				},
+				{
+					"type": "text",
+					"value": " flag to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst config: NextConfig = {\n\texperimental: {\n\t\tpreloadEntriesOnStart: false,\n\t},\n}\n\nexport default config"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.mjs\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst config = {\n\texperimental: {\n\t\tpreloadEntriesOnStart: false,\n\t},\n}\n\nexport default config"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js doesn't unload these JavaScript modules, meaning that even with this optimization disabled, the memory footprint of your Next.js server will eventually be the same if all pages are eventually requested."
+				}
+			]
+		}
+	]
+}

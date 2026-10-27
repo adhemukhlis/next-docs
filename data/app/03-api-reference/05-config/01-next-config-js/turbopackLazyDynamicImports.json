@@ -1,0 +1,316 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: turbopackLazyDynamicImports\ndescription: Compile client-side dynamic imports when they are first requested during development.\nversion: experimental\nrelated:\n links:\n  - app/api-reference/config/next-config-js/turbopackLazyDynamicImportsSSR"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.turbopackLazyDynamicImports"
+				},
+				{
+					"type": "text",
+					"value": " option defers compiling client-side dynamic "
+				},
+				{
+					"type": "inlineCode",
+					"value": "import()"
+				},
+				{
+					"type": "text",
+					"value": " targets until the browser first requests them during "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher highlight={5}",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\texperimental: {\n\t\tturbopackLazyDynamicImports: true,\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher highlight={4}",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\texperimental: {\n\t\tturbopackLazyDynamicImports: true,\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "How it works"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "inlineCode",
+					"value": "turbopackLazyDynamicImports"
+				},
+				{
+					"type": "text",
+					"value": " enabled, Turbopack waits to compile the target of a client-side dynamic "
+				},
+				{
+					"type": "inlineCode",
+					"value": "import()"
+				},
+				{
+					"type": "text",
+					"value": " until the browser requests its chunk. Code that the application never imports remains uncompiled during the development session."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, the module in this Client Component is compiled when the visitor selects the button:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/greeting-button.tsx\" switcher",
+			"value": "'use client'\n\nimport { useState } from 'react'\n\nexport function GreetingButton() {\n\tconst [message, setMessage] = useState('')\n\n\tasync function showGreeting() {\n\t\tconst { getGreeting } = await import('./get-greeting')\n\t\tsetMessage(getGreeting('Ada'))\n\t}\n\n\treturn (\n\t\t<>\n\t\t\t<button onClick={showGreeting}>Show greeting</button>\n\t\t\t<p>{message}</p>\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/greeting-button.js\" switcher",
+			"value": "'use client'\n\nimport { useState } from 'react'\n\nexport function GreetingButton() {\n\tconst [message, setMessage] = useState('')\n\n\tasync function showGreeting() {\n\t\tconst { getGreeting } = await import('./get-greeting')\n\t\tsetMessage(getGreeting('Ada'))\n\t}\n\n\treturn (\n\t\t<>\n\t\t\t<button onClick={showGreeting}>Show greeting</button>\n\t\t\t<p>{message}</p>\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The option defaults to "
+										},
+										{
+											"type": "inlineCode",
+											"value": "false"
+										},
+										{
+											"type": "text",
+											"value": " and only affects Turbopack during "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next dev"
+										},
+										{
+											"type": "text",
+											"value": ". It does not change production builds."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Errors in a deferred module appear when Turbopack first compiles that module."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Some "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/guides/lazy-loading#nextdynamic",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "next/dynamic"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " targets are still compiled eagerly."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "To defer dynamic imports reached while rendering Client Components on the server, use "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/config/next-config-js/turbopackLazyDynamicImportsSSR",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "turbopackLazyDynamicImportsSSR"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.4.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "experimental.turbopackLazyDynamicImports"
+								},
+								{
+									"type": "text",
+									"value": " configuration option added."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,738 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: skipProxyUrlNormalize\ndescription: Let Proxy see the original request instead of Next.js's normalized version. Formerly skipMiddlewareUrlNormalize."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Enabling "
+				},
+				{
+					"type": "inlineCode",
+					"value": "skipProxyUrlNormalize"
+				},
+				{
+					"type": "text",
+					"value": " lets "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/proxy",
+					"children": [
+						{
+							"type": "text",
+							"value": "Proxy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " see the original request instead of Next.js's normalized version. This includes internal URLs, query parameters, and headers used during client-side navigation."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Most projects don't need this option."
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " It is one of the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/proxy#advanced-proxy-flags",
+					"children": [
+						{
+							"type": "text",
+							"value": "advanced Proxy flags"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", meant for specific routing cases and debugging."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tskipProxyUrlNormalize: true,\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\tskipProxyUrlNormalize: true,\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "During client-side navigation, Next.js uses an internal request rather than requesting the destination URL as a full document load. By default, Next.js normalizes that request before it reaches Proxy, so Proxy sees the same destination URL for both client-side navigation and a full page load."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js also normalizes what Proxy returns, so any URL you rewrite or redirect to is rewritten to match."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "inlineCode",
+					"value": "skipProxyUrlNormalize: true"
+				},
+				{
+					"type": "text",
+					"value": ", neither normalization runs. Proxy receives the request as sent, and the destinations it rewrites or redirects to are sent as written:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Default"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "With "
+								},
+								{
+									"type": "inlineCode",
+									"value": "skipProxyUrlNormalize: true"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "request.nextUrl"
+								},
+								{
+									"type": "text",
+									"value": " resolves the internal data URL back to the route path and extracts the locale"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Holds the requested pathname as sent"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "request.url"
+								},
+								{
+									"type": "text",
+									"value": " is the normalized URL"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Is the original request URL"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The internal "
+								},
+								{
+									"type": "inlineCode",
+									"value": "_rsc"
+								},
+								{
+									"type": "text",
+									"value": " query parameter is stripped"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Preserved"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Next.js internal navigation headers ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "rsc"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next-router-state-tree"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next-router-prefetch"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next-router-segment-prefetch"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next-hmr-refresh"
+								},
+								{
+									"type": "text",
+									"value": ") are removed from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "request.headers"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Preserved"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "NextResponse.rewrite()"
+								},
+								{
+									"type": "text",
+									"value": " destinations are re-serialized with the build ID"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Sent as written"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "NextResponse.redirect()"
+								},
+								{
+									"type": "text",
+									"value": " "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Location"
+								},
+								{
+									"type": "text",
+									"value": " is rewritten to a relative URL"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Sent as written, trailing slash preserved"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "With "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/trailingSlash",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "trailingSlash: true"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", a trailing slash is appended before Proxy runs"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Pathname passed through unchanged"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Deprecated alias"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The former name of this option is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "skipMiddlewareUrlNormalize"
+				},
+				{
+					"type": "text",
+					"value": ", from when Proxy was called Middleware. It still works and logs a deprecation warning. Setting both at once throws:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "Config options `skipProxyUrlNormalize` and `skipMiddlewareUrlNormalize` cannot be set at the same time. Please use `skipProxyUrlNormalize` instead."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/codemods#160",
+					"children": [
+						{
+							"type": "text",
+							"value": "version 16 codemod"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " renames it for you."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Good to know"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Avoid using the internal navigation headers to return different content for client-side navigation and full page loads."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "You do not need this option to limit which routes Proxy runs on. The "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/proxy#matcher",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "matcher"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " config still matches the destination URL either way."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Only the request and response Proxy sees change. Filesystem routing, "
+								},
+								{
+									"type": "inlineCode",
+									"value": "redirects"
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "rewrites"
+								},
+								{
+									"type": "text",
+									"value": " from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next.config.js"
+								},
+								{
+									"type": "text",
+									"value": " behave the same."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reading the URL as the client sent it"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "During client-side navigation, Next.js adds an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "_rsc"
+				},
+				{
+					"type": "text",
+					"value": " query parameter and its internal navigation headers to the request. With the option enabled, Proxy can read both."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"proxy.ts\" switcher",
+			"value": "import type { NextRequest } from 'next/server'\n\nexport default function proxy(request: NextRequest) {\n\tconsole.log(request.nextUrl.searchParams.get('_rsc'))\n\t// Enabled: the value Next.js added to the request\n\t// Disabled: null\n\n\tconsole.log(request.headers.get('rsc'))\n\t// Enabled: '1' during client-side navigation\n\t// Disabled: null\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"proxy.js\" switcher",
+			"value": "export default function proxy(request) {\n\tconsole.log(request.nextUrl.searchParams.get('_rsc'))\n\t// Enabled: the value Next.js added to the request\n\t// Disabled: null\n\n\tconsole.log(request.headers.get('rsc'))\n\t// Enabled: '1' during client-side navigation\n\t// Disabled: null\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Renamed from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "skipMiddlewareUrlNormalize"
+								},
+								{
+									"type": "text",
+									"value": " to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "skipProxyUrlNormalize"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.1.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "skipMiddlewareUrlNormalize"
+								},
+								{
+									"type": "text",
+									"value": " added."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

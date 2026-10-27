@@ -1,0 +1,212 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: supportsImmutableAssets\ndescription: Configure support for immutable static assets"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Attention"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": This option is primarily intended for "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/adapters",
+							"children": [
+								{
+									"type": "text",
+									"value": "adapter"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " authors. App developers should only set it when troubleshooting adapter-specific issues."
+						}
+					]
+				},
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enabling this feature when your provider or adapter does not support it can result in broken deployments."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When skew protection is enabled, static asset requests include a deployment-specific query parameter, for example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "plain",
+			"meta": null,
+			"value": "GET https://foo.com/_next/static/chunks/0d_ks0ow7ur6m.js?dpl=<unique-deployment-id>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "One downside is that browsers have to download static assets again after each new deployment, even when those assets have not changed."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Immutable static assets allow the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "?dpl"
+				},
+				{
+					"type": "text",
+					"value": " query parameter to be omitted for static assets that are guaranteed to be immutable and content-addressed by their filename. This lets browsers cache those assets indefinitely and allows unchanged static assets to be skipped when uploading files during subsequent deployments:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "plain",
+			"meta": null,
+			"value": "GET https://foo.com/_next/static/immutable/chunks/0d_ks0ow7ur6m.js"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use this config option to opt out of immutable static assets when your adapter has enabled support for them. If your adapter has not enabled this feature, this option has no effect:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\tsupportsImmutableAssets: false,\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/adapters/immutable-static-assets",
+					"children": [
+						{
+							"type": "text",
+							"value": "Supporting immutable static assets"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more information on how to support this feature in an adapter."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Added support for immutable static assets."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

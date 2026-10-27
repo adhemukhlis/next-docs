@@ -1,0 +1,421 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: use server\ndescription: Learn how to use the use server directive to execute code on the server."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use server"
+				},
+				{
+					"type": "text",
+					"value": " directive designates a function or file to be executed on the "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "server side"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". It can be used at the top of a file to indicate that all functions in the file are server-side, or inline at the top of a function to mark the function as a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://19.react.dev/reference/rsc/server-functions",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Function"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This is a React feature."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For Next.js-specific Server Action behaviors (response model, security, configuration, deployment), see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/server-actions",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Actions and Mutations"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use server"
+				},
+				{
+					"type": "text",
+					"value": " at the top of a file"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The following example shows a file with a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use server"
+				},
+				{
+					"type": "text",
+					"value": " directive at the top. All functions in the file are executed on the server."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/actions.ts\" highlight={1} switcher",
+			"value": "'use server'\nimport { db } from '@/lib/db' // Your database client\nimport { auth } from '@/lib/auth'\n\nexport async function createUser(data: { name: string; email: string }) {\n\tconst session = await auth()\n\tif (!session?.user) {\n\t\tthrow new Error('Unauthorized')\n\t}\n\n\tconst user = await db.user.create({ data })\n\treturn { id: user.id, name: user.name }\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/actions.js\" highlight={1} switcher",
+			"value": "'use server'\nimport { db } from '@/lib/db' // Your database client\nimport { auth } from '@/lib/auth'\n\nexport async function createUser(data) {\n\tconst session = await auth()\n\tif (!session?.user) {\n\t\tthrow new Error('Unauthorized')\n\t}\n\n\tconst user = await db.user.create({ data })\n\treturn { id: user.id, name: user.name }\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using Server Functions in a Client Component"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use Server Functions in Client Components you need to create your Server Functions in a dedicated file using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use server"
+				},
+				{
+					"type": "text",
+					"value": " directive at the top of the file. These Server Functions can then be imported into Client and Server Components and executed."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Assuming you have a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetchUsers"
+				},
+				{
+					"type": "text",
+					"value": " Server Function in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "actions.ts"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/actions.ts\" highlight={1} switcher",
+			"value": "'use server'\nimport { db } from '@/lib/db' // Your database client\nimport { auth } from '@/lib/auth'\n\nexport async function fetchUsers() {\n\tconst session = await auth()\n\tif (!session?.user) {\n\t\tthrow new Error('Unauthorized')\n\t}\n\n\tconst users = await db.user.findMany({\n\t\tselect: { id: true, name: true, email: true },\n\t})\n\treturn users\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/actions.js\" highlight={1} switcher",
+			"value": "'use server'\nimport { db } from '@/lib/db' // Your database client\nimport { auth } from '@/lib/auth'\n\nexport async function fetchUsers() {\n\tconst session = await auth()\n\tif (!session?.user) {\n\t\tthrow new Error('Unauthorized')\n\t}\n\n\tconst users = await db.user.findMany({\n\t\tselect: { id: true, name: true, email: true },\n\t})\n\treturn users\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then you can import the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetchUsers"
+				},
+				{
+					"type": "text",
+					"value": " Server Function into a Client Component and execute it on the client-side."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/components/my-button.tsx\" highlight={1,2,5} switcher",
+			"value": "'use client'\nimport { fetchUsers } from '../actions'\n\nexport default function MyButton() {\n\treturn <button onClick={() => fetchUsers()}>Fetch Users</button>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/components/my-button.js\" highlight={1,2,5} switcher",
+			"value": "'use client'\nimport { fetchUsers } from '../actions'\n\nexport default function MyButton() {\n\treturn <button onClick={() => fetchUsers()}>Fetch Users</button>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use server"
+				},
+				{
+					"type": "text",
+					"value": " inline"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the following example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use server"
+				},
+				{
+					"type": "text",
+					"value": " is used inline at the top of a function to mark it as a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://19.react.dev/reference/rsc/server-functions",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Function"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/posts/[id]/page.tsx\" switcher highlight={9}",
+			"value": "import { EditPost } from './edit-post'\nimport { revalidatePath } from 'next/cache'\n\nexport default async function PostPage({ params }: PageProps<'/posts/[id]'>) {\n\tconst { id } = await params\n\tconst post = await getPost(id)\n\n\tasync function updatePost(formData: FormData) {\n\t\t'use server'\n\t\t// Verify auth before saving (e.g. inside savePost)\n\t\tawait savePost(id, formData)\n\t\trevalidatePath(`/posts/${id}`)\n\t}\n\n\treturn (\n\t\t<EditPost\n\t\t\tupdatePostAction={updatePost}\n\t\t\tpost={post}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/posts/[id]/page.js\" switcher highlight={9}",
+			"value": "import { EditPost } from './edit-post'\nimport { revalidatePath } from 'next/cache'\n\nexport default async function PostPage({ params }) {\n\tconst { id } = await params\n\tconst post = await getPost(id)\n\n\tasync function updatePost(formData) {\n\t\t'use server'\n\t\t// Verify auth before saving (e.g. inside savePost)\n\t\tawait savePost(id, formData)\n\t\trevalidatePath(`/posts/${id}`)\n\t}\n\n\treturn (\n\t\t<EditPost\n\t\t\tupdatePostAction={updatePost}\n\t\t\tpost={post}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Security considerations"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Design your data access functions as secure primitives: validate inputs, check authentication and authorization, and constrain return types to only what the caller needs. When Server Functions delegate to a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/data-security#using-a-data-access-layer-for-mutations",
+					"children": [
+						{
+							"type": "text",
+							"value": "Data Access Layer"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", these guarantees live in one place and apply consistently."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Authentication and authorization"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Always authenticate and authorize users before performing sensitive server-side operations. Read authentication from cookies or headers rather than accepting tokens as function parameters."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/actions.ts\" highlight={1,7,8,9,10} switcher",
+			"value": "'use server'\n\nimport { db } from '@/lib/db' // Your database client\nimport { auth } from '@/lib/auth' // Your authentication library\n\nexport async function createUser(data: { name: string; email: string }) {\n\tconst session = await auth()\n\tif (!session?.user) {\n\t\tthrow new Error('Unauthorized')\n\t}\n\tconst newUser = await db.user.create({ data })\n\treturn { id: newUser.id, name: newUser.name }\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/actions.js\" highlight={1,7,8,9,10} switcher",
+			"value": "'use server'\n\nimport { db } from '@/lib/db' // Your database client\nimport { auth } from '@/lib/auth' // Your authentication library\n\nexport async function createUser(data) {\n\tconst session = await auth()\n\tif (!session?.user) {\n\t\tthrow new Error('Unauthorized')\n\t}\n\tconst newUser = await db.user.create({ data })\n\treturn { id: newUser.id, name: newUser.name }\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Return values"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Function return values are serialized and sent to the client. Only return data the UI needs, not raw database records. See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/data-security#controlling-return-values",
+					"children": [
+						{
+							"type": "text",
+							"value": "Data Security guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more details."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/rsc/use-server",
+					"children": [
+						{
+							"type": "text",
+							"value": "React documentation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more information on "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use server"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		}
+	]
+}

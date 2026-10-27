@@ -1,0 +1,1991 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: route.js\ndescription: API reference for the route.js special file."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Handlers allow you to create custom request handlers for a given route using the Web "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/Request",
+					"children": [
+						{
+							"type": "text",
+							"value": "Request"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/Response",
+					"children": [
+						{
+							"type": "text",
+							"value": "Response"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " APIs."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"route.ts\" switcher",
+			"value": "export async function GET() {\n\treturn Response.json({ message: 'Hello World' })\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"route.js\" switcher",
+			"value": "export async function GET() {\n\treturn Response.json({ message: 'Hello World' })\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "HTTP Methods"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "route"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " file allows you to create custom request handlers for a given route. The following "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/HTTP/Methods",
+					"children": [
+						{
+							"type": "text",
+							"value": "HTTP methods"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " are supported: "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GET"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "POST"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "PUT"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "PATCH"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "DELETE"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "HEAD"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "OPTIONS"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"route.ts\" switcher",
+			"value": "export async function GET(request: Request) {}\n\nexport async function HEAD(request: Request) {}\n\nexport async function POST(request: Request) {}\n\nexport async function PUT(request: Request) {}\n\nexport async function DELETE(request: Request) {}\n\nexport async function PATCH(request: Request) {}\n\n// If `OPTIONS` is not defined, Next.js will automatically implement `OPTIONS` and set the appropriate Response `Allow` header depending on the other methods defined in the Route Handler.\nexport async function OPTIONS(request: Request) {}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"route.js\" switcher",
+			"value": "export async function GET(request) {}\n\nexport async function HEAD(request) {}\n\nexport async function POST(request) {}\n\nexport async function PUT(request) {}\n\nexport async function DELETE(request) {}\n\nexport async function PATCH(request) {}\n\n// If `OPTIONS` is not defined, Next.js will automatically implement `OPTIONS` and set the appropriate Response `Allow` header depending on the other methods defined in the Route Handler.\nexport async function OPTIONS(request) {}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parameters"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "request"
+				},
+				{
+					"type": "text",
+					"value": " (optional)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "request"
+				},
+				{
+					"type": "text",
+					"value": " object is a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/next-request",
+					"children": [
+						{
+							"type": "text",
+							"value": "NextRequest"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " object, which is an extension of the Web "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/API/Request",
+					"children": [
+						{
+							"type": "text",
+							"value": "Request"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " API. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NextRequest"
+				},
+				{
+					"type": "text",
+					"value": " gives you further control over the incoming request, including easily accessing "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies"
+				},
+				{
+					"type": "text",
+					"value": " and an extended, parsed, URL object "
+				},
+				{
+					"type": "inlineCode",
+					"value": "nextUrl"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"route.ts\" switcher",
+			"value": "import type { NextRequest } from 'next/server'\n\nexport async function GET(request: NextRequest) {\n\tconst url = request.nextUrl\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"route.js\" switcher",
+			"value": "export async function GET(request) {\n\tconst url = request.nextUrl\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "context"
+				},
+				{
+					"type": "text",
+					"value": " (optional)"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "params"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": a promise that resolves to an object containing the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/dynamic-routes",
+									"children": [
+										{
+											"type": "text",
+											"value": "dynamic route parameters"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for the current route."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/dashboard/[team]/route.ts\" switcher",
+			"value": "export async function GET(request: Request, { params }: { params: Promise<{ team: string }> }) {\n\tconst { team } = await params\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/dashboard/[team]/route.js\" switcher",
+			"value": "export async function GET(request, { params }) {\n\tconst { team } = await params\n}"
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Example"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "URL"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "params"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/dashboard/[team]/route.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/dashboard/1"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Promise<{ team: '1' }>"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/shop/[tag]/[item]/route.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/shop/1/2"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Promise<{ tag: '1', item: '2' }>"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/blog/[...slug]/route.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/blog/1/2"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Promise<{ slug: ['1', '2'] }>"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Context Helper"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can type the Route Handler context using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "RouteContext"
+				},
+				{
+					"type": "text",
+					"value": " to get strongly typed "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " from a route literal. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "RouteContext"
+				},
+				{
+					"type": "text",
+					"value": " is a globally available helper."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/users/[id]/route.ts\"",
+			"value": "import type { NextRequest } from 'next/server'\n\nexport async function GET(_req: NextRequest, ctx: RouteContext<'/users/[id]'>) {\n\tconst { id } = await ctx.params\n\treturn Response.json({ id })\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Types are generated during "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next dev"
+										},
+										{
+											"type": "text",
+											"value": ", "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next build"
+										},
+										{
+											"type": "text",
+											"value": " or "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next typegen"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "After type generation, the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "RouteContext"
+										},
+										{
+											"type": "text",
+											"value": " helper is globally available. It doesn't need to be imported."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Cookies"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can read or set cookies with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cookies",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cookies"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/headers"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"route.ts\" switcher",
+			"value": "import { cookies } from 'next/headers'\n\nexport async function GET(request: NextRequest) {\n\tconst cookieStore = await cookies()\n\n\tconst a = cookieStore.get('a')\n\tconst b = cookieStore.set('b', '1')\n\tconst c = cookieStore.delete('c')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"route.js\" switcher",
+			"value": "import { cookies } from 'next/headers'\n\nexport async function GET(request) {\n\tconst cookieStore = await cookies()\n\n\tconst a = cookieStore.get('a')\n\tconst b = cookieStore.set('b', '1')\n\tconst c = cookieStore.delete('c')\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Alternatively, you can return a new "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Response"
+				},
+				{
+					"type": "text",
+					"value": " using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/HTTP/Headers/Set-Cookie",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Set-Cookie"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " header."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/route.ts\" switcher",
+			"value": "import { cookies } from 'next/headers'\n\nexport async function GET(request: Request) {\n\tconst cookieStore = await cookies()\n\tconst token = cookieStore.get('token')\n\n\treturn new Response('Hello, Next.js!', {\n\t\tstatus: 200,\n\t\theaders: { 'Set-Cookie': `token=${token.value}` },\n\t})\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/route.js\" switcher",
+			"value": "import { cookies } from 'next/headers'\n\nexport async function GET(request) {\n\tconst cookieStore = await cookies()\n\tconst token = cookieStore.get('token')\n\n\treturn new Response('Hello, Next.js!', {\n\t\tstatus: 200,\n\t\theaders: { 'Set-Cookie': `token=${token.value}` },\n\t})\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also use the underlying Web APIs to read cookies from the request ("
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/next-request",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "NextRequest"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "):"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/route.ts\" switcher",
+			"value": "import { type NextRequest } from 'next/server'\n\nexport async function GET(request: NextRequest) {\n\tconst token = request.cookies.get('token')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/route.js\" switcher",
+			"value": "export async function GET(request) {\n\tconst token = request.cookies.get('token')\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Headers"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can read headers with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/headers",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "headers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/headers"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"route.ts\" switcher",
+			"value": "import { headers } from 'next/headers'\nimport type { NextRequest } from 'next/server'\n\nexport async function GET(request: NextRequest) {\n\tconst headersList = await headers()\n\tconst referer = headersList.get('referer')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"route.js\" switcher",
+			"value": "import { headers } from 'next/headers'\n\nexport async function GET(request) {\n\tconst headersList = await headers()\n\tconst referer = headersList.get('referer')\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers"
+				},
+				{
+					"type": "text",
+					"value": " instance is read-only. To set headers, you need to return a new "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Response"
+				},
+				{
+					"type": "text",
+					"value": " with new "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/route.ts\" switcher",
+			"value": "import { headers } from 'next/headers'\n\nexport async function GET(request: Request) {\n\tconst headersList = await headers()\n\tconst referer = headersList.get('referer')\n\n\treturn new Response('Hello, Next.js!', {\n\t\tstatus: 200,\n\t\theaders: { referer: referer },\n\t})\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/route.js\" switcher",
+			"value": "import { headers } from 'next/headers'\n\nexport async function GET(request) {\n\tconst headersList = await headers()\n\tconst referer = headersList.get('referer')\n\n\treturn new Response('Hello, Next.js!', {\n\t\tstatus: 200,\n\t\theaders: { referer: referer },\n\t})\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also use the underlying Web APIs to read headers from the request ("
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/next-request",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "NextRequest"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "):"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/route.ts\" switcher",
+			"value": "import { type NextRequest } from 'next/server'\n\nexport async function GET(request: NextRequest) {\n\tconst requestHeaders = new Headers(request.headers)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/route.js\" switcher",
+			"value": "export async function GET(request) {\n\tconst requestHeaders = new Headers(request.headers)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Revalidating Cached Data"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/incremental-static-regeneration",
+					"children": [
+						{
+							"type": "text",
+							"value": "revalidate cached data"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				},
+				{
+					"type": "text",
+					"value": " route segment config option."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/posts/route.ts\" switcher",
+			"value": "export const revalidate = 60\n\nexport async function GET() {\n\tconst data = await fetch('https://api.vercel.app/blog')\n\tconst posts = await data.json()\n\n\treturn Response.json(posts)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/posts/route.js\" switcher",
+			"value": "export const revalidate = 60\n\nexport async function GET() {\n\tconst data = await fetch('https://api.vercel.app/blog')\n\tconst posts = await data.json()\n\n\treturn Response.json(posts)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Redirects"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/route.ts\" switcher",
+			"value": "import { redirect } from 'next/navigation'\n\nexport async function GET(request: Request) {\n\tredirect('https://nextjs.org/')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/route.js\" switcher",
+			"value": "import { redirect } from 'next/navigation'\n\nexport async function GET(request) {\n\tredirect('https://nextjs.org/')\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Dynamic Route Segments"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Handlers can use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/dynamic-routes",
+					"children": [
+						{
+							"type": "text",
+							"value": "Dynamic Segments"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to create request handlers from dynamic data."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/items/[slug]/route.ts\" switcher",
+			"value": "export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {\n\tconst { slug } = await params // 'a', 'b', or 'c'\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/items/[slug]/route.js\" switcher",
+			"value": "export async function GET(request, { params }) {\n\tconst { slug } = await params // 'a', 'b', or 'c'\n}"
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Route"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Example URL"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "params"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/items/[slug]/route.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/items/a"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Promise<{ slug: 'a' }>"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/items/[slug]/route.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/items/b"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Promise<{ slug: 'b' }>"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/items/[slug]/route.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/items/c"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Promise<{ slug: 'c' }>"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Static Generation with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-static-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with dynamic Route Handlers to statically generate responses at build time for specified params, while handling other params dynamically at request time."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", you can combine "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " to enable data caching for both prerendered and runtime params."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-static-params#with-route-handlers",
+					"children": [
+						{
+							"type": "text",
+							"value": "generateStaticParams with Route Handlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " documentation for examples and details."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "URL Query Parameters"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The request object passed to the Route Handler is a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NextRequest"
+				},
+				{
+					"type": "text",
+					"value": " instance, which includes "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/next-request#nexturl",
+					"children": [
+						{
+							"type": "text",
+							"value": "some additional convenience methods"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", such as those for more easily handling query parameters."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/search/route.ts\" switcher",
+			"value": "import { type NextRequest } from 'next/server'\n\nexport function GET(request: NextRequest) {\n\tconst searchParams = request.nextUrl.searchParams\n\tconst query = searchParams.get('query')\n\t// query is \"hello\" for /api/search?query=hello\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/search/route.js\" switcher",
+			"value": "export function GET(request) {\n\tconst searchParams = request.nextUrl.searchParams\n\tconst query = searchParams.get('query')\n\t// query is \"hello\" for /api/search?query=hello\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Streaming"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Streaming is commonly used in combination with Large Language Models (LLMs), such as OpenAI, for AI-generated content. Learn more about the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://sdk.vercel.ai/docs/introduction",
+					"children": [
+						{
+							"type": "text",
+							"value": "AI SDK"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/chat/route.ts\" switcher",
+			"value": "import { openai } from '@ai-sdk/openai'\nimport { StreamingTextResponse, streamText } from 'ai'\n\nexport async function POST(req: Request) {\n\tconst { messages } = await req.json()\n\tconst result = await streamText({\n\t\tmodel: openai('gpt-4-turbo'),\n\t\tmessages,\n\t})\n\n\treturn new StreamingTextResponse(result.toAIStream())\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/chat/route.js\" switcher",
+			"value": "import { openai } from '@ai-sdk/openai'\nimport { StreamingTextResponse, streamText } from 'ai'\n\nexport async function POST(req) {\n\tconst { messages } = await req.json()\n\tconst result = await streamText({\n\t\tmodel: openai('gpt-4-turbo'),\n\t\tmessages,\n\t})\n\n\treturn new StreamingTextResponse(result.toAIStream())\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "These abstractions use the Web APIs to create a stream. You can also use the underlying Web APIs directly."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/route.ts\" switcher",
+			"value": "// https://developer.mozilla.org/docs/Web/API/ReadableStream#convert_async_iterator_to_stream\nfunction iteratorToStream(iterator: any) {\n\treturn new ReadableStream({\n\t\tasync pull(controller) {\n\t\t\tconst { value, done } = await iterator.next()\n\n\t\t\tif (done) {\n\t\t\t\tcontroller.close()\n\t\t\t} else {\n\t\t\t\tcontroller.enqueue(value)\n\t\t\t}\n\t\t},\n\t})\n}\n\nfunction sleep(time: number) {\n\treturn new Promise((resolve) => {\n\t\tsetTimeout(resolve, time)\n\t})\n}\n\nconst encoder = new TextEncoder()\n\nasync function* makeIterator() {\n\tyield encoder.encode('<p>One</p>')\n\tawait sleep(200)\n\tyield encoder.encode('<p>Two</p>')\n\tawait sleep(200)\n\tyield encoder.encode('<p>Three</p>')\n}\n\nexport async function GET() {\n\tconst iterator = makeIterator()\n\tconst stream = iteratorToStream(iterator)\n\n\treturn new Response(stream)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/route.js\" switcher",
+			"value": "// https://developer.mozilla.org/docs/Web/API/ReadableStream#convert_async_iterator_to_stream\nfunction iteratorToStream(iterator) {\n\treturn new ReadableStream({\n\t\tasync pull(controller) {\n\t\t\tconst { value, done } = await iterator.next()\n\n\t\t\tif (done) {\n\t\t\t\tcontroller.close()\n\t\t\t} else {\n\t\t\t\tcontroller.enqueue(value)\n\t\t\t}\n\t\t},\n\t})\n}\n\nfunction sleep(time) {\n\treturn new Promise((resolve) => {\n\t\tsetTimeout(resolve, time)\n\t})\n}\n\nconst encoder = new TextEncoder()\n\nasync function* makeIterator() {\n\tyield encoder.encode('<p>One</p>')\n\tawait sleep(200)\n\tyield encoder.encode('<p>Two</p>')\n\tawait sleep(200)\n\tyield encoder.encode('<p>Three</p>')\n}\n\nexport async function GET() {\n\tconst iterator = makeIterator()\n\tconst stream = iteratorToStream(iterator)\n\n\treturn new Response(stream)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Request Body"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can read the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Request"
+				},
+				{
+					"type": "text",
+					"value": " body using the standard Web API methods:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/items/route.ts\" switcher",
+			"value": "export async function POST(request: Request) {\n\tconst res = await request.json()\n\treturn Response.json({ res })\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/items/route.js\" switcher",
+			"value": "export async function POST(request) {\n\tconst res = await request.json()\n\treturn Response.json({ res })\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Request Body FormData"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can read the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "FormData"
+				},
+				{
+					"type": "text",
+					"value": " using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "request.formData()"
+				},
+				{
+					"type": "text",
+					"value": " function:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/items/route.ts\" switcher",
+			"value": "export async function POST(request: Request) {\n\tconst formData = await request.formData()\n\tconst name = formData.get('name')\n\tconst email = formData.get('email')\n\treturn Response.json({ name, email })\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/items/route.js\" switcher",
+			"value": "export async function POST(request) {\n\tconst formData = await request.formData()\n\tconst name = formData.get('name')\n\tconst email = formData.get('email')\n\treturn Response.json({ name, email })\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since "
+				},
+				{
+					"type": "inlineCode",
+					"value": "formData"
+				},
+				{
+					"type": "text",
+					"value": " data are all strings, you may want to use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.npmjs.com/zod-form-data",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "zod-form-data"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to validate the request and retrieve data in the format you prefer (e.g. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "number"
+				},
+				{
+					"type": "text",
+					"value": ")."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "CORS"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can set CORS headers for a specific Route Handler using the standard Web API methods:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/route.ts\" switcher",
+			"value": "export async function GET(request: Request) {\n\treturn new Response('Hello, Next.js!', {\n\t\tstatus: 200,\n\t\theaders: {\n\t\t\t'Access-Control-Allow-Origin': '*',\n\t\t\t'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',\n\t\t\t'Access-Control-Allow-Headers': 'Content-Type, Authorization',\n\t\t},\n\t})\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/route.js\" switcher",
+			"value": "export async function GET(request) {\n\treturn new Response('Hello, Next.js!', {\n\t\tstatus: 200,\n\t\theaders: {\n\t\t\t'Access-Control-Allow-Origin': '*',\n\t\t\t'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',\n\t\t\t'Access-Control-Allow-Headers': 'Content-Type, Authorization',\n\t\t},\n\t})\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "To add CORS headers to multiple Route Handlers, you can use "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/proxy#cors",
+											"children": [
+												{
+													"type": "text",
+													"value": "Proxy"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " or the "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/config/next-config-js/headers#cors",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "next.config.js"
+												},
+												{
+													"type": "text",
+													"value": " file"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Webhooks"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use a Route Handler to receive webhooks from third-party services:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/route.ts\" switcher",
+			"value": "export async function POST(request: Request) {\n\ttry {\n\t\tconst text = await request.text()\n\t\t// Process the webhook payload\n\t} catch (error) {\n\t\treturn new Response(`Webhook error: ${error.message}`, {\n\t\t\tstatus: 400,\n\t\t})\n\t}\n\n\treturn new Response('Success!', {\n\t\tstatus: 200,\n\t})\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/route.js\" switcher",
+			"value": "export async function POST(request) {\n\ttry {\n\t\tconst text = await request.text()\n\t\t// Process the webhook payload\n\t} catch (error) {\n\t\treturn new Response(`Webhook error: ${error.message}`, {\n\t\t\tstatus: 400,\n\t\t})\n\t}\n\n\treturn new Response('Success!', {\n\t\tstatus: 200,\n\t})\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Notably, unlike API Routes with the Pages Router, you do not need to use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "bodyParser"
+				},
+				{
+					"type": "text",
+					"value": " to use any additional configuration."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Non-UI Responses"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use Route Handlers to return non-UI content. Note that "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/metadata/sitemap#generating-a-sitemap-using-code-js-ts",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "sitemap.xml"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/metadata/robots#generate-a-robots-file",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "robots.txt"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/metadata/app-icons#generate-icons-using-code-js-ts-tsx",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "app icons"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/metadata/opengraph-image",
+					"children": [
+						{
+							"type": "text",
+							"value": "open graph images"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " all have built-in support."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/rss.xml/route.ts\" switcher",
+			"value": "export async function GET() {\n\treturn new Response(\n\t\t`<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<rss version=\"2.0\">\n\n<channel>\n  <title>Next.js Documentation</title>\n  <link>https://nextjs.org/docs</link>\n  <description>The React Framework for the Web</description>\n</channel>\n\n</rss>`,\n\t\t{\n\t\t\theaders: {\n\t\t\t\t'Content-Type': 'text/xml',\n\t\t\t},\n\t\t},\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/rss.xml/route.js\" switcher",
+			"value": "export async function GET() {\n\treturn new Response(`<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<rss version=\"2.0\">\n\n<channel>\n  <title>Next.js Documentation</title>\n  <link>https://nextjs.org/docs</link>\n  <description>The React Framework for the Web</description>\n</channel>\n\n</rss>`)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Segment Config Options"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Handlers use the same "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config",
+					"children": [
+						{
+							"type": "text",
+							"value": "route segment configuration"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " as pages and layouts."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/items/route.ts\" switcher",
+			"value": "export const dynamic = 'auto'\nexport const dynamicParams = true\nexport const revalidate = false\nexport const fetchCache = 'auto'\nexport const runtime = 'nodejs'\nexport const preferredRegion = 'auto' // deprecated"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/items/route.js\" switcher",
+			"value": "export const dynamic = 'auto'\nexport const dynamicParams = true\nexport const revalidate = false\nexport const fetchCache = 'auto'\nexport const runtime = 'nodejs'\nexport const preferredRegion = 'auto' // deprecated"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config",
+					"children": [
+						{
+							"type": "text",
+							"value": "API reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more details."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.0.0-RC"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "context.params"
+								},
+								{
+									"type": "text",
+									"value": " is now a promise. A "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/upgrading/codemods#150",
+									"children": [
+										{
+											"type": "text",
+											"value": "codemod"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " is available"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.0.0-RC"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The default caching for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "GET"
+								},
+								{
+									"type": "text",
+									"value": " handlers was changed from static to dynamic"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.2.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Route Handlers are introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

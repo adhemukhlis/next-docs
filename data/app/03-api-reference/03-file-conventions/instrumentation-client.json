@@ -1,0 +1,1024 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: instrumentation-client.js\ndescription: Learn how to add client-side instrumentation to track and monitor your Next.js application's frontend performance."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instrumentation-client.js|ts"
+				},
+				{
+					"type": "text",
+					"value": " file allows you to add monitoring, analytics code, and other side-effects that run before your application becomes interactive. This is useful for setting up performance tracking, error monitoring, polyfills, or any other client-side observability tools."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use it, place the file in the "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "root"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " of your application or inside a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " folder."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Usage"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Unlike "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/instrumentation",
+					"children": [
+						{
+							"type": "text",
+							"value": "server-side instrumentation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", you do not need to export any specific functions. You can write your monitoring code directly in the file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"instrumentation-client.ts\" switcher",
+			"value": "// Set up performance monitoring\nperformance.mark('app-init')\n\n// Initialize analytics\nconsole.log('Analytics initialized')\n\n// Set up error tracking\nwindow.addEventListener('error', (event) => {\n\t// Send to your error tracking service\n\treportError(event.error)\n})"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"instrumentation-client.js\" switcher",
+			"value": "// Set up performance monitoring\nperformance.mark('app-init')\n\n// Initialize analytics\nconsole.log('Analytics initialized')\n\n// Set up error tracking\nwindow.addEventListener('error', (event) => {\n\t// Send to your error tracking service\n\treportError(event.error)\n})"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Error handling:"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " Implement try-catch blocks around your instrumentation code to ensure robust monitoring. This prevents individual tracking failures from affecting other instrumentation features."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Router navigation tracking"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can export "
+				},
+				{
+					"type": "inlineCode",
+					"value": "onRouterTransitionStart"
+				},
+				{
+					"type": "text",
+					"value": " to observe the start of App Router navigations:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"instrumentation-client.ts\"",
+			"value": "export function onRouterTransitionStart(url: string, navigationType: 'push' | 'replace' | 'traverse') {\n\tconsole.log(url, navigationType)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Additional router transition information is experimental. Enable it to receive a third "
+				},
+				{
+					"type": "inlineCode",
+					"value": "event"
+				},
+				{
+					"type": "text",
+					"value": " argument:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\texperimental: {\n\t\tinstrumentationClientRouterTransitionEvents: true,\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The event includes the transition metadata and source context known when the navigation is dispatched:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"instrumentation-client.ts\" switcher",
+			"value": "import type { RouterTransitionStartEvent, RouterTransitionType } from 'next'\n\nexport function onRouterTransitionStart(url: string, navigationType: RouterTransitionType, { id, timestamp, fromRoutes, prefetchIntent }: RouterTransitionStartEvent) {\n\tconsole.log(id, timestamp, url, navigationType, fromRoutes, prefetchIntent)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"instrumentation-client.js\" switcher",
+			"value": "export function onRouterTransitionStart(url, navigationType, event) {\n\tconsole.log(event.id, event.timestamp, url, navigationType, event.fromRoutes, event.prefetchIntent)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "onRouterTransitionStart"
+				},
+				{
+					"type": "text",
+					"value": " receives:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "url: string"
+								},
+								{
+									"type": "text",
+									"value": " - The URL being navigated to"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "navigationType: 'push' | 'replace' | 'traverse'"
+								},
+								{
+									"type": "text",
+									"value": " - The type of navigation"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "event.id"
+								},
+								{
+									"type": "text",
+									"value": " - An opaque ID shared by events for this transition"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "event.timestamp"
+								},
+								{
+									"type": "text",
+									"value": " - A framework-captured Unix timestamp in milliseconds"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "event.fromRoutes"
+								},
+								{
+									"type": "text",
+									"value": " - Route patterns visible before navigation. The primary "
+								},
+								{
+									"type": "inlineCode",
+									"value": "children"
+								},
+								{
+									"type": "text",
+									"value": " route is first, followed by parallel slots in deterministic order"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "event.prefetchIntent"
+								},
+								{
+									"type": "text",
+									"value": " - For link navigations, whether the clicked link requested full prefetching ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "full"
+								},
+								{
+									"type": "text",
+									"value": "), used automatic prefetching ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "auto"
+								},
+								{
+									"type": "text",
+									"value": "), or did not request prefetching ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "none"
+								},
+								{
+									"type": "text",
+									"value": "). For navigations with no associated link (programmatic "
+								},
+								{
+									"type": "inlineCode",
+									"value": "router.push()"
+								},
+								{
+									"type": "text",
+									"value": "/"
+								},
+								{
+									"type": "inlineCode",
+									"value": "router.replace()"
+								},
+								{
+									"type": "text",
+									"value": ", or browser back/forward) this is "
+								},
+								{
+									"type": "inlineCode",
+									"value": "null"
+								},
+								{
+									"type": "text",
+									"value": ", since no link prefetch intent applies"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Route entries use filesystem-style patterns, so a navigation away from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/hello"
+				},
+				{
+					"type": "text",
+					"value": " may report "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/[slug]"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Hook errors are isolated and do not affect navigation or other hooks."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Performance considerations"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Keep instrumentation code lightweight."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js monitors initialization time in development and will log warnings if it takes longer than 16ms, which could impact smooth page loading."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Execution timing"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instrumentation-client.js"
+				},
+				{
+					"type": "text",
+					"value": " file executes at a specific point in the application lifecycle:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "After"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " the HTML document is loaded"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Before"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " React hydration begins"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Before"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " user interactions are possible"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This timing makes it ideal for setting up error tracking, analytics, and performance monitoring that needs to capture early application lifecycle events."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Only synchronous, top-level code is guaranteed to complete before hydration. Asynchronous work started here (a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Promise"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "import()"
+				},
+				{
+					"type": "text",
+					"value": ", or top-level "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await"
+				},
+				{
+					"type": "text",
+					"value": ") is not awaited and may resolve after hydration has begun, so treat it as fire-and-forget. When something must be in place before your components run, use one of the synchronous patterns in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#polyfills",
+					"children": [
+						{
+							"type": "text",
+							"value": "Polyfills"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "See also"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " plugins (for example, wrappers like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "withSentry"
+				},
+				{
+					"type": "text",
+					"value": ") can register their own client instrumentation module via the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/instrumentationClientInject",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "instrumentationClientInject"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " option. Injected modules run before this file, in array order, and may export the same router transition start hook. Application code should continue to use this file convention directly."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Error tracking"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Initialize error tracking before React starts and add navigation breadcrumbs for better debugging context."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"instrumentation-client.ts\" switcher",
+			"value": "import Monitor from './lib/monitoring'\n\nMonitor.initialize()\n\nexport function onRouterTransitionStart(url: string) {\n\tMonitor.pushEvent({\n\t\tmessage: `Navigation to ${url}`,\n\t\tcategory: 'navigation',\n\t})\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"instrumentation-client.js\" switcher",
+			"value": "import Monitor from './lib/monitoring'\n\nMonitor.initialize()\n\nexport function onRouterTransitionStart(url) {\n\tMonitor.pushEvent({\n\t\tmessage: `Navigation to ${url}`,\n\t\tcategory: 'navigation',\n\t})\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Analytics tracking"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Initialize analytics and track navigation events with detailed metadata for user behavior analysis."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"instrumentation-client.ts\" switcher",
+			"value": "import { analytics } from './lib/analytics'\n\nanalytics.init()\n\nexport function onRouterTransitionStart(url: string, navigationType: string) {\n\tanalytics.track('page_navigation', {\n\t\turl,\n\t\ttype: navigationType,\n\t\ttimestamp: Date.now(),\n\t})\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"instrumentation-client.js\" switcher",
+			"value": "import { analytics } from './lib/analytics'\n\nanalytics.init()\n\nexport function onRouterTransitionStart(url, navigationType) {\n\tanalytics.track('page_navigation', {\n\t\turl,\n\t\ttype: navigationType,\n\t\ttimestamp: Date.now(),\n\t})\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Performance monitoring"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Track Time to Interactive and navigation performance using the Performance Observer API and performance marks."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"instrumentation-client.ts\" switcher",
+			"value": "const startTime = performance.now()\n\nconst observer = new PerformanceObserver((list: PerformanceObserverEntryList) => {\n\tfor (const entry of list.getEntries()) {\n\t\tif (entry instanceof PerformanceNavigationTiming) {\n\t\t\tconsole.log('Time to Interactive:', entry.loadEventEnd - startTime)\n\t\t}\n\t}\n})\n\nobserver.observe({ entryTypes: ['navigation'] })\n\nexport function onRouterTransitionStart(url: string) {\n\tperformance.mark(`nav-start-${url}`)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"instrumentation-client.js\" switcher",
+			"value": "const startTime = performance.now()\n\nconst observer = new PerformanceObserver((list) => {\n\tfor (const entry of list.getEntries()) {\n\t\tif (entry instanceof PerformanceNavigationTiming) {\n\t\t\tconsole.log('Time to Interactive:', entry.loadEventEnd - startTime)\n\t\t}\n\t}\n})\n\nobserver.observe({ entryTypes: ['navigation'] })\n\nexport function onRouterTransitionStart(url) {\n\tperformance.mark(`nav-start-${url}`)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Polyfills"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "As noted in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#execution-timing",
+					"children": [
+						{
+							"type": "text",
+							"value": "Execution timing"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", only synchronous, top-level code here runs before hydration, so a conditional "
+				},
+				{
+					"type": "inlineCode",
+					"value": "import()"
+				},
+				{
+					"type": "text",
+					"value": " or top-level "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await"
+				},
+				{
+					"type": "text",
+					"value": " may resolve after hydration has already started."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To guarantee a polyfill is applied before your components run, statically import it and apply it synchronously after feature detection. Because the import is static, the polyfill ships to every visitor:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"instrumentation-client.ts\"",
+			"value": "import ResizeObserverPolyfill from './lib/polyfills/resize-observer'\n\nif (!window.ResizeObserver) {\n\twindow.ResizeObserver = ResizeObserverPolyfill\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Avoid loading a polyfill with a conditional "
+				},
+				{
+					"type": "inlineCode",
+					"value": "import()"
+				},
+				{
+					"type": "text",
+					"value": " here. The import is fire-and-forget, so the polyfill may be applied after hydration has already begun, which can be too late for your components:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"instrumentation-client.ts\"",
+			"value": "// Avoid: the dynamic import is fire-and-forget, so `ResizeObserver`\n// may still be undefined when your components run.\nif (!window.ResizeObserver) {\n\timport('./lib/polyfills/resize-observer').then((mod) => {\n\t\twindow.ResizeObserver = mod.default\n\t})\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For anything loaded on demand, prefer polyfilling in the code that uses the feature. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/architecture/supported-browsers#custom-polyfills",
+					"children": [
+						{
+							"type": "text",
+							"value": "Custom Polyfills"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for that and other strategies."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js already injects a baseline of "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/architecture/supported-browsers#polyfills",
+					"children": [
+						{
+							"type": "text",
+							"value": "widely used polyfills"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " (such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "URL"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Object.assign"
+				},
+				{
+					"type": "text",
+					"value": ") for the browsers that need them, so you only need to add polyfills for features outside that baseline."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version history"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Experimental router transition start event introduced"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.3"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "instrumentation-client"
+								},
+								{
+									"type": "text",
+									"value": " introduced"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

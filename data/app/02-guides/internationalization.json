@@ -1,0 +1,1001 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Internationalization\ndescription: Add support for multiple languages with internationalized routing and localized content.\nrelated:\n description: Related API references and conventions.\n links:\n  - app/api-reference/functions/next-root-params"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js enables you to configure the routing and rendering of content to support multiple languages. Making your site adaptive to different locales includes translated content (localization) and internationalized routes."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Terminology"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Locale:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " An identifier for a set of language and formatting preferences. This usually includes the preferred language of the user and possibly their geographic region."
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "en-US"
+												},
+												{
+													"type": "text",
+													"value": ": English as spoken in the United States"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "nl-NL"
+												},
+												{
+													"type": "text",
+													"value": ": Dutch as spoken in the Netherlands"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "nl"
+												},
+												{
+													"type": "text",
+													"value": ": Dutch, no specific region"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Routing Overview"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "It’s recommended to use the user’s language preferences in the browser to select which locale to use. Changing your preferred language will modify the incoming "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Accept-Language"
+				},
+				{
+					"type": "text",
+					"value": " header to your application."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, using the following libraries, you can look at an incoming "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Request"
+				},
+				{
+					"type": "text",
+					"value": " to determine which locale to select, based on the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Headers"
+				},
+				{
+					"type": "text",
+					"value": ", locales you plan to support, and the default locale."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"proxy.js\"",
+			"value": "import { match } from '@formatjs/intl-localematcher'\nimport Negotiator from 'negotiator'\n\nlet headers = { 'accept-language': 'en-US,en;q=0.5' }\nlet languages = new Negotiator({ headers }).languages()\nlet locales = ['en-US', 'nl-NL', 'nl']\nlet defaultLocale = 'en-US'\n\nmatch(languages, locales, defaultLocale) // -> 'en-US'"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Routing can be internationalized by either the sub-path ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "/fr/products"
+				},
+				{
+					"type": "text",
+					"value": ") or domain ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "my-site.fr/products"
+				},
+				{
+					"type": "text",
+					"value": "). With this information, you can now redirect the user based on the locale inside "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/proxy",
+					"children": [
+						{
+							"type": "text",
+							"value": "Proxy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"proxy.js\"",
+			"value": "import { NextResponse } from \"next/server\";\n\nlet locales = ['en-US', 'nl-NL', 'nl']\n\n// Get the preferred locale, similar to the above or using a library\nfunction getLocale(request) { ... }\n\nexport function proxy(request) {\n  // Check if there is any supported locale in the pathname\n  const { pathname } = request.nextUrl\n  const pathnameHasLocale = locales.some(\n    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`\n  )\n\n  if (pathnameHasLocale) return\n\n  // Redirect if there is no locale\n  const locale = getLocale(request)\n  request.nextUrl.pathname = `/${locale}${pathname}`\n  // e.g. incoming request is /products\n  // The new URL is now /en-US/products\n  return NextResponse.redirect(request.nextUrl)\n}\n\nexport const config = {\n  matcher: [\n    // Skip all internal paths (_next)\n    '/((?!_next).*)',\n    // Optional: only run on root (/) URL\n    // '/'\n  ],\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Finally, ensure all special files inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/"
+				},
+				{
+					"type": "text",
+					"value": " are nested under "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/[lang]"
+				},
+				{
+					"type": "text",
+					"value": ". This enables the Next.js router to dynamically handle different locales in the route, and forward the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "lang"
+				},
+				{
+					"type": "text",
+					"value": " parameter to every layout and page. For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/[lang]/page.tsx\" switcher",
+			"value": "// You now have access to the current locale\n// e.g. /en-US/products -> `lang` is \"en-US\"\nexport default async function Page({ params }: PageProps<'/[lang]'>) {\n  const { lang } = await params\n  return ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/[lang]/page.js\" switcher",
+			"value": "// You now have access to the current locale\n// e.g. /en-US/products -> `lang` is \"en-US\"\nexport default async function Page({ params }) {\n  const { lang } = await params\n  return ...\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " "
+						},
+						{
+							"type": "inlineCode",
+							"value": "PageProps"
+						},
+						{
+							"type": "text",
+							"value": " and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "LayoutProps"
+						},
+						{
+							"type": "text",
+							"value": " are globally available TypeScript helpers that provide strong typing for route parameters. See "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/file-conventions/page#page-props-helper",
+							"children": [
+								{
+									"type": "text",
+									"value": "PageProps"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " and "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/file-conventions/layout#layout-props-helper",
+							"children": [
+								{
+									"type": "text",
+									"value": "LayoutProps"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for more details."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The root layout can also be nested in the new folder (e.g. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/[lang]/layout.js"
+				},
+				{
+					"type": "text",
+					"value": ")."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Localization"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Changing displayed content based on the user’s preferred locale, or localization, is not something specific to Next.js. The patterns described below would work the same with any web application."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Let’s assume we want to support both English and Dutch content inside our application. We might maintain two different “dictionaries”, which are objects that give us a mapping from some key to a localized string. For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"dictionaries/en.json\"",
+			"value": "{\n\t\"products\": {\n\t\t\"cart\": \"Add to Cart\"\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"dictionaries/nl.json\"",
+			"value": "{\n\t\"products\": {\n\t\t\"cart\": \"Toevoegen aan Winkelwagen\"\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We can then create a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getDictionary"
+				},
+				{
+					"type": "text",
+					"value": " function to load the translations for the requested locale:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/[lang]/dictionaries.ts\" switcher",
+			"value": "import 'server-only'\n\nconst dictionaries = {\n\ten: () => import('./dictionaries/en.json').then((module) => module.default),\n\tnl: () => import('./dictionaries/nl.json').then((module) => module.default),\n}\n\nexport type Locale = keyof typeof dictionaries\n\nexport const hasLocale = (locale: string): locale is Locale => locale in dictionaries\n\nexport const getDictionary = async (locale: Locale) => dictionaries[locale]()"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/[lang]/dictionaries.js\" switcher",
+			"value": "import 'server-only'\n\nconst dictionaries = {\n\ten: () => import('./dictionaries/en.json').then((module) => module.default),\n\tnl: () => import('./dictionaries/nl.json').then((module) => module.default),\n}\n\nexport const hasLocale = (locale) => locale in dictionaries\n\nexport const getDictionary = async (locale) => dictionaries[locale]()"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Given the currently selected language, we can fetch the dictionary inside of a layout or page."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since "
+				},
+				{
+					"type": "inlineCode",
+					"value": "lang"
+				},
+				{
+					"type": "text",
+					"value": " is typed as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "string"
+				},
+				{
+					"type": "text",
+					"value": ", using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "hasLocale"
+				},
+				{
+					"type": "text",
+					"value": " narrows the type to your supported locales. It also ensures a 404 is returned if a translation is missing, rather than a runtime error."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/[lang]/page.tsx\" switcher",
+			"value": "import { notFound } from 'next/navigation'\nimport { getDictionary, hasLocale } from './dictionaries'\n\nexport default async function Page({ params }: PageProps<'/[lang]'>) {\n\tconst { lang } = await params\n\n\tif (!hasLocale(lang)) notFound()\n\n\tconst dict = await getDictionary(lang)\n\treturn <button>{dict.products.cart}</button> // Add to Cart\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/[lang]/page.js\" switcher",
+			"value": "import { notFound } from 'next/navigation'\nimport { getDictionary, hasLocale } from './dictionaries'\n\nexport default async function Page({ params }) {\n\tconst { lang } = await params\n\n\tif (!hasLocale(lang)) notFound()\n\n\tconst dict = await getDictionary(lang)\n\treturn <button>{dict.products.cart}</button> // Add to Cart\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Because all layouts and pages in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/"
+				},
+				{
+					"type": "text",
+					"value": " directory default to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", we do not need to worry about the size of the translation files affecting our client-side JavaScript bundle size. This code will "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "only run on the server"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and only the resulting HTML will be sent to the browser."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Sharing the locale across your app"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The locale is often needed beyond the page that receives it, such as in shared data-fetching utilities or deeply nested components. Instead of prop drilling "
+				},
+				{
+					"type": "inlineCode",
+					"value": "lang"
+				},
+				{
+					"type": "text",
+					"value": " through each layer, we can read it directly with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/next-root-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next/root-params"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next/root-params"
+				},
+				{
+					"type": "text",
+					"value": " exports a getter for each dynamic segment above the root layout. Since every route is nested under "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/[lang]"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "lang"
+				},
+				{
+					"type": "text",
+					"value": " is a root parameter, and any Server Component or server-side utility can call its getter. We can move the locale lookup into "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getDictionary"
+				},
+				{
+					"type": "text",
+					"value": ", so callers no longer pass "
+				},
+				{
+					"type": "inlineCode",
+					"value": "lang"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/[lang]/dictionaries.ts\" highlight={1,2,15,16,17} switcher",
+			"value": "import { lang } from 'next/root-params'\nimport { notFound } from 'next/navigation'\n\nconst dictionaries = {\n\ten: () => import('./dictionaries/en.json').then((module) => module.default),\n\tnl: () => import('./dictionaries/nl.json').then((module) => module.default),\n}\n\nexport type Locale = keyof typeof dictionaries\n\nexport const hasLocale = (locale: string): locale is Locale => locale in dictionaries\n\nexport const getDictionary = async () => {\n\tconst locale = await lang()\n\tif (!hasLocale(locale)) notFound()\n\treturn dictionaries[locale]()\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/[lang]/dictionaries.js\" highlight={1,2,12,13,14} switcher",
+			"value": "import { lang } from 'next/root-params'\nimport { notFound } from 'next/navigation'\n\nconst dictionaries = {\n\ten: () => import('./dictionaries/en.json').then((module) => module.default),\n\tnl: () => import('./dictionaries/nl.json').then((module) => module.default),\n}\n\nexport const hasLocale = (locale) => locale in dictionaries\n\nexport const getDictionary = async () => {\n\tconst locale = await lang()\n\tif (!hasLocale(locale)) notFound()\n\treturn dictionaries[locale]()\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Files that import from "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next/root-params"
+						},
+						{
+							"type": "text",
+							"value": " do not need "
+						},
+						{
+							"type": "inlineCode",
+							"value": "import 'server-only'"
+						},
+						{
+							"type": "text",
+							"value": ". The import already fails at build time if used in a Client Component."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Pages and components then call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getDictionary()"
+				},
+				{
+					"type": "text",
+					"value": " with no arguments, since the locale is resolved internally:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/[lang]/page.tsx\" highlight={4} switcher",
+			"value": "import { getDictionary } from './dictionaries'\n\nexport default async function Page() {\n\tconst dict = await getDictionary()\n\treturn <button>{dict.products.cart}</button> // Add to Cart\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/[lang]/page.js\" highlight={4} switcher",
+			"value": "import { getDictionary } from './dictionaries'\n\nexport default async function Page() {\n\tconst dict = await getDictionary()\n\treturn <button>{dict.products.cart}</button> // Add to Cart\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Root parameter getters run in Server Components and server-side utilities, but not in Client Components, Server Actions, or Route Handlers. See "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/next-root-params",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next/root-params"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for the full API and its behavior with caching."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Static Rendering"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To generate static routes for a given set of locales, we can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " with any page or layout. This can be global, for example, in the root layout:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/[lang]/layout.tsx\" switcher",
+			"value": "export async function generateStaticParams() {\n\treturn [{ lang: 'en-US' }, { lang: 'de' }]\n}\n\nexport default async function RootLayout({ children, params }: LayoutProps<'/[lang]'>) {\n\treturn (\n\t\t<html lang={(await params).lang}>\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/[lang]/layout.js\" switcher",
+			"value": "export async function generateStaticParams() {\n\treturn [{ lang: 'en-US' }, { lang: 'de' }]\n}\n\nexport default async function RootLayout({ children, params }) {\n\treturn (\n\t\t<html lang={(await params).lang}>\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Resources"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel/next.js/tree/canary/examples/i18n-routing",
+									"children": [
+										{
+											"type": "text",
+											"value": "Minimal i18n routing and translations"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://next-intl.dev",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "next-intl"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/QuiiBz/next-international",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "next-international"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/i18nexus/next-i18n-router",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "next-i18n-router"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://inlang.com/m/osslbuzt/paraglide-next-i18n",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "paraglide-next"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://lingui.dev",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "lingui"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://tolgee.io/apps-integrations/next",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "tolgee"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://intlayer.org/doc/environment/nextjs",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "next-intlayer"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://generaltranslation.com/en/docs/next",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "gt-next"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

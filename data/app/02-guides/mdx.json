@@ -1,0 +1,1939 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to use markdown and MDX in Next.js\nnav_title: MDX\ndescription: Learn how to configure MDX and use it in your Next.js apps."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://daringfireball.net/projects/markdown/syntax",
+					"children": [
+						{
+							"type": "text",
+							"value": "Markdown"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is a lightweight markup language used to format text. It allows you to write using plain text syntax and convert it to structurally valid HTML. It's commonly used for writing content on websites and blogs."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You write..."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "md",
+			"meta": null,
+			"value": "I **love** using [Next.js](https://nextjs.org/)"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Output:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": null,
+			"value": "<p>I <strong>love</strong> using <a href=\"https://nextjs.org/\">Next.js</a></p>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://mdxjs.com/",
+					"children": [
+						{
+							"type": "text",
+							"value": "MDX"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is a superset of markdown that lets you write "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/learn/writing-markup-with-jsx",
+					"children": [
+						{
+							"type": "text",
+							"value": "JSX"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " directly in your markdown files. It is a powerful way to add dynamic interactivity and embed React components within your content."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js can support both local MDX content inside your application, as well as remote MDX files fetched dynamically on the server. The Next.js plugin handles transforming markdown and React components into HTML, including support for usage in Server Components (the default in App Router)."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": View the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://vercel.com/templates/next.js/portfolio-starter-kit",
+							"children": [
+								{
+									"type": "text",
+									"value": "Portfolio Starter Kit"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " template for a complete working example."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Install dependencies"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@next/mdx"
+				},
+				{
+					"type": "text",
+					"value": " package, and related packages, are used to configure Next.js so it can process markdown and MDX. "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "It sources data from local files"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", allowing you to create pages with a "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".md"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".mdx"
+				},
+				{
+					"type": "text",
+					"value": " extension, directly in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/pages"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/app"
+				},
+				{
+					"type": "text",
+					"value": " directory."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Install these packages to render MDX with Next.js:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add @next/mdx @mdx-js/loader @mdx-js/react @types/mdx"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install @next/mdx @mdx-js/loader @mdx-js/react @types/mdx"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add @next/mdx @mdx-js/loader @mdx-js/react @types/mdx"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add @next/mdx @mdx-js/loader @mdx-js/react @types/mdx"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Configure "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.mjs"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Update the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.mjs"
+				},
+				{
+					"type": "text",
+					"value": " file at your project's root to configure it to use MDX:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.mjs\"",
+			"value": "import createMDX from '@next/mdx'\n\n/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\t// Configure `pageExtensions` to include markdown and MDX files\n\tpageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],\n\t// Optionally, add any other Next.js config below\n}\n\nconst withMDX = createMDX({\n\t// Add markdown plugins here, as desired\n})\n\n// Merge MDX config with Next.js config\nexport default withMDX(nextConfig)"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This allows "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".mdx"
+				},
+				{
+					"type": "text",
+					"value": " files to act as pages, routes, or imports in your application."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Handling "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".md"
+				},
+				{
+					"type": "text",
+					"value": " files"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@next/mdx"
+				},
+				{
+					"type": "text",
+					"value": " only compiles files with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".mdx"
+				},
+				{
+					"type": "text",
+					"value": " extension. To handle "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".md"
+				},
+				{
+					"type": "text",
+					"value": " files with webpack, update the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "extension"
+				},
+				{
+					"type": "text",
+					"value": " option:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.mjs\"",
+			"value": "const withMDX = createMDX({\n\textension: /\\.(md|mdx)$/,\n})"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Add an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "mdx-components.tsx"
+				},
+				{
+					"type": "text",
+					"value": " file"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Create an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "mdx-components.tsx"
+				},
+				{
+					"type": "text",
+					"value": " (or "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".js"
+				},
+				{
+					"type": "text",
+					"value": ") file in the root of your project to define global MDX Components. For example, at the same level as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": ", or inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " if applicable."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"mdx-components.tsx\" switcher",
+			"value": "import type { MDXComponents } from 'mdx/types'\n\nconst components: MDXComponents = {}\n\nexport function useMDXComponents(): MDXComponents {\n\treturn components\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"mdx-components.js\" switcher",
+			"value": "const components = {}\n\nexport function useMDXComponents() {\n\treturn components\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "mdx-components.tsx"
+										},
+										{
+											"type": "text",
+											"value": " is "
+										},
+										{
+											"type": "strong",
+											"children": [
+												{
+													"type": "text",
+													"value": "required"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " to use "
+										},
+										{
+											"type": "inlineCode",
+											"value": "@next/mdx"
+										},
+										{
+											"type": "text",
+											"value": " with App Router and will not work without it."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Learn more about the "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/mdx-components",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "mdx-components.tsx"
+												},
+												{
+													"type": "text",
+													"value": " file convention"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Learn how to "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "#using-custom-styles-and-components",
+											"children": [
+												{
+													"type": "text",
+													"value": "use custom styles and components"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Rendering MDX"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can render MDX using Next.js's file based routing or by importing MDX files into other pages."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using file based routing"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using file based routing, you can use MDX pages like any other page."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In App Router apps, that includes being able to use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/metadata-and-og-images",
+					"children": [
+						{
+							"type": "text",
+							"value": "metadata"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Create a new MDX page within the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/app"
+				},
+				{
+					"type": "text",
+					"value": " directory:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "txt",
+			"meta": null,
+			"value": "  my-project\n  ├── app\n  │   └── mdx-page\n  │       └── page.(mdx/md)\n  |── mdx-components.(tsx/js)\n  └── package.json"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use MDX in these files, and even import React components, directly inside your MDX page:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "mdx",
+			"meta": null,
+			"value": "import { MyComponent } from 'my-component'\n\n# Welcome to my MDX page!\n\nThis is some **bold** and _italics_ text.\n\nThis is a list in markdown:\n\n- One\n- Two\n- Three\n\nCheckout my React component:\n\n<MyComponent />"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Navigating to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/mdx-page"
+				},
+				{
+					"type": "text",
+					"value": " route should display your rendered MDX page."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using imports"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Create a new page within the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/app"
+				},
+				{
+					"type": "text",
+					"value": " directory and an MDX file wherever you'd like:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "txt",
+			"meta": null,
+			"value": "  .\n  ├── app/\n  │   └── mdx-page/\n  │       └── page.(tsx/js)\n  ├── markdown/\n  │   └── welcome.(mdx/md)\n  ├── mdx-components.(tsx/js)\n  └── package.json"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use MDX in these files, and even import React components, directly inside your MDX page:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "mdx",
+			"meta": "filename=\"markdown/welcome.mdx\" switcher",
+			"value": "import { MyComponent } from 'my-component'\n\n# Welcome to my MDX page!\n\nThis is some **bold** and _italics_ text.\n\nThis is a list in markdown:\n\n- One\n- Two\n- Three\n\nCheckout my React component:\n\n<MyComponent />"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Import the MDX file inside the page to display the content:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/mdx-page/page.tsx\" switcher",
+			"value": "import Welcome from '@/markdown/welcome.mdx'\n\nexport default function Page() {\n\treturn <Welcome />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/mdx-page/page.js\" switcher",
+			"value": "import Welcome from '@/markdown/welcome.mdx'\n\nexport default function Page() {\n\treturn <Welcome />\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Navigating to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/mdx-page"
+				},
+				{
+					"type": "text",
+					"value": " route should display your rendered MDX page."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using dynamic imports"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can import dynamic MDX components instead of using filesystem routing for MDX files."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, you can have a dynamic route segment which loads MDX components from a separate directory:"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"Route segments for dynamic MDX components\"\nsrcLight=\"/docs/light/mdx-files.png\"\nsrcDark=\"/docs/dark/mdx-files.png\"\nwidth=\"1600\"\nheight=\"849\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-static-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " can be used to prerender the provided routes. By marking "
+				},
+				{
+					"type": "inlineCode",
+					"value": "dynamicParams"
+				},
+				{
+					"type": "text",
+					"value": " as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": ", accessing a route not defined in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				},
+				{
+					"type": "text",
+					"value": " will 404."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" switcher",
+			"value": "export default async function Page({ params }: { params: Promise<{ slug: string }> }) {\n\tconst { slug } = await params\n\tconst { default: Post } = await import(`@/content/${slug}.mdx`)\n\n\treturn <Post />\n}\n\nexport function generateStaticParams() {\n\treturn [{ slug: 'welcome' }, { slug: 'about' }]\n}\n\nexport const dynamicParams = false"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\" switcher",
+			"value": "export default async function Page({ params }) {\n\tconst { slug } = await params\n\tconst { default: Post } = await import(`@/content/${slug}.mdx`)\n\n\treturn <Post />\n}\n\nexport function generateStaticParams() {\n\treturn [{ slug: 'welcome' }, { slug: 'about' }]\n}\n\nexport const dynamicParams = false"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Ensure you specify the "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".mdx"
+						},
+						{
+							"type": "text",
+							"value": " file extension in your import. While it is not required to use "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/getting-started/installation#set-up-absolute-imports-and-module-path-aliases",
+							"children": [
+								{
+									"type": "text",
+									"value": "module path aliases"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " (e.g., "
+						},
+						{
+							"type": "inlineCode",
+							"value": "@/content"
+						},
+						{
+							"type": "text",
+							"value": "), it does simplify your import path."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using custom styles and components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Markdown, when rendered, maps to native HTML elements. For example, writing the following markdown:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "md",
+			"meta": null,
+			"value": "## This is a heading\n\nThis is a list in markdown:\n\n- One\n- Two\n- Three"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Generates the following HTML:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "html",
+			"meta": null,
+			"value": "<h2>This is a heading</h2>\n\n<p>This is a list in markdown:</p>\n\n<ul>\n\t<li>One</li>\n\t<li>Two</li>\n\t<li>Three</li>\n</ul>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To style your markdown, you can provide custom components that map to the generated HTML elements. Styles and components can be implemented globally, locally, and with shared layouts."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Global styles and components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Adding styles and components in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "mdx-components.tsx"
+				},
+				{
+					"type": "text",
+					"value": " will affect "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "all"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " MDX files in your application."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"mdx-components.tsx\" switcher",
+			"value": "import type { MDXComponents } from 'mdx/types'\nimport Image, { ImageProps } from 'next/image'\n\n// This file allows you to provide custom React components\n// to be used in MDX files. You can import and use any\n// React component you want, including inline styles,\n// components from other libraries, and more.\n\nconst components = {\n\t// Allows customizing built-in components, e.g. to add styling.\n\th1: ({ children }) => <h1 style={{ color: 'red', fontSize: '48px' }}>{children}</h1>,\n\timg: (props) => (\n\t\t<Image\n\t\t\tsizes=\"100vw\"\n\t\t\tstyle={{ width: '100%', height: 'auto' }}\n\t\t\t{...(props as ImageProps)}\n\t\t/>\n\t),\n} satisfies MDXComponents\n\nexport function useMDXComponents(): MDXComponents {\n\treturn components\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"mdx-components.js\" switcher",
+			"value": "import Image from 'next/image'\n\n// This file allows you to provide custom React components\n// to be used in MDX files. You can import and use any\n// React component you want, including inline styles,\n// components from other libraries, and more.\n\nconst components = {\n\t// Allows customizing built-in components, e.g. to add styling.\n\th1: ({ children }) => <h1 style={{ color: 'red', fontSize: '48px' }}>{children}</h1>,\n\timg: (props) => (\n\t\t<Image\n\t\t\tsizes=\"100vw\"\n\t\t\tstyle={{ width: '100%', height: 'auto' }}\n\t\t\t{...props}\n\t\t/>\n\t),\n}\n\nexport function useMDXComponents() {\n\treturn components\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Local styles and components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can apply local styles and components to specific pages by passing them into imported MDX components. These will merge with and override "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#global-styles-and-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "global styles and components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/mdx-page/page.tsx\" switcher",
+			"value": "import Welcome from '@/markdown/welcome.mdx'\n\nfunction CustomH1({ children }) {\n\treturn <h1 style={{ color: 'blue', fontSize: '100px' }}>{children}</h1>\n}\n\nconst overrideComponents = {\n\th1: CustomH1,\n}\n\nexport default function Page() {\n\treturn <Welcome components={overrideComponents} />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/mdx-page/page.js\" switcher",
+			"value": "import Welcome from '@/markdown/welcome.mdx'\n\nfunction CustomH1({ children }) {\n\treturn <h1 style={{ color: 'blue', fontSize: '100px' }}>{children}</h1>\n}\n\nconst overrideComponents = {\n\th1: CustomH1,\n}\n\nexport default function Page() {\n\treturn <Welcome components={overrideComponents} />\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Shared layouts"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To share a layout across MDX pages, you can use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout",
+					"children": [
+						{
+							"type": "text",
+							"value": "built-in layouts support"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with the App Router."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/mdx-page/layout.tsx\" switcher",
+			"value": "export default function MdxLayout({ children }: { children: React.ReactNode }) {\n\t// Create any shared layout or styles here\n\treturn <div style={{ color: 'blue' }}>{children}</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/mdx-page/layout.js\" switcher",
+			"value": "export default function MdxLayout({ children }) {\n\t// Create any shared layout or styles here\n\treturn <div style={{ color: 'blue' }}>{children}</div>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using Tailwind typography plugin"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you are using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://tailwindcss.com",
+					"children": [
+						{
+							"type": "text",
+							"value": "Tailwind"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to style your application, using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://tailwindcss.com/docs/plugins#typography",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "@tailwindcss/typography"
+						},
+						{
+							"type": "text",
+							"value": " plugin"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " will allow you to reuse your Tailwind configuration and styles in your markdown files."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The plugin adds a set of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prose"
+				},
+				{
+					"type": "text",
+					"value": " classes that can be used to add typographic styles to content blocks that come from sources, like markdown."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/tailwindlabs/tailwindcss-typography?tab=readme-ov-file#installation",
+					"children": [
+						{
+							"type": "text",
+							"value": "Install Tailwind typography"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and use with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#shared-layouts",
+					"children": [
+						{
+							"type": "text",
+							"value": "shared layouts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to add the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prose"
+				},
+				{
+					"type": "text",
+					"value": " you want."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/mdx-page/layout.tsx\" switcher",
+			"value": "export default function MdxLayout({ children }: { children: React.ReactNode }) {\n\t// Create any shared layout or styles here\n\treturn (\n\t\t<div className=\"prose prose-headings:mt-8 prose-headings:font-semibold prose-headings:text-black prose-h1:text-5xl prose-h2:text-4xl prose-h3:text-3xl prose-h4:text-2xl prose-h5:text-xl prose-h6:text-lg dark:prose-headings:text-white\">\n\t\t\t{children}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/mdx-page/layout.js\" switcher",
+			"value": "export default function MdxLayout({ children }) {\n\t// Create any shared layout or styles here\n\treturn (\n\t\t<div className=\"prose prose-headings:mt-8 prose-headings:font-semibold prose-headings:text-black prose-h1:text-5xl prose-h2:text-4xl prose-h3:text-3xl prose-h4:text-2xl prose-h5:text-xl prose-h6:text-lg dark:prose-headings:text-white\">\n\t\t\t{children}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A common use case for this is when you want to iterate over a collection of MDX and extract data. For example, creating a blog index page from all blog posts. You can use packages like "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nodejs.org/api/fs.html",
+					"children": [
+						{
+							"type": "text",
+							"value": "Node's "
+						},
+						{
+							"type": "inlineCode",
+							"value": "fs"
+						},
+						{
+							"type": "text",
+							"value": " module"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.npmjs.com/package/globby",
+					"children": [
+						{
+							"type": "text",
+							"value": "globby"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to read a directory of posts and extract the metadata."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Using "
+										},
+										{
+											"type": "inlineCode",
+											"value": "fs"
+										},
+										{
+											"type": "text",
+											"value": ", "
+										},
+										{
+											"type": "inlineCode",
+											"value": "globby"
+										},
+										{
+											"type": "text",
+											"value": ", etc. can only be used server-side."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "View the "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://vercel.com/templates/next.js/portfolio-starter-kit",
+											"children": [
+												{
+													"type": "text",
+													"value": "Portfolio Starter Kit"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " template for a complete working example."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "remark and rehype Plugins"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can optionally provide remark and rehype plugins to transform the MDX content."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, you can use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/remarkjs/remark-gfm",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "remark-gfm"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to support GitHub Flavored Markdown."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since the remark and rehype ecosystem is ESM only, you'll need to use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.mjs"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": " as the configuration file."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.mjs\"",
+			"value": "import remarkGfm from 'remark-gfm'\nimport createMDX from '@next/mdx'\n\n/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\t// Allow .mdx extensions for files\n\tpageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],\n\t// Optionally, add any other Next.js config below\n}\n\nconst withMDX = createMDX({\n\t// Add markdown plugins here, as desired\n\toptions: {\n\t\tremarkPlugins: [remarkGfm],\n\t\trehypePlugins: [],\n\t},\n})\n\n// Combine MDX and Next.js config\nexport default withMDX(nextConfig)"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using Plugins with Turbopack"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use plugins with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/turbopack",
+					"children": [
+						{
+							"type": "text",
+							"value": "Turbopack"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", upgrade to the latest "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@next/mdx"
+				},
+				{
+					"type": "text",
+					"value": " and specify plugin names using a string:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.mjs\"",
+			"value": "import createMDX from '@next/mdx'\n\n/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\tpageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],\n}\n\nconst withMDX = createMDX({\n\toptions: {\n\t\tremarkPlugins: [\n\t\t\t// Without options\n\t\t\t'remark-gfm',\n\t\t\t// With options\n\t\t\t['remark-toc', { heading: 'The Table' }],\n\t\t],\n\t\trehypePlugins: [\n\t\t\t// Without options\n\t\t\t'rehype-slug',\n\t\t\t// With options\n\t\t\t['rehype-katex', { strict: true, throwOnError: true }],\n\t\t],\n\t},\n})\n\nexport default withMDX(nextConfig)"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "remark and rehype plugins without serializable options cannot be used yet with "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/turbopack",
+							"children": [
+								{
+									"type": "text",
+									"value": "Turbopack"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", because JavaScript functions can't be passed to Rust."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Deep Dive: How do you transform markdown into HTML?"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "React does not natively understand markdown. The markdown plaintext needs to first be transformed into HTML. This can be accomplished with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "remark"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "rehype"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "remark"
+				},
+				{
+					"type": "text",
+					"value": " is an ecosystem of tools around markdown. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "rehype"
+				},
+				{
+					"type": "text",
+					"value": " is the same, but for HTML. For example, the following code snippet transforms markdown into HTML:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "import { unified } from 'unified'\nimport remarkParse from 'remark-parse'\nimport remarkRehype from 'remark-rehype'\nimport rehypeSanitize from 'rehype-sanitize'\nimport rehypeStringify from 'rehype-stringify'\n\nmain()\n\nasync function main() {\n\tconst file = await unified()\n\t\t.use(remarkParse) // Convert into markdown AST\n\t\t.use(remarkRehype) // Transform to HTML AST\n\t\t.use(rehypeSanitize) // Sanitize HTML input\n\t\t.use(rehypeStringify) // Convert AST into serialized HTML\n\t\t.process('Hello, Next.js!')\n\n\tconsole.log(String(file)) // <p>Hello, Next.js!</p>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "remark"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "rehype"
+				},
+				{
+					"type": "text",
+					"value": " ecosystem contains plugins for "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/atomiks/rehype-pretty-code",
+					"children": [
+						{
+							"type": "text",
+							"value": "syntax highlighting"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/rehypejs/rehype-autolink-headings",
+					"children": [
+						{
+							"type": "text",
+							"value": "linking headings"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/remarkjs/remark-toc",
+					"children": [
+						{
+							"type": "text",
+							"value": "generating a table of contents"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and more."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@next/mdx"
+				},
+				{
+					"type": "text",
+					"value": " as shown above, you "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "do not"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " need to use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "remark"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "rehype"
+				},
+				{
+					"type": "text",
+					"value": " directly, as it is handled for you. We're describing it here for a deeper understanding of what the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@next/mdx"
+				},
+				{
+					"type": "text",
+					"value": " package is doing underneath."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using the Rust-based MDX compiler (experimental)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js supports a new MDX compiler written in Rust. This compiler is still experimental and is not recommended for production use. To use the new compiler, you need to configure "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " when you pass it to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "withMDX"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = withMDX({\n\texperimental: {\n\t\tmdxRs: true,\n\t},\n})"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "mdxRs"
+				},
+				{
+					"type": "text",
+					"value": " also accepts an object to configure how to transform mdx files."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = withMDX({\n  experimental: {\n    mdxRs: {\n      jsxRuntime?: string            // Custom jsx runtime\n      jsxImportSource?: string       // Custom jsx import source,\n      providerImportSource?: string  // Module providing a `useMDXComponents` context\n      mdxType?: 'gfm' | 'commonmark' // Configure what kind of mdx syntax will be used to parse & transform\n    },\n  },\n})"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Helpful Links"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://mdxjs.com",
+									"children": [
+										{
+											"type": "text",
+											"value": "MDX"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://www.npmjs.com/package/@next/mdx",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "@next/mdx"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/remarkjs/remark",
+									"children": [
+										{
+											"type": "text",
+											"value": "remark"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/rehypejs/rehype",
+									"children": [
+										{
+											"type": "text",
+											"value": "rehype"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://markdoc.dev/docs/nextjs",
+									"children": [
+										{
+											"type": "text",
+											"value": "Markdoc"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

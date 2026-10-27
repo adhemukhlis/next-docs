@@ -1,0 +1,310 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: generateSitemaps\nnav_title: generateSitemaps\ndescription: Learn how to use the generateSitemaps function to create multiple sitemaps for your application.\nrelated:\n title: Next Steps\n description: Learn how to create sitemaps for your Next.js application.\n links:\n  - app/api-reference/file-conventions/metadata/sitemap"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateSitemaps"
+				},
+				{
+					"type": "text",
+					"value": " function to generate multiple sitemaps for your application."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateSitemaps"
+				},
+				{
+					"type": "text",
+					"value": " returns an array of objects with an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "id"
+				},
+				{
+					"type": "text",
+					"value": " property."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "URLs"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Your generated sitemaps will be available at "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/.../sitemap/[id].xml"
+				},
+				{
+					"type": "text",
+					"value": ". For example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/product/sitemap/1.xml"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Example"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, to split a sitemap using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateSitemaps"
+				},
+				{
+					"type": "text",
+					"value": ", return an array of objects with the sitemap "
+				},
+				{
+					"type": "inlineCode",
+					"value": "id"
+				},
+				{
+					"type": "text",
+					"value": ". Then, use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "id"
+				},
+				{
+					"type": "text",
+					"value": " to generate the unique sitemaps."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/product/sitemap.ts\" switcher",
+			"value": "import type { MetadataRoute } from 'next'\nimport { BASE_URL } from '@/app/lib/constants'\n\nexport async function generateSitemaps() {\n\t// Fetch the total number of products and calculate the number of sitemaps needed\n\treturn [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }]\n}\n\nexport default async function sitemap(props: { id: Promise<string> }): Promise<MetadataRoute.Sitemap> {\n\tconst id = await props.id\n\t// Google's limit is 50,000 URLs per sitemap\n\tconst start = id * 50000\n\tconst end = start + 50000\n\tconst products = await getProducts(`SELECT id, date FROM products WHERE id BETWEEN ${start} AND ${end}`)\n\treturn products.map((product) => ({\n\t\turl: `${BASE_URL}/product/${product.id}`,\n\t\tlastModified: product.date,\n\t}))\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/product/sitemap.js\" switcher",
+			"value": "import { BASE_URL } from '@/app/lib/constants'\n\nexport async function generateSitemaps() {\n\t// Fetch the total number of products and calculate the number of sitemaps needed\n\treturn [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }]\n}\n\nexport default async function sitemap(props) {\n\tconst id = await props.id\n\t// Google's limit is 50,000 URLs per sitemap\n\tconst start = id * 50000\n\tconst end = start + 50000\n\tconst products = await getProducts(`SELECT id, date FROM products WHERE id BETWEEN ${start} AND ${end}`)\n\treturn products.map((product) => ({\n\t\turl: `${BASE_URL}/product/${product.id}`,\n\t\tlastModified: product.date,\n\t}))\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "inlineCode",
+									"value": "id"
+								},
+								{
+									"type": "text",
+									"value": " values returned from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "generateSitemaps"
+								},
+								{
+									"type": "text",
+									"value": " are now passed as a promise that resolves to a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "string"
+								},
+								{
+									"type": "text",
+									"value": " to the sitemap function."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "generateSitemaps"
+								},
+								{
+									"type": "text",
+									"value": " now generates consistent URLs between development and production"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.3.2"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "generateSitemaps"
+								},
+								{
+									"type": "text",
+									"value": " introduced. In development, you can view the generated sitemap on "
+								},
+								{
+									"type": "inlineCode",
+									"value": "/.../sitemap.xml/[id]"
+								},
+								{
+									"type": "text",
+									"value": ". For example, "
+								},
+								{
+									"type": "inlineCode",
+									"value": "/product/sitemap.xml/1"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

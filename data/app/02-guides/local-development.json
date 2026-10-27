@@ -1,0 +1,1929 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to optimize your local development environment\nnav_title: Development Environment\ndescription: Learn how to optimize your local development environment with Next.js."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js is designed to provide a great developer experience. As your application grows, you might notice slower compilation times during local development. This guide will help you identify and fix common compile-time performance issues."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Local dev vs. production"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The development process with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " is different than "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next start"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " compiles routes in your application as you open or navigate to them. This enables you to start the dev server without waiting for every route in your application to compile, which is both faster and uses less memory. Running a production build applies other optimizations, like minifying files and creating content hashes, which are not needed for local development."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "System configuration"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "1. Check your computer's antivirus"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Antivirus software can slow down file access. While this is more common on Windows machines, this can be an issue for any system with an antivirus tool installed."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "On Windows,"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " you can add your project to the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://support.microsoft.com/en-us/windows/virus-and-threat-protection-in-the-windows-security-app-1362f4cd-d71a-b52a-0b66-c2820032b65e#bkmk_threat-protection-settings",
+					"children": [
+						{
+							"type": "text",
+							"value": "Microsoft Defender Antivirus exclusion list"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Open the "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "\"Windows Security\""
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " application and then select "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "\"Virus & threat protection\""
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " → "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "\"Manage settings\""
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " → "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "\"Add or remove exclusions\""
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Add a "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "\"Folder\""
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " exclusion. Select your project folder."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Alternatively, you can enable and use a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#3-windows-use-dev-drive-or-wsl-2",
+					"children": [
+						{
+							"type": "text",
+							"value": "Dev Drive"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", which "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://learn.microsoft.com/en-us/windows/dev-drive/#understanding-security-risks-and-trust-in-relation-to-dev-drive",
+					"children": [
+						{
+							"type": "text",
+							"value": "uses Microsoft Defender's \"performance mode\""
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "On macOS,"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " you can disable "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://support.apple.com/guide/security/gatekeeper-and-runtime-protection-sec5599b66df/web",
+					"children": [
+						{
+							"type": "text",
+							"value": "Gatekeeper"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " inside of your terminal."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Run "
+								},
+								{
+									"type": "inlineCode",
+									"value": "sudo spctl developer-mode enable-terminal"
+								},
+								{
+									"type": "text",
+									"value": " in your terminal."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Open the "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "\"System Settings\""
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " app and then select "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "\"Privacy & Security\""
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " → "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "\"Developer Tools\""
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Ensure your terminal is listed and enabled. If you're using a third-party terminal like iTerm or Ghostty, add that to the list."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Restart your terminal."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"Screenshot of macOS System Settings showing the Privacy & Security pane\"\nsrcLight=\"/docs/light/macos-gatekeeper-privacy-and-security.png\"\nsrcDark=\"/docs/dark/macos-gatekeeper-privacy-and-security.png\"\nwidth=\"723\"\nheight=\"250\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"Screenshot of macOS System Settings showing the Developer Tools options\"\nsrcLight=\"/docs/light/macos-gatekeeper-developer-tools.png\"\nsrcDark=\"/docs/dark/macos-gatekeeper-developer-tools.png\"\nwidth=\"723\"\nheight=\"250\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you or your employer have configured any other Antivirus solutions on your system, you should inspect the relevant settings for those products."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "2. Avoid common Docker pitfalls"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you're using Docker for development on Mac or Windows, you may experience significantly slower performance compared to running Next.js without Docker."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This generally isn't an issue in production or when Docker runs natively on Linux, because project files don't cross Docker Desktop's host-to-VM file-sharing layer."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When project files are stored on the macOS or Windows host and mounted into a container through Docker Desktop or similar tools, the host-to-VM file-sharing layer can delay or fail to propagate filesystem events. This can cause "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/architecture/fast-refresh",
+					"children": [
+						{
+							"type": "text",
+							"value": "Fast Refresh"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to take seconds or even minutes, while the same application shows updates quickly when developed on the host without Docker."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For the best development experience:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Run Next.js without Docker ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "npm run dev"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pnpm dev"
+								},
+								{
+									"type": "text",
+									"value": ") during development."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Reserve Docker for production deployments and testing production builds."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If you must use Docker for development, consider running Docker natively on a Linux machine or a manually configured virtual machine. If using a manually configured virtual machine, move the source code into the VM and do not share it from the host."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If you're using Docker Desktop, evaluate using "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://docs.docker.com/desktop/features/synchronized-file-sharing/",
+									"children": [
+										{
+											"type": "text",
+											"value": "synchronized file shares"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". Synchronized file shares still add latency compared to running Next.js directly on the host, but can improve file-watching reliability without resorting to polling."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Avoid using "
+								},
+								{
+									"type": "inlineCode",
+									"value": "watchOptions.pollIntervalMs"
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next.config.js"
+								},
+								{
+									"type": "text",
+									"value": " to work around Fast Refresh issues. Only use it as a last resort. Polling adds significant latency and can drastically increase CPU and I/O usage."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/deploying#docker",
+					"children": [
+						{
+							"type": "text",
+							"value": "Learn more about Docker deployment"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for production use."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "3. (Windows) Use Dev Drive or WSL 2"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Windows 11's Dev Drive feature uses an alternative filesystem to improve performance for common development workflows. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://learn.microsoft.com/en-us/windows/dev-drive/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Microsoft has a guide explaining how to configure it"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Alternatively, Windows provides an easy way to set up a Linux virtual machine using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://learn.microsoft.com/en-us/windows/wsl/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Windows Subsystem for Linux"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". You may see better performance by using WSL 2."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using WSL 2, store your project directory inside the virtual machine's filesystem (e.g. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/home/$USER/project"
+				},
+				{
+					"type": "text",
+					"value": ") and not on a Windows drive (e.g. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "C:\\"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/mnt/c"
+				},
+				{
+					"type": "text",
+					"value": "). If you do not do this, you will experience worse performance and file updates may not be reflected properly in development."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Improving application development performance"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "1. Update Next.js and use Turbopack"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Make sure you're using the latest version of Next.js. Each new version often includes performance improvements."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack is now the default bundler for Next.js development and provides significant performance improvements over webpack."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add next@latest\npnpm dev  # Turbopack is used by default"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install next@latest\nnpm run dev  # Turbopack is used by default"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add next@latest\nyarn dev  # Turbopack is used by default"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add next@latest\nbun dev  # Turbopack is used by default"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you need to use Webpack instead of Turbopack, you can opt-in:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm dev --webpack"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm run dev -- --webpack"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn dev --webpack"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun run dev --webpack"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/blog/turbopack-for-development-stable",
+					"children": [
+						{
+							"type": "text",
+							"value": "Learn more about Turbopack"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". See our "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading",
+					"children": [
+						{
+							"type": "text",
+							"value": "upgrade guides"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and codemods for more information."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "2. Check your imports"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The way you import code can greatly affect compilation and bundling time. Learn more about "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/package-bundling",
+					"children": [
+						{
+							"type": "text",
+							"value": "optimizing package bundling"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and explore tools like "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/sverweij/dependency-cruiser",
+					"children": [
+						{
+							"type": "text",
+							"value": "Dependency Cruiser"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/pahen/madge",
+					"children": [
+						{
+							"type": "text",
+							"value": "Madge"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Icon libraries"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Libraries like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@material-ui/icons"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@phosphor-icons/react"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "react-icons"
+				},
+				{
+					"type": "text",
+					"value": " can import thousands of icons, even if you only use a few. Try to import only the icons you need:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "// Instead of this:\nimport { TriangleIcon } from '@phosphor-icons/react'\n\n// Do this:\nimport { TriangleIcon } from '@phosphor-icons/react/dist/csr/Triangle'"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can often find what import pattern to use in the documentation for the icon library you're using. This example follows "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.npmjs.com/package/@phosphor-icons/react#import-performance-optimization",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "@phosphor-icons/react"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " recommendation."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Libraries like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "react-icons"
+				},
+				{
+					"type": "text",
+					"value": " includes many different icon sets. Choose one set and stick with that set."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, if your application uses "
+				},
+				{
+					"type": "inlineCode",
+					"value": "react-icons"
+				},
+				{
+					"type": "text",
+					"value": " and imports all of these:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "pi"
+								},
+								{
+									"type": "text",
+									"value": " (Phosphor Icons)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "md"
+								},
+								{
+									"type": "text",
+									"value": " (Material Design Icons)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "tb"
+								},
+								{
+									"type": "text",
+									"value": " (tabler-icons)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "cg"
+								},
+								{
+									"type": "text",
+									"value": " (cssgg)"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Combined they will be tens of thousands of modules that the compiler has to handle, even if you only use a single import from each."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Barrel files"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "\"Barrel files\" are files that export many items from other files. They can slow down builds because the compiler has to parse them to find if there are side-effects in the module scope by using the import."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Try to import directly from specific files when possible. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://vercel.com/blog/how-we-optimized-package-imports-in-next-js",
+					"children": [
+						{
+							"type": "text",
+							"value": "Learn more about barrel files"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and the built-in optimizations in Next.js."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Optimize package imports"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js can automatically optimize imports for certain packages. If you are using packages that utilize barrel files, add them to your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "module.exports = {\n\texperimental: {\n\t\toptimizePackageImports: ['package-name'],\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack automatically analyzes imports and optimizes them. It does not require this configuration."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "3. Check your Tailwind CSS setup"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you're using Tailwind CSS, make sure it's set up correctly."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A common mistake is configuring your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "content"
+				},
+				{
+					"type": "text",
+					"value": " array in a way which includes "
+				},
+				{
+					"type": "inlineCode",
+					"value": "node_modules"
+				},
+				{
+					"type": "text",
+					"value": " or other large directories of files that should not be scanned."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Tailwind CSS version 3.4.8 or newer will warn you about settings that might slow down your build."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": true,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": true,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "In your "
+								},
+								{
+									"type": "inlineCode",
+									"value": "tailwind.config.js"
+								},
+								{
+									"type": "text",
+									"value": ", be specific about which files to scan:"
+								}
+							]
+						},
+						{
+							"type": "code",
+							"lang": "jsx",
+							"meta": null,
+							"value": "module.exports = {\n\tcontent: [\n\t\t'./src/**/*.{js,ts,jsx,tsx}', // Good\n\t\t// This might be too broad\n\t\t// It will match `packages/**/node_modules` too\n\t\t// '../../packages/**/*.{js,ts,jsx,tsx}',\n\t],\n}"
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": true,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Avoid scanning unnecessary files:"
+								}
+							]
+						},
+						{
+							"type": "code",
+							"lang": "jsx",
+							"meta": null,
+							"value": "module.exports = {\n\tcontent: [\n\t\t// Better - only scans the 'src' folder\n\t\t'../../packages/ui/src/**/*.{js,ts,jsx,tsx}',\n\t],\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "4. Check custom webpack settings"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you've added custom webpack settings, they might be slowing down compilation."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Consider if you really need them for local development. You can optionally only include certain tools for production builds, or explore using the default Turbopack bundler and configuring "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/turbopack#configuring-webpack-loaders",
+					"children": [
+						{
+							"type": "text",
+							"value": "loaders"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " instead."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "5. Optimize memory usage"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If your app is very large, it might need more memory."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/memory-usage",
+					"children": [
+						{
+							"type": "text",
+							"value": "Learn more about optimizing memory usage"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "6. Server Components and data fetching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Changes to Server Components cause the entire page to re-render locally in order to show the new changes, which includes fetching new data for the component."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The experimental "
+				},
+				{
+					"type": "inlineCode",
+					"value": "serverComponentsHmrCache"
+				},
+				{
+					"type": "text",
+					"value": " option allows you to cache "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " responses in Server Components across Hot Module Replacement (HMR) refreshes in local development. This results in faster responses and reduced costs for billed API calls."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/serverComponentsHmrCache",
+					"children": [
+						{
+							"type": "text",
+							"value": "Learn more about the experimental option"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Tools for finding problems"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Detailed fetch logging"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "logging.fetches"
+				},
+				{
+					"type": "text",
+					"value": " option in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file, to see more detailed information about what's happening during development:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "module.exports = {\n\tlogging: {\n\t\tfetches: {\n\t\t\tfullUrl: true,\n\t\t},\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/logging",
+					"children": [
+						{
+							"type": "text",
+							"value": "Learn more about fetch logging"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack tracing"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack tracing is a tool that helps you understand the performance of your application during local development. It provides detailed information about the time taken for each module to compile and how they are related."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": true,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Make sure you have the latest version of Next.js installed."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": true,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Generate a Turbopack trace file:"
+								}
+							]
+						},
+						{
+							"type": "code",
+							"lang": "bash",
+							"meta": "package=\"pnpm\"",
+							"value": "pnpm dev --internal-trace"
+						},
+						{
+							"type": "code",
+							"lang": "bash",
+							"meta": "package=\"npm\"",
+							"value": "npm run dev -- --internal-trace"
+						},
+						{
+							"type": "code",
+							"lang": "bash",
+							"meta": "package=\"yarn\"",
+							"value": "yarn dev --internal-trace"
+						},
+						{
+							"type": "code",
+							"lang": "bash",
+							"meta": "package=\"bun\"",
+							"value": "bun dev --internal-trace"
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Navigate around your application or make edits to files to reproduce the problem."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Stop the Next.js development server."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "A file called "
+								},
+								{
+									"type": "inlineCode",
+									"value": "trace-turbopack.bin"
+								},
+								{
+									"type": "text",
+									"value": " will be available in the "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".next-profiles"
+								},
+								{
+									"type": "text",
+									"value": " folder."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": true,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "You can interpret the file using "
+								},
+								{
+									"type": "inlineCode",
+									"value": "npx next internal trace [path-to-file]"
+								},
+								{
+									"type": "text",
+									"value": ":"
+								}
+							]
+						},
+						{
+							"type": "code",
+							"lang": "bash",
+							"meta": null,
+							"value": "npx next internal trace .next-profiles/trace-turbopack.bin"
+						},
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "On versions where "
+								},
+								{
+									"type": "inlineCode",
+									"value": "trace"
+								},
+								{
+									"type": "text",
+									"value": " is not available, the command was named "
+								},
+								{
+									"type": "inlineCode",
+									"value": "turbo-trace-server"
+								},
+								{
+									"type": "text",
+									"value": ":"
+								}
+							]
+						},
+						{
+							"type": "code",
+							"lang": "bash",
+							"meta": null,
+							"value": "npx next internal turbo-trace-server .next-profiles/trace-turbopack.bin"
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Once the trace server is running you can view the trace at "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://trace.nextjs.org/",
+									"children": [
+										{
+											"type": "text",
+											"value": "https://trace.nextjs.org/"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "By default the trace viewer will aggregate timings, in order to see each individual time you can switch from \"Aggregated in order\" to \"Spans in order\" at the top right of the viewer."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": The trace file is placed in the "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".next-profiles"
+						},
+						{
+							"type": "text",
+							"value": " directory at the project root."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Still having problems?"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Share the trace file generated in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#turbopack-tracing",
+					"children": [
+						{
+							"type": "text",
+							"value": "Turbopack Tracing"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " section and share it on "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/discussions",
+					"children": [
+						{
+							"type": "text",
+							"value": "GitHub Discussions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nextjs.org/discord",
+					"children": [
+						{
+							"type": "text",
+							"value": "Discord"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		}
+	]
+}

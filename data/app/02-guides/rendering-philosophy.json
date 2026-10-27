@@ -1,0 +1,731 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Next.js Rendering Philosophy\nnav_title: Rendering Philosophy\ndescription: Learn how Next.js treats static and dynamic rendering as a spectrum at the component level, and what this means for deployment.\nrelated:\n description: Learn more about the features discussed on this page.\n links:\n  - app/getting-started/caching\n  - app/guides/streaming\n  - app/guides/self-hosting\n  - app/guides/deploying-to-platforms"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Static and Dynamic as a Spectrum"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Most web frameworks draw a hard line between static and dynamic at the route level. A page is either prerendered at build time or server-rendered at request time. This model is simple to understand and simple to deploy: you upload static files to a CDN and point dynamic routes at a server."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js takes a different approach: "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "the boundary between static and dynamic is at the component level, not the route level."
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " A single page can have a static shell that loads instantly and dynamic sections that stream in as they resolve. A cached function can live inside a dynamic route. A static page can be updated without a redeploy."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This is what Partial Prerendering, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": "), and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidateTag",
+					"children": [
+						{
+							"type": "text",
+							"value": "on-demand revalidation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " enable. They are not incremental features: they represent a rendering model that treats static and dynamic as a spectrum rather than a binary choice."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "What This Enables"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This model benefits developers and users in concrete ways:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Faster perceived load times."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " The static shell renders immediately while dynamic content streams in. Users see useful content right away instead of waiting for the entire page to render."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Incremental caching."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Developers can add caching and revalidation incrementally, without deciding upfront at build time whether a route is static or dynamic. Any page can be revalidated on demand, and any function can be cached with "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/directives/use-cache",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "use cache"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Granular caching."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Cache a function with "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/directives/use-cache",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "use cache"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", not a route. Revalidate a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/revalidateTag",
+									"children": [
+										{
+											"type": "text",
+											"value": "tag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", not a deployment. This means an expensive database query can be cached independently of the rest of the page."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "The Trade-Off"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Web frameworks differ in where they place the boundary between static and dynamic content. Each approach makes a different trade-off between developer flexibility and infrastructure complexity."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Build-time prerendering"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Every page is generated at build time. The output is static files that can be served from any CDN or file server with zero runtime infrastructure. Dynamic content, if any, requires client-side fetching after the page loads. This is the simplest model to deploy, but every content change requires a rebuild and redeploy."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Route-level boundaries"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each route chooses whether it is static or dynamic. Static routes are prerendered at build time, dynamic routes are server-rendered per request. The infrastructure splits cleanly: static files go to a CDN, dynamic routes go to a server. This is straightforward to reason about but the choice is all-or-nothing per route. A mostly-static page with one dynamic element (a user greeting, a live price) must either be fully dynamic or fetch that element on the client after load."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Component-level boundaries"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This is the approach Next.js takes. Static and dynamic content coexist within a single streaming response. A page can have a static shell that loads instantly, a cached function that revalidates independently, and a dynamic section that streams in as it resolves, all without the developer splitting anything into separate routes or client-side fetches."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The trade-off is infrastructure complexity. A finer-grained rendering boundary transfers complexity from application code into the hosting platform. The infrastructure requirements described below exist because of this choice."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Infrastructure Implications"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The component-level rendering model has direct implications for platforms hosting Next.js applications:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Streaming"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " is required because static and dynamic content are served in a single response. The server sends initial content first, then streams dynamic portions as they resolve. See "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/streaming",
+									"children": [
+										{
+											"type": "text",
+											"value": "Streaming"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for details."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Cache coordination"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " is required when running multiple instances because any cached content can be invalidated on demand via "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/revalidateTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidateTag()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/revalidatePath",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidatePath()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". See "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/how-revalidation-works",
+									"children": [
+										{
+											"type": "text",
+											"value": "How Revalidation Works"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for the architecture."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Cache consistency"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " matters because revalidation regenerates both the HTML response and the RSC payload (the serialized React Server Components data used for client-side navigation). If these get out of sync, users may see inconsistent data during navigation. See "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/how-revalidation-works",
+									"children": [
+										{
+											"type": "text",
+											"value": "How Revalidation Works"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for consistency requirements."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "PPR shell delivery at CDN latency"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " can require additional platform integration to store the static shell separately and resume dynamic rendering correctly. See "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/ppr-platform-guide",
+									"children": [
+										{
+											"type": "text",
+											"value": "PPR Platform Guide"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for implementation details."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each of these infrastructure requirements maps directly to a capability: streaming enables progressive delivery, cache coordination propagates invalidations across instances, cache consistency keeps HTML and RSC aligned, and PPR-at-edge often requires extra shell/resume integration."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Portability and Fidelity"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js runs as a Node.js server process, and a single process handles every feature correctly. Streaming support enables progressive delivery of Server Components and PPR; without it, responses are buffered but features still work. Additional infrastructure investments (CDN caching, edge compute, shared cache) improve performance and, in multi-instance deployments, reduce consistency gaps."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To make this concrete, we distinguish between two types of platform support:"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Functional fidelity"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " means every Next.js feature works correctly on the platform. The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/adapters/testing-adapters",
+					"children": [
+						{
+							"type": "text",
+							"value": "adapter test suite"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is the contract: if a platform's adapter passes the tests, it has full functional fidelity. This is binary: it passes or it doesn't. The test suite is open to contributions from platform partners to ensure it is fair and complete."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Performance fidelity"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " means features achieve their optimal performance characteristics. For example, PPR's static shell served at CDN latency rather than origin latency, or ISR serving stale content instantly while revalidating in the background with sub-second propagation. Performance fidelity is a spectrum: every platform will achieve different levels based on their architecture, and platforms will improve over time."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A platform that achieves functional fidelity is a fully supported deployment target for Next.js. Performance fidelity is how platforms differentiate. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/deploying-to-platforms",
+					"children": [
+						{
+							"type": "text",
+							"value": "Deploying to Platforms"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the full feature compatibility matrix."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "CDN Feature Compatibility"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Many CDNs have useful primitives for deeper Next.js integration (edge compute, key-value storage, blob storage), but end-to-end PPR resume support is still emerging and may require bespoke platform work. Most community adapters today deploy Next.js as a Node.js server without leveraging these CDN-specific primitives. See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/deploying#adapters",
+					"children": [
+						{
+							"type": "text",
+							"value": "Deploying"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " page for the current list of adapters."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/deploying-to-platforms#cdn-infrastructure-compatibility",
+					"children": [
+						{
+							"type": "text",
+							"value": "Deploying to Platforms"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the full CDN compatibility table and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/cdn-caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "CDN Caching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for caching behavior details."
+				}
+			]
+		}
+	]
+}

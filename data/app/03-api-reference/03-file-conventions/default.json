@@ -1,0 +1,557 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: default.js\ndescription: API Reference for the default.js file.\nrelated:\n title: Learn more about Parallel Routes\n links:\n  - app/api-reference/file-conventions/parallel-routes"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default.js"
+				},
+				{
+					"type": "text",
+					"value": " file is used to render a fallback within "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/parallel-routes",
+					"children": [
+						{
+							"type": "text",
+							"value": "Parallel Routes"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when Next.js cannot recover a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/parallel-routes#slots",
+					"children": [
+						{
+							"type": "text",
+							"value": "slot's"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " active state after a full-page load."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "During "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/linking-and-navigating#client-side-transitions",
+					"children": [
+						{
+							"type": "text",
+							"value": "soft navigation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", Next.js keeps track of the active "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "state"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " (subpage) for each slot. However, for hard navigations (full-page load), Next.js cannot recover the active state. In this case, a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default.js"
+				},
+				{
+					"type": "text",
+					"value": " file can be rendered for subpages that don't match the current URL."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Consider the following folder structure. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@team"
+				},
+				{
+					"type": "text",
+					"value": " slot has a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "settings"
+				},
+				{
+					"type": "text",
+					"value": " page, but "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@analytics"
+				},
+				{
+					"type": "text",
+					"value": " does not."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"Parallel Routes unmatched routes\"\nsrcLight=\"/docs/light/parallel-routes-unmatched-routes.png\"\nsrcDark=\"/docs/dark/parallel-routes-unmatched-routes.png\"\nwidth=\"1600\"\nheight=\"930\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When navigating to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/settings"
+				},
+				{
+					"type": "text",
+					"value": ", the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@team"
+				},
+				{
+					"type": "text",
+					"value": " slot will render the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "settings"
+				},
+				{
+					"type": "text",
+					"value": " page while maintaining the currently active page for the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@analytics"
+				},
+				{
+					"type": "text",
+					"value": " slot."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "On refresh, Next.js will render a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default.js"
+				},
+				{
+					"type": "text",
+					"value": " for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@analytics"
+				},
+				{
+					"type": "text",
+					"value": ". If "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default.js"
+				},
+				{
+					"type": "text",
+					"value": " doesn't exist, an error is returned for named slots ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "@team"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@analytics"
+				},
+				{
+					"type": "text",
+					"value": ", etc) and requires you to define a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default.js"
+				},
+				{
+					"type": "text",
+					"value": " in order to continue. If you want to preserve the old behavior of returning a 404 in these situations, you can create a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default.js"
+				},
+				{
+					"type": "text",
+					"value": " that contains:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/@team/default.js\"",
+			"value": "import { notFound } from 'next/navigation'\n\nexport default function Default() {\n\tnotFound()\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Additionally, since "
+				},
+				{
+					"type": "inlineCode",
+					"value": "children"
+				},
+				{
+					"type": "text",
+					"value": " is an implicit slot, you also need to create a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default.js"
+				},
+				{
+					"type": "text",
+					"value": " file to render a fallback for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "children"
+				},
+				{
+					"type": "text",
+					"value": " when Next.js cannot recover the active state of the parent page. If you don't create a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default.js"
+				},
+				{
+					"type": "text",
+					"value": " for the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "children"
+				},
+				{
+					"type": "text",
+					"value": " slot, it will return a 404 page for the route."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " (optional)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A promise that resolves to an object containing the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/dynamic-routes",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamic route parameters"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " from the root segment down to the slot's subpages. For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/[artist]/@sidebar/default.js\" switcher",
+			"value": "export default async function Default({ params }: { params: Promise<{ artist: string }> }) {\n\tconst { artist } = await params\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/[artist]/@sidebar/default.js\" switcher",
+			"value": "export default async function Default({ params }) {\n\tconst { artist } = await params\n}"
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Example"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "URL"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "params"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/[artist]/@sidebar/default.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/zack"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Promise<{ artist: 'zack' }>"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/[artist]/[album]/@sidebar/default.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/zack/next"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Promise<{ artist: 'zack', album: 'next' }>"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Since the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "params"
+								},
+								{
+									"type": "text",
+									"value": " prop is a promise. You must use "
+								},
+								{
+									"type": "inlineCode",
+									"value": "async/await"
+								},
+								{
+									"type": "text",
+									"value": " or React's "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react/use",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "use"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " function to access the values."
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "In version 14 and earlier, "
+												},
+												{
+													"type": "inlineCode",
+													"value": "params"
+												},
+												{
+													"type": "text",
+													"value": " was a synchronous prop. To help with backwards compatibility, you can still access it synchronously in Next.js 15, but this behavior will be deprecated in the future."
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

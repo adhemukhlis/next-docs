@@ -4,7 +4,7 @@ nav_title: Sass
 description: Style your Next.js application using Sass.
 ---
 
-Next.js has built-in support for integrating with Sass after the package is installed using both the `.scss` and `.sass` extensions. You can use component-level Sass via CSS Modules and the `.module.scss`or `.module.sass` extension.
+Next.js has built-in support for integrating with Sass after the package is installed using both the `.scss` and `.sass` extensions. You can use component-level Sass via CSS Modules and the `.module.scss` or `.module.sass` extension.
 
 First, install [`sass`](https://github.com/sass/sass):
 

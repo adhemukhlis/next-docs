@@ -1,6 +1,6 @@
 ---
 title: turbopackChunking
-description: Configure how Turbopack splits your client-side JavaScript into chunks in production.
+description: Configure how Turbopack splits your client-side and server-side JavaScript into chunks in production.
 version: experimental
 ---
 
@@ -45,13 +45,36 @@ module.exports = nextConfig
 
 ## Size Thresholds
 
-The following options control how aggressively Turbopack merges chunks and how large a chunk is allowed to grow. Sizes are in bytes of uncompressed, unminified code (roughly 5x the size of the compressed, minified output).
+The following options control how aggressively Turbopack merges client-side chunks and how large a chunk is allowed to grow. Sizes are in bytes of uncompressed, unminified code (roughly 5x the size of the compressed, minified output).
 
 - **`minChunkSize`** (default `50000`): Turbopack will avoid creating more than one chunk smaller than this size by merging small chunks into larger ones. Raising this number will produce fewer, larger chunks. Meanwhile, lowering it will produce more chunks that are smaller.
 - **`maxChunkCountPerGroup`** (default `40`): Turbopack will not emit more than this many chunks per chunk group (eg. a route or a dynamic import). Lowering this number will lead to more aggressive merging and less network requests per-page. Raising it will produce smaller chunks and increase the likelihood of cache hits when navigating.
 - **`maxMergeChunkSize`** (default `200000`): Turbopack never merges a chunk larger than this size with other chunks. This keeps the code in large chunks from being duplicated across multiple large output chunks.
 
 When merging chunks, the trade-off being made is an improvement to performance on initial page loads at the cost of navigation performance. This is because each additional network request being made is costly, however, smaller chunks are more likely to be re-usable across pages.
+
+## Server Chunks
+
+The size thresholds above only apply to client-side JavaScript. Server-side JavaScript for the Node.js runtime uses separate thresholds:
+
+- **`minServerChunkSize`** (default `4000`): Turbopack will avoid creating more than one server chunk smaller than this size by merging small chunks into larger ones.
+- **`maxMergeServerChunkSize`** (default `100000`): Turbopack never merges a server chunk larger than this size with other chunks.
+
+These options don't apply to the Edge runtime, whose chunking is not configurable.
+
+```js filename="next.config.js"
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+	experimental: {
+		turbopackChunking: {
+			minServerChunkSize: 10000,
+			maxMergeServerChunkSize: 200000,
+		},
+	},
+}
+
+module.exports = nextConfig
+```
 
 ## Component Chunks
 

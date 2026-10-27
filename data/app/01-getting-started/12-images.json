@@ -1,0 +1,734 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Image Optimization\ndescription: Learn how to optimize images in Next.js\nrelated:\n title: API Reference\n description: See the API Reference for the full feature set of Next.js Image.\n links:\n  - app/api-reference/components/image"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The Next.js "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Image>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " component extends the HTML "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<img>"
+				},
+				{
+					"type": "text",
+					"value": " element to provide:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Size optimization:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Automatically serving correctly sized images for each device, using modern image formats like WebP."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Visual stability:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Preventing "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://web.dev/articles/cls",
+									"children": [
+										{
+											"type": "text",
+											"value": "layout shift"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " automatically when images are loading."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Faster page loads:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Only loading images when they enter the viewport using native browser lazy loading, with optional blur-up placeholders."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Asset flexibility:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Resizing images on-demand, even images stored on remote servers."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To start using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Image>"
+				},
+				{
+					"type": "text",
+					"value": ", import it from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/image"
+				},
+				{
+					"type": "text",
+					"value": " and render it within your component."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import Image from 'next/image'\n\nexport default function Page() {\n\treturn (\n\t\t<Image\n\t\t\tsrc=\"\"\n\t\t\talt=\"\"\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import Image from 'next/image'\n\nexport default function Page() {\n\treturn (\n\t\t<Image\n\t\t\tsrc=\"\"\n\t\t\talt=\"\"\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " property can be a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#local-images",
+					"children": [
+						{
+							"type": "text",
+							"value": "local"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#remote-images",
+					"children": [
+						{
+							"type": "text",
+							"value": "remote"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " image."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "🎥 Watch:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Learn more about how to use "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next/image"
+						},
+						{
+							"type": "text",
+							"value": " → "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://youtu.be/IU_qq_c_lKA",
+							"children": [
+								{
+									"type": "text",
+									"value": "YouTube (9 minutes)"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Local images"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can store static files, like images and fonts, under a folder called "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/public-folder",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "public"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in the root directory. Files inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "public"
+				},
+				{
+					"type": "text",
+					"value": " can then be referenced by your code starting from the base URL ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "/"
+				},
+				{
+					"type": "text",
+					"value": ")."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"Folder structure showing app and public folders\"\nsrcLight=\"/docs/light/public-folder.png\"\nsrcDark=\"/docs/dark/public-folder.png\"\nwidth=\"1600\"\nheight=\"282\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import Image from 'next/image'\n\nexport default function Page() {\n\treturn (\n\t\t<Image\n\t\t\tsrc=\"/profile.png\"\n\t\t\talt=\"Picture of the author\"\n\t\t\twidth={500}\n\t\t\theight={500}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import Image from 'next/image'\n\nexport default function Page() {\n\treturn (\n\t\t<Image\n\t\t\tsrc=\"/profile.png\"\n\t\t\talt=\"Picture of the author\"\n\t\t\twidth={500}\n\t\t\theight={500}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If the image is statically imported, Next.js will automatically determine the intrinsic "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image#width-and-height",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "width"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image#width-and-height",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "height"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". These values are used to determine the image ratio and prevent "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://web.dev/articles/cls",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cumulative Layout Shift"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " while your image is loading."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import Image from 'next/image'\nimport ProfileImage from './profile.png'\n\nexport default function Page() {\n\treturn (\n\t\t<Image\n\t\t\tsrc={ProfileImage}\n\t\t\talt=\"Picture of the author\"\n\t\t\t// width={500} automatically provided\n\t\t\t// height={500} automatically provided\n\t\t\t// blurDataURL=\"data:...\" automatically provided\n\t\t\t// placeholder=\"blur\" // Optional blur-up while loading\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import Image from 'next/image'\nimport ProfileImage from './profile.png'\n\nexport default function Page() {\n\treturn (\n\t\t<Image\n\t\t\tsrc={ProfileImage}\n\t\t\talt=\"Picture of the author\"\n\t\t\t// width={500} automatically provided\n\t\t\t// height={500} automatically provided\n\t\t\t// blurDataURL=\"data:...\" automatically provided\n\t\t\t// placeholder=\"blur\" // Optional blur-up while loading\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Images without static imports"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you can't use a static "
+				},
+				{
+					"type": "inlineCode",
+					"value": "import"
+				},
+				{
+					"type": "text",
+					"value": " for your images, you can use a dynamic "
+				},
+				{
+					"type": "inlineCode",
+					"value": "import()"
+				},
+				{
+					"type": "text",
+					"value": " in a Server Component to still get automatic "
+				},
+				{
+					"type": "inlineCode",
+					"value": "width"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "height"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "blurDataURL"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" switcher",
+			"value": "import Image from 'next/image'\n\nasync function PostImage({ imageFilename, alt }: { imageFilename: string; alt: string }) {\n\tconst { default: image } = await import(`../content/blog/images/${imageFilename}`)\n\t// image contains width, height, and blurDataURL\n\treturn (\n\t\t<Image\n\t\t\tsrc={image}\n\t\t\talt={alt}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\" switcher",
+			"value": "import Image from 'next/image'\n\nasync function PostImage({ imageFilename, alt }) {\n\tconst { default: image } = await import(`../content/blog/images/${imageFilename}`)\n\t// image contains width, height, and blurDataURL\n\treturn (\n\t\t<Image\n\t\t\tsrc={image}\n\t\t\talt={alt}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you have a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.typescriptlang.org/tsconfig/#paths",
+					"children": [
+						{
+							"type": "text",
+							"value": "path alias"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " configured (e.g. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@/"
+				},
+				{
+					"type": "text",
+					"value": "), you can use it instead of a relative path:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "const { default: image } = await import(`@/content/blog/images/${imageFilename}`)"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The path must include a static prefix (like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "../content/blog/images/"
+				},
+				{
+					"type": "text",
+					"value": "). Be as specific as possible, since "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "all"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " files matching that prefix are bundled. Only files in your specified directory are included, so external input cannot reach outside of it."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Remote images"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use a remote image, you can provide a URL string for the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " property."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import Image from 'next/image'\n\nexport default function Page() {\n\treturn (\n\t\t<Image\n\t\t\tsrc=\"https://s3.amazonaws.com/my-bucket/profile.png\"\n\t\t\talt=\"Picture of the author\"\n\t\t\twidth={500}\n\t\t\theight={500}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import Image from 'next/image'\n\nexport default function Page() {\n\treturn (\n\t\t<Image\n\t\t\tsrc=\"https://s3.amazonaws.com/my-bucket/profile.png\"\n\t\t\talt=\"Picture of the author\"\n\t\t\twidth={500}\n\t\t\theight={500}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since Next.js does not have access to remote files during the build process, you'll need to provide the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image#width-and-height",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "width"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image#width-and-height",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "height"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and optional "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image#blurdataurl",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "blurDataURL"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " props manually. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "width"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "height"
+				},
+				{
+					"type": "text",
+					"value": " are used to infer the correct aspect ratio of image and avoid layout shift from the image loading in. Alternatively, you can use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image#fill",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "fill"
+						},
+						{
+							"type": "text",
+							"value": " property"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to make the image fill the size of the parent element."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To safely allow images from remote servers, you need to define a list of supported URL patterns in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next.config.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Be as specific as possible to prevent malicious usage. For example, the following configuration will only allow images from a specific AWS S3 bucket:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst config: NextConfig = {\n\timages: {\n\t\tremotePatterns: [\n\t\t\t{\n\t\t\t\tprotocol: 'https',\n\t\t\t\thostname: 's3.amazonaws.com',\n\t\t\t\tport: '',\n\t\t\t\tpathname: '/my-bucket/**',\n\t\t\t\tsearch: '',\n\t\t\t},\n\t\t],\n\t},\n}\n\nexport default config"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "module.exports = {\n\timages: {\n\t\tremotePatterns: [\n\t\t\t{\n\t\t\t\tprotocol: 'https',\n\t\t\t\thostname: 's3.amazonaws.com',\n\t\t\t\tport: '',\n\t\t\t\tpathname: '/my-bucket/**',\n\t\t\t\tsearch: '',\n\t\t\t},\n\t\t],\n\t},\n}"
+		}
+	]
+}

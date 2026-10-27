@@ -1,0 +1,685 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: taint\ndescription: Enable tainting Objects and Values.\nversion: experimental"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Usage"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "taint"
+				},
+				{
+					"type": "text",
+					"value": " option enables support for experimental React APIs for tainting objects and values. This feature helps prevent sensitive data from being accidentally passed to the client. When enabled, you can use:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react/experimental_taintObjectReference",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "experimental_taintObjectReference"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " taint objects references."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react/experimental_taintUniqueValue",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "experimental_taintUniqueValue"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to taint unique values."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Activating this flag also enables the React "
+						},
+						{
+							"type": "inlineCode",
+							"value": "experimental"
+						},
+						{
+							"type": "text",
+							"value": " channel for "
+						},
+						{
+							"type": "inlineCode",
+							"value": "app"
+						},
+						{
+							"type": "text",
+							"value": " directory, and taints "
+						},
+						{
+							"type": "inlineCode",
+							"value": "process.env"
+						},
+						{
+							"type": "text",
+							"value": " so it cannot be passed whole to a Client Component."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\texperimental: {\n\t\ttaint: true,\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\texperimental: {\n\t\ttaint: true,\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Warning:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Do not rely on the taint API as your only mechanism to prevent exposing sensitive data to the client. See our "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/blog/security-nextjs-server-components-actions",
+							"children": [
+								{
+									"type": "text",
+									"value": "security recommendations"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The taint APIs allows you to be defensive, by declaratively and explicitly marking data that is not allowed to pass through the Server-Client boundary. When an object or value, is passed through the Server-Client boundary, React throws an error."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This is helpful for cases where:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The methods to read data are out of your control"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "You have to work with sensitive data shapes not defined by you"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Sensitive data is accessed during Server Component rendering"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "It is recommended to model your data and APIs so that sensitive data is not returned to contexts where it is not needed."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Caveats"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Tainting can only keep track of objects by reference. Copying an object creates an untainted version, which loses all guarantees given by the API. You'll need to taint the copy."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The built-in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "process.env"
+								},
+								{
+									"type": "text",
+									"value": " taint applies to the object reference only. Reading individual variables such as "
+								},
+								{
+									"type": "inlineCode",
+									"value": "process.env.MY_VAR"
+								},
+								{
+									"type": "text",
+									"value": " and passing the resulting string to a Client Component is unaffected, as is passing a copy like "
+								},
+								{
+									"type": "inlineCode",
+									"value": "{ ...process.env }"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Tainting cannot keep track of data derived from a tainted value. You also need to taint the derived value."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Values are tainted for as long as their lifetime reference is within scope. See the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react/experimental_taintUniqueValue#parameters",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "experimental_taintUniqueValue"
+										},
+										{
+											"type": "text",
+											"value": " parameters reference"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", for more information."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Tainting an object reference"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In this case, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getUserDetails"
+				},
+				{
+					"type": "text",
+					"value": " function returns data about a given user. We taint the user object reference, so that it cannot cross a Server-Client boundary. For example, assuming "
+				},
+				{
+					"type": "inlineCode",
+					"value": "UserCard"
+				},
+				{
+					"type": "text",
+					"value": " is a Client Component."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "switcher",
+			"value": "import { experimental_taintObjectReference } from 'react'\n\nasync function getUserDetails(id: string): Promise<UserDetails> {\n\tconst user = await db.queryUserById(id)\n\n\texperimental_taintObjectReference('Do not use the entire user info object. Instead, select only the fields you need.', user)\n\n\treturn user\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "switcher",
+			"value": "import { experimental_taintObjectReference } from 'react'\n\nasync function getUserDetails(id) {\n\tconst user = await db.queryUserById(id)\n\n\texperimental_taintObjectReference('Do not use the entire user info object. Instead, select only the fields you need.', user)\n\n\treturn user\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We can still access individual fields from the tainted "
+				},
+				{
+					"type": "inlineCode",
+					"value": "userDetails"
+				},
+				{
+					"type": "text",
+					"value": " object."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/contact/page.tsx switcher",
+			"value": "export async function ContactPage({ params }: { params: Promise<{ id: string }> }) {\n\tconst { id } = await params\n\tconst userDetails = await getUserDetails(id)\n\n\treturn (\n\t\t<UserCard\n\t\t\tfirstName={userDetails.firstName}\n\t\t\tlastName={userDetails.lastName}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/contact/page.js switcher",
+			"value": "export async function ContactPage({ params }) {\n\tconst { id } = await params\n\tconst userDetails = await getUserDetails(id)\n\n\treturn (\n\t\t<UserCard\n\t\t\tfirstName={userDetails.firstName}\n\t\t\tlastName={userDetails.lastName}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Now, passing the entire object to the Client Component will throw an error."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "switcher",
+			"value": "export async function ContactPage({ params }: { params: Promise<{ id: string }> }) {\n\tconst userDetails = await getUserDetails(id)\n\n\t// Throws an error\n\treturn <UserCard user={userDetails} />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "switcher",
+			"value": "export async function ContactPage({ params }) {\n\tconst { id } = await params\n\tconst userDetails = await getUserDetails(id)\n\n\t// Throws an error\n\treturn <UserCard user={userDetails} />\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Tainting a unique value"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In this case, we can access the server configuration by awaiting calls to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "configService.getConfigDetails"
+				},
+				{
+					"type": "text",
+					"value": ". However, the system configuration contains the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "SERVICE_API_KEY"
+				},
+				{
+					"type": "text",
+					"value": " that we don't want to expose to clients."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We can taint the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "config.SERVICE_API_KEY"
+				},
+				{
+					"type": "text",
+					"value": " value."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "switcher",
+			"value": "import { experimental_taintUniqueValue } from 'react'\n\nasync function getSystemConfig(): Promise<SystemConfig> {\n\tconst config = await configService.getConfigDetails()\n\n\texperimental_taintUniqueValue('Do not pass configuration tokens to the client', config, config.SERVICE_API_KEY)\n\n\treturn config\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "switcher",
+			"value": "import { experimental_taintUniqueValue } from 'react'\n\nasync function getSystemConfig() {\n\tconst config = await configService.getConfigDetails()\n\n\texperimental_taintUniqueValue('Do not pass configuration tokens to the client', config, config.SERVICE_API_KEY)\n\n\treturn config\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We can still access other properties of the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "systemConfig"
+				},
+				{
+					"type": "text",
+					"value": " object."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "export async function Dashboard() {\n\tconst systemConfig = await getSystemConfig()\n\n\treturn <ClientDashboard version={systemConfig.SERVICE_API_VERSION} />\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "However, passing "
+				},
+				{
+					"type": "inlineCode",
+					"value": "SERVICE_API_KEY"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ClientDashboard"
+				},
+				{
+					"type": "text",
+					"value": " throws an error."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "export async function Dashboard() {\n\tconst systemConfig = await getSystemConfig()\n\t// Someone makes a mistake in a PR\n\tconst version = systemConfig.SERVICE_API_KEY\n\n\treturn <ClientDashboard version={version} />\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Note that, even though, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "systemConfig.SERVICE_API_KEY"
+				},
+				{
+					"type": "text",
+					"value": " is reassigned to a new variable. Passing it to a Client Component still throws an error."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Whereas, a value derived from a tainted unique value, will be exposed to the client."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "export async function Dashboard() {\n\tconst systemConfig = await getSystemConfig()\n\t// Someone makes a mistake in a PR\n\tconst version = `version::${systemConfig.SERVICE_API_KEY}`\n\n\treturn <ClientDashboard version={version} />\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A better approach is to remove "
+				},
+				{
+					"type": "inlineCode",
+					"value": "SERVICE_API_KEY"
+				},
+				{
+					"type": "text",
+					"value": " from the data returned by "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getSystemConfig"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		}
+	]
+}

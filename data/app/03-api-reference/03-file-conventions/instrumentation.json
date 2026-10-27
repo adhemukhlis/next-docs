@@ -1,0 +1,614 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: instrumentation.js\ndescription: API reference for the instrumentation.js file.\nrelated:\n title: Learn more about Instrumentation\n links:\n  - app/guides/instrumentation"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instrumentation.js|ts"
+				},
+				{
+					"type": "text",
+					"value": " file is used to integrate observability tools into your application, allowing you to track the performance and behavior, and to debug issues in production."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use it, place the file in the "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "root"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " of your application or inside a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/src-folder",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "src"
+						},
+						{
+							"type": "text",
+							"value": " folder"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " if using one."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Exports"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "register"
+				},
+				{
+					"type": "text",
+					"value": " (optional)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The file exports a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "register"
+				},
+				{
+					"type": "text",
+					"value": " function that is called "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "once"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when a new Next.js server instance is initiated, and must complete before the server is ready to handle requests. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "register"
+				},
+				{
+					"type": "text",
+					"value": " can be an async function."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"instrumentation.ts\" switcher",
+			"value": "import { registerOTel } from '@vercel/otel'\n\nexport function register() {\n\tregisterOTel('next-app')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"instrumentation.js\" switcher",
+			"value": "import { registerOTel } from '@vercel/otel'\n\nexport function register() {\n\tregisterOTel('next-app')\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "onRequestError"
+				},
+				{
+					"type": "text",
+					"value": " (optional)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can optionally export an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "onRequestError"
+				},
+				{
+					"type": "text",
+					"value": " function to track "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "server"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " errors to any custom observability provider."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If you're running any async tasks in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "onRequestError"
+								},
+								{
+									"type": "text",
+									"value": ", make sure they're awaited. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "onRequestError"
+								},
+								{
+									"type": "text",
+									"value": " will be triggered when the Next.js server captures the error."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "inlineCode",
+									"value": "error"
+								},
+								{
+									"type": "text",
+									"value": " instance might not be the original error instance thrown, as it may be processed by React if encountered during Server Components rendering. If this happens, you can use "
+								},
+								{
+									"type": "inlineCode",
+									"value": "digest"
+								},
+								{
+									"type": "text",
+									"value": " property on an error to identify the actual error type."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"instrumentation.ts\" switcher",
+			"value": "import { type Instrumentation } from 'next'\n\nexport const onRequestError: Instrumentation.onRequestError = async (err, request, context) => {\n\tconst message = err instanceof Error ? err.message : String(err)\n\tconst digest = typeof err === 'object' && err !== null && 'digest' in err ? String(err.digest) : undefined\n\n\tawait fetch('https://.../report-error', {\n\t\tmethod: 'POST',\n\t\tbody: JSON.stringify({\n\t\t\tmessage,\n\t\t\tdigest,\n\t\t\trequest,\n\t\t\tcontext,\n\t\t}),\n\t\theaders: {\n\t\t\t'Content-Type': 'application/json',\n\t\t},\n\t})\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"instrumentation.js\" switcher",
+			"value": "export async function onRequestError(err, request, context) {\n\tconst message = err instanceof Error ? err.message : String(err)\n\tconst digest = typeof err === 'object' && err !== null && 'digest' in err ? String(err.digest) : undefined\n\n\tawait fetch('https://.../report-error', {\n\t\tmethod: 'POST',\n\t\tbody: JSON.stringify({\n\t\t\tmessage,\n\t\t\tdigest,\n\t\t\trequest,\n\t\t\tcontext,\n\t\t}),\n\t\theaders: {\n\t\t\t'Content-Type': 'application/json',\n\t\t},\n\t})\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parameters"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The function accepts three parameters: "
+				},
+				{
+					"type": "inlineCode",
+					"value": "error"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "request"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "context"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"Types\"",
+			"value": "export function onRequestError(\n\terror: unknown,\n\trequest: {\n\t\tpath: string // resource path, e.g. /blog?name=foo\n\t\tmethod: string // request method. e.g. GET, POST, etc\n\t\theaders: { [key: string]: string | string[] }\n\t},\n\tcontext: {\n\t\trouterKind: 'Pages Router' | 'App Router' // the router type\n\t\troutePath: string // the route file path, e.g. /app/blog/[dynamic]\n\t\trouteType: 'render' | 'route' | 'action' | 'proxy' // the context in which the error occurred\n\t\trenderSource: 'react-server-components' | 'react-server-components-payload' | 'server-rendering'\n\t\trevalidateReason: 'on-demand' | 'stale' | undefined // undefined is a normal request without revalidation\n\t\trenderType: 'dynamic' | 'dynamic-resume' // 'dynamic-resume' for PPR\n\t},\n): void | Promise<void>"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "error"
+								},
+								{
+									"type": "text",
+									"value": ": The caught value is typed as "
+								},
+								{
+									"type": "inlineCode",
+									"value": "unknown"
+								},
+								{
+									"type": "text",
+									"value": ". Narrow it before reading properties like "
+								},
+								{
+									"type": "inlineCode",
+									"value": "message"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "digest"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "request"
+								},
+								{
+									"type": "text",
+									"value": ": Read-only request information associated with the error."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "context"
+								},
+								{
+									"type": "text",
+									"value": ": The context in which the error occurred. This can be the type of router (App or Pages Router), and/or (Server Components ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "'render'"
+								},
+								{
+									"type": "text",
+									"value": "), Route Handlers ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "'route'"
+								},
+								{
+									"type": "text",
+									"value": "), Server Actions ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "'action'"
+								},
+								{
+									"type": "text",
+									"value": "), or Proxy ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "'proxy'"
+								},
+								{
+									"type": "text",
+									"value": "))."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Specifying the runtime"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instrumentation.js"
+				},
+				{
+					"type": "text",
+					"value": " file works in both the Node.js and Edge runtime, however, you can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "process.env.NEXT_RUNTIME"
+				},
+				{
+					"type": "text",
+					"value": " to target a specific runtime."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"instrumentation.js\"",
+			"value": "export function register() {\n\tif (process.env.NEXT_RUNTIME === 'edge') {\n\t\treturn require('./register.edge')\n\t} else {\n\t\treturn require('./register.node')\n\t}\n}\n\nexport function onRequestError() {\n\tif (process.env.NEXT_RUNTIME === 'edge') {\n\t\treturn require('./on-request-error.edge')\n\t} else {\n\t\treturn require('./on-request-error.node')\n\t}\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "onRequestError"
+								},
+								{
+									"type": "text",
+									"value": " introduced, "
+								},
+								{
+									"type": "inlineCode",
+									"value": "instrumentation"
+								},
+								{
+									"type": "text",
+									"value": " stable"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v14.0.4"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Turbopack support for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "instrumentation"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.2.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "instrumentation"
+								},
+								{
+									"type": "text",
+									"value": " introduced as an experimental feature"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

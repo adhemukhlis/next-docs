@@ -1,0 +1,6409 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to upgrade to version 16\nnav_title: Version 16\ndescription: Upgrade your Next.js Application from Version 15 to 16."
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Use a coding agent (recommended)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Run the latest upgrade CLI from your app's directory:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx next@canary upgrade --agent=latest"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The CLI prepares the Next.js 16 migration guides and codemod command for the agent, then asks it to apply the changes and verify the app. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/agent-upgrade",
+					"children": [
+						{
+							"type": "text",
+							"value": "Upgrade with a coding agent"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for details."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Or upgrade manually"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Upgrading manually follows a few steps, in order:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#set-up-ai-agent-docs",
+									"children": [
+										{
+											"type": "text",
+											"value": "Set up AI agent docs"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " if you use a coding agent now or want future agent work grounded in version-matched docs."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#using-the-codemod",
+									"children": [
+										{
+											"type": "text",
+											"value": "Run the upgrade codemod"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If you prefer not to run the codemod, "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#install-packages-manually",
+									"children": [
+										{
+											"type": "text",
+											"value": "install packages manually"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Continue through the breaking changes below, run the relevant checks, and fix any remaining issues."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Set up AI agent docs"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Before upgrading, point "
+				},
+				{
+					"type": "inlineCode",
+					"value": "AGENTS.md"
+				},
+				{
+					"type": "text",
+					"value": " at version-matched Next.js docs so a coding agent can help with the remaining steps:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod@canary agents-md"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After upgrading, check that "
+				},
+				{
+					"type": "inlineCode",
+					"value": "AGENTS.md"
+				},
+				{
+					"type": "text",
+					"value": " points at the docs bundled with the installed version in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "node_modules/next/dist/docs/"
+				},
+				{
+					"type": "text",
+					"value": ". On Next.js 16.2 and later, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " keeps this block up to date when it detects a coding agent. If the setup downloaded docs into "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next-docs/"
+				},
+				{
+					"type": "text",
+					"value": ", remove that directory once nothing references it. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/ai-agents#version-matched-documentation",
+					"children": [
+						{
+							"type": "text",
+							"value": "Version-matched documentation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the managed block and setup details."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using the codemod"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To update to Next.js version 16, you can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "upgrade"
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/codemods#160",
+					"children": [
+						{
+							"type": "text",
+							"value": "codemod"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm dlx @next/codemod@canary upgrade latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npx @next/codemod@canary upgrade latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn dlx @next/codemod@canary upgrade latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bunx @next/codemod@canary upgrade latest"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/codemods#160",
+					"children": [
+						{
+							"type": "text",
+							"value": "codemod"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is able to:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Update "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next.config.js"
+								},
+								{
+									"type": "text",
+									"value": " to use the new "
+								},
+								{
+									"type": "inlineCode",
+									"value": "turbopack"
+								},
+								{
+									"type": "text",
+									"value": " configuration"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Migrate from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next lint"
+								},
+								{
+									"type": "text",
+									"value": " to the ESLint CLI"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Migrate from deprecated "
+								},
+								{
+									"type": "inlineCode",
+									"value": "middleware"
+								},
+								{
+									"type": "text",
+									"value": " convention to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "proxy"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Remove "
+								},
+								{
+									"type": "inlineCode",
+									"value": "unstable_"
+								},
+								{
+									"type": "text",
+									"value": " prefix from stabilized APIs"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Remove "
+								},
+								{
+									"type": "inlineCode",
+									"value": "experimental_ppr"
+								},
+								{
+									"type": "text",
+									"value": " Route Segment Config from pages and layouts"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "upgrade"
+				},
+				{
+					"type": "text",
+					"value": " codemod does not run every migration codemod. If your app still uses synchronous "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers()"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "draftMode()"
+				},
+				{
+					"type": "text",
+					"value": " access from the Next.js 15 compatibility period, also run the async Request APIs codemod:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx @next/codemod@canary next-async-request-api ."
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Install packages manually"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you prefer to do it manually, install the latest Next.js and React versions:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add next@latest react@latest react-dom@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install next@latest react@latest react-dom@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add next@latest react@latest react-dom@latest"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add next@latest react@latest react-dom@latest"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you are using TypeScript, ensure you also upgrade "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@types/react"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@types/react-dom"
+				},
+				{
+					"type": "text",
+					"value": " to their latest versions."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Node.js runtime and browser support"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Requirement"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Change / Details"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Node.js 20.9+"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Minimum version now "
+								},
+								{
+									"type": "inlineCode",
+									"value": "20.9.0"
+								},
+								{
+									"type": "text",
+									"value": " (LTS); Node.js 18 no longer supported"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "TypeScript 5+"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Minimum version now "
+								},
+								{
+									"type": "inlineCode",
+									"value": "5.1.0"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Browsers"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Chrome 111+, Edge 111+, Firefox 111+, Safari 16.4+"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack by default"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Starting with "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js 16"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", Turbopack is stable and used by default with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Previously you had to enable Turbopack using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "--turbopack"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "--turbo"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"package.json\"",
+			"value": "{\n\t\"scripts\": {\n\t\t\"dev\": \"next dev --turbopack\",\n\t\t\"build\": \"next build --turbopack\",\n\t\t\"start\": \"next start\"\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This is no longer necessary. You can update your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "package.json"
+				},
+				{
+					"type": "text",
+					"value": " scripts:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"package.json\"",
+			"value": "{\n\t\"scripts\": {\n\t\t\"dev\": \"next dev\",\n\t\t\"build\": \"next build\",\n\t\t\"start\": \"next start\"\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If your project has a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/webpack",
+					"children": [
+						{
+							"type": "text",
+							"value": "custom "
+						},
+						{
+							"type": "inlineCode",
+							"value": "webpack"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " configuration and you run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " (which now uses Turbopack by default), the build will "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "fail"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to prevent misconfiguration issues."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You have a few different ways to address this:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Use Turbopack anyway:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Run with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next build --turbopack"
+								},
+								{
+									"type": "text",
+									"value": " to build using Turbopack and ignore your "
+								},
+								{
+									"type": "inlineCode",
+									"value": "webpack"
+								},
+								{
+									"type": "text",
+									"value": " config."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Switch to Turbopack fully:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Migrate your "
+								},
+								{
+									"type": "inlineCode",
+									"value": "webpack"
+								},
+								{
+									"type": "text",
+									"value": " config to Turbopack-compatible options."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Keep using Webpack:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Use the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "--webpack"
+								},
+								{
+									"type": "text",
+									"value": " flag to opt out of Turbopack and build with Webpack."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": If you see failing builds because a "
+						},
+						{
+							"type": "inlineCode",
+							"value": "webpack"
+						},
+						{
+							"type": "text",
+							"value": " configuration was found, but you don't define one yourself, it is likely that a plugin is adding a "
+						},
+						{
+							"type": "inlineCode",
+							"value": "webpack"
+						},
+						{
+							"type": "text",
+							"value": " option"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Opting out of Turbopack"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you need to continue using Webpack, you can opt out with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "--webpack"
+				},
+				{
+					"type": "text",
+					"value": " flag. For example, to use Turbopack in development but Webpack for production builds:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"package.json\"",
+			"value": "{\n\t\"scripts\": {\n\t\t\"dev\": \"next dev\",\n\t\t\"build\": \"next build --webpack\",\n\t\t\"start\": \"next start\"\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We recommend using Turbopack for development and production. Submit a comment to this "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/discussions/77721",
+					"children": [
+						{
+							"type": "text",
+							"value": "thread"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", if you are unable to switch to Turbopack."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack configuration location"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.turbopack"
+				},
+				{
+					"type": "text",
+					"value": " configuration is out of experimental."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\n// Next.js 15 - experimental.turbopack\nconst nextConfig: NextConfig = {\n\texperimental: {\n\t\tturbopack: {\n\t\t\t// options\n\t\t},\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use it as a top-level "
+				},
+				{
+					"type": "inlineCode",
+					"value": "turbopack"
+				},
+				{
+					"type": "text",
+					"value": " option:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\n// Next.js 16 - turbopack at the top level of nextConfig\nconst nextConfig: NextConfig = {\n\tturbopack: {\n\t\t// options\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Make sure to review the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Turbopack"
+				},
+				{
+					"type": "text",
+					"value": " configuration "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/turbopack",
+					"children": [
+						{
+							"type": "text",
+							"value": "options"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js 16"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " introduces various improvements and new options, for example:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/turbopack#advanced-webpack-loader-conditions",
+									"children": [
+										{
+											"type": "text",
+											"value": "Advanced Webpack loader conditions"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/turbopack#debug-ids",
+									"children": [
+										{
+											"type": "text",
+											"value": "debugIds"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Resolve alias fallback"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In some projects, client-side code may import files containing Node.js native modules. This will cause "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Module not found: Can't resolve 'fs'"
+				},
+				{
+					"type": "text",
+					"value": " type of errors."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When this happens, you should refactor your code so that your client-side bundles do not reference these Node.js native modules."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "However, in some cases, this might not be possible. In Webpack the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "resolve.fallback"
+				},
+				{
+					"type": "text",
+					"value": " option was typically used to "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "silence"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " the error. Turbopack offers a similar option, using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "turbopack.resolveAlias"
+				},
+				{
+					"type": "text",
+					"value": ". In this case, tell Turbopack to load an empty module when "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fs"
+				},
+				{
+					"type": "text",
+					"value": " is requested for the browser."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tturbopack: {\n\t\tresolveAlias: {\n\t\t\tfs: {\n\t\t\t\tbrowser: './empty.ts', // We recommend to fix code imports before using this method\n\t\t\t},\n\t\t},\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "It is preferable to refactor your modules so that client code doesn't ever import from modules using Node.js native modules."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Sass node_modules imports"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack fully supports importing Sass files from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "node_modules"
+				},
+				{
+					"type": "text",
+					"value": ". Note that while Webpack allowed the legacy tilde ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "~"
+				},
+				{
+					"type": "text",
+					"value": ") prefix, Turbopack does not support this syntax."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In Webpack:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "scss",
+			"meta": "filename=\"styles/globals.scss\"",
+			"value": "@import '~bootstrap/dist/css/bootstrap.min.css';"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In Turbopack:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "scss",
+			"meta": "filename=\"styles/globals.scss\"",
+			"value": "@import 'bootstrap/dist/css/bootstrap.min.css';"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If changing the imports is not possible, you can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "turbopack.resolveAlias"
+				},
+				{
+					"type": "text",
+					"value": ". For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tturbopack: {\n\t\tresolveAlias: {\n\t\t\t'~*': '*',\n\t\t},\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack File System Caching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack stores compiler artifacts on disk between runs, for significantly faster compile times across restarts. Filesystem caching is enabled by default for both "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ", through "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.turbopackFileSystemCacheForDev"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.turbopackFileSystemCacheForBuild"
+				},
+				{
+					"type": "text",
+					"value": ". See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/turbopackFileSystemCache",
+					"children": [
+						{
+							"type": "text",
+							"value": "Turbopack FileSystem Caching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to configure or disable either one."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Async Request APIs (Breaking change)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Version 15 introduced "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nextjs.org/docs/app/guides/upgrading/version-15#async-request-apis-breaking-change",
+					"children": [
+						{
+							"type": "text",
+							"value": "Async Request APIs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " as a breaking change, with "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "temporary"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " synchronous compatibility."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Starting with "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js 16"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", synchronous access is fully removed. These APIs can only be accessed asynchronously."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/cookies",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cookies"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/headers",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "headers"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/draft-mode",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "draftMode"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "params"
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/layout",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "layout.js"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/page",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "page.js"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/route",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "route.js"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/default",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "default.js"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/metadata/opengraph-image#opengraph-image",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "opengraph-image"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/metadata/opengraph-image#twitter-image",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "twitter-image"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/metadata/app-icons#icon",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "icon"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/metadata/app-icons#apple-icon",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "apple-icon"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "searchParams"
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/page",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "page.js"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/codemods#migrate-to-async-dynamic-apis",
+					"children": [
+						{
+							"type": "text",
+							"value": "codemod"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to migrate to async Request-time APIs."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Migrating types for async Request-time APIs"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To help migrate to async "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": ", you can run "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/cli/next#next-typegen-options",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "npx next typegen"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to automatically generate these globally available types helpers:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/page#page-props-helper",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "PageProps"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/layout#layout-props-helper",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "LayoutProps"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/route#route-context-helper",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "RouteContext"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": "typegen"
+						},
+						{
+							"type": "text",
+							"value": " was introduced in Next.js 15.5"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This simplifies type-safe migration to the new async API pattern, and enables you to update your components with full type safety, for example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"/app/blog/[slug]/page.tsx\"",
+			"value": "export default async function Page(props: PageProps<'/blog/[slug]'>) {\n\tconst { slug } = await props.params\n\tconst query = await props.searchParams\n\treturn <h1>Blog Post: {slug}</h1>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This approach gives you fully type-safe access to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "props.params"
+				},
+				{
+					"type": "text",
+					"value": ", including the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "slug"
+				},
+				{
+					"type": "text",
+					"value": ", and to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": ", directly within your page."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Async parameters for icon, and open-graph Image (Breaking change)"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "The props passed to the image generating functions in "
+						},
+						{
+							"type": "inlineCode",
+							"value": "opengraph-image"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": "twitter-image"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": "icon"
+						},
+						{
+							"type": "text",
+							"value": ", and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "apple-icon"
+						},
+						{
+							"type": "text",
+							"value": ", are now Promises."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In previous versions, both the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Image"
+				},
+				{
+					"type": "text",
+					"value": " (image generation function), and the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateImageMetadata"
+				},
+				{
+					"type": "text",
+					"value": " received a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " object. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "id"
+				},
+				{
+					"type": "text",
+					"value": " returned by "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateImageMetadata"
+				},
+				{
+					"type": "text",
+					"value": " was passed as a string to the image generation function."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/shop/[slug]/opengraph-image.js\"",
+			"value": "// Next.js 15 - synchronous params access\nexport function generateImageMetadata({ params }) {\n\tconst { slug } = params\n\treturn [{ id: '1' }, { id: '2' }]\n}\n\n// Next.js 15 - synchronous params and id access\nexport default function Image({ params, id }) {\n\tconst slug = params.slug\n\tconst imageId = id // string\n\t// ...\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Starting with "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js 16"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", to align with the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#async-request-apis-breaking-change",
+					"children": [
+						{
+							"type": "text",
+							"value": "Async Request APIs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " change, the image generating function now receives "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "id"
+				},
+				{
+					"type": "text",
+					"value": " as promises. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateImageMetadata"
+				},
+				{
+					"type": "text",
+					"value": " function continues to receive synchronous "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/shop/[slug]/opengraph-image.js\"",
+			"value": "export async function generateImageMetadata({ params }) {\n\tconst { slug } = params\n\treturn [{ id: '1' }, { id: '2' }]\n}\n\n// Next.js 16 - asynchronous params and id access\nexport default async function Image({ params, id }) {\n\tconst { slug } = await params // params now async\n\tconst imageId = await id // id is now Promise<string> when using generateImageMetadata\n\t// ...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Async "
+				},
+				{
+					"type": "inlineCode",
+					"value": "id"
+				},
+				{
+					"type": "text",
+					"value": " parameter for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "sitemap"
+				},
+				{
+					"type": "text",
+					"value": " (Breaking change)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Previously, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "id"
+				},
+				{
+					"type": "text",
+					"value": " values returned from "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-sitemaps",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateSitemaps"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " were passed directly to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "sitemap"
+				},
+				{
+					"type": "text",
+					"value": " generating function."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/product/sitemap.js\"",
+			"value": "export async function generateSitemaps() {\n\treturn [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }]\n}\n\n// Next.js 15 - synchronous id access\nexport default async function sitemap({ id }) {\n\tconst start = id * 50000 // id is a number\n\t// ...\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Starting with "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js 16"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "sitemap"
+				},
+				{
+					"type": "text",
+					"value": " generating function now receives "
+				},
+				{
+					"type": "inlineCode",
+					"value": "id"
+				},
+				{
+					"type": "text",
+					"value": " as a promise."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/product/sitemap.js\"",
+			"value": "export async function generateSitemaps() {\n\treturn [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }]\n}\n\n// Next.js 16 - asynchronous id access\nexport default async function sitemap({ id }) {\n\tconst resolvedId = await id // id is now Promise<string>\n\tconst start = Number(resolvedId) * 50000\n\t// ...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "React 19.2"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The App Router in "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js 16"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " uses the latest React "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/blog/2023/05/03/react-canaries",
+					"children": [
+						{
+							"type": "text",
+							"value": "Canary release"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", which includes the newly released React 19.2 features and other features being incrementally stabilized. Highlights include:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://react.dev/reference/react/ViewTransition",
+											"children": [
+												{
+													"type": "text",
+													"value": "View Transitions"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Animate elements that update inside a Transition or navigation"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://react.dev/reference/react/useEffectEvent",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "useEffectEvent"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Extract non-reactive logic from Effects into reusable Effect Event functions"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://react.dev/reference/react/Activity",
+											"children": [
+												{
+													"type": "text",
+													"value": "Activity"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Render \"background activity\" by hiding UI with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "display: none"
+								},
+								{
+									"type": "text",
+									"value": " while maintaining state and cleaning up Effects"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn more in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/blog/2025/10/01/react-19-2",
+					"children": [
+						{
+							"type": "text",
+							"value": "React 19.2 announcement"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "React Compiler Support"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Built-in support for the React Compiler is now stable in "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js 16"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " following the React Compiler's 1.0 release. The React Compiler automatically memoizes components, reducing unnecessary re-renders with zero manual code changes."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "reactCompiler"
+				},
+				{
+					"type": "text",
+					"value": " configuration option has been promoted from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental"
+				},
+				{
+					"type": "text",
+					"value": " to stable. It is not enabled by default as we continue gathering build performance data across different application types."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\treactCompiler: true,\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\treactCompiler: true,\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Install the latest version of the React Compiler plugin:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add -D babel-plugin-react-compiler"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install -D babel-plugin-react-compiler"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add -D babel-plugin-react-compiler"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add -D babel-plugin-react-compiler"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Expect compile times in development and during builds to be higher when enabling this option as the React Compiler relies on Babel."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Caching APIs"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "revalidateTag"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " now requires a second argument specifying a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife#reference",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " profile. The single-argument form is deprecated and will produce a TypeScript error."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "// Before\nrevalidateTag('posts')\n\n// After\nrevalidateTag('posts', 'max')"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you need immediate expiration rather than stale-while-revalidate, use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/updateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "updateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in Server Actions instead."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/actions.ts\" switcher",
+			"value": "'use server'\n\nimport { revalidateTag } from 'next/cache'\n\nexport async function updateArticle(articleId: string) {\n\t// Mark article data as stale - article readers see stale data while it revalidates\n\trevalidateTag(`article-${articleId}`, 'max')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/actions.js\" switcher",
+			"value": "'use server'\n\nimport { revalidateTag } from 'next/cache'\n\nexport async function updateArticle(articleId) {\n\t// Mark article data as stale - article readers see stale data while it revalidates\n\trevalidateTag(`article-${articleId}`, 'max')\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidateTag"
+				},
+				{
+					"type": "text",
+					"value": " for content where a slight delay in updates is acceptable, such as blog posts, product catalogs, or documentation. Users receive stale content while fresh data loads in the background."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "updateTag"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/updateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "updateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is a new "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/mutating-data#what-are-server-functions",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Actions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "-only API that provides "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "read-your-writes"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " semantics, where a user makes a change and the UI immediately shows the change, rather than stale data."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "It does this by expiring and immediately refreshing data within the same request."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/actions.ts\" switcher",
+			"value": "'use server'\n\nimport { updateTag } from 'next/cache'\n\nexport async function updateUserProfile(userId: string, profile: Profile) {\n\tawait db.users.update(userId, profile)\n\n\t// Expire cache and refresh immediately - user sees their changes right away\n\tupdateTag(`user-${userId}`)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/actions.js\" switcher",
+			"value": "'use server'\n\nimport { updateTag } from 'next/cache'\n\nexport async function updateUserProfile(userId, profile) {\n\tawait db.users.update(userId, profile)\n\n\t// Expire cache and refresh immediately - user sees their changes right away\n\tupdateTag(`user-${userId}`)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This ensures interactive features reflect changes immediately. Perfect for forms, user settings, and any workflow where users expect to see their updates instantly."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn more about when to use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "updateTag"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidateTag"
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/updateTag#when-to-use-updatetag",
+					"children": [
+						{
+							"type": "text",
+							"value": "here"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "refresh"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/refresh",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "refresh"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " allows you to refresh the client router from within a Server Action."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/actions.ts\" switcher",
+			"value": "'use server'\n\nimport { refresh } from 'next/cache'\n\nexport async function markNotificationAsRead(notificationId: string) {\n\t// Update the notification in the database\n\tawait db.notifications.markAsRead(notificationId)\n\n\t// Refresh the notification count displayed in the header\n\trefresh()\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/actions.js\" switcher",
+			"value": "'use server'\n\nimport { refresh } from 'next/cache'\n\nexport async function markNotificationAsRead(notificationId) {\n\t// Update the notification in the database\n\tawait db.notifications.markAsRead(notificationId)\n\n\t// Refresh the notification count displayed in the header\n\trefresh()\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use it when you need to refresh the client router after performing an action."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "cacheLife and cacheTag"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " are now stable. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "unstable_"
+				},
+				{
+					"type": "text",
+					"value": " prefix is no longer needed."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Wherever you had aliased imports like:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "import { unstable_cacheLife as cacheLife, unstable_cacheTag as cacheTag } from 'next/cache'"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can update your imports to:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "import { cacheLife, cacheTag } from 'next/cache'"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Enhanced Routing and Navigation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js 16"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " includes a complete overhaul of the routing and navigation system, making page transitions leaner and faster. This optimizes how Next.js prefetches and caches navigation data:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Layout deduplication"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": When prefetching multiple URLs with a shared layout, the layout is downloaded once."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Incremental prefetching"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Next.js only prefetches parts not already in cache, rather than entire pages."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "These changes require "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "no code modifications"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and are designed to improve performance across all apps."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "However, you may see more individual prefetch requests with much lower total transfer sizes. We believe this is the right trade-off for nearly all applications."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If the increased request count causes issues, please let us know by creating an "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/issues",
+					"children": [
+						{
+							"type": "text",
+							"value": "issue"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/discussions",
+					"children": [
+						{
+							"type": "text",
+							"value": "discussion"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " item."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Partial Prerendering (PPR)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js 16"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " removes the experimental "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Prerendering (PPR)"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " flag and configuration options, including the route level segment "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental_ppr"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Starting with "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js 16"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", you can opt into PPR using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " configuration."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\tcacheComponents: true,\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "PPR in "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js 16"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " works differently than in "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js 15"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " canaries. If you are using PPR today, stay in the current Next.js 15 canary you are using. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/migrating-to-cache-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Migrating to Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for migration patterns."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\t// If you are using PPR today\n\t// stay in the current Next.js 15 canary\n\texperimental: {\n\t\tppr: true,\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "middleware"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "proxy"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "middleware"
+				},
+				{
+					"type": "text",
+					"value": " filename is deprecated, and has been renamed to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "proxy"
+				},
+				{
+					"type": "text",
+					"value": " to clarify network boundary and routing focus."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "edge"
+				},
+				{
+					"type": "text",
+					"value": " runtime is "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "NOT"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " supported in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "proxy"
+				},
+				{
+					"type": "text",
+					"value": ". The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "proxy"
+				},
+				{
+					"type": "text",
+					"value": " runtime is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "nodejs"
+				},
+				{
+					"type": "text",
+					"value": ", and it cannot be configured. If you want to continue using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "edge"
+				},
+				{
+					"type": "text",
+					"value": " runtime, keep using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "middleware"
+				},
+				{
+					"type": "text",
+					"value": ". We will follow up on a minor release with further "
+				},
+				{
+					"type": "inlineCode",
+					"value": "edge"
+				},
+				{
+					"type": "text",
+					"value": " runtime instructions."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "# Rename your middleware file\nmv middleware.ts proxy.ts\n# or\nmv middleware.js proxy.js"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The named export "
+				},
+				{
+					"type": "inlineCode",
+					"value": "middleware"
+				},
+				{
+					"type": "text",
+					"value": " is also deprecated. Rename your function to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "proxy"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"proxy.ts\" switcher",
+			"value": "export function proxy(request: Request) {}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"proxy.js\" switcher",
+			"value": "export function proxy(request) {}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We recommend changing the function name to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "proxy"
+				},
+				{
+					"type": "text",
+					"value": ", even if you are using a default export."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Configuration flags that contained the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "middleware"
+				},
+				{
+					"type": "text",
+					"value": " name are also renamed. For example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "skipMiddlewareUrlNormalize"
+				},
+				{
+					"type": "text",
+					"value": " is now "
+				},
+				{
+					"type": "inlineCode",
+					"value": "skipProxyUrlNormalize"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tskipProxyUrlNormalize: true,\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\tskipProxyUrlNormalize: true,\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The version 16 "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/codemods#160",
+					"children": [
+						{
+							"type": "text",
+							"value": "codemod"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is able to update these flags too."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next/image"
+				},
+				{
+					"type": "text",
+					"value": " changes"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Local Images with Query Strings (Breaking change)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Local image sources with query strings now require "
+				},
+				{
+					"type": "inlineCode",
+					"value": "images.localPatterns.search"
+				},
+				{
+					"type": "text",
+					"value": " configuration to prevent enumeration attacks."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\"",
+			"value": "import Image from 'next/image'\n\nexport default function Page() {\n\treturn (\n\t\t<Image\n\t\t\tsrc=\"/assets/photo?v=1\"\n\t\t\talt=\"Photo\"\n\t\t\twidth=\"100\"\n\t\t\theight=\"100\"\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you need to use query strings with local images, add the pattern to your configuration:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\timages: {\n\t\tlocalPatterns: [\n\t\t\t{\n\t\t\t\tpathname: '/assets/**',\n\t\t\t\tsearch: '?v=1',\n\t\t\t},\n\t\t],\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\timages: {\n\t\tlocalPatterns: [\n\t\t\t{\n\t\t\t\tpathname: '/assets/**',\n\t\t\t\tsearch: '?v=1',\n\t\t\t},\n\t\t],\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "minimumCacheTTL"
+				},
+				{
+					"type": "text",
+					"value": " Default (Breaking change)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The default value for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "images.minimumCacheTTL"
+				},
+				{
+					"type": "text",
+					"value": " has changed from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "60 seconds"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "4 hours"
+				},
+				{
+					"type": "text",
+					"value": " (14400 seconds). This reduces revalidation cost for images without cache-control headers."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For some Next.js users, image revalidation was happening frequently, often because the upstream source images missed a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cache-control"
+				},
+				{
+					"type": "text",
+					"value": " header. This caused revalidation to happen every "
+				},
+				{
+					"type": "inlineCode",
+					"value": "60"
+				},
+				{
+					"type": "text",
+					"value": " seconds, which increased CPU usage and cost."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since most images do not change often, this short interval is not ideal. Setting the default to 4 hours offers a more durable cache by default, while still allowing images to update a few times per day if needed."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you need the previous behavior, change "
+				},
+				{
+					"type": "inlineCode",
+					"value": "minimumCacheTTL"
+				},
+				{
+					"type": "text",
+					"value": " to a lower value, for example back to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "60"
+				},
+				{
+					"type": "text",
+					"value": " seconds:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\timages: {\n\t\tminimumCacheTTL: 60,\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\timages: {\n\t\tminimumCacheTTL: 60,\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "imageSizes"
+				},
+				{
+					"type": "text",
+					"value": " Default (Breaking change)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The value "
+				},
+				{
+					"type": "inlineCode",
+					"value": "16"
+				},
+				{
+					"type": "text",
+					"value": " has been removed from the default "
+				},
+				{
+					"type": "inlineCode",
+					"value": "images.imageSizes"
+				},
+				{
+					"type": "text",
+					"value": " array."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We have looked at request analytics and found out that very few projects ever serve 16 pixels width images. Removing this setting reduces the size of the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "srcset"
+				},
+				{
+					"type": "text",
+					"value": " attribute shipped to the browser by "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/image"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you need to support 16px images:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\timages: {\n\t\timageSizes: [16, 32, 48, 64, 96, 128, 256, 384],\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\timages: {\n\t\timageSizes: [16, 32, 48, 64, 96, 128, 256, 384],\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Rather than lack of developer usage, we believe 16 pixels width images have become less common, because "
+				},
+				{
+					"type": "inlineCode",
+					"value": "devicePixelRatio: 2"
+				},
+				{
+					"type": "text",
+					"value": " actually fetches a 32px image to prevent blurriness in retina displays."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "qualities"
+				},
+				{
+					"type": "text",
+					"value": " Default (Breaking change)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The default value for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "images.qualities"
+				},
+				{
+					"type": "text",
+					"value": " has changed from allowing all qualities to only "
+				},
+				{
+					"type": "inlineCode",
+					"value": "[75]"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you need to support multiple quality levels:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\timages: {\n\t\tqualities: [50, 75, 100],\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\timages: {\n\t\tqualities: [50, 75, 100],\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you specify a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "quality"
+				},
+				{
+					"type": "text",
+					"value": " prop not included in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "images.qualities"
+				},
+				{
+					"type": "text",
+					"value": " array, the quality will be coerced to the closest value in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "images.qualities"
+				},
+				{
+					"type": "text",
+					"value": ". For example, given the configuration above, a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "quality"
+				},
+				{
+					"type": "text",
+					"value": " prop of 80, is coerced to 75."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Review custom image qualities. Add required values to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "images.qualities"
+				},
+				{
+					"type": "text",
+					"value": ", and test direct "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/_next/image"
+				},
+				{
+					"type": "text",
+					"value": " requests because unsupported "
+				},
+				{
+					"type": "inlineCode",
+					"value": "q"
+				},
+				{
+					"type": "text",
+					"value": " values return "
+				},
+				{
+					"type": "inlineCode",
+					"value": "400"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Local IP Restriction (Breaking change)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A new security restriction blocks local IP optimization by default. Set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "images.dangerouslyAllowLocalIP"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": " only for private networks."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\timages: {\n\t\tdangerouslyAllowLocalIP: true, // Only for private networks\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\timages: {\n\t\tdangerouslyAllowLocalIP: true, // Only for private networks\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This might be necessary when hosting Next.js in a VPC with split-horizon DNS and you receive status 400 Bad Request. Only enable once you understand the SSRF risk."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Maximum Redirects (Breaking change)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The default for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "images.maximumRedirects"
+				},
+				{
+					"type": "text",
+					"value": " has changed from unlimited to 3 redirects maximum."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\timages: {\n\t\tmaximumRedirects: 0, // Disable redirects\n\t\t// or\n\t\tmaximumRedirects: 5, // Increase for edge cases\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\timages: {\n\t\tmaximumRedirects: 0, // Disable redirects\n\t\t// or\n\t\tmaximumRedirects: 5, // Increase for edge cases\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next/legacy/image"
+				},
+				{
+					"type": "text",
+					"value": " Component (deprecated)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/legacy/image"
+				},
+				{
+					"type": "text",
+					"value": " component is deprecated. Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/image"
+				},
+				{
+					"type": "text",
+					"value": " instead:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "// Before\nimport Image from 'next/legacy/image'\n\n// After\nimport Image from 'next/image'"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "images.domains"
+				},
+				{
+					"type": "text",
+					"value": " Configuration (deprecated)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "images.domains"
+				},
+				{
+					"type": "text",
+					"value": " config is deprecated."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "// image.domains is deprecated\nmodule.exports = {\n\timages: {\n\t\tdomains: ['example.com'],\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "images.remotePatterns"
+				},
+				{
+					"type": "text",
+					"value": " instead for improved security:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "// Use image.remotePatterns instead\nmodule.exports = {\n\timages: {\n\t\tremotePatterns: [\n\t\t\t{\n\t\t\t\tprotocol: 'https',\n\t\t\t\thostname: 'example.com',\n\t\t\t},\n\t\t],\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Concurrent "
+				},
+				{
+					"type": "inlineCode",
+					"value": "dev"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "build"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " now use separate output directories, enabling concurrent execution. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " command outputs to "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next/dev"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Additionally, a lockfile mechanism prevents multiple "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " instances on the same project."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/local-development#turbopack-tracing",
+					"children": [
+						{
+							"type": "text",
+							"value": "Turbopack tracing command"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " should be:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm next internal trace .next-profiles/trace-turbopack.bin"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npx next internal trace .next-profiles/trace-turbopack.bin"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn next internal trace .next-profiles/trace-turbopack.bin"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bunx next internal trace .next-profiles/trace-turbopack.bin"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parallel Routes "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default.js"
+				},
+				{
+					"type": "text",
+					"value": " requirement"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "All "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/parallel-routes",
+					"children": [
+						{
+							"type": "text",
+							"value": "parallel route"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " slots now require explicit "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default.js"
+				},
+				{
+					"type": "text",
+					"value": " files. Builds will fail without them."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To maintain previous behavior, create a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/default",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "default.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " file that calls "
+				},
+				{
+					"type": "inlineCode",
+					"value": "notFound()"
+				},
+				{
+					"type": "text",
+					"value": " or returns "
+				},
+				{
+					"type": "inlineCode",
+					"value": "null"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/@modal/default.tsx\"",
+			"value": "import { notFound } from 'next/navigation'\n\nexport default function Default() {\n\tnotFound()\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Or return "
+				},
+				{
+					"type": "inlineCode",
+					"value": "null"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/@modal/default.tsx\"",
+			"value": "export default function Default() {\n\treturn null\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "ESLint Flat Config"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "@next/eslint-plugin-next"
+				},
+				{
+					"type": "text",
+					"value": " now defaults to ESLint Flat Config format, aligning with ESLint v10 which will drop legacy config support."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Make sure to review our API reference for the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/eslint#setup-eslint",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "@next/eslint-plugin-next"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " plugin."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you're using the legacy "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".eslintrc"
+				},
+				{
+					"type": "text",
+					"value": " format, consider migrating to the flat config format. See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://eslint.org/docs/latest/use/configure/migration-guide",
+					"children": [
+						{
+							"type": "text",
+							"value": "ESLint migration guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for details."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Scroll Behavior Override"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "previous versions of Next.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", if you had set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "scroll-behavior: smooth"
+				},
+				{
+					"type": "text",
+					"value": " globally on your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<html>"
+				},
+				{
+					"type": "text",
+					"value": " element via CSS, Next.js would override this during SPA route transitions, as follows:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Temporarily set "
+								},
+								{
+									"type": "inlineCode",
+									"value": "scroll-behavior"
+								},
+								{
+									"type": "text",
+									"value": " to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "auto"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Perform the navigation (causing instant scroll to top)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Restore your original "
+								},
+								{
+									"type": "inlineCode",
+									"value": "scroll-behavior"
+								},
+								{
+									"type": "text",
+									"value": " value"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This ensured that page navigation always felt snappy and instant, even when you had smooth scrolling enabled for in-page navigation. However, this manipulation could be expensive, especially at the start of every navigation."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js 16"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", this behavior has changed. By default, Next.js will "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "no longer override"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "scroll-behavior"
+				},
+				{
+					"type": "text",
+					"value": " setting during navigation."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "If you want Next.js to perform this override"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " (the previous default behavior), add the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "data-scroll-behavior=\"smooth\""
+				},
+				{
+					"type": "text",
+					"value": " attribute to your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<html>"
+				},
+				{
+					"type": "text",
+					"value": " element:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\"",
+			"value": "export default function RootLayout({ children }) {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tdata-scroll-behavior=\"smooth\">\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Performance Improvements"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Significant performance optimizations for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next start"
+				},
+				{
+					"type": "text",
+					"value": " commands, along with improved terminal output with clearer formatting, better error messages, and improved performance metrics."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js 16"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " removes the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "size"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "First Load JS"
+				},
+				{
+					"type": "text",
+					"value": " metrics from the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " output. We found these to be inaccurate in server-driven architectures using React Server Components. Both our Turbopack and Webpack implementations had issues, and disagreed on how to account for Client Components payload."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The most effective way to measure actual route performance is through tools such as "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.chrome.com/docs/lighthouse/overview",
+					"children": [
+						{
+							"type": "text",
+							"value": "Chrome Lighthouse"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or Vercel Analytics, which focus on Core Web Vitals and downloaded resource sizes."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " config load"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In previous versions the Next config file was loaded twice during development:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "When running the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next dev"
+								},
+								{
+									"type": "text",
+									"value": " command"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "When the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next dev"
+								},
+								{
+									"type": "text",
+									"value": " command started the Next.js server"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This was inefficient because the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " command doesn't need the config file to start the Next.js server."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A consequence of this change is that, when running "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " checking if "
+				},
+				{
+					"type": "inlineCode",
+					"value": "process.argv"
+				},
+				{
+					"type": "text",
+					"value": " includes "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'dev'"
+				},
+				{
+					"type": "text",
+					"value": ", in your Next.js config file, will return "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": The "
+						},
+						{
+							"type": "inlineCode",
+							"value": "typegen"
+						},
+						{
+							"type": "text",
+							"value": ", and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "build"
+						},
+						{
+							"type": "text",
+							"value": " commands, are still visible in "
+						},
+						{
+							"type": "inlineCode",
+							"value": "process.argv"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This is specially important for plugins that trigger side-effects on "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": ". If that's the case, it might be enough to check if "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NODE_ENV"
+				},
+				{
+					"type": "text",
+					"value": " is set to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "development"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "import { startServer } from 'docs-lib/dev-server'\n\nconst isDev = process.env.NODE_ENV === 'development'\n\nif (isDev) {\n\tstartServer()\n}\n\nconst nextConfig = {/* Your config options */}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Alternatively, use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js#phase",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "phase"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in which the configuration is loaded."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Build Adapters API (alpha)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Following the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/discussions/77740",
+					"children": [
+						{
+							"type": "text",
+							"value": "Build Adapters RFC"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", the first alpha version of the Build Adapters API is now available."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Build Adapters allow you to create custom adapters that hook into the build process, enabling deployment platforms and custom build integrations to modify Next.js configuration or process build output."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "const nextConfig = {\n\texperimental: {\n\t\tadapterPath: require.resolve('./my-adapter.js'),\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "adapterPath"
+				},
+				{
+					"type": "text",
+					"value": " was promoted to a stable, top-level option in 16.2.0. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/adapterPath",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "adapterPath"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the current API reference."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Modern Sass API"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "sass-loader"
+				},
+				{
+					"type": "text",
+					"value": " has been bumped to v16, which supports "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://sass-lang.com/documentation/js-api/#md:usage",
+					"children": [
+						{
+							"type": "text",
+							"value": "modern Sass syntax"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and new features."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Removals"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "These features were previously deprecated and are now removed:"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "AMP Support"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "AMP adoption has declined significantly, and maintaining this feature adds complexity to the framework. All AMP APIs and configurations have been removed:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "amp"
+								},
+								{
+									"type": "text",
+									"value": " configuration from your Next config file"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next/amp"
+								},
+								{
+									"type": "text",
+									"value": " hook imports and usage ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "useAmp"
+								},
+								{
+									"type": "text",
+									"value": ")"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "// Removed\nimport { useAmp } from 'next/amp'\n\n// Removed\nexport const config = { amp: true }"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "export const config = { amp: true }"
+								},
+								{
+									"type": "text",
+									"value": " from pages"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "const nextConfig = {\n\t// Removed\n\tamp: {\n\t\tcanonicalBase: 'https://example.com',\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Evaluate if AMP is still necessary for your use case. Most performance benefits can now be achieved through Next.js's built-in optimizations and modern web standards."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next lint"
+				},
+				{
+					"type": "text",
+					"value": " Command"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next lint"
+				},
+				{
+					"type": "text",
+					"value": " command has been removed. Use Biome or ESLint directly. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " no longer runs linting."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A codemod is available to automate migration:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm dlx @next/codemod@canary next-lint-to-eslint-cli ."
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npx @next/codemod@canary next-lint-to-eslint-cli ."
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn dlx @next/codemod@canary next-lint-to-eslint-cli ."
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bunx @next/codemod@canary next-lint-to-eslint-cli ."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "eslint"
+				},
+				{
+					"type": "text",
+					"value": " option in the Next.js config file is also removed."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.mjs\"",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\t// No longer supported\n\t// eslint: {},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Runtime Configuration"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "serverRuntimeConfig"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "publicRuntimeConfig"
+				},
+				{
+					"type": "text",
+					"value": " have been removed. Use environment variables instead."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Before (Next.js 15):"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tserverRuntimeConfig: {\n\t\tdbUrl: process.env.DATABASE_URL,\n\t},\n\tpublicRuntimeConfig: {\n\t\tapiUrl: '/api',\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"pages/index.tsx\"",
+			"value": "import getConfig from 'next/config'\n\nexport default function Page() {\n\tconst { publicRuntimeConfig } = getConfig()\n\treturn <p>API URL: {publicRuntimeConfig.apiUrl}</p>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "After (Next.js 16):"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For server-only values, access environment variables directly in Server Components:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\"",
+			"value": "async function fetchData() {\n\tconst dbUrl = process.env.DATABASE_URL\n\t// Use for server-side operations only\n\treturn await db.query(dbUrl, 'SELECT * FROM users')\n}\n\nexport default async function Page() {\n\tconst data = await fetchData()\n\treturn <div>{/* render data */}</div>\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Use the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/config/next-config-js/taint",
+							"children": [
+								{
+									"type": "text",
+									"value": "taint API"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " to prevent accidentally passing sensitive server values to Client Components."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For client-accessible values, use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NEXT_PUBLIC_"
+				},
+				{
+					"type": "text",
+					"value": " prefix:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\".env.local\"",
+			"value": "NEXT_PUBLIC_API_URL=\"/api\""
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/components/client-component.tsx\"",
+			"value": "'use client'\n\nexport default function ClientComponent() {\n\tconst apiUrl = process.env.NEXT_PUBLIC_API_URL\n\treturn <p>API URL: {apiUrl}</p>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To ensure environment variables are read at runtime (not bundled at build time), use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/connection",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "connection()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " function before reading from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "process.env"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\"",
+			"value": "import { connection } from 'next/server'\n\nexport default async function Page() {\n\tawait connection()\n\tconst config = process.env.RUNTIME_CONFIG\n\treturn <p>{config}</p>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Learn more about "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/environment-variables",
+					"children": [
+						{
+							"type": "text",
+							"value": "environment variables"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "devIndicators"
+				},
+				{
+					"type": "text",
+					"value": " Options"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The following options have been removed from "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/devIndicators",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "devIndicators"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "appIsrStatus"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "buildActivity"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "buildActivityPosition"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The indicator itself remains available."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "experimental.dynamicIO"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.useCache"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.dynamicIO"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.useCache"
+				},
+				{
+					"type": "text",
+					"value": " flags have been removed."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "// Before: experimental.useCache\nmodule.exports = {\n\texperimental: {\n\t\tuseCache: true,\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "// Before: experimental.dynamicIO\nmodule.exports = {\n\texperimental: {\n\t\tdynamicIO: true,\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you were actively using these flags, migrate to top-level "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\n// After\nconst nextConfig: NextConfig = {\n\tcacheComponents: true,\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "// After\nmodule.exports = {\n\tcacheComponents: true,\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you were not actively adopting Cache Components, remove the flags instead. Enabling "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheComponents"
+				},
+				{
+					"type": "text",
+					"value": " is not a rename-only change: it can surface build errors for uncached data outside of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " and requires adopting the Cache Components model."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For the full migration path, see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/migrating-to-cache-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Migrating to Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "unstable_rootParams"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "unstable_rootParams"
+				},
+				{
+					"type": "text",
+					"value": " function has been removed. Use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/next-root-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next/root-params"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " instead."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Troubleshooting"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Installation fails after upgrading to React 19"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Follow the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/upgrading/version-15#installation-fails-after-upgrading-to-react-19",
+									"children": [
+										{
+											"type": "text",
+											"value": "React recovery checklist"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Installation fails after upgrading ESLint"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js 16 removes "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next lint"
+				},
+				{
+					"type": "text",
+					"value": ", but migrating to the ESLint CLI does not require upgrading ESLint. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "eslint-config-next@16"
+				},
+				{
+					"type": "text",
+					"value": " requires ESLint 9 or later, and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "eslint-config-next@16.4.0"
+				},
+				{
+					"type": "text",
+					"value": " or later supports ESLint 10. If your existing lint configuration does not use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "eslint-config-next@16"
+				},
+				{
+					"type": "text",
+					"value": ", you can keep its compatible ESLint version."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If an ESLint upgrade causes peer dependency conflicts, restore the previous compatible versions of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "eslint"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "eslint-config-next"
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "@next/eslint-plugin-next"
+								},
+								{
+									"type": "text",
+									"value": " (if present), along with the previous lint configuration."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If installation interrupted the upgrade, retry the same exact target with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "--skip-eslint-upgrade"
+								},
+								{
+									"type": "text",
+									"value": " to preserve the repaired lint stack and skip the lint codemod. If Next.js already matches the target, install dependencies and complete interrupted migrations individually. Replace "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next lint"
+								},
+								{
+									"type": "text",
+									"value": " scripts with ESLint CLI commands compatible with the preserved configuration. Confirm installation and lint pass."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Review migration checklist"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After applying the changes relevant to your app, review these action items before you consider the migration complete:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": true,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The app meets the Node.js, TypeScript, and React requirements in this guide."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Development and build scripts agree with the effective bundler configuration, including plugins, loaders, aliases, and affected Sass imports."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Middleware and proxy changes preserve the required runtime and routing behavior. Edge middleware is not blindly renamed to proxy."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Affected image requests succeed under the documented restrictions and defaults while preserving the intended quality."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Existing cache API calls follow the documented signatures and semantics. React Compiler and Cache Components are not enabled merely to complete the upgrade."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Removed APIs and configuration have no remaining consumers. Runtime configuration replacements preserve server and client visibility and the required evaluation time."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Scripts and CI no longer invoke "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next lint"
+								},
+								{
+									"type": "text",
+									"value": "; linting runs separately where the app requires it."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The app's supported checks and affected runtime behavior pass. A green build alone does not close runtime findings."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Async Request API access and affected callers are migrated. Resolve codemod error comments and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "UnsafeUnwrapped"
+								},
+								{
+									"type": "text",
+									"value": " casts; use React "
+								},
+								{
+									"type": "inlineCode",
+									"value": "use"
+								},
+								{
+									"type": "text",
+									"value": " for synchronous Client Components where appropriate."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Dynamic metadata image functions and sitemap functions handle their asynchronous parameters, and affected generated URLs work."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": false,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Parallel route slots have appropriate defaults, and direct navigation and reloads retain the intended fallback behavior."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

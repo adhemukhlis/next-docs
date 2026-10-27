@@ -1,0 +1,3060 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Building interactive apps\ndescription: Learn how to build responsive interactions with Server Functions, transitions, optimistic UI, and pending feedback.\nnav_title: Interactive apps\nrelated:\n description: Learn more about the APIs used in this guide.\n links:\n  - app/api-reference/functions/refresh\n  - app/api-reference/directives/use-cache\n  - app/api-reference/functions/cacheTag\n  - app/api-reference/functions/updateTag"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When a user interaction requires server-side work, the result is not available immediately. Network requests take an unknown amount of time to complete and may succeed or fail. While waiting, the client should provide feedback and respond to those states. Otherwise, users are left looking at stale data and may wonder whether anything is happening."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This guide adds responsive feedback to a task management app called "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "Taskboard"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Each step handles a different kind of pending work, from streaming slow reads to confirming mutations before the server responds."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " The patterns in this guide also improve "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://web.dev/articles/vitals",
+							"children": [
+								{
+									"type": "text",
+									"value": "Core Web Vitals"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ". Streaming with "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://react.dev/reference/react/Suspense",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<Suspense>"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " lowers "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://web.dev/articles/fcp",
+							"children": [
+								{
+									"type": "text",
+									"value": "FCP"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " and "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://web.dev/articles/lcp",
+							"children": [
+								{
+									"type": "text",
+									"value": "LCP"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " by letting the shell paint while slow reads finish. Optimistic UI and transitions lower "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://web.dev/articles/inp",
+							"children": [
+								{
+									"type": "text",
+									"value": "INP"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " by keeping the click frame fast. Prefetching the next route makes FCP, LCP, and INP on the destination page near-instant. These patterns help, but they don't replace the usual INP work: shipping less client JavaScript and avoiding blocking roundtrips during interactions."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Example"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The patterns build in order: stream slow data behind loading boundaries, add an instant priority toggle, build a reusable filter with a callback prop, show comments before they're confirmed, move cards between columns on drop, manage form lifecycle in a create dialog, and signal pending deletion to a parent. The final step caches the reusable reads so navigations stay instant."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The companion "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://async-react-demo.labs.vercel.dev",
+					"children": [
+						{
+							"type": "text",
+							"value": "Taskboard demo"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " ("
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/nextjs/async-react-demo",
+					"children": [
+						{
+							"type": "text",
+							"value": "source"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ") lets you see each pattern from this guide in action."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The app is organized by feature. Everything for the task domain (queries, Server Functions, and components) lives under "
+				},
+				{
+					"type": "inlineCode",
+					"value": "features/task/"
+				},
+				{
+					"type": "text",
+					"value": ". Shared UI primitives live in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "components/ui/"
+				},
+				{
+					"type": "text",
+					"value": ", and pages in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/"
+				},
+				{
+					"type": "text",
+					"value": " compose feature components. The file paths throughout this guide follow that structure."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The starting point is a Server Component app that reads tasks and comments from a database, with no "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/streaming",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " boundaries and no caching. Client Components call "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/mutating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Functions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to mutate that data. After each mutation, the Server Function calls "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/refresh",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "refresh()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " so the server re-renders with fresh data:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"features/task/task-actions.ts\"",
+			"value": "'use server'\n\nimport { refresh } from 'next/cache'\nimport { PRIORITY_CYCLE } from '@/lib/data'\nimport { getTaskById, updateTaskPriority } from '@/lib/db'\n\nexport async function cyclePriority(taskId: string) {\n\tconst task = await getTaskById(taskId)\n\tif (!task) return null\n\tconst newPriority = PRIORITY_CYCLE[task.priority]\n\tawait updateTaskPriority(taskId, newPriority)\n\trefresh()\n\treturn newPriority\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 1: Stream slow data with Suspense"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The task detail page reads the task and its comments. When both are awaited at the top of the page component, the whole page blocks until the slowest read resolves."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/task/[id]/page.tsx\"",
+			"value": "import { getTask } from '@/features/task/task-queries'\nimport { TaskDetail } from '@/features/task/components/task-detail'\nimport { CommentSection } from '@/features/task/components/comment-section'\n\nexport default async function TaskPage({ params }) {\n\tconst { id } = await params\n\tconst task = await getTask(id)\n\n\treturn (\n\t\t<div>\n\t\t\t<TaskDetail task={task} />\n\t\t\t<CommentSection taskId={id} />\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With this version, nothing renders until "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getTask"
+				},
+				{
+					"type": "text",
+					"value": " resolves, and the comments read starts only after that."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Split the reads into separate components, pass each one a promise, and wrap them in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Suspense",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". The page becomes synchronous, returns the shell immediately, and the server streams each section in as its data resolves:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/task/[id]/page.tsx\"",
+			"value": "import { Suspense } from 'react'\nimport { TaskDetail, TaskDetailSkeleton } from '@/features/task/components/task-detail'\nimport { CommentSection, CommentSectionSkeleton } from '@/features/task/components/comment-section'\n\nexport default function TaskPage({ params }) {\n\treturn (\n\t\t<div>\n\t\t\t<Suspense fallback={<TaskDetailSkeleton />}>\n\t\t\t\t{params.then(({ id }) => (\n\t\t\t\t\t<>\n\t\t\t\t\t\t<TaskDetail id={id} />\n\t\t\t\t\t\t<Suspense fallback={<CommentSectionSkeleton />}>\n\t\t\t\t\t\t\t<CommentSection taskId={id} />\n\t\t\t\t\t\t</Suspense>\n\t\t\t\t\t</>\n\t\t\t\t))}\n\t\t\t</Suspense>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each section component awaits its own data:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"features/task/components/task-detail.tsx\"",
+			"value": "export async function TaskDetail({ id }) {\n\tconst task = await getTask(id)\n\treturn <TaskHeader task={task} />\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Calling "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params.then()"
+				},
+				{
+					"type": "text",
+					"value": " inline in JSX keeps the page synchronous. The outer "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " covers the params resolution and the task detail read. Once "
+				},
+				{
+					"type": "inlineCode",
+					"value": "TaskDetail"
+				},
+				{
+					"type": "text",
+					"value": " resolves, React reveals the task header and the nested "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary, which shows "
+				},
+				{
+					"type": "inlineCode",
+					"value": "CommentSectionSkeleton"
+				},
+				{
+					"type": "text",
+					"value": " while comments load."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The page shell now paints immediately, the task header streams in when "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getTask"
+				},
+				{
+					"type": "text",
+					"value": " resolves, and the comments section follows when "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getComments"
+				},
+				{
+					"type": "text",
+					"value": " resolves."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For more on streaming patterns, see the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/streaming",
+					"children": [
+						{
+							"type": "text",
+							"value": "Streaming"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " guide."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 2: Respond instantly to a toggle"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each task card has a priority indicator that cycles through low, medium, and high on click."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The button renders the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "priority"
+				},
+				{
+					"type": "text",
+					"value": " prop from the server. Calling a Server Function starts the mutation, but it doesn't change that prop in the current render."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Here the Server Function is called directly:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"features/task/components/task-card.tsx\"",
+			"value": "'use client'\n\nimport { cyclePriority } from '@/features/task/task-actions'\n\nexport function TaskCard({ id, priority }) {\n\treturn (\n\t\t<button\n\t\t\tonClick={() => cyclePriority(id)}\n\t\t\tclassName={priorityDot[priority]}>\n\t\t\t{priority}\n\t\t</button>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you click the dot, the Server Function runs, but the button keeps rendering the old "
+				},
+				{
+					"type": "inlineCode",
+					"value": "priority"
+				},
+				{
+					"type": "text",
+					"value": " prop until the next server render arrives."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Replace the direct call with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/useOptimistic",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useOptimistic"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/useTransition",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useTransition"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useOptimistic"
+				},
+				{
+					"type": "text",
+					"value": " provides a value to render in place of the stale prop, and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useTransition"
+				},
+				{
+					"type": "text",
+					"value": " runs the Server Function as part of a transition. The optimistic value applies for as long as that transition is pending:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"features/task/components/task-card.tsx\"",
+			"value": "'use client'\n\nimport { useOptimistic, useTransition } from 'react'\nimport { cyclePriority } from '@/features/task/task-actions'\nimport { PRIORITY_CYCLE } from '@/lib/data'\n\nexport function TaskCard({ id, priority }) {\n\tconst [optimisticPriority, setOptimisticPriority] = useOptimistic(priority)\n\tconst [, startTransition] = useTransition()\n\n\tfunction handlePriority() {\n\t\tstartTransition(async () => {\n\t\t\tsetOptimisticPriority(PRIORITY_CYCLE[optimisticPriority])\n\t\t\tawait cyclePriority(id)\n\t\t})\n\t}\n\n\treturn (\n\t\t<button\n\t\t\tonClick={handlePriority}\n\t\t\tclassName={priorityDot[optimisticPriority]}>\n\t\t\t{optimisticPriority}\n\t\t</button>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "setOptimisticPriority"
+				},
+				{
+					"type": "text",
+					"value": " call updates the UI on the current frame with the next value in the cycle. Reading from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "optimisticPriority"
+				},
+				{
+					"type": "text",
+					"value": " instead of the prop means rapid double-clicks cycle correctly rather than reading a stale closure value."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When the transition ends and fresh data arrives, the optimistic value reverts to the new server-rendered prop. If the Server Function inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useTransition"
+				},
+				{
+					"type": "text",
+					"value": " throws, the error is forwarded to the nearest "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/error",
+					"children": [
+						{
+							"type": "text",
+							"value": "error boundary"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " without a manual "
+				},
+				{
+					"type": "inlineCode",
+					"value": "try"
+				},
+				{
+					"type": "text",
+					"value": "/"
+				},
+				{
+					"type": "inlineCode",
+					"value": "catch"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The color now changes the moment the mouse lifts. Clicking again cycles to the next value without waiting for the first mutation to finish."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 3: Filter with pending feedback"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The board has label filter chips (Design, Frontend, Backend). Clicking a chip updates a query param to filter the task list."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The selected filter comes from the URL. Calling "
+				},
+				{
+					"type": "inlineCode",
+					"value": "router.push()"
+				},
+				{
+					"type": "text",
+					"value": " starts a client navigation, and the server re-renders the board with the new search params. Until that navigation completes, the page keeps rendering the old URL state."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Here "
+				},
+				{
+					"type": "inlineCode",
+					"value": "router.push()"
+				},
+				{
+					"type": "text",
+					"value": " is called directly:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"features/task/components/label-filter.tsx\"",
+			"value": "'use client'\n\nimport { useRouter, useSearchParams } from 'next/navigation'\n\nexport function LabelFilter() {\n\tconst router = useRouter()\n\tconst searchParams = useSearchParams()\n\n\tfunction handleFilter(value: string | null) {\n\t\tconst params = new URLSearchParams(searchParams.toString())\n\t\tif (value) params.set('label', value)\n\t\telse params.delete('label')\n\t\trouter.push(`/?${params.toString()}`)\n\t}\n\n\t// ...render chips with onClick={handleFilter}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With this version, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "router.push()"
+				},
+				{
+					"type": "text",
+					"value": " starts the navigation, but there's no local pending state. The chip keeps rendering the old URL value, and the board gives no sign that a new server render is loading."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Separate the filter into two components. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "LabelFilter"
+				},
+				{
+					"type": "text",
+					"value": " owns the query string update and passes the navigation callback to a reusable "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ChipGroup"
+				},
+				{
+					"type": "text",
+					"value": ", which handles all the pending feedback:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"features/task/components/label-filter.tsx\"",
+			"value": "'use client'\n\nimport { useRouter, useSearchParams } from 'next/navigation'\nimport { ChipGroup } from '@/components/ui/chip-group'\n\nconst labels = [\n\t{ label: 'Design', value: 'design' },\n\t{ label: 'Frontend', value: 'frontend' },\n\t{ label: 'Backend', value: 'backend' },\n]\n\nexport function LabelFilter() {\n\tconst router = useRouter()\n\tconst searchParams = useSearchParams()\n\tconst current = searchParams.get('label') ?? null\n\n\tfunction filterAction(value: string | null) {\n\t\tconst params = new URLSearchParams(searchParams.toString())\n\t\tif (value) {\n\t\t\tparams.set('label', value)\n\t\t} else {\n\t\t\tparams.delete('label')\n\t\t}\n\t\trouter.push(`/?${params.toString()}`)\n\t}\n\n\treturn (\n\t\t<ChipGroup\n\t\t\titems={labels}\n\t\t\tvalue={current}\n\t\t\tchangeAction={filterAction}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "LabelFilter"
+				},
+				{
+					"type": "text",
+					"value": " decides where the app navigates and holds no pending state of its own."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Handle pending feedback internally"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "ChipGroup"
+				},
+				{
+					"type": "text",
+					"value": " accepts a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "changeAction"
+				},
+				{
+					"type": "text",
+					"value": " prop and calls it inside its own "
+				},
+				{
+					"type": "inlineCode",
+					"value": "startTransition"
+				},
+				{
+					"type": "text",
+					"value": ". It uses two "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useOptimistic"
+				},
+				{
+					"type": "text",
+					"value": " hooks: one for the selected chip, and one for the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "data-pending"
+				},
+				{
+					"type": "text",
+					"value": " attribute that ancestor components can style against:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"components/ui/chip-group.tsx\"",
+			"value": "'use client'\n\nimport { startTransition, useOptimistic } from 'react'\n\nexport function ChipGroup({ items, value, changeAction }) {\n\tconst [optimisticValue, setOptimisticValue] = useOptimistic(value)\n\tconst [isPending, setIsPending] = useOptimistic(false)\n\n\tfunction handleClick(newValue) {\n\t\tstartTransition(async () => {\n\t\t\tsetOptimisticValue(newValue)\n\t\t\tsetIsPending(true)\n\t\t\tawait changeAction(newValue)\n\t\t})\n\t}\n\n\treturn (\n\t\t<div\n\t\t\tclassName=\"flex gap-1.5\"\n\t\t\tdata-pending={isPending ? '' : undefined}>\n\t\t\t{items.map((item) => (\n\t\t\t\t<button\n\t\t\t\t\tkey={item.value}\n\t\t\t\t\tonClick={() => handleClick(item.value === optimisticValue ? null : item.value)}\n\t\t\t\t\tclassName={item.value === optimisticValue ? 'active' : ''}>\n\t\t\t\t\t{item.label}\n\t\t\t\t</button>\n\t\t\t))}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The consumer passes a callback ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "changeAction"
+				},
+				{
+					"type": "text",
+					"value": "), and the design component runs it inside a transition. By convention, props named "
+				},
+				{
+					"type": "inlineCode",
+					"value": "action"
+				},
+				{
+					"type": "text",
+					"value": " or suffixed with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Action"
+				},
+				{
+					"type": "text",
+					"value": " signal this behavior. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/useTransition#exposing-action-props-from-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Exposing "
+						},
+						{
+							"type": "inlineCode",
+							"value": "action"
+						},
+						{
+							"type": "text",
+							"value": " props from components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in the React docs for this pattern."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "data-pending"
+				},
+				{
+					"type": "text",
+					"value": " attribute on the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ChipGroup"
+				},
+				{
+					"type": "text",
+					"value": " root element lets ancestor components react through CSS without any coordination. The board on the home page uses "
+				},
+				{
+					"type": "inlineCode",
+					"value": "group-has-data-pending:opacity-50"
+				},
+				{
+					"type": "text",
+					"value": " to dim while the transition runs, without replacing the board with a skeleton. Because "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ChipGroup"
+				},
+				{
+					"type": "text",
+					"value": " renders inside the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "group"
+				},
+				{
+					"type": "text",
+					"value": " element, the attribute is available to any ancestor for styling."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " "
+						},
+						{
+							"type": "inlineCode",
+							"value": "group-has-data-pending:"
+						},
+						{
+							"type": "text",
+							"value": " and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "has-data-pending:"
+						},
+						{
+							"type": "text",
+							"value": " compile to the CSS "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/:has",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": ":has()"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " selector, which the browser re-evaluates over the anchored subtree whenever "
+						},
+						{
+							"type": "inlineCode",
+							"value": "data-pending"
+						},
+						{
+							"type": "text",
+							"value": " toggles. That stays cheap here because the board toggles it only twice per filter, and dragging (Step 5) deliberately skips it. Reach for client state instead when a broad "
+						},
+						{
+							"type": "inlineCode",
+							"value": ":has()"
+						},
+						{
+							"type": "text",
+							"value": " anchor toggles on a high-frequency interaction like dragging or scrolling, where repeated recalculation over a large subtree adds up."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The \"Frontend\" chip now highlights on the current frame. The board dims while the filtered data loads, then updates with the filtered tasks."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 4: Add comments with instant feedback"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The task detail page has a comment section. Submitting a comment writes new data on the server, but a server component renders the persisted list, so it can't include the new comment until the next server render arrives."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Here a comment form uses controlled state for the input and calls the Server Function directly:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"features/task/components/comment-form.tsx\"",
+			"value": "'use client'\n\nimport { useState } from 'react'\nimport { addComment } from '@/features/task/task-actions'\n\nexport function CommentForm({ taskId }) {\n\tconst [content, setContent] = useState('')\n\n\tasync function handleSubmit() {\n\t\tif (!content.trim()) return\n\t\tawait addComment(taskId, content)\n\t\tsetContent('')\n\t}\n\n\treturn (\n\t\t<div>\n\t\t\t<input\n\t\t\t\tvalue={content}\n\t\t\t\tonChange={(e) => setContent(e.target.value)}\n\t\t\t\tplaceholder=\"Write a comment...\"\n\t\t\t/>\n\t\t\t<button onClick={handleSubmit}>Send</button>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With this version, the Server Function runs on submit, but the input stays filled and the list doesn't change until the server responds."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Split the comment list into two parts. A server component renders the persisted comments, and a client component tracks only the "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "pending"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " comments using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useOptimistic([])"
+				},
+				{
+					"type": "text",
+					"value": " with an empty initial array. When the transition completes and a new render arrives with fresh data, the pending list resets to empty and the real comment appears in the server-rendered list:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"features/task/components/optimistic-comments.tsx\"",
+			"value": "'use client'\n\nimport { useOptimistic, useRef } from 'react'\nimport { addComment } from '@/features/task/task-actions'\nimport { CommentCard } from './comment-card'\n\nexport function OptimisticComments({ taskId }) {\n\tconst [pendingComments, setPendingComments] = useOptimistic([])\n\tconst formRef = useRef(null)\n\n\treturn (\n\t\t<>\n\t\t\t<form\n\t\t\t\tref={formRef}\n\t\t\t\taction={async (formData) => {\n\t\t\t\t\tconst content = formData.get('content')?.trim()\n\t\t\t\t\tif (!content) return\n\t\t\t\t\tformRef.current?.reset()\n\n\t\t\t\t\tconst id = crypto.randomUUID()\n\t\t\t\t\tsetPendingComments((current) => [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\tid,\n\t\t\t\t\t\t\tcontent,\n\t\t\t\t\t\t\tuserName: 'You',\n\t\t\t\t\t\t\tcreatedAt: new Date().toISOString(),\n\t\t\t\t\t\t},\n\t\t\t\t\t\t...current,\n\t\t\t\t\t])\n\n\t\t\t\t\tawait addComment(taskId, content)\n\t\t\t\t}}>\n\t\t\t\t<input\n\t\t\t\t\tname=\"content\"\n\t\t\t\t\tplaceholder=\"Write a comment...\"\n\t\t\t\t\trequired\n\t\t\t\t/>\n\t\t\t\t<button type=\"submit\">Send</button>\n\t\t\t</form>\n\t\t\t{pendingComments.map((comment) => (\n\t\t\t\t<CommentCard\n\t\t\t\t\tkey={comment.id}\n\t\t\t\t\tcomment={comment}\n\t\t\t\t\tpending\n\t\t\t\t/>\n\t\t\t))}\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Three things happen on submit:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "formRef.current?.reset()"
+								},
+								{
+									"type": "text",
+									"value": " clears the input through direct DOM manipulation. Inside a transition, "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react/useState",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "useState"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " setters are deferred until the transition completes, but "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useOptimistic"
+								},
+								{
+									"type": "text",
+									"value": " setters and direct DOM calls like "
+								},
+								{
+									"type": "inlineCode",
+									"value": "formRef.reset()"
+								},
+								{
+									"type": "text",
+									"value": " apply on the current frame."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "setPendingComments"
+								},
+								{
+									"type": "text",
+									"value": " adds the new comment to the pending list with a client-generated UUID."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The form "
+								},
+								{
+									"type": "inlineCode",
+									"value": "action"
+								},
+								{
+									"type": "text",
+									"value": " runs the handler inside a transition."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The server component renders the real list alongside it:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"features/task/components/comment-section.tsx\"",
+			"value": "import { getComments } from '@/features/task/task-queries'\nimport { CommentCard } from './comment-card'\nimport { OptimisticComments } from './optimistic-comments'\n\nasync function CommentSection({ taskId }) {\n\tconst comments = await getComments(taskId)\n\n\treturn (\n\t\t<div>\n\t\t\t<OptimisticComments taskId={taskId} />\n\t\t\t{comments.map((comment) => (\n\t\t\t\t<CommentCard\n\t\t\t\t\tkey={comment.id}\n\t\t\t\t\tcomment={comment}\n\t\t\t\t/>\n\t\t\t))}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The input now clears on submit and a faded comment card appears at the top of the list. When the server confirms, the faded card disappears and the real comment takes its place in the server-rendered list."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 5: Move cards between columns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The board has three columns: Todo, In Progress, and Done. Each column renders tasks from the server-provided "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tasks"
+				},
+				{
+					"type": "text",
+					"value": " prop."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Dropping a card starts a Server Function that writes the new status. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tasks"
+				},
+				{
+					"type": "text",
+					"value": " prop doesn't change until the next server render arrives, so the client needs a temporary task list for the pending move."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Here the Server Function is called on drop:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"features/task/components/board.tsx\"",
+			"value": "'use client'\n\nimport { use } from 'react'\nimport { updateStatus } from '@/features/task/task-actions'\n\nexport function Board({ tasksPromise }) {\n\tconst tasks = use(tasksPromise)\n\n\tfunction handleDrop(targetStatus, taskId) {\n\t\tupdateStatus(taskId, targetStatus)\n\t}\n\n\t// ...render columns from tasks\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The component receives a promise from the parent server component (see Step 1's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary) and unwraps it with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/use",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". With this version, a card dragged from \"Todo\" to \"In Progress\" stays in the old column while the server processes the update, then jumps to the new column after the response arrives."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useOptimistic"
+				},
+				{
+					"type": "text",
+					"value": " with a reducer to remap the card's status on the current frame. The reducer receives the full task list and an action describing which card moved where:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"features/task/components/board.tsx\"",
+			"value": "'use client'\n\nimport { startTransition, use, useOptimistic } from 'react'\nimport { toast } from 'sonner'\nimport { updateStatus } from '@/features/task/task-actions'\n\nexport function Board({ tasksPromise }) {\n\tconst tasks = use(tasksPromise)\n\tconst [optimisticTasks, moveTask] = useOptimistic(tasks, (currentTasks, action: { taskId: string; status: Status }) =>\n\t\tcurrentTasks.map((t) => (t.id === action.taskId ? { ...t, status: action.status } : t)),\n\t)\n\n\tfunction handleDrop(targetStatus, taskId) {\n\t\tstartTransition(async () => {\n\t\t\tmoveTask({ taskId, status: targetStatus })\n\t\t\tconst result = await updateStatus(taskId, targetStatus)\n\t\t\tif (!result.success) toast.error(result.error)\n\t\t})\n\t}\n\n\treturn (\n\t\t<div className=\"grid grid-cols-3 gap-4\">\n\t\t\t{columns.map((col) => (\n\t\t\t\t<Column\n\t\t\t\t\tkey={col.status}\n\t\t\t\t\ttasks={optimisticTasks.filter((t) => t.status === col.status)}\n\t\t\t\t\tonDrop={(taskId) => handleDrop(col.status, taskId)}\n\t\t\t\t/>\n\t\t\t))}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The reducer maps over the task list and updates the status of the dragged card, leaving the rest unchanged. If a background refresh arrives mid-drag, for example from polling or another user's mutation, React re-runs the reducer with the updated base data so the optimistic move sits on top of fresh data. The Server Function returns an error result when the task no longer exists, which the client displays in a toast."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This step uses the standalone "
+				},
+				{
+					"type": "inlineCode",
+					"value": "startTransition"
+				},
+				{
+					"type": "text",
+					"value": " instead of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useTransition"
+				},
+				{
+					"type": "text",
+					"value": " because the hook's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "isPending"
+				},
+				{
+					"type": "text",
+					"value": " would trigger the board fade from Step 3. The optimistic move already covers the visual feedback, so no pending indicator is needed. If the Server Function returns an expected error, the card reverts. Unexpected errors are forwarded to the nearest "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/error-handling",
+					"children": [
+						{
+							"type": "text",
+							"value": "error boundary"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A card dragged from \"Todo\" to \"In Progress\" now lands in the target column the moment you release."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 6: Manage form lifecycle"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The board has a \"New Task\" button that opens a create dialog. The form action creates the task on the server, then refreshes the board."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The dialog coordinates three pieces of client state while the action is pending: the submit button, the field values, and whether the dialog is open. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/useActionState",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useActionState"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " handles all three."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Here a form manages submission state manually and calls the Server Function in an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "onSubmit"
+				},
+				{
+					"type": "text",
+					"value": " handler:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"features/task/components/create-task-modal.tsx\"",
+			"value": "'use client'\n\nimport { useState } from 'react'\nimport { createTask } from '@/features/task/task-actions'\n\nexport function CreateTaskModal() {\n\tconst [isOpen, setIsOpen] = useState(false)\n\tconst [isSubmitting, setIsSubmitting] = useState(false)\n\n\tasync function handleSubmit(e) {\n\t\te.preventDefault()\n\t\tconst formData = new FormData(e.currentTarget)\n\t\tconst title = formData.get('title')\n\t\tif (!title.trim()) return\n\n\t\tsetIsSubmitting(true)\n\t\tawait createTask({ title /* ... */ })\n\t\tsetIsSubmitting(false)\n\t\tsetIsOpen(false)\n\t}\n\n\treturn (\n\t\t<Dialog\n\t\t\topen={isOpen}\n\t\t\tonOpenChange={setIsOpen}>\n\t\t\t<form onSubmit={handleSubmit}>\n\t\t\t\t<input\n\t\t\t\t\tname=\"title\"\n\t\t\t\t\tplaceholder=\"Task title...\"\n\t\t\t\t\trequired\n\t\t\t\t/>\n\t\t\t\t<button\n\t\t\t\t\ttype=\"submit\"\n\t\t\t\t\tdisabled={isSubmitting}>\n\t\t\t\t\t{isSubmitting ? 'Creating...' : 'Create Task'}\n\t\t\t\t</button>\n\t\t\t</form>\n\t\t</Dialog>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With this version, the submit handler runs, but two separate "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useState"
+				},
+				{
+					"type": "text",
+					"value": " calls manage the pending state. The dialog closes before the board shows the new task, because "
+				},
+				{
+					"type": "inlineCode",
+					"value": "setIsOpen(false)"
+				},
+				{
+					"type": "text",
+					"value": " fires outside of a transition. The form fields also keep their values across submissions unless you track a reset key yourself."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "useActionState"
+				},
+				{
+					"type": "text",
+					"value": " handles all three concerns: "
+				},
+				{
+					"type": "inlineCode",
+					"value": "isPending"
+				},
+				{
+					"type": "text",
+					"value": " for the button, key-based reset for the fields, and a wrap around the dialog close:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"features/task/components/create-task-modal.tsx\"",
+			"value": "'use client'\n\nimport { useActionState, startTransition, useState } from 'react'\nimport { createTask } from '@/features/task/task-actions'\n\nexport function CreateTaskModal() {\n\tconst [isOpen, setIsOpen] = useState(false)\n\n\tconst [{ key }, formAction, isPending] = useActionState(\n\t\tasync (prev, formData) => {\n\t\t\tconst title = String(formData.get('title'))\n\t\t\tif (!title.trim()) return prev\n\n\t\t\tawait createTask({\n\t\t\t\ttitle,\n\t\t\t\tdescription: String(formData.get('description')),\n\t\t\t\tstatus: 'todo',\n\t\t\t\tpriority: 'medium',\n\t\t\t})\n\n\t\t\tstartTransition(() => setIsOpen(false))\n\t\t\treturn { key: prev.key + 1 }\n\t\t},\n\t\t{ key: 0 },\n\t)\n\n\treturn (\n\t\t<Dialog\n\t\t\topen={isOpen}\n\t\t\tonOpenChange={setIsOpen}>\n\t\t\t<form action={formAction}>\n\t\t\t\t<div key={key}>\n\t\t\t\t\t<input\n\t\t\t\t\t\tname=\"title\"\n\t\t\t\t\t\tplaceholder=\"Task title...\"\n\t\t\t\t\t\trequired\n\t\t\t\t\t/>\n\t\t\t\t\t<input\n\t\t\t\t\t\tname=\"description\"\n\t\t\t\t\t\tplaceholder=\"Describe the task...\"\n\t\t\t\t\t/>\n\t\t\t\t</div>\n\t\t\t\t<button\n\t\t\t\t\ttype=\"submit\"\n\t\t\t\t\tdisabled={isPending}>\n\t\t\t\t\t{isPending ? 'Creating...' : 'Create Task'}\n\t\t\t\t</button>\n\t\t\t</form>\n\t\t</Dialog>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "key"
+				},
+				{
+					"type": "text",
+					"value": " in the returned state controls form reset. On success, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "key"
+				},
+				{
+					"type": "text",
+					"value": " increments, which remounts the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<div key={key}>"
+				},
+				{
+					"type": "text",
+					"value": " and resets every input inside it."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "useActionState"
+				},
+				{
+					"type": "text",
+					"value": " runs the action as a transition, so the dialog stays open and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "isPending"
+				},
+				{
+					"type": "text",
+					"value": " stays "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": " while "
+				},
+				{
+					"type": "inlineCode",
+					"value": "createTask"
+				},
+				{
+					"type": "text",
+					"value": " runs. State updates after the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await"
+				},
+				{
+					"type": "text",
+					"value": " aren't automatically part of that transition, so wrapping "
+				},
+				{
+					"type": "inlineCode",
+					"value": "setIsOpen(false)"
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "startTransition"
+				},
+				{
+					"type": "text",
+					"value": " runs the close as part of the transition."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With that wrap in place, React batches the dialog close with the board update that "
+				},
+				{
+					"type": "inlineCode",
+					"value": "refresh()"
+				},
+				{
+					"type": "text",
+					"value": " triggers inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "createTask"
+				},
+				{
+					"type": "text",
+					"value": ", so the new task appears at the moment the dialog closes. Without it, the dialog closes first and the board updates a frame later."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " This limitation is documented in React under "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://react.dev/reference/react/useTransition#react-doesnt-treat-my-state-update-after-await-as-a-transition",
+							"children": [
+								{
+									"type": "text",
+									"value": "React doesn't treat my state update after "
+								},
+								{
+									"type": "inlineCode",
+									"value": "await"
+								},
+								{
+									"type": "text",
+									"value": " as a transition"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ". Until it's fixed, wrapping post-"
+						},
+						{
+							"type": "inlineCode",
+							"value": "await"
+						},
+						{
+							"type": "text",
+							"value": " state updates in "
+						},
+						{
+							"type": "inlineCode",
+							"value": "startTransition"
+						},
+						{
+							"type": "text",
+							"value": " is the recommended workaround."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The same post-"
+				},
+				{
+					"type": "inlineCode",
+					"value": "await"
+				},
+				{
+					"type": "text",
+					"value": " window is where side effects like toasts belong:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "await createTask({/* … */})\n\nstartTransition(() => setIsOpen(false))\ntoast.success('Task created')"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Side effects that don't affect rendered state, such as analytics, toasts, and focus changes, run after the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await"
+				},
+				{
+					"type": "text",
+					"value": " resolves. They don't need a transition because they don't update React state."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The button text now changes to \"Creating...\" and dims on submit. When the server responds, the fields clear, the dialog closes, the new task appears on the board, and a toast confirms the action."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " The companion app adds status, priority, assignee, and label pickers to the modal. The pattern is the same: hidden inputs track each picker's state, and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "key"
+						},
+						{
+							"type": "text",
+							"value": " resets them all on success."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 7: Signal pending deletion to a parent"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each comment card has a delete button that removes the comment on the server, and the comment disappears from the list after the next render."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Between the click and that render, the card still shows the old data. The list itself can't show the pending removal, so the signal has to come from the button."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This step reuses the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "data-pending"
+				},
+				{
+					"type": "text",
+					"value": " CSS hook from Step 3, but drives it from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useOptimistic(false)"
+				},
+				{
+					"type": "text",
+					"value": " instead of the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "isPending"
+				},
+				{
+					"type": "text",
+					"value": " from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useTransition"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Here the Server Function is called directly:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"features/task/components/delete-button.tsx\"",
+			"value": "'use client'\n\nimport { Trash2 } from 'lucide-react'\nimport { deleteComment } from '@/features/task/task-actions'\n\nexport function DeleteButton({ commentId }) {\n\treturn (\n\t\t<button\n\t\t\tonClick={() => deleteComment(commentId)}\n\t\t\taria-label=\"Delete comment\">\n\t\t\t<Trash2 className=\"size-3\" />\n\t\t</button>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With this version, the comment stays fully visible until the next server render."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Wrap the action in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<form>"
+				},
+				{
+					"type": "text",
+					"value": ", track pending state with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useOptimistic(false)"
+				},
+				{
+					"type": "text",
+					"value": ", and expose it through a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "data-pending"
+				},
+				{
+					"type": "text",
+					"value": " attribute. Accept the action as a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "deleteAction"
+				},
+				{
+					"type": "text",
+					"value": " prop so the parent comment card can react with CSS:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"features/task/components/delete-button.tsx\"",
+			"value": "'use client'\n\nimport { useOptimistic } from 'react'\nimport { Trash2 } from 'lucide-react'\n\nexport function DeleteButton({ deleteAction }: { deleteAction: () => void | Promise<void> }) {\n\tconst [isPending, setIsPending] = useOptimistic(false)\n\n\treturn (\n\t\t<form\n\t\t\taction={async () => {\n\t\t\t\tsetIsPending(true)\n\t\t\t\tawait deleteAction()\n\t\t\t}}>\n\t\t\t<button\n\t\t\t\ttype=\"submit\"\n\t\t\t\tdisabled={isPending}\n\t\t\t\tdata-pending={isPending ? '' : undefined}\n\t\t\t\taria-label=\"Delete comment\">\n\t\t\t\t<Trash2 className=\"size-3\" />\n\t\t\t</button>\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The parent comment card uses Tailwind's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "has-data-pending:"
+				},
+				{
+					"type": "text",
+					"value": " variant to fade itself when any descendant sets the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "data-pending"
+				},
+				{
+					"type": "text",
+					"value": " attribute. The button is the only component that knows when deletion is pending, so exposing that state as a CSS attribute lets any ancestor dim itself without lifting state or threading callbacks:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"features/task/components/comment-card.tsx\"",
+			"value": "<div className=\"rounded-lg px-3 transition-all has-data-pending:opacity-30\">\n\t{/* comment content */}\n\t{deleteAction && <DeleteButton deleteAction={deleteAction} />}\n</div>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The parent server component binds the Server Function to the comment ID, which keeps "
+				},
+				{
+					"type": "inlineCode",
+					"value": "DeleteButton"
+				},
+				{
+					"type": "text",
+					"value": " reusable:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"features/task/components/comment-section.tsx\"",
+			"value": "<CommentCard\n\tcomment={comment}\n\tdeleteAction={comment.userName === 'You' ? deleteComment.bind(null, comment.id) : undefined}\n/>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The card now fades to 30% opacity the moment the click registers. When the server confirms and the next render arrives, the card unmounts from the list."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 8: Make repeat navigation instant"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Every pattern so far smooths a single interaction. Across navigations, the same reads rerun and the same fallbacks paint again. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Caching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " the reusable reads and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " them with the real request closes that gap without moving the data model into the browser."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This step uses "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", introduced in Next.js 16. Steps 1 through 7 work without it. If you aren't using Cache Components, see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/caching-without-cache-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Caching without Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Enable it in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tcacheComponents: true,\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Enabling Cache Components applies prerender validation across every route, not just the ones in this step. A route that reads request data such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers()"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": " outside "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Suspense",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " now blocks prerendering and needs the Step 1 treatment. To turn it on in an existing app, see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/migrating-to-cache-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Migrating to Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache reusable reads"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For each server read, ask whether it should be reused across requests and whether each write can invalidate it precisely. A task is stable enough to cache and has a clear per-id tag:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"features/task/task-queries.ts\"",
+			"value": "import { cacheLife, cacheTag } from 'next/cache'\nimport { getTaskById } from '@/lib/db'\n\nexport async function getTask(id: string) {\n\t'use cache'\n\tcacheLife('hours')\n\tcacheTag('tasks', `task-${id}`)\n\n\treturn getTaskById(id)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The per-id tag "
+				},
+				{
+					"type": "inlineCode",
+					"value": "task-${id}"
+				},
+				{
+					"type": "text",
+					"value": " gives a single task its own handle. The broader "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tasks"
+				},
+				{
+					"type": "text",
+					"value": " tag covers the list. See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Caching guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for cache scoping ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache: private'"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache: remote'"
+				},
+				{
+					"type": "text",
+					"value": "), cache lifetimes, and tag patterns."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Invalidate from mutations"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/refresh",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "refresh()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " reruns dynamic work but leaves cached entries in place. Replace it with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/updateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "updateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the tags each write touched:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"features/task/task-actions.ts\"",
+			"value": "'use server'\n\nimport { updateTag } from 'next/cache'\nimport { updateTaskStatus } from '@/lib/db'\n\nexport async function updateStatus(taskId: string, newStatus: Status) {\n\tconst updated = await updateTaskStatus(taskId, newStatus)\n\tif (!updated) {\n\t\treturn { success: false as const, error: 'Task no longer exists' }\n\t}\n\n\tupdateTag('tasks')\n\tupdateTag(`task-${taskId}`)\n\treturn { success: true as const, status: newStatus }\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Every Server Function follows the same shape: run the write, then call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "updateTag"
+				},
+				{
+					"type": "text",
+					"value": " for the cached reads that changed. Dynamic reads do not have tags to invalidate, so use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "refresh()"
+				},
+				{
+					"type": "text",
+					"value": " for those mutations."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In this demo, the comment thread stays dynamic because readers expect the current discussion to update immediately on the open task page. Adding or deleting a comment calls "
+				},
+				{
+					"type": "inlineCode",
+					"value": "refresh()"
+				},
+				{
+					"type": "text",
+					"value": ", which reruns the dynamic comment read for the current route while leaving the task caches in place. See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/revalidating",
+					"children": [
+						{
+							"type": "text",
+							"value": "Revalidating guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for tag patterns, time-based revalidation, and on-demand invalidation from route handlers."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Prefetch the destination with the real request"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Under "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/adopting-partial-prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " (Next.js 16.3 and later), "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " prefetches the destination's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#app-shell",
+					"children": [
+						{
+							"type": "text",
+							"value": "App Shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ": the route output that is shared across links for the current user. The shell does not include "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#url-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "URL data"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", because "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": " are link-specific. Opt the link into "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/optimizing-prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "per-link prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch={true}"
+				},
+				{
+					"type": "text",
+					"value": " to resolve that URL data ahead of the click:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"features/task/components/task-card.tsx\"",
+			"value": "<Link\n\thref={`/task/${id}`}\n\tprefetch={true}>\n\t{/* … */}\n</Link>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Per-link prefetching is most valuable when the destination has URL-specific work that users are likely to need next. Cached reads make the prefetched output reusable and tag-invalidatable in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#client-cache",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client Cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "; dynamic reads can still resolve before the click, but each prefetch can do real server work. In the companion app, the task cards prefetch the detail page as they scroll into view, so it paints instantly by the time the user clicks."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Next steps"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The patterns in this guide combine a handful of primitives:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Situation"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Use"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Slow data should stream in without blocking the page"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react/Suspense",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "<Suspense>"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "A value should update while async work runs"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react/useOptimistic",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "useOptimistic"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Async work needs pending state, error handling, or coordinated UI updates"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react/useTransition",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "useTransition"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "A form needs pending, reset, and result state"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react/useActionState",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "useActionState"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "An ancestor should show pending state for work happening elsewhere"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react-dom/components/form#props",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "data-pending"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " attribute styled with CSS"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Reusable reads should survive across requests and stay fresh after writes"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/directives/use-cache",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'use cache'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " with "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/cacheTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cacheTag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", revalidated by "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/updateTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "updateTag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/revalidateTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidateTag"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Navigation between pages of an interactive app should feel instant"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/components/link",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "<Link>"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " prefetching with "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/adopting-partial-prefetching",
+									"children": [
+										{
+											"type": "text",
+											"value": "Partial Prefetching"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/optimizing-prefetching",
+									"children": [
+										{
+											"type": "text",
+											"value": "per-link prefetching"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " via "
+								},
+								{
+									"type": "inlineCode",
+									"value": "prefetch={true}"
+								},
+								{
+									"type": "text",
+									"value": " for content that depends on URL data"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Most patterns mix two or more of these. Reach for whichever primitive fits the constraint you're solving."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Related guides:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/client-side-data-fetching",
+									"children": [
+										{
+											"type": "text",
+											"value": "Client-side data fetching"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for direct browser fetching, providing initial data from a Server Component, and client cache coordination"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/streaming",
+									"children": [
+										{
+											"type": "text",
+											"value": "Streaming"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for loading boundaries and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Suspense>"
+								},
+								{
+									"type": "text",
+									"value": " patterns"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/instant-navigation",
+									"children": [
+										{
+											"type": "text",
+											"value": "Instant Navigation"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for validating that navigations stay instant"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/view-transitions",
+									"children": [
+										{
+											"type": "text",
+											"value": "View Transitions"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for animating state changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/single-page-applications#mutating-data-with-server-actions",
+									"children": [
+										{
+											"type": "text",
+											"value": "Single-page applications"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for a shared-reducer "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useOptimistic"
+								},
+								{
+									"type": "text",
+									"value": " example that keeps client and server list updates in sync"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

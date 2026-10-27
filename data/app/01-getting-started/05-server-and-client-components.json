@@ -1,0 +1,2131 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Server and Client Components\ndescription: Learn how you can use React Server and Client Components to render parts of your application on the server or the client.\nrelated:\n title: Next Steps\n description: Learn more about the APIs mentioned in this page.\n links:\n  - app/api-reference/directives/use-client\n  - app/guides/server-and-client-boundary"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, layouts and pages are "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/rsc/server-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", which lets you fetch data and render parts of your UI on the server, optionally cache the result, and stream it to the client. When you need interactivity or browser APIs, you can use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/rsc/use-client",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to layer in functionality."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This page explains how Server and Client Components work in Next.js and when to use them, with examples of how to compose them together in your application."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " For an explanation of where each component type runs and how the boundary works, see "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/server-and-client-boundary",
+							"children": [
+								{
+									"type": "text",
+									"value": "The Server and Client Boundary"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "When to use Server and Client Components?"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The client and server environments have different capabilities. Server and Client Components allow you to run logic in each environment depending on your use case."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when you need:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/learn/managing-state",
+									"children": [
+										{
+											"type": "text",
+											"value": "State"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/learn/responding-to-events",
+									"children": [
+										{
+											"type": "text",
+											"value": "event handlers"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". E.g. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "onClick"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "onChange"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/learn/lifecycle-of-reactive-effects",
+									"children": [
+										{
+											"type": "text",
+											"value": "Lifecycle logic"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". E.g. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useEffect"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Browser-only APIs. E.g. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "localStorage"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "window"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "navigator.geolocation"
+								},
+								{
+									"type": "text",
+									"value": ", etc."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/learn/reusing-logic-with-custom-hooks",
+									"children": [
+										{
+											"type": "text",
+											"value": "Custom hooks"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when you need:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Fetch data from databases or APIs close to the source."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Use API keys, tokens, and other secrets without exposing them to the client."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Reduce the amount of JavaScript sent to the browser."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Improve the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://web.dev/fcp/",
+									"children": [
+										{
+											"type": "text",
+											"value": "First Contentful Paint (FCP)"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", and stream content progressively to the client."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Page>"
+				},
+				{
+					"type": "text",
+					"value": " component is a Server Component that fetches data about a post, and passes it as props to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<LikeButton>"
+				},
+				{
+					"type": "text",
+					"value": " which handles client-side interactivity."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/[id]/page.tsx\" highlight={1,17} switcher",
+			"value": "import LikeButton from '@/app/ui/like-button'\nimport { getPost } from '@/lib/data'\n\nexport default async function Page({ params }: { params: Promise<{ id: string }> }) {\n\tconst { id } = await params\n\tconst post = await getPost(id)\n\n\treturn (\n\t\t<div>\n\t\t\t<main>\n\t\t\t\t<h1>{post.title}</h1>\n\t\t\t\t{/* ... */}\n\t\t\t\t<LikeButton likes={post.likes} />\n\t\t\t</main>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/[id]/page.js\" highlight={1,13} switcher",
+			"value": "import LikeButton from '@/app/ui/like-button'\nimport { getPost } from '@/lib/data'\n\nexport default async function Page({ params }) {\n\tconst { id } = await params\n\tconst post = await getPost(id)\n\n\treturn (\n\t\t<div>\n\t\t\t<main>\n\t\t\t\t<h1>{post.title}</h1>\n\t\t\t\t{/* ... */}\n\t\t\t\t<LikeButton likes={post.likes} />\n\t\t\t</main>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/like-button.tsx\" highlight={1} switcher",
+			"value": "'use client'\n\nimport { useState } from 'react'\n\nexport default function LikeButton({ likes }: { likes: number }) {\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/like-button.js\" highlight={1} switcher",
+			"value": "'use client'\n\nimport { useState } from 'react'\n\nexport default function LikeButton({ likes }) {\n\t// ...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "How do Server and Client Components work in Next.js?"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "On the server"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "On the server, Next.js uses React's APIs to orchestrate rendering. The rendering work is split into chunks, by individual route segments ("
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/layouts-and-pages",
+					"children": [
+						{
+							"type": "text",
+							"value": "layouts and pages"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "), including "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/parallel-routes",
+					"children": [
+						{
+							"type": "text",
+							"value": "parallel route slots"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " whether or not they are displayed:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Server Components"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " are rendered into a special data format called the React Server Component Payload (RSC Payload)."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Client Components"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and the RSC Payload are used to "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/glossary#prerendering",
+									"children": [
+										{
+											"type": "text",
+											"value": "prerender"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " HTML."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "What is the React Server Component Payload (RSC)?"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "The RSC Payload is a compact, serialized representation of the rendered React Server Components tree. It's used by React on the client to update the browser's DOM. The RSC Payload contains:"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The rendered result of Server Components"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Placeholders for where Client Components should be rendered and references to their JavaScript files"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Any props passed from a Server Component to a Client Component"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "On the client (first load)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, on the client:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "HTML"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " is used to immediately show a fast non-interactive preview of the route to the user."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "RSC Payload"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " is used to reconcile the Client and Server Component trees."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "JavaScript"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " is used to hydrate Client Components and make the application interactive."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "What is hydration?"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "Hydration is React's process for attaching "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://react.dev/learn/responding-to-events",
+							"children": [
+								{
+									"type": "text",
+									"value": "event handlers"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " to the DOM, to make the static HTML interactive."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Subsequent Navigations"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "On subsequent navigations:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "RSC Payload"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " is prefetched and cached for instant navigation."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Client Components"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " are rendered entirely on the client, without the server-rendered HTML."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using Client Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can create a Client Component by adding the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/rsc/use-client",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "\"use client\""
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " directive at the top of the file, above your imports."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/counter.tsx\" highlight={1} switcher",
+			"value": "'use client'\n\nimport { useState } from 'react'\n\nexport default function Counter() {\n\tconst [count, setCount] = useState(0)\n\n\treturn (\n\t\t<div>\n\t\t\t<p>{count} likes</p>\n\t\t\t<button onClick={() => setCount(count + 1)}>Click me</button>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/counter.js\" highlight={1} switcher",
+			"value": "'use client'\n\nimport { useState } from 'react'\n\nexport default function Counter() {\n\tconst [count, setCount] = useState(0)\n\n\treturn (\n\t\t<div>\n\t\t\t<p>{count} likes</p>\n\t\t\t<button onClick={() => setCount(count + 1)}>Click me</button>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "\"use client\""
+				},
+				{
+					"type": "text",
+					"value": " is used to declare a "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "boundary"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " between the Server and Client module graphs (trees)."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Once a file is marked with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"use client\""
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "all of its imports and the components it directly renders are included in the client bundle"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This means you don’t need to add the directive to every component that is intended for the client."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This behavior applies to components that are part of the Client Component’s "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#module-graph",
+					"children": [
+						{
+							"type": "text",
+							"value": "module graph"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", which includes the modules it imports and the components it renders directly. It does not apply to Server Components passed as children or other props. Those components are not imported into the Client Component’s module graph. They are rendered on the server and passed to the Client Component as rendered output."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components#interleaving-server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Interleaving Server and Client Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for how Server and Client Components can be combined."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reducing JS bundle size"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To reduce the size of your client JavaScript bundles, add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use client'"
+				},
+				{
+					"type": "text",
+					"value": " at the top of the files that define your interactive components instead of marking large parts of your UI as Client Components."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Layout>"
+				},
+				{
+					"type": "text",
+					"value": " component contains mostly static elements like a logo and navigation links, but includes an interactive search bar. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Search />"
+				},
+				{
+					"type": "text",
+					"value": " needs to be a Client Component, while the rest of the layout can stay a Server Component."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" highlight={12} switcher",
+			"value": "// Client Component\nimport Search from './search'\n// Server Component\nimport Logo from './logo'\n\n// Layout is a Server Component by default\nexport default function Layout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<>\n\t\t\t<nav>\n\t\t\t\t<Logo />\n\t\t\t\t<Search />\n\t\t\t</nav>\n\t\t\t<main>{children}</main>\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" highlight={12} switcher",
+			"value": "// Client Component\nimport Search from './search'\n// Server Component\nimport Logo from './logo'\n\n// Layout is a Server Component by default\nexport default function Layout({ children }) {\n\treturn (\n\t\t<>\n\t\t\t<nav>\n\t\t\t\t<Logo />\n\t\t\t\t<Search />\n\t\t\t</nav>\n\t\t\t<main>{children}</main>\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/search.tsx\" highlight={1} switcher",
+			"value": "'use client'\n\nexport default function Search() {\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/search.js\" highlight={1} switcher",
+			"value": "'use client'\n\nexport default function Search() {\n\t// ...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Passing data from Server to Client Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can pass data from Server Components to Client Components using props."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/[id]/page.tsx\" highlight={1,12} switcher",
+			"value": "import LikeButton from '@/app/ui/like-button'\nimport { getPost } from '@/lib/data'\n\nexport default async function Page({ params }: { params: Promise<{ id: string }> }) {\n\tconst { id } = await params\n\tconst post = await getPost(id)\n\n\treturn <LikeButton likes={post.likes} />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/[id]/page.js\" highlight={1,8} switcher",
+			"value": "import LikeButton from '@/app/ui/like-button'\nimport { getPost } from '@/lib/data'\n\nexport default async function Page({ params }) {\n\tconst { id } = await params\n\tconst post = await getPost(id)\n\n\treturn <LikeButton likes={post.likes} />\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/like-button.tsx\" highlight={1} switcher",
+			"value": "'use client'\n\nexport default function LikeButton({ likes }: { likes: number }) {\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/like-button.js\" highlight={1} switcher",
+			"value": "'use client'\n\nexport default function LikeButton({ likes }) {\n\t// ...\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Alternatively, you can stream data from a Server Component to a Client Component with the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/use",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use"
+						},
+						{
+							"type": "text",
+							"value": " API"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". See an "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/fetching-data#streaming-data-with-the-use-api",
+					"children": [
+						{
+							"type": "text",
+							"value": "example"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Props passed to Client Components need to be "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://react.dev/reference/react/use-server#serializable-parameters-and-return-values",
+							"children": [
+								{
+									"type": "text",
+									"value": "serializable"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " by React."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Interleaving Server and Client Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can pass Server Components as a prop to a Client Component. This allows you to visually nest server-rendered UI within Client components."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A common pattern is to use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "children"
+				},
+				{
+					"type": "text",
+					"value": " to create a "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "slot"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<ClientComponent>"
+				},
+				{
+					"type": "text",
+					"value": ". For example, a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Cart>"
+				},
+				{
+					"type": "text",
+					"value": " component that fetches data on the server, inside a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Modal>"
+				},
+				{
+					"type": "text",
+					"value": " component that uses client state to toggle visibility."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/modal.tsx\" switcher",
+			"value": "'use client'\n\nexport default function Modal({ children }: { children: React.ReactNode }) {\n\treturn <div>{children}</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/modal.js\" switcher",
+			"value": "'use client'\n\nexport default function Modal({ children }) {\n\treturn <div>{children}</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, in a parent Server Component (e.g."
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Page>"
+				},
+				{
+					"type": "text",
+					"value": "), you can pass a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Cart>"
+				},
+				{
+					"type": "text",
+					"value": " as the child of the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Modal>"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\"  highlight={7} switcher",
+			"value": "import Modal from './ui/modal'\nimport Cart from './ui/cart'\n\nexport default function Page() {\n\treturn (\n\t\t<Modal>\n\t\t\t<Cart />\n\t\t</Modal>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" highlight={7} switcher",
+			"value": "import Modal from './ui/modal'\nimport Cart from './ui/cart'\n\nexport default function Page() {\n\treturn (\n\t\t<Modal>\n\t\t\t<Cart />\n\t\t</Modal>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In this pattern, Server Components are rendered on the server ahead of time, even when passed as props to Client Components. The React Server Component Payload contains the rendered result of those Server Components, plus placeholders for where Client Components should be rendered and references to their JavaScript files."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Context providers"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/learn/passing-data-deeply-with-context",
+					"children": [
+						{
+							"type": "text",
+							"value": "React context"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is commonly used to share global state like the current theme. However, React context is not supported in Server Components."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use context, create a Client Component that accepts "
+				},
+				{
+					"type": "inlineCode",
+					"value": "children"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/theme-provider.tsx\" switcher",
+			"value": "'use client'\n\nimport { createContext } from 'react'\n\nexport const ThemeContext = createContext({})\n\nexport default function ThemeProvider({ children }: { children: React.ReactNode }) {\n\treturn <ThemeContext.Provider value=\"dark\">{children}</ThemeContext.Provider>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/theme-provider.js\" switcher",
+			"value": "'use client'\n\nimport { createContext } from 'react'\n\nexport const ThemeContext = createContext({})\n\nexport default function ThemeProvider({ children }) {\n\treturn <ThemeContext.Provider value=\"dark\">{children}</ThemeContext.Provider>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, import it into a Server Component (e.g. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout"
+				},
+				{
+					"type": "text",
+					"value": "):"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import ThemeProvider from './theme-provider'\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html>\n\t\t\t<body>\n\t\t\t\t<ThemeProvider>{children}</ThemeProvider>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "import ThemeProvider from './theme-provider'\n\nexport default function RootLayout({ children }) {\n\treturn (\n\t\t<html>\n\t\t\t<body>\n\t\t\t\t<ThemeProvider>{children}</ThemeProvider>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Your Server Component will now be able to directly render your provider, and all other Client Components throughout your app will be able to consume this context."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": You should render providers as deep as possible in the tree – notice how "
+						},
+						{
+							"type": "inlineCode",
+							"value": "ThemeProvider"
+						},
+						{
+							"type": "text",
+							"value": " only wraps "
+						},
+						{
+							"type": "inlineCode",
+							"value": "{children}"
+						},
+						{
+							"type": "text",
+							"value": " instead of the entire "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<html>"
+						},
+						{
+							"type": "text",
+							"value": " document. This makes it easier for Next.js to optimize the static parts of your Server Components."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To pass server-fetched data through context and read it in Client Components with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use()"
+				},
+				{
+					"type": "text",
+					"value": ", see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/single-page-applications#using-reacts-use-within-a-context-provider",
+					"children": [
+						{
+							"type": "text",
+							"value": "Using React's "
+						},
+						{
+							"type": "inlineCode",
+							"value": "use"
+						},
+						{
+							"type": "text",
+							"value": " within a Context Provider"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Third-party components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using a third-party component that relies on client-only features, you can wrap it in a Client Component to ensure it works as expected."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Carousel />"
+				},
+				{
+					"type": "text",
+					"value": " can be imported from the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "acme-carousel"
+				},
+				{
+					"type": "text",
+					"value": " package. This component uses "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useState"
+				},
+				{
+					"type": "text",
+					"value": ", but the module that defines it doesn't yet have the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"use client\""
+				},
+				{
+					"type": "text",
+					"value": " directive."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Carousel />"
+				},
+				{
+					"type": "text",
+					"value": " within a Client Component, it will work as expected:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/gallery.tsx\" switcher",
+			"value": "'use client'\n\nimport { useState } from 'react'\nimport { Carousel } from 'acme-carousel'\n\nexport default function Gallery() {\n\tconst [isOpen, setIsOpen] = useState(false)\n\n\treturn (\n\t\t<div>\n\t\t\t<button onClick={() => setIsOpen(true)}>View pictures</button>\n\t\t\t{/* Works, since Carousel is used within a Client Component */}\n\t\t\t{isOpen && <Carousel />}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/gallery.js\" switcher",
+			"value": "'use client'\n\nimport { useState } from 'react'\nimport { Carousel } from 'acme-carousel'\n\nexport default function Gallery() {\n\tconst [isOpen, setIsOpen] = useState(false)\n\n\treturn (\n\t\t<div>\n\t\t\t<button onClick={() => setIsOpen(true)}>View pictures</button>\n\t\t\t{/*  Works, since Carousel is used within a Client Component */}\n\t\t\t{isOpen && <Carousel />}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "However, if you try to use it directly within a Server Component, you'll see an error. This is because Next.js doesn't know "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Carousel />"
+				},
+				{
+					"type": "text",
+					"value": " is using client-only features."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To fix this, you can wrap third-party components that rely on client-only features in your own Client Components:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/carousel.tsx\" switcher",
+			"value": "'use client'\n\nimport { Carousel } from 'acme-carousel'\n\nexport default Carousel"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/carousel.js\" switcher",
+			"value": "'use client'\n\nimport { Carousel } from 'acme-carousel'\n\nexport default Carousel"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Now, you can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Carousel />"
+				},
+				{
+					"type": "text",
+					"value": " directly within a Server Component:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import Carousel from './carousel'\n\nexport default function Page() {\n\treturn (\n\t\t<div>\n\t\t\t<p>View pictures</p>\n\t\t\t{/*  Works, since Carousel is a Client Component */}\n\t\t\t<Carousel />\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import Carousel from './carousel'\n\nexport default function Page() {\n\treturn (\n\t\t<div>\n\t\t\t<p>View pictures</p>\n\t\t\t{/*  Works, since Carousel is a Client Component */}\n\t\t\t<Carousel />\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Advice for Library Authors"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "If you’re building a component library, add the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "\"use client\""
+						},
+						{
+							"type": "text",
+							"value": " directive to entry points that rely on client-only features. This lets your users import components into Server Components without needing to create wrappers."
+						}
+					]
+				},
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "It's worth noting some bundlers might strip out "
+						},
+						{
+							"type": "inlineCode",
+							"value": "\"use client\""
+						},
+						{
+							"type": "text",
+							"value": " directives. You can find an example of how to configure esbuild to include the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "\"use client\""
+						},
+						{
+							"type": "text",
+							"value": " directive in the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://github.com/shuding/react-wrap-balancer/blob/main/tsup.config.ts#L10-L13",
+							"children": [
+								{
+									"type": "text",
+									"value": "React Wrap Balancer"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " and "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://github.com/vercel/analytics/blob/main/packages/web/tsup.config.js#L26-L30",
+							"children": [
+								{
+									"type": "text",
+									"value": "Vercel Analytics"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " repositories."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Preventing environment poisoning"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "JavaScript modules can be shared between both Server and Client Components modules. This means it's possible to accidentally import server-only code into the client. For example, consider the following function:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"lib/data.ts\" switcher",
+			"value": "export async function getData() {\n\tconst res = await fetch('https://external-service.com/data', {\n\t\theaders: {\n\t\t\tauthorization: process.env.API_KEY,\n\t\t},\n\t})\n\n\treturn res.json()\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"lib/data.js\" switcher",
+			"value": "export async function getData() {\n\tconst res = await fetch('https://external-service.com/data', {\n\t\theaders: {\n\t\t\tauthorization: process.env.API_KEY,\n\t\t},\n\t})\n\n\treturn res.json()\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This function contains an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "API_KEY"
+				},
+				{
+					"type": "text",
+					"value": " that should never be exposed to the client."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In Next.js, only environment variables prefixed with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NEXT_PUBLIC_"
+				},
+				{
+					"type": "text",
+					"value": " are included in the client bundle. If variables are not prefixed, Next.js replaces them with an empty string."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "As a result, even though "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getData()"
+				},
+				{
+					"type": "text",
+					"value": " can be imported and executed on the client, it won't work as expected."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To prevent accidental usage in Client Components, you can use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.npmjs.com/package/server-only",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "server-only"
+						},
+						{
+							"type": "text",
+							"value": " package"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, import the package into a file that contains server-only code:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"lib/data.js\"",
+			"value": "import 'server-only'\n\nexport async function getData() {\n\tconst res = await fetch('https://external-service.com/data', {\n\t\theaders: {\n\t\t\tauthorization: process.env.API_KEY,\n\t\t},\n\t})\n\n\treturn res.json()\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Now, if you try to import the module into a Client Component, there will be a build-time error."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The corresponding "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.npmjs.com/package/client-only",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "client-only"
+						},
+						{
+							"type": "text",
+							"value": " package"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " can be used to mark modules that contain client-only logic like code that accesses the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "window"
+				},
+				{
+					"type": "text",
+					"value": " object."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In Next.js, installing "
+				},
+				{
+					"type": "inlineCode",
+					"value": "server-only"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "client-only"
+				},
+				{
+					"type": "text",
+					"value": " is "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "optional"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". However, if your linting rules flag extraneous dependencies, you may install them to avoid issues."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install server-only"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add server-only"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add server-only"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add server-only"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js handles "
+				},
+				{
+					"type": "inlineCode",
+					"value": "server-only"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "client-only"
+				},
+				{
+					"type": "text",
+					"value": " imports internally to provide clearer error messages when a module is used in the wrong environment. The contents of these packages from NPM are not used by Next.js."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js also provides its own type declarations for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "server-only"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "client-only"
+				},
+				{
+					"type": "text",
+					"value": ", for TypeScript configurations where "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.typescriptlang.org/tsconfig/#noUncheckedSideEffectImports",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "noUncheckedSideEffectImports"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is active."
+				}
+			]
+		}
+	]
+}

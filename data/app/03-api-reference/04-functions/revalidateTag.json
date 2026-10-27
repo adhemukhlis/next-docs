@@ -1,0 +1,807 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: revalidateTag\ndescription: API Reference for the revalidateTag function.\nrelated:\n links:\n  - app/guides/server-actions"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "revalidateTag"
+				},
+				{
+					"type": "text",
+					"value": " allows you to invalidate cached data on-demand for a specific cache tag."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This function is ideal for content where a slight delay in updates is acceptable, such as blog posts, product catalogs, or documentation. With the recommended "
+				},
+				{
+					"type": "inlineCode",
+					"value": "max"
+				},
+				{
+					"type": "text",
+					"value": " profile, users receive stale content while fresh data loads in the background."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Usage"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "revalidateTag"
+				},
+				{
+					"type": "text",
+					"value": " can be called in Server Functions and Route Handlers."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "revalidateTag"
+				},
+				{
+					"type": "text",
+					"value": " cannot be called in Client Components or Proxy, as it only works in server environments."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Revalidation Behavior"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Calling "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidateTag"
+				},
+				{
+					"type": "text",
+					"value": " marks the tagged data as stale. The next request for that data kicks off a revalidation and is served stale content while it runs, using stale-while-revalidate semantics. The second argument sets how long stale content may be served. Past that, a request blocks until the revalidation completes."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "profile=\"max\""
+										},
+										{
+											"type": "text",
+											"value": " (recommended)"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": A one year window, long enough that requests are always served stale content while the revalidation runs."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Another profile, or an object"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Any other default or custom profile defined in "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/cacheLife",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cacheLife"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", or an object with an "
+								},
+								{
+									"type": "inlineCode",
+									"value": "expire"
+								},
+								{
+									"type": "text",
+									"value": " property, when you want a different window."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "{ expire: 0 }"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Stale content is never served, so the next request is a blocking revalidate/cache miss. Use it when the caller needs the data gone immediately and you cannot use "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/updateTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "updateTag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "No second argument (deprecated)"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Behaves like "
+								},
+								{
+									"type": "inlineCode",
+									"value": "{ expire: 0 }"
+								},
+								{
+									"type": "text",
+									"value": ". Migrate to "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/updateTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "updateTag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " in Server Actions, or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "profile=\"max\""
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The profile sets the point past which data correctness is more important than being fast."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": A revalidation is triggered by a request, not by the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "revalidateTag"
+						},
+						{
+							"type": "text",
+							"value": " call, so pages using the tag revalidate as they are visited rather than all at once."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parameters"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "revalidateTag(tag: string, profile: string | { expire?: number }): void;"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "tag"
+								},
+								{
+									"type": "text",
+									"value": ": A string representing the cache tag associated with the data you want to revalidate. Tags are case-sensitive and must not exceed 256 characters. A tag that exceeds the limit is never assigned to cached data, so revalidating it does nothing."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "profile"
+								},
+								{
+									"type": "text",
+									"value": ": How long stale content may be served, see "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#revalidation-behavior",
+									"children": [
+										{
+											"type": "text",
+											"value": "Revalidation Behavior"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". The recommended value is "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"max\""
+								},
+								{
+									"type": "text",
+									"value": ". Any other default or custom profile defined in "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/cacheLife",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cacheLife"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " is also accepted, and only its "
+								},
+								{
+									"type": "inlineCode",
+									"value": "expire"
+								},
+								{
+									"type": "text",
+									"value": " is read. You can also pass an object with an "
+								},
+								{
+									"type": "inlineCode",
+									"value": "expire"
+								},
+								{
+									"type": "text",
+									"value": " property, in seconds."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Tags must first be assigned to cached data. You can do this in two ways:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Using the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/fetch",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "next.tags"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " option with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " for caching external API requests:"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "fetch(url, { next: { tags: ['posts'] } })"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Using "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/cacheTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cacheTag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " inside cached functions or components with the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'use cache'"
+								},
+								{
+									"type": "text",
+									"value": " directive:"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "import { cacheTag } from 'next/cache'\n\nasync function getData() {\n\t'use cache'\n\tcacheTag('posts')\n\t// ...\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": The single-argument form "
+						},
+						{
+							"type": "inlineCode",
+							"value": "revalidateTag(tag)"
+						},
+						{
+							"type": "text",
+							"value": " is deprecated. It currently works if TypeScript errors are suppressed, but this behavior may be removed in a future version. Update to the two-argument signature."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "revalidateTag"
+				},
+				{
+					"type": "text",
+					"value": " does not return a value."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Relationship with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidatePath"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "revalidateTag"
+				},
+				{
+					"type": "text",
+					"value": " invalidates data with specific tags across all pages that use those tags, while "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidatePath",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidatePath"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " invalidates specific page or layout paths."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": These functions serve different purposes and may need to be used together for comprehensive data consistency. For detailed examples and considerations, see "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/revalidatePath#relationship-with-revalidatetag-and-updatetag",
+							"children": [
+								{
+									"type": "text",
+									"value": "relationship with revalidateTag and updateTag"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " for more information."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The following examples demonstrate how to use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidateTag"
+				},
+				{
+					"type": "text",
+					"value": " in different contexts. In both cases, we're using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "profile=\"max\""
+				},
+				{
+					"type": "text",
+					"value": " to mark data as stale and use stale-while-revalidate semantics, which is the recommended approach for most use cases."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Action"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/actions.ts\" switcher",
+			"value": "'use server'\n\nimport { revalidateTag } from 'next/cache'\n\nexport default async function submit() {\n\tawait addPost()\n\trevalidateTag('posts', 'max')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/actions.js\" switcher",
+			"value": "'use server'\n\nimport { revalidateTag } from 'next/cache'\n\nexport default async function submit() {\n\tawait addPost()\n\trevalidateTag('posts', 'max')\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Route Handler"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/api/revalidate/route.ts\" switcher",
+			"value": "import type { NextRequest } from 'next/server'\nimport { revalidateTag } from 'next/cache'\n\nexport async function GET(request: NextRequest) {\n\tconst tag = request.nextUrl.searchParams.get('tag')\n\n\tif (tag) {\n\t\trevalidateTag(tag, 'max')\n\t\treturn Response.json({ revalidated: true, now: Date.now() })\n\t}\n\n\treturn Response.json({\n\t\trevalidated: false,\n\t\tnow: Date.now(),\n\t\tmessage: 'Missing tag to revalidate',\n\t})\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/api/revalidate/route.js\" switcher",
+			"value": "import { revalidateTag } from 'next/cache'\n\nexport async function GET(request) {\n\tconst tag = request.nextUrl.searchParams.get('tag')\n\n\tif (tag) {\n\t\trevalidateTag(tag, 'max')\n\t\treturn Response.json({ revalidated: true, now: Date.now() })\n\t}\n\n\treturn Response.json({\n\t\trevalidated: false,\n\t\tnow: Date.now(),\n\t\tmessage: 'Missing tag to revalidate',\n\t})\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When the invalidation comes from outside a Server Action, for example a webhook or another service calling a Route Handler, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/updateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "updateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is not available. Pass "
+				},
+				{
+					"type": "inlineCode",
+					"value": "{ expire: 0 }"
+				},
+				{
+					"type": "text",
+					"value": " to expire the data immediately:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "revalidateTag(tag, { expire: 0 })"
+		}
+	]
+}

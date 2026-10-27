@@ -1,0 +1,1568 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: page.js\ndescription: API reference for the page.js file."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page"
+				},
+				{
+					"type": "text",
+					"value": " file allows you to define UI that is "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "unique"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to a route. You can create a page by default exporting a component from the file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" switcher",
+			"value": "export default function Page({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {\n\treturn <h1>My Page</h1>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\" switcher",
+			"value": "export default function Page({ params, searchParams }) {\n\treturn <h1>My Page</h1>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Good to know"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".js"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".jsx"
+								},
+								{
+									"type": "text",
+									"value": ", or "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".tsx"
+								},
+								{
+									"type": "text",
+									"value": " file extensions can be used for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "page"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "A "
+								},
+								{
+									"type": "inlineCode",
+									"value": "page"
+								},
+								{
+									"type": "text",
+									"value": " is always the "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "leaf"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " of the route subtree."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "A "
+								},
+								{
+									"type": "inlineCode",
+									"value": "page"
+								},
+								{
+									"type": "text",
+									"value": " file is required to make a route segment "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "publicly accessible"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Pages are "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/rsc/server-components",
+									"children": [
+										{
+											"type": "text",
+											"value": "Server Components"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " by default, but can be set to a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/rsc/use-client",
+									"children": [
+										{
+											"type": "text",
+											"value": "Client Component"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "In the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/project-structure#component-hierarchy",
+									"children": [
+										{
+											"type": "text",
+											"value": "component hierarchy"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "page.js"
+								},
+								{
+									"type": "text",
+									"value": " is the innermost file convention. It is wrapped by "
+								},
+								{
+									"type": "inlineCode",
+									"value": "loading.js"
+								},
+								{
+									"type": "text",
+									"value": " (Suspense boundary), "
+								},
+								{
+									"type": "inlineCode",
+									"value": "error.js"
+								},
+								{
+									"type": "text",
+									"value": " (error boundary), "
+								},
+								{
+									"type": "inlineCode",
+									"value": "template.js"
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "layout.js"
+								},
+								{
+									"type": "text",
+									"value": " in the same segment."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Props"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " (optional)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A promise that resolves to an object containing the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/dynamic-routes",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamic route parameters"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " from the root segment down to that page."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/shop/[slug]/page.tsx\" switcher",
+			"value": "export default async function Page({ params }: { params: Promise<{ slug: string }> }) {\n\tconst { slug } = await params\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/shop/[slug]/page.js\" switcher",
+			"value": "export default async function Page({ params }) {\n\tconst { slug } = await params\n}"
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Example Route"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "URL"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "params"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/shop/[slug]/page.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/shop/1"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Promise<{ slug: '1' }>"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/shop/[category]/[item]/page.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/shop/1/2"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Promise<{ category: '1', item: '2' }>"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/shop/[...slug]/page.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/shop/1/2"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Promise<{ slug: ['1', '2'] }>"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Since the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "params"
+								},
+								{
+									"type": "text",
+									"value": " prop is a promise, you must use "
+								},
+								{
+									"type": "inlineCode",
+									"value": "async/await"
+								},
+								{
+									"type": "text",
+									"value": " or React's "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react/use",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "use"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " function to access the values."
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "In version 14 and earlier, "
+												},
+												{
+													"type": "inlineCode",
+													"value": "params"
+												},
+												{
+													"type": "text",
+													"value": " was a synchronous prop. To help with backwards compatibility, you can still access it synchronously in Next.js 15, but this behavior will be deprecated in the future."
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": " (optional)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A promise that resolves to an object containing the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Learn/Common_questions/What_is_a_URL#parameters",
+					"children": [
+						{
+							"type": "text",
+							"value": "search parameters"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " of the current URL. For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/shop/page.tsx\" switcher",
+			"value": "export default async function Page({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {\n\tconst filters = (await searchParams).filters\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/shop/page.js\" switcher",
+			"value": "export default async function Page({ searchParams }) {\n\tconst filters = (await searchParams).filters\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Client Component "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "pages"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " can also access "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": " using React’s "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/use",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " hook:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/shop/page.tsx\" switcher",
+			"value": "'use client'\nimport { use } from 'react'\n\nexport default function Page({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {\n\tconst filters = use(searchParams).filters\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.jsx\" switcher",
+			"value": "'use client'\nimport { use } from 'react'\n\nexport default function Page({ searchParams }) {\n\tconst filters = use(searchParams).filters\n}"
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Example URL"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "searchParams"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/shop?a=1"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Promise<{ a: '1' }>"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/shop?a=1&b=2"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Promise<{ a: '1', b: '2' }>"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/shop?a=1&a=2"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Promise<{ a: ['1', '2'] }>"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Since the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "searchParams"
+								},
+								{
+									"type": "text",
+									"value": " prop is a promise. You must use "
+								},
+								{
+									"type": "inlineCode",
+									"value": "async/await"
+								},
+								{
+									"type": "text",
+									"value": " or React's "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react/use",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "use"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " function to access the values."
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "In version 14 and earlier, "
+												},
+												{
+													"type": "inlineCode",
+													"value": "searchParams"
+												},
+												{
+													"type": "text",
+													"value": " was a synchronous prop. To help with backwards compatibility, you can still access it synchronously in Next.js 15, but this behavior will be deprecated in the future."
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "searchParams"
+								},
+								{
+									"type": "text",
+									"value": " is a "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/glossary#request-time-apis",
+											"children": [
+												{
+													"type": "text",
+													"value": "Request-time API"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " whose values cannot be known ahead of time. Using it will opt the page into "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/glossary#dynamic-rendering",
+											"children": [
+												{
+													"type": "text",
+													"value": "dynamic rendering"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " at request time."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "With "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/caching",
+									"children": [
+										{
+											"type": "text",
+											"value": "Cache Components"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", where you access "
+								},
+								{
+									"type": "inlineCode",
+									"value": "searchParams"
+								},
+								{
+									"type": "text",
+									"value": " in the component tree determines how much of the page can be prerendered. See "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/caching#maximizing-the-static-shell",
+									"children": [
+										{
+											"type": "text",
+											"value": "Maximizing the static shell"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "searchParams"
+								},
+								{
+									"type": "text",
+									"value": " is a plain JavaScript object, not a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "URLSearchParams"
+								},
+								{
+									"type": "text",
+									"value": " instance."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Page Props Helper"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can type pages with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "PageProps"
+				},
+				{
+					"type": "text",
+					"value": " to get strongly typed "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": " from the route literal. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "PageProps"
+				},
+				{
+					"type": "text",
+					"value": " is a globally available helper."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\"",
+			"value": "export default async function Page(props: PageProps<'/blog/[slug]'>) {\n\tconst { slug } = await props.params\n\tconst query = await props.searchParams\n\treturn <h1>Blog Post: {slug}</h1>\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Using a literal route (e.g. "
+										},
+										{
+											"type": "inlineCode",
+											"value": "'/blog/[slug]'"
+										},
+										{
+											"type": "text",
+											"value": ") enables autocomplete and strict keys for "
+										},
+										{
+											"type": "inlineCode",
+											"value": "params"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Static routes resolve "
+										},
+										{
+											"type": "inlineCode",
+											"value": "params"
+										},
+										{
+											"type": "text",
+											"value": " to "
+										},
+										{
+											"type": "inlineCode",
+											"value": "{}"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Types are generated during "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next dev"
+										},
+										{
+											"type": "text",
+											"value": ", "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next build"
+										},
+										{
+											"type": "text",
+											"value": ", or with "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next typegen"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "After type generation, the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "PageProps"
+										},
+										{
+											"type": "text",
+											"value": " helper is globally available. It doesn't need to be imported."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Displaying content based on "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/dynamic-routes",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamic route segments"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", you can display or fetch specific content for the page based on the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " prop."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" switcher",
+			"value": "export default async function Page({ params }: { params: Promise<{ slug: string }> }) {\n\tconst { slug } = await params\n\treturn <h1>Blog Post: {slug}</h1>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\" switcher",
+			"value": "export default async function Page({ params }) {\n\tconst { slug } = await params\n\treturn <h1>Blog Post: {slug}</h1>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Handling filtering with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": " prop to handle filtering, pagination, or sorting based on the query string of the URL."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/shop/page.tsx\" switcher",
+			"value": "export default async function Page({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {\n\tconst { page = '1', sort = 'asc', query = '' } = await searchParams\n\n\treturn (\n\t\t<div>\n\t\t\t<h1>Product Listing</h1>\n\t\t\t<p>Search query: {query}</p>\n\t\t\t<p>Current page: {page}</p>\n\t\t\t<p>Sort order: {sort}</p>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/shop/page.js\" switcher",
+			"value": "export default async function Page({ searchParams }) {\n\tconst { page = '1', sort = 'asc', query = '' } = await searchParams\n\n\treturn (\n\t\t<div>\n\t\t\t<h1>Product Listing</h1>\n\t\t\t<p>Search query: {query}</p>\n\t\t\t<p>Current page: {page}</p>\n\t\t\t<p>Sort order: {sort}</p>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reading "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " in Client Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " in a Client Component (which cannot be "
+				},
+				{
+					"type": "inlineCode",
+					"value": "async"
+				},
+				{
+					"type": "text",
+					"value": "), you can use React's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/use",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " function to read the promise:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "'use client'\n\nimport { use } from 'react'\n\nexport default function Page({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {\n\tconst { slug } = use(params)\n\tconst { query } = use(searchParams)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "'use client'\n\nimport { use } from 'react'\n\nexport default function Page({ params, searchParams }) {\n\tconst { slug } = use(params)\n\tconst { query } = use(searchParams)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.0.0-RC"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "params"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "searchParams"
+								},
+								{
+									"type": "text",
+									"value": " are now promises. A "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/upgrading/codemods#150",
+									"children": [
+										{
+											"type": "text",
+											"value": "codemod"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " is available."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "page"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

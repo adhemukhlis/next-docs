@@ -1,0 +1,823 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: cacheComponents\ndescription: Learn how to enable the cacheComponents flag in Next.js.\nrelated:\n links:\n  - app/getting-started/caching\n  - app/guides/incremental-static-regeneration-cache-components\n  - app/api-reference/directives/use-cache\n  - app/api-reference/directives/use-cache-remote"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache Components enables component and function-level caching using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " directive. Data fetching is dynamic by default, and you choose what to cache at the page, component, or function level. Next.js prerenders a static HTML shell that is served immediately while dynamic content streams in when ready, letting you mix static and dynamic content within a single route."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Usage"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To enable the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheComponents"
+				},
+				{
+					"type": "text",
+					"value": " flag, set it to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": " in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": " file, together with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/partialPrefetching",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "partialPrefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tcacheComponents: true,\n\tpartialPrefetching: true,\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "partialPrefetching"
+				},
+				{
+					"type": "text",
+					"value": " explicitly. Leaving it unset logs a warning, because the first release of Cache Components did not include Partial Prefetching. Set it to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " only while "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/adopting-partial-prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "migrating an app that adopted Cache Components before Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Both features will be enabled everywhere in the next major release, and the options will be removed."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Cache Components requires the Node.js runtime and does not support the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/file-conventions/route-segment-config/runtime",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "runtime"
+								},
+								{
+									"type": "text",
+									"value": " route segment config"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ". Remove any "
+						},
+						{
+							"type": "inlineCode",
+							"value": "runtime"
+						},
+						{
+							"type": "text",
+							"value": " export, including "
+						},
+						{
+							"type": "inlineCode",
+							"value": "runtime = 'nodejs'"
+						},
+						{
+							"type": "text",
+							"value": " and the deprecated "
+						},
+						{
+							"type": "inlineCode",
+							"value": "runtime = 'edge'"
+						},
+						{
+							"type": "text",
+							"value": ". Other server-side JavaScript runtimes are not guaranteed to work. See "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/migrating-to-cache-components#runtime--edge",
+							"children": [
+								{
+									"type": "text",
+									"value": "Migrating to Cache Components"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheComponents"
+				},
+				{
+					"type": "text",
+					"value": " is enabled, you can use the following cache functions and configurations:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/directives/use-cache",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "use cache"
+										},
+										{
+											"type": "text",
+											"value": " directive"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/cacheLife",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cacheLife"
+										},
+										{
+											"type": "text",
+											"value": " function"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "use cache"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/cacheTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cacheTag"
+										},
+										{
+											"type": "text",
+											"value": " function"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": If you used "
+						},
+						{
+							"type": "inlineCode",
+							"value": "experimental.useCache"
+						},
+						{
+							"type": "text",
+							"value": " or "
+						},
+						{
+							"type": "inlineCode",
+							"value": "experimental.dynamicIO"
+						},
+						{
+							"type": "text",
+							"value": ", migrate using the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/upgrading/version-16#experimentaldynamicio-and-experimentalusecache",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version 16 upgrade guide"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ". To migrate route segment configs and other caching patterns, see "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/migrating-to-cache-components",
+							"children": [
+								{
+									"type": "text",
+									"value": "Migrating to Cache Components"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Additionally, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheComponents"
+				},
+				{
+					"type": "text",
+					"value": " implements "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/glossary#partial-prerendering-ppr",
+							"children": [
+								{
+									"type": "text",
+									"value": "Partial Prerendering (PPR)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " as the default behavior in the App Router. This means the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.ppr"
+				},
+				{
+					"type": "text",
+					"value": " configuration flag and the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental_ppr"
+				},
+				{
+					"type": "text",
+					"value": " route segment configuration are no longer necessary and have been removed."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Read "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching#prerendering",
+					"children": [
+						{
+							"type": "text",
+							"value": "Prerendering"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for how the static shell and streaming fit together."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": If you used experimental PPR in Next.js 15, refer to the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/guides/upgrading/version-16#partial-prerendering-ppr",
+							"children": [
+								{
+									"type": "text",
+									"value": "Partial Prerendering (PPR)"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " section of the Version 16 upgrade guide when migrating."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Navigation with Activity"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheComponents"
+				},
+				{
+					"type": "text",
+					"value": " is enabled, Next.js uses React's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Activity",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Activity>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " component to preserve component state during client-side navigation."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Rather than unmounting the previous route when you navigate away, Next.js sets the Activity mode to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Activity#activity",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "\"hidden\""
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This means:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Component state is preserved when navigating between routes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "When you navigate back, the previous route reappears with its state intact"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Effects are cleaned up when a route is hidden, and recreated when it becomes visible again"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This behavior improves the navigation experience by maintaining UI state (form inputs, or expanded sections) when users navigate back and forth between routes."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Next.js uses heuristics to keep a few recently visited routes "
+						},
+						{
+							"type": "inlineCode",
+							"value": "\"hidden\""
+						},
+						{
+							"type": "text",
+							"value": ", while older routes are removed from the DOM to prevent excessive growth."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Some UI patterns behave differently when components stay mounted instead of unmounting. See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/preserving-ui-state",
+					"children": [
+						{
+							"type": "text",
+							"value": "Preserving UI state guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for handling common patterns like dropdowns, dialogs, and testing."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Change"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "16.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "cacheComponents"
+								},
+								{
+									"type": "text",
+									"value": " stabilized and moved from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "experimental.cacheComponents"
+								},
+								{
+									"type": "text",
+									"value": " to the top-level "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cacheComponents"
+								},
+								{
+									"type": "text",
+									"value": " option. This flag controls the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "ppr"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useCache"
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "dynamicIO"
+								},
+								{
+									"type": "text",
+									"value": " flags as a single, unified configuration."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,1544 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: next/root-params\nnav_title: root-params\ndescription: API Reference for the next/root-params module that provides access to root-level route parameters.\nrelated:\n description: Related API references and conventions.\n links:\n  - app/api-reference/file-conventions/layout\n  - app/api-reference/functions/generate-static-params\n  - app/api-reference/directives/use-cache\n  - app/api-reference/file-conventions/dynamic-routes"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/root-params"
+				},
+				{
+					"type": "text",
+					"value": " module provides getter functions for accessing root-level "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/dynamic-routes",
+					"children": [
+						{
+							"type": "text",
+							"value": "parameters"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#server-component",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Server Components"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Each root parameter is exported as an async function that resolves to the parameter value for the current route."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The export names are generated from your dynamic segment folder names. For example, if your root layout is inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/[locale]"
+				},
+				{
+					"type": "text",
+					"value": ", you import "
+				},
+				{
+					"type": "inlineCode",
+					"value": "locale"
+				},
+				{
+					"type": "text",
+					"value": " from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/root-params"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This is useful for values like a language or locale segment that need to be accessed across your application, for example in shared utilities, layouts, and deeply nested components, without passing them down as props."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/[lang]/layout.tsx\" highlight={1,5} switcher",
+			"value": "import { lang } from 'next/root-params'\n\nexport default async function RootLayout(props: LayoutProps<'/[lang]'>) {\n\treturn (\n\t\t<html lang={await lang()}>\n\t\t\t<body>{props.children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/[lang]/layout.js\" highlight={1,5} switcher",
+			"value": "import { lang } from 'next/root-params'\n\nexport default async function RootLayout({ children }) {\n\treturn (\n\t\t<html lang={await lang()}>\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Root parameters are the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/dynamic-routes",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamic segments"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " that appear before the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout#root-layout",
+					"children": [
+						{
+							"type": "text",
+							"value": "root layout"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Unlike the regular "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/page#params-optional",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "params"
+						},
+						{
+							"type": "text",
+							"value": " prop"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", root parameter getters can be called from any Server Component in your application without prop drilling. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#why-root-parameters-are-special",
+					"children": [
+						{
+							"type": "text",
+							"value": "Why root parameters are special"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more details."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Root parameter names must be valid JavaScript function identifiers. Kebab-cased segment names (e.g. "
+										},
+										{
+											"type": "inlineCode",
+											"value": "[post-slug]"
+										},
+										{
+											"type": "text",
+											"value": ") are not supported and will cause an error at dev time or during build."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "next/root-params"
+										},
+										{
+											"type": "text",
+											"value": " can be used in Server Components. It cannot be used in Client Components, Server Actions, or "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/route",
+											"children": [
+												{
+													"type": "text",
+													"value": "Route Handlers"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ". Support for Route Handlers is planned for a future release."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Types for the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next/root-params"
+										},
+										{
+											"type": "text",
+											"value": " exports are generated during "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next dev"
+										},
+										{
+											"type": "text",
+											"value": ", "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next build"
+										},
+										{
+											"type": "text",
+											"value": ", or "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/cli/next#next-typegen-options",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "next typegen"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ", the same as "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/config/typescript#route-aware-type-helpers",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "PageProps"
+												},
+												{
+													"type": "text",
+													"value": " and "
+												},
+												{
+													"type": "inlineCode",
+													"value": "LayoutProps"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Root parameters and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Root parameters are available as soon as you create the routes that define them. A "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-static-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " function is only required with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", where each root parameter must have at least one value or the build fails."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With a single root parameter:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/[lang]/layout.tsx\" highlight={11,12,13} switcher",
+			"value": "import { lang } from 'next/root-params'\n\nexport default async function RootLayout(props: LayoutProps<'/[lang]'>) {\n\treturn (\n\t\t<html lang={await lang()}>\n\t\t\t<body>{props.children}</body>\n\t\t</html>\n\t)\n}\n\nexport async function generateStaticParams() {\n\treturn [{ lang: 'en' }, { lang: 'fr' }]\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/[lang]/layout.js\" highlight={11,12,13} switcher",
+			"value": "import { lang } from 'next/root-params'\n\nexport default async function RootLayout({ children }) {\n\treturn (\n\t\t<html lang={await lang()}>\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}\n\nexport async function generateStaticParams() {\n\treturn [{ lang: 'en' }, { lang: 'fr' }]\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With multiple root parameters, return a value for each:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/[lang]/[locale]/layout.tsx\"",
+			"value": "export async function generateStaticParams() {\n\treturn [\n\t\t{ lang: 'en', locale: 'us' },\n\t\t{ lang: 'en', locale: 'uk' },\n\t]\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reading root parameters in a nested "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Inside a nested segment's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-static-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", you can read a root parameter directly with its getter, instead of destructuring it from the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " argument:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/[lang]/posts/[slug]/page.tsx\" highlight={1,4} switcher",
+			"value": "import { lang } from 'next/root-params'\n\nexport async function generateStaticParams() {\n\tconst language = await lang()\n\tconst posts = await fetch(`https://api.example.com/posts?lang=${language}`).then((res) => res.json())\n\treturn posts.map((post) => ({ slug: post.slug }))\n}\n\nexport default async function Page() {\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/[lang]/posts/[slug]/page.js\" highlight={1,4} switcher",
+			"value": "import { lang } from 'next/root-params'\n\nexport async function generateStaticParams() {\n\tconst language = await lang()\n\tconst posts = await fetch(`https://api.example.com/posts?lang=${language}`).then((res) => res.json())\n\treturn posts.map((post) => ({ slug: post.slug }))\n}\n\nexport default async function Page() {\n\t// ...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Root parameters and other route parameters"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Root parameters are the route parameters from "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#dynamic-route-segments",
+					"children": [
+						{
+							"type": "text",
+							"value": "dynamic segments"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " that appear in the path up to the root layout file. Other route parameters deeper in the route tree are accessed through the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/page#params-optional",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "params"
+						},
+						{
+							"type": "text",
+							"value": " prop"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Given this file structure:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/[lang]/layout.tsx"
+								},
+								{
+									"type": "text",
+									"value": " (root layout)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/[lang]/posts/[slug]/page.tsx"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Only "
+				},
+				{
+					"type": "inlineCode",
+					"value": "lang"
+				},
+				{
+					"type": "text",
+					"value": " is a root parameter. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "slug"
+				},
+				{
+					"type": "text",
+					"value": " is a regular route parameter:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/[lang]/posts/[slug]/page.tsx\" highlight={1,7} switcher",
+			"value": "import { lang } from 'next/root-params'\n\nexport default async function PostPage(props: PageProps<'/[lang]/posts/[slug]'>) {\n\tconst { slug } = await props.params\n\tconst language = await lang()\n\n\treturn (\n\t\t<article>\n\t\t\t<p>Language: {language}</p>\n\t\t\t<p>Post: {slug}</p>\n\t\t</article>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/[lang]/posts/[slug]/page.js\" highlight={1,5} switcher",
+			"value": "import { lang } from 'next/root-params'\n\nexport default async function PostPage({ params }) {\n\tconst { slug } = await params\n\tconst language = await lang()\n\n\treturn (\n\t\t<article>\n\t\t\t<p>Language: {language}</p>\n\t\t\t<p>Post: {slug}</p>\n\t\t</article>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Accessing root parameters in shared code"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Root parameter getters are module imports, they can be called from any Server Component or server-side utility, not just layouts and pages:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"lib/get-translations.ts\" highlight={4}",
+			"value": "import { lang } from 'next/root-params'\n\nexport async function getTranslations() {\n\tconst language = await lang()\n\t// Load translations based on the root language parameter\n\treturn import(`@/locales/${language}.json`)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " You do not need to add "
+						},
+						{
+							"type": "inlineCode",
+							"value": "import 'server-only'"
+						},
+						{
+							"type": "text",
+							"value": " to files that use "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next/root-params"
+						},
+						{
+							"type": "text",
+							"value": ". The import already fails at build time if used in a Client Component."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Behavior with caching directives"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Because root parameter getters are imported functions, Next.js can track which ones a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "text",
+							"value": "cached"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " function uses. Only those root parameters become part of the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache#cache-keys",
+					"children": [
+						{
+							"type": "text",
+							"value": "cache key"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", so cache entries are not split across unrelated parameter values."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/[lang]/components/cached-nav.tsx\" highlight={7} switcher",
+			"value": "import { lang } from 'next/root-params'\n\n// The cache key for this function only includes `lang`,\n// not every dynamic segment in the route.\nasync function getNavigation() {\n\t'use cache'\n\tconst language = await lang()\n\tconst res = await fetch(`https://api.example.com/nav?lang=${language}`)\n\treturn res.json()\n}\n\nexport default async function CachedNav() {\n\tconst nav = await getNavigation()\n\treturn <nav>{/* render nav items */}</nav>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/[lang]/components/cached-nav.js\" highlight={7} switcher",
+			"value": "import { lang } from 'next/root-params'\n\n// The cache key for this function only includes `lang`,\n// not every dynamic segment in the route.\nasync function getNavigation() {\n\t'use cache'\n\tconst language = await lang()\n\tconst res = await fetch(`https://api.example.com/nav?lang=${language}`)\n\treturn res.json()\n}\n\nexport default async function CachedNav() {\n\tconst nav = await getNavigation()\n\treturn <nav>{/* render nav items */}</nav>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With the regular "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " prop, you would need to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await params"
+				},
+				{
+					"type": "text",
+					"value": " outside the cached function and pass the value in as an argument:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/[lang]/page.tsx\" highlight={6,17} switcher",
+			"value": "import { lang } from 'next/root-params'\n\n// With root params: call directly inside the cached function\nasync function getDataWithRootParams() {\n\t'use cache'\n\tconst language = await lang()\n\treturn fetch(`https://api.example.com/data?lang=${language}`)\n}\n\n// Without root params: await params outside, pass as argument\nasync function getDataWithParams(language: string) {\n\t'use cache'\n\treturn fetch(`https://api.example.com/data?lang=${language}`)\n}\n\nexport default async function Page(props: PageProps<'/[lang]'>) {\n\tconst { lang: language } = await props.params\n\tconst data = await getDataWithParams(language)\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/[lang]/page.js\" highlight={6,17} switcher",
+			"value": "import { lang } from 'next/root-params'\n\n// With root params: call directly inside the cached function\nasync function getDataWithRootParams() {\n\t'use cache'\n\tconst language = await lang()\n\treturn fetch(`https://api.example.com/data?lang=${language}`)\n}\n\n// Without root params: await params outside, pass as argument\nasync function getDataWithParams(language) {\n\t'use cache'\n\treturn fetch(`https://api.example.com/data?lang=${language}`)\n}\n\nexport default async function Page({ params }) {\n\tconst { lang: language } = await params\n\tconst data = await getDataWithParams(language)\n\t// ...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Multiple root layouts"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When an application has multiple root layouts with different parameters, getter functions are typed to account for usage in any of all possible routes. A parameter that does not exist in every root layout has the type "
+				},
+				{
+					"type": "inlineCode",
+					"value": "string | undefined"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Given this file structure:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/dashboard/[id]/layout.tsx"
+								},
+								{
+									"type": "text",
+									"value": " (root layout with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "id"
+								},
+								{
+									"type": "text",
+									"value": ")"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/marketing/layout.tsx"
+								},
+								{
+									"type": "text",
+									"value": " (root layout without "
+								},
+								{
+									"type": "inlineCode",
+									"value": "id"
+								},
+								{
+									"type": "text",
+									"value": ")"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/[id]/page.tsx\" highlight={4} switcher",
+			"value": "import { id } from 'next/root-params'\n\nexport default async function DashboardPage() {\n\tconst dashboardId = await id() // string | undefined\n\treturn <div>Dashboard: {dashboardId}</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/[id]/page.js\" highlight={4} switcher",
+			"value": "import { id } from 'next/root-params'\n\nexport default async function DashboardPage() {\n\tconst dashboardId = await id() // string | undefined\n\treturn <div>Dashboard: {dashboardId}</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since "
+				},
+				{
+					"type": "inlineCode",
+					"value": "id"
+				},
+				{
+					"type": "text",
+					"value": " does not exist in the marketing root layout, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await id()"
+				},
+				{
+					"type": "text",
+					"value": " returns "
+				},
+				{
+					"type": "inlineCode",
+					"value": "undefined"
+				},
+				{
+					"type": "text",
+					"value": " when accessed from marketing routes."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Catch-all and optional catch-all segments"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Root parameters work with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/dynamic-routes#catch-all-segments",
+					"children": [
+						{
+							"type": "text",
+							"value": "catch-all and optional catch-all"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " segments:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/docs/[...path]/layout.tsx\" highlight={6} switcher",
+			"value": "import { path } from 'next/root-params'\n\nexport default async function DocsLayout(props: LayoutProps<'/docs/[...path]'>) {\n\tconst segments = await path() // string[] | undefined\n\treturn (\n\t\t<div>\n\t\t\t<nav>Path: {segments?.join(' / ')}</nav>\n\t\t\t{props.children}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/docs/[...path]/layout.js\" highlight={4} switcher",
+			"value": "import { path } from 'next/root-params'\n\nexport default async function DocsLayout({ children }) {\n\tconst segments = await path() // string[] | undefined\n\treturn (\n\t\t<div>\n\t\t\t<nav>Path: {segments?.join(' / ')}</nav>\n\t\t\t{children}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each root parameter getter returns a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Promise"
+				},
+				{
+					"type": "text",
+					"value": " that resolves to one of the following:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Segment type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Example"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Return type"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Dynamic"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "[id]"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Catch-all"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "[...path]"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string[]"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional catch-all"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "[[...path]]"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string[] | undefined"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If the parameter does not exist in the current route's root layout (see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#multiple-root-layouts",
+					"children": [
+						{
+							"type": "text",
+							"value": "Multiple root layouts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "), the return type includes "
+				},
+				{
+					"type": "inlineCode",
+					"value": "undefined"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Restrictions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Most of these are permanent constraints of how root parameters work. The exception is "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", which are not supported yet but are planned for a future release."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Components only"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Root parameter getters can only be used in Server Components:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "// This will cause a build error\n'use client'\n\nimport { lang } from 'next/root-params' // Error: Cannot import in Client Component"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Not available in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "unstable_cache"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Calling a root parameter getter inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "unstable_cache"
+				},
+				{
+					"type": "text",
+					"value": " will throw a runtime error. Use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "\"use cache\""
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " instead."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "import { lang } from 'next/root-params'\nimport { unstable_cache } from 'next/cache'\n\nconst getCachedData = unstable_cache(async () => {\n\tconst language = await lang() // Error: Not supported inside unstable_cache\n\treturn fetch(`https://api.example.com/data?lang=${language}`)\n})"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Not available in Server Actions"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "import { lang } from 'next/root-params'\n\nasync function submitForm() {\n\t'use server'\n\tconst language = await lang() // Error: Not supported in Server Actions\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Why root parameters are special"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout#root-layout",
+					"children": [
+						{
+							"type": "text",
+							"value": "root layout"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is the top-level rendering boundary. The route parameters before it are shared by all routes under that root layout, which is what makes them safe to access from any Server Component in that tree. Route parameters deeper in the route vary depending on which child page is being rendered, so they are only available through the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/page#params-optional",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "params"
+						},
+						{
+							"type": "text",
+							"value": " prop"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in the page or layout that defines them."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "txt",
+			"meta": null,
+			"value": "app/\n  [lang]/              ← root parameter (shared by all routes below)\n    layout.tsx         ← root layout\n    page.tsx           ← has no slug, doesn't know about blog or store\n    blog/\n      [slug]/          ← route parameter\n        page.tsx\n    store/\n      [...slug]/       ← catch-all route parameter with the same name\n        page.tsx"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In this example, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "lang"
+				},
+				{
+					"type": "text",
+					"value": " is the only root parameter. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.tsx"
+				},
+				{
+					"type": "text",
+					"value": " directly under the root layout has no "
+				},
+				{
+					"type": "inlineCode",
+					"value": "slug"
+				},
+				{
+					"type": "text",
+					"value": " at all. The blog and store branches both define "
+				},
+				{
+					"type": "inlineCode",
+					"value": "slug"
+				},
+				{
+					"type": "text",
+					"value": ", but with different segment types ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "[slug]"
+				},
+				{
+					"type": "text",
+					"value": " vs "
+				},
+				{
+					"type": "inlineCode",
+					"value": "[...slug]"
+				},
+				{
+					"type": "text",
+					"value": "). Each route only knows about its own route parameters. The same name can have different types, different meanings, or not exist at all depending on the route. This is why route parameters below the root layout are accessed through the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " prop rather than as global getters."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The exception is "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#multiple-root-layouts",
+					"children": [
+						{
+							"type": "text",
+							"value": "multiple root layouts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". When different root layouts define different route parameters, the getter functions include "
+				},
+				{
+					"type": "inlineCode",
+					"value": "undefined"
+				},
+				{
+					"type": "text",
+					"value": " in their return type to account for routes where a given parameter may not exist."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next/root-params"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

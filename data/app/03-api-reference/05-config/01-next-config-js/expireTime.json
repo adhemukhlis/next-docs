@@ -1,0 +1,107 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: expireTime\ndescription: Customize stale-while-revalidate expire time for ISR enabled pages."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can specify a custom "
+				},
+				{
+					"type": "inlineCode",
+					"value": "stale-while-revalidate"
+				},
+				{
+					"type": "text",
+					"value": " expire time for CDNs to consume in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Cache-Control"
+				},
+				{
+					"type": "text",
+					"value": " header for ISR enabled pages."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Open "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " and add the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "expireTime"
+				},
+				{
+					"type": "text",
+					"value": " config:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\t// one hour in seconds\n\texpireTime: 3600,\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Now when sending the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Cache-Control"
+				},
+				{
+					"type": "text",
+					"value": " header the expire time will be calculated depending on the specific revalidate period."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, if you have a revalidate of 15 minutes on a path and the expire time is one hour the generated "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Cache-Control"
+				},
+				{
+					"type": "text",
+					"value": " header will be "
+				},
+				{
+					"type": "inlineCode",
+					"value": "s-maxage=900, stale-while-revalidate=2700"
+				},
+				{
+					"type": "text",
+					"value": " so that it can stay stale for 15 minutes less than the configured expire time."
+				}
+			]
+		}
+	]
+}

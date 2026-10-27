@@ -227,7 +227,7 @@ Create an error boundary by adding an [`error.js`](/docs/app/api-reference/file-
 
 import { useEffect } from 'react'
 
-export default function ErrorPage({ error, retry }: { error: Error & { digest?: string }; retry: () => void }) {
+export default function ErrorPage({ error, retry }: { error: unknown; retry: () => void }) {
 	useEffect(() => {
 		// Log the error to an error reporting service
 		console.error(error)
@@ -292,10 +292,12 @@ For component-level error recovery, the [`catchError`](/docs/app/api-reference/f
 import { catchError, type ErrorInfo } from 'next/error'
 
 function ErrorFallback(props: { title: string }, { error, retry }: ErrorInfo) {
+	const message = error instanceof Error ? error.message : String(error)
+
 	return (
 		<div>
 			<h2>{props.title}</h2>
-			<p>{error.message}</p>
+			<p>{message}</p>
 			<button onClick={() => retry()}>Try again</button>
 		</div>
 	)
@@ -310,10 +312,12 @@ export default catchError(ErrorFallback)
 import { catchError } from 'next/error'
 
 function ErrorFallback(props, { error, retry }) {
+	const message = error instanceof Error ? error.message : String(error)
+
 	return (
 		<div>
 			<h2>{props.title}</h2>
-			<p>{error.message}</p>
+			<p>{message}</p>
 			<button onClick={() => retry()}>Try again</button>
 		</div>
 	)
@@ -409,7 +413,7 @@ While less common, you can handle errors in the root layout using the [`global-e
 ```tsx filename="app/global-error.tsx" switcher
 'use client' // Error boundaries must be Client Components
 
-export default function GlobalError({ error, retry }: { error: Error & { digest?: string }; retry: () => void }) {
+export default function GlobalError({ error, retry }: { error: unknown; retry: () => void }) {
 	return (
 		// global-error must include html and body tags
 		<html>

@@ -1,0 +1,825 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: images\ndescription: Custom configuration for the next/image loader"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you want to use a cloud provider to optimize images instead of using the Next.js built-in Image Optimization API, you can configure "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " with the following:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\timages: {\n\t\tloader: 'custom',\n\t\tloaderFile: './my/image/loader.js',\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loaderFile"
+				},
+				{
+					"type": "text",
+					"value": " must point to a file relative to the root of your Next.js application. The file must export a default function that returns a string, for example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"my/image/loader.js\"",
+			"value": "'use client'\n\nexport default function myImageLoader({ src, width, quality }) {\n\treturn `https://example.com/${src}?w=${width}&q=${quality || 75}`\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Alternatively, you can use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image#loader",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "loader"
+						},
+						{
+							"type": "text",
+							"value": " prop"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to pass the function to each instance of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/image"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Customizing the image loader file, which accepts a function, requires using "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/getting-started/server-and-client-components",
+							"children": [
+								{
+									"type": "text",
+									"value": "Client Components"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " to serialize the provided function."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To learn more about configuring the behavior of the built-in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image",
+					"children": [
+						{
+							"type": "text",
+							"value": "Image Optimization API"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image",
+					"children": [
+						{
+							"type": "text",
+							"value": "Image Component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image#configuration-options",
+					"children": [
+						{
+							"type": "text",
+							"value": "Image Configuration Options"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for available options."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Example Loader Configuration"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#akamai",
+									"children": [
+										{
+											"type": "text",
+											"value": "Akamai"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#aws-cloudfront",
+									"children": [
+										{
+											"type": "text",
+											"value": "AWS CloudFront"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#cloudinary",
+									"children": [
+										{
+											"type": "text",
+											"value": "Cloudinary"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#cloudflare",
+									"children": [
+										{
+											"type": "text",
+											"value": "Cloudflare"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#contentful",
+									"children": [
+										{
+											"type": "text",
+											"value": "Contentful"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#fastly",
+									"children": [
+										{
+											"type": "text",
+											"value": "Fastly"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#gumlet",
+									"children": [
+										{
+											"type": "text",
+											"value": "Gumlet"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#imageengine",
+									"children": [
+										{
+											"type": "text",
+											"value": "ImageEngine"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#imgix",
+									"children": [
+										{
+											"type": "text",
+											"value": "Imgix"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#pixelbin",
+									"children": [
+										{
+											"type": "text",
+											"value": "PixelBin"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#sanity",
+									"children": [
+										{
+											"type": "text",
+											"value": "Sanity"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#sirv",
+									"children": [
+										{
+											"type": "text",
+											"value": "Sirv"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#supabase",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supabase"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#thumbor",
+									"children": [
+										{
+											"type": "text",
+											"value": "Thumbor"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#imagekitio",
+									"children": [
+										{
+											"type": "text",
+											"value": "Imagekit"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#nitrogen-aio",
+									"children": [
+										{
+											"type": "text",
+											"value": "Nitrogen AIO"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Akamai"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Docs: https://techdocs.akamai.com/ivm/reference/test-images-on-demand\nexport default function akamaiLoader({ src, width, quality }) {\n\treturn `https://example.com/${src}?imwidth=${width}`\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "AWS CloudFront"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Docs: https://aws.amazon.com/developer/application-security-performance/articles/image-optimization\nexport default function cloudfrontLoader({ src, width, quality }) {\n\tconst url = new URL(`https://example.com${src}`)\n\turl.searchParams.set('format', 'auto')\n\turl.searchParams.set('width', width.toString())\n\turl.searchParams.set('quality', (quality || 75).toString())\n\treturn url.href\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Cloudinary"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Demo: https://res.cloudinary.com/demo/image/upload/w_300,c_limit,q_auto/turtles.jpg\nexport default function cloudinaryLoader({ src, width, quality }) {\n\tconst params = ['f_auto', 'c_limit', `w_${width}`, `q_${quality || 'auto'}`]\n\treturn `https://example.com/${params.join(',')}${src}`\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Cloudflare"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Docs: https://developers.cloudflare.com/images/transform-images\nexport default function cloudflareLoader({ src, width, quality }) {\n\tconst params = [`width=${width}`, `quality=${quality || 75}`, 'format=auto']\n\treturn `https://example.com/cdn-cgi/image/${params.join(',')}/${src}`\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Contentful"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Docs: https://www.contentful.com/developers/docs/references/images-api/\nexport default function contentfulLoader({ src, width, quality }) {\n\tconst url = new URL(`https://example.com${src}`)\n\turl.searchParams.set('fm', 'webp')\n\turl.searchParams.set('w', width.toString())\n\turl.searchParams.set('q', (quality || 75).toString())\n\treturn url.href\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Fastly"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Docs: https://developer.fastly.com/reference/io/\nexport default function fastlyLoader({ src, width, quality }) {\n\tconst url = new URL(`https://example.com${src}`)\n\turl.searchParams.set('auto', 'webp')\n\turl.searchParams.set('width', width.toString())\n\turl.searchParams.set('quality', (quality || 75).toString())\n\treturn url.href\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Gumlet"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Docs: https://docs.gumlet.com/reference/image-transform-size\nexport default function gumletLoader({ src, width, quality }) {\n\tconst url = new URL(`https://example.com${src}`)\n\turl.searchParams.set('format', 'auto')\n\turl.searchParams.set('w', width.toString())\n\turl.searchParams.set('q', (quality || 75).toString())\n\treturn url.href\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "ImageEngine"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Docs: https://support.imageengine.io/hc/en-us/articles/360058880672-Directives\nexport default function imageengineLoader({ src, width, quality }) {\n\tconst compression = 100 - (quality || 50)\n\tconst params = [`w_${width}`, `cmpr_${compression}`]\n\treturn `https://example.com${src}?imgeng=/${params.join('/')}`\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Imgix"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Demo: https://static.imgix.net/daisy.png?format=auto&fit=max&w=300\nexport default function imgixLoader({ src, width, quality }) {\n\tconst url = new URL(`https://example.com${src}`)\n\tconst params = url.searchParams\n\tparams.set('auto', params.getAll('auto').join(',') || 'format')\n\tparams.set('fit', params.get('fit') || 'max')\n\tparams.set('w', params.get('w') || width.toString())\n\tparams.set('q', (quality || 50).toString())\n\treturn url.href\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "PixelBin"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Doc (Resize): https://www.pixelbin.io/docs/transformations/basic/resize/#width-w\n// Doc (Optimise): https://www.pixelbin.io/docs/optimizations/quality/#image-quality-when-delivering\n// Doc (Auto Format Delivery): https://www.pixelbin.io/docs/optimizations/format/#automatic-format-selection-with-f_auto-url-parameter\nexport default function pixelBinLoader({ src, width, quality }) {\n\tconst name = '<your-cloud-name>'\n\tconst opt = `t.resize(w:${width})~t.compress(q:${quality || 75})`\n\treturn `https://cdn.pixelbin.io/v2/${name}/${opt}/${src}?f_auto=true`\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Sanity"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Docs: https://www.sanity.io/docs/image-urls\nexport default function sanityLoader({ src, width, quality }) {\n\tconst prj = 'zp7mbokg'\n\tconst dataset = 'production'\n\tconst url = new URL(`https://cdn.sanity.io/images/${prj}/${dataset}${src}`)\n\turl.searchParams.set('auto', 'format')\n\turl.searchParams.set('fit', 'max')\n\turl.searchParams.set('w', width.toString())\n\tif (quality) {\n\t\turl.searchParams.set('q', quality.toString())\n\t}\n\treturn url.href\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Sirv"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Docs: https://sirv.com/help/articles/dynamic-imaging/\nexport default function sirvLoader({ src, width, quality }) {\n\tconst url = new URL(`https://example.com${src}`)\n\tconst params = url.searchParams\n\tparams.set('format', params.getAll('format').join(',') || 'optimal')\n\tparams.set('w', params.get('w') || width.toString())\n\tparams.set('q', (quality || 85).toString())\n\treturn url.href\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Supabase"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Docs: https://supabase.com/docs/guides/storage/image-transformations#nextjs-loader\nexport default function supabaseLoader({ src, width, quality }) {\n\tconst url = new URL(`https://example.com${src}`)\n\turl.searchParams.set('width', width.toString())\n\turl.searchParams.set('quality', (quality || 75).toString())\n\treturn url.href\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Thumbor"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Docs: https://thumbor.readthedocs.io/en/latest/\nexport default function thumborLoader({ src, width, quality }) {\n\tconst params = [`${width}x0`, `filters:quality(${quality || 75})`]\n\treturn `https://example.com${params.join('/')}${src}`\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "ImageKit.io"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Docs: https://imagekit.io/docs/image-transformation\nexport default function imageKitLoader({ src, width, quality }) {\n\tconst params = [`w-${width}`, `q-${quality || 80}`]\n\treturn `https://ik.imagekit.io/your_imagekit_id/${src}?tr=${params.join(',')}`\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Nitrogen AIO"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Docs: https://docs.n7.io/aio/intergrations/\nexport default function aioLoader({ src, width, quality }) {\n\tconst url = new URL(src, window.location.href)\n\tconst params = url.searchParams\n\tconst aioParams = params.getAll('aio')\n\taioParams.push(`w-${width}`)\n\tif (quality) {\n\t\taioParams.push(`q-${quality.toString()}`)\n\t}\n\tparams.set('aio', aioParams.join(';'))\n\treturn url.href\n}"
+		}
+	]
+}

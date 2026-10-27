@@ -1,0 +1,1049 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: not-found.js\ndescription: API reference for the not-found.js file."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js provides two conventions to handle not found cases:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "not-found.js"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Used when you call the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/not-found",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "notFound"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " function in a route segment."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "global-not-found.js"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Used to define a global 404 page for unmatched routes across your entire app. This is handled at the routing level and doesn't depend on rendering a layout or page."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "not-found.js"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "not-found"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " file renders UI when the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/not-found",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "notFound"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " function is thrown within a route segment."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Before streaming starts, Next.js returns a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "404"
+				},
+				{
+					"type": "text",
+					"value": " status code. After streaming starts, the status code remains "
+				},
+				{
+					"type": "inlineCode",
+					"value": "200"
+				},
+				{
+					"type": "text",
+					"value": " and the not-found UI renders in the response. Next.js injects a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<meta name=\"robots\" content=\"noindex\" />"
+				},
+				{
+					"type": "text",
+					"value": " tag in both cases. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/loading#status-codes",
+					"children": [
+						{
+							"type": "text",
+							"value": "Status codes"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for details."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/not-found.tsx\" switcher",
+			"value": "import Link from 'next/link'\n\nexport default function NotFound() {\n\treturn (\n\t\t<div>\n\t\t\t<h2>Not Found</h2>\n\t\t\t<p>Could not find requested resource</p>\n\t\t\t<Link href=\"/\">Return Home</Link>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/not-found.js\" switcher",
+			"value": "import Link from 'next/link'\n\nexport default function NotFound() {\n\treturn (\n\t\t<div>\n\t\t\t<h2>Not Found</h2>\n\t\t\t<p>Could not find requested resource</p>\n\t\t\t<Link href=\"/\">Return Home</Link>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/project-structure#component-hierarchy",
+					"children": [
+						{
+							"type": "text",
+							"value": "component hierarchy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "not-found.js"
+				},
+				{
+					"type": "text",
+					"value": " renders between "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.js"
+				},
+				{
+					"type": "text",
+					"value": ". It is wrapped by the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": " and the error boundary from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "error.js"
+				},
+				{
+					"type": "text",
+					"value": " in the same segment."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": The default not found UI follows the operating system's color scheme via "
+						},
+						{
+							"type": "inlineCode",
+							"value": "prefers-color-scheme"
+						},
+						{
+							"type": "text",
+							"value": " and does not read an app-level theme (such as a class or "
+						},
+						{
+							"type": "inlineCode",
+							"value": "data-theme"
+						},
+						{
+							"type": "text",
+							"value": " attribute on "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<html>"
+						},
+						{
+							"type": "text",
+							"value": "). Because it renders inside your root layout, the quickest way to match an explicit theme is to add a higher-specificity rule pair in your global stylesheet, scoped to your theme selector — for example "
+						},
+						{
+							"type": "inlineCode",
+							"value": "html[data-theme='light'] body"
+						},
+						{
+							"type": "text",
+							"value": " and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "html[data-theme='dark'] body"
+						},
+						{
+							"type": "text",
+							"value": ". For full control over the markup, provide your own "
+						},
+						{
+							"type": "inlineCode",
+							"value": "not-found.js"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "global-not-found.js"
+				},
+				{
+					"type": "text",
+					"value": " (experimental)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "global-not-found.js"
+				},
+				{
+					"type": "text",
+					"value": " file lets you define a 404 page for your entire application. Unlike "
+				},
+				{
+					"type": "inlineCode",
+					"value": "not-found.js"
+				},
+				{
+					"type": "text",
+					"value": ", which works at the route level, this is used when a requested URL doesn't match any route at all. Next.js "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "skips rendering"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and directly returns this global page."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "global-not-found.js"
+				},
+				{
+					"type": "text",
+					"value": " file bypasses your app's normal rendering, which means you'll need to import any global styles, fonts, or other dependencies that your 404 page requires. This includes your theme: because "
+				},
+				{
+					"type": "inlineCode",
+					"value": "global-not-found.js"
+				},
+				{
+					"type": "text",
+					"value": " bypasses your layout, the OS color scheme is the only signal the default UI sees, so apply your theme (class or attribute) inside this file."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": A smaller version of your global styles, and a simpler font family could improve performance of this page."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "global-not-found.js"
+				},
+				{
+					"type": "text",
+					"value": " is useful when you can't build a 404 page using a combination of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "layout.js"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "not-found.js"
+				},
+				{
+					"type": "text",
+					"value": ". This can happen in two cases:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Your app has multiple root layouts (e.g. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/(admin)/layout.tsx"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/(shop)/layout.tsx"
+								},
+								{
+									"type": "text",
+									"value": "), so there's no single layout to compose a global 404 from."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Your root layout is defined using top-level dynamic segments (e.g. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/[country]/layout.tsx"
+								},
+								{
+									"type": "text",
+									"value": "), which makes composing a consistent 404 page harder."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To enable it, add the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "globalNotFound"
+				},
+				{
+					"type": "text",
+					"value": " flag in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\texperimental: {\n\t\tglobalNotFound: true,\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, create a file in the root of the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " directory: "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/global-not-found.js"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/global-not-found.tsx\" switcher",
+			"value": "// Import global styles and fonts\nimport './globals.css'\nimport { Inter } from 'next/font/google'\nimport type { Metadata } from 'next'\n\nconst inter = Inter({ subsets: ['latin'] })\n\nexport const metadata: Metadata = {\n\ttitle: '404 - Page Not Found',\n\tdescription: 'The page you are looking for does not exist.',\n}\n\nexport default function GlobalNotFound() {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={inter.className}>\n\t\t\t<body>\n\t\t\t\t<h1>404 - Page Not Found</h1>\n\t\t\t\t<p>This page does not exist.</p>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/global-not-found.js\" switcher",
+			"value": "// Import global styles and fonts\nimport './globals.css'\nimport { Inter } from 'next/font/google'\n\nconst inter = Inter({ subsets: ['latin'] })\n\nexport const metadata = {\n\ttitle: '404 - Page Not Found',\n\tdescription: 'The page you are looking for does not exist.',\n}\n\nexport default function GlobalNotFound() {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={inter.className}>\n\t\t\t<body>\n\t\t\t\t<h1>404 - Page Not Found</h1>\n\t\t\t\t<p>This page does not exist.</p>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Unlike "
+				},
+				{
+					"type": "inlineCode",
+					"value": "not-found.js"
+				},
+				{
+					"type": "text",
+					"value": ", this file must return a full HTML document, including "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<html>"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<body>"
+				},
+				{
+					"type": "text",
+					"value": " tags."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Props"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "not-found.js"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "global-not-found.js"
+				},
+				{
+					"type": "text",
+					"value": " components do not accept any props."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": In addition to catching expected "
+						},
+						{
+							"type": "inlineCode",
+							"value": "notFound()"
+						},
+						{
+							"type": "text",
+							"value": " errors, the root "
+						},
+						{
+							"type": "inlineCode",
+							"value": "app/not-found.js"
+						},
+						{
+							"type": "text",
+							"value": " and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "app/global-not-found.js"
+						},
+						{
+							"type": "text",
+							"value": " files handle any unmatched URLs for your whole application. This means users that visit a URL that is not handled by your app will be shown the exported UI."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Data Fetching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "not-found"
+				},
+				{
+					"type": "text",
+					"value": " is a Server Component. You can mark it as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "async"
+				},
+				{
+					"type": "text",
+					"value": " to fetch and display data:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/not-found.tsx\" switcher",
+			"value": "import Link from 'next/link'\nimport { headers } from 'next/headers'\n\nexport default async function NotFound() {\n\tconst headersList = await headers()\n\tconst domain = headersList.get('host')\n\tconst data = await getSiteData(domain)\n\treturn (\n\t\t<div>\n\t\t\t<h2>Not Found: {data.name}</h2>\n\t\t\t<p>Could not find requested resource</p>\n\t\t\t<p>\n\t\t\t\tView <Link href=\"/blog\">all posts</Link>\n\t\t\t</p>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/not-found.jsx\" switcher",
+			"value": "import Link from 'next/link'\nimport { headers } from 'next/headers'\n\nexport default async function NotFound() {\n\tconst headersList = await headers()\n\tconst domain = headersList.get('host')\n\tconst data = await getSiteData(domain)\n\treturn (\n\t\t<div>\n\t\t\t<h2>Not Found: {data.name}</h2>\n\t\t\t<p>Could not find requested resource</p>\n\t\t\t<p>\n\t\t\t\tView <Link href=\"/blog\">all posts</Link>\n\t\t\t</p>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you need to use Client Component hooks like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "usePathname"
+				},
+				{
+					"type": "text",
+					"value": " to display content based on the path, you must fetch data on the client-side instead."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Metadata"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Both the root "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/not-found.js"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/global-not-found.js"
+				},
+				{
+					"type": "text",
+					"value": " support exporting a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "metadata"
+				},
+				{
+					"type": "text",
+					"value": " object or a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-metadata",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateMetadata"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " function to customize the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<title>"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<meta>"
+				},
+				{
+					"type": "text",
+					"value": ", and other head tags for your 404 page:"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Next.js automatically injects "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<meta name=\"robots\" content=\"noindex\" />"
+						},
+						{
+							"type": "text",
+							"value": " for pages that return a 404 status code, including "
+						},
+						{
+							"type": "inlineCode",
+							"value": "global-not-found.js"
+						},
+						{
+							"type": "text",
+							"value": " pages."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/global-not-found.tsx\" switcher",
+			"value": "import type { Metadata } from 'next'\n\nexport const metadata: Metadata = {\n\ttitle: 'Not Found',\n\tdescription: 'The page you are looking for does not exist.',\n}\n\nexport default function GlobalNotFound() {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<body>\n\t\t\t\t<div>\n\t\t\t\t\t<h1>Not Found</h1>\n\t\t\t\t\t<p>The page you are looking for does not exist.</p>\n\t\t\t\t</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/global-not-found.js\" switcher",
+			"value": "export const metadata = {\n\ttitle: 'Not Found',\n\tdescription: 'The page you are looking for does not exist.',\n}\n\nexport default function GlobalNotFound() {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<body>\n\t\t\t\t<div>\n\t\t\t\t\t<h1>Not Found</h1>\n\t\t\t\t\t<p>The page you are looking for does not exist.</p>\n\t\t\t\t</div>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.4.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "global-not-found.js"
+								},
+								{
+									"type": "text",
+									"value": " introduced (experimental)."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Root "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app/not-found"
+								},
+								{
+									"type": "text",
+									"value": " handles global unmatched URLs."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "not-found"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

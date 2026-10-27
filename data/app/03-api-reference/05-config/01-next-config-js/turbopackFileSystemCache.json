@@ -1,0 +1,512 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Turbopack FileSystem Caching\nnav_title: turbopackFileSystemCache\ndescription: Learn how to enable and configure FileSystem Caching for Turbopack builds\nrelated:\n links:\n  - app/api-reference/config/next-config-js/turbopackGc"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Usage"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack FileSystem Cache enables Turbopack to reduce work across "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " commands. When enabled, Turbopack will save and restore data under the "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next"
+				},
+				{
+					"type": "text",
+					"value": " directory between runs, which can greatly speed up subsequent builds and dev sessions."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Two options control the cache, one for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " and one for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ". Both are enabled by default:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\texperimental: {\n\t\tturbopackFileSystemCacheForDev: true,\n\t\tturbopackFileSystemCacheForBuild: true,\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\texperimental: {\n\t\tturbopackFileSystemCacheForDev: true,\n\t\tturbopackFileSystemCacheForBuild: true,\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Options"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "turbopackFileSystemCacheForDev"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (default: "
+								},
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": "): caches Turbopack's work for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next dev"
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".next/dev/cache/turbopack"
+								},
+								{
+									"type": "text",
+									"value": ". Restarting the dev server reuses the previous compilation."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "turbopackFileSystemCacheForBuild"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (default: "
+								},
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": "): caches Turbopack's work for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next build"
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".next/cache/turbopack"
+								},
+								{
+									"type": "text",
+									"value": ". Subsequent builds start warm. See "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#build-environments",
+									"children": [
+										{
+											"type": "text",
+											"value": "Build environments"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Set either option to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " to opt out."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Build environments"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The build cache lives in "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next/cache"
+				},
+				{
+					"type": "text",
+					"value": ". Builds only get faster when that directory is restored before each build."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Self-hosted builds"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": reuse the same working directory between builds. Containerized builds start from a clean layer and do not carry "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".next/cache"
+								},
+								{
+									"type": "text",
+									"value": " over unless you cache or mount it explicitly."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "CI providers"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/ci-build-caching",
+									"children": [
+										{
+											"type": "text",
+											"value": "configure build caching"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".next/cache"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If your build environment never preserves "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next/cache"
+				},
+				{
+					"type": "text",
+					"value": ", set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "turbopackFileSystemCacheForBuild: false"
+				},
+				{
+					"type": "text",
+					"value": " to skip writing a cache that will not be read."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "FileSystem caching is enabled by default for builds"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.1.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "FileSystem caching is enabled by default for development"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Beta release with separate flags for build and dev"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.5.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Persistent caching released as experimental on canary releases"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

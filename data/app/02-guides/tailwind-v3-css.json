@@ -1,0 +1,272 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to install Tailwind CSS v3 in your Next.js application\nnav_title: Tailwind CSS v3\ndescription: Style your Next.js Application using Tailwind CSS v3 for broader browser support."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This guide will walk you through how to install "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://v3.tailwindcss.com/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Tailwind CSS v3"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in your Next.js application."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " For the latest Tailwind 4 setup, see the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/getting-started/css#tailwind-css",
+							"children": [
+								{
+									"type": "text",
+									"value": "Tailwind CSS setup instructions"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Installing Tailwind v3"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Install Tailwind CSS and its peer dependencies, then run the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "init"
+				},
+				{
+					"type": "text",
+					"value": " command to generate both "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tailwind.config.js"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "postcss.config.js"
+				},
+				{
+					"type": "text",
+					"value": " files:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add -D tailwindcss@^3 postcss autoprefixer\nnpx tailwindcss init -p"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install -D tailwindcss@^3 postcss autoprefixer\nnpx tailwindcss init -p"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add -D tailwindcss@^3 postcss autoprefixer\nnpx tailwindcss init -p"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add -D tailwindcss@^3 postcss autoprefixer\nbunx tailwindcss init -p"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Configuring Tailwind v3"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Configure your template paths in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tailwind.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"tailwind.config.js\"",
+			"value": "/** @type {import('tailwindcss').Config} */\nmodule.exports = {\n\tcontent: ['./app/**/*.{js,ts,jsx,tsx,mdx}', './pages/**/*.{js,ts,jsx,tsx,mdx}', './components/**/*.{js,ts,jsx,tsx,mdx}'],\n\ttheme: {\n\t\textend: {},\n\t},\n\tplugins: [],\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Add the Tailwind directives to your global CSS file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "css",
+			"meta": "filename=\"app/globals.css\"",
+			"value": "@tailwind base;\n@tailwind components;\n@tailwind utilities;"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Import the CSS file in your root layout:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import './globals.css'\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "import './globals.css'\n\nexport default function RootLayout({ children }) {\n\treturn (\n\t\t<html lang=\"en\">\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using classes"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After installing Tailwind CSS and adding the global styles, you can use Tailwind's utility classes in your application."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "export default function Page() {\n\treturn <h1 className=\"text-3xl font-bold underline\">Hello, Next.js!</h1>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "export default function Page() {\n\treturn <h1 className=\"text-3xl font-bold underline\">Hello, Next.js!</h1>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Usage with Turbopack"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "As of Next.js 13.1, Tailwind CSS and PostCSS are supported with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://turbo.build/pack/docs/features/css#tailwind-css",
+					"children": [
+						{
+							"type": "text",
+							"value": "Turbopack"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		}
+	]
+}

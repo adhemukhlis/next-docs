@@ -1,0 +1,607 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Testing Adapters\ndescription: Validate adapters with the Next.js compatibility test harness and custom lifecycle scripts."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js provides a test harness for validating adapters. Running the end-to-end tests for deployment."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Example GitHub Actions workflow:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "yaml",
+			"meta": "filename=\".github/workflows/test-e2e-deploy.yml\"",
+			"value": "name: test-e2e-deploy\n\non:\n workflow_dispatch:\n  inputs:\n   nextjsRef:\n    description: 'Next.js repo ref (branch/tag/SHA)'\n    default: 'canary'\n    type: string\n # schedule:\n #   - cron: '0 2 * * *'\n\njobs:\n build:\n  name: Build Next.js + adapter\n  runs-on: ubuntu-latest\n  timeout-minutes: 30\n  steps:\n   - uses: actions/checkout@v4\n     with:\n      path: adapter\n\n   - uses: actions/checkout@v4\n     with:\n      repository: vercel/next.js\n      ref: ${{ inputs.nextjsRef || 'canary' }}\n      path: nextjs\n      fetch-depth: 25\n\n   - uses: actions/setup-node@v4\n     with: { node-version: '20' }\n\n   - name: Setup pnpm\n     run: npm i -g corepack@0.31 && corepack enable\n\n   - name: Install & build Next.js\n     working-directory: nextjs\n     run: pnpm install && pnpm build && pnpm install\n\n   - name: Install Playwright\n     working-directory: nextjs\n     run: pnpm playwright install --with-deps chromium\n\n   - name: Build adapter\n     working-directory: adapter\n     run: pnpm install && pnpm build\n\n   - uses: actions/cache/save@v4\n     with:\n      path: |\n       nextjs\n       adapter\n       ~/.cache/ms-playwright\n      key: build-${{ github.sha }}-${{ github.run_id }}\n\n test:\n  name: Tests (${{ matrix.group }})\n  needs: build\n  runs-on: ubuntu-latest\n  timeout-minutes: 60\n  strategy:\n   fail-fast: false\n   matrix:\n    group: [1/16, 2/16, 3/16, 4/16, 5/16, 6/16, 7/16, 8/16, 9/16, 10/16, 11/16, 12/16, 13/16, 14/16, 15/16, 16/16]\n  steps:\n   - uses: actions/cache/restore@v4\n     with:\n      path: |\n       nextjs\n       adapter\n       ~/.cache/ms-playwright\n      key: build-${{ github.sha }}-${{ github.run_id }}\n\n   - uses: actions/setup-node@v4\n     with: { node-version: '20' }\n\n   - name: Setup pnpm\n     run: npm i -g corepack@0.31 && corepack enable\n\n   - name: Ensure Playwright browser\n     working-directory: nextjs\n     run: pnpm playwright install chromium\n\n   - name: Make scripts executable\n     run: chmod +x adapter/scripts/e2e-deploy.sh adapter/scripts/e2e-logs.sh adapter/scripts/e2e-cleanup.sh\n\n   - name: Run deploy tests\n     working-directory: nextjs\n     env:\n      NEXT_TEST_MODE: deploy\n      NEXT_E2E_TEST_TIMEOUT: 240000\n      NEXT_EXTERNAL_TESTS_FILTERS: test/deploy-tests-manifest.json\n      ADAPTER_DIR: ${{ github.workspace }}/adapter\n      IS_TURBOPACK_TEST: 1\n      NEXT_TEST_JOB: 1\n      NEXT_TELEMETRY_DISABLED: 1\n\n      # Change these to your adapter's scripts\n      # Keep as-is if the scripts are in the adapter repository `scripts` directory\n      NEXT_TEST_DEPLOY_SCRIPT_PATH: ${{ github.workspace }}/adapter/scripts/e2e-deploy.sh\n      NEXT_TEST_DEPLOY_LOGS_SCRIPT_PATH: ${{ github.workspace }}/adapter/scripts/e2e-logs.sh\n      NEXT_TEST_CLEANUP_SCRIPT_PATH: ${{ github.workspace }}/adapter/scripts/e2e-cleanup.sh\n     run: node run-tests.js --timings -g ${{ matrix.group }} -c 2 --type e2e\n\n   - name: Save test results\n     if: always()\n     uses: actions/upload-artifact@v4\n     with:\n      name: adapter-test-results-${{ strategy.job-index }}\n      path: '**/*.results.json'\n      retention-days: 1\n\n upload-results:\n  name: Report results to nextjs.org\n  needs: test\n  if: always()\n  runs-on: ubuntu-latest\n  permissions:\n   contents: read\n   # Minting a GitHub OIDC token to authenticate the results upload.\n   id-token: write\n  steps:\n   - uses: actions/checkout@v4\n     with:\n      repository: vercel/next.js\n      ref: ${{ inputs.nextjsRef || 'canary' }}\n      path: nextjs\n\n   - uses: actions/setup-node@v4\n     with: { node-version: '20' }\n\n   - uses: actions/download-artifact@v4\n     with:\n      pattern: adapter-test-results-*\n      path: adapter-test-results\n      merge-multiple: true\n\n   - name: Upload adapter test results\n     working-directory: nextjs\n     run: node scripts/upload-adapter-test-results.mjs --results-root ../adapter-test-results"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reporting results to nextjs.org"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "upload-results"
+				},
+				{
+					"type": "text",
+					"value": " job above sends your results to the adapter test-results endpoint, which powers the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nextjs.org/docs/app/api-reference/adapters/supported-providers",
+					"children": [
+						{
+							"type": "text",
+							"value": "Adapter Support by Provider"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " matrix."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The upload authenticates with a GitHub Actions OIDC token, so it needs the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "id-token: write"
+				},
+				{
+					"type": "text",
+					"value": " permission shown above. No secret is issued or stored: the provider name and commit SHA are derived from the token claims, which means results can only be attributed to the repository and workflow that produced them."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Getting listed:"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " the matrix is open to adapters in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nextjs.org/ecosystem-working-group",
+					"children": [
+						{
+							"type": "text",
+							"value": "Ecosystem Working Group"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/deploying-to-platforms",
+					"children": [
+						{
+							"type": "text",
+							"value": "Deploying to Platforms"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for how verified adapters and the working group operate. Your repository and workflow are registered as part of that process. Your results appear on the matrix after your next workflow run. Until then the upload returns "
+				},
+				{
+					"type": "inlineCode",
+					"value": "403 Forbidden"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The test harness looks for these environment variables:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "NEXT_TEST_DEPLOY_SCRIPT_PATH"
+								},
+								{
+									"type": "text",
+									"value": ": Path to the executable that builds and deploys the isolated test app"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "NEXT_TEST_DEPLOY_LOGS_SCRIPT_PATH"
+								},
+								{
+									"type": "text",
+									"value": ": Path to the executable that returns build and runtime logs for that deployment"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "NEXT_TEST_CLEANUP_SCRIPT_PATH"
+								},
+								{
+									"type": "text",
+									"value": ": Path to the optional executable that tears the deployment down after the test run"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Custom deploy script contract"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The deploy script "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NEXT_TEST_DEPLOY_SCRIPT_PATH"
+				},
+				{
+					"type": "text",
+					"value": " is executed with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cwd"
+				},
+				{
+					"type": "text",
+					"value": " set to the isolated temporary app created by the Next.js test harness."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The deploy script must follow this contract:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Exit with a non-zero code on failure."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Print the deployment URL to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "stdout"
+								},
+								{
+									"type": "text",
+									"value": ". This will be used to verify the deployment. Avoid writing anything else to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "stdout"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Write diagnostic output to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "stderr"
+								},
+								{
+									"type": "text",
+									"value": " or to files inside the working directory."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Because the deploy script and logs script run as separate processes, any data you want to use later, such as build IDs or server logs, should be persisted to files inside the working directory."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Example deploy script:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"scripts/e2e-deploy.sh\"",
+			"value": "#!/usr/bin/env bash\nset -euo pipefail\n\n# Install the adapter, build the app, and deploy or start it.\nnode -e \"\nconst pkg=JSON.parse(require('fs').readFileSync('package.json','utf8'));\npkg.dependencies=pkg.dependencies||{};\npkg.dependencies['adapter']='file:${ADAPTER_DIR}';\nrequire('fs').writeFileSync('package.json',JSON.stringify(pkg,null,2));\n\" >&2\n\n# Set the adapter path so that the app uses it.\nexport NEXT_ADAPTER_PATH=\"${ADAPTER_DIR}/dist/index.js\"\n\n# Build the app\npnpm build\n\n# Write any metadata needed later to files in the working directory.\nBUILD_ID=\"$(cat .next/BUILD_ID)\"\nDEPLOYMENT_ID=\"my-adapter-local\"\n# If your adapter enables immutable static assets, set this to \"1\".\nNEXT_SUPPORTS_IMMUTABLE_ASSETS=\"0\"\n\n{\n  echo \"BUILD_ID: $BUILD_ID\"\n  echo \"DEPLOYMENT_ID: $DEPLOYMENT_ID\"\n  echo \"NEXT_SUPPORTS_IMMUTABLE_ASSETS: $NEXT_SUPPORTS_IMMUTABLE_ASSETS\"\n} >> .adapter-build.log\n\n# Start or deploy the app. Capture the URL at this point or make the script output the URL to stdout.\nprovider-cli-to-deploy\n\n# Example URL output:\n# echo \"http://127.0.0.1:3000\""
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Custom logs script contract"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The logs script "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NEXT_TEST_DEPLOY_LOGS_SCRIPT_PATH"
+				},
+				{
+					"type": "text",
+					"value": " is executed with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cwd"
+				},
+				{
+					"type": "text",
+					"value": " set to the isolated temporary app created by the Next.js test harness."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Additionally it receives "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NEXT_TEST_DIR"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NEXT_TEST_DEPLOY_URL"
+				},
+				{
+					"type": "text",
+					"value": " as environment variables."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Its output must include lines starting with:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "BUILD_ID:"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "DEPLOYMENT_ID:"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "NEXT_SUPPORTS_IMMUTABLE_ASSETS:"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "After those markers, the logs script can print any additional build or server logs that would help debug failures."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"scripts/e2e-logs.sh\"",
+			"value": "#!/usr/bin/env bash\nset -euo pipefail\n\nif [ -f \".adapter-build.log\" ]; then\n  cat \".adapter-build.log\"\nfi\n\nif [ -f \".adapter-server.log\" ]; then\n  echo \"=== .adapter-server.log ===\"\n  cat \".adapter-server.log\"\nfi"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "One pattern is to have the deploy script write "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".adapter-build.log"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".adapter-server.log"
+				},
+				{
+					"type": "text",
+					"value": ", then have the logs script replay those files so the harness can extract the required markers. This is one option, each platform has different ways to get the logs."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Custom cleanup script contract"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The cleanup script "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NEXT_TEST_CLEANUP_SCRIPT_PATH"
+				},
+				{
+					"type": "text",
+					"value": " is executed with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cwd"
+				},
+				{
+					"type": "text",
+					"value": " set to the isolated temporary app created by the Next.js test harness."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Additionally it receives "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NEXT_TEST_DIR"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NEXT_TEST_DEPLOY_URL"
+				},
+				{
+					"type": "text",
+					"value": " as environment variables."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The cleanup script can be used to clean up any resources created by the deploy script. It runs after the tests have completed."
+				}
+			]
+		}
+	]
+}

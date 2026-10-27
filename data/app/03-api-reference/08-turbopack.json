@@ -1,0 +1,6710 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Turbopack\ndescription: Turbopack is an incremental bundler optimized for JavaScript and TypeScript, written in Rust, and built into Next.js."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack is an "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "incremental bundler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " optimized for JavaScript and TypeScript, written in Rust, and built into "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". You can use Turbopack with both the Pages and App Router for a "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "much faster"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " local development experience."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Why Turbopack?"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We built Turbopack to push the performance of Next.js, including:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Unified Graph:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Next.js supports multiple output environments (e.g., client and server). Managing multiple compilers and stitching bundles together can be tedious. Turbopack uses a "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "single, unified graph"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for all environments."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Bundling vs Native ESM:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Some tools skip bundling in development and rely on the browser's native ESM. This works well for small apps but can slow down large apps due to excessive network requests. Turbopack "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "bundles"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " in dev, but in an optimized way to keep large apps fast."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Incremental Computation:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Turbopack parallelizes work across cores and "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "caches"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " results down to the function level. Once a piece of work is done, Turbopack won’t repeat it. Results persist to disk between runs."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Lazy Bundling:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Turbopack only bundles what is actually requested by the dev server. This lazy approach can reduce initial compile times and memory usage."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Supported platforms"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack requires platform-specific native bindings. The following platforms are currently supported:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Platform"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Architecture"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "macOS (Darwin)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "x64, ARM64"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Windows"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "x64, ARM64"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Linux (glibc)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "x64, ARM64"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Linux (musl)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "x64, ARM64"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "On platforms without native bindings (e.g. FreeBSD, OpenBSD), Next.js falls back to WebAssembly (WASM) bindings. WASM bindings support core SWC features like compilation and minification, but "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "do not support Turbopack"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". On these platforms, use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "--webpack"
+				},
+				{
+					"type": "text",
+					"value": " flag:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": null,
+			"value": "next dev --webpack\nnext build --webpack"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Getting started"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack is now the "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "default bundler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in Next.js. No configuration is needed to use Turbopack:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"package.json\" highlight={3}",
+			"value": "{\n\t\"scripts\": {\n\t\t\"dev\": \"next dev\",\n\t\t\"build\": \"next build\",\n\t\t\"start\": \"next start\"\n\t}\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using Webpack instead"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you need to use Webpack instead of Turbopack, you can opt-in with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "--webpack"
+				},
+				{
+					"type": "text",
+					"value": " flag:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"package.json\"",
+			"value": "{\n\t\"scripts\": {\n\t\t\"dev\": \"next dev --webpack\",\n\t\t\"build\": \"next build --webpack\",\n\t\t\"start\": \"next start\"\n\t}\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Supported features"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack in Next.js has "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "zero-configuration"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the common use cases. Below is a summary of what is supported out of the box, plus some references to how you can configure Turbopack further when needed."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Language features"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Feature"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Status"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Notes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "JavaScript & TypeScript"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supported"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Uses SWC under the hood. Type-checking is not done by Turbopack (run "
+								},
+								{
+									"type": "inlineCode",
+									"value": "tsc --watch"
+								},
+								{
+									"type": "text",
+									"value": " or rely on your IDE for type checks)."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "ECMAScript (ESNext)"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supported"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Turbopack supports the latest ECMAScript features, matching SWC’s coverage."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "CommonJS"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supported"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "require()"
+								},
+								{
+									"type": "text",
+									"value": " syntax is handled out of the box."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "ESM"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supported"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Static and dynamic "
+								},
+								{
+									"type": "inlineCode",
+									"value": "import"
+								},
+								{
+									"type": "text",
+									"value": " are fully supported."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Babel"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supported"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Starting in Next.js 16, Turbopack uses Babel automatically if it detects "
+								},
+								{
+									"type": "linkReference",
+									"children": [
+										{
+											"type": "text",
+											"value": "a configuration file"
+										}
+									],
+									"label": "babel-config",
+									"identifier": "babel-config",
+									"referenceType": "full"
+								},
+								{
+									"type": "text",
+									"value": ". Unlike in webpack, SWC is always used for Next.js's internal transforms and downleveling to older ECMAScript revisions. Next.js with webpack disables SWC if a Babel configuration file is present. Files in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "node_modules"
+								},
+								{
+									"type": "text",
+									"value": " are excluded, unless you "
+								},
+								{
+									"type": "linkReference",
+									"children": [
+										{
+											"type": "text",
+											"value": "manually configure "
+										},
+										{
+											"type": "inlineCode",
+											"value": "babel-loader"
+										}
+									],
+									"label": "manual-loader",
+									"identifier": "manual-loader",
+									"referenceType": "full"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "definition",
+			"identifier": "babel-config",
+			"label": "babel-config",
+			"title": null,
+			"url": "https://babeljs.io/docs/config-files"
+		},
+		{
+			"type": "definition",
+			"identifier": "manual-loader",
+			"label": "manual-loader",
+			"title": null,
+			"url": "/docs/app/api-reference/config/next-config-js/turbopack#configuring-webpack-loaders"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Framework and React features"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Feature"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Status"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Notes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "JSX / TSX"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supported"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "SWC handles JSX/TSX compilation."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Fast Refresh"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supported"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No configuration needed."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "React Server Components (RSC)"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supported"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "For the Next.js App Router. Turbopack ensures correct server/client bundling."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Root layout creation"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Unsupported"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Automatic creation of a root layout in App Router is not supported. Turbopack will instruct you to create it manually."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "CSS and styling"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Feature"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Status"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Notes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Global CSS"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supported"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Import "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".css"
+								},
+								{
+									"type": "text",
+									"value": " files directly in your application."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "CSS Modules"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supported"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": ".module.css"
+								},
+								{
+									"type": "text",
+									"value": " files work natively (Lightning CSS)."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "CSS Nesting"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supported"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Lightning CSS supports "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://lightningcss.dev/",
+									"children": [
+										{
+											"type": "text",
+											"value": "modern CSS nesting"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "@import syntax"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supported"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Combine multiple CSS files."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "PostCSS"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supported"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Automatically processes PostCSS config files ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "postcss.config.js"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".mjs"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".cjs"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".ts"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".mts"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".cts"
+								},
+								{
+									"type": "text",
+									"value": ") in a Node.js worker pool. Useful for Tailwind, Autoprefixer, etc."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Sass / SCSS"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supported"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (Next.js)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "For Next.js, Sass is supported out of the box. Custom Sass functions ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "sassOptions.functions"
+								},
+								{
+									"type": "text",
+									"value": ") are not supported because Turbopack's Rust-based architecture cannot directly execute JavaScript functions, unlike webpack's Node.js environment. Use webpack if you need this feature. In the future, Turbopack standalone usage will likely require a loader config."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Less"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Planned via plugins"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Not yet supported by default. Will likely require a loader config once custom loaders are stable."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Lightning CSS"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "In Use"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Handles CSS transformations. Some low-usage CSS Modules features (like "
+								},
+								{
+									"type": "inlineCode",
+									"value": ":local/:global"
+								},
+								{
+									"type": "text",
+									"value": " as standalone pseudo-classes) are not yet supported. "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#unsupported-and-unplanned-features",
+									"children": [
+										{
+											"type": "text",
+											"value": "See below for more details."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Assets"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Feature"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Status"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Notes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Static Assets"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (images, fonts)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supported"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Importing "
+								},
+								{
+									"type": "inlineCode",
+									"value": "import img from './img.png'"
+								},
+								{
+									"type": "text",
+									"value": " works out of the box. In Next.js, returns an object for the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Image />"
+								},
+								{
+									"type": "text",
+									"value": " component."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "JSON Imports"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supported"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Named or default imports from "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".json"
+								},
+								{
+									"type": "text",
+									"value": " are supported."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Module resolution"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Feature"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Status"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Notes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Path Aliases"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supported"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Reads "
+								},
+								{
+									"type": "inlineCode",
+									"value": "tsconfig.json"
+								},
+								{
+									"type": "text",
+									"value": "'s "
+								},
+								{
+									"type": "inlineCode",
+									"value": "paths"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "baseUrl"
+								},
+								{
+									"type": "text",
+									"value": ", matching Next.js behavior."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Manual Aliases"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supported"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/turbopack#resolving-aliases",
+									"children": [
+										{
+											"type": "text",
+											"value": "Configure "
+										},
+										{
+											"type": "inlineCode",
+											"value": "resolveAlias"
+										},
+										{
+											"type": "text",
+											"value": " in "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next.config.js"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (similar to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "webpack.resolve.alias"
+								},
+								{
+									"type": "text",
+									"value": ")."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Custom Extensions"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supported"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/turbopack#resolving-custom-extensions",
+									"children": [
+										{
+											"type": "text",
+											"value": "Configure "
+										},
+										{
+											"type": "inlineCode",
+											"value": "resolveExtensions"
+										},
+										{
+											"type": "text",
+											"value": " in "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next.config.js"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "AMD"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Partially Supported"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Basic transforms work; advanced AMD usage is limited."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Performance and Fast Refresh"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Feature"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Status"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Notes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Fast Refresh"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supported"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Updates JavaScript, TypeScript, and CSS without a full refresh."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Incremental Bundling"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supported"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Turbopack lazily builds only what's requested by the dev server, speeding up large apps."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "FileSystem Cache"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Supported"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Persists compiler artifacts to disk between runs. See "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/turbopackFileSystemCache",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "turbopackFileSystemCache"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Magic Comments"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack supports webpack-compatible magic comments for controlling import behavior. These comments work with dynamic "
+				},
+				{
+					"type": "inlineCode",
+					"value": "import()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "require()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "require.resolve()"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "new Worker()"
+				},
+				{
+					"type": "text",
+					"value": " expressions (not static "
+				},
+				{
+					"type": "inlineCode",
+					"value": "import"
+				},
+				{
+					"type": "text",
+					"value": " statements)."
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Comment"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Webpack"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Turbopack"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "webpackIgnore: true"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "✓"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "✓"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Skip bundling, preserve import"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "turbopackIgnore: true"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "✗"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "✓"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Skip bundling (Turbopack-only)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "turbopackOptional: true"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "✗"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "✓"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Suppress resolve errors"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "webpackOptional: true"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "✗"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "✗"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Not supported"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/lazy-loading#magic-comments",
+					"children": [
+						{
+							"type": "text",
+							"value": "Lazy Loading"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for usage examples."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "import.meta.env"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack supports built-in environment metadata through "
+				},
+				{
+					"type": "inlineCode",
+					"value": "import.meta.env"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Property"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Value"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "DEV"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "boolean"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Whether "
+								},
+								{
+									"type": "inlineCode",
+									"value": "MODE"
+								},
+								{
+									"type": "text",
+									"value": " is not "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"production\""
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "PROD"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "boolean"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Whether "
+								},
+								{
+									"type": "inlineCode",
+									"value": "MODE"
+								},
+								{
+									"type": "text",
+									"value": " is "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"production\""
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "MODE"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The compile-time "
+								},
+								{
+									"type": "inlineCode",
+									"value": "NODE_ENV"
+								},
+								{
+									"type": "text",
+									"value": ", defaulting to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"development\""
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "BASE_URL"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The Next.js "
+								},
+								{
+									"type": "inlineCode",
+									"value": "basePath"
+								},
+								{
+									"type": "text",
+									"value": ", with a trailing slash ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "\"/\""
+								},
+								{
+									"type": "text",
+									"value": " by default)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "SSR"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "boolean"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": " in server bundles and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": " in browser and client bundles"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "These values are statically analyzed, so Turbopack can remove unreachable branches:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/example.ts\"",
+			"value": "if (import.meta.env.DEV) {\n\tconsole.log('development mode')\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also read the whole object, destructure it, or use static bracket access:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/example.ts\"",
+			"value": "const { MODE, SSR } = import.meta.env\nconst baseUrl = import.meta.env['BASE_URL']"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": "import.meta.env"
+						},
+						{
+							"type": "text",
+							"value": " requires Turbopack. Custom "
+						},
+						{
+							"type": "inlineCode",
+							"value": "VITE_*"
+						},
+						{
+							"type": "text",
+							"value": " variables, Vite custom modes, "
+						},
+						{
+							"type": "inlineCode",
+							"value": "envPrefix"
+						},
+						{
+							"type": "text",
+							"value": ", and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "envDir"
+						},
+						{
+							"type": "text",
+							"value": " are not supported. "
+						},
+						{
+							"type": "inlineCode",
+							"value": "BASE_URL"
+						},
+						{
+							"type": "text",
+							"value": " reflects the Next.js "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/config/next-config-js/basePath",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "basePath"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " configuration and includes a trailing slash to match Vite's format."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "import.meta.glob"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack supports "
+				},
+				{
+					"type": "inlineCode",
+					"value": "import.meta.glob()"
+				},
+				{
+					"type": "text",
+					"value": ", a Vite-compatible API for importing multiple modules at once using glob patterns. The result is an object keyed by the file path relative to the calling file."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "const modules = import.meta.glob('./dir/*.js')\n// {\n//   './dir/foo.js': () => import('./dir/foo.js'),\n//   './dir/bar.js': () => import('./dir/bar.js'),\n// }"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " "
+						},
+						{
+							"type": "inlineCode",
+							"value": "import.meta.glob"
+						},
+						{
+							"type": "text",
+							"value": " requires Turbopack. It is not available when using webpack."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Patterns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A pattern is either relative to the importing file ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "./"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "../"
+				},
+				{
+					"type": "text",
+					"value": ") or absolute from the project root ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "/"
+				},
+				{
+					"type": "text",
+					"value": "):"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Relative to the importing file\nconst siblings = import.meta.glob('./dir/*.js')\nconst parent = import.meta.glob('../docs/*.js')\n\n// Absolute from the project root\nconst content = import.meta.glob('/content/*.md')"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The keys of the result follow the pattern: relative patterns produce relative keys ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "'./dir/foo.js'"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'../docs/intro.js'"
+				},
+				{
+					"type": "text",
+					"value": "), project-root-absolute patterns produce project-root-absolute keys ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "'/content/alpha.md'"
+				},
+				{
+					"type": "text",
+					"value": ")."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "node_modules"
+				},
+				{
+					"type": "text",
+					"value": " is matched like any other directory, so a broad pattern such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "import.meta.glob('/**/*.js')"
+				},
+				{
+					"type": "text",
+					"value": " walks your dependencies as well and can take seconds. Narrow the pattern, or exclude what you don't need with a negative pattern. The build output directory ("
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next"
+				},
+				{
+					"type": "text",
+					"value": ") is never traversed."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The keys are always sorted, deterministically and identically in development and production. The sort is a bytewise comparison of the key, so it is not a natural or display order — "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'10-ten.js'"
+				},
+				{
+					"type": "text",
+					"value": " sorts before "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'2-two.js'"
+				},
+				{
+					"type": "text",
+					"value": ", uppercase before "
+				},
+				{
+					"type": "inlineCode",
+					"value": "_"
+				},
+				{
+					"type": "text",
+					"value": " before lowercase, and files in subdirectories are interleaved with their siblings rather than grouped. Multiple patterns are merged into a single sorted object, not concatenated in pattern order."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Lazy loading (default)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, each value in the result object is a thunk — a function that returns a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Promise"
+				},
+				{
+					"type": "text",
+					"value": " for the module. This enables lazy loading:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "const modules = import.meta.glob('./dir/*.js')\n\nfor (const path in modules) {\n\tconst module = await modules[path]()\n\tconsole.log(path, module)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Eager loading"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Pass "
+				},
+				{
+					"type": "inlineCode",
+					"value": "{ eager: true }"
+				},
+				{
+					"type": "text",
+					"value": " to import all matching modules up front. Each value is the module object directly instead of a thunk:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "const modules = import.meta.glob('./dir/*.js', { eager: true })\n\nfor (const path in modules) {\n\tconsole.log(path, modules[path].default)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Named imports"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "import"
+				},
+				{
+					"type": "text",
+					"value": " option to select a specific named export from each matched module. This works in both lazy and eager modes:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Lazy: each value is () => Promise<exportValue>\nconst defaults = import.meta.glob('./dir/*.js', { import: 'default' })\n\n// Eager: each value is the export value directly\nconst setups = import.meta.glob('./dir/*.js', { import: 'setup', eager: true })"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Query strings"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "query"
+				},
+				{
+					"type": "text",
+					"value": " option to append a query string to every import request:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "const rawFiles = import.meta.glob('./dir/*.txt', { query: '?raw' })"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "query"
+				},
+				{
+					"type": "text",
+					"value": " option also accepts an object. Keys and values are URL-encoded and joined into a query string:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "const modules = import.meta.glob('./*.ts', {\n\tquery: { bar: 'foo', raw: true },\n})\n// equivalent to: { query: '?bar=foo&raw=true' }"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The query is passed through to the module rules, it has no meaning on its own. Unlike Vite, Turbopack has no built-in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "?raw"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "?url"
+				},
+				{
+					"type": "text",
+					"value": " handling, so match the query with a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/turbopack#module-types",
+					"children": [
+						{
+							"type": "text",
+							"value": "rule"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to decide how those files are loaded:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tturbopack: {\n\t\trules: {\n\t\t\t// `import.meta.glob('./dir/*.txt', { query: '?raw' })` returns the file contents as strings\n\t\t\t'*.txt': { condition: { query: '?raw' }, type: 'text' },\n\t\t},\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Multiple patterns and negation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Pass an array of glob patterns as the first argument. Prefix a pattern with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "!"
+				},
+				{
+					"type": "text",
+					"value": " to exclude matching files:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Combine multiple directories\nconst modules = import.meta.glob(['./dir/*.js', './other/*.js'])\n\n// Exclude specific files\nconst withoutTests = import.meta.glob(['./src/**/*.js', '!**/*.test.js'])"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Base path"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "base"
+				},
+				{
+					"type": "text",
+					"value": " option to resolve the patterns against a different directory. The keys of the result are then relative to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "base"
+				},
+				{
+					"type": "text",
+					"value": " rather than to the importing file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "const modules = import.meta.glob('*.md', { base: '../../content' })\n// {\n//   './alpha.md': () => import('../../content/alpha.md'),\n//   './nested/deep.md': () => import('../../content/nested/deep.md'),\n// }"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "TypeScript"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "TypeScript types for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "import.meta.glob"
+				},
+				{
+					"type": "text",
+					"value": " are included in Next.js. They are available automatically when "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"moduleResolution\": \"bundler\""
+				},
+				{
+					"type": "text",
+					"value": " (or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"node16\""
+				},
+				{
+					"type": "text",
+					"value": " / "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"nodenext\""
+				},
+				{
+					"type": "text",
+					"value": ") is set in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tsconfig.json"
+				},
+				{
+					"type": "text",
+					"value": ", which is the default for new Next.js projects."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The return type differs based on the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "eager"
+				},
+				{
+					"type": "text",
+					"value": " option:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "// Lazy (default) — Record<string, () => Promise<unknown>>\nconst lazy = import.meta.glob('./dir/*.ts')\n\n// Eager — Record<string, unknown>\nconst eager = import.meta.glob('./dir/*.ts', { eager: true })"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Pass the module type to describe what the matched files export:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "interface Mod {\n\tname: string\n\tdefault: () => string\n}\n\n// Record<string, () => Promise<Mod>>\nconst lazy = import.meta.glob<Mod>('./dir/*.ts')\n\n// Record<string, Mod>\nconst eager = import.meta.glob<Mod>('./dir/*.ts', { eager: true })"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Options reference"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Option"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Default"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "eager"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "boolean"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Import modules synchronously instead of returning thunks."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "import"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Named export to select from each matched module (e.g. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'default'"
+								},
+								{
+									"type": "text",
+									"value": ")."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "query"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string | Record<string, string | boolean>"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Query string (or object) to append to each import."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "base"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Directory the patterns are resolved against, relative to the importing file. Result keys become relative to it."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "caseSensitive"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "boolean"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Match glob patterns case-sensitively. Set to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": " to ignore ASCII case."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Note:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " The "
+						},
+						{
+							"type": "inlineCode",
+							"value": "as"
+						},
+						{
+							"type": "text",
+							"value": " option (deprecated in Vite 5) is not supported. Use "
+						},
+						{
+							"type": "inlineCode",
+							"value": "query"
+						},
+						{
+							"type": "text",
+							"value": " together with a matching rule instead, as shown in "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "#query-strings",
+							"children": [
+								{
+									"type": "text",
+									"value": "Query strings"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ". The legacy "
+						},
+						{
+							"type": "inlineCode",
+							"value": "import.meta.globEager()"
+						},
+						{
+							"type": "text",
+							"value": " API is also not supported — use "
+						},
+						{
+							"type": "inlineCode",
+							"value": "import.meta.glob('...', { eager: true })"
+						},
+						{
+							"type": "text",
+							"value": " instead."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Known gaps with webpack"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There are a number of non-trivial behavior differences between webpack and Turbopack that are important to be aware of when migrating an application. Generally, these are less of a concern for new applications."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Filesystem Root"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack uses the root directory to resolve modules. Files outside of the project root are not resolved."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, linked dependencies outside the project root (via "
+				},
+				{
+					"type": "inlineCode",
+					"value": "npm link"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "yarn link"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pnpm link"
+				},
+				{
+					"type": "text",
+					"value": ", etc.) are not resolved by default. Configure "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/turbopack#additional-roots-experimental",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "experimental.turbopackAdditionalRoots"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for symlinked dependencies."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/turbopack#root-directory",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "turbopack.root"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when your application directly imports files outside the detected root rather than reaching them through symlinks."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "CSS Module Ordering"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack will follow JS import order to order "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/css#css-modules",
+					"children": [
+						{
+							"type": "text",
+							"value": "CSS modules"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " which are not otherwise ordered. For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"components/BlogPost.jsx\"",
+			"value": "import utilStyles from './utils.module.css'\nimport buttonStyles from './button.module.css'\nexport default function BlogPost() {\n\treturn (\n\t\t<div className={utilStyles.container}>\n\t\t\t<button className={buttonStyles.primary}>Click me</button>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In this example, Turbopack will ensure that "
+				},
+				{
+					"type": "inlineCode",
+					"value": "utils.module.css"
+				},
+				{
+					"type": "text",
+					"value": " will appear before "
+				},
+				{
+					"type": "inlineCode",
+					"value": "button.module.css"
+				},
+				{
+					"type": "text",
+					"value": " in the produced CSS chunk, following the import order"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Webpack generally does this as well, but there are cases where it will ignore JS inferred ordering, for example if it infers the JS file is side-effect-free."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This can lead to subtle rendering changes when adopting Turbopack, if applications have come to rely on an arbitrary ordering. Generally, the solution is easy, e.g. have "
+				},
+				{
+					"type": "inlineCode",
+					"value": "button.module.css"
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@import utils.module.css"
+				},
+				{
+					"type": "text",
+					"value": " to force the ordering, or identify the conflicting rules and change them to not target the same properties."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Sass node_modules imports"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack supports importing "
+				},
+				{
+					"type": "inlineCode",
+					"value": "node_modules"
+				},
+				{
+					"type": "text",
+					"value": " Sass files out of the box. Webpack supports a legacy tilde "
+				},
+				{
+					"type": "inlineCode",
+					"value": "~"
+				},
+				{
+					"type": "text",
+					"value": " syntax for this, which is not supported by Turbopack."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "From:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "scss",
+			"meta": "filename=\"styles/globals.scss\"",
+			"value": "@import '~bootstrap/dist/css/bootstrap.min.css';"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "scss",
+			"meta": "filename=\"styles/globals.scss\"",
+			"value": "@import 'bootstrap/dist/css/bootstrap.min.css';"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you can't update the imports, you can add a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "turbopack.resolveAlias"
+				},
+				{
+					"type": "text",
+					"value": " configuration to map the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "~"
+				},
+				{
+					"type": "text",
+					"value": " syntax to the actual path:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tturbopack: {\n\t\tresolveAlias: {\n\t\t\t'~*': '*',\n\t\t},\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "CSS / Sass / SCSS decimal precision"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack uses "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://lightningcss.dev/",
+					"children": [
+						{
+							"type": "text",
+							"value": "Lightning CSS"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to compile CSS. Lightning CSS uses 5 digits of decimal precision for numeric CSS values, while webpack uses 10 digits. This applies to both plain CSS and Sass/SCSS output. For example, a value that evaluates to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "25/17"
+				},
+				{
+					"type": "text",
+					"value": " produces:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Webpack:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " "
+								},
+								{
+									"type": "inlineCode",
+									"value": "line-height: 1.4705882353"
+								},
+								{
+									"type": "text",
+									"value": " (10 digits)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Turbopack:"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " "
+								},
+								{
+									"type": "inlineCode",
+									"value": "line-height: 1.47059"
+								},
+								{
+									"type": "text",
+									"value": " (5 digits)"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This can lead to subtle rendering differences when migrating from webpack to Turbopack, especially for properties like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "line-height"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "letter-spacing"
+				},
+				{
+					"type": "text",
+					"value": ", or other calculated values where high precision matters."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Webpack plugins"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack does not support webpack plugins. This affects third-party tools that rely on webpack's plugin system for integration. We do support "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/turbopack#configuring-webpack-loaders",
+					"children": [
+						{
+							"type": "text",
+							"value": "webpack loaders"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". If you depend on webpack plugins, you'll need to find Turbopack-compatible alternatives or continue using webpack until equivalent functionality is available."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Unsupported and unplanned features"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Some features are not yet implemented or not planned:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Legacy CSS Modules features"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Standalone "
+												},
+												{
+													"type": "inlineCode",
+													"value": ":local"
+												},
+												{
+													"type": "text",
+													"value": " and "
+												},
+												{
+													"type": "inlineCode",
+													"value": ":global"
+												},
+												{
+													"type": "text",
+													"value": " pseudo-classes (only the function variant "
+												},
+												{
+													"type": "inlineCode",
+													"value": ":global(...)"
+												},
+												{
+													"type": "text",
+													"value": " is supported)."
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "The "
+												},
+												{
+													"type": "inlineCode",
+													"value": "@value"
+												},
+												{
+													"type": "text",
+													"value": " rule (superseded by CSS variables)."
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": ":import"
+												},
+												{
+													"type": "text",
+													"value": " and "
+												},
+												{
+													"type": "inlineCode",
+													"value": ":export"
+												},
+												{
+													"type": "text",
+													"value": " ICSS rules."
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "composes"
+												},
+												{
+													"type": "text",
+													"value": " in "
+												},
+												{
+													"type": "inlineCode",
+													"value": ".module.css"
+												},
+												{
+													"type": "text",
+													"value": " composing a "
+												},
+												{
+													"type": "inlineCode",
+													"value": ".css"
+												},
+												{
+													"type": "text",
+													"value": " file. In webpack this would treat the "
+												},
+												{
+													"type": "inlineCode",
+													"value": ".css"
+												},
+												{
+													"type": "text",
+													"value": " file as a CSS Module, with Turbopack the "
+												},
+												{
+													"type": "inlineCode",
+													"value": ".css"
+												},
+												{
+													"type": "text",
+													"value": " file will always be global. This means that if you want to use "
+												},
+												{
+													"type": "inlineCode",
+													"value": "composes"
+												},
+												{
+													"type": "text",
+													"value": " in a CSS Module, you need to change the "
+												},
+												{
+													"type": "inlineCode",
+													"value": ".css"
+												},
+												{
+													"type": "text",
+													"value": " file to a "
+												},
+												{
+													"type": "inlineCode",
+													"value": ".module.css"
+												},
+												{
+													"type": "text",
+													"value": " file."
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "@import"
+												},
+												{
+													"type": "text",
+													"value": " in CSS Modules importing "
+												},
+												{
+													"type": "inlineCode",
+													"value": ".css"
+												},
+												{
+													"type": "text",
+													"value": " as a CSS Module. In webpack this would treat the "
+												},
+												{
+													"type": "inlineCode",
+													"value": ".css"
+												},
+												{
+													"type": "text",
+													"value": " file as a CSS Module, with Turbopack the "
+												},
+												{
+													"type": "inlineCode",
+													"value": ".css"
+												},
+												{
+													"type": "text",
+													"value": " file will always be global. This means that if you want to use "
+												},
+												{
+													"type": "inlineCode",
+													"value": "@import"
+												},
+												{
+													"type": "text",
+													"value": " in a CSS Module, you need to change the "
+												},
+												{
+													"type": "inlineCode",
+													"value": ".css"
+												},
+												{
+													"type": "text",
+													"value": " file to a "
+												},
+												{
+													"type": "inlineCode",
+													"value": ".module.css"
+												},
+												{
+													"type": "text",
+													"value": " file."
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "sassOptions.functions"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Custom Sass functions defined in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "sassOptions.functions"
+								},
+								{
+									"type": "text",
+									"value": " are not supported. This feature allows defining JavaScript functions that can be called from Sass code during compilation. Turbopack's Rust-based architecture cannot directly execute JavaScript functions passed through "
+								},
+								{
+									"type": "inlineCode",
+									"value": "sassOptions.functions"
+								},
+								{
+									"type": "text",
+									"value": ", unlike webpack's Node.js-based sass-loader which runs entirely in JavaScript. If you're using custom Sass functions, you'll need to use webpack instead of Turbopack."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "webpack()"
+										},
+										{
+											"type": "text",
+											"value": " configuration"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next.config.js"
+								},
+								{
+									"type": "text",
+									"value": " Turbopack replaces webpack, so "
+								},
+								{
+									"type": "inlineCode",
+									"value": "webpack()"
+								},
+								{
+									"type": "text",
+									"value": " configs are not recognized. Use the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/turbopack",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "turbopack"
+										},
+										{
+											"type": "text",
+											"value": " config"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " instead."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Yarn PnP"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Not planned for Turbopack support in Next.js."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "experimental.urlImports"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Not planned for Turbopack."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "experimental.esmExternals"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Not planned. Turbopack does not support the legacy "
+								},
+								{
+									"type": "inlineCode",
+									"value": "esmExternals"
+								},
+								{
+									"type": "text",
+									"value": " configuration in Next.js."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Some Next.js Experimental Flags"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "experimental.nextScriptWorkers"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "experimental.fallbackNodePolyfills"
+												},
+												{
+													"type": "text",
+													"value": " We plan to implement these in the future."
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For a full, detailed breakdown of each feature flag and its status, see the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/turbopack",
+					"children": [
+						{
+							"type": "text",
+							"value": "Turbopack API Reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Configuration"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack can be configured via "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " (or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": ") under the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "turbopack"
+				},
+				{
+					"type": "text",
+					"value": " key. Configuration options include:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "rules"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Define additional "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/turbopack#configuring-webpack-loaders",
+									"children": [
+										{
+											"type": "text",
+											"value": "webpack loaders"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for file transformations."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "resolveAlias"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Create manual aliases (like "
+								},
+								{
+									"type": "inlineCode",
+									"value": "resolve.alias"
+								},
+								{
+									"type": "text",
+									"value": " in webpack)."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "resolveExtensions"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Change or extend file extensions for module resolution."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/config/next-config-js/turbopackIgnoreIssue",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "ignoreIssue"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Suppress specific Turbopack errors and warnings from the CLI output and error overlay."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Additionally, the following experimental options are available under "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental"
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Option"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Default (dev)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Default (build)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/turbopackFileSystemCache",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "turbopackFileSystemCacheForDev"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enable filesystem cache for the dev server."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "N/A"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/turbopackFileSystemCache",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "turbopackFileSystemCacheForBuild"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enable filesystem cache for builds."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "N/A"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "html",
+									"value": "<sup>"
+								},
+								{
+									"type": "text",
+									"value": "1"
+								},
+								{
+									"type": "html",
+									"value": "</sup>"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/turbopackGc",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "turbopackGc"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Remove unreachable work from memory and the persistent cache."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/turbopackLazyDynamicImports",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "turbopackLazyDynamicImports"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Compile client-side dynamic import targets when the browser first requests them."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "N/A"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/turbopackLazyDynamicImportsSSR",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "turbopackLazyDynamicImportsSSR"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Compile dynamic import targets when server rendering first reaches them."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "N/A"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/turbopackPluginRuntimeStrategy",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "turbopackPluginRuntimeStrategy"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Choose whether Node.js evaluation runs in child processes or worker threads."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'childProcesses'"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'childProcesses'"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "turbopackMinify"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enable minification. Accepts a boolean, or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "{ server, client, edge }"
+								},
+								{
+									"type": "text",
+									"value": " to configure each environment separately."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "turbopackSourceMaps"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enable source maps."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "productionBrowserSourceMaps"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "turbopackInputSourceMaps"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enable extraction of source maps from input files."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "turbopackModuleFragments"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Currently in active development. This splits modules into fragments and chunks only import the used fragments of the modules."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "turbopackRemoveUnusedImports"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enable removing unused imports. Requires "
+								},
+								{
+									"type": "inlineCode",
+									"value": "turbopackRemoveUnusedExports"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "turbopackRemoveUnusedExports"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enable removing unused exports."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "turbopackMangleExportNames"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Shorten the export names modules expose to each other, to reduce bundle size. A module whose export names can be observed (an escaping namespace object, a dynamic "
+								},
+								{
+									"type": "inlineCode",
+									"value": "import()"
+								},
+								{
+									"type": "text",
+									"value": ", a CommonJS "
+								},
+								{
+									"type": "inlineCode",
+									"value": "require()"
+								},
+								{
+									"type": "text",
+									"value": ") keeps its original names."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "turbopackMangleViaMaterializedNamespaceObject"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Allow export mangling through a materialized namespace facade. Defaults to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": " when "
+								},
+								{
+									"type": "inlineCode",
+									"value": "turbopackMangleExportNames"
+								},
+								{
+									"type": "text",
+									"value": " is explicitly "
+								},
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "turbopackInferModuleSideEffects"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enable local analysis to infer side-effect-free modules for better tree shaking."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "turbopackScopeHoisting"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enable scope hoisting. Always disabled in dev mode."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "turbopackSharedRuntime"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Share the browser runtime across routes in a single "
+								},
+								{
+									"type": "inlineCode",
+									"value": "runtime.js"
+								},
+								{
+									"type": "text",
+									"value": " asset. Only applies to production builds."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "N/A"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "turbopackClientSideNestedAsyncChunking"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enable nested async chunking for client-side assets."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "turbopackServerSideNestedAsyncChunking"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enable nested async chunking for server-side assets."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "turbopackImportTypeBytes"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enable support for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "with {type: \"bytes\"}"
+								},
+								{
+									"type": "text",
+									"value": " for ESM imports."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "turbopackUseBuiltinBabel"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enable automatic Babel loader configuration when a Babel config file is present."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "turbopackUseBuiltinSass"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enable automatic Sass loader configuration."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "turbopackModuleIds"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Module ID strategy: "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'named'"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'deterministic'"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'named'"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'deterministic'"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/config/next-config-js/turbopackLocalPostcssConfig",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "turbopackLocalPostcssConfig"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Resolve "
+								},
+								{
+									"type": "inlineCode",
+									"value": "postcss.config.js"
+								},
+								{
+									"type": "text",
+									"value": " from the CSS file's directory first, then the project root."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "turbopackWorkerAssetPrefix"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Custom asset prefix for Web Worker URLs (entrypoint + module chunks), overriding "
+								},
+								{
+									"type": "inlineCode",
+									"value": "assetPrefix"
+								},
+								{
+									"type": "text",
+									"value": ". Mirrors webpack's "
+								},
+								{
+									"type": "inlineCode",
+									"value": "output.workerPublicPath"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Table notes:"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enabled by default. Set the option to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": " when the build environment does not preserve the "
+								},
+								{
+									"type": "inlineCode",
+									"value": ".next/cache"
+								},
+								{
+									"type": "text",
+									"value": " directory between builds."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, to configure an alias and a custom file extension under the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "turbopack"
+				},
+				{
+					"type": "text",
+					"value": " key:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tturbopack: {\n\t\tresolveAlias: {\n\t\t\tunderscore: 'lodash',\n\t\t},\n\t\tresolveExtensions: ['.mdx', '.tsx', '.ts', '.jsx', '.js', '.mjs', '.node', '.json'],\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For more in-depth configuration examples, see the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/turbopack",
+					"children": [
+						{
+							"type": "text",
+							"value": "Turbopack config documentation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Generating trace files for performance debugging"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you encounter performance or memory issues and want to help the Next.js team diagnose them, you can generate a trace file by adding the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "--internal-trace"
+				},
+				{
+					"type": "text",
+					"value": " flag to your dev command:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": null,
+			"value": "next dev --internal-trace"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This will produce a "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next-profiles/trace-turbopack.bin"
+				},
+				{
+					"type": "text",
+					"value": " file. Include that file when creating a GitHub issue on the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js repo"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to help us investigate."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Summary"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Turbopack is a "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Rust-based"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "incremental"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " bundler designed to make local development and builds fast—especially for large applications. It is integrated into Next.js, offering zero-config CSS, React, and TypeScript support."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version Changes"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Turbopack support for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "build"
+								},
+								{
+									"type": "text",
+									"value": " is stable, and Turbopack becomes the default bundler for Next.js. Automatic support for Babel when a configuration file is found."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.5.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Turbopack support for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "build"
+								},
+								{
+									"type": "text",
+									"value": " beta"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Experimental support for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "build"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Turbopack for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "dev"
+								},
+								{
+									"type": "text",
+									"value": " stable"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

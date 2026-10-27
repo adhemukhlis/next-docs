@@ -1,0 +1,329 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: assetPrefix\ndescription: Learn how to use the assetPrefix config option to configure your CDN."
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Attention"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/getting-started/deploying",
+							"children": [
+								{
+									"type": "text",
+									"value": "Deploying to Vercel"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " automatically configures a global CDN for your Next.js project. You do not need to manually set up an Asset Prefix."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Next.js 9.5+ added support for a customizable "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/config/next-config-js/basePath",
+							"children": [
+								{
+									"type": "text",
+									"value": "Base Path"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", which is better suited for hosting your application on a sub-path like "
+						},
+						{
+							"type": "inlineCode",
+							"value": "/docs"
+						},
+						{
+							"type": "text",
+							"value": ". We do not suggest you use a custom Asset Prefix for this use case."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Set up a CDN"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To set up a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://en.wikipedia.org/wiki/Content_delivery_network",
+					"children": [
+						{
+							"type": "text",
+							"value": "CDN"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", you can set up an asset prefix and configure your CDN's origin to resolve to the domain that Next.js is hosted on."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Open "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.mjs"
+				},
+				{
+					"type": "text",
+					"value": " and add the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "assetPrefix"
+				},
+				{
+					"type": "text",
+					"value": " config based on the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js#async-configuration",
+					"children": [
+						{
+							"type": "text",
+							"value": "phase"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.mjs\"",
+			"value": "// @ts-check\nimport { PHASE_DEVELOPMENT_SERVER } from 'next/constants'\n\nexport default (phase) => {\n\tconst isDev = phase === PHASE_DEVELOPMENT_SERVER\n\t/**\n\t * @type {import('next').NextConfig}\n\t */\n\tconst nextConfig = {\n\t\tassetPrefix: isDev ? undefined : 'https://cdn.mydomain.com',\n\t}\n\treturn nextConfig\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js will automatically use your asset prefix for the JavaScript and CSS files it loads from the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/_next/"
+				},
+				{
+					"type": "text",
+					"value": " path ("
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next/static/"
+				},
+				{
+					"type": "text",
+					"value": " folder). For example, with the above configuration, the following request for a JS chunk:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": null,
+			"meta": null,
+			"value": "/_next/static/chunks/4b9b41aaa062cbbfeff4add70f256968c51ece5d.4d708494b3aed70c04f0.js"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Would instead become:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": null,
+			"meta": null,
+			"value": "https://cdn.mydomain.com/_next/static/chunks/4b9b41aaa062cbbfeff4add70f256968c51ece5d.4d708494b3aed70c04f0.js"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The exact configuration for uploading your files to a given CDN will depend on your CDN of choice. The only folder you need to host on your CDN is the contents of "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next/static/"
+				},
+				{
+					"type": "text",
+					"value": ", which should be uploaded as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "_next/static/"
+				},
+				{
+					"type": "text",
+					"value": " as the above URL request indicates. "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Do not upload the rest of your "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".next/"
+						},
+						{
+							"type": "text",
+							"value": " folder"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", as you should not expose your server code and other configuration to the public."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "While "
+				},
+				{
+					"type": "inlineCode",
+					"value": "assetPrefix"
+				},
+				{
+					"type": "text",
+					"value": " covers requests to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "_next/static"
+				},
+				{
+					"type": "text",
+					"value": ", it does not influence the following paths:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Files in the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/public-folder",
+									"children": [
+										{
+											"type": "text",
+											"value": "public"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " folder; if you want to serve those assets over a CDN, you'll have to introduce the prefix yourself"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

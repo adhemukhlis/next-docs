@@ -1,0 +1,605 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to build micro-frontends using multi-zones and Next.js\nnav_title: Multi-zones\ndescription: Learn how to build micro-frontends using Next.js Multi-Zones to deploy multiple Next.js apps under a single domain."
+		},
+		{
+			"type": "html",
+			"value": "<details open>\n  <summary>Examples</summary>"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel/next.js/tree/canary/examples/with-zones",
+									"children": [
+										{
+											"type": "text",
+											"value": "With Zones"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "</details>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Multi-Zones are an approach to micro-frontends that separate a large application on a domain into smaller Next.js applications that each serve a set of paths. This is useful when there are collections of pages unrelated to the other pages in the application. By moving those pages to a separate zone (i.e., a separate application), you can reduce the size of each application which improves build times and removes code that is only necessary for one of the zones. Since applications are decoupled, Multi-Zones also allows other applications on the domain to use their own choice of framework."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, let's say you have the following set of pages that you would like to split up:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/blog/*"
+								},
+								{
+									"type": "text",
+									"value": " for all blog posts"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/dashboard/*"
+								},
+								{
+									"type": "text",
+									"value": " for all pages when the user is logged-in to the dashboard"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/*"
+								},
+								{
+									"type": "text",
+									"value": " for the rest of your website not covered by other zones"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With Multi-Zones support, you can create three applications that all are served on the same domain and look the same to the user, but you can develop and deploy each of the applications independently."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"Three zones: A, B, C. Showing a hard navigation between routes from different zones, and soft navigations between routes within the same zone.\"\nsrcLight=\"/docs/light/multi-zones.png\"\nsrcDark=\"/docs/dark/multi-zones.png\"\nwidth=\"1600\"\nheight=\"750\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Navigating between pages in the same zone will perform soft navigations, a navigation that does not require reloading the page. For example, in this diagram, navigating from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/products"
+				},
+				{
+					"type": "text",
+					"value": " will be a soft navigation."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Navigating from a page in one zone to a page in another zone, such as from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/dashboard"
+				},
+				{
+					"type": "text",
+					"value": ", will perform a hard navigation, unloading the resources of the current page and loading the resources of the new page. Pages that are frequently visited together should live in the same zone to avoid hard navigations."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "How to define a zone"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A zone is a normal Next.js application where you also configure an "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/assetPrefix",
+					"children": [
+						{
+							"type": "text",
+							"value": "assetPrefix"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to avoid conflicts with pages and static files in other zones."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\tassetPrefix: '/blog-static',\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js assets, such as JavaScript and CSS, will be prefixed with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "assetPrefix"
+				},
+				{
+					"type": "text",
+					"value": " to make sure that they don't conflict with assets from other zones. These assets will be served under "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/assetPrefix/_next/..."
+				},
+				{
+					"type": "text",
+					"value": " for each of the zones."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The default application handling all paths not routed to another more specific zone does not need an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "assetPrefix"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In versions older than Next.js 15, you may also need an additional rewrite to handle the static assets. This is no longer necessary in Next.js 15."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\tassetPrefix: '/blog-static',\n\tasync rewrites() {\n\t\treturn {\n\t\t\tbeforeFiles: [\n\t\t\t\t{\n\t\t\t\t\tsource: '/blog-static/_next/:path+',\n\t\t\t\t\tdestination: '/_next/:path+',\n\t\t\t\t},\n\t\t\t],\n\t\t}\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "How to route requests to the right zone"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With the Multi Zones set-up, you need to route the paths to the correct zone since they are served by different applications. You can use any HTTP proxy to do this, but one of the Next.js applications can also be used to route requests for the entire domain."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To route to the correct zone using a Next.js application, you can use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/rewrites",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "rewrites"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". For each path served by a different zone, you would add a rewrite rule to send that path to the domain of the other zone, and you also need to rewrite the requests for the static assets. For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "async rewrites() {\n    return [\n        {\n            source: '/blog',\n            destination: `${process.env.BLOG_DOMAIN}/blog`,\n        },\n        {\n            source: '/blog/:path+',\n            destination: `${process.env.BLOG_DOMAIN}/blog/:path+`,\n        },\n        {\n            source: '/blog-static/:path+',\n            destination: `${process.env.BLOG_DOMAIN}/blog-static/:path+`,\n        }\n    ];\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "destination"
+				},
+				{
+					"type": "text",
+					"value": " should be a URL that is served by the zone, including scheme and domain. This should point to the zone's production domain, but it can also be used to route requests to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "localhost"
+				},
+				{
+					"type": "text",
+					"value": " in local development."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": URL paths should be unique to a zone. For example, two zones trying to serve "
+						},
+						{
+							"type": "inlineCode",
+							"value": "/blog"
+						},
+						{
+							"type": "text",
+							"value": " would create a routing conflict."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Routing requests using proxy"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Routing requests through "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/rewrites",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "rewrites"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is recommended to minimize latency overhead for the requests, but proxy can also be used when there is a need for a dynamic decision when routing. For example, if you are using a feature flag to decide where a path should be routed such as during a migration, you can use proxy."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"proxy.js\"",
+			"value": "export async function proxy(request) {\n\tconst { pathname, search } = request.nextUrl\n\tif (pathname === '/your-path' && myFeatureFlag.isEnabled()) {\n\t\treturn NextResponse.rewrite(`${rewriteDomain}${pathname}${search}`)\n\t}\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Linking between zones"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Links to paths in a different zone should use an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "a"
+				},
+				{
+					"type": "text",
+					"value": " tag instead of the Next.js "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/link",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Link>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " component. This is because Next.js will try to prefetch and soft navigate to any relative path in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " component, which will not work across zones."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Sharing code"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The Next.js applications that make up the different zones can live in any repository. However, it is often convenient to put these zones in a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://en.wikipedia.org/wiki/Monorepo",
+					"children": [
+						{
+							"type": "text",
+							"value": "monorepo"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to more easily share code. For zones that live in different repositories, code can also be shared using public or private NPM packages."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since the pages in different zones may be released at different times, feature flags can be useful for enabling or disabling features in unison across the different zones."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Actions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/mutating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Actions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with Multi-Zones, you must explicitly allow the user-facing origin since your user facing domain may serve multiple applications. In your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file, add the following lines:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "const nextConfig = {\n\texperimental: {\n\t\tserverActions: {\n\t\t\tallowedOrigins: ['your-production-domain.com'],\n\t\t},\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/serverActions#allowedorigins",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "serverActions.allowedOrigins"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more information."
+				}
+			]
+		}
+	]
+}

@@ -22,7 +22,7 @@ An **error** file allows you to handle unexpected runtime errors and display fal
 
 import { useEffect } from 'react'
 
-export default function Error({ error, retry }: { error: Error & { digest?: string }; retry: () => void }) {
+export default function Error({ error, retry }: { error: unknown; retry: () => void }) {
 	useEffect(() => {
 		// Log the error to an error reporting service
 		console.error(error)
@@ -93,14 +93,14 @@ In the [component hierarchy](/docs/app/getting-started/project-structure#compone
 
 #### `error`
 
-An instance of an [`Error`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) object forwarded to the `error.js` Client Component.
+The value that was thrown, forwarded to the `error.js` Client Component. Errors from Server Components arrive as an [`Error`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) instance, while a value thrown in a Client Component is passed as-is and may not be an `Error`. Narrow it, for example with `instanceof Error`, before reading properties like `message` or `digest`.
 
 > **Good to know:** During development, the `Error` object forwarded to the client will be serialized and include the `message` of the original error for easier debugging. However, **this behavior is different in production** to avoid leaking potentially sensitive details included in the error to the client.
 
 #### `error.message`
 
 - Errors forwarded from Client Components show the original `Error` message.
-- Errors forwarded from Server Components show a generic message with an identifier. This is to prevent leaking sensitive details. You can use the identifier, under `errors.digest`, to match the corresponding server-side logs.
+- Errors forwarded from Server Components show a generic message with an identifier. This is to prevent leaking sensitive details. You can use the identifier, under `error.digest`, to match the corresponding server-side logs.
 
 #### `error.digest`
 
@@ -115,7 +115,7 @@ An error component can use the `retry()` function to prompt the user to attempt 
 ```tsx filename="app/dashboard/error.tsx" switcher
 'use client' // Error boundaries must be Client Components
 
-export default function Error({ error, retry }: { error: Error & { digest?: string }; retry: () => void }) {
+export default function Error({ error, retry }: { error: unknown; retry: () => void }) {
 	return (
 		<div>
 			<h2>Something went wrong!</h2>
@@ -155,7 +155,7 @@ While less common, you can handle errors in the root layout or template using `g
 ```tsx filename="app/global-error.tsx" switcher
 'use client' // Error boundaries must be Client Components
 
-export default function GlobalError({ error, retry }: { error: Error & { digest?: string }; retry: () => void }) {
+export default function GlobalError({ error, retry }: { error: unknown; retry: () => void }) {
 	return (
 		// global-error must include html and body tags
 		<html>

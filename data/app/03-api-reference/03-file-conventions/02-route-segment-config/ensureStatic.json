@@ -1,0 +1,2058 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: ensureStatic\ndescription: Require selected route output to remain static instead of rendering per request with the ensureStatic route segment config.\nrelated:\n title: Next Steps\n description: Choose a static level or defer selected subtrees to a later navigation stage.\n links:\n  - app/guides/keeping-pages-static\n  - app/guides/optimizing-prefetching\n  - app/api-reference/functions/prefetch\n  - app/api-reference/functions/navigation"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ensureStatic"
+				},
+				{
+					"type": "text",
+					"value": " route segment config requires selected route output to be static instead of rendered per request. Export it from a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/page",
+					"children": [
+						{
+							"type": "text",
+							"value": "page"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout",
+					"children": [
+						{
+							"type": "text",
+							"value": "layout"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to enforce this requirement for the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#app-shell",
+					"children": [
+						{
+							"type": "text",
+							"value": "App Shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", per-link prefetches, or the complete server-rendered route."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use it so later changes cannot add request-time server rendering to a navigation stage that must stay static. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/keeping-pages-static",
+					"children": [
+						{
+							"type": "text",
+							"value": "Keeping pages static"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for a worked example of each level."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The "
+										},
+										{
+											"type": "inlineCode",
+											"value": "ensureStatic"
+										},
+										{
+											"type": "text",
+											"value": " export only works when "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "cacheComponents"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " is enabled. The build fails otherwise."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Exporting "
+										},
+										{
+											"type": "inlineCode",
+											"value": "ensureStatic"
+										},
+										{
+											"type": "text",
+											"value": " from a Client Component throws an error."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/layout.tsx\" highlight={1} switcher",
+			"value": "export const ensureStatic = 'navigation'\n\nexport default function Layout({ children }: { children: React.ReactNode }) {\n\treturn <>{children}</>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/layout.js\" highlight={1} switcher",
+			"value": "export const ensureStatic = 'navigation'\n\nexport default function Layout({ children }) {\n\treturn <>{children}</>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The export accepts "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'auto'"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'shell'"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'prefetch'"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'navigation'"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": ". The default is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'auto'"
+				},
+				{
+					"type": "text",
+					"value": ", which is equivalent to omitting the export."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "ensureStatic"
+				},
+				{
+					"type": "text",
+					"value": " controls which server-rendered output must be static. With Partial Prefetching, that output can be the App Shell, an optional per-link prefetch, or the complete route rendered during navigation. These outputs are called "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#navigation-stages",
+					"children": [
+						{
+							"type": "text",
+							"value": "navigation stages"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Each stricter level also includes the earlier stages."
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Value"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Output that must be static"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'auto'"
+								},
+								{
+									"type": "text",
+									"value": " (default)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No additional static requirement"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'shell'"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "App Shell"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'prefetch'"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "App Shell and per-link prefetch"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'navigation'"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Complete server-rendered route"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " does not select a static level. It preserves normal rendering behavior and prevents another segment from applying "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'shell'"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'prefetch'"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'navigation'"
+				},
+				{
+					"type": "text",
+					"value": " to the route. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#false",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "false"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "'shell'"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Requires the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#app-shell",
+					"children": [
+						{
+							"type": "text",
+							"value": "App Shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " loaded by a default "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " to be static. Without "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/partialPrefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " there is no App Shell, so the value has no effect and Next.js logs a warning."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The shell can include static or cached content and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " fallbacks. Request-specific content behind "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " can render during a later per-link prefetch with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/link#prefetch",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Link prefetch={true}>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", or during navigation."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For an individual subtree, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/prefetch",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "await prefetch()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " provides similar behavior by deferring code below the call to a per-link prefetch or navigation. Setting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'shell'"
+				},
+				{
+					"type": "text",
+					"value": " enforces that stage boundary across the route without adding "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await prefetch()"
+				},
+				{
+					"type": "text",
+					"value": " to each request-specific subtree. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/optimizing-prefetching#defer-work-to-a-later-stage",
+					"children": [
+						{
+							"type": "text",
+							"value": "Defer work to a later stage"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the per-subtree controls."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": "'shell'"
+						},
+						{
+							"type": "text",
+							"value": " does not require per-link prefetches to be static. If the route reads "
+						},
+						{
+							"type": "inlineCode",
+							"value": "cookies()"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": "headers()"
+						},
+						{
+							"type": "text",
+							"value": ", or URL data before "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/functions/navigation",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "await navigation()"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ", each visible "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/components/link#prefetch",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "<Link prefetch={true}>"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " can still trigger a server render. Use "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "#prefetch",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'prefetch'"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " when per-link prefetches must also come from static output."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "'prefetch'"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Requires both the App Shell and per-link prefetches to be static. Without "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/partialPrefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", the value adds no requirement and links keep their normal full-prefetch behavior. A full prefetch can include request-specific data and is not guaranteed to be static."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A per-link prefetch from "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/link#prefetch",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Link prefetch={true}>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " can load static or cached "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/optimizing-prefetching#resolve-url-data-at-prefetch-time",
+					"children": [
+						{
+							"type": "text",
+							"value": "URL-specific content"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " before the user follows the link. Request-specific content behind "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " renders when the navigation completes the route."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#static-shell",
+					"children": [
+						{
+							"type": "text",
+							"value": "static HTML shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " can also include this static or cached per-link content. Unlike a per-link prefetch, it cannot include request-specific data because the HTML shell is prerendered."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For an individual subtree, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/navigation",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "await navigation()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " provides similar behavior by deferring code below the call until navigation. Setting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'prefetch'"
+				},
+				{
+					"type": "text",
+					"value": " enforces that stage boundary across the route without adding "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await navigation()"
+				},
+				{
+					"type": "text",
+					"value": " to each request-specific subtree. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/optimizing-prefetching#keep-the-prefetch-static",
+					"children": [
+						{
+							"type": "text",
+							"value": "Keep the prefetch static"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for shaping one route this way."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "'navigation'"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Requires the complete server-rendered route to be produced during prerendering, so initial loads and client navigations use static output. This value works with Cache Components alone and does not require Partial Prefetching."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To require static server output for the entire app, set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'navigation'"
+				},
+				{
+					"type": "text",
+					"value": " on the root layout. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#combining-levels-across-layouts-and-pages",
+					"children": [
+						{
+							"type": "text",
+							"value": "Combining levels across layouts and pages"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for how levels apply across a route."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Validation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'shell'"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'prefetch'"
+				},
+				{
+					"type": "text",
+					"value": ", request-specific work inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " can move to a later navigation stage. These values do not add build validation. When "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/instant-navigation-validation",
+					"children": [
+						{
+							"type": "text",
+							"value": "Instant Navigation validation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is enabled, it can report request-specific work outside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " because it blocks the navigation."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "'navigation'"
+				},
+				{
+					"type": "text",
+					"value": " is the final server-rendering stage, so no later stage remains. Next.js validates its complete static-output requirement during both "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ". In development, errors include source-mapped stack traces that update as you edit. Build output is more abbreviated, so you may need to run "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/building#debug-prerender-errors",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next build --debug-prerender"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for detailed stack traces and code frames. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/instant-navigation",
+					"children": [
+						{
+							"type": "text",
+							"value": "Ensuring instant navigations"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the development workflow."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ensureStatic = 'navigation'"
+				},
+				{
+					"type": "text",
+					"value": ", the following server content fails validation, even when it is wrapped in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " or the segment sets "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config/instant#disabling-instant",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "instant = false"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/static-route-dynamic",
+									"children": [
+										{
+											"type": "text",
+											"value": "Uncached data"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", including a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " or database call without "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/directives/use-cache",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "use cache"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/connection",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "connection()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/messages/static-route-runtime",
+									"children": [
+										{
+											"type": "text",
+											"value": "Runtime data"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", such as "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cookies()"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "headers()"
+								},
+								{
+									"type": "text",
+									"value": ", and server-side "
+								},
+								{
+									"type": "inlineCode",
+									"value": "searchParams"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "A "
+								},
+								{
+									"type": "inlineCode",
+									"value": "use cache"
+								},
+								{
+									"type": "text",
+									"value": " scope whose "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/cacheLife#expire",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "expire"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " is under five minutes, "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/cacheLife#stale",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "stale"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " is under 30 seconds, or "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/cacheLife#revalidate",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidate"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " is "
+								},
+								{
+									"type": "inlineCode",
+									"value": "0"
+								},
+								{
+									"type": "text",
+									"value": ". A "
+								},
+								{
+									"type": "inlineCode",
+									"value": "stale"
+								},
+								{
+									"type": "text",
+									"value": " time between 30 seconds and five minutes is allowed."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "A promise for request-dependent server data passed to a Client Component, whether or not the component reads it."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "These constraints also apply to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-metadata",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateMetadata"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-viewport",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateViewport"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Data cached with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " can be prerendered. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/prefetch",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "prefetch()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/navigation",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "navigation()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " are also allowed because a static prerender continues through their stage boundaries."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Dynamic route parameters"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'navigation'"
+				},
+				{
+					"type": "text",
+					"value": ", a dynamic route must export "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-static-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and return at least one complete parameter set. Each result must include every dynamic parameter in the route, even if the parameter is unused or only read in a Client Component."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Values returned by "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams()"
+				},
+				{
+					"type": "text",
+					"value": " are available during prerendering. When a request uses a value that was not prerendered at build time, Next.js waits for the static result to be generated before serving it."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'shell'"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'prefetch'"
+				},
+				{
+					"type": "text",
+					"value": ", a value that was not prerendered serves the route's fallback shell instead, with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " fallbacks in place of its content, while Next.js generates the page in the background. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/incremental-static-regeneration-cache-components#at-runtime",
+					"children": [
+						{
+							"type": "text",
+							"value": "ISR with Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The build fails when "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams()"
+				},
+				{
+					"type": "text",
+					"value": " is missing or returns an incomplete parameter set. See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/generate-static-params#with-ensurestatic",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						},
+						{
+							"type": "text",
+							"value": " error guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Client Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Client Components can load request-specific content in the browser. Inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use(browser())"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/io",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "use(io())"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " are allowed. The prerender includes the fallback for the deferred content. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/single-page-applications#rendering-components-only-in-the-browser",
+					"children": [
+						{
+							"type": "text",
+							"value": "Rendering components only in the browser"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Client hooks such as "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useParams()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-search-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useSearchParams()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " are also allowed. Dynamic routes still require "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateStaticParams()"
+				},
+				{
+					"type": "text",
+					"value": ". Passing a request-dependent promise from a Server Component still requires server work and produces an error."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "false"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With Partial Prefetching, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " keeps the route's normal rendering behavior and fails the build if another segment sets "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'shell'"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'prefetch'"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'navigation'"
+				},
+				{
+					"type": "text",
+					"value": ". Use it to signal that a segment is not meant to be statically optimized."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "How "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ensureStatic"
+				},
+				{
+					"type": "text",
+					"value": " differs from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instant"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "ensureStatic"
+				},
+				{
+					"type": "text",
+					"value": " requires selected server-rendered output to avoid request-time work. Use it when the App Shell, a per-link prefetch, or the complete route must be static."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config/instant",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "instant"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " validates whether a navigation can update the UI immediately. Cached or prerendered UI can satisfy this requirement while request-specific content streams later behind "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Setting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instant = false"
+				},
+				{
+					"type": "text",
+					"value": " disables Instant Navigation validation for the route. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'shell'"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'prefetch'"
+				},
+				{
+					"type": "text",
+					"value": " values still make the client request the corresponding static output, but neither value adds separate build validation. A static prefetch can still include a parent layout, metadata, and Client Component preload hints even when the page UI renders only after the user follows the link. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'navigation'"
+				},
+				{
+					"type": "text",
+					"value": " value uses separate complete static-output validation, which "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instant = false"
+				},
+				{
+					"type": "text",
+					"value": " does not relax."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Combining levels across layouts and pages"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A level set on the root layout applies to every route in the app. A level set on another layout applies to every route that renders it, including its nested layouts, pages, and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/parallel-routes",
+					"children": [
+						{
+							"type": "text",
+							"value": "parallel routes"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Within a route, the level covers every segment, including the layouts above the one that sets it."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Leaving the export unset or setting it to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'auto'"
+				},
+				{
+					"type": "text",
+					"value": " is compatible with any level and preserves another segment's setting. A descendant can set a stricter static level, but not a weaker one:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/layout.tsx\"",
+			"value": "export const ensureStatic = 'prefetch'"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\"",
+			"value": "export const ensureStatic = 'navigation' // allowed, stricter than 'prefetch'"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A weaker level on a child segment fails the build:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "text",
+			"meta": "filename=\"Terminal\"",
+			"value": "A child segment cannot override a parent segment with a less-constrained `ensureStatic`."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Mixing "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'shell'"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'prefetch'"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'navigation'"
+				},
+				{
+					"type": "text",
+					"value": " in a parent and child fails with:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "text",
+			"meta": "filename=\"Terminal\"",
+			"value": "A child segment cannot override a parent segment with an incompatible `ensureStatic`."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Parallel routes rendered together must set the same value, leave the export unset, or use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'auto'"
+				},
+				{
+					"type": "text",
+					"value": ". Conflicting values fail with:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "text",
+			"meta": "filename=\"Terminal\"",
+			"value": "Parallel slots cannot have incompatible `ensureStatic`."
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "TypeScript"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/layout.tsx\"",
+			"value": "type EnsureStatic = 'auto' | 'shell' | 'prefetch' | 'navigation' | false\n\nexport const ensureStatic: EnsureStatic = 'navigation'"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.4.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "ensureStatic"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

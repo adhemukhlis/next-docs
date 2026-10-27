@@ -1,0 +1,648 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: cacheTag\ndescription: Learn how to use the cacheTag function to manage cache invalidation in your Next.js application.\nrelated:\n title: Related\n description: View related API references.\n links:\n  - app/api-reference/config/next-config-js/cacheComponents\n  - app/api-reference/directives/use-cache\n  - app/api-reference/functions/revalidateTag\n  - app/api-reference/functions/updateTag\n  - app/api-reference/functions/cacheLife"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheTag"
+				},
+				{
+					"type": "text",
+					"value": " function allows you to tag cached data for on-demand invalidation. By associating tags with cache entries, you can selectively purge or revalidate specific cache entries without affecting other cached data."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Usage"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheTag"
+				},
+				{
+					"type": "text",
+					"value": ", enable the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents"
+						},
+						{
+							"type": "text",
+							"value": " flag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tcacheComponents: true,\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "const nextConfig = {\n\tcacheComponents: true,\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheTag"
+				},
+				{
+					"type": "text",
+					"value": " function takes one or more string values."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/data.ts\" switcher",
+			"value": "import { cacheTag } from 'next/cache'\n\nexport async function getData() {\n\t'use cache'\n\tcacheTag('my-data')\n\tconst res = await fetch('https://api.example.com/data')\n\tconst data = await res.json()\n\treturn data\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/data.js\" switcher",
+			"value": "import { cacheTag } from 'next/cache'\n\nexport async function getData() {\n\t'use cache'\n\tcacheTag('my-data')\n\tconst res = await fetch('https://api.example.com/data')\n\tconst data = await res.json()\n\treturn data\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can then purge the cache on-demand from a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/mutating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Function"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Use "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/updateTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "updateTag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for read-your-own-writes scenarios, such as forms and other user-triggered mutations, where a user makes a change and the next read should fetch fresh data immediately. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "updateTag"
+								},
+								{
+									"type": "text",
+									"value": " is only available inside Server Functions."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Use "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/revalidateTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidateTag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " when it is acceptable to serve stale data while revalidation happens in the background, or when revalidating from a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/route",
+									"children": [
+										{
+											"type": "text",
+											"value": "Route Handler"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " or other context."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, this Server Function adds a post and then purges every cache entry tagged "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'my-data'"
+				},
+				{
+					"type": "text",
+					"value": " so the next read reflects the change:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/action.ts\" switcher",
+			"value": "'use server'\n\nimport { updateTag } from 'next/cache'\n\nexport default async function submit() {\n\tawait addPost()\n\tupdateTag('my-data')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/action.js\" switcher",
+			"value": "'use server'\n\nimport { updateTag } from 'next/cache'\n\nexport default async function submit() {\n\tawait addPost()\n\tupdateTag('my-data')\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Good to know"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Idempotent Tags"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Applying the same tag multiple times has no additional effect."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Multiple Tags"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": You can assign multiple tags to a single cache entry by passing multiple string values to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cacheTag"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "cacheTag('tag-one', 'tag-two')"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Limits"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": A single "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cacheTag()"
+								},
+								{
+									"type": "text",
+									"value": " call accepts up to 128 tags, each with a maximum length of 256 characters. Tags longer than 256 characters are skipped, and any tags past the 128th in one call are dropped. Both cases log a console warning."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Tagging components or functions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Tag your cached data by calling "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheTag"
+				},
+				{
+					"type": "text",
+					"value": " within a cached function or component:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/components/bookings.tsx\" switcher",
+			"value": "import { cacheTag } from 'next/cache'\n\ninterface BookingsProps {\n\ttype: string\n}\n\nexport async function Bookings({ type = 'haircut' }: BookingsProps) {\n\t'use cache'\n\tcacheTag('bookings-data')\n\n\tasync function getBookingsData() {\n\t\tconst response = await fetch(`https://api.example.com/bookings?type=${encodeURIComponent(type)}`)\n\t\tconst data = await response.json()\n\t\treturn data\n\t}\n\n\treturn //...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/components/bookings.js\" switcher",
+			"value": "import { cacheTag } from 'next/cache'\n\nexport async function Bookings({ type = 'haircut' }) {\n\t'use cache'\n\tcacheTag('bookings-data')\n\n\tasync function getBookingsData() {\n\t\tconst response = await fetch(`https://api.example.com/bookings?type=${encodeURIComponent(type)}`)\n\t\tconst data = await response.json()\n\t\treturn data\n\t}\n\n\treturn //...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Creating tags from external data"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use the data returned from an async function to tag the cache entry."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/components/bookings.tsx\" switcher",
+			"value": "import { cacheTag } from 'next/cache'\n\ninterface BookingsProps {\n\ttype: string\n}\n\nexport async function Bookings({ type = 'haircut' }: BookingsProps) {\n\tasync function getBookingsData() {\n\t\t'use cache'\n\t\tconst response = await fetch(`https://api.example.com/bookings?type=${encodeURIComponent(type)}`)\n\t\tconst data = await response.json()\n\t\tcacheTag('bookings-data', data.id)\n\t\treturn data\n\t}\n\treturn //...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/components/bookings.js\" switcher",
+			"value": "import { cacheTag } from 'next/cache'\n\nexport async function Bookings({ type = 'haircut' }) {\n\tasync function getBookingsData() {\n\t\t'use cache'\n\t\tconst response = await fetch(`https://api.example.com/bookings?type=${encodeURIComponent(type)}`)\n\t\tconst data = await response.json()\n\t\tcacheTag('bookings-data', data.id)\n\t\treturn data\n\t}\n\treturn //...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Invalidating tagged cache"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", you can invalidate the cache for a specific tag when needed:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/actions.ts\" switcher",
+			"value": "'use server'\n\nimport { revalidateTag } from 'next/cache'\n\nexport async function updateBookings() {\n\tawait updateBookingData()\n\trevalidateTag('bookings-data', 'max')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/actions.js\" switcher",
+			"value": "'use server'\n\nimport { revalidateTag } from 'next/cache'\n\nexport async function updateBookings() {\n\tawait updateBookingData()\n\trevalidateTag('bookings-data', 'max')\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "cacheTag"
+								},
+								{
+									"type": "text",
+									"value": " stabilized. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "unstable_cacheTag"
+								},
+								{
+									"type": "text",
+									"value": " deprecated."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/version-16#cachelife-and-cachetag",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js 16 upgrade guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to update imports from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "unstable_cacheTag"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheTag"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		}
+	]
+}

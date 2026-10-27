@@ -1,0 +1,872 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to lazy load Client Components and libraries\nnav_title: Lazy Loading\ndescription: Lazy load imported libraries and React Components to improve your application's loading performance."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/Performance/Lazy_loading",
+					"children": [
+						{
+							"type": "text",
+							"value": "Lazy loading"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in Next.js helps improve the initial loading performance of an application by decreasing the amount of JavaScript needed to render a route."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "It allows you to defer loading of "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and imported libraries, and only include them in the client bundle when they're needed. For example, you might want to defer loading a modal until a user clicks to open it."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "There are two ways you can implement lazy loading in Next.js:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Using "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#nextdynamic",
+									"children": [
+										{
+											"type": "text",
+											"value": "Dynamic Imports"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next/dynamic"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Using "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react/lazy",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "React.lazy()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " with "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react/Suspense",
+									"children": [
+										{
+											"type": "text",
+											"value": "Suspense"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, Server Components are automatically "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Glossary/Code_splitting",
+					"children": [
+						{
+							"type": "text",
+							"value": "code split"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and you can use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/streaming",
+					"children": [
+						{
+							"type": "text",
+							"value": "streaming"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to progressively send pieces of UI from the server to the client. Lazy loading applies to Client Components."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next/dynamic"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next/dynamic"
+				},
+				{
+					"type": "text",
+					"value": " is a composite of "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/lazy",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "React.lazy()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Suspense",
+					"children": [
+						{
+							"type": "text",
+							"value": "Suspense"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". It behaves the same way in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "pages"
+				},
+				{
+					"type": "text",
+					"value": " directories to allow for incremental migration."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Importing Client Components"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\"",
+			"value": "'use client'\n\nimport { useState } from 'react'\nimport dynamic from 'next/dynamic'\n\n// Client Components:\nconst ComponentA = dynamic(() => import('../components/A'))\nconst ComponentB = dynamic(() => import('../components/B'))\nconst ComponentC = dynamic(() => import('../components/C'), { ssr: false })\n\nexport default function ClientComponentExample() {\n\tconst [showMore, setShowMore] = useState(false)\n\n\treturn (\n\t\t<div>\n\t\t\t{/* Load immediately, but in a separate client bundle */}\n\t\t\t<ComponentA />\n\n\t\t\t{/* Load on demand, only when/if the condition is met */}\n\t\t\t{showMore && <ComponentB />}\n\t\t\t<button onClick={() => setShowMore(!showMore)}>Toggle</button>\n\n\t\t\t{/* Load only on the client side */}\n\t\t\t<ComponentC />\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Note:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " When a Server Component dynamically imports a Client Component, automatic "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://developer.mozilla.org/docs/Glossary/Code_splitting",
+							"children": [
+								{
+									"type": "text",
+									"value": "code splitting"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " is currently "
+						},
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "not"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " supported."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Skipping SSR"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "React.lazy()"
+				},
+				{
+					"type": "text",
+					"value": " and Suspense, Client Components will be "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/reactwg/server-components/discussions/4",
+					"children": [
+						{
+							"type": "text",
+							"value": "prerendered"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " (SSR) by default."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Note:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " "
+						},
+						{
+							"type": "inlineCode",
+							"value": "ssr: false"
+						},
+						{
+							"type": "text",
+							"value": " option will only work for Client Components, move it into Client Components ensure the client code-splitting working properly."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you want to disable prerendering for a Client Component, you can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ssr"
+				},
+				{
+					"type": "text",
+					"value": " option set to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "const ComponentC = dynamic(() => import('../components/C'), { ssr: false })"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Importing Server Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you dynamically import a Server Component, only the Client Components that are children of the Server Component will be lazy-loaded - not the Server Component itself. It will also help preload the static assets such as CSS when you're using it in Server Components."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\"",
+			"value": "import dynamic from 'next/dynamic'\n\n// Server Component:\nconst ServerComponent = dynamic(() => import('../components/ServerComponent'))\n\nexport default function ServerComponentExample() {\n\treturn (\n\t\t<div>\n\t\t\t<ServerComponent />\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Note:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " "
+						},
+						{
+							"type": "inlineCode",
+							"value": "ssr: false"
+						},
+						{
+							"type": "text",
+							"value": " option is not supported in Server Components. You will see an error if you try to use it in Server Components. "
+						},
+						{
+							"type": "inlineCode",
+							"value": "ssr: false"
+						},
+						{
+							"type": "text",
+							"value": " is not allowed with "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next/dynamic"
+						},
+						{
+							"type": "text",
+							"value": " in Server Components. Please move it into a Client Component."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Loading External Libraries"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "External libraries can be loaded on demand using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/import",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "import()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " function. This example uses the external library "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fuse.js"
+				},
+				{
+					"type": "text",
+					"value": " for fuzzy search. The module is only loaded on the client after the user types in the search input."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\"",
+			"value": "'use client'\n\nimport { useState } from 'react'\n\nconst names = ['Tim', 'Joe', 'Bel', 'Lee']\n\nexport default function Page() {\n\tconst [results, setResults] = useState()\n\n\treturn (\n\t\t<div>\n\t\t\t<input\n\t\t\t\ttype=\"text\"\n\t\t\t\tplaceholder=\"Search\"\n\t\t\t\tonChange={async (e) => {\n\t\t\t\t\tconst { value } = e.currentTarget\n\t\t\t\t\t// Dynamically load fuse.js\n\t\t\t\t\tconst Fuse = (await import('fuse.js')).default\n\t\t\t\t\tconst fuse = new Fuse(names)\n\n\t\t\t\t\tsetResults(fuse.search(value))\n\t\t\t\t}}\n\t\t\t/>\n\t\t\t<pre>Results: {JSON.stringify(results, null, 2)}</pre>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Adding a custom loading component"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\"",
+			"value": "'use client'\n\nimport dynamic from 'next/dynamic'\n\nconst WithCustomLoading = dynamic(() => import('../components/WithCustomLoading'), {\n\tloading: () => <p>Loading...</p>,\n})\n\nexport default function Page() {\n\treturn (\n\t\t<div>\n\t\t\t{/* The loading component will be rendered while  <WithCustomLoading/> is loading */}\n\t\t\t<WithCustomLoading />\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Importing Named Exports"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To dynamically import a named export, you can return it from the Promise returned by "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/import",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "import()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " function:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"components/hello.js\"",
+			"value": "'use client'\n\nexport function Hello() {\n\treturn <p>Hello!</p>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\"",
+			"value": "import dynamic from 'next/dynamic'\n\nconst ClientComponent = dynamic(() => import('../components/hello').then((mod) => mod.Hello))"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Magic Comments"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js supports magic comments to control how dynamic imports are handled by the bundler. These comments work with dynamic "
+				},
+				{
+					"type": "inlineCode",
+					"value": "import()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "require()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "require.resolve()"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "new Worker()"
+				},
+				{
+					"type": "text",
+					"value": " expressions."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Magic comments do not work with static "
+						},
+						{
+							"type": "inlineCode",
+							"value": "import"
+						},
+						{
+							"type": "text",
+							"value": " statements ("
+						},
+						{
+							"type": "inlineCode",
+							"value": "import x from 'y'"
+						},
+						{
+							"type": "text",
+							"value": "). They only work with dynamic expressions."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "webpackIgnore"
+				},
+				{
+					"type": "text",
+					"value": " / "
+				},
+				{
+					"type": "inlineCode",
+					"value": "turbopackIgnore"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use these comments to skip bundling a dynamic import. The import expression will be left as-is in the output, useful for runtime-only modules:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// Skip bundling - import happens at runtime\nconst runtime = await import(/* webpackIgnore: true */ 'runtime-module')\n\n// Turbopack-specific variant\nconst plugin = await import(/* turbopackIgnore: true */ pluginPath)\n\n// Also works with require\nconst mod = require(/* webpackIgnore: true */ 'runtime-module')"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "turbopackOptional"
+				},
+				{
+					"type": "text",
+					"value": " (Turbopack only)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use this comment to suppress build errors when a module might not exist. The import will still throw at runtime if the module is missing:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "// No build error if './optional-feature' doesn't exist\n// Runtime will throw MODULE_NOT_FOUND if executed\nconst feature = await import(/* turbopackOptional: true */ './optional-feature')\n\n// Also works with require\nconst mod = require(/* turbopackOptional: true */ './optional-module')"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This is useful for:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Conditional features that may not be installed"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Plugin systems where modules are optional"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Gradual migrations where some files may not exist yet"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " "
+						},
+						{
+							"type": "inlineCode",
+							"value": "webpackOptional"
+						},
+						{
+							"type": "text",
+							"value": " is not supported. Use "
+						},
+						{
+							"type": "inlineCode",
+							"value": "turbopackOptional"
+						},
+						{
+							"type": "text",
+							"value": " instead when using Turbopack."
+						}
+					]
+				}
+			]
+		}
+	]
+}

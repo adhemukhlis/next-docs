@@ -1,0 +1,1325 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: redirect\ndescription: API Reference for the redirect function.\nrelated:\n links:\n  - app/api-reference/functions/permanentRedirect\n  - app/guides/server-actions"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "redirect"
+				},
+				{
+					"type": "text",
+					"value": " function allows you to redirect the user to another URL. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "redirect"
+				},
+				{
+					"type": "text",
+					"value": " can be used while rendering in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server and Client Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/mutating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Functions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When used in a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/linking-and-navigating#streaming",
+					"children": [
+						{
+							"type": "text",
+							"value": "streaming context"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", this will insert a meta tag to emit the redirect on the client side. In a Server Action, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "redirect"
+				},
+				{
+					"type": "text",
+					"value": " performs a client-side navigation when JavaScript is available. For progressive enhancement form submissions, it serves a 303 HTTP redirect response. Otherwise, it serves a 307 HTTP redirect response."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If a resource doesn't exist, you can use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/not-found",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "notFound"
+						},
+						{
+							"type": "text",
+							"value": " function"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " instead."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parameters"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "redirect"
+				},
+				{
+					"type": "text",
+					"value": " function accepts two arguments:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "redirect(path, type)"
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Parameter"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "path"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The URL to redirect to. Can be a relative or absolute path."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'replace'"
+								},
+								{
+									"type": "text",
+									"value": " (default) or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'push'"
+								},
+								{
+									"type": "text",
+									"value": " (default in Server Actions)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The type of redirect to perform."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "redirect"
+				},
+				{
+					"type": "text",
+					"value": " will use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "push"
+				},
+				{
+					"type": "text",
+					"value": " (adding a new entry to the browser history stack) in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/mutating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Actions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "replace"
+				},
+				{
+					"type": "text",
+					"value": " (replacing the current URL in the browser history stack) everywhere else. You can override this behavior by specifying the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "type"
+				},
+				{
+					"type": "text",
+					"value": " parameter."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "RedirectType"
+				},
+				{
+					"type": "text",
+					"value": " object contains the available options for the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "type"
+				},
+				{
+					"type": "text",
+					"value": " parameter."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "import { redirect, RedirectType } from 'next/navigation'\n\nredirect('/redirect-to', RedirectType.replace)\n// or\nredirect('/redirect-to', RedirectType.push)"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "type"
+				},
+				{
+					"type": "text",
+					"value": " parameter has no effect when used in Server Components."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "redirect"
+				},
+				{
+					"type": "text",
+					"value": " does not return a value."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Behavior"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "In Server Actions and Route Handlers, redirect should be called "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "outside"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "try"
+								},
+								{
+									"type": "text",
+									"value": " block when using "
+								},
+								{
+									"type": "inlineCode",
+									"value": "try/catch"
+								},
+								{
+									"type": "text",
+									"value": " statements."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If you prefer to return a 308 (Permanent) HTTP redirect instead of 307 (Temporary), you can use the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/permanentRedirect",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "permanentRedirect"
+										},
+										{
+											"type": "text",
+											"value": " function"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " instead."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "redirect"
+								},
+								{
+									"type": "text",
+									"value": " throws an error so it should be called "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "outside"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "try"
+								},
+								{
+									"type": "text",
+									"value": " block when using "
+								},
+								{
+									"type": "inlineCode",
+									"value": "try/catch"
+								},
+								{
+									"type": "text",
+									"value": " statements."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "redirect"
+								},
+								{
+									"type": "text",
+									"value": " can be called in Client Components during the rendering process but not in event handlers. You can use the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/use-router",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "useRouter"
+										},
+										{
+											"type": "text",
+											"value": " hook"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " instead."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "redirect"
+								},
+								{
+									"type": "text",
+									"value": " also accepts absolute URLs and can be used to redirect to external links."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If you'd like to redirect before the render process, use "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/redirecting#redirects-in-nextconfigjs",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "next.config.js"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/redirecting#nextresponseredirect-in-proxy",
+									"children": [
+										{
+											"type": "text",
+											"value": "Proxy"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Example"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Component"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Invoking the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "redirect()"
+				},
+				{
+					"type": "text",
+					"value": " function throws a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NEXT_REDIRECT"
+				},
+				{
+					"type": "text",
+					"value": " error and terminates rendering of the route segment in which it was thrown."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/team/[id]/page.tsx\" switcher",
+			"value": "import { redirect } from 'next/navigation'\n\nasync function fetchTeam(id: string) {\n\tconst res = await fetch('https://...')\n\tif (!res.ok) return undefined\n\treturn res.json()\n}\n\nexport default async function Profile({ params }: { params: Promise<{ id: string }> }) {\n\tconst { id } = await params\n\tconst team = await fetchTeam(id)\n\n\tif (!team) {\n\t\tredirect('/login')\n\t}\n\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/team/[id]/page.js\" switcher",
+			"value": "import { redirect } from 'next/navigation'\n\nasync function fetchTeam(id) {\n\tconst res = await fetch('https://...')\n\tif (!res.ok) return undefined\n\treturn res.json()\n}\n\nexport default async function Profile({ params }) {\n\tconst { id } = await params\n\tconst team = await fetchTeam(id)\n\n\tif (!team) {\n\t\tredirect('/login')\n\t}\n\n\t// ...\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": "redirect"
+						},
+						{
+							"type": "text",
+							"value": " does not require you to use "
+						},
+						{
+							"type": "inlineCode",
+							"value": "return redirect()"
+						},
+						{
+							"type": "text",
+							"value": " as it uses the TypeScript "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://www.typescriptlang.org/docs/handbook/2/functions.html#never",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "never"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " type."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Client Component"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "redirect"
+				},
+				{
+					"type": "text",
+					"value": " can be directly used in a Client Component."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"components/client-redirect.tsx\" switcher",
+			"value": "'use client'\n\nimport { redirect, usePathname } from 'next/navigation'\n\nexport function ClientRedirect() {\n\tconst pathname = usePathname()\n\n\tif (pathname.startsWith('/admin') && !pathname.includes('/login')) {\n\t\tredirect('/admin/login')\n\t}\n\n\treturn <div>Login Page</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"components/client-redirect.jsx\" switcher",
+			"value": "'use client'\n\nimport { redirect, usePathname } from 'next/navigation'\n\nexport function ClientRedirect() {\n\tconst pathname = usePathname()\n\n\tif (pathname.startsWith('/admin') && !pathname.includes('/login')) {\n\t\tredirect('/admin/login')\n\t}\n\n\treturn <div>Login Page</div>\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": When using "
+						},
+						{
+							"type": "inlineCode",
+							"value": "redirect"
+						},
+						{
+							"type": "text",
+							"value": " in a Client Component on initial page load during Server-Side Rendering (SSR), it will perform a server-side redirect."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "redirect"
+				},
+				{
+					"type": "text",
+					"value": " can be used in a Client Component through a Server Action. If you need to use an event handler to redirect the user, you can use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/use-router",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useRouter"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " hook."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/client-redirect.tsx\" switcher",
+			"value": "'use client'\n\nimport { navigate } from './actions'\n\nexport function ClientRedirect() {\n\treturn (\n\t\t<form action={navigate}>\n\t\t\t<input\n\t\t\t\ttype=\"text\"\n\t\t\t\tname=\"id\"\n\t\t\t/>\n\t\t\t<button>Submit</button>\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/client-redirect.jsx\" switcher",
+			"value": "'use client'\n\nimport { navigate } from './actions'\n\nexport function ClientRedirect() {\n\treturn (\n\t\t<form action={navigate}>\n\t\t\t<input\n\t\t\t\ttype=\"text\"\n\t\t\t\tname=\"id\"\n\t\t\t/>\n\t\t\t<button>Submit</button>\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/actions.ts\" switcher",
+			"value": "'use server'\n\nimport { redirect } from 'next/navigation'\n\nexport async function navigate(data: FormData) {\n\tredirect(`/posts/${data.get('id')}`)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/actions.js\" switcher",
+			"value": "'use server'\n\nimport { redirect } from 'next/navigation'\n\nexport async function navigate(data) {\n\tredirect(`/posts/${data.get('id')}`)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "FAQ"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Why does "
+				},
+				{
+					"type": "inlineCode",
+					"value": "redirect"
+				},
+				{
+					"type": "text",
+					"value": " use 307 and 308?"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "redirect()"
+				},
+				{
+					"type": "text",
+					"value": " you may notice that the status codes used are "
+				},
+				{
+					"type": "inlineCode",
+					"value": "307"
+				},
+				{
+					"type": "text",
+					"value": " for a temporary redirect, and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "308"
+				},
+				{
+					"type": "text",
+					"value": " for a permanent redirect. While traditionally a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "302"
+				},
+				{
+					"type": "text",
+					"value": " was used for a temporary redirect, and a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "301"
+				},
+				{
+					"type": "text",
+					"value": " for a permanent redirect, many browsers changed the request method of the redirect, from a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "POST"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GET"
+				},
+				{
+					"type": "text",
+					"value": " request when using a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "302"
+				},
+				{
+					"type": "text",
+					"value": ", regardless of the origins request method."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Taking the following example of a redirect from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/users"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/people"
+				},
+				{
+					"type": "text",
+					"value": ", if you make a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "POST"
+				},
+				{
+					"type": "text",
+					"value": " request to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/users"
+				},
+				{
+					"type": "text",
+					"value": " to create a new user, and are conforming to a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "302"
+				},
+				{
+					"type": "text",
+					"value": " temporary redirect, the request method will be changed from a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "POST"
+				},
+				{
+					"type": "text",
+					"value": " to a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GET"
+				},
+				{
+					"type": "text",
+					"value": " request. This doesn't make sense, as to create a new user, you should be making a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "POST"
+				},
+				{
+					"type": "text",
+					"value": " request to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/people"
+				},
+				{
+					"type": "text",
+					"value": ", and not a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GET"
+				},
+				{
+					"type": "text",
+					"value": " request."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The introduction of the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "307"
+				},
+				{
+					"type": "text",
+					"value": " status code means that the request method is preserved as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "POST"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "302"
+								},
+								{
+									"type": "text",
+									"value": " - Temporary redirect, will change the request method from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "POST"
+								},
+								{
+									"type": "text",
+									"value": " to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "GET"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "307"
+								},
+								{
+									"type": "text",
+									"value": " - Temporary redirect, will preserve the request method as "
+								},
+								{
+									"type": "inlineCode",
+									"value": "POST"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "redirect()"
+				},
+				{
+					"type": "text",
+					"value": " method uses a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "307"
+				},
+				{
+					"type": "text",
+					"value": " by default, instead of a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "302"
+				},
+				{
+					"type": "text",
+					"value": " temporary redirect, meaning the request method is preserved. Server Action form submissions are an exception: they use a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "303"
+				},
+				{
+					"type": "text",
+					"value": " response so the browser follows the redirect with a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "GET"
+				},
+				{
+					"type": "text",
+					"value": " request. When JavaScript is available, Server Actions perform a client-side navigation instead of an HTTP redirect."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/docs/Web/HTTP/Redirections",
+					"children": [
+						{
+							"type": "text",
+							"value": "Learn more"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " about HTTP Redirects."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "redirect"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

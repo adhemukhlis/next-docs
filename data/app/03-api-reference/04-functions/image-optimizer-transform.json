@@ -1,0 +1,2931 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: next/image-optimizer-transform\ndescription: API Reference for the next/image-optimizer-transform module, the standalone sharp-based image resizing and format conversion pipeline behind Next.js Image Optimization."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/image-optimizer-transform"
+				},
+				{
+					"type": "text",
+					"value": " module exposes the transformation step of Next.js "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image",
+					"children": [
+						{
+							"type": "text",
+							"value": "Image Optimization"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " as a standalone Node.js module with a small dependency graph, so image resizing and format conversion (powered by "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://sharp.pixelplumbing.com/",
+					"children": [
+						{
+							"type": "text",
+							"value": "sharp"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ") can run outside the main server process."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"optimize.ts\" highlight={1,3} switcher",
+			"value": "import { imageOptimizerTransform } from 'next/image-optimizer-transform'\n\nconst result = await imageOptimizerTransform(\n\t{\n\t\tbuffer: upstreamBuffer, // Buffer of the source image\n\t\tcontentType: null,\n\t\tcacheControl: 'public, max-age=120',\n\t\tetag: 'source-etag',\n\t},\n\t{ href: '/me.png', width: 64, quality: 75, mimeType: 'image/webp' },\n\t{\n\t\timages: { dangerouslyAllowSVG: false, minimumCacheTTL: 60 },\n\t\texperimental: {\n\t\t\timgOptConcurrency: null,\n\t\t\timgOptOperationCache: null,\n\t\t\timgOptMaxInputPixels: 268402689,\n\t\t\timgOptSequentialRead: null,\n\t\t\timgOptTimeoutInSeconds: 7,\n\t\t\timgOptMozjpeg: true,\n\t\t},\n\t},\n)\n// result.contentType === 'image/webp'"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"optimize.js\" highlight={1,3} switcher",
+			"value": "import { imageOptimizerTransform } from 'next/image-optimizer-transform'\n\nconst result = await imageOptimizerTransform(\n\t{\n\t\tbuffer: upstreamBuffer, // Buffer of the source image\n\t\tcontentType: null,\n\t\tcacheControl: 'public, max-age=120',\n\t\tetag: 'source-etag',\n\t},\n\t{ href: '/me.png', width: 64, quality: 75, mimeType: 'image/webp' },\n\t{\n\t\timages: { dangerouslyAllowSVG: false, minimumCacheTTL: 60 },\n\t\texperimental: {\n\t\t\timgOptConcurrency: null,\n\t\t\timgOptOperationCache: null,\n\t\t\timgOptMaxInputPixels: 268402689,\n\t\t\timgOptSequentialRead: null,\n\t\t\timgOptTimeoutInSeconds: 7,\n\t\t\timgOptMozjpeg: true,\n\t\t},\n\t},\n)\n// result.contentType === 'image/webp'"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "imageOptimizerTransform"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "async function imageOptimizerTransform(\n\timageUpstream: ImageUpstream,\n\tparamsResult: ImageOptimizerTransformParams,\n\tnextConfig: ImageOptimizerTransformConfig,\n\topts?: ImageOptimizerTransformOptions,\n): Promise<ImageOptimizerResult>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Validates an upstream image, optimizes it with sharp, and returns the result with caching metadata."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "imageUpstream"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Field"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "buffer"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Buffer"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The source image bytes."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "contentType"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string | null | undefined"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The content type reported upstream. Not trusted; the type is detected from the buffer."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "cacheControl"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string | null | undefined"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The upstream "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Cache-Control"
+								},
+								{
+									"type": "text",
+									"value": " header. Used to compute "
+								},
+								{
+									"type": "inlineCode",
+									"value": "maxAge"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "etag"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The upstream ETag. Returned as "
+								},
+								{
+									"type": "inlineCode",
+									"value": "upstreamEtag"
+								},
+								{
+									"type": "text",
+									"value": ", and as "
+								},
+								{
+									"type": "inlineCode",
+									"value": "etag"
+								},
+								{
+									"type": "text",
+									"value": " when optimization is skipped."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "paramsResult"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Field"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "href"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The source URL of the image. Used in log and error messages."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "width"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "number"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The target width in pixels."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "quality"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "number"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The target quality, an integer between 1 and 100."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "mimeType"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The requested output MIME type. An empty string means no preference."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "nextConfig"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Field"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "images.dangerouslyAllowSVG"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "boolean"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Allows SVG sources. When "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": ", an SVG source throws an "
+								},
+								{
+									"type": "inlineCode",
+									"value": "ImageError"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "images.minimumCacheTTL"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "number"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The minimum "
+								},
+								{
+									"type": "inlineCode",
+									"value": "maxAge"
+								},
+								{
+									"type": "text",
+									"value": " of the result, in seconds."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "experimental.imgOptConcurrency"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "number | null"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The sharp thread pool size. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "null"
+								},
+								{
+									"type": "text",
+									"value": " selects a default based on "
+								},
+								{
+									"type": "inlineCode",
+									"value": "NODE_ENV"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "experimental.imgOptOperationCache"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "boolean | null"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enables or disables the libvips operation cache."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "experimental.imgOptMaxInputPixels"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "number"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Passed to sharp as "
+								},
+								{
+									"type": "inlineCode",
+									"value": "limitInputPixels"
+								},
+								{
+									"type": "text",
+									"value": ". Default "
+								},
+								{
+									"type": "inlineCode",
+									"value": "268402689"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "experimental.imgOptSequentialRead"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "boolean | null"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Passed to sharp as "
+								},
+								{
+									"type": "inlineCode",
+									"value": "sequentialRead"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "experimental.imgOptTimeoutInSeconds"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "number"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Per-image processing timeout. Default "
+								},
+								{
+									"type": "inlineCode",
+									"value": "7"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "experimental.imgOptMozjpeg"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "boolean"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Encodes JPEG output with mozjpeg. Default "
+								},
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/images",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "images"
+						},
+						{
+							"type": "text",
+							"value": " configuration"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "images"
+				},
+				{
+					"type": "text",
+					"value": " options."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "opts"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Field"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "previousOutput"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "object"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "A previously cached result ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "{ buffer, maxAge?, etag, upstreamEtag }"
+								},
+								{
+									"type": "text",
+									"value": "). Returned instead of optimizing."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "logger"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "object"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "A logger with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "error(...args)"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "warnOnce(message)"
+								},
+								{
+									"type": "text",
+									"value": ". When omitted, no logging occurs."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "handleDevOutput"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "function"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "An async hook "
+								},
+								{
+									"type": "inlineCode",
+									"value": "(buffer, contentType) => ({ buffer, contentType })"
+								},
+								{
+									"type": "text",
+									"value": " that post-processes the optimized image."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "Promise<ImageOptimizerResult>"
+				},
+				{
+					"type": "text",
+					"value": " with the following fields:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Field"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "buffer"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Buffer"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The optimized image, or the upstream image when optimization is skipped or failed."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "contentType"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The MIME type of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "buffer"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "maxAge"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "number"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The cache lifetime in seconds."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "etag"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The ETag for the returned buffer."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "upstreamEtag"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The ETag of the upstream image."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "error"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "unknown"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Present only when optimization failed and the upstream image was returned instead."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The function runs the following steps in order:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Computes "
+								},
+								{
+									"type": "inlineCode",
+									"value": "maxAge"
+								},
+								{
+									"type": "text",
+									"value": " as the greater of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "images.minimumCacheTTL"
+								},
+								{
+									"type": "text",
+									"value": " and the upstream "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Cache-Control"
+								},
+								{
+									"type": "text",
+									"value": " "
+								},
+								{
+									"type": "inlineCode",
+									"value": "s-maxage"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "max-age"
+								},
+								{
+									"type": "text",
+									"value": " directive."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Detects the content type from the magic bytes of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "imageUpstream.buffer"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Throws an "
+								},
+								{
+									"type": "inlineCode",
+									"value": "ImageError"
+								},
+								{
+									"type": "text",
+									"value": " with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "statusCode"
+								},
+								{
+									"type": "text",
+									"value": " 400 when the buffer is not a recognized image, or when the image is SVG and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "images.dangerouslyAllowSVG"
+								},
+								{
+									"type": "text",
+									"value": " is "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Returns animated WebP, PNG, and GIF sources unoptimized, and calls "
+								},
+								{
+									"type": "inlineCode",
+									"value": "logger.warnOnce"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Returns SVG, ICO, ICNS, BMP, JXL, and HEIC sources unmodified."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Selects the output type: "
+								},
+								{
+									"type": "inlineCode",
+									"value": "paramsResult.mimeType"
+								},
+								{
+									"type": "text",
+									"value": " when non-empty, "
+								},
+								{
+									"type": "inlineCode",
+									"value": "image/jpeg"
+								},
+								{
+									"type": "text",
+									"value": " for WebP or AVIF sources when no type is requested, otherwise the detected source type."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Returns "
+								},
+								{
+									"type": "inlineCode",
+									"value": "opts.previousOutput"
+								},
+								{
+									"type": "text",
+									"value": " without optimizing when it is provided."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optimizes with "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#optimizeimage",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "optimizeImage"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " using the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "experimental.imgOpt*"
+								},
+								{
+									"type": "text",
+									"value": " values, then applies "
+								},
+								{
+									"type": "inlineCode",
+									"value": "opts.handleDevOutput"
+								},
+								{
+									"type": "text",
+									"value": " when provided."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "On failure, returns the upstream buffer and content type with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "maxAge"
+								},
+								{
+									"type": "text",
+									"value": " set to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "images.minimumCacheTTL"
+								},
+								{
+									"type": "text",
+									"value": " and the caught value on "
+								},
+								{
+									"type": "inlineCode",
+									"value": "result.error"
+								},
+								{
+									"type": "text",
+									"value": ". The failure does not throw."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "optimizeImage"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "async function optimizeImage(options: {\n\tbuffer: Buffer\n\tcontentType: string\n\tquality: number\n\twidth: number\n\theight?: number\n\tconcurrency?: number | null\n\toperationCache?: boolean | null\n\tlimitInputPixels?: number\n\tsequentialRead?: boolean | null\n\ttimeoutInSeconds?: number\n\tmozjpeg?: boolean\n}): Promise<Buffer>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Resizes and re-encodes an image buffer with sharp and returns the optimized buffer."
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Option"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Default"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "buffer"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "Buffer"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Required"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The source image bytes."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "contentType"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Required"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Selects the output encoder: "
+								},
+								{
+									"type": "inlineCode",
+									"value": "image/avif"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "image/webp"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "image/png"
+								},
+								{
+									"type": "text",
+									"value": ", or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "image/jpeg"
+								},
+								{
+									"type": "text",
+									"value": ". For other values sharp keeps the input format."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "quality"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "number"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Required"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "An integer between 1 and 100. AVIF quality is scaled by 50/80 to approximate WebP quality."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "width"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "number"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Required"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The target width in pixels."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "height"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "number"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The target height. When omitted, the aspect ratio is preserved and the image is never enlarged."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "concurrency"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "number | null"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Forwarded to "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#getsharp",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "getSharp"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "operationCache"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "boolean | null"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Forwarded to "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#getsharp",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "getSharp"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "limitInputPixels"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "number"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Passed to sharp. Limits the input pixel count."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "sequentialRead"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "boolean | null"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "undefined"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Passed to sharp."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "timeoutInSeconds"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "number"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "7"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The processing timeout passed to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "sharp.timeout"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "mozjpeg"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "boolean"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Encodes JPEG output with mozjpeg, which produces progressive JPEGs."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The output is auto-rotated according to the EXIF orientation of the source image."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "getMaxAge"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "function getMaxAge(cacheControl: string | null | undefined): number"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Parses a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Cache-Control"
+				},
+				{
+					"type": "text",
+					"value": " header value and returns the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "s-maxage"
+				},
+				{
+					"type": "text",
+					"value": " directive, or the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "max-age"
+				},
+				{
+					"type": "text",
+					"value": " directive when "
+				},
+				{
+					"type": "inlineCode",
+					"value": "s-maxage"
+				},
+				{
+					"type": "text",
+					"value": " is absent, as an integer number of seconds. Returns "
+				},
+				{
+					"type": "inlineCode",
+					"value": "0"
+				},
+				{
+					"type": "text",
+					"value": " when neither directive is present or its value is not a number. This is the same parsing the image optimizer applies to upstream responses when computing "
+				},
+				{
+					"type": "inlineCode",
+					"value": "maxAge"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "const maxAge = getMaxAge('public, max-age=120') // 120"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "getSharp"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "function getSharp(concurrency: number | null | undefined, operationCache: boolean | null | undefined): typeof import('sharp').default"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Loads the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "sharp"
+				},
+				{
+					"type": "text",
+					"value": " module once, applies configuration, and returns the memoized instance."
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Parameter"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "concurrency"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "number | null | undefined"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The libvips thread pool size. When not a number, the default is the current concurrency divided by 4 in development or 2 in production, with a minimum of 1."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "operationCache"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "boolean | null | undefined"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "When a boolean, passed to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "sharp.cache()"
+								},
+								{
+									"type": "text",
+									"value": " to enable or disable the libvips operation cache."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "On first load, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getSharp"
+				},
+				{
+					"type": "text",
+					"value": " restricts libvips image loaders to HEIF (AVIF), JPEG, GIF, PNG, SVG, TIFF, and WebP. If "
+				},
+				{
+					"type": "inlineCode",
+					"value": "sharp"
+				},
+				{
+					"type": "text",
+					"value": " is not installed, it throws an error that suggests running "
+				},
+				{
+					"type": "inlineCode",
+					"value": "npm install --cpu=wasm32 sharp"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "ImageError"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "class ImageError extends Error {\n\tstatusCode: number\n\tconstructor(statusCode: number, message: string)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The error type thrown by "
+				},
+				{
+					"type": "inlineCode",
+					"value": "imageOptimizerTransform"
+				},
+				{
+					"type": "text",
+					"value": " for invalid input. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "statusCode"
+				},
+				{
+					"type": "text",
+					"value": " is preserved when it is 400 or greater. Any lower value is replaced with 500."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Good to know"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "sharp"
+								},
+								{
+									"type": "text",
+									"value": " is required and is loaded lazily on the first call to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "getSharp"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "optimizeImage"
+								},
+								{
+									"type": "text",
+									"value": ". The same instance is reused afterwards."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The module intentionally imports very little so it loads quickly in a separate process, such as a worker or child process. Its file location and exports are a stable public contract."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The "
+								},
+								{
+									"type": "inlineCode",
+									"value": "contentType"
+								},
+								{
+									"type": "text",
+									"value": " field of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "imageUpstream"
+								},
+								{
+									"type": "text",
+									"value": " is not used for detection. The content type is detected from the first bytes of the buffer."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optimization failures do not throw. "
+								},
+								{
+									"type": "inlineCode",
+									"value": "imageOptimizerTransform"
+								},
+								{
+									"type": "text",
+									"value": " returns the upstream buffer with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "error"
+								},
+								{
+									"type": "text",
+									"value": " set on the result."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Passing "
+								},
+								{
+									"type": "inlineCode",
+									"value": "previousOutput"
+								},
+								{
+									"type": "text",
+									"value": " skips sharp entirely, but the upstream buffer is still validated first."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Animated WebP, PNG, and GIF images are returned unoptimized. SVG, ICO, ICNS, BMP, JXL, and HEIC images are always passed through without optimization."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Optimizing a fetched image"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Fetch an upstream image and convert it to WebP, using the response headers as the upstream metadata."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"optimize.ts\" switcher",
+			"value": "import { imageOptimizerTransform } from 'next/image-optimizer-transform'\n\nconst logger = {\n\terror: (...args: unknown[]) => console.error(...args),\n\twarnOnce: (message: string) => console.warn(message),\n}\n\nconst upstream = await fetch('https://example.com/me.png')\n\nconst result = await imageOptimizerTransform(\n\t{\n\t\tbuffer: Buffer.from(await upstream.arrayBuffer()),\n\t\tcontentType: upstream.headers.get('content-type'),\n\t\tcacheControl: upstream.headers.get('cache-control'),\n\t\tetag: upstream.headers.get('etag') ?? 'unknown',\n\t},\n\t{\n\t\thref: 'https://example.com/me.png',\n\t\twidth: 64,\n\t\tquality: 75,\n\t\tmimeType: 'image/webp',\n\t},\n\t{\n\t\timages: { dangerouslyAllowSVG: false, minimumCacheTTL: 60 },\n\t\texperimental: {\n\t\t\timgOptConcurrency: null,\n\t\t\timgOptOperationCache: null,\n\t\t\timgOptMaxInputPixels: 268402689,\n\t\t\timgOptSequentialRead: null,\n\t\t\timgOptTimeoutInSeconds: 7,\n\t\t\timgOptMozjpeg: true,\n\t\t},\n\t},\n\t{ logger },\n)\n\nif (result.error) {\n\t// Optimization failed. result.buffer contains the upstream image.\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"optimize.js\" switcher",
+			"value": "import { imageOptimizerTransform } from 'next/image-optimizer-transform'\n\nconst logger = {\n\terror: (...args) => console.error(...args),\n\twarnOnce: (message) => console.warn(message),\n}\n\nconst upstream = await fetch('https://example.com/me.png')\n\nconst result = await imageOptimizerTransform(\n\t{\n\t\tbuffer: Buffer.from(await upstream.arrayBuffer()),\n\t\tcontentType: upstream.headers.get('content-type'),\n\t\tcacheControl: upstream.headers.get('cache-control'),\n\t\tetag: upstream.headers.get('etag') ?? 'unknown',\n\t},\n\t{\n\t\thref: 'https://example.com/me.png',\n\t\twidth: 64,\n\t\tquality: 75,\n\t\tmimeType: 'image/webp',\n\t},\n\t{\n\t\timages: { dangerouslyAllowSVG: false, minimumCacheTTL: 60 },\n\t\texperimental: {\n\t\t\timgOptConcurrency: null,\n\t\t\timgOptOperationCache: null,\n\t\t\timgOptMaxInputPixels: 268402689,\n\t\t\timgOptSequentialRead: null,\n\t\t\timgOptTimeoutInSeconds: 7,\n\t\t\timgOptMozjpeg: true,\n\t\t},\n\t},\n\t{ logger },\n)\n\nif (result.error) {\n\t// Optimization failed. result.buffer contains the upstream image.\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reusing a previously cached result"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Pass "
+				},
+				{
+					"type": "inlineCode",
+					"value": "previousOutput"
+				},
+				{
+					"type": "text",
+					"value": " to skip optimization when a cached result already exists."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"optimize.ts\" switcher",
+			"value": "const result = await imageOptimizerTransform(imageUpstream, params, nextConfig, {\n\tpreviousOutput: {\n\t\tbuffer: cachedBuffer,\n\t\tmaxAge: 90,\n\t\tetag: 'optimized-etag',\n\t\tupstreamEtag: 'source-etag',\n\t},\n})\n// result.buffer === cachedBuffer, sharp is not invoked."
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"optimize.js\" switcher",
+			"value": "const result = await imageOptimizerTransform(imageUpstream, params, nextConfig, {\n\tpreviousOutput: {\n\t\tbuffer: cachedBuffer,\n\t\tmaxAge: 90,\n\t\tetag: 'optimized-etag',\n\t\tupstreamEtag: 'source-etag',\n\t},\n})\n// result.buffer === cachedBuffer, sharp is not invoked."
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Resizing directly with optimizeImage"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "optimizeImage"
+				},
+				{
+					"type": "text",
+					"value": " when you only need a resize without validation or caching metadata. Next.js uses the same function at build time to generate blur placeholders for static imports."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"blur.ts\" switcher",
+			"value": "import { optimizeImage } from 'next/image-optimizer-transform'\n\nconst placeholder = await optimizeImage({\n\tbuffer: sourceBuffer,\n\tcontentType: 'image/webp',\n\twidth: 8,\n\tquality: 70,\n})"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"blur.js\" switcher",
+			"value": "import { optimizeImage } from 'next/image-optimizer-transform'\n\nconst placeholder = await optimizeImage({\n\tbuffer: sourceBuffer,\n\tcontentType: 'image/webp',\n\twidth: 8,\n\tquality: 70,\n})"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Configuring sharp with getSharp"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getSharp"
+				},
+				{
+					"type": "text",
+					"value": " to load sharp with the same loader restrictions and concurrency limits as the Next.js image optimizer."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"metadata.ts\" switcher",
+			"value": "import { getSharp } from 'next/image-optimizer-transform'\n\nconst sharp = getSharp(1, false)\nconst metadata = await sharp(buffer).metadata()"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"metadata.js\" switcher",
+			"value": "import { getSharp } from 'next/image-optimizer-transform'\n\nconst sharp = getSharp(1, false)\nconst metadata = await sharp(buffer).metadata()"
+		}
+	]
+}

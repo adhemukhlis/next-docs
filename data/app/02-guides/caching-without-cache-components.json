@@ -1,0 +1,2678 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Caching and Revalidating (Previous Model)\nnav_title: Caching (Previous Model)\ndescription: Learn how to cache and revalidate data using fetch options, unstable_cache, and route segment configs for projects not using Cache Components."
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "This guide assumes you are "
+						},
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "not"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " using "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/getting-started/caching",
+							"children": [
+								{
+									"type": "text",
+									"value": "Cache Components"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " which was introduced in version 16 under the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "cacheComponents"
+								},
+								{
+									"type": "text",
+									"value": " flag"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Caching "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " requests"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/fetch",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "fetch"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " requests are not cached. You can cache individual requests by setting the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cache"
+				},
+				{
+					"type": "text",
+					"value": " option to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'force-cache'"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "export default async function Page() {\n\tconst data = await fetch('https://...', { cache: 'force-cache' })\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.jsx\" switcher",
+			"value": "export default async function Page() {\n\tconst data = await fetch('https://...', { cache: 'force-cache' })\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/fetch",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "fetch"
+						},
+						{
+							"type": "text",
+							"value": " API reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to learn more."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "unstable_cache"
+				},
+				{
+					"type": "text",
+					"value": " for non-"
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " functions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "unstable_cache"
+				},
+				{
+					"type": "text",
+					"value": " allows you to cache the result of database queries and other async functions that don't use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": ". Wrap "
+				},
+				{
+					"type": "inlineCode",
+					"value": "unstable_cache"
+				},
+				{
+					"type": "text",
+					"value": " around the function:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/lib/data.ts\" switcher",
+			"value": "import { unstable_cache } from 'next/cache'\nimport { db } from '@/lib/db'\n\nexport const getCachedUser = unstable_cache(\n\tasync (id: string) => {\n\t\treturn db\n\t\t\t.select()\n\t\t\t.from(users)\n\t\t\t.where(eq(users.id, id))\n\t\t\t.then((res) => res[0])\n\t},\n\t['user'], // cache key prefix\n\t{\n\t\ttags: ['user'],\n\t\trevalidate: 3600,\n\t},\n)"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/lib/data.js\" switcher",
+			"value": "import { unstable_cache } from 'next/cache'\nimport { db } from '@/lib/db'\n\nexport const getCachedUser = unstable_cache(\n\tasync (id) => {\n\t\treturn db\n\t\t\t.select()\n\t\t\t.from(users)\n\t\t\t.where(eq(users.id, id))\n\t\t\t.then((res) => res[0])\n\t},\n\t['user'], // cache key prefix\n\t{\n\t\ttags: ['user'],\n\t\trevalidate: 3600,\n\t},\n)"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The third argument accepts:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "tags"
+								},
+								{
+									"type": "text",
+									"value": ": an array of tags for on-demand revalidation with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidateTag"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "revalidate"
+								},
+								{
+									"type": "text",
+									"value": ": the number of seconds before the cache is revalidated."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/unstable_cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "unstable_cache"
+						},
+						{
+							"type": "text",
+							"value": " API reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to learn more."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Route segment config"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can configure caching behavior at the route level by exporting config options from a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/page",
+					"children": [
+						{
+							"type": "text",
+							"value": "Page"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout",
+					"children": [
+						{
+							"type": "text",
+							"value": "Layout"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "dynamic"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Change the dynamic behavior of a layout or page to fully static or fully dynamic."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"layout.tsx | page.tsx | route.ts\" switcher",
+			"value": "export const dynamic = 'auto'\n// 'auto' | 'force-dynamic' | 'error' | 'force-static'"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js | route.js\" switcher",
+			"value": "export const dynamic = 'auto'\n// 'auto' | 'force-dynamic' | 'error' | 'force-static'"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'auto'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (default): The default option to cache as much as possible without preventing any components from opting into dynamic behavior."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'force-dynamic'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Force "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/glossary#dynamic-rendering",
+									"children": [
+										{
+											"type": "text",
+											"value": "dynamic rendering"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", which will result in routes being rendered for each user at request time. This option is equivalent to:"
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Setting the option of every "
+												},
+												{
+													"type": "inlineCode",
+													"value": "fetch()"
+												},
+												{
+													"type": "text",
+													"value": " request in a layout or page to "
+												},
+												{
+													"type": "inlineCode",
+													"value": "{ cache: 'no-store', next: { revalidate: 0 } }"
+												},
+												{
+													"type": "text",
+													"value": "."
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Setting the segment config to "
+												},
+												{
+													"type": "inlineCode",
+													"value": "export const fetchCache = 'force-no-store'"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'error'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Force prerendering and cache the data of a layout or page by causing an error if any components use Request-time APIs or uncached data. This option is equivalent to:"
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "getStaticProps()"
+												},
+												{
+													"type": "text",
+													"value": " in the "
+												},
+												{
+													"type": "inlineCode",
+													"value": "pages"
+												},
+												{
+													"type": "text",
+													"value": " directory."
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Setting the option of every "
+												},
+												{
+													"type": "inlineCode",
+													"value": "fetch()"
+												},
+												{
+													"type": "text",
+													"value": " request in a layout or page to "
+												},
+												{
+													"type": "inlineCode",
+													"value": "{ cache: 'force-cache' }"
+												},
+												{
+													"type": "text",
+													"value": "."
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "Setting the segment config to "
+												},
+												{
+													"type": "inlineCode",
+													"value": "fetchCache = 'only-cache'"
+												},
+												{
+													"type": "text",
+													"value": "."
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'force-static'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Force prerendering and cache the data of a layout or page by forcing "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/cookies",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "cookies"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/headers",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "headers()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/use-search-params",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "useSearchParams()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " to return empty values. It is possible to "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "#route-segment-config-revalidate",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidate"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/revalidatePath",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidatePath"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", or "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/revalidateTag",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidateTag"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", in pages or layouts rendered with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "force-static"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "fetchCache"
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "<details>\n  <summary>This is an advanced option that should only be used if you specifically need to override the default behavior.</summary>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " request that sets no "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cache"
+				},
+				{
+					"type": "text",
+					"value": " option is fetched once during "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " if it is reachable "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "before"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " any Request-time APIs are used, because the route is prerendered up to that point. Requests discovered "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "after"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " a Request-time API run on every request."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "fetchCache"
+				},
+				{
+					"type": "text",
+					"value": " allows you to override the default "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cache"
+				},
+				{
+					"type": "text",
+					"value": " option of all "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " requests in a layout or page."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"layout.tsx | page.tsx | route.ts\" switcher",
+			"value": "export const fetchCache = 'auto'\n// 'auto' | 'default-cache' | 'only-cache'\n// 'force-cache' | 'force-no-store' | 'default-no-store' | 'only-no-store'"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js | route.js\" switcher",
+			"value": "export const fetchCache = 'auto'\n// 'auto' | 'default-cache' | 'only-cache'\n// 'force-cache' | 'force-no-store' | 'default-no-store' | 'only-no-store'"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'auto'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (default): The default option to cache "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " requests before Request-time APIs with the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cache"
+								},
+								{
+									"type": "text",
+									"value": " option they provide and not cache "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " requests after Request-time APIs."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'default-cache'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Allow any "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cache"
+								},
+								{
+									"type": "text",
+									"value": " option to be passed to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " but if no option is provided then set the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cache"
+								},
+								{
+									"type": "text",
+									"value": " option to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'force-cache'"
+								},
+								{
+									"type": "text",
+									"value": ". This means that even "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " requests after Request-time APIs are considered static."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'only-cache'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Ensure all "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " requests opt into caching by changing the default to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cache: 'force-cache'"
+								},
+								{
+									"type": "text",
+									"value": " if no option is provided and causing an error if any "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " requests use "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cache: 'no-store'"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'force-cache'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Ensure all "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " requests opt into caching by setting the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cache"
+								},
+								{
+									"type": "text",
+									"value": " option of all "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " requests to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'force-cache'"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'default-no-store'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Allow any "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cache"
+								},
+								{
+									"type": "text",
+									"value": " option to be passed to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " but if no option is provided then set the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cache"
+								},
+								{
+									"type": "text",
+									"value": " option to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'no-store'"
+								},
+								{
+									"type": "text",
+									"value": ". This means that even "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " requests before Request-time APIs are considered dynamic."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'only-no-store'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Ensure all "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " requests opt out of caching by changing the default to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cache: 'no-store'"
+								},
+								{
+									"type": "text",
+									"value": " if no option is provided and causing an error if any "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " requests use "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cache: 'force-cache'"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'force-no-store'"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Ensure all "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " requests opt out of caching by setting the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cache"
+								},
+								{
+									"type": "text",
+									"value": " option of all "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " requests to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'no-store'"
+								},
+								{
+									"type": "text",
+									"value": ". This forces all "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " requests to be re-fetched every request even if they provide a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'force-cache'"
+								},
+								{
+									"type": "text",
+									"value": " option."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 5,
+			"children": [
+				{
+					"type": "text",
+					"value": "Cross-route segment behavior"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Any options set across each layout and page of a single route need to be compatible with each other."
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "If both the "
+												},
+												{
+													"type": "inlineCode",
+													"value": "'only-cache'"
+												},
+												{
+													"type": "text",
+													"value": " and "
+												},
+												{
+													"type": "inlineCode",
+													"value": "'force-cache'"
+												},
+												{
+													"type": "text",
+													"value": " are provided, then "
+												},
+												{
+													"type": "inlineCode",
+													"value": "'force-cache'"
+												},
+												{
+													"type": "text",
+													"value": " wins. If both "
+												},
+												{
+													"type": "inlineCode",
+													"value": "'only-no-store'"
+												},
+												{
+													"type": "text",
+													"value": " and "
+												},
+												{
+													"type": "inlineCode",
+													"value": "'force-no-store'"
+												},
+												{
+													"type": "text",
+													"value": " are provided, then "
+												},
+												{
+													"type": "inlineCode",
+													"value": "'force-no-store'"
+												},
+												{
+													"type": "text",
+													"value": " wins. The force option changes the behavior across the route so a single segment with "
+												},
+												{
+													"type": "inlineCode",
+													"value": "'force-*'"
+												},
+												{
+													"type": "text",
+													"value": " would prevent any errors caused by "
+												},
+												{
+													"type": "inlineCode",
+													"value": "'only-*'"
+												},
+												{
+													"type": "text",
+													"value": "."
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "The intention of the "
+												},
+												{
+													"type": "inlineCode",
+													"value": "'only-*'"
+												},
+												{
+													"type": "text",
+													"value": " and "
+												},
+												{
+													"type": "inlineCode",
+													"value": "'force-*'"
+												},
+												{
+													"type": "text",
+													"value": " options is to guarantee the whole route is either fully static or fully dynamic. This means:"
+												}
+											]
+										},
+										{
+											"type": "list",
+											"ordered": false,
+											"start": null,
+											"spread": false,
+											"children": [
+												{
+													"type": "listItem",
+													"spread": false,
+													"checked": null,
+													"children": [
+														{
+															"type": "paragraph",
+															"children": [
+																{
+																	"type": "text",
+																	"value": "A combination of "
+																},
+																{
+																	"type": "inlineCode",
+																	"value": "'only-cache'"
+																},
+																{
+																	"type": "text",
+																	"value": " and "
+																},
+																{
+																	"type": "inlineCode",
+																	"value": "'only-no-store'"
+																},
+																{
+																	"type": "text",
+																	"value": " in a single route is not allowed."
+																}
+															]
+														}
+													]
+												},
+												{
+													"type": "listItem",
+													"spread": false,
+													"checked": null,
+													"children": [
+														{
+															"type": "paragraph",
+															"children": [
+																{
+																	"type": "text",
+																	"value": "A combination of "
+																},
+																{
+																	"type": "inlineCode",
+																	"value": "'force-cache'"
+																},
+																{
+																	"type": "text",
+																	"value": " and "
+																},
+																{
+																	"type": "inlineCode",
+																	"value": "'force-no-store'"
+																},
+																{
+																	"type": "text",
+																	"value": " in a single route is not allowed."
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "text",
+													"value": "A parent cannot provide "
+												},
+												{
+													"type": "inlineCode",
+													"value": "'default-no-store'"
+												},
+												{
+													"type": "text",
+													"value": " if a child provides "
+												},
+												{
+													"type": "inlineCode",
+													"value": "'auto'"
+												},
+												{
+													"type": "text",
+													"value": " or "
+												},
+												{
+													"type": "inlineCode",
+													"value": "'*-cache'"
+												},
+												{
+													"type": "text",
+													"value": " since that could make the same fetch have different behavior."
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "It is generally recommended to leave shared parent layouts as "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'auto'"
+								},
+								{
+									"type": "text",
+									"value": " and customize the options where child segments diverge."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "</details>"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Time-based revalidation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.revalidate"
+				},
+				{
+					"type": "text",
+					"value": " option on "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " to revalidate data after a specified number of seconds:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "export default async function Page() {\n\tconst data = await fetch('https://...', { next: { revalidate: 3600 } })\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.jsx\" switcher",
+			"value": "export default async function Page() {\n\tconst data = await fetch('https://...', { next: { revalidate: 3600 } })\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For non-"
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " functions, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "unstable_cache"
+				},
+				{
+					"type": "text",
+					"value": " accepts a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				},
+				{
+					"type": "text",
+					"value": " option in its configuration (see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#unstable_cache-for-non-fetch-functions",
+					"children": [
+						{
+							"type": "text",
+							"value": "example above"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ")."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Route segment config "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Set the default revalidation time for a layout or page. This option does not override the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				},
+				{
+					"type": "text",
+					"value": " value set by individual "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " requests."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"layout.tsx | page.tsx | route.ts\" switcher",
+			"value": "export const revalidate = false\n// false | 0 | number"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"layout.js | page.js | route.js\" switcher",
+			"value": "export const revalidate = false\n// false | 0 | number"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "false"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " (default): The default heuristic to cache any "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " requests that set their "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cache"
+								},
+								{
+									"type": "text",
+									"value": " option to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'force-cache'"
+								},
+								{
+									"type": "text",
+									"value": " or are discovered before a Request-time API is used. Semantically equivalent to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidate: Infinity"
+								},
+								{
+									"type": "text",
+									"value": " which effectively means the resource should be cached indefinitely. It is still possible for individual "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " requests to use "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cache: 'no-store'"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidate: 0"
+								},
+								{
+									"type": "text",
+									"value": " to avoid being cached and make the route dynamically rendered. Or set "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidate"
+								},
+								{
+									"type": "text",
+									"value": " to a positive number lower than the route default to increase the revalidation frequency of a route."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "0"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Ensure a layout or page is always dynamically rendered even if no Request-time APIs or uncached data fetches are discovered. This option changes the default of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " requests that do not set a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cache"
+								},
+								{
+									"type": "text",
+									"value": " option to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'no-store'"
+								},
+								{
+									"type": "text",
+									"value": " but leaves "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " requests that opt into "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'force-cache'"
+								},
+								{
+									"type": "text",
+									"value": " or use a positive "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidate"
+								},
+								{
+									"type": "text",
+									"value": " as is."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "number"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": (in seconds) Set the default revalidation frequency of a layout or page to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "n"
+								},
+								{
+									"type": "text",
+									"value": " seconds."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The revalidate value needs to be statically analyzable. For example "
+										},
+										{
+											"type": "inlineCode",
+											"value": "revalidate = 600"
+										},
+										{
+											"type": "text",
+											"value": " is valid, but "
+										},
+										{
+											"type": "inlineCode",
+											"value": "revalidate = 60 * 10"
+										},
+										{
+											"type": "text",
+											"value": " is not."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The revalidate value is not available when using the deprecated "
+										},
+										{
+											"type": "inlineCode",
+											"value": "runtime = 'edge'"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "In Development, Pages are "
+										},
+										{
+											"type": "emphasis",
+											"children": [
+												{
+													"type": "text",
+													"value": "always"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " rendered on-demand and are never cached. This allows you to see changes immediately without waiting for a revalidation period to pass."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Revalidation frequency"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The lowest "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidate"
+								},
+								{
+									"type": "text",
+									"value": " across each layout and page of a single route will determine the revalidation frequency of the "
+								},
+								{
+									"type": "emphasis",
+									"children": [
+										{
+											"type": "text",
+											"value": "entire"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " route. This ensures that child pages are revalidated as frequently as their parent layouts."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Individual "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " requests can set a lower "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidate"
+								},
+								{
+									"type": "text",
+									"value": " than the route's default "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidate"
+								},
+								{
+									"type": "text",
+									"value": " to increase the revalidation frequency of the entire route. This allows you to dynamically opt-in to more frequent revalidation for certain routes based on some criteria."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "On-demand revalidation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To revalidate cached data after an event, use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidatePath",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidatePath"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/mutating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Action"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Tagging cached data"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Tag "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " requests with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.tags"
+				},
+				{
+					"type": "text",
+					"value": " to enable on-demand cache invalidation:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/lib/data.ts\" switcher",
+			"value": "export async function getUserById(id: string) {\n\tconst data = await fetch(`https://...`, {\n\t\tnext: { tags: ['user'] },\n\t})\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/lib/data.js\" switcher",
+			"value": "export async function getUserById(id) {\n\tconst data = await fetch(`https://...`, {\n\t\tnext: { tags: ['user'] },\n\t})\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For non-"
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " functions, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "unstable_cache"
+				},
+				{
+					"type": "text",
+					"value": " also accepts a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tags"
+				},
+				{
+					"type": "text",
+					"value": " option (see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#unstable_cache-for-non-fetch-functions",
+					"children": [
+						{
+							"type": "text",
+							"value": "example above"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ")."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "revalidateTag"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Invalidate cached data by tag using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidateTag"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/lib/actions.ts\" switcher",
+			"value": "import { revalidateTag } from 'next/cache'\n\nexport async function updateUser(id: string) {\n\t// Mutate data\n\trevalidateTag('user', 'max')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/lib/actions.js\" switcher",
+			"value": "import { revalidateTag } from 'next/cache'\n\nexport async function updateUser(id) {\n\t// Mutate data\n\trevalidateTag('user', 'max')\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "revalidatePath"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Invalidate all cached data for a specific route path using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidatePath",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidatePath"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/lib/actions.ts\" switcher",
+			"value": "import { revalidatePath } from 'next/cache'\n\nexport async function updateUser(id: string) {\n\t// Mutate data\n\trevalidatePath('/profile')\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/lib/actions.js\" switcher",
+			"value": "import { revalidatePath } from 'next/cache'\n\nexport async function updateUser(id) {\n\t// Mutate data\n\trevalidatePath('/profile')\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Deduplicating requests"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you are not using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " (which is "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/fetch#memoization",
+					"children": [
+						{
+							"type": "text",
+							"value": "automatically memoized"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "), and instead using an ORM or database directly, you can wrap your data access with the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/cache",
+					"children": [
+						{
+							"type": "text",
+							"value": "React "
+						},
+						{
+							"type": "inlineCode",
+							"value": "cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " function to deduplicate requests within a single render pass:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/lib/data.ts\" switcher",
+			"value": "import { cache } from 'react'\nimport { db, posts, eq } from '@/lib/db'\n\nexport const getPost = cache(async (id: string) => {\n\tconst post = await db.query.posts.findFirst({\n\t\twhere: eq(posts.id, parseInt(id)),\n\t})\n})"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/lib/data.js\" switcher",
+			"value": "import { cache } from 'react'\nimport { db, posts, eq } from '@/lib/db'\n\nexport const getPost = cache(async (id) => {\n\tconst post = await db.query.posts.findFirst({\n\t\twhere: eq(posts.id, parseInt(id)),\n\t})\n})"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Preloading data"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can preload data by creating a utility function that you eagerly call above blocking requests. This lets you initiate data fetching early, so the data is already available by the time the component renders."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Combine the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.npmjs.com/package/server-only",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "server-only"
+						},
+						{
+							"type": "text",
+							"value": " package"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with React's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to create a reusable preload utility:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"utils/get-item.ts\" switcher",
+			"value": "import { cache } from 'react'\nimport 'server-only'\n\nexport const getItem = cache(async (id: string) => {\n\t// ...\n})\n\nexport const preload = (id: string) => {\n\tvoid getItem(id)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"utils/get-item.js\" switcher",
+			"value": "import { cache } from 'react'\nimport 'server-only'\n\nexport const getItem = cache(async (id) => {\n\t// ...\n})\n\nexport const preload = (id) => {\n\tvoid getItem(id)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then call "
+				},
+				{
+					"type": "inlineCode",
+					"value": "preload()"
+				},
+				{
+					"type": "text",
+					"value": " before any blocking work so the data starts loading immediately:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/item/[id]/page.tsx\" switcher",
+			"value": "import { getItem, preload, checkIsAvailable } from '@/lib/data'\n\nexport default async function Page({ params }: { params: Promise<{ id: string }> }) {\n\tconst { id } = await params\n\t// Start loading item data\n\tpreload(id)\n\t// Perform another asynchronous task\n\tconst isAvailable = await checkIsAvailable()\n\n\treturn isAvailable ? <Item id={id} /> : null\n}\n\nasync function Item({ id }: { id: string }) {\n\tconst result = await getItem(id)\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/item/[id]/page.js\" switcher",
+			"value": "import { getItem, preload, checkIsAvailable } from '@/lib/data'\n\nexport default async function Page({ params }) {\n\tconst { id } = await params\n\t// Start loading item data\n\tpreload(id)\n\t// Perform another asynchronous task\n\tconst isAvailable = await checkIsAvailable()\n\n\treturn isAvailable ? <Item id={id} /> : null\n}\n\nasync function Item({ id }) {\n\tconst result = await getItem(id)\n\t// ...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Statically generating dynamic routes"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To prerender dynamic routes with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/generate-static-params",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "generateStaticParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and revalidate them over time, see the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/incremental-static-regeneration",
+					"children": [
+						{
+							"type": "text",
+							"value": "Incremental Static Regeneration"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " guide."
+				}
+			]
+		}
+	]
+}

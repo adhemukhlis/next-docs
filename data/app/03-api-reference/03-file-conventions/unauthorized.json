@@ -1,0 +1,284 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: unauthorized.js\ndescription: API reference for the unauthorized.js special file.\nrelated:\n links:\n  - app/api-reference/functions/unauthorized\nversion: experimental"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "unauthorized"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " file renders UI when the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/unauthorized",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "unauthorized"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " function is invoked."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Before streaming starts, Next.js returns a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "401"
+				},
+				{
+					"type": "text",
+					"value": " status code. After streaming starts, the status code remains "
+				},
+				{
+					"type": "inlineCode",
+					"value": "200"
+				},
+				{
+					"type": "text",
+					"value": " and the unauthorized UI renders in the response. Next.js injects a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<meta name=\"robots\" content=\"noindex\" />"
+				},
+				{
+					"type": "text",
+					"value": " tag in both cases. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/loading#status-codes",
+					"children": [
+						{
+							"type": "text",
+							"value": "Status codes"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for details."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/unauthorized.tsx\" switcher",
+			"value": "import Login from '@/app/components/Login'\n\nexport default function Unauthorized() {\n\treturn (\n\t\t<main>\n\t\t\t<h1>401 - Unauthorized</h1>\n\t\t\t<p>Please log in to access this page.</p>\n\t\t\t<Login />\n\t\t</main>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/unauthorized.js\" switcher",
+			"value": "import Login from '@/app/components/Login'\n\nexport default function Unauthorized() {\n\treturn (\n\t\t<main>\n\t\t\t<h1>401 - Unauthorized</h1>\n\t\t\t<p>Please log in to access this page.</p>\n\t\t\t<Login />\n\t\t</main>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Props"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "unauthorized.js"
+				},
+				{
+					"type": "text",
+					"value": " components do not accept any props."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Displaying login UI to unauthenticated users"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/unauthorized",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "unauthorized"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " function to render the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "unauthorized.js"
+				},
+				{
+					"type": "text",
+					"value": " file with a login UI."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/page.tsx\" switcher",
+			"value": "import { verifySession } from '@/app/lib/dal'\nimport { unauthorized } from 'next/navigation'\n\nexport default async function DashboardPage() {\n\tconst session = await verifySession()\n\n\tif (!session) {\n\t\tunauthorized()\n\t}\n\n\treturn <div>Dashboard</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/page.js\" switcher",
+			"value": "import { verifySession } from '@/app/lib/dal'\nimport { unauthorized } from 'next/navigation'\n\nexport default async function DashboardPage() {\n\tconst session = await verifySession()\n\n\tif (!session) {\n\t\tunauthorized()\n\t}\n\n\treturn <div>Dashboard</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/unauthorized.tsx\" switcher",
+			"value": "import Login from '@/app/components/Login'\n\nexport default function UnauthorizedPage() {\n\treturn (\n\t\t<main>\n\t\t\t<h1>401 - Unauthorized</h1>\n\t\t\t<p>Please log in to access this page.</p>\n\t\t\t<Login />\n\t\t</main>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/unauthorized.js\" switcher",
+			"value": "import Login from '@/app/components/Login'\n\nexport default function UnauthorizedPage() {\n\treturn (\n\t\t<main>\n\t\t\t<h1>401 - Unauthorized</h1>\n\t\t\t<p>Please log in to access this page.</p>\n\t\t\t<Login />\n\t\t</main>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.1.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "unauthorized.js"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

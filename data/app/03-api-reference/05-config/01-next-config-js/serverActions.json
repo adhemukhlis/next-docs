@@ -1,0 +1,618 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: serverActions\ndescription: Configure Server Actions behavior in your Next.js application.\nrelated:\n links:\n  - app/guides/server-actions"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Options for configuring Server Actions behavior in your Next.js application. For how Server Actions work, including the security boundary these options tune, see the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/server-actions",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Actions guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "allowedOrigins"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A list of extra safe hosts from which Server Actions can be invoked. To prevent CSRF attacks, Next.js compares the host in a request's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Origin"
+				},
+				{
+					"type": "text",
+					"value": " header against the app's own host, taken from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "x-forwarded-host"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "host"
+				},
+				{
+					"type": "text",
+					"value": ", and rejects the action when the two differ. If not provided, only the same origin is allowed. A request that carries no "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Origin"
+				},
+				{
+					"type": "text",
+					"value": " header at all is allowed through with a warning rather than rejected."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "/** @type {import('next').NextConfig} */\n\nmodule.exports = {\n\texperimental: {\n\t\tserverActions: {\n\t\t\tallowedOrigins: ['my-proxy.com', '*.my-proxy.com'],\n\t\t},\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Only the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/API/URL/host",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "host"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " of the request's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Origin"
+				},
+				{
+					"type": "text",
+					"value": " header is matched against your entries, which is the hostname plus the port when the URL carries one. For a request from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "https://my-proxy.com/checkout"
+				},
+				{
+					"type": "text",
+					"value": ", that is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "my-proxy.com"
+				},
+				{
+					"type": "text",
+					"value": ". For one from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "https://my-proxy.com:8443/checkout"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "my-proxy.com:8443"
+				},
+				{
+					"type": "text",
+					"value": ". Write your entries the same way."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Entries can also expand, through two wildcards: a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "*"
+				},
+				{
+					"type": "text",
+					"value": " stands in for exactly one label of the host, and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "**"
+				},
+				{
+					"type": "text",
+					"value": " for one or more. That is why the example above lists two entries, one for the bare host and one for its subdomains."
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Entry"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Matches"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Does not match"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "my-proxy.com"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "my-proxy.com"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "my-proxy.com:8443"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app.my-proxy.com"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "*.my-proxy.com"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app.my-proxy.com"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "my-proxy.com"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app.my-proxy.com:8443"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "**.my-proxy.com"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app.my-proxy.com"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app.eu.my-proxy.com"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "my-proxy.com"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "my-proxy.com:8443"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "my-proxy.com:8443"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "my-proxy.com"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Partial replacement is not supported. Write "
+				},
+				{
+					"type": "inlineCode",
+					"value": "*.my-proxy.com"
+				},
+				{
+					"type": "text",
+					"value": ", rather than "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app-*.my-proxy.com"
+				},
+				{
+					"type": "text",
+					"value": ". Using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "**"
+				},
+				{
+					"type": "text",
+					"value": " is only supported at the start of the pattern. A port cannot be wildcarded, so write it out in full: "
+				},
+				{
+					"type": "inlineCode",
+					"value": "my-proxy.com:8443"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "*.my-proxy.com:8443"
+				},
+				{
+					"type": "text",
+					"value": " for its subdomains."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Behind a reverse proxy, no entry is needed as long as the proxy forwards the public host in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "x-forwarded-host"
+				},
+				{
+					"type": "text",
+					"value": ". When it forwards its own host instead, the browser sends "
+				},
+				{
+					"type": "inlineCode",
+					"value": "my-proxy.com"
+				},
+				{
+					"type": "text",
+					"value": " while the server reports something like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "localhost:3000"
+				},
+				{
+					"type": "text",
+					"value": ", and that mismatch is what this list is for: the host visible in the browser's address bar is the one to add, not the internal one the server reports."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The check runs in production as well as in development, so the list applies to your deployed app and not only to local work."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, remote development through a tunnel needs the tunnel hostname in two places: in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/allowedDevOrigins",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "allowedDevOrigins"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", so the dev server serves its own assets and endpoints, and here, so actions from it are accepted:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "/** @type {import('next').NextConfig} */\n\nmodule.exports = {\n\tallowedDevOrigins: ['*.tunnel.example.com'],\n\texperimental: {\n\t\tserverActions: {\n\t\t\tallowedOrigins: ['*.tunnel.example.com'],\n\t\t},\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "bodySizeLimit"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, the maximum size of the request body sent to a Server Action is 1MB, to prevent the consumption of excessive server resources in parsing large amounts of data, as well as potential DDoS attacks."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "However, you can configure this limit using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "serverActions.bodySizeLimit"
+				},
+				{
+					"type": "text",
+					"value": " option. It can take the number of bytes or any string format supported by bytes, for example "
+				},
+				{
+					"type": "inlineCode",
+					"value": "1000"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'500kb'"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'3mb'"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "/** @type {import('next').NextConfig} */\n\nmodule.exports = {\n\texperimental: {\n\t\tserverActions: {\n\t\t\tbodySizeLimit: '2mb',\n\t\t},\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The limit applies to the raw HTTP request body, including the bytes that "
+				},
+				{
+					"type": "inlineCode",
+					"value": "multipart/form-data"
+				},
+				{
+					"type": "text",
+					"value": " adds for boundaries, part headers, and field metadata. If you expect uploads close to the configured value, leave some room for this overhead. For typical multipart uploads, an additional 10–20 KB is a reasonable rule of thumb."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Enabling Server Actions (v13)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Actions became a stable feature in Next.js 14, and are enabled by default. However, if you are using an earlier version of Next.js, you can enable them by setting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.serverActions"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "true"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "/** @type {import('next').NextConfig} */\nconst config = {\n\texperimental: {\n\t\tserverActions: true,\n\t},\n}\n\nmodule.exports = config"
+		}
+	]
+}

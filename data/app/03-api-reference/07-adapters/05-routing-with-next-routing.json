@@ -1,0 +1,361 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Routing with @next/routing\ndescription: Use `@next/routing` to apply Next.js route matching behavior in adapters."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.npmjs.com/package/@next/routing",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "@next/routing"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to reproduce Next.js route matching behavior with data from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "onBuildComplete"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "typescript",
+			"meta": null,
+			"value": "import { resolveRoutes } from '@next/routing'\n\nconst pathnames = [...outputs.pages, ...outputs.pagesApi, ...outputs.appPages, ...outputs.appRoutes, ...outputs.staticFiles].map((output) => output.pathname)\n\nconst result = await resolveRoutes({\n\turl: new URL(requestUrl),\n\tbuildId,\n\tbasePath: config.basePath || '',\n\ti18n: config.i18n,\n\theaders: new Headers(requestHeaders),\n\trequestBody, // ReadableStream\n\tpathnames,\n\troutes: routing,\n\tinvokeMiddleware: async (ctx) => {\n\t\t// platform-specific middleware invocation\n\t\treturn {}\n\t},\n})\n\nif (result.resolvedPathname) {\n\tconsole.log('Resolved pathname:', result.resolvedPathname)\n\tconsole.log('Resolved query:', result.resolvedQuery)\n\tconsole.log('Invocation target:', result.invocationTarget)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "resolveRoutes()"
+				},
+				{
+					"type": "text",
+					"value": " returns:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "middlewareResponded"
+								},
+								{
+									"type": "text",
+									"value": ": "
+								},
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": " when middleware already sent a response (the adapter should not invoke an entrypoint)."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "externalRewrite"
+								},
+								{
+									"type": "text",
+									"value": ": A "
+								},
+								{
+									"type": "inlineCode",
+									"value": "URL"
+								},
+								{
+									"type": "text",
+									"value": " when routing resolved to an external rewrite destination."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "redirect"
+								},
+								{
+									"type": "text",
+									"value": ": An object with "
+								},
+								{
+									"type": "inlineCode",
+									"value": "url"
+								},
+								{
+									"type": "text",
+									"value": " ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "URL"
+								},
+								{
+									"type": "text",
+									"value": ") and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "status"
+								},
+								{
+									"type": "text",
+									"value": " when the request should be redirected."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "resolvedPathname"
+								},
+								{
+									"type": "text",
+									"value": ": The route pathname selected by Next.js routing. For dynamic routes, this is the matched route template such as "
+								},
+								{
+									"type": "inlineCode",
+									"value": "/blog/[slug]"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "resolvedQuery"
+								},
+								{
+									"type": "text",
+									"value": ": The final query after rewrites or middleware have added or replaced search params."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "invocationTarget"
+								},
+								{
+									"type": "text",
+									"value": ": The concrete pathname and query to invoke for the matched route."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "resolvedHeaders"
+								},
+								{
+									"type": "text",
+									"value": ": A "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Headers"
+								},
+								{
+									"type": "text",
+									"value": " object containing any headers added or modified during routing."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "status"
+								},
+								{
+									"type": "text",
+									"value": ": An HTTP status code set by routing (for example from a redirect or rewrite rule)."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "routeMatches"
+								},
+								{
+									"type": "text",
+									"value": ": A record of named matches extracted from dynamic route segments."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, if "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/post-1?draft=1"
+				},
+				{
+					"type": "text",
+					"value": " matches "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/[slug]?slug=post-1"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "resolvedPathname"
+				},
+				{
+					"type": "text",
+					"value": " is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/[slug]"
+				},
+				{
+					"type": "text",
+					"value": " while "
+				},
+				{
+					"type": "inlineCode",
+					"value": "invocationTarget.pathname"
+				},
+				{
+					"type": "text",
+					"value": " is "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/blog/post-1"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		}
+	]
+}

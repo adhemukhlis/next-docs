@@ -1,0 +1,700 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: turbopack.ignoreIssue\ndescription: Suppress specific Turbopack errors and warnings from the CLI output and error overlay.\nrelated:\n title: Next Steps\n description: Learn more about Turbopack configuration.\n links:\n  - app/api-reference/config/next-config-js/turbopack\n  - app/api-reference/turbopack"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "turbopack.ignoreIssue"
+				},
+				{
+					"type": "text",
+					"value": " option allows you to filter out specific "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/turbopack",
+					"children": [
+						{
+							"type": "text",
+							"value": "Turbopack"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " errors and warnings so they do not appear in the CLI output or the error overlay. This is useful for suppressing known warnings that do not affect your application, such as intentionally unresolved optional dependencies."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This option is only available when using Turbopack ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev --turbopack"
+				},
+				{
+					"type": "text",
+					"value": ")."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Usage"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tturbopack: {\n\t\tignoreIssue: [\n\t\t\t{\n\t\t\t\tpath: '**/vendor/**',\n\t\t\t},\n\t\t],\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\tturbopack: {\n\t\tignoreIssue: [\n\t\t\t{\n\t\t\t\tpath: '**/vendor/**',\n\t\t\t},\n\t\t],\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Options"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each rule in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ignoreIssue"
+				},
+				{
+					"type": "text",
+					"value": " array is an object with the following fields:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Field"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Required"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#path",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "path"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string | RegExp"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Matches against the file path of the issue"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#title",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "title"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string | RegExp"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Matches against the issue title"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#description",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "description"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string | RegExp"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Matches against the issue description"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "An issue is suppressed when it matches the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "path"
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "and"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " all other specified fields in a rule. If only "
+				},
+				{
+					"type": "inlineCode",
+					"value": "path"
+				},
+				{
+					"type": "text",
+					"value": " is provided, any issue from a matching file is suppressed."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Issue titles and descriptions may change between Turbopack versions. The "
+						},
+						{
+							"type": "inlineCode",
+							"value": "path"
+						},
+						{
+							"type": "text",
+							"value": " field is generally stable, but is not guaranteed to remain consistent for all issue types. When possible, prefer using more specific "
+						},
+						{
+							"type": "inlineCode",
+							"value": "path"
+						},
+						{
+							"type": "text",
+							"value": " patterns over "
+						},
+						{
+							"type": "inlineCode",
+							"value": "title"
+						},
+						{
+							"type": "text",
+							"value": " or "
+						},
+						{
+							"type": "inlineCode",
+							"value": "description"
+						},
+						{
+							"type": "text",
+							"value": " matching."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "path"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "glob pattern"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " (when a string) or "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "regular expression"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " that matches against the file path where the issue originated."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tturbopack: {\n\t\tignoreIssue: [\n\t\t\t// Glob pattern: suppress issues from any file under vendor/\n\t\t\t{ path: '**/vendor/**' },\n\t\t\t// RegExp: suppress issues from files matching a pattern\n\t\t\t{ path: /node_modules\\/legacy-lib/ },\n\t\t],\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "title"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "An "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "exact string match"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " (when a string) or "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "regular expression"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " that matches against the issue title."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tturbopack: {\n\t\tignoreIssue: [\n\t\t\t{\n\t\t\t\tpath: '**/src/**',\n\t\t\t\ttitle: 'Module not found',\n\t\t\t},\n\t\t],\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "description"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "An "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "exact string match"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " (when a string) or "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "regular expression"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " that matches against the issue description."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tturbopack: {\n\t\tignoreIssue: [\n\t\t\t{\n\t\t\t\tpath: '**/src/**',\n\t\t\t\tdescription: /Cannot find module 'optional-dep'/,\n\t\t\t},\n\t\t],\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Suppressing warnings for optional dependencies"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If your code uses "
+				},
+				{
+					"type": "inlineCode",
+					"value": "try/catch"
+				},
+				{
+					"type": "text",
+					"value": " around an optional "
+				},
+				{
+					"type": "inlineCode",
+					"value": "require()"
+				},
+				{
+					"type": "text",
+					"value": " call, Turbopack may report a \"Module not found\" warning. You can suppress it:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tturbopack: {\n\t\tignoreIssue: [\n\t\t\t{\n\t\t\t\tpath: '**/lib/optional-feature/**',\n\t\t\t\ttitle: 'Module not found',\n\t\t\t},\n\t\t],\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\tturbopack: {\n\t\tignoreIssue: [\n\t\t\t{\n\t\t\t\tpath: '**/lib/optional-feature/**',\n\t\t\t\ttitle: 'Module not found',\n\t\t\t},\n\t\t],\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Combining multiple rules"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can specify multiple rules to suppress different issues:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tturbopack: {\n\t\tignoreIssue: [{ path: '**/vendor/**' }, { path: '**/legacy/**', title: 'Module not found' }, { path: /generated\\//, description: /expected identifier/ }],\n\t},\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.2.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "turbopack.ignoreIssue"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

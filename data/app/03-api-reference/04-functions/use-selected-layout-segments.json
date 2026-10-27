@@ -1,0 +1,1006 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: useSelectedLayoutSegments\ndescription: API Reference for the useSelectedLayoutSegments hook."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "useSelectedLayoutSegments"
+				},
+				{
+					"type": "text",
+					"value": " is a "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Client Component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " hook that lets you read the active route segments "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "below"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " the Layout it is called from."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "It is useful for creating UI in parent Layouts that need knowledge of active child segments such as breadcrumbs."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/example-client-component.tsx\" switcher",
+			"value": "'use client'\n\nimport { useSelectedLayoutSegments } from 'next/navigation'\n\nexport default function ExampleClientComponent() {\n\tconst segments = useSelectedLayoutSegments()\n\n\treturn (\n\t\t<ul>\n\t\t\t{segments.map((segment, index) => (\n\t\t\t\t<li key={index}>{segment}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/example-client-component.js\" switcher",
+			"value": "'use client'\n\nimport { useSelectedLayoutSegments } from 'next/navigation'\n\nexport default function ExampleClientComponent() {\n\tconst segments = useSelectedLayoutSegments()\n\n\treturn (\n\t\t<ul>\n\t\t\t{segments.map((segment, index) => (\n\t\t\t\t<li key={index}>{segment}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Since "
+										},
+										{
+											"type": "inlineCode",
+											"value": "useSelectedLayoutSegments"
+										},
+										{
+											"type": "text",
+											"value": " is a "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/getting-started/server-and-client-components",
+											"children": [
+												{
+													"type": "text",
+													"value": "Client Component"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " hook, and Layouts are "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/getting-started/server-and-client-components",
+											"children": [
+												{
+													"type": "text",
+													"value": "Server Components"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " by default, "
+										},
+										{
+											"type": "inlineCode",
+											"value": "useSelectedLayoutSegments"
+										},
+										{
+											"type": "text",
+											"value": " is usually called via a Client Component that is imported into a Layout."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The returned segments include "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/route-groups",
+											"children": [
+												{
+													"type": "text",
+													"value": "Route Groups"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ", which you might not want to be included in your UI. You can use the "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "filter"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " array method to remove items that start with a bracket."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "For "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/file-conventions/dynamic-routes#catch-all-segments",
+											"children": [
+												{
+													"type": "text",
+													"value": "catch-all"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " routes, the matched segments are returned as a single joined string within the array. For example, given "
+										},
+										{
+											"type": "inlineCode",
+											"value": "app/blog/[...slug]/page.js"
+										},
+										{
+											"type": "text",
+											"value": ", calling from "
+										},
+										{
+											"type": "inlineCode",
+											"value": "app/layout.js"
+										},
+										{
+											"type": "text",
+											"value": " when visiting "
+										},
+										{
+											"type": "inlineCode",
+											"value": "/blog/a/b/c"
+										},
+										{
+											"type": "text",
+											"value": " returns "
+										},
+										{
+											"type": "inlineCode",
+											"value": "['blog', 'a/b/c']"
+										},
+										{
+											"type": "text",
+											"value": ", not "
+										},
+										{
+											"type": "inlineCode",
+											"value": "['blog', 'a', 'b', 'c']"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parameters"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "const segments = useSelectedLayoutSegments(parallelRouteKey?: string)"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "useSelectedLayoutSegments"
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "optionally"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " accepts a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/parallel-routes#with-useselectedlayoutsegments",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "parallelRouteKey"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", which allows you to read the active route segment within that slot."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "useSelectedLayoutSegments"
+				},
+				{
+					"type": "text",
+					"value": " returns an array of strings containing the active segments one level down from the layout the hook was called from. Or an empty array if none exist."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, given the Layouts and URLs below, the returned segments would be:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Layout"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Visited URL"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Returned Segments"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/layout.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "[]"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/layout.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/dashboard"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "['dashboard']"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/layout.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/dashboard/settings"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "['dashboard', 'settings']"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/dashboard/layout.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/dashboard"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "[]"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/dashboard/layout.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/dashboard/settings"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "['settings']"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For catch-all routes ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "[...slug]"
+				},
+				{
+					"type": "text",
+					"value": "), all matched path segments are returned as a single joined string within the array:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Layout"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Visited URL"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Returned Segments"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/layout.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/blog/a/b/c"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "['blog', 'a/b/c']"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "app/blog/layout.js"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "/blog/a/b/c"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "['a/b/c']"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Behavior"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is enabled, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useSelectedLayoutSegments"
+				},
+				{
+					"type": "text",
+					"value": " may require a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Suspense",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "Suspense"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " boundary. This depends on whether the active segments can be resolved during prerendering."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Static routes and routes with "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/functions/generate-static-params",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "generateStaticParams"
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": every route segment, including dynamic params, is known at build time. The active segments can be resolved during prerendering, so "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useSelectedLayoutSegments"
+								},
+								{
+									"type": "text",
+									"value": " resolves on the server and no "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Suspense"
+								},
+								{
+									"type": "text",
+									"value": " boundary is required."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Routes with dynamic params not covered by "
+										},
+										{
+											"type": "inlineCode",
+											"value": "generateStaticParams"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": the param is a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/generate-static-params#all-paths-at-build-time",
+									"children": [
+										{
+											"type": "text",
+											"value": "fallback param"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " that is not known until request time. The active segments cannot be resolved during prerendering, so "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useSelectedLayoutSegments"
+								},
+								{
+									"type": "text",
+									"value": " suspends. Wrap the component (or a parent) in a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Suspense"
+								},
+								{
+									"type": "text",
+									"value": " boundary so its fallback can be rendered during prerendering; otherwise, the build fails."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This applies even when the component that calls "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useSelectedLayoutSegments"
+				},
+				{
+					"type": "text",
+					"value": " is itself static. For example, a breadcrumb component rendered in a parent layout suspends on any page below it that has an unknown dynamic param. To keep the rest of the layout prerendered, wrap the component that calls "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useSelectedLayoutSegments"
+				},
+				{
+					"type": "text",
+					"value": " (or a parent) in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Suspense"
+				},
+				{
+					"type": "text",
+					"value": " boundary with a fallback."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/messages/blocking-prerender-client-hook",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js encountered URL data in a Client Component outside of Suspense"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for full fix options and trade-offs."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "useSelectedLayoutSegments"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

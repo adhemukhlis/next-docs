@@ -123,9 +123,7 @@ You can use TypeScript and import types in your Next.js configuration by using `
 ```ts filename="next.config.ts"
 import type { NextConfig } from 'next'
 
-const nextConfig: NextConfig = {
-	/* config options here */
-}
+const nextConfig: NextConfig = {/* config options here */}
 
 export default nextConfig
 ```
@@ -138,9 +136,7 @@ When using the `next.config.js` file, you can add some type checking in your IDE
 // @ts-check
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-	/* config options here */
-}
+const nextConfig = {/* config options here */}
 
 module.exports = nextConfig
 ```

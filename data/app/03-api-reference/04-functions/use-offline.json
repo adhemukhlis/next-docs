@@ -1,0 +1,457 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: useOffline\ndescription: API Reference for the useOffline hook.\nversion: experimental\nrelated:\n links:\n  - app/api-reference/config/next-config-js/useOffline\n  - app/guides/progressive-web-apps"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useOffline"
+				},
+				{
+					"type": "text",
+					"value": " hook returns a boolean indicating whether the app is currently offline. Use it to render connectivity-aware UI, such as a banner when the user loses their network connection, or an offline-aware Suspense fallback."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The hook is one piece of a larger feature. Enabling the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/useOffline",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "experimental.useOffline"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " config option turns on offline connectivity detection and automatic retry of blocked navigation, prefetch, and Server Action requests, and exposes this hook so Client Components can read the state."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Without the flag, this hook always returns "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\texperimental: {\n\t\tuseOffline: true,\n\t},\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/offline-status.tsx\" switcher",
+			"value": "'use client'\n\nimport { useOffline } from 'next/offline'\n\nexport function OfflineStatus() {\n\tconst isOffline = useOffline()\n\treturn <div>{isOffline ? 'Offline' : 'Online'}</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/offline-status.js\" switcher",
+			"value": "'use client'\n\nimport { useOffline } from 'next/offline'\n\nexport function OfflineStatus() {\n\tconst isOffline = useOffline()\n\treturn <div>{isOffline ? 'Offline' : 'Online'}</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For details on how connectivity is detected and requests retried, see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/useOffline#how-retry-works",
+					"children": [
+						{
+							"type": "text",
+							"value": "How retry works"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parameters"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "const isOffline = useOffline()"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "useOffline"
+				},
+				{
+					"type": "text",
+					"value": " does not take any parameters."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "useOffline"
+				},
+				{
+					"type": "text",
+					"value": " returns a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "boolean"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Value"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Meaning"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The app is offline. A network request has failed, or the browser has fired an "
+								},
+								{
+									"type": "inlineCode",
+									"value": "offline"
+								},
+								{
+									"type": "text",
+									"value": " event."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The app is online, or rendering on the server. This is also the initial value before hydration completes."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Show an offline banner"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Render a persistent banner whenever the user loses connectivity."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/components/offline-banner.tsx\" switcher",
+			"value": "'use client'\n\nimport { useOffline } from 'next/offline'\n\nexport function OfflineBanner() {\n\tconst isOffline = useOffline()\n\n\tif (!isOffline) {\n\t\treturn null\n\t}\n\n\treturn (\n\t\t<div\n\t\t\trole=\"status\"\n\t\t\tclassName=\"offline-banner\">\n\t\t\tYou are offline. Some content may be unavailable.\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/components/offline-banner.js\" switcher",
+			"value": "'use client'\n\nimport { useOffline } from 'next/offline'\n\nexport function OfflineBanner() {\n\tconst isOffline = useOffline()\n\n\tif (!isOffline) {\n\t\treturn null\n\t}\n\n\treturn (\n\t\t<div\n\t\t\trole=\"status\"\n\t\t\tclassName=\"offline-banner\">\n\t\t\tYou are offline. Some content may be unavailable.\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Render it in the root layout so the banner shows on every route:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import { OfflineBanner } from './components/offline-banner'\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html>\n\t\t\t<body>\n\t\t\t\t<OfflineBanner />\n\t\t\t\t{children}\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "import { OfflineBanner } from './components/offline-banner'\n\nexport default function RootLayout({ children }) {\n\treturn (\n\t\t<html>\n\t\t\t<body>\n\t\t\t\t<OfflineBanner />\n\t\t\t\t{children}\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Offline-aware Suspense fallback"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When a user navigates to a route while offline, the prefetched static shell renders immediately but the dynamic content behind a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Suspense>"
+				},
+				{
+					"type": "text",
+					"value": " boundary blocks on the network. For example, use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useOffline"
+				},
+				{
+					"type": "text",
+					"value": " inside a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/loading",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "loading.tsx"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " file to explain why the content is taking longer than expected."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/destination/loading.tsx\" switcher",
+			"value": "'use client'\n\nimport { useOffline } from 'next/offline'\n\nexport default function Loading() {\n\tconst isOffline = useOffline()\n\n\treturn <div>{isOffline ? 'Waiting for connection to load this page...' : 'Loading...'}</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/destination/loading.js\" switcher",
+			"value": "'use client'\n\nimport { useOffline } from 'next/offline'\n\nexport default function Loading() {\n\tconst isOffline = useOffline()\n\n\treturn <div>{isOffline ? 'Waiting for connection to load this page...' : 'Loading...'}</div>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When connectivity is restored, Next.js retries the blocked request and the dynamic content streams in automatically."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.x.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "useOffline"
+								},
+								{
+									"type": "text",
+									"value": " hook introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,588 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: permanentRedirect\ndescription: API Reference for the permanentRedirect function.\nrelated:\n links:\n  - app/api-reference/functions/redirect"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "permanentRedirect"
+				},
+				{
+					"type": "text",
+					"value": " function allows you to redirect the user to another URL. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "permanentRedirect"
+				},
+				{
+					"type": "text",
+					"value": " can be used in Server Components, Client Components, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route",
+					"children": [
+						{
+							"type": "text",
+							"value": "Route Handlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/mutating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Functions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When used in a streaming context, this will insert a meta tag to emit the redirect on the client side. In a Server Action, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "permanentRedirect"
+				},
+				{
+					"type": "text",
+					"value": " performs a client-side navigation when JavaScript is available. For progressive enhancement form submissions, it serves a 303 HTTP redirect response. Otherwise, it serves a 308 (Permanent) HTTP redirect response."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If a resource doesn't exist, you can use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/not-found",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "notFound"
+						},
+						{
+							"type": "text",
+							"value": " function"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " instead."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parameters"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "permanentRedirect"
+				},
+				{
+					"type": "text",
+					"value": " function accepts two arguments:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "permanentRedirect(path, type)"
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Parameter"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "path"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "string"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The URL to redirect to. Can be a relative or absolute path."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'replace'"
+								},
+								{
+									"type": "text",
+									"value": " (default) or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'push'"
+								},
+								{
+									"type": "text",
+									"value": " (default in Server Actions)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "The type of redirect to perform."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "permanentRedirect"
+				},
+				{
+					"type": "text",
+					"value": " will use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "push"
+				},
+				{
+					"type": "text",
+					"value": " (adding a new entry to the browser history stack) in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/mutating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Actions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "replace"
+				},
+				{
+					"type": "text",
+					"value": " (replacing the current URL in the browser history stack) everywhere else. You can override this behavior by specifying the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "type"
+				},
+				{
+					"type": "text",
+					"value": " parameter."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "RedirectType"
+				},
+				{
+					"type": "text",
+					"value": " object contains the available options for the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "type"
+				},
+				{
+					"type": "text",
+					"value": " parameter."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": null,
+			"value": "import { permanentRedirect, RedirectType } from 'next/navigation'\n\npermanentRedirect('/redirect-to', RedirectType.replace)\n// or\npermanentRedirect('/redirect-to', RedirectType.push)"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "type"
+				},
+				{
+					"type": "text",
+					"value": " parameter has no effect when used in Server Components."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "permanentRedirect"
+				},
+				{
+					"type": "text",
+					"value": " does not return a value."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Behavior"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "In Server Actions and Route Handlers, "
+								},
+								{
+									"type": "inlineCode",
+									"value": "permanentRedirect"
+								},
+								{
+									"type": "text",
+									"value": " should be called "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "outside"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "try"
+								},
+								{
+									"type": "text",
+									"value": " block when using "
+								},
+								{
+									"type": "inlineCode",
+									"value": "try/catch"
+								},
+								{
+									"type": "text",
+									"value": " statements because it throws an error."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If you prefer to return a 307 (Temporary) HTTP redirect instead of 308 (Permanent), you can use the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/redirect",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "redirect"
+										},
+										{
+											"type": "text",
+											"value": " function"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " instead."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Example"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Invoking the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "permanentRedirect()"
+				},
+				{
+					"type": "text",
+					"value": " function throws a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NEXT_REDIRECT"
+				},
+				{
+					"type": "text",
+					"value": " error and terminates rendering of the route segment in which it was thrown."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/team/[id]/page.js\"",
+			"value": "import { permanentRedirect } from 'next/navigation'\n\nasync function fetchTeam(id) {\n\tconst res = await fetch('https://...')\n\tif (!res.ok) return undefined\n\treturn res.json()\n}\n\nexport default async function Profile({ params }) {\n\tconst { id } = await params\n\tconst team = await fetchTeam(id)\n\tif (!team) {\n\t\tpermanentRedirect('/login')\n\t}\n\n\t// ...\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": "permanentRedirect"
+						},
+						{
+							"type": "text",
+							"value": " does not require you to use "
+						},
+						{
+							"type": "inlineCode",
+							"value": "return permanentRedirect()"
+						},
+						{
+							"type": "text",
+							"value": " as it uses the TypeScript "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://www.typescriptlang.org/docs/handbook/2/functions.html#never",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "never"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " type."
+						}
+					]
+				}
+			]
+		}
+	]
+}

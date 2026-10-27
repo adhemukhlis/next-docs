@@ -1,0 +1,2730 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How to self-host your Next.js application\nnav_title: Self-Hosting\ndescription: Learn how to self-host your Next.js application on a Node.js server, Docker image, or static HTML files (static exports)."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/deploying",
+					"children": [
+						{
+							"type": "text",
+							"value": "deploying"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " your Next.js app, you may want to configure how different features are handled based on your infrastructure."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "🎥 Watch:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Learn more about self-hosting Next.js → "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://www.youtube.com/watch?v=sIVL4JMqRfc",
+							"children": [
+								{
+									"type": "text",
+									"value": "YouTube (45 minutes)"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reverse Proxy"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When self-hosting, it's recommended to use a reverse proxy (like nginx) in front of your Next.js server rather than exposing it directly to the internet. A reverse proxy can handle malformed requests, slow connection attacks, payload size limits, rate limiting, and other security concerns, offloading these tasks from the Next.js server. This allows the server to dedicate its resources to rendering rather than request validation."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Image Optimization"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image",
+					"children": [
+						{
+							"type": "text",
+							"value": "Image Optimization"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " through "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/image"
+				},
+				{
+					"type": "text",
+					"value": " works self-hosted with zero configuration when deploying using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next start"
+				},
+				{
+					"type": "text",
+					"value": ". If you would prefer to have a separate service to optimize images, you can "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/image#loader",
+					"children": [
+						{
+							"type": "text",
+							"value": "configure an image loader"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Image Optimization can be used with a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/static-exports#image-optimization",
+					"children": [
+						{
+							"type": "text",
+							"value": "static export"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " by defining a custom image loader in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ". Note that images are optimized at runtime, not during the build."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "On glibc-based Linux systems, Image Optimization may require "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://sharp.pixelplumbing.com/install#linux-memory-allocator",
+											"children": [
+												{
+													"type": "text",
+													"value": "additional configuration"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " to prevent excessive memory usage."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Learn more about the "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/components/image#minimumcachettl",
+											"children": [
+												{
+													"type": "text",
+													"value": "caching behavior of optimized images"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " and how to configure the TTL."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "You can also "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/components/image#unoptimized",
+											"children": [
+												{
+													"type": "text",
+													"value": "disable Image Optimization"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " and still retain other benefits of using "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next/image"
+										},
+										{
+											"type": "text",
+											"value": " if you prefer. For example, if you are optimizing images yourself separately."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Proxy"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/proxy",
+					"children": [
+						{
+							"type": "text",
+							"value": "Proxy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " works self-hosted with zero configuration when deploying using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next start"
+				},
+				{
+					"type": "text",
+					"value": ". Since it requires access to the incoming request, it is not supported when using a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/static-exports",
+					"children": [
+						{
+							"type": "text",
+							"value": "static export"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you are looking to add logic (or use an external package) that requires all Node.js APIs, you might be able to move this logic to a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout",
+					"children": [
+						{
+							"type": "text",
+							"value": "layout"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " as a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/server-and-client-components",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Component"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". For example, checking "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/headers",
+					"children": [
+						{
+							"type": "text",
+							"value": "headers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/redirect",
+					"children": [
+						{
+							"type": "text",
+							"value": "redirecting"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". You can also use headers, cookies, or query parameters to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/redirects#header-cookie-and-query-matching",
+					"children": [
+						{
+							"type": "text",
+							"value": "redirect"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/rewrites#header-cookie-and-query-matching",
+					"children": [
+						{
+							"type": "text",
+							"value": "rewrite"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " through "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ". If that does not work, you can also use a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/pages/guides/custom-server",
+					"children": [
+						{
+							"type": "text",
+							"value": "custom server"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Environment Variables"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js can support both build time and runtime environment variables."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "By default, environment variables are only available on the server"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". To expose an environment variable to the browser, it must be prefixed with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NEXT_PUBLIC_"
+				},
+				{
+					"type": "text",
+					"value": ". However, these public environment variables will be inlined into the JavaScript bundle during "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You safely read environment variables on the server during dynamic rendering."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.ts\" switcher",
+			"value": "import { connection } from 'next/server'\n\nexport default async function Component() {\n\tawait connection()\n\t// cookies, headers, and other Request-time APIs\n\t// will also opt into dynamic rendering, meaning\n\t// this env variable is evaluated at runtime\n\tconst value = process.env.MY_VALUE\n\t// ...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "import { connection } from 'next/server'\n\nexport default async function Component() {\n\tawait connection()\n\t// cookies, headers, and other Request-time APIs\n\t// will also opt into dynamic rendering, meaning\n\t// this env variable is evaluated at runtime\n\tconst value = process.env.MY_VALUE\n\t// ...\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This allows you to use a singular Docker image that can be promoted through multiple environments with different values."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "You can run code on server startup using the "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/guides/instrumentation",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "register"
+												},
+												{
+													"type": "text",
+													"value": " function"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Caching and ISR"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js can cache responses, generated static pages, build outputs, and other static assets like images, fonts, and scripts."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Caching and revalidating pages (with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/incremental-static-regeneration",
+					"children": [
+						{
+							"type": "text",
+							"value": "Incremental Static Regeneration"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ") use the "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "same Next.js server cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". By default, this cache is stored on the local filesystem (on disk) of each Next.js server instance."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This works automatically for a single self-hosted "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next start"
+				},
+				{
+					"type": "text",
+					"value": " instance with persistent local disk. If you run multiple instances, use ephemeral compute, or place a CDN/reverse proxy in front of Next.js, also review "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#configuring-caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Configuring Caching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#multi-instance-cache-coordination",
+					"children": [
+						{
+							"type": "text",
+							"value": "Multi-Instance Cache Coordination"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#usage-with-cdns",
+					"children": [
+						{
+							"type": "text",
+							"value": "Usage with CDNs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can configure the Next.js cache location if you want to persist cached pages and data to durable storage, or share the cache across multiple containers or instances of your Next.js application."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Automatic Caching"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Next.js sets the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Cache-Control"
+								},
+								{
+									"type": "text",
+									"value": " header of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "public, max-age=31536000, immutable"
+								},
+								{
+									"type": "text",
+									"value": " to truly immutable assets. It cannot be overridden. These immutable files contain a SHA-hash in the file name, so they can be safely cached indefinitely. For example, "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/images#local-images",
+									"children": [
+										{
+											"type": "text",
+											"value": "Static Image Imports"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ". You can "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/components/image#minimumcachettl",
+									"children": [
+										{
+											"type": "text",
+											"value": "configure the TTL"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " for images."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Incremental Static Regeneration (ISR) sets the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Cache-Control"
+								},
+								{
+									"type": "text",
+									"value": " header of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "s-maxage: <revalidate in getStaticProps>, stale-while-revalidate"
+								},
+								{
+									"type": "text",
+									"value": ". This revalidation time is defined in your "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/pages/building-your-application/data-fetching/get-static-props",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "getStaticProps"
+										},
+										{
+											"type": "text",
+											"value": " function"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " in seconds. If you set "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidate: false"
+								},
+								{
+									"type": "text",
+									"value": ", it will default to a one-year cache duration. To leverage this at the CDN layer, your CDN/reverse proxy must respect these directives and cache-key variability ("
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/cdn-caching",
+									"children": [
+										{
+											"type": "text",
+											"value": "CDN Caching"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "); otherwise, responses may bypass CDN caching or serve stale/mismatched variants during client-side navigation."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Dynamically rendered pages set a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Cache-Control"
+								},
+								{
+									"type": "text",
+									"value": " header of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "private, no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"type": "text",
+									"value": " to prevent user-specific data from being cached. This applies to both the App Router and Pages Router. This also includes "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/draft-mode",
+									"children": [
+										{
+											"type": "text",
+											"value": "Draft Mode"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Static Assets"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you want to host static assets on a different domain or CDN, you can use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "assetPrefix"
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/assetPrefix",
+					"children": [
+						{
+							"type": "text",
+							"value": "configuration"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ". Next.js will use this asset prefix when retrieving JavaScript or CSS files. Separating your assets to a different domain does come with the downside of extra time spent on DNS and TLS resolution."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/assetPrefix",
+					"children": [
+						{
+							"type": "text",
+							"value": "Learn more about "
+						},
+						{
+							"type": "inlineCode",
+							"value": "assetPrefix"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Configuring Caching"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, generated cache assets will be stored in memory (defaults to 50mb) and on disk. On ephemeral compute platforms (common serverless setups), local disk is often non-persistent or unavailable, so this cache is effectively short-lived and per-instance. If you are hosting Next.js using a container orchestration platform like Kubernetes, each pod will have a copy of the cache. To prevent stale data from being shown since the cache is not shared between pods by default, you can configure the Next.js cache to provide a cache handler and disable in-memory caching."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To configure the cache location when self-hosting, set a custom handler in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tcacheHandler: require.resolve('./cache-handler.js'),\n\tcacheMaxMemorySize: 0, // disable default in-memory caching\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The handler file exports a class that implements "
+				},
+				{
+					"type": "inlineCode",
+					"value": "get"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "set"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidateTag"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "resetRequestCache"
+				},
+				{
+					"type": "text",
+					"value": ". See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/incrementalCacheHandlerPath",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheHandler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for each method's signature, and the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/tree/canary/examples/cache-handler-redis",
+					"children": [
+						{
+							"type": "text",
+							"value": "Redis "
+						},
+						{
+							"type": "inlineCode",
+							"value": "cacheHandler"
+						},
+						{
+							"type": "text",
+							"value": " example"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for a working implementation."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For production deployments, the handler must:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Store entries where every instance can reach them"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", like "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/vercel/next.js/tree/canary/examples/cache-handler-redis",
+									"children": [
+										{
+											"type": "text",
+											"value": "Redis"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " or AWS S3. A store inside the process, such as a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Map"
+								},
+								{
+									"type": "text",
+									"value": ", gives each pod its own copy of the cache again."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Bound the store's size."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Use a TTL or size-based eviction to remove entries for paths and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " keys that are no longer requested."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Serialize entries."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " Any store outside the process needs this. An entry can contain "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Buffer"
+								},
+								{
+									"type": "text",
+									"value": " (for example "
+								},
+								{
+									"type": "inlineCode",
+									"value": "rscData"
+								},
+								{
+									"type": "text",
+									"value": ") and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Map"
+								},
+								{
+									"type": "text",
+									"value": " (for example "
+								},
+								{
+									"type": "inlineCode",
+									"value": "segmentData"
+								},
+								{
+									"type": "text",
+									"value": ") values that "
+								},
+								{
+									"type": "inlineCode",
+									"value": "JSON.stringify"
+								},
+								{
+									"type": "text",
+									"value": "/"
+								},
+								{
+									"type": "inlineCode",
+									"value": "JSON.parse"
+								},
+								{
+									"type": "text",
+									"value": " can't serialize and restore on their own. Not handling this serialization results in errors like "
+								},
+								{
+									"type": "inlineCode",
+									"value": "segmentData.get is not a function"
+								},
+								{
+									"type": "text",
+									"value": " or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "failed to pipe response"
+								},
+								{
+									"type": "text",
+									"value": " on client-side navigation or prefetch (RSC) requests."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Index entries by tag."
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " "
+								},
+								{
+									"type": "inlineCode",
+									"value": "APP_PAGE"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "APP_ROUTE"
+								},
+								{
+									"type": "text",
+									"value": ", and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "PAGES"
+								},
+								{
+									"type": "text",
+									"value": " entries carry their tags in the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "x-next-cache-tags"
+								},
+								{
+									"type": "text",
+									"value": " response header ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "data.headers"
+								},
+								{
+									"type": "text",
+									"value": "), while "
+								},
+								{
+									"type": "inlineCode",
+									"value": "ctx.tags"
+								},
+								{
+									"type": "text",
+									"value": " carries tags for "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " entries. Keep the index in the shared store, so a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidateTag"
+								},
+								{
+									"type": "text",
+									"value": " call on one instance invalidates the entry on every instance."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Handle storage errors"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", such as timeouts and dropped connections."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "revalidatePath"
+										},
+										{
+											"type": "text",
+											"value": " is a convenience layer on top of cache tags. Calling "
+										},
+										{
+											"type": "inlineCode",
+											"value": "revalidatePath"
+										},
+										{
+											"type": "text",
+											"value": " will call the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "revalidateTag"
+										},
+										{
+											"type": "text",
+											"value": " function with a special default tag for the provided page."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "If you are configuring backends for "
+										},
+										{
+											"type": "inlineCode",
+											"value": "'use cache'"
+										},
+										{
+											"type": "text",
+											"value": " directives, use "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/config/next-config-js/cacheHandlers",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "cacheHandlers"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Production-oriented community Redis handlers (GET timeouts, in-memory coalescing, multi-instance tag coordination) are listed in the "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://github.com/vercel/next.js/blob/canary/examples/cache-handler-redis/README.md#production-community-handlers",
+											"children": [
+												{
+													"type": "text",
+													"value": "Redis example README"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": ", including "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://github.com/trieb-work/nextjs-turbo-redis-cache",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "@trieb.work/nextjs-turbo-redis-cache"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " and "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "https://github.com/mrjasonroy/cache-components-cache-handler",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "@mrjasonroy/cache-components-cache-handler"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Build Cache"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js generates an ID during "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " to identify which version of your application is being served. The same build should be used and boot up multiple containers."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you are rebuilding for each stage of your environment, you will need to generate a consistent build ID to use between containers. Use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "generateBuildId"
+				},
+				{
+					"type": "text",
+					"value": " command in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tgenerateBuildId: async () => {\n\t\t// This could be anything, using the latest git hash\n\t\treturn process.env.GIT_HASH\n\t},\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " When "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/config/next-config-js/deploymentId",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "deploymentId"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " is set, Next.js uses a constant build ID unless you explicitly configure "
+						},
+						{
+							"type": "inlineCode",
+							"value": "generateBuildId"
+						},
+						{
+							"type": "text",
+							"value": ". "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "#version-skew",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version skew"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " is detected from the deployment ID instead."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Multi-Server Deployments"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When running Next.js across multiple server instances (for example, containers behind a load balancer), there are additional considerations to ensure consistent behavior."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Functions encryption key"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js encrypts "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/mutating-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Function"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " closure variables before sending them to the client. By default, a unique encryption key is generated for each build."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When running multiple server instances, all instances must use the same encryption key. Otherwise, a Server Function encrypted by one instance cannot be decrypted by another, causing \"Failed to find Server Action\" errors."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Set a consistent encryption key using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY"
+				},
+				{
+					"type": "text",
+					"value": " environment variable. The key must be a base64-encoded value with a valid AES key length (16, 24, or 32 bytes). Next.js generates 32-byte keys by default."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": null,
+			"value": "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY=your-generated-key next build"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The key is embedded in the build output and used automatically at runtime. Learn more in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/data-security#overwriting-encryption-keys-advanced",
+					"children": [
+						{
+							"type": "text",
+							"value": "Data Security guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Deployment identifier"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Configure a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/deploymentId",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "deploymentId"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to enable version skew protection during rolling deployments. This ensures clients always receive assets from a consistent deployment version."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Shared cache"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, Next.js uses an in-memory cache that is not shared across instances. For consistent caching behavior, use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache-remote",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "'use cache: remote'"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " with a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheHandlers",
+					"children": [
+						{
+							"type": "text",
+							"value": "custom cache handler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " that stores data in external storage."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version Skew"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When self-hosting across multiple instances or doing rolling deployments, "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#version-skew",
+					"children": [
+						{
+							"type": "text",
+							"value": "version skew"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " can cause:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Missing assets"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": The client requests JavaScript or CSS files that no longer exist on the server"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Server Function mismatches"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": The client invokes a Server Function using an ID from a previous build that the server no longer recognizes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Navigation failures"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Prefetched page data from an old deployment is incompatible with the new server"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js uses the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/deploymentId",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "deploymentId"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to detect and handle version skew. When a deployment ID is configured:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Static assets include a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "?dpl=<deploymentId>"
+								},
+								{
+									"type": "text",
+									"value": " query parameter"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Client-side navigation requests include an "
+								},
+								{
+									"type": "inlineCode",
+									"value": "x-deployment-id"
+								},
+								{
+									"type": "text",
+									"value": " header"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The server compares the client's deployment ID with its own"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If a mismatch is detected, Next.js triggers a hard navigation (full page reload) instead of a client-side navigation. This ensures the client fetches assets from a consistent deployment version."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tdeploymentId: process.env.DEPLOYMENT_VERSION,\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " When the application is reloaded, there may be a loss of application state if it's not designed to persist between page navigations. URL state or local storage would persist, but component state like "
+						},
+						{
+							"type": "inlineCode",
+							"value": "useState"
+						},
+						{
+							"type": "text",
+							"value": " would be lost."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Immutable Assets"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/supportsImmutableAssets",
+					"children": [
+						{
+							"type": "text",
+							"value": "immutable static assets"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", preventing version skew becomes much easier:"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Assets can be shared across deployments, so if you just keep adding them to your existing static file folder (or CDN bucket), there will be no version skew (without having to track deployment ids in the reverse proxy/do green-blue deployments)."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Streaming and Suspense"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The Next.js App Router supports "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/loading",
+					"children": [
+						{
+							"type": "text",
+							"value": "streaming responses"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when self-hosting. If you are using nginx or a similar proxy, you will need to configure it to disable buffering to enable streaming."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, you can disable buffering in nginx by setting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "X-Accel-Buffering"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "no"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\tasync headers() {\n\t\treturn [\n\t\t\t{\n\t\t\t\tsource: '/:path*{/}?',\n\t\t\t\theaders: [\n\t\t\t\t\t{\n\t\t\t\t\t\tkey: 'X-Accel-Buffering',\n\t\t\t\t\t\tvalue: 'no',\n\t\t\t\t\t},\n\t\t\t\t],\n\t\t\t},\n\t\t]\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Beyond nginx, ensure that your entire infrastructure supports streaming end-to-end:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Load balancers"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " must support chunked transfer encoding or HTTP/2 streaming. Some cloud load balancers (for example, AWS ALB with Lambda integration) may buffer responses by default."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Reverse proxies"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " between the load balancer and Next.js must also pass through chunked responses without buffering."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If using "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/ppr-platform-guide",
+									"children": [
+										{
+											"type": "text",
+											"value": "Partial Prerendering"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", streaming support is required. Without it, the static shell and dynamic content are delivered together after the full render completes, eliminating PPR's time-to-first-byte advantage."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Multi-Instance Cache Coordination"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In addition to the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/self-hosting#multi-server-deployments",
+					"children": [
+						{
+							"type": "text",
+							"value": "multi-server configuration"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " above (encryption key, deployment ID, shared cache), App Router deployments with multiple instances need cache tag coordination."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, calling "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/revalidateTag",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "revalidateTag()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " on one instance only invalidates the cache on that instance. Other instances continue serving stale content until they independently discover the invalidation."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To coordinate tag invalidation across instances, implement the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheHandlers#refreshtags",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "refreshTags()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " method in your "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheHandlers",
+					"children": [
+						{
+							"type": "text",
+							"value": "custom cache handler"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This method is called before each request and should sync tag state from shared storage (like Redis) so all instances learn about invalidations promptly."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For a detailed explanation of the tag architecture, see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/how-revalidation-works",
+					"children": [
+						{
+							"type": "text",
+							"value": "How Revalidation Works"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " works by default with Next.js and is not a CDN-only feature. This includes deployment as a Node.js server (through "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next start"
+				},
+				{
+					"type": "text",
+					"value": ") and when used with a Docker container."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Usage with CDNs"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using a CDN in front of your Next.js application, the page will include "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Cache-Control: private"
+				},
+				{
+					"type": "text",
+					"value": " response header when dynamic APIs are accessed. This ensures that the resulting HTML page is marked as non-cacheable. If the page is fully prerendered to static, it will include "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Cache-Control: public"
+				},
+				{
+					"type": "text",
+					"value": " to allow the page to be cached on the CDN."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you don't need a mix of both static and dynamic components, you can make your entire route static and cache the output HTML on a CDN. This Automatic Static Optimization is the default behavior when running "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " if dynamic APIs are not used."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For detailed guidance on CDN caching behavior, graceful degradation, and cache variability, see "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/cdn-caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "CDN Caching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". For Partial Prerendering support on different platforms, see the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/ppr-platform-guide",
+					"children": [
+						{
+							"type": "text",
+							"value": "PPR Platform Guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/adapterPath",
+					"children": [
+						{
+							"type": "text",
+							"value": "Deployment Adapter API"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "after"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/after",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "after"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is fully supported when self-hosting with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next start"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When stopping the server, ensure a graceful shutdown by sending "
+				},
+				{
+					"type": "inlineCode",
+					"value": "SIGINT"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "SIGTERM"
+				},
+				{
+					"type": "text",
+					"value": " signals and waiting. The Next.js server will finish in-flight requests and execute any pending "
+				},
+				{
+					"type": "inlineCode",
+					"value": "after()"
+				},
+				{
+					"type": "text",
+					"value": " callbacks before exiting. Platforms should allow a configurable drain period (10-30 seconds is recommended) to ensure all background work completes."
+				}
+			]
+		}
+	]
+}

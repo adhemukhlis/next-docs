@@ -1,0 +1,2255 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: 'use cache: remote'\ndescription: 'Learn how to use the \"use cache: remote\" directive for persistent, shared caching using remote cache handlers.'\nrelated:\n title: Related\n description: View related API references.\n links:\n  - app/api-reference/directives/use-cache\n  - app/api-reference/directives/use-cache-private\n  - app/api-reference/config/next-config-js/cacheComponents\n  - app/api-reference/config/next-config-js/cacheHandlers\n  - app/api-reference/functions/cacheLife\n  - app/api-reference/functions/cacheTag\n  - app/api-reference/functions/connection"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "While the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " directive is sufficient for most application needs, you might notice that cached operations are re-running more often than expected, or that your upstream services (CMS, databases, external APIs) are getting more hits than you'd expect. This can happen because "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " stores entries in-memory, which has inherent limitations:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Cache entries being evicted to make room for new ones"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Memory constraints in your deployment environment"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Cache not persisting across requests or server restarts"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Note that "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " still provides value beyond server-side caching: it informs Next.js what can be prefetched and defines stale times for client-side navigation."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache: remote'"
+				},
+				{
+					"type": "text",
+					"value": " directive lets you declaratively specify that a cached output should be stored in a remote cache instead of in-memory, providing durable caching shared across all server instances. This comes with tradeoffs: infrastructure cost and network latency during cache lookups."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Usage"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache: remote'"
+				},
+				{
+					"type": "text",
+					"value": ", enable the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " flag in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": " file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tcacheComponents: true,\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\tcacheComponents: true,\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache: remote'"
+				},
+				{
+					"type": "text",
+					"value": " to the functions or components where you've determined remote caching is justified. The handler implementation is configured via "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheHandlers",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheHandlers"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", though hosting providers should typically provide this automatically. If you're self-hosting, see the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheHandlers"
+				},
+				{
+					"type": "text",
+					"value": " configuration reference to set up your cache storage."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "When to avoid remote caching"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If you already have a server-side cache key-value store wrapping your data layer, "
+								},
+								{
+									"type": "inlineCode",
+									"value": "use cache"
+								},
+								{
+									"type": "text",
+									"value": " may be sufficient to include data in the static shell without adding another caching layer"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If operations are already fast (< 50ms) due to proximity or local access, the remote cache lookup might not improve performance"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If cache keys have mostly unique values per request (search filters, price ranges, user-specific parameters), cache utilization will be near-zero"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "If data changes frequently (seconds to minutes), cache hits will quickly go stale, leading to frequent misses and waiting for upstream revalidation"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "When remote caching makes sense"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Remote caching provides the most value when content is deferred to request time (outside the static shell). This typically happens when a component accesses request values like "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cookies",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cookies()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/headers",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "headers()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/page#searchparams-optional",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "searchParams"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", placing it inside a Suspense boundary. In this context:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Each request executes the component and looks up the cache"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "In serverless environments, each instance has its own ephemeral memory with low cache hit rates"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Remote caching provides a shared cache across all instances, improving hit rates and reducing backend load"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Compelling scenarios for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache: remote'"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Rate-limited APIs"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Your upstream service has rate limits or request quotas that you risk hitting"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Protecting slow backends"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Your database or API becomes a bottleneck under high traffic"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Expensive operations"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": Database queries or computations that are costly to run repeatedly"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Flaky or unreliable services"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": External services that occasionally fail or have availability issues"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In these cases, the cost and latency of remote caching is justified by avoiding worse outcomes (rate limit errors, backend overload, high compute bills, or degraded user experience)."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For static shell content, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " is usually sufficient. If your upstream source can't handle concurrent revalidation requests (like a rate-limited CMS), "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache: remote"
+				},
+				{
+					"type": "text",
+					"value": " acts as a shared cache layer. This is the same pattern as putting a key-value store in front of a database, but declared in code."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "How "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache: remote"
+				},
+				{
+					"type": "text",
+					"value": " differs from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache: private"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js provides three caching directives, each designed for different use cases:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Feature"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "use cache"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'use cache: remote'"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "'use cache: private'"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Server-side caching"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "In-memory or cache handler"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Remote cache handler"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "None"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Cache scope"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Shared across all users"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Shared across all users"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Per-client (browser)"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Can access cookies/headers directly"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No (must pass as arguments)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No (must pass as arguments)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Server cache utilization"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "May be low outside static shell"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "High (shared across instances)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "N/A"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Additional costs"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "None"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Infrastructure (storage, network)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "None"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Latency impact"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "None"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Cache handler lookup"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "None"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Persists across deploys"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "N/A"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Persistence across deploys"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Remote cache entries do not persist across deploys. The cache key includes the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "deploymentId"
+				},
+				{
+					"type": "text",
+					"value": " (when configured) or the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "buildId"
+				},
+				{
+					"type": "text",
+					"value": ", so a new build produces new keys and the previous build's entries are no longer reachable. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache#cache-keys",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache keys"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the full key composition."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This is intentional. Between builds, the function's identity hash or the shape of its return value can change. Upgrading a CMS client, refactoring a cached function, or changing a dependency could produce a value that doesn't match what older callers expect, so reusing entries across deploys risks serving stale or malformed data."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you need entries that persist across deploys, use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/unstable_cache",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "unstable_cache"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for non-"
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " functions, or rely on the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/fetch",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "fetch"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " cache."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Caching with runtime data"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Both "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache: remote'"
+				},
+				{
+					"type": "text",
+					"value": " can't access runtime values like cookies or search params directly. You can extract these values and pass them as arguments to cached functions. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching#working-with-runtime-apis",
+					"children": [
+						{
+							"type": "text",
+							"value": "with runtime data"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for this pattern."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": "
+						},
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						},
+						{
+							"type": "text",
+							"value": " stores entries in-memory. In serverless environments, memory is not shared between instances and is typically destroyed after serving a request, leading to frequent cache misses for runtime caching."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache key considerations"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Be thoughtful about which values you include in cache keys. Each unique value creates a separate cache entry, reducing cache utilization. Consider this example with search filters:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/products/[category]/page.tsx\"",
+			"value": "import { Suspense } from 'react'\n\nexport default async function ProductsPage({ params, searchParams }: { params: Promise<{ category: string }>; searchParams: Promise<{ minPrice?: string }> }) {\n\treturn (\n\t\t<Suspense fallback={<div>Loading...</div>}>\n\t\t\t<ProductList\n\t\t\t\tparams={params}\n\t\t\t\tsearchParams={searchParams}\n\t\t\t/>\n\t\t</Suspense>\n\t)\n}\n\nasync function ProductList({ params, searchParams }: { params: Promise<{ category: string }>; searchParams: Promise<{ minPrice?: string }> }) {\n\tconst { category } = await params\n\n\tconst { minPrice } = await searchParams\n\n\t// Cache only on category (few unique values)\n\t// Don't include price filter (many unique values)\n\tconst products = await getProductsByCategory(category)\n\n\t// Filter price in memory instead of creating cache entries\n\t// for every price value\n\tconst filtered = minPrice ? products.filter((p) => p.price >= parseFloat(minPrice)) : products\n\n\treturn <div>{/* render filtered products */}</div>\n}\n\nasync function getProductsByCategory(category: string) {\n\t'use cache: remote'\n\t// Only category is part of the cache key\n\t// Much better utilization than caching every price filter value\n\treturn db.products.findByCategory(category)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In this example, the remote handler stores more data per cache entry (all products in a category) to achieve better cache hit rates. This is worth it when the cost of cache misses (hitting your backend) outweighs the storage cost of larger entries."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The same principle applies to user-specific data. Rather than caching per-user data directly, use user preferences to determine what shared data to cache."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, if users have a language preference in their session, extract that preference and use it to cache shared content:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Instead of remote caching "
+								},
+								{
+									"type": "inlineCode",
+									"value": "getUserProfile(sessionID)"
+								},
+								{
+									"type": "text",
+									"value": ", which creates one entry per user"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Remote cache "
+								},
+								{
+									"type": "inlineCode",
+									"value": "getCMSContent(language)"
+								},
+								{
+									"type": "text",
+									"value": " to create one entry per language"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/components/welcome-message.tsx\"",
+			"value": "import { cookies } from 'next/headers'\nimport { cacheLife } from 'next/cache'\n\nexport async function WelcomeMessage() {\n\t// Extract the language preference (not unique per user)\n\tconst language = (await cookies()).get('language')?.value || 'en'\n\n\t// Cache based on language (few unique values: en, es, fr, de, etc.)\n\t// All users who prefer 'en' share the same cache entry\n\tconst content = await getCMSContent(language)\n\n\treturn <div>{content.welcomeMessage}</div>\n}\n\nasync function getCMSContent(language: string) {\n\t'use cache: remote'\n\tcacheLife({ expire: 3600 })\n\t// Creates ~10-50 cache entries (one per language)\n\t// instead of thousands (one per user)\n\treturn cms.getHomeContent(language)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This way all users who prefer the same language share a cache entry, improving cache utilization and reducing load on your CMS."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The pattern is the same in both examples: find the dimension with fewer unique values (category vs. price, language vs. user ID), cache on that dimension, and filter or select the rest in memory."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If the service used by "
+				},
+				{
+					"type": "inlineCode",
+					"value": "getUserProfile"
+				},
+				{
+					"type": "text",
+					"value": " cannot scale with your frontend load, you may still be able to use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "use cache"
+				},
+				{
+					"type": "text",
+					"value": " directive with a short "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": " for in-memory caching. However, for most user data, you likely want to fetch directly from the source (which might already be wrapped in a key/value store as mentioned in the guidelines above)."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Only use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/directives/use-cache-private",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "'use cache: private'"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " if you have compliance requirements or can't refactor to pass runtime data as arguments."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Nesting rules"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Remote caches have specific nesting rules:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Remote caches "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "can"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " be nested inside other remote caches ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "'use cache: remote'"
+								},
+								{
+									"type": "text",
+									"value": ")"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Remote caches "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "can"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " be nested inside regular caches ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "'use cache'"
+								},
+								{
+									"type": "text",
+									"value": ")"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Remote caches "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "cannot"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " be nested inside private caches ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "'use cache: private'"
+								},
+								{
+									"type": "text",
+									"value": ")"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Private caches "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "cannot"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " be nested inside remote caches"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "// VALID: Remote inside remote\nasync function outerRemote() {\n\t'use cache: remote'\n\tconst result = await innerRemote()\n\treturn result\n}\n\nasync function innerRemote() {\n\t'use cache: remote'\n\treturn getData()\n}\n\n// VALID: Remote inside regular cache\nasync function outerCache() {\n\t'use cache'\n\t// The inner remote cache will work when deferred to request time\n\tconst result = await innerRemote()\n\treturn result\n}\n\nasync function innerRemote() {\n\t'use cache: remote'\n\treturn getData()\n}\n\n// INVALID: Remote inside private\nasync function outerPrivate() {\n\t'use cache: private'\n\tconst result = await innerRemote() // Error!\n\treturn result\n}\n\nasync function innerRemote() {\n\t'use cache: remote'\n\treturn getData()\n}\n\n// INVALID: Private inside remote\nasync function outerRemote() {\n\t'use cache: remote'\n\tconst result = await innerPrivate() // Error!\n\treturn result\n}\n\nasync function innerPrivate() {\n\t'use cache: private'\n\treturn getData()\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The following examples demonstrate common patterns for using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'use cache: remote'"
+				},
+				{
+					"type": "text",
+					"value": ". For details about "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheLife"
+				},
+				{
+					"type": "text",
+					"value": " parameters ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "stale"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "revalidate"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "expire"
+				},
+				{
+					"type": "text",
+					"value": "), see the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/cacheLife",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheLife"
+						},
+						{
+							"type": "text",
+							"value": " API reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "With user preferences"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache product pricing based on the user's currency preference. Since the currency is stored in a cookie, this component renders at request time. Remote caching is valuable here because all users with the same currency share the cached price, and in serverless environments, all instances share the same remote cache."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/product/[id]/page.tsx\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { cookies } from 'next/headers'\nimport { cacheTag, cacheLife } from 'next/cache'\n\nexport async function generateStaticParams() {\n\treturn [{ id: '1' }, { id: '2' }, { id: '3' }]\n}\n\nexport default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {\n\tconst { id } = await params\n\n\treturn (\n\t\t<div>\n\t\t\t<ProductDetails id={id} />\n\t\t\t<Suspense fallback={<div>Loading price...</div>}>\n\t\t\t\t<ProductPrice productId={id} />\n\t\t\t</Suspense>\n\t\t</div>\n\t)\n}\n\nfunction ProductDetails({ id }: { id: string }) {\n\treturn <div>Product: {id}</div>\n}\n\nasync function ProductPrice({ productId }: { productId: string }) {\n\t// Reading cookies defers this component to request time\n\tconst currency = (await cookies()).get('currency')?.value ?? 'USD'\n\n\t// Cache the price per product and currency combination\n\t// All users with the same currency share this cache entry\n\tconst price = await getProductPrice(productId, currency)\n\n\treturn (\n\t\t<div>\n\t\t\tPrice: {price} {currency}\n\t\t</div>\n\t)\n}\n\nasync function getProductPrice(productId: string, currency: string) {\n\t'use cache: remote'\n\tcacheTag(`product-price-${productId}`)\n\tcacheLife({ expire: 3600 }) // 1 hour\n\n\t// Cached per (productId, currency) - few currencies means high cache utilization\n\treturn db.products.getPrice(productId, currency)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/product/[id]/page.js\" switcher",
+			"value": "import { Suspense } from 'react'\nimport { cookies } from 'next/headers'\nimport { cacheTag, cacheLife } from 'next/cache'\n\nexport async function generateStaticParams() {\n\treturn [{ id: '1' }, { id: '2' }, { id: '3' }]\n}\n\nexport default async function ProductPage({ params }) {\n\tconst { id } = await params\n\n\treturn (\n\t\t<div>\n\t\t\t<ProductDetails id={id} />\n\t\t\t<Suspense fallback={<div>Loading price...</div>}>\n\t\t\t\t<ProductPrice productId={id} />\n\t\t\t</Suspense>\n\t\t</div>\n\t)\n}\n\nfunction ProductDetails({ id }) {\n\treturn <div>Product: {id}</div>\n}\n\nasync function ProductPrice({ productId }) {\n\t// Reading cookies defers this component to request time\n\tconst currency = (await cookies()).get('currency')?.value ?? 'USD'\n\n\t// Cache the price per product and currency combination\n\t// All users with the same currency share this cache entry\n\tconst price = await getProductPrice(productId, currency)\n\n\treturn (\n\t\t<div>\n\t\t\tPrice: {price} {currency}\n\t\t</div>\n\t)\n}\n\nasync function getProductPrice(productId, currency) {\n\t'use cache: remote'\n\tcacheTag(`product-price-${productId}`)\n\tcacheLife({ expire: 3600 }) // 1 hour\n\n\t// Cached per (productId, currency) - few currencies means high cache utilization\n\treturn db.products.getPrice(productId, currency)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reducing database load"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache expensive database queries, reducing load on your database. In this example, we don't access "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers()"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": ". If we had a requirement to not include these stats in the static shell, we could use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/connection",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "connection()"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to explicitly defer to request time:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/page.tsx\"",
+			"value": "import { Suspense } from 'react'\nimport { connection } from 'next/server'\nimport { cacheLife, cacheTag } from 'next/cache'\n\nexport default function DashboardPage() {\n\treturn (\n\t\t<Suspense fallback={<div>Loading stats...</div>}>\n\t\t\t<DashboardStats />\n\t\t</Suspense>\n\t)\n}\n\nasync function DashboardStats() {\n\t// Defer to request time\n\tawait connection()\n\n\tconst stats = await getGlobalStats()\n\n\treturn <StatsDisplay stats={stats} />\n}\n\nasync function getGlobalStats() {\n\t'use cache: remote'\n\tcacheTag('global-stats')\n\tcacheLife({ expire: 60 }) // 1 minute\n\n\t// This expensive database query is cached and shared across all users,\n\t// reducing load on your database\n\tconst stats = await db.analytics.aggregate({\n\t\ttotal_users: 'count',\n\t\tactive_sessions: 'count',\n\t\trevenue: 'sum',\n\t})\n\n\treturn stats\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With this setup, your upstream database sees at most one request per minute, regardless of how many users visit the dashboard."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "API responses in streaming contexts"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache API responses that are fetched during streaming or after dynamic operations:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/feed/page.tsx\"",
+			"value": "import { Suspense } from 'react'\nimport { connection } from 'next/server'\nimport { cacheLife, cacheTag } from 'next/cache'\n\nexport default async function FeedPage() {\n\treturn (\n\t\t<div>\n\t\t\t<Suspense fallback={<Skeleton />}>\n\t\t\t\t<FeedItems />\n\t\t\t</Suspense>\n\t\t</div>\n\t)\n}\n\nasync function FeedItems() {\n\t// Defer to request time\n\tawait connection()\n\n\tconst items = await getFeedItems()\n\n\treturn items.map((item) => (\n\t\t<FeedItem\n\t\t\tkey={item.id}\n\t\t\titem={item}\n\t\t/>\n\t))\n}\n\nasync function getFeedItems() {\n\t'use cache: remote'\n\tcacheTag('feed-items')\n\tcacheLife({ expire: 120 }) // 2 minutes\n\n\t// This API call is cached, reducing requests to your external service\n\tconst response = await fetch('https://api.example.com/feed')\n\treturn response.json()\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Computed data after dynamic checks"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Cache expensive computations that occur after dynamic security or feature checks:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/reports/page.tsx\"",
+			"value": "import { connection } from 'next/server'\nimport { cacheLife } from 'next/cache'\n\nexport default async function ReportsPage() {\n\t// Defer to request time (for security check)\n\tawait connection()\n\n\tconst report = await generateReport()\n\n\treturn <ReportViewer report={report} />\n}\n\nasync function generateReport() {\n\t'use cache: remote'\n\tcacheLife({ expire: 3600 }) // 1 hour\n\n\t// This expensive computation is cached and shared across all authorized users,\n\t// avoiding repeated calculations\n\tconst data = await db.transactions.findMany()\n\n\treturn {\n\t\ttotalRevenue: calculateRevenue(data),\n\t\ttopProducts: analyzeProducts(data),\n\t\ttrends: calculateTrends(data),\n\t}\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Mixed caching strategies"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Combine static, remote, and private caching for optimal performance:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/product/[id]/page.tsx\"",
+			"value": "import { Suspense } from 'react'\nimport { connection } from 'next/server'\nimport { cookies } from 'next/headers'\nimport { cacheLife, cacheTag } from 'next/cache'\n\n// Static product data - prerendered at build time\nasync function getProduct(id: string) {\n\t'use cache'\n\tcacheTag(`product-${id}`)\n\n\t// This is cached at build time and shared across all users\n\treturn db.products.find({ where: { id } })\n}\n\n// Shared pricing data - cached at runtime in remote handler\nasync function getProductPrice(id: string) {\n\t'use cache: remote'\n\tcacheTag(`product-price-${id}`)\n\tcacheLife({ expire: 300 }) // 5 minutes\n\n\t// This is cached at runtime and shared across all users\n\treturn db.products.getPrice({ where: { id } })\n}\n\n// User-specific recommendations - private cache per user\nasync function getRecommendations(productId: string) {\n\t'use cache: private'\n\tcacheLife({ expire: 60 }) // 1 minute\n\n\tconst sessionId = (await cookies()).get('session-id')?.value\n\n\t// This is cached per-user and never shared\n\treturn db.recommendations.findMany({\n\t\twhere: { productId, sessionId },\n\t})\n}\n\nexport default async function ProductPage({ params }) {\n\tconst { id } = await params\n\n\t// Static product data\n\tconst product = await getProduct(id)\n\n\treturn (\n\t\t<div>\n\t\t\t<ProductDetails product={product} />\n\n\t\t\t{/* Dynamic shared price */}\n\t\t\t<Suspense fallback={<PriceSkeleton />}>\n\t\t\t\t<ProductPriceComponent productId={id} />\n\t\t\t</Suspense>\n\n\t\t\t{/* Dynamic personalized recommendations */}\n\t\t\t<Suspense fallback={<RecommendationsSkeleton />}>\n\t\t\t\t<ProductRecommendations productId={id} />\n\t\t\t</Suspense>\n\t\t</div>\n\t)\n}\n\nfunction ProductDetails({ product }) {\n\treturn (\n\t\t<div>\n\t\t\t<h1>{product.name}</h1>\n\t\t\t<p>{product.description}</p>\n\t\t</div>\n\t)\n}\n\nasync function ProductPriceComponent({ productId }) {\n\t// Defer to request time\n\tawait connection()\n\n\tconst price = await getProductPrice(productId)\n\treturn <div>Price: ${price}</div>\n}\n\nasync function ProductRecommendations({ productId }) {\n\tconst recommendations = await getRecommendations(productId)\n\treturn <RecommendationsList items={recommendations} />\n}\n\nfunction PriceSkeleton() {\n\treturn <div>Loading price...</div>\n}\n\nfunction RecommendationsSkeleton() {\n\treturn <div>Loading recommendations...</div>\n}\n\nfunction RecommendationsList({ items }) {\n\treturn (\n\t\t<ul>\n\t\t\t{items.map((item) => (\n\t\t\t\t<li key={item.id}>{item.name}</li>\n\t\t\t))}\n\t\t</ul>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Remote caches are stored in server-side cache handlers and shared across all users"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "'use cache: remote'"
+										},
+										{
+											"type": "text",
+											"value": " works outside the static shell where "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/directives/use-cache",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "use cache"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " may not provide server-side cache hits"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Use "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/functions/cacheTag",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "cacheTag()"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " and "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/functions/revalidateTag",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "revalidateTag()"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " to invalidate remote caches on-demand"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Use "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/functions/cacheLife",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "cacheLife()"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " to configure cache expiration"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "For user-specific data, use "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/directives/use-cache-private",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "'use cache: private'"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " instead of "
+										},
+										{
+											"type": "inlineCode",
+											"value": "'use cache: remote'"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Remote caches reduce origin load by storing computed or fetched data server-side"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Platform Support"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Deployment Option"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Supported"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#nodejs-server",
+									"children": [
+										{
+											"type": "text",
+											"value": "Node.js server"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#docker",
+									"children": [
+										{
+											"type": "text",
+											"value": "Docker container"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#static-export",
+									"children": [
+										{
+											"type": "text",
+											"value": "Static export"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "No"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/deploying#adapters",
+									"children": [
+										{
+											"type": "text",
+											"value": "Adapters"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Yes"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "\"use cache: remote\""
+								},
+								{
+									"type": "text",
+									"value": " is enabled with the Cache Components feature."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

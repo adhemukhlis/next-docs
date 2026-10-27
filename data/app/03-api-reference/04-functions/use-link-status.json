@@ -1,0 +1,707 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: useLinkStatus\ndescription: API Reference for the useLinkStatus hook.\nrelated:\n title: Next Steps\n description: Learn more about the features mentioned in this page by reading the API Reference.\n links:\n  - app/api-reference/components/link\n  - app/api-reference/file-conventions/loading"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useLinkStatus"
+				},
+				{
+					"type": "text",
+					"value": " hook lets you track the "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "pending"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " state of a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": ". Use it for subtle, inline feedback, for example a shimmer effect over the clicked link, while navigation completes. Prefer route-level fallbacks with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": ", and prefetching for instant transitions."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "useLinkStatus"
+				},
+				{
+					"type": "text",
+					"value": " is useful when:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/linking-and-navigating#prefetching",
+									"children": [
+										{
+											"type": "text",
+											"value": "Prefetching"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " is disabled or in progress meaning navigation is blocked."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The destination route is dynamic "
+								},
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "and"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " doesn't include a "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/loading",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "loading.js"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " file that would allow an instant navigation."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/hint.tsx\" switcher",
+			"value": "'use client'\n\nimport Link from 'next/link'\nimport { useLinkStatus } from 'next/link'\n\nfunction Hint() {\n\tconst { pending } = useLinkStatus()\n\treturn (\n\t\t<span\n\t\t\taria-hidden\n\t\t\tclassName={`link-hint ${pending ? 'is-pending' : ''}`}\n\t\t/>\n\t)\n}\n\nexport default function Header() {\n\treturn (\n\t\t<header>\n\t\t\t<Link\n\t\t\t\thref=\"/dashboard\"\n\t\t\t\tprefetch={false}>\n\t\t\t\t<span className=\"label\">Dashboard</span> <Hint />\n\t\t\t</Link>\n\t\t</header>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/hint.js\" switcher",
+			"value": "'use client'\n\nimport Link from 'next/link'\nimport { useLinkStatus } from 'next/link'\n\nfunction Hint() {\n\tconst { pending } = useLinkStatus()\n\treturn (\n\t\t<span\n\t\t\taria-hidden\n\t\t\tclassName={`link-hint ${pending ? 'is-pending' : ''}`}\n\t\t/>\n\t)\n}\n\nexport default function Header() {\n\treturn (\n\t\t<header>\n\t\t\t<Link\n\t\t\t\thref=\"/dashboard\"\n\t\t\t\tprefetch={false}>\n\t\t\t\t<span className=\"label\">Dashboard</span> <Hint />\n\t\t\t</Link>\n\t\t</header>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "useLinkStatus"
+										},
+										{
+											"type": "text",
+											"value": " must be used within a descendant component of a "
+										},
+										{
+											"type": "inlineCode",
+											"value": "Link"
+										},
+										{
+											"type": "text",
+											"value": " component"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The hook is most useful when "
+										},
+										{
+											"type": "inlineCode",
+											"value": "prefetch={false}"
+										},
+										{
+											"type": "text",
+											"value": " is set on the "
+										},
+										{
+											"type": "inlineCode",
+											"value": "Link"
+										},
+										{
+											"type": "text",
+											"value": " component"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "If the linked route has been prefetched, the pending state will be skipped"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "When clicking multiple links in quick succession, only the last link's pending state is shown"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "This hook is not supported in the Pages Router and always returns "
+										},
+										{
+											"type": "inlineCode",
+											"value": "{ pending: false }"
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Inline indicators can easily introduce layout shifts. Prefer a fixed-size, always-rendered hint element and toggle its opacity, or use an animation."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "You might not need "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useLinkStatus"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Before adding inline feedback, consider if:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The destination is static and prefetched in production, so the pending phase may be skipped."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "The route has a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "loading.js"
+								},
+								{
+									"type": "text",
+									"value": " file, enabling instant transitions with a route-level fallback."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Navigation is typically fast. Use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useLinkStatus"
+				},
+				{
+					"type": "text",
+					"value": " as a quick patch when you identify a slow transition, then iterate to fix the root cause with prefetching or a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "loading.js"
+				},
+				{
+					"type": "text",
+					"value": " fallback."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parameters"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "const { pending } = useLinkStatus()"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "useLinkStatus"
+				},
+				{
+					"type": "text",
+					"value": " does not take any parameters."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "useLinkStatus"
+				},
+				{
+					"type": "text",
+					"value": " returns an object with a single property:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Property"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Type"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "pending"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "boolean"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": " before history updates, "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": " after"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Example"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Inline link hint"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Add a subtle, fixed-size hint that doesn’t affect layout to confirm a click when prefetching hasn’t completed."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/components/loading-indicator.tsx\" switcher",
+			"value": "'use client'\n\nimport { useLinkStatus } from 'next/link'\n\nexport default function LoadingIndicator() {\n\tconst { pending } = useLinkStatus()\n\treturn (\n\t\t<span\n\t\t\taria-hidden\n\t\t\tclassName={`link-hint ${pending ? 'is-pending' : ''}`}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/components/loading-indicator.js\" switcher",
+			"value": "'use client'\n\nimport { useLinkStatus } from 'next/link'\n\nexport default function LoadingIndicator() {\n\tconst { pending } = useLinkStatus()\n\treturn (\n\t\t<span\n\t\t\taria-hidden\n\t\t\tclassName={`link-hint ${pending ? 'is-pending' : ''}`}\n\t\t/>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/shop/layout.tsx\" switcher",
+			"value": "import Link from 'next/link'\nimport LoadingIndicator from './components/loading-indicator'\n\nconst links = [\n\t{ href: '/shop/electronics', label: 'Electronics' },\n\t{ href: '/shop/clothing', label: 'Clothing' },\n\t{ href: '/shop/books', label: 'Books' },\n]\n\nfunction Menubar() {\n\treturn (\n\t\t<div>\n\t\t\t{links.map((link) => (\n\t\t\t\t<Link\n\t\t\t\t\tkey={link.label}\n\t\t\t\t\thref={link.href}>\n\t\t\t\t\t<span className=\"label\">{link.label}</span> <LoadingIndicator />\n\t\t\t\t</Link>\n\t\t\t))}\n\t\t</div>\n\t)\n}\n\nexport default function Layout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<div>\n\t\t\t<Menubar />\n\t\t\t{children}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/shop/layout.js\" switcher",
+			"value": "import Link from 'next/link'\nimport LoadingIndicator from './components/loading-indicator'\n\nconst links = [\n\t{ href: '/shop/electronics', label: 'Electronics' },\n\t{ href: '/shop/clothing', label: 'Clothing' },\n\t{ href: '/shop/books', label: 'Books' },\n]\n\nfunction Menubar() {\n\treturn (\n\t\t<div>\n\t\t\t{links.map((link) => (\n\t\t\t\t<Link\n\t\t\t\t\tkey={link.label}\n\t\t\t\t\thref={link.href}>\n\t\t\t\t\t<span className=\"label\">{link.label}</span> <LoadingIndicator />\n\t\t\t\t</Link>\n\t\t\t))}\n\t\t</div>\n\t)\n}\n\nexport default function Layout({ children }) {\n\treturn (\n\t\t<div>\n\t\t\t<Menubar />\n\t\t\t{children}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Gracefully handling fast navigation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If the navigation to a new route is fast, users may see an unnecessary flash of the hint. One way to improve the user experience and only show the hint when the navigation takes time to complete is to add an initial animation delay (e.g. 100ms) and start the animation as invisible (e.g. "
+				},
+				{
+					"type": "inlineCode",
+					"value": "opacity: 0"
+				},
+				{
+					"type": "text",
+					"value": ")."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "css",
+			"meta": "filename=\"app/styles/global.css\"",
+			"value": ".link-hint {\n\tdisplay: inline-block;\n\twidth: 0.6em;\n\theight: 0.6em;\n\tmargin-left: 0.25rem;\n\tborder-radius: 9999px;\n\tbackground: currentColor;\n\topacity: 0;\n\tvisibility: hidden; /* reserve space without showing the hint */\n}\n\n.link-hint.is-pending {\n\t/* Animation 1: fade in after 100ms and keep final opacity */\n\t/* Animation 2: subtle pulsing while pending */\n\tvisibility: visible;\n\tanimation-name: fadeIn, pulse;\n\tanimation-duration: 200ms, 1s;\n\t/* Appear only if navigation actually takes time */\n\tanimation-delay: 100ms, 100ms;\n\tanimation-timing-function: ease, ease-in-out;\n\tanimation-iteration-count: 1, infinite;\n\tanimation-fill-mode: forwards, none;\n}\n\n@keyframes fadeIn {\n\tto {\n\t\topacity: 0.35;\n\t}\n}\n@keyframes pulse {\n\t50% {\n\t\topacity: 0.15;\n\t}\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "useLinkStatus"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

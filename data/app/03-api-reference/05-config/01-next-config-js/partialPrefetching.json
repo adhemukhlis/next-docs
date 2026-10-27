@@ -1,0 +1,567 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: partialPrefetching\ndescription: Configure the default link prefetch behavior to fetch only the static parts of each route.\nrelated:\n title: Related\n description: View related API references and guides.\n links:\n  - app/api-reference/config/next-config-js/cacheComponents\n  - app/api-reference/file-conventions/route-segment-config/prefetch\n  - app/api-reference/components/link\n  - app/guides/optimizing-prefetching"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "partialPrefetching"
+				},
+				{
+					"type": "text",
+					"value": " enables Partial Prefetching at the app level. The framework prefetches the static parts of each route by default; set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch={true}"
+				},
+				{
+					"type": "text",
+					"value": " on individual links to use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/optimizing-prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "per-link prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and fetch more."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Usage"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" highlight={5} switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\tcacheComponents: true,\n\tpartialPrefetching: true,\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" highlight={3} switcher",
+			"value": "module.exports = {\n\tcacheComponents: true,\n\tpartialPrefetching: true,\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "partialPrefetching"
+				},
+				{
+					"type": "text",
+					"value": " requires "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "cacheComponents"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Without it, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " throw at config validation."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Reference"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Value"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Description"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "true"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enables Partial Prefetching across the app."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "false"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Keeps the previous prefetch behavior, for apps that adopted Cache Components before Partial Prefetching was available."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Leaving the option unset behaves like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " and logs a warning when "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cacheComponents"
+				},
+				{
+					"type": "text",
+					"value": " is enabled. Both features will be enabled everywhere in the next major release, and the options will be removed."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "How prefetches resolve"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Before Partial Prefetching, Next.js prefetched per visible link: a page with N links to N routes produced ~N route prefetches as those links entered the viewport."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "inlineCode",
+					"value": "partialPrefetching: true"
+				},
+				{
+					"type": "text",
+					"value": ", Next.js prefetches one reusable "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/glossary#app-shell",
+					"children": [
+						{
+							"type": "text",
+							"value": "App Shell"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " per route instead. The App Shell contains rendered output that does not depend on a link's URL. URL-specific content, including content that depends on "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": ", resolves after navigation by default. App Shells are cached on the client, so links to the same route reuse one prefetch."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The pattern is similar to per-route code splitting in single-page apps: one artifact per route, shared by every link that points to it."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Routes that read "
+						},
+						{
+							"type": "inlineCode",
+							"value": "cookies()"
+						},
+						{
+							"type": "text",
+							"value": " or "
+						},
+						{
+							"type": "inlineCode",
+							"value": "headers()"
+						},
+						{
+							"type": "text",
+							"value": " produce an App Shell that includes session data. The framework auto-detects this and caches the shell per session on the client."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A link can ask for more than the App Shell with "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/link#prefetch",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Link prefetch={true}>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". The prefetch also resolves URL data like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "params"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "searchParams"
+				},
+				{
+					"type": "text",
+					"value": ", and the full URL, and the cached content behind it. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/optimizing-prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Optimizing prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": If you use "
+						},
+						{
+							"type": "inlineCode",
+							"value": "<Link prefetch={true}>"
+						},
+						{
+							"type": "text",
+							"value": " to a route that hasn't opted into Partial Prefetching, a dev console error suggests enabling "
+						},
+						{
+							"type": "inlineCode",
+							"value": "partialPrefetching"
+						},
+						{
+							"type": "text",
+							"value": " app-wide or "
+						},
+						{
+							"type": "inlineCode",
+							"value": "prefetch = 'partial'"
+						},
+						{
+							"type": "text",
+							"value": " on the segment. The "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/messages/instant-link-prefetch-partial",
+							"children": [
+								{
+									"type": "text",
+									"value": "dev warning Insight"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " covers each fix in detail."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Per-segment overrides"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A segment that exports an explicit "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/route-segment-config/prefetch",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "prefetch"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " value overrides the app-level default for that route."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Change"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "16.3.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "partialPrefetching"
+								},
+								{
+									"type": "text",
+									"value": " introduced. Requires "
+								},
+								{
+									"type": "inlineCode",
+									"value": "cacheComponents"
+								},
+								{
+									"type": "text",
+									"value": " to be enabled."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

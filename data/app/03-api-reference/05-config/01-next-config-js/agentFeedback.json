@@ -1,0 +1,386 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: agentFeedback\ndescription: Enable a review flow for Next.js issue reports prepared by AI coding agents.\nversion: experimental\nrelated:\n links:\n  - app/guides/ai-agents\n  - app/api-reference/config/next-config-js/agentRules"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.agentFeedback"
+				},
+				{
+					"type": "text",
+					"value": " option controls whether "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " creates and updates instructions that let detected AI coding agents prepare Next.js issue reports for your review. It is disabled by default and requires "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/telemetry",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js Telemetry"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to be enabled. Agent feedback does not run in CI."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "New apps created with the recommended "
+				},
+				{
+					"type": "inlineCode",
+					"value": "create-next-app"
+				},
+				{
+					"type": "text",
+					"value": " settings enable agent feedback in the generated Next.js config. For other apps, set the option manually:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher highlight={5}",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\texperimental: {\n\t\tagentFeedback: true,\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher highlight={4}",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\texperimental: {\n\t\tagentFeedback: true,\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Generated agent instructions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.agentFeedback"
+				},
+				{
+					"type": "text",
+					"value": " is enabled and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " detects an AI coding agent, Next.js creates or updates this managed block in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "AGENTS.md"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "md",
+			"meta": "filename=\"AGENTS.md\"",
+			"value": "<!-- BEGIN:nextjs-agent-feedback -->\n\n## Report Next.js feedback\n\nThe project owner enabled `experimental.agentFeedback`, authorizing this feedback pass. When enabled, `next dev` writes this block and restores it if removed. Commit `AGENTS.md` with your work to keep the tree clean.\n\nDuring the current user request, retain anonymized facts as feedback candidates for meaningful or recurring Next.js issues:\n\n- Crashes, hangs, OOMs, or unexpected slowness\n- Incorrect behavior, output, errors, or diagnostics\n- Missing, unclear, or conflicting documentation\n- Unexpected CLI, codemod, Skill, or upgrade behavior and non-obvious workarounds\n\nContinue the current user request without reporting immediately. Routine debugging is not feedback. Verify changes before retaining them as feedback candidates. Never retain code, logs, paths, URLs, secrets, personal information, or project-specific data.\n\nRetain qualifying friction even if it is later fixed or worked around; record the final outcome during the reporting pass.\n\nBefore the final response, run one reporting pass. If candidates remain, from this file's directory run `npx --no-install next internal agent-feedback-instructions` once without piping or truncating its output. Follow its output or error guidance. If a network sandbox blocks it, retry with network access; if it still returns no output, continue normally.\n\n<!-- END:nextjs-agent-feedback -->"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js updates only the content between the markers and preserves the rest of the file."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When agent rules and agent feedback are both enabled, Next.js keeps both managed blocks in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "AGENTS.md"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Review and send agent feedback"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The generated instructions let the agent retain feedback candidates without interrupting the current user request. Immediately before the final response, the agent runs one reporting pass and prepares each distinct qualifying issue as a separate report draft."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each report draft contains a generic setup, reproduction steps, observed facts, an expected result, and an optional control or workaround."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The agent attempts to open each report draft once in a separate review form in your default browser. You can edit a report, remove details, close the form without sending, or select "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Send feedback"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Nothing is sent when a form opens."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Before opening a form, the agent attempts to anonymize the report by replacing customer and project details with generic descriptions and omitting source code, logs, paths, URLs, secrets, and personal information. Review the draft and remove anything you don't want to include before sending it."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Submitting the form sends the content you reviewed, the agent name, and the Next.js version. The form does not automatically attach project files or machine metadata."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Disable agent feedback"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.agentFeedback"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " or remove the option to stop "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " from creating or updating the managed block. The next "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " run removes the existing agent feedback block and preserves all other content. If the file contained only the managed block, Next.js deletes the file instead of leaving it empty."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Disabling Next.js Telemetry also removes the managed feedback block the next time you run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": ". The feedback command does not return reporting instructions while telemetry is disabled."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "experimental.agentFeedback"
+				},
+				{
+					"type": "text",
+					"value": " and top-level "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/agentRules",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "agentRules"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " work independently. Changing one option does not affect the other."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.4.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "experimental.agentFeedback"
+								},
+								{
+									"type": "text",
+									"value": " configuration option added."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

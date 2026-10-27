@@ -1,168 +1,114 @@
-const { execSync } = require('child_process')
-const path = require('path')
-const fs = require('fs')
+// Pull the latest Next.js docs (canary) into docs/, App Router only.
+// Usage: bun script.js [--force]
+//   --force  overwrite docs/ even if it has uncommitted changes
 
-const rootDir = __dirname
-const nextJsDir = path.join(rootDir, 'next.js')
-const docsDir = path.join(rootDir, 'docs')
+import { $ } from 'bun'
+import { rm, rename, readdir } from 'node:fs/promises'
+import { join } from 'node:path'
+
+const rootDir = import.meta.dir
+const nextJsDir = join(rootDir, 'next.js')
+const docsDir = join(rootDir, 'docs')
+const commitHashFile = join(rootDir, 'commit-hash.txt')
 const ignoreList = ['02-pages', '03-architecture', '04-community']
+const force = Bun.argv.includes('--force')
 
-// Step 0: Cleanup previous runs if necessary
-if (fs.existsSync(nextJsDir)) {
-	console.log('🧹 Cleaning up existing next.js directory...')
-	fs.rmSync(nextJsDir, { recursive: true, force: true })
-}
-if (fs.existsSync(docsDir)) {
-	console.log('🧹 Cleaning up existing docs directory...')
-	fs.rmSync(docsDir, { recursive: true, force: true })
-}
-const commitHashFile = path.join(rootDir, 'commit-hash.txt')
-if (fs.existsSync(commitHashFile)) {
-	fs.rmSync(commitHashFile, { force: true })
-}
+$.cwd(rootDir)
 
-// Step 1: Run git clone with sparse-checkout
+// Step 0: Refuse to wipe uncommitted refinements in docs/, then clean up previous runs
+const dirty = (await $`git status --porcelain -- docs`.quiet().nothrow().text()).trim()
+if (dirty && !force) {
+	console.error('❌ docs/ has uncommitted changes. Commit/stash them first, or rerun with --force.')
+	process.exit(1)
+}
+console.log('🧹 Cleaning up previous run...')
+await rm(nextJsDir, { recursive: true, force: true })
+await rm(docsDir, { recursive: true, force: true })
+await rm(commitHashFile, { force: true })
+
+// Step 1: Sparse clone, docs/ only
 console.log('🚚 Step 1: Running git clone with sparse-checkout...')
-const gitCommand =
-	"git clone --depth 1 --filter=blob:none --no-checkout https://github.com/vercel/next.js && cd next.js && git sparse-checkout set --no-cone 'docs/*' && git checkout"
-execSync(gitCommand, { stdio: 'inherit', cwd: rootDir, shell: true })
+await $`git clone --depth 1 --filter=blob:none --no-checkout https://github.com/vercel/next.js`
+await $`git sparse-checkout set --no-cone 'docs/*'`.cwd(nextJsDir)
+await $`git checkout`.cwd(nextJsDir)
 
-// Step 2: Generate commit-hash.txt containing commit hash of canary branch
+// Step 2: Save canary commit hash
 console.log('\n📌 Step 2: Generating commit-hash.txt...')
-const commitHash = execSync('git rev-parse HEAD', { cwd: nextJsDir, encoding: 'utf8' }).trim()
-fs.writeFileSync(commitHashFile, commitHash + '\n', 'utf8')
+const commitHash = (await $`git rev-parse HEAD`.cwd(nextJsDir).text()).trim()
+await Bun.write(commitHashFile, commitHash + '\n')
 console.log(`  🔖 Commit hash saved: ${commitHash}`)
 
-// Step 3: Move docs/ to current directory
+// Step 3: Move docs/ to root
 console.log('\n📂 Step 3: Moving docs/ to root directory...')
-const sourceDocs = path.join(nextJsDir, 'docs')
-if (fs.existsSync(sourceDocs)) {
-	fs.renameSync(sourceDocs, docsDir)
-} else {
+const sourceDocs = join(nextJsDir, 'docs')
+if (!(await isDir(sourceDocs))) {
 	console.error('❌ Error: docs/ directory not found in next.js repository')
 	process.exit(1)
 }
+await rename(sourceDocs, docsDir)
 
 // Step 4: Remove downloaded next.js repository
 console.log('🗑️  Step 4: Removing next.js repository directory...')
-fs.rmSync(nextJsDir, { recursive: true, force: true })
+await rm(nextJsDir, { recursive: true, force: true })
 
-// Step 5: Remove contents in docs/ based on ignore string array
+// Step 5: Remove ignored top-level sections
 console.log('🗑️  Step 5: Removing ignored contents from docs/...')
-if (fs.existsSync(docsDir)) {
-	const items = fs.readdirSync(docsDir)
-	for (const item of items) {
-		if (ignoreList.includes(item)) {
-			const itemPath = path.join(docsDir, item)
-			fs.rmSync(itemPath, { recursive: true, force: true })
-			console.log(`  ➖ Removed: ${item}`)
-		}
+for (const item of await readdir(docsDir)) {
+	if (ignoreList.includes(item)) {
+		await rm(join(docsDir, item), { recursive: true, force: true })
+		console.log(`  ➖ Removed: ${item}`)
 	}
 }
 
-// Step 6: Rename subdirectories in docs/ by removing "[number]-" prefix
+// Step 6: Strip "[number]-" prefix from top-level subdirectories
 console.log('🏷️  Step 6: Renaming subdirectories in docs/...')
-if (fs.existsSync(docsDir)) {
-	const items = fs.readdirSync(docsDir)
-	for (const item of items) {
-		const itemPath = path.join(docsDir, item)
-		if (fs.statSync(itemPath).isDirectory()) {
-			const newName = item.replace(/^\d+-(.+)$/, '$1')
-			if (newName !== item) {
-				const newPath = path.join(docsDir, newName)
-				fs.renameSync(itemPath, newPath)
-				console.log(`  ✏️  Renamed directory: ${item} -> ${newName}`)
-			}
-		}
+for (const entry of await readdir(docsDir, { withFileTypes: true })) {
+	if (!entry.isDirectory()) continue
+	const newName = entry.name.replace(/^\d+-(.+)$/, '$1')
+	if (newName !== entry.name) {
+		await rename(join(docsDir, entry.name), join(docsDir, newName))
+		console.log(`  ✏️  Renamed directory: ${entry.name} -> ${newName}`)
 	}
 }
 
-// Helper function to clean MDX legacy blocks/tags
-function cleanMdxContent(filePath) {
-	let content = fs.readFileSync(filePath, 'utf8')
-
-	// 8a. Remove multiline comment code {/* ... */} (and content), except inside codeblocks (triple backticks/tildes)
+// Remove MDX-only constructs that plain Markdown can't render
+function cleanMdxContent(content) {
+	// {/* ... */} comments, except inside fenced code blocks
 	content = content.replace(/(```[\s\S]*?```|~~~[\s\S]*?~~~)|(\{\/\*[\s\S]*?\*\/\})/g, (match, codeBlock) => (codeBlock ? codeBlock : ''))
-
-	// 8b. Remove <PagesOnly> ... </PagesOnly> (and content)
+	// <PagesOnly> ... </PagesOnly> (with content)
 	content = content.replace(/<PagesOnly\b[^>]*>[\s\S]*?<\/PagesOnly>/g, '')
-
-	// 8c. Remove <AppOnly> and </AppOnly> tags only (keep inner content)
+	// <AppOnly> / </AppOnly> tags only (keep content)
 	content = content.replace(/<AppOnly\b[^>]*>/g, '')
 	content = content.replace(/<\/AppOnly>/g, '')
-
-	fs.writeFileSync(filePath, content, 'utf8')
+	return content
 }
 
-// Step 7 & 8: Convert *.mdx files to *.md recursively and clean MDX artifacts
+// Step 7 & 8: *.mdx -> *.md and clean MDX artifacts
 console.log('🔄 Step 7 & 8: Converting *.mdx to *.md and cleaning MDX legacy blocks...')
-function processDirectory(dir) {
-	if (!fs.existsSync(dir)) return 0
-	const entries = fs.readdirSync(dir, { withFileTypes: true })
-	let count = 0
-	for (const entry of entries) {
-		let fullPath = path.join(dir, entry.name)
-		if (entry.isDirectory()) {
-			count += processDirectory(fullPath)
-		} else if (entry.isFile()) {
-			const isMdx = entry.name.endsWith('.mdx')
-			const isMd = entry.name.endsWith('.md')
-
-			if (isMdx) {
-				const newName = entry.name.slice(0, -4) + '.md'
-				const newPath = path.join(dir, newName)
-				fs.renameSync(fullPath, newPath)
-				fullPath = newPath
-				count++
-			}
-
-			if (isMdx || isMd) {
-				cleanMdxContent(fullPath)
-			}
-		}
+const files = await Array.fromAsync(new Bun.Glob('**/*.{md,mdx}').scan({ cwd: docsDir, absolute: true }))
+let convertedCount = 0
+for (const file of files) {
+	const content = cleanMdxContent(await Bun.file(file).text())
+	if (file.endsWith('.mdx')) {
+		await Bun.write(file.slice(0, -4) + '.md', content)
+		await rm(file)
+		convertedCount++
+	} else {
+		await Bun.write(file, content)
 	}
-	return count
 }
+console.log(`  ✨ Processed ${files.length} file(s), converted ${convertedCount} .mdx file(s) to .md.`)
 
-const convertedCount = processDirectory(docsDir)
-console.log(`  ✨ Processed and converted ${convertedCount} .mdx file(s) to .md with cleaned content.`)
-
-// Step 9: Apply custom rules from patch/rules.js
-console.log('\n🛠️  Step 9: Applying custom rules from patch/rules.js...')
-const rulesFile = path.join(rootDir, 'patch', 'rules.js')
-if (fs.existsSync(rulesFile)) {
-	const rules = require(rulesFile)
-	let appliedCount = 0
-
-	for (const rule of rules) {
-		const targetPath = path.resolve(rootDir, rule.target)
-		if (fs.existsSync(targetPath)) {
-			let content = fs.readFileSync(targetPath, 'utf8')
-			let modified = false
-
-			for (const { search, replace } of rule.replacements) {
-				const newContent = content.replace(search, replace)
-				if (newContent !== content) {
-					content = newContent
-					modified = true
-				}
-			}
-
-			if (modified) {
-				fs.writeFileSync(targetPath, content, 'utf8')
-				console.log(`  📝 Applied rules to: ${rule.target}`)
-				appliedCount++
-			}
-		} else {
-			console.warn(`  ⚠️  Warning: Target file not found: ${rule.target}`)
-		}
-	}
-	console.log(`  ✅ Processed ${appliedCount} rule set(s).`)
-}
-
-// Step 10: Run prettier formatting
-console.log('\n🎨 Step 10: Running Prettier formatting...')
-const prettierCommand = 'prettier --config .prettierrc --log-level silent --write "**/*.{js,jsx,mjs,cjs,ts,tsx,css,scss,less,json,yml,yaml,md}"'
-execSync(prettierCommand, { stdio: 'inherit', cwd: rootDir, shell: true })
+// Step 9: Format with bun fmt (reads .prettierrc)
+console.log('\n🎨 Step 9: Running formatting...')
+await $`bun fmt --no-script --log-level silent docs`
 
 console.log('\n🎉 All steps completed successfully!')
+
+async function isDir(path) {
+	try {
+		return (await Bun.file(path).stat()).isDirectory()
+	} catch {
+		return false
+	}
+}

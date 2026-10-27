@@ -1,0 +1,246 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Supporting Immutable Static Assets\ndescription: Support immutable static assets in an adapter"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/supportsImmutableAssets",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "config.supportsImmutableAssets"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for end-user-facing information about this feature."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "inlineCode",
+					"value": "config.supportsImmutableAssets"
+				},
+				{
+					"type": "text",
+					"value": " is enabled, Next.js outputs immutable content-addressed static assets under the public path "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/_next/static/immutable/*"
+				},
+				{
+					"type": "text",
+					"value": ". This prefix can be used to differentiate immutable static assets from non-immutable static assets at the CDN level."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "At runtime, these immutable static assets are requested without the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "?dpl"
+				},
+				{
+					"type": "text",
+					"value": " query parameter and thus live in a shared namespace across deployments. You must ensure that these assets are immutable and not changed (even after a new deployment) or deleted (for as long as there are active deployments using them) . Next.js may use a truncated shorter content hash as the filename, so "
+				},
+				{
+					"type": "inlineCode",
+					"value": "outputs.staticFiles[].immutableHash"
+				},
+				{
+					"type": "text",
+					"value": " contains the full content hash which can be used to validate that no hash collision occurred."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "config.outputHashSalt"
+				},
+				{
+					"type": "text",
+					"value": " to set a salt for the content hashes, if you want to rotate the hashes for any reason (e.g. after a detected hash collision)."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Note that you need to continue supporting non-immutable static assets (which may change between deployments and continue to be requested with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "?dpl"
+				},
+				{
+					"type": "text",
+					"value": " query parameter), e.g. for the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "public"
+				},
+				{
+					"type": "text",
+					"value": " folder or for older Next.js versions."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Adapter Implementation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You need to:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "In the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "modifyConfig"
+								},
+								{
+									"type": "text",
+									"value": ", set the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "config.supportsImmutableAssets"
+								},
+								{
+									"type": "text",
+									"value": " property to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "true"
+								},
+								{
+									"type": "text",
+									"value": " (if it's not already set to "
+								},
+								{
+									"type": "inlineCode",
+									"value": "false"
+								},
+								{
+									"type": "text",
+									"value": " by the user) to signal that you support deploying immutable static assets, and"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "In "
+								},
+								{
+									"type": "inlineCode",
+									"value": "onBuildComplete"
+								},
+								{
+									"type": "text",
+									"value": ", read the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "outputs.staticFiles[].immutableHash"
+								},
+								{
+									"type": "text",
+									"value": " property to determine which static assets are immutable and have to be requested without the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "?dpl"
+								},
+								{
+									"type": "text",
+									"value": " query parameter."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"my-adapter.js\"",
+			"value": "/** @type {import('next').NextAdapter} */\nconst adapter = {\n\tname: 'my-custom-adapter',\n\n\tasync modifyConfig(config, { phase }) {\n\t\tif (phase === 'phase-production-build') {\n\t\t\tconfig.supportsImmutableAssets =\n\t\t\t\t// Default to true, but allow users to opt-out\n\t\t\t\tconfig.supportsImmutableAssets ?? true\n\n\t\t\t// Optionally, pass a salt for the content hashes\n\t\t\t// config.outputHashSalt = getSaltForCurrentProject()\n\t\t}\n\t\treturn config\n\t},\n\n\tasync onBuildComplete({ outputs }) {\n\t\tfor (const output of outputs.staticFiles) {\n\t\t\tif (output.immutableHash != null) {\n\t\t\t\t// This has to be requestable at `output.pathname`\n\t\t\t\t// even without the `?dpl` query parameter.\n\t\t\t\tuploadOrVerifyImmutableStaticAsset(output.filePath, output.pathname, output.immutableHash)\n\t\t\t} else {\n\t\t\t\t// This is a non-immutable static asset and will be requested with\n\t\t\t\t// the `?dpl` query parameter, scoped to the deployment.\n\t\t\t\tuploadStaticAsset(output.filePath, output.pathname)\n\t\t\t}\n\t\t}\n\n\t\t// Process other outputs....\n\t},\n}"
+		}
+	]
+}

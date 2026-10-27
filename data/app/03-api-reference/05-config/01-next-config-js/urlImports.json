@@ -1,0 +1,338 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: urlImports\ndescription: Configure Next.js to allow importing modules from external URLs.\nversion: experimental"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "URL imports are an experimental feature that allows you to import modules directly from external servers (instead of from the local disk)."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Warning"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Only use domains that you trust to download and execute on your machine. Please exercise discretion, and caution until the feature is flagged as stable."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To opt-in, add the allowed URL prefixes inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "module.exports = {\n\texperimental: {\n\t\turlImports: ['https://example.com/assets/', 'https://cdn.skypack.dev'],\n\t},\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, you can import modules directly from URLs:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "import { a, b, c } from 'https://example.com/assets/some/module.js'"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "URL Imports can be used everywhere normal package imports can be used."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Security Model"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This feature is being designed with "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "security as the top priority"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". To start, we added an experimental flag forcing you to explicitly allow the domains you accept URL imports from. We're working to take this further by limiting URL imports to execute in the browser sandbox using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/edge",
+					"children": [
+						{
+							"type": "text",
+							"value": "Edge Runtime"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Lockfile"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using URL imports, Next.js will create a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.lock"
+				},
+				{
+					"type": "text",
+					"value": " directory containing a lockfile and fetched assets. This directory "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "must be committed to Git"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", not ignored by "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".gitignore"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "When running "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next dev"
+								},
+								{
+									"type": "text",
+									"value": ", Next.js will download and add all newly discovered URL Imports to your lockfile."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "When running "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next build"
+								},
+								{
+									"type": "text",
+									"value": ", Next.js will use only the lockfile to build the application for production."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Typically, no network requests are needed and any outdated lockfile will cause the build to fail. One exception is resources that respond with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Cache-Control: no-cache"
+				},
+				{
+					"type": "text",
+					"value": ". These resources will have a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "no-cache"
+				},
+				{
+					"type": "text",
+					"value": " entry in the lockfile and will always be fetched from the network on each build."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Skypack"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "import confetti from 'https://cdn.skypack.dev/canvas-confetti'\nimport { useEffect } from 'react'\n\nexport default () => {\n\tuseEffect(() => {\n\t\tconfetti()\n\t})\n\treturn <p>Hello</p>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Static Image Imports"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "import Image from 'next/image'\nimport logo from 'https://example.com/assets/logo.png'\n\nexport default () => (\n\t<div>\n\t\t<Image\n\t\t\tsrc={logo}\n\t\t\tplaceholder=\"blur\"\n\t\t/>\n\t</div>\n)"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "URLs in CSS"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "css",
+			"meta": null,
+			"value": ".className {\n\tbackground: url('https://example.com/assets/hero.jpg');\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Asset Imports"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "const logo = new URL('https://example.com/assets/file.txt', import.meta.url)\n\nconsole.log(logo.pathname)\n\n// prints \"/_next/static/media/file.a9727b5d.txt\""
+		}
+	]
+}

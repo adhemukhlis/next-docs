@@ -1,0 +1,142 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: serverComponentsHmrCache\ndescription: Configure whether fetch responses in Server Components are cached across HMR refresh requests.\nversion: experimental"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The experimental "
+				},
+				{
+					"type": "inlineCode",
+					"value": "serverComponentsHmrCache"
+				},
+				{
+					"type": "text",
+					"value": " option allows you to cache "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " responses in Server Components across Hot Module Replacement (HMR) refreshes in local development. This results in faster responses and reduced costs for billed API calls."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "By default, the HMR cache applies to all "
+				},
+				{
+					"type": "inlineCode",
+					"value": "fetch"
+				},
+				{
+					"type": "text",
+					"value": " requests, including those with the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cache: 'no-store'"
+				},
+				{
+					"type": "text",
+					"value": " option. This means uncached requests will not show fresh data between HMR refreshes. However, the cache will be cleared on navigation or full-page reloads."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can disable the HMR cache by setting "
+				},
+				{
+					"type": "inlineCode",
+					"value": "serverComponentsHmrCache"
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\" switcher",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\texperimental: {\n\t\tserverComponentsHmrCache: false, // defaults to true\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\" switcher",
+			"value": "/** @type {import('next').NextConfig} */\nconst nextConfig = {\n\texperimental: {\n\t\tserverComponentsHmrCache: false, // defaults to true\n\t},\n}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " For better observability, we recommend using the "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/config/next-config-js/logging",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "logging.fetches"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " option which logs fetch cache hits and misses in the console during development."
+						}
+					]
+				}
+			]
+		}
+	]
+}

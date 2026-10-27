@@ -1,0 +1,3069 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: TypeScript\ndescription: Next.js provides a TypeScript-first development experience for building your React application."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js comes with built-in TypeScript, automatically installing the necessary packages and configuring the proper settings when you create a new project with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "create-next-app"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To add TypeScript to an existing project, rename a file to "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".ts"
+				},
+				{
+					"type": "text",
+					"value": " / "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".tsx"
+				},
+				{
+					"type": "text",
+					"value": ". Run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " to automatically install the necessary dependencies and add a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tsconfig.json"
+				},
+				{
+					"type": "text",
+					"value": " file with the recommended config options."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": If you already have a "
+						},
+						{
+							"type": "inlineCode",
+							"value": "jsconfig.json"
+						},
+						{
+							"type": "text",
+							"value": " file, copy the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "paths"
+						},
+						{
+							"type": "text",
+							"value": " compiler option from the old "
+						},
+						{
+							"type": "inlineCode",
+							"value": "jsconfig.json"
+						},
+						{
+							"type": "text",
+							"value": " into the new "
+						},
+						{
+							"type": "inlineCode",
+							"value": "tsconfig.json"
+						},
+						{
+							"type": "text",
+							"value": " file, and delete the old "
+						},
+						{
+							"type": "inlineCode",
+							"value": "jsconfig.json"
+						},
+						{
+							"type": "text",
+							"value": " file."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using TypeScript 7"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/",
+					"children": [
+						{
+							"type": "text",
+							"value": "TypeScript 7"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " does not currently provide the JavaScript compiler API. To use TypeScript 7 during "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ", install it in your project:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm add -D typescript@^7"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npm install -D typescript@^7"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"yarn\"",
+			"value": "yarn add -D typescript@^7"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"bun\"",
+			"value": "bun add -D typescript@^7"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js uses the project-local "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tsc"
+				},
+				{
+					"type": "text",
+					"value": " CLI by default, so no additional configuration is required. To use the JavaScript compiler API instead, set "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/useTypeScriptCli",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "experimental.useTypeScriptCli"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "CLI type checking prints the native "
+										},
+										{
+											"type": "inlineCode",
+											"value": "tsc"
+										},
+										{
+											"type": "text",
+											"value": " diagnostics. It does not apply Next.js-specific code frames or rewrite errors for routes, pages, layouts, or route handlers."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The CLI checks the complete project selected by your "
+										},
+										{
+											"type": "inlineCode",
+											"value": "tsconfig"
+										},
+										{
+											"type": "text",
+											"value": " file. This includes test files and "
+										},
+										{
+											"type": "inlineCode",
+											"value": ".next/dev/types"
+										},
+										{
+											"type": "text",
+											"value": " when they are included by that configuration. "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/api-reference/cli/next#next-build-options",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "next build --debug-build-paths"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " does not narrow the files that are type checked and produces a warning when used with this option."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "link",
+											"title": null,
+											"url": "#custom-tsconfig-path",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "typescript.tsconfigPath"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " continues to select the configuration passed to "
+										},
+										{
+											"type": "inlineCode",
+											"value": "tsc"
+										},
+										{
+											"type": "text",
+											"value": ". "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "#disabling-typescript-errors-in-production",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "typescript.ignoreBuildErrors"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": " skips the type-checking step, including the CLI checker."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "experimental.useTypeScriptCli"
+										},
+										{
+											"type": "text",
+											"value": " is experimental and its behavior may change."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "IDE Plugin"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js includes a custom TypeScript plugin and type checker, which VSCode and other code editors can use for advanced type-checking and auto-completion."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can enable the plugin in VS Code by:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Opening the command palette ("
+								},
+								{
+									"type": "inlineCode",
+									"value": "Ctrl/⌘"
+								},
+								{
+									"type": "text",
+									"value": " + "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Shift"
+								},
+								{
+									"type": "text",
+									"value": " + "
+								},
+								{
+									"type": "inlineCode",
+									"value": "P"
+								},
+								{
+									"type": "text",
+									"value": ")"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Searching for \"TypeScript: Select TypeScript Version\""
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Selecting \"Use Workspace Version\""
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"TypeScript Command Palette\"\nsrcLight=\"/docs/light/typescript-command-palette.png\"\nsrcDark=\"/docs/dark/typescript-command-palette.png\"\nwidth=\"1600\"\nheight=\"637\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Now, when editing files, the custom plugin will be enabled. By default, the project-local "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tsc"
+				},
+				{
+					"type": "text",
+					"value": " CLI is used when running "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ". Set "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#using-typescript-7",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "experimental.useTypeScriptCli"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "false"
+				},
+				{
+					"type": "text",
+					"value": " to use the custom type checker instead."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The TypeScript plugin can help with:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Warning if invalid values for "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/route-segment-config",
+									"children": [
+										{
+											"type": "text",
+											"value": "segment config options"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " are passed."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Showing available options and in-context documentation."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Ensuring the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "'use client'"
+								},
+								{
+									"type": "text",
+									"value": " directive is used correctly."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Ensuring client hooks (like "
+								},
+								{
+									"type": "inlineCode",
+									"value": "useState"
+								},
+								{
+									"type": "text",
+									"value": ") are only used in Client Components."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "🎥 Watch:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " Learn about the built-in TypeScript plugin → "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "https://www.youtube.com/watch?v=pqMqn9fKEf8",
+							"children": [
+								{
+									"type": "text",
+									"value": "YouTube (3 minutes)"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "End-to-End Type Safety"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The Next.js App Router has "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "enhanced type safety"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This includes:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "No serialization of data between fetching function and page"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": You can "
+								},
+								{
+									"type": "inlineCode",
+									"value": "fetch"
+								},
+								{
+									"type": "text",
+									"value": " directly in components, layouts, and pages on the server. This data "
+								},
+								{
+									"type": "emphasis",
+									"children": [
+										{
+											"type": "text",
+											"value": "does not"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " need to be serialized (converted to a string) to be passed to the client side for consumption in React. Instead, since "
+								},
+								{
+									"type": "inlineCode",
+									"value": "app"
+								},
+								{
+									"type": "text",
+									"value": " uses Server Components by default, we can use values like "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Date"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Map"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Set"
+								},
+								{
+									"type": "text",
+									"value": ", and more without any extra steps. Previously, you needed to manually type the boundary between server and client with Next.js-specific types."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Streamlined data flow between components"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ": With the removal of "
+								},
+								{
+									"type": "inlineCode",
+									"value": "_app"
+								},
+								{
+									"type": "text",
+									"value": " in favor of root layouts, it is now easier to visualize the data flow between components and pages. Previously, data flowing between individual "
+								},
+								{
+									"type": "inlineCode",
+									"value": "pages"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "_app"
+								},
+								{
+									"type": "text",
+									"value": " were difficult to type and could introduce confusing bugs. With "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/getting-started/fetching-data",
+									"children": [
+										{
+											"type": "text",
+											"value": "colocated data fetching"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " in the App Router, this is no longer an issue."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/fetching-data",
+					"children": [
+						{
+							"type": "text",
+							"value": "Data Fetching in Next.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " now provides as close to end-to-end type safety as possible without being prescriptive about your database or content provider selection."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We're able to type the response data as you would expect with normal TypeScript. For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "async function getData() {\n\tconst res = await fetch('https://api.example.com/...')\n\t// The return value is *not* serialized\n\t// You can return Date, Map, Set, etc.\n\treturn res.json()\n}\n\nexport default async function Page() {\n\tconst name = await getData()\n\n\treturn '...'\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "complete"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " end-to-end type safety, this also requires your database or content provider to support TypeScript. This could be through using an "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping",
+					"children": [
+						{
+							"type": "text",
+							"value": "ORM"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or type-safe query builder."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Route-Aware Type Helpers"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js generates global helpers for App Router route types. These are available without imports and are generated during "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ", or via "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/cli/next#next-typegen-options",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next typegen"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/page#page-props-helper",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "PageProps"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/layout#layout-props-helper",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "LayoutProps"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/file-conventions/route#route-context-helper",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "RouteContext"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next-env.d.ts"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js generates a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next-env.d.ts"
+				},
+				{
+					"type": "text",
+					"value": " file in your project root. This file references Next.js type definitions, allowing TypeScript to recognize non-code imports (images, stylesheets, etc.) and Next.js-specific types."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Running "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ", or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/cli/next#next-typegen-options",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next typegen"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " regenerates this file."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "next-env.d.ts"
+										},
+										{
+											"type": "text",
+											"value": " is managed by Next.js. Its contents are an implementation detail and may change over time. Add it to "
+										},
+										{
+											"type": "inlineCode",
+											"value": ".gitignore"
+										},
+										{
+											"type": "text",
+											"value": ". If your project already tracks the file, remove it from Git. Do not edit this file manually."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The file must be in your "
+										},
+										{
+											"type": "inlineCode",
+											"value": "tsconfig.json"
+										},
+										{
+											"type": "text",
+											"value": " "
+										},
+										{
+											"type": "inlineCode",
+											"value": "include"
+										},
+										{
+											"type": "text",
+											"value": " array ("
+										},
+										{
+											"type": "inlineCode",
+											"value": "create-next-app"
+										},
+										{
+											"type": "text",
+											"value": " does this automatically)."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Examples"
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Type Checking Next.js Configuration Files"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use TypeScript and import types in your Next.js configuration by using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {/* config options here */}\n\nexport default nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Module resolution in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": " is currently limited to CommonJS. However, ECMAScript Modules (ESM) syntax is available when "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#using-nodejs-native-typescript-resolver-for-nextconfigts",
+					"children": [
+						{
+							"type": "text",
+							"value": "using Node.js native TypeScript resolver"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for Node.js v22.10.0 and higher."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.js"
+				},
+				{
+					"type": "text",
+					"value": " file, you can add some type checking in your IDE using JSDoc as below:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"next.config.js\"",
+			"value": "// @ts-check\n\n/** @type {import('next').NextConfig} */\nconst nextConfig = {/* config options here */}\n\nmodule.exports = nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Using Node.js Native TypeScript Resolver for "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Note"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Available on Node.js v22.10.0+ and only when the feature is enabled. Next.js does not enable it."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js detects the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nodejs.org/api/typescript.html",
+					"children": [
+						{
+							"type": "text",
+							"value": "Node.js native TypeScript resolver"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " via "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nodejs.org/api/process.html#processfeaturestypescript",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "process.features.typescript"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", added in "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "v22.10.0"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". When present, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": " can use native ESM, including top‑level "
+				},
+				{
+					"type": "inlineCode",
+					"value": "await"
+				},
+				{
+					"type": "text",
+					"value": " and dynamic "
+				},
+				{
+					"type": "inlineCode",
+					"value": "import()"
+				},
+				{
+					"type": "text",
+					"value": ". This mechanism inherits the capabilities and limitations of Node's resolver."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In Node.js versions "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "v22.18.0+"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "process.features.typescript"
+				},
+				{
+					"type": "text",
+					"value": " is enabled by default. For versions between "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "v22.10.0"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "22.17.x"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", opt in with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "NODE_OPTIONS=--experimental-transform-types"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "NODE_OPTIONS=--experimental-transform-types next <command>"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "For CommonJS Projects (Default)"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Although "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": " supports native ESM syntax in CommonJS projects, Node.js will still assume "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": " is a CommonJS file by default, resulting in Node.js reparsing the file as ESM when module syntax is detected. Therefore, we recommend using the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.mts"
+				},
+				{
+					"type": "text",
+					"value": " file for CommonJS projects to explicitly indicate it's an ESM module:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.mts\"",
+			"value": "import type { NextConfig } from 'next'\n\n// Top-level await and dynamic import are supported\nconst flags = await import('./flags.js').then((m) => m.default ?? m)\n\nconst nextConfig: NextConfig = {\n\t/* config options here */\n\ttypedRoutes: Boolean(flags?.typedRoutes),\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "For ESM Projects"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"type\""
+				},
+				{
+					"type": "text",
+					"value": " is set to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "\"module\""
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "package.json"
+				},
+				{
+					"type": "text",
+					"value": ", your project uses ESM. Learn more about this setting "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nodejs.org/api/packages.html#type",
+					"children": [
+						{
+							"type": "text",
+							"value": "in the Node.js docs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". In this case, you can write "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": " directly with ESM syntax."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": When using "
+						},
+						{
+							"type": "inlineCode",
+							"value": "\"type\": \"module\""
+						},
+						{
+							"type": "text",
+							"value": " in your "
+						},
+						{
+							"type": "inlineCode",
+							"value": "package.json"
+						},
+						{
+							"type": "text",
+							"value": ", all "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".js"
+						},
+						{
+							"type": "text",
+							"value": " and "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".ts"
+						},
+						{
+							"type": "text",
+							"value": " files in your project are treated as ESM modules by default. You may need to rename files with CommonJS syntax to "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".cjs"
+						},
+						{
+							"type": "text",
+							"value": " or "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".cts"
+						},
+						{
+							"type": "text",
+							"value": " extensions if needed."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Statically Typed Links"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js can statically type links to prevent typos and other errors when using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/link"
+				},
+				{
+					"type": "text",
+					"value": ", improving type safety when navigating between pages."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Works in both the Pages and App Router for the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "href"
+				},
+				{
+					"type": "text",
+					"value": " prop in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/link"
+				},
+				{
+					"type": "text",
+					"value": ". In the App Router, it also types "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/navigation"
+				},
+				{
+					"type": "text",
+					"value": " methods like "
+				},
+				{
+					"type": "inlineCode",
+					"value": "push"
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "inlineCode",
+					"value": "replace"
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "prefetch"
+				},
+				{
+					"type": "text",
+					"value": ". It does not type "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/router"
+				},
+				{
+					"type": "text",
+					"value": " methods in Pages Router."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Literal "
+				},
+				{
+					"type": "inlineCode",
+					"value": "href"
+				},
+				{
+					"type": "text",
+					"value": " strings are validated, while non-literal "
+				},
+				{
+					"type": "inlineCode",
+					"value": "href"
+				},
+				{
+					"type": "text",
+					"value": "s may require a cast with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "as Route"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To opt-into this feature, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "typedRoutes"
+				},
+				{
+					"type": "text",
+					"value": " needs to be enabled and the project needs to be using TypeScript."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\ttypedRoutes: true,\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js will generate a link definition in "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next/types"
+				},
+				{
+					"type": "text",
+					"value": " that contains information about all existing routes in your application, which TypeScript can then use to provide feedback in your editor about invalid links."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": If you set up your project without "
+						},
+						{
+							"type": "inlineCode",
+							"value": "create-next-app"
+						},
+						{
+							"type": "text",
+							"value": ", ensure the generated Next.js types are included by adding "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".next/types/**/*.ts"
+						},
+						{
+							"type": "text",
+							"value": " to the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "include"
+						},
+						{
+							"type": "text",
+							"value": " array in your "
+						},
+						{
+							"type": "inlineCode",
+							"value": "tsconfig.json"
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"tsconfig.json\" highlight={4}",
+			"value": "{\n\t\"include\": [\"next-env.d.ts\", \".next/types/**/*.ts\", \"**/*.ts\", \"**/*.tsx\"],\n\t\"exclude\": [\"node_modules\"]\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Currently, support includes any string literal, including dynamic segments. For non-literal strings, you need to manually cast with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "as Route"
+				},
+				{
+					"type": "text",
+					"value": ". The example below shows both "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/link"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/navigation"
+				},
+				{
+					"type": "text",
+					"value": " usage:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/example-client.tsx\"",
+			"value": "'use client'\n\nimport type { Route } from 'next'\nimport Link from 'next/link'\nimport { useRouter } from 'next/navigation'\n\nexport default function Example() {\n\tconst router = useRouter()\n\tconst slug = 'nextjs'\n\n\treturn (\n\t\t<>\n\t\t\t{/* Link: literal and dynamic */}\n\t\t\t<Link href=\"/about\" />\n\t\t\t<Link href={`/blog/${slug}`} />\n\t\t\t<Link href={('/blog/' + slug) as Route} />\n\t\t\t{/* TypeScript error if href is not a valid route */}\n\t\t\t<Link href=\"/aboot\" />\n\n\t\t\t{/* Router: literal and dynamic strings are validated */}\n\t\t\t<button onClick={() => router.push('/about')}>Push About</button>\n\t\t\t<button onClick={() => router.replace(`/blog/${slug}`)}>Replace Blog</button>\n\t\t\t<button onClick={() => router.prefetch('/contact')}>Prefetch Contact</button>\n\n\t\t\t{/* For non-literal strings, cast to Route */}\n\t\t\t<button onClick={() => router.push(('/blog/' + slug) as Route)}>Push Non-literal Blog</button>\n\t\t</>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The same applies for redirecting routes defined by proxy:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"proxy.ts\"",
+			"value": "import { NextRequest, NextResponse } from 'next/server'\n\nexport function proxy(request: NextRequest) {\n\tif (request.nextUrl.pathname === '/proxy-redirect') {\n\t\treturn NextResponse.redirect(new URL('/', request.url))\n\t}\n\n\treturn NextResponse.next()\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/some/page.tsx\"",
+			"value": "import type { Route } from 'next'\nimport Link from 'next/link'\n\nexport default function Page() {\n\treturn <Link href={'/proxy-redirect' as Route}>Link Text</Link>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To accept "
+				},
+				{
+					"type": "inlineCode",
+					"value": "href"
+				},
+				{
+					"type": "text",
+					"value": " in a custom component wrapping "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/link"
+				},
+				{
+					"type": "text",
+					"value": ", use a generic:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "import type { Route } from 'next'\nimport Link from 'next/link'\n\nfunction Card<T extends string>({ href }: { href: Route<T> | URL }) {\n\treturn (\n\t\t<Link href={href}>\n\t\t\t<div>My Card</div>\n\t\t</Link>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also type a simple data structure and iterate to render links:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"components/nav-items.ts\"",
+			"value": "import type { Route } from 'next'\n\ntype NavItem<T extends string = string> = {\n\thref: T\n\tlabel: string\n}\n\nexport const navItems: NavItem<Route>[] = [\n\t{ href: '/', label: 'Home' },\n\t{ href: '/about', label: 'About' },\n\t{ href: '/blog', label: 'Blog' },\n]"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then, map over the items to render "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Link"
+				},
+				{
+					"type": "text",
+					"value": "s:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"components/nav.tsx\"",
+			"value": "import Link from 'next/link'\nimport { navItems } from './nav-items'\n\nexport function Nav() {\n\treturn (\n\t\t<nav>\n\t\t\t{navItems.map((item) => (\n\t\t\t\t<Link\n\t\t\t\t\tkey={item.href}\n\t\t\t\t\thref={item.href}>\n\t\t\t\t\t{item.label}\n\t\t\t\t</Link>\n\t\t\t))}\n\t\t</nav>\n\t)\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "How does it work?"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "When running, "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next typegen"
+						},
+						{
+							"type": "text",
+							"value": ", "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next dev"
+						},
+						{
+							"type": "text",
+							"value": " or "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next build"
+						},
+						{
+							"type": "text",
+							"value": ", Next.js generates a hidden "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".d.ts"
+						},
+						{
+							"type": "text",
+							"value": " file inside "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".next"
+						},
+						{
+							"type": "text",
+							"value": " that contains information about all existing routes in your application (all valid routes as the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "href"
+						},
+						{
+							"type": "text",
+							"value": " type of "
+						},
+						{
+							"type": "inlineCode",
+							"value": "Link"
+						},
+						{
+							"type": "text",
+							"value": "). This "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".d.ts"
+						},
+						{
+							"type": "text",
+							"value": " file is included in "
+						},
+						{
+							"type": "inlineCode",
+							"value": "tsconfig.json"
+						},
+						{
+							"type": "text",
+							"value": " and the TypeScript compiler will check that "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".d.ts"
+						},
+						{
+							"type": "text",
+							"value": " and provide feedback in your editor about invalid links."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Type IntelliSense for Environment Variables"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "During development, Next.js generates a "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".d.ts"
+				},
+				{
+					"type": "text",
+					"value": " file in "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next/types"
+				},
+				{
+					"type": "text",
+					"value": " that contains information about the loaded environment variables for your editor's IntelliSense. If the same environment variable key is defined in multiple files, it is deduplicated according to the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/environment-variables#environment-variable-load-order",
+					"children": [
+						{
+							"type": "text",
+							"value": "Environment Variable Load Order"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To opt-into this feature, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "experimental.typedEnv"
+				},
+				{
+					"type": "text",
+					"value": " needs to be enabled and the project needs to be using TypeScript."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\texperimental: {\n\t\ttypedEnv: true,\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": Types are generated based on the environment variables loaded at development runtime, which excludes variables from "
+						},
+						{
+							"type": "inlineCode",
+							"value": ".env.production*"
+						},
+						{
+							"type": "text",
+							"value": " files by default. To include production-specific variables, run "
+						},
+						{
+							"type": "inlineCode",
+							"value": "next dev"
+						},
+						{
+							"type": "text",
+							"value": " with "
+						},
+						{
+							"type": "inlineCode",
+							"value": "NODE_ENV=production"
+						},
+						{
+							"type": "text",
+							"value": "."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "With Async Server Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "async"
+				},
+				{
+					"type": "text",
+					"value": " Server Component with TypeScript, ensure you are using TypeScript "
+				},
+				{
+					"type": "inlineCode",
+					"value": "5.1.3"
+				},
+				{
+					"type": "text",
+					"value": " or higher and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@types/react"
+				},
+				{
+					"type": "text",
+					"value": " "
+				},
+				{
+					"type": "inlineCode",
+					"value": "18.2.8"
+				},
+				{
+					"type": "text",
+					"value": " or higher."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you are using an older version of TypeScript, you may see a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "'Promise<Element>' is not a valid JSX element"
+				},
+				{
+					"type": "text",
+					"value": " type error. Updating to the latest version of TypeScript and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "@types/react"
+				},
+				{
+					"type": "text",
+					"value": " should resolve this issue."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Incremental type checking"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Since "
+				},
+				{
+					"type": "inlineCode",
+					"value": "v10.2.1"
+				},
+				{
+					"type": "text",
+					"value": " Next.js supports "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.typescriptlang.org/tsconfig#incremental",
+					"children": [
+						{
+							"type": "text",
+							"value": "incremental type checking"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " when enabled in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tsconfig.json"
+				},
+				{
+					"type": "text",
+					"value": ", this can help speed up type checking in larger applications."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Custom "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tsconfig"
+				},
+				{
+					"type": "text",
+					"value": " path"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In some cases, you might want to use a different TypeScript configuration for builds or tooling. To do that, set "
+				},
+				{
+					"type": "inlineCode",
+					"value": "typescript.tsconfigPath"
+				},
+				{
+					"type": "text",
+					"value": " in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": " to point Next.js to another "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tsconfig"
+				},
+				{
+					"type": "text",
+					"value": " file."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\ttypescript: {\n\t\ttsconfigPath: 'tsconfig.build.json',\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, switch to a different config for production builds:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\nconst isProd = process.env.NODE_ENV === 'production'\n\nconst nextConfig: NextConfig = {\n\ttypescript: {\n\t\ttsconfigPath: isProd ? 'tsconfig.build.json' : 'tsconfig.json',\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "html",
+			"value": "<details>\n<summary>Why you might use a separate `tsconfig` for builds</summary>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You might need to relax checks in scenarios like monorepos, where the build also validates shared dependencies that don't match your project's standards, or when loosening checks in CI to continue delivering while migrating locally to stricter TypeScript settings (and still wanting your IDE to highlight misuse)."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For example, if your project uses "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useUnknownInCatchVariables"
+				},
+				{
+					"type": "text",
+					"value": " but some monorepo dependencies still assume "
+				},
+				{
+					"type": "inlineCode",
+					"value": "any"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"tsconfig.build.json\"",
+			"value": "{\n\t\"extends\": \"./tsconfig.json\",\n\t\"compilerOptions\": {\n\t\t\"useUnknownInCatchVariables\": false\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This keeps your editor strict via "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tsconfig.json"
+				},
+				{
+					"type": "text",
+					"value": " while allowing the production build to use relaxed settings."
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "</details>"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "IDEs typically read "
+										},
+										{
+											"type": "inlineCode",
+											"value": "tsconfig.json"
+										},
+										{
+											"type": "text",
+											"value": " for diagnostics and IntelliSense, so you can still see IDE warnings while production builds use the alternate config. Mirror critical options if you want parity in the editor."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "In development, only "
+										},
+										{
+											"type": "inlineCode",
+											"value": "tsconfig.json"
+										},
+										{
+											"type": "text",
+											"value": " is watched for changes. If you edit a different file name via "
+										},
+										{
+											"type": "inlineCode",
+											"value": "typescript.tsconfigPath"
+										},
+										{
+											"type": "text",
+											"value": ", restart the dev server to apply changes."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "The configured file is used in "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next dev"
+										},
+										{
+											"type": "text",
+											"value": ", "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next build"
+										},
+										{
+											"type": "text",
+											"value": ", and "
+										},
+										{
+											"type": "inlineCode",
+											"value": "next typegen"
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Disabling TypeScript errors in production"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js fails your "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "production build"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": ") when TypeScript errors are present in your project."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you'd like Next.js to dangerously produce production code even when your application has errors, you can disable the built-in type checking step."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If disabled, be sure you are running type checks as part of your build or deploy process, otherwise this can be very dangerous."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Open "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next.config.ts"
+				},
+				{
+					"type": "text",
+					"value": " and enable the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ignoreBuildErrors"
+				},
+				{
+					"type": "text",
+					"value": " option in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/typescript",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "typescript"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " config:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"next.config.ts\"",
+			"value": "import type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n\ttypescript: {\n\t\t// !! WARN !!\n\t\t// Dangerously allow production builds to successfully complete even if\n\t\t// your project has type errors.\n\t\t// !! WARN !!\n\t\tignoreBuildErrors: true,\n\t},\n}\n\nexport default nextConfig"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ": You can run "
+						},
+						{
+							"type": "inlineCode",
+							"value": "tsc --noEmit"
+						},
+						{
+							"type": "text",
+							"value": " to check for TypeScript errors yourself before building. This is useful for CI/CD pipelines where you'd like to check for TypeScript errors before deploying."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Custom type declarations"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When you need to declare custom types, you might be tempted to modify "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next-env.d.ts"
+				},
+				{
+					"type": "text",
+					"value": ". However, this file is automatically generated, so any changes you make will be overwritten. Instead, you should create a new file, let's call it "
+				},
+				{
+					"type": "inlineCode",
+					"value": "new-types.d.ts"
+				},
+				{
+					"type": "text",
+					"value": ", and reference it in your "
+				},
+				{
+					"type": "inlineCode",
+					"value": "tsconfig.json"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "json",
+			"meta": "filename=\"tsconfig.json\"",
+			"value": "{\n\t\"compilerOptions\": {\n\t\t\"skipLibCheck\": true\n\t\t//...truncated...\n\t},\n\t\"include\": [\"new-types.d.ts\", \"next-env.d.ts\", \".next/types/**/*.ts\", \"**/*.ts\", \"**/*.tsx\"],\n\t\"exclude\": [\"node_modules\"]\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version Changes"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v15.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "#type-checking-nextjs-configuration-files",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "next.config.ts"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " support added for TypeScript projects."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v13.2.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Statically typed links are available in beta."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v12.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/architecture/nextjs-compiler",
+									"children": [
+										{
+											"type": "text",
+											"value": "SWC"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " is now used by default to compile TypeScript and TSX for faster builds."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v10.2.1"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://www.typescriptlang.org/tsconfig#incremental",
+									"children": [
+										{
+											"type": "text",
+											"value": "Incremental type checking"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " support added when enabled in your "
+								},
+								{
+									"type": "inlineCode",
+									"value": "tsconfig.json"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

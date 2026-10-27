@@ -1,0 +1,1754 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Designing view transitions\ndescription: Learn how to use view transitions to communicate meaning during navigation, loading, and content changes in a Next.js app.\nnav_title: View transitions"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In web apps, route changes replace the entire page at once. One set of elements disappears, another appears, with no visual connection between them. A user selects a photo thumbnail to view it in detail on another page. They are the same image, but nothing on screen communicates that."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Apps that need these transitions typically rely on complex animation libraries that manage mount/unmount lifecycles, track element positions across routes, and coordinate timing manually, to animate how elements enter, exit, and move between states."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "React's "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<ViewTransition>"
+				},
+				{
+					"type": "text",
+					"value": " component integrates with the browser's "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API",
+					"children": [
+						{
+							"type": "text",
+							"value": "View Transitions API"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to handle this declaratively. You name the elements that should persist, and the browser animates between their old and new positions."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This guide walks through four patterns that cover the most common cases: morphing shared elements, animating loading states, adding directional navigation, and crossfading content within the same route."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Add view transitions with an agent"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://skills.sh/vercel-labs/agent-skills/vercel-react-view-transitions",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "vercel-react-view-transitions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " skill teaches a coding agent the patterns in this guide, plus the CSS recipes and troubleshooting for applying them to an existing app."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Install the skill:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx skills add vercel-labs/agent-skills --skill vercel-react-view-transitions"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then prompt the agent with something like:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "prompt",
+			"meta": null,
+			"value": "Add view transitions to this app using the vercel-react-view-transitions skill."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Or prompt for a specific transition, such as:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Morphing a thumbnail into a hero image"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Sliding between routes forward and back"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Crossfading content within the same route"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To apply the patterns yourself, follow the walkthrough below."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Example"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "As an example, we'll build a photography gallery called "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "Frames"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We'll start by morphing a thumbnail into a hero image (shared elements), then animate the loading skeleton into real content (Suspense reveals), add directional slides for forward and back navigation (route transitions), and finish with crossfades for switching between photographer tabs (same-route transitions)."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can find the resources used in this example here:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react-view-transitions-demo.labs.vercel.dev",
+									"children": [
+										{
+											"type": "text",
+											"value": "Demo"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/nextjs/react-view-transitions-demo",
+									"children": [
+										{
+											"type": "text",
+											"value": "Code"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "View transitions work in the App Router with no configuration. React 19.3 includes the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<ViewTransition>"
+				},
+				{
+					"type": "text",
+					"value": " component and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "addTransitionType"
+				},
+				{
+					"type": "text",
+					"value": " API used in this guide."
+				}
+			]
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "text",
+							"value": "[!NOTE] React's integration uses newer View Transitions API features (transition types and "
+						},
+						{
+							"type": "inlineCode",
+							"value": "view-transition-class"
+						},
+						{
+							"type": "text",
+							"value": "), available in Chromium 125+ and recent Safari and Firefox versions. Some animations may behave differently in Safari. Without browser support, your application works normally; the transitions do not animate."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Import the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ViewTransition"
+				},
+				{
+					"type": "text",
+					"value": " component from React:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "import { ViewTransition } from 'react'"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "<ViewTransition>"
+				},
+				{
+					"type": "text",
+					"value": " animations are activated by "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/useTransition",
+					"children": [
+						{
+							"type": "text",
+							"value": "Transitions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Suspense",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "<Suspense>"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/useDeferredValue",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useDeferredValue"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Regular "
+				},
+				{
+					"type": "inlineCode",
+					"value": "setState"
+				},
+				{
+					"type": "text",
+					"value": " calls do not trigger them. In Next.js, route navigations are transitions, so "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<ViewTransition>"
+				},
+				{
+					"type": "text",
+					"value": " animations activate automatically during navigation."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 1: Morph a thumbnail into a hero image"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The gallery displays photos in a grid. Clicking a photo opens a detail page with a larger version of the same image. Without transitions, the thumbnail disappears and the hero appears. Nothing connects them visually. The user has to scan the detail page to confirm they clicked the right photo."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In motion design, when an object persists across a cut, it communicates continuity. The viewer understands they are looking at the same thing, not a replacement. This is the most important transition pattern: "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "shared element morphing"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Wrap both the grid thumbnail and the detail hero in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<ViewTransition>"
+				},
+				{
+					"type": "text",
+					"value": " with the same "
+				},
+				{
+					"type": "inlineCode",
+					"value": "name"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"components/photo-grid.tsx\"",
+			"value": "import { ViewTransition } from 'react'\nimport Image from 'next/image'\nimport Link from 'next/link'\n\nfunction PhotoGrid({ photos }) {\n\treturn (\n\t\t<div className=\"grid grid-cols-3 gap-3\">\n\t\t\t{photos.map((photo) => (\n\t\t\t\t<Link\n\t\t\t\t\tkey={photo.id}\n\t\t\t\t\thref={`/photo/${photo.id}`}>\n\t\t\t\t\t<ViewTransition name={`photo-${photo.id}`}>\n\t\t\t\t\t\t<Image\n\t\t\t\t\t\t\tsrc={photo.src}\n\t\t\t\t\t\t\talt={photo.title}\n\t\t\t\t\t\t/>\n\t\t\t\t\t</ViewTransition>\n\t\t\t\t</Link>\n\t\t\t))}\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/photo/[id]/photo-content.tsx\"",
+			"value": "import { ViewTransition } from 'react'\nimport Image from 'next/image'\n\nasync function PhotoContent({ id }) {\n\tconst photo = await getPhoto(id)\n\n\treturn (\n\t\t<ViewTransition name={`photo-${photo.id}`}>\n\t\t\t<div style={{ position: 'relative', aspectRatio: '3 / 2' }}>\n\t\t\t\t<Image\n\t\t\t\t\tsrc={photo.src}\n\t\t\t\t\talt={photo.title}\n\t\t\t\t\tfill\n\t\t\t\t/>\n\t\t\t</div>\n\t\t</ViewTransition>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "name"
+				},
+				{
+					"type": "text",
+					"value": " prop creates identity. React finds elements with the same name on the old and new pages, then animates between their size and position automatically. No additional props are needed for the morph to work."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If we click a thumbnail now, the image scales and repositions from its grid cell to the hero slot. Navigating back reverses the morph. The user sees one object moving, not two objects swapping."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The morph plays when the destination content renders in the same commit as the navigation, which is the case with prefetched (cached) pages. If the destination suspends into a fallback first, no pair forms, and the content animates with its enter animation instead when it arrives."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Customizing the morph animation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The morph works without any CSS. To customize it, add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "share=\"morph\""
+				},
+				{
+					"type": "text",
+					"value": " together with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default=\"none\""
+				},
+				{
+					"type": "text",
+					"value": ". The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "share"
+				},
+				{
+					"type": "text",
+					"value": " prop assigns the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "morph"
+				},
+				{
+					"type": "text",
+					"value": " class to the view transition, which you can target with CSS pseudo-elements. For example, to soften the morph mid-flight with a "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/blur",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "blur"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " keyframe:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "<ViewTransition\n\tname={`photo-${photo.id}`}\n\tshare=\"morph\"\n\tdefault=\"none\">\n\t<Image\n\t\tsrc={photo.src}\n\t\talt={photo.title}\n\t/>\n</ViewTransition>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Add the same props to both Step 1 snippets ("
+				},
+				{
+					"type": "inlineCode",
+					"value": "photo-grid.tsx"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "photo-content.tsx"
+				},
+				{
+					"type": "text",
+					"value": "). "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default=\"none\""
+				},
+				{
+					"type": "text",
+					"value": " keeps each named image from running its own crossfade on every unrelated transition. Without it, every named "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<ViewTransition>"
+				},
+				{
+					"type": "text",
+					"value": " animates whenever any transition runs on the page. When you add "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default=\"none\""
+				},
+				{
+					"type": "text",
+					"value": " to a named pair, keep the explicit "
+				},
+				{
+					"type": "inlineCode",
+					"value": "share"
+				},
+				{
+					"type": "text",
+					"value": ". With "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default=\"none\""
+				},
+				{
+					"type": "text",
+					"value": " and no "
+				},
+				{
+					"type": "inlineCode",
+					"value": "share"
+				},
+				{
+					"type": "text",
+					"value": " prop, the pair silently stops morphing."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "css",
+			"meta": "filename=\"app/globals.css\"",
+			"value": "::view-transition-group(.morph) {\n\tanimation-duration: 400ms;\n}\n::view-transition-image-pair(.morph) {\n\tanimation-name: via-blur;\n}\n@keyframes via-blur {\n\t30% {\n\t\tfilter: blur(3px);\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The blur hides pixel-level interpolation artifacts during the transition. At 400ms, the morph is slow enough to register but fast enough to feel direct."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 2: Animate loading states with Suspense reveals"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The photo detail page loads its content asynchronously. While data is in flight, a Suspense boundary shows a skeleton. When the data resolves, the skeleton is replaced by the real content."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Without a transition, the swap is instant. The skeleton vanishes and the content pops in."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In motion design, vertical direction encodes hierarchy. Content sliding up communicates arrival. Content sliding down communicates departure. The pair together creates a handoff: the placeholder yields to the real thing."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Wrap the Suspense fallback in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ViewTransition"
+				},
+				{
+					"type": "text",
+					"value": " with an exit animation, and the content in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ViewTransition"
+				},
+				{
+					"type": "text",
+					"value": " with an enter animation:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/photo/[id]/page.tsx\"",
+			"value": "import { Suspense, ViewTransition } from 'react'\n\nexport default async function PhotoPage({ params }) {\n\tconst { id } = await params\n\n\treturn (\n\t\t<Suspense\n\t\t\tfallback={\n\t\t\t\t<ViewTransition\n\t\t\t\t\texit=\"slide-down\"\n\t\t\t\t\tdefault=\"none\">\n\t\t\t\t\t<PhotoContentSkeleton />\n\t\t\t\t</ViewTransition>\n\t\t\t}>\n\t\t\t<ViewTransition\n\t\t\t\tenter=\"slide-up\"\n\t\t\t\tdefault=\"none\">\n\t\t\t\t<PhotoContent id={id} />\n\t\t\t</ViewTransition>\n\t\t</Suspense>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "As in Step 1, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default=\"none\""
+				},
+				{
+					"type": "text",
+					"value": " prevents this "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ViewTransition"
+				},
+				{
+					"type": "text",
+					"value": " from animating during unrelated transitions, like the shared element morph."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The CSS animations use asymmetric timing. The exit is fast (150ms). The enter fade is slower (210ms) and delayed until the exit completes, while its slide movement runs longer (400ms):"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "css",
+			"meta": "filename=\"app/globals.css\"",
+			"value": ":root {\n\t--duration-exit: 150ms;\n\t--duration-enter: 210ms;\n\t--duration-move: 400ms;\n}\n\n::view-transition-old(.slide-down) {\n\tanimation:\n\t\tvar(--duration-exit) ease-out both fade reverse,\n\t\tvar(--duration-exit) ease-out both slide-y reverse;\n}\n::view-transition-new(.slide-up) {\n\tanimation:\n\t\tvar(--duration-enter) ease-in var(--duration-exit) both fade,\n\t\tvar(--duration-move) ease-in both slide-y;\n}\n\n@keyframes fade {\n\tfrom {\n\t\tfilter: blur(3px);\n\t\topacity: 0;\n\t}\n\tto {\n\t\tfilter: blur(0);\n\t\topacity: 1;\n\t}\n}\n@keyframes slide-y {\n\tfrom {\n\t\ttransform: translateY(10px);\n\t}\n\tto {\n\t\ttransform: translateY(0);\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The asymmetry is deliberate. Old content should leave quickly so it does not compete for attention. New content should arrive more gently so the user has time to register it. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "var(--duration-exit)"
+				},
+				{
+					"type": "text",
+					"value": " delay on the enter fade means the new content waits for the old content to finish leaving before it becomes visible."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If we refresh the page, the skeleton slides down and fades out, and a moment later the real content slides up and fades in."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 3: Add directional motion for navigation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The gallery now has morphing images and animated loading states. But navigating between pages still has no directional signal. Forward and back navigations look identical. The user cannot tell from the animation whether they moved deeper into the app or returned to a previous page."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In film and animation, horizontal direction encodes spatial position. Moving left means progressing forward (like turning a page in a left-to-right language). Moving right means going back. This convention is so ingrained that violating it feels disorienting."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "transitionTypes"
+				},
+				{
+					"type": "text",
+					"value": " prop on "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<Link>"
+				},
+				{
+					"type": "text",
+					"value": " to tag forward navigations:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"components/photo-grid.tsx\"",
+			"value": "<Link\n\thref={`/photo/${photo.id}`}\n\ttransitionTypes={['nav-forward']}>\n\t{/* photo thumbnail */}\n</Link>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The same pattern works for any navigation within the app. For example, previous/next arrows on a photo detail page can use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "nav-back"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "nav-forward"
+				},
+				{
+					"type": "text",
+					"value": " to animate in the corresponding direction."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For links that return the user to a previous page, use "
+				},
+				{
+					"type": "inlineCode",
+					"value": "nav-back"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/photo/[id]/page.tsx\"",
+			"value": "<Link\n\thref=\"/\"\n\ttransitionTypes={['nav-back']}>\n\t← Gallery\n</Link>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The transition type is not automatic. You decide which links are \"forward\" and which are \"back\" based on your app's navigation hierarchy."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then wrap page content in a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ViewTransition"
+				},
+				{
+					"type": "text",
+					"value": " that maps transition types to directional animations:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/photo/[id]/page.tsx\"",
+			"value": "<ViewTransition\n\tenter={{\n\t\t'nav-forward': 'nav-forward',\n\t\t'nav-back': 'nav-back',\n\t\tdefault: 'none',\n\t}}\n\texit={{\n\t\t'nav-forward': 'nav-forward',\n\t\t'nav-back': 'nav-back',\n\t\tdefault: 'none',\n\t}}\n\tdefault=\"none\">\n\t{/* page content */}\n</ViewTransition>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "enter"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "exit"
+				},
+				{
+					"type": "text",
+					"value": " props accept an object keyed by transition type. When a navigation carries the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "nav-forward"
+				},
+				{
+					"type": "text",
+					"value": " type, the exit animation slides old content left and the enter animation slides new content in from the right. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "default: \"none\""
+				},
+				{
+					"type": "text",
+					"value": " ensures that transitions without a type (browser back/forward, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "router.refresh()"
+				},
+				{
+					"type": "text",
+					"value": ", Suspense reveals) produce no directional animation."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Wrap every participating page the same way. For the gallery to slide out on forward navigation and back in on "
+				},
+				{
+					"type": "inlineCode",
+					"value": "nav-back"
+				},
+				{
+					"type": "text",
+					"value": ", its page needs the same wrapper. Put the wrapper in each "
+				},
+				{
+					"type": "inlineCode",
+					"value": "page.tsx"
+				},
+				{
+					"type": "text",
+					"value": ", not the layout. Layouts persist across navigations, so enter and exit never fire there:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\"",
+			"value": "<ViewTransition\n\tenter={{\n\t\t'nav-forward': 'nav-forward',\n\t\t'nav-back': 'nav-back',\n\t\tdefault: 'none',\n\t}}\n\texit={{\n\t\t'nav-forward': 'nav-forward',\n\t\t'nav-back': 'nav-back',\n\t\tdefault: 'none',\n\t}}\n\tdefault=\"none\">\n\t<PhotoGrid photos={photos} />\n</ViewTransition>"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The CSS for directional slides:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "css",
+			"meta": "filename=\"app/globals.css\"",
+			"value": "::view-transition-old(.nav-forward) {\n\t--slide-offset: -60px;\n\tanimation:\n\t\t150ms ease-in both fade reverse,\n\t\t400ms ease-in-out both slide reverse;\n}\n::view-transition-new(.nav-forward) {\n\t--slide-offset: 60px;\n\tanimation:\n\t\t210ms ease-out 150ms both fade,\n\t\t400ms ease-in-out both slide;\n}\n\n::view-transition-old(.nav-back) {\n\t--slide-offset: 60px;\n\tanimation:\n\t\t150ms ease-in both fade reverse,\n\t\t400ms ease-in-out both slide reverse;\n}\n::view-transition-new(.nav-back) {\n\t--slide-offset: -60px;\n\tanimation:\n\t\t210ms ease-out 150ms both fade,\n\t\t400ms ease-in-out both slide;\n}\n\n@keyframes slide {\n\tfrom {\n\t\ttranslate: var(--slide-offset);\n\t}\n\tto {\n\t\ttranslate: 0;\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The 60px offset is enough to communicate direction without making the user track a fast-moving element across the screen."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Anchoring the header"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "During directional slides, the header should not move. A sliding header breaks the user's spatial anchor. They need one fixed reference point to understand that the "
+				},
+				{
+					"type": "emphasis",
+					"children": [
+						{
+							"type": "text",
+							"value": "content"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " moved, not the entire viewport."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Assign the header a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "viewTransitionName"
+				},
+				{
+					"type": "text",
+					"value": " and suppress its animation in CSS:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"components/header.tsx\"",
+			"value": "<header style={{ viewTransitionName: 'site-header' }}>{/* navigation links */}</header>"
+		},
+		{
+			"type": "code",
+			"lang": "css",
+			"meta": "filename=\"app/globals.css\"",
+			"value": "::view-transition-group(site-header) {\n\tanimation: none;\n\tz-index: 100;\n}\n::view-transition-old(site-header) {\n\tdisplay: none;\n}\n::view-transition-new(site-header) {\n\tanimation: none;\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "display: none"
+				},
+				{
+					"type": "text",
+					"value": " on the old snapshot prevents a flash where both old and new headers are briefly visible. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "z-index: 100"
+				},
+				{
+					"type": "text",
+					"value": " ensures the header renders above the sliding content."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If we navigate forward to a photo, content slides left. If we click the \"← Gallery\" link (tagged with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "nav-back"
+				},
+				{
+					"type": "text",
+					"value": "), content slides right. The header stays fixed throughout both transitions."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Browser-initiated back navigations (the back button or swipe gestures) do not carry a transition type, so the directional slide does not play. The shared element morph from Step 1 still applies if both pages have matching "
+				},
+				{
+					"type": "inlineCode",
+					"value": "name"
+				},
+				{
+					"type": "text",
+					"value": " props."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Keeping the page interactive"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "While a transition runs, the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "::view-transition"
+				},
+				{
+					"type": "text",
+					"value": " overlay captures pointer events, so clicks during the animation are lost. Let them pass through to the live page:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "css",
+			"meta": "filename=\"app/globals.css\"",
+			"value": "::view-transition {\n\tpointer-events: none;\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "This restores interactivity for unnamed content. Hit-testing still skips named participants (like the anchored header) for the transition's duration, so keep transitions short and avoid naming elements the user clicks rapidly."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 4,
+			"children": [
+				{
+					"type": "text",
+					"value": "Respecting reduced motion"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Directional slides simulate physical movement across the viewport. This is the most common trigger for motion sensitivity. Morphs, reveals, and crossfades carry less risk since they affect smaller areas or rely on opacity rather than position."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The simplest approach is to disable all animation durations:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "css",
+			"meta": "filename=\"app/globals.css\"",
+			"value": "@media (prefers-reduced-motion: reduce) {\n\t::view-transition-old(*),\n\t::view-transition-new(*),\n\t::view-transition-group(*) {\n\t\tanimation-duration: 0s !important;\n\t\tanimation-delay: 0s !important;\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Without animation, content swaps instantly, which is the browser's default behavior. A more refined approach would preserve crossfades and opacity transitions while removing positional movement. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://css-tricks.com/nuking-motion-with-prefers-reduced-motion/",
+					"children": [
+						{
+							"type": "text",
+							"value": "\"No Motion Isn't Always prefers-reduced-motion\""
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for more on this."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Step 4: Crossfade content within the same route"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The gallery has a photographer section with tabs. Each tab shows a different photographer's photos, but the route structure is the same: "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/collection/[slug]"
+				},
+				{
+					"type": "text",
+					"value": ". Clicking between tabs does not feel like navigating to a new page. It feels like switching content within the same container."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "A directional slide would be wrong here. Slides communicate \"going to a new place.\" A crossfade communicates \"same place, different content.\" The container persists (continuity), only the grid inside changes (swap)."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use a "
+				},
+				{
+					"type": "inlineCode",
+					"value": "ViewTransition"
+				},
+				{
+					"type": "text",
+					"value": " with "
+				},
+				{
+					"type": "inlineCode",
+					"value": "key"
+				},
+				{
+					"type": "text",
+					"value": " set to the current slug. When the key changes, React triggers a transition between the old and new content:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/collection/[slug]/page.tsx\"",
+			"value": "import { Suspense, ViewTransition } from 'react'\n\nexport default async function CollectionPage({ params }) {\n\tconst { slug } = await params\n\n\treturn (\n\t\t<Suspense fallback={<CollectionGridSkeleton />}>\n\t\t\t<ViewTransition\n\t\t\t\tkey={slug}\n\t\t\t\tname=\"collection-content\"\n\t\t\t\tshare=\"auto\"\n\t\t\t\tenter=\"auto\"\n\t\t\t\tdefault=\"none\">\n\t\t\t\t<CollectionGrid slug={slug} />\n\t\t\t</ViewTransition>\n\t\t</Suspense>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "share=\"auto\""
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "enter=\"auto\""
+				},
+				{
+					"type": "text",
+					"value": " props tell React to use its default crossfade animation. The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "name"
+				},
+				{
+					"type": "text",
+					"value": " prop gives the container an identity so React knows what to animate. The navigation triggers the transition; the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "key={slug}"
+				},
+				{
+					"type": "text",
+					"value": " change makes React treat the old and new content as an exit/enter pair (activating "
+				},
+				{
+					"type": "inlineCode",
+					"value": "share"
+				},
+				{
+					"type": "text",
+					"value": ") instead of an in-place update."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If we click between photographer tabs, the grid crossfades. The tab bar and surrounding layout do not move. Only the photo grid transitions between states."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Next steps"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You now know how to use view transitions to communicate meaning during navigation. Shared elements communicate continuity across routes. Suspense reveals animate loading handoffs. Directional slides encode navigation history. Crossfades signal content changes within the same location."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Each pattern answers a different question for the user:"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Pattern"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "What it communicates"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Shared element (morph)"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "\"Same thing, going deeper\""
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Suspense reveal"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "\"Data loaded\""
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Directional slide"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "\"Going forward / coming back\""
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Same-route crossfade"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "\"Same place, different content\""
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For API details and more patterns:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/components/link#transitiontypes",
+									"children": [
+										{
+											"type": "text",
+											"value": "Link "
+										},
+										{
+											"type": "inlineCode",
+											"value": "transitionTypes"
+										},
+										{
+											"type": "text",
+											"value": " prop"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/api-reference/functions/use-router",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "useRouter"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": ", which also supports "
+								},
+								{
+									"type": "inlineCode",
+									"value": "transitionTypes"
+								},
+								{
+									"type": "text",
+									"value": " in "
+								},
+								{
+									"type": "inlineCode",
+									"value": "push()"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "replace()"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://react.dev/reference/react/ViewTransition",
+									"children": [
+										{
+											"type": "text",
+											"value": "React "
+										},
+										{
+											"type": "inlineCode",
+											"value": "ViewTransition"
+										},
+										{
+											"type": "text",
+											"value": " component"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "link",
+									"title": null,
+									"url": "https://github.com/nextjs/react-view-transitions-demo/blob/main/src/app/globals.css",
+									"children": [
+										{
+											"type": "text",
+											"value": "Complete CSS from this guide"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " — all keyframes and view transition rules in one file"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

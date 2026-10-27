@@ -1,0 +1,354 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Font Optimization\ndescription: Learn how to optimize fonts in Next.js\nrelated:\n title: API Reference\n description: See the API Reference for the full feature set of Next.js Font\n links:\n  - app/api-reference/components/font"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/font",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next/font"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " module automatically optimizes your fonts and removes external network requests for improved privacy and performance."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "It includes "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "built-in self-hosting"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for any font file. This means you can optimally load web fonts with no layout shift."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To start using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font"
+				},
+				{
+					"type": "text",
+					"value": ", import it from "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#local-fonts",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next/font/local"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#google-fonts",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next/font/google"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", call it as a function with the appropriate options, and set the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "className"
+				},
+				{
+					"type": "text",
+					"value": " of the element you want to apply the font to. For example:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" highlight={1,3-5,9} switcher",
+			"value": "import { Geist } from 'next/font/google'\n\nconst geist = Geist({\n\tsubsets: ['latin'],\n})\n\nexport default function Layout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={geist.className}>\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" highlight={1,3-5,9} switcher",
+			"value": "import { Geist } from 'next/font/google'\n\nconst geist = Geist({\n\tsubsets: ['latin'],\n})\n\nexport default function Layout({ children }) {\n\treturn (\n\t\t<html className={geist.className}>\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Fonts are scoped to the component they're used in. To apply a font to your entire application, add it to the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/layout#root-layout",
+					"children": [
+						{
+							"type": "text",
+							"value": "Root Layout"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Google fonts"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can automatically self-host any Google Font. Fonts are included as static assets and served from the same domain as your deployment, meaning no requests are sent to Google by the browser when the user visits your site."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To start using a Google Font, import your chosen font from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/google"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import { Geist } from 'next/font/google'\n\nconst geist = Geist({\n\tsubsets: ['latin'],\n})\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={geist.className}>\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "import { Geist } from 'next/font/google'\n\nconst geist = Geist({\n\tsubsets: ['latin'],\n})\n\nexport default function RootLayout({ children }) {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={geist.className}>\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "We recommend using "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://fonts.google.com/variablefonts",
+					"children": [
+						{
+							"type": "text",
+							"value": "variable fonts"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the best performance and flexibility. But if you can't use a variable font, you will need to specify a weight:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" highlight={4} switcher",
+			"value": "import { Roboto } from 'next/font/google'\n\nconst roboto = Roboto({\n\tweight: '400',\n\tsubsets: ['latin'],\n})\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={roboto.className}>\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\"  highlight={4} switcher",
+			"value": "import { Roboto } from 'next/font/google'\n\nconst roboto = Roboto({\n\tweight: '400',\n\tsubsets: ['latin'],\n})\n\nexport default function RootLayout({ children }) {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={roboto.className}>\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Local fonts"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To use a local font, import the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "localFont"
+				},
+				{
+					"type": "text",
+					"value": " function from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next/font/local"
+				},
+				{
+					"type": "text",
+					"value": " and specify the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/components/font#src",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "src"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " of your local font file. The path is resolved relative to the file where "
+				},
+				{
+					"type": "inlineCode",
+					"value": "localFont"
+				},
+				{
+					"type": "text",
+					"value": " is called. Fonts can be stored anywhere in the project, including the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/public-folder",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "public"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " folder or co-located inside the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app"
+				},
+				{
+					"type": "text",
+					"value": " folder. For example, to use a font stored in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "app/fonts/"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/layout.tsx\" switcher",
+			"value": "import localFont from 'next/font/local'\n\nconst myFont = localFont({\n\tsrc: './my-font.woff2',\n})\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={myFont.className}>\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/layout.js\" switcher",
+			"value": "import localFont from 'next/font/local'\n\nconst myFont = localFont({\n\tsrc: './my-font.woff2',\n})\n\nexport default function RootLayout({ children }) {\n\treturn (\n\t\t<html\n\t\t\tlang=\"en\"\n\t\t\tclassName={myFont.className}>\n\t\t\t<body>{children}</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "If you want to use multiple files for a single font family, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "src"
+				},
+				{
+					"type": "text",
+					"value": " can be an array:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": null,
+			"value": "const roboto = localFont({\n\tsrc: [\n\t\t{\n\t\t\tpath: './Roboto-Regular.woff2',\n\t\t\tweight: '400',\n\t\t\tstyle: 'normal',\n\t\t},\n\t\t{\n\t\t\tpath: './Roboto-Italic.woff2',\n\t\t\tweight: '400',\n\t\t\tstyle: 'italic',\n\t\t},\n\t\t{\n\t\t\tpath: './Roboto-Bold.woff2',\n\t\t\tweight: '700',\n\t\t\tstyle: 'normal',\n\t\t},\n\t\t{\n\t\t\tpath: './Roboto-BoldItalic.woff2',\n\t\t\tweight: '700',\n\t\t\tstyle: 'italic',\n\t\t},\n\t],\n})"
+		}
+	]
+}

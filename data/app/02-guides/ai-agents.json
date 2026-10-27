@@ -1,0 +1,2136 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: How Next.js supports AI coding agents\nnav_title: AI Coding Agents\ndescription: Learn how Next.js helps AI coding agents use current framework guidance, inspect applications, verify changes, and report issues.\nrelated:\n title: Next Steps\n description: Learn more about the APIs and tools described in this guide.\n links:\n  - app/guides/mcp\n  - app/getting-started/upgrading\n  - app/api-reference/config/next-config-js/agentRules\n  - app/api-reference/config/next-config-js/agentFeedback\n  - app/api-reference/config/next-config-js/agentUpgrade"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "AI coding agents may rely on training data that predates the Next.js version installed in a project. To help agents use current APIs and verify their work, Next.js provides and evaluates version-matched documentation, managed project instructions, agent-guided upgrades, runtime tools, structured errors, reusable Skills, and optional agent feedback. See the results in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nextjs.org/evals",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js agent evaluations"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For more background, read about the AI tooling introduced in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/blog/next-16-2-ai",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js 16.2"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/blog/next-16-3-ai-improvements",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js 16.3"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "<span id=\"step-1-point-agents-at-the-bundled-docs\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version-matched documentation"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js 16.2 and later include documentation that matches the installed framework version. The documentation is available at "
+				},
+				{
+					"type": "inlineCode",
+					"value": "node_modules/next/dist/docs/"
+				},
+				{
+					"type": "text",
+					"value": " and mirrors the structure of the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nextjs.org/docs",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js documentation site"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "txt",
+			"meta": null,
+			"value": "node_modules/next/dist/docs/\n├── 01-app/\n│   ├── 01-getting-started/\n│   ├── 02-guides/\n│   └── 03-api-reference/\n├── 02-pages/\n├── 03-architecture/\n└── index.mdx"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The bundled copy gives coding agents access to the APIs and patterns supported by the project without a network request or external lookup. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/upgrading",
+					"children": [
+						{
+							"type": "text",
+							"value": "Upgrading Next.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " also updates the bundled documentation."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Managed documentation instructions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js makes the bundled documentation discoverable through managed instructions in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "AGENTS.md"
+				},
+				{
+					"type": "text",
+					"value": " at the project root. Coding agents such as Claude Code, Codex, Cursor, and GitHub Copilot read this file when they start a session."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/cli/create-next-app",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "create-next-app"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " creates the agent files for new projects. When "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " detects a coding agent, it creates or updates the managed instructions for existing projects. The block directs the agent to the documentation installed with the project:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "md",
+			"meta": "filename=\"AGENTS.md\"",
+			"value": "<!-- BEGIN:nextjs-agent-rules -->\n\n## This is NOT the Next.js you know\n\nThis version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.\n\nThis block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.\n\n<!-- END:nextjs-agent-rules -->"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js updates only the content between the agent rules markers and preserves the rest of "
+				},
+				{
+					"type": "inlineCode",
+					"value": "AGENTS.md"
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://vercel.com/blog/agents-md-outperforms-skills-in-our-agent-evals",
+					"children": [
+						{
+							"type": "text",
+							"value": "Research comparing "
+						},
+						{
+							"type": "inlineCode",
+							"value": "AGENTS.md"
+						},
+						{
+							"type": "text",
+							"value": " with knowledge Skills"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " found a 100% pass rate with bundled documentation, compared with up to 79% for Skill-based approaches. See the current "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nextjs.org/evals",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js agent evaluation results"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Managed documentation instructions are enabled by default in Next.js 16.3 and later. See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/agentRules",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "agentRules"
+						},
+						{
+							"type": "text",
+							"value": " API reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to configure or disable them."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version support"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js 16.3 and later include bundled documentation and support managed agent instructions. Next.js 16.2 includes the bundled documentation but does not generate instructions automatically."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js 16.1 and earlier do not include the bundled documentation. The legacy "
+				},
+				{
+					"type": "inlineCode",
+					"value": "agents-md"
+				},
+				{
+					"type": "text",
+					"value": " command downloads a version-matched copy to "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next-docs/"
+				},
+				{
+					"type": "text",
+					"value": " and indexes it in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "AGENTS.md"
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": null,
+			"value": "npx @next/codemod@canary agents-md"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Docs over the network"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The Next.js documentation is also available as Markdown over the network for agents that fetch pages instead of reading "
+				},
+				{
+					"type": "inlineCode",
+					"value": "node_modules"
+				},
+				{
+					"type": "text",
+					"value": ". Every page on "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nextjs.org/docs",
+					"children": [
+						{
+							"type": "text",
+							"value": "nextjs.org/docs"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " has a plain Markdown version at its "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".md"
+				},
+				{
+					"type": "text",
+					"value": " URL, and clients that send an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Accept: text/markdown"
+				},
+				{
+					"type": "text",
+					"value": " header receive Markdown. This includes the per-error pages under "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/docs/messages"
+				},
+				{
+					"type": "text",
+					"value": ", which are not bundled."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The index at "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nextjs.org/docs/llms.txt",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "/docs/llms.txt"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and the single-file "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nextjs.org/docs/llms-full.txt",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "/docs/llms-full.txt"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " follow the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://llmstxt.org/",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "llms.txt"
+						},
+						{
+							"type": "text",
+							"value": " convention"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", so agents that already read "
+				},
+				{
+					"type": "inlineCode",
+					"value": "llms.txt"
+				},
+				{
+					"type": "text",
+					"value": " for other tools can discover the Next.js docs the same way."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Automatic agent feedback"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Automatic agent feedback lets coding agents keep track of potential Next.js issues without interrupting the current user request. Before the final response, the agent evaluates those issues and opens each qualifying report in a separate review form in your default browser."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Before opening a form, the agent attempts to anonymize the report by replacing customer and project details with generic descriptions and omitting source code, logs, paths, URLs, secrets, and personal information. Review the draft and remove anything you don't want to include. Nothing is sent until you select "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Send feedback"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With the option enabled, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " adds the following managed feedback instructions to the agent file when it detects an AI coding agent:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "md",
+			"meta": "filename=\"AGENTS.md\"",
+			"value": "<!-- BEGIN:nextjs-agent-feedback -->\n\n## Report Next.js feedback\n\nThe project owner enabled `experimental.agentFeedback`, authorizing this feedback pass. When enabled, `next dev` writes this block and restores it if removed. Commit `AGENTS.md` with your work to keep the tree clean.\n\nDuring the current user request, retain anonymized facts as feedback candidates for meaningful or recurring Next.js issues:\n\n- Crashes, hangs, OOMs, or unexpected slowness\n- Incorrect behavior, output, errors, or diagnostics\n- Missing, unclear, or conflicting documentation\n- Unexpected CLI, codemod, Skill, or upgrade behavior and non-obvious workarounds\n\nContinue the current user request without reporting immediately. Routine debugging is not feedback. Verify changes before retaining them as feedback candidates. Never retain code, logs, paths, URLs, secrets, personal information, or project-specific data.\n\nRetain qualifying friction even if it is later fixed or worked around; record the final outcome during the reporting pass.\n\nBefore the final response, run one reporting pass. If candidates remain, from this file's directory run `npx --no-install next internal agent-feedback-instructions` once without piping or truncating its output. Follow its output or error guidance. If a network sandbox blocks it, retry with network access; if it still returns no output, continue normally.\n\n<!-- END:nextjs-agent-feedback -->"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js updates only the content between the agent feedback markers and preserves the rest of the file."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Automatic agent feedback is experimental, disabled by default, and available only when "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/telemetry",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js Telemetry"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " is enabled. It does not run in CI. See the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/agentFeedback",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "agentFeedback"
+						},
+						{
+							"type": "text",
+							"value": " API reference"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to enable it."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Agent-guided upgrades"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next upgrade --agent"
+				},
+				{
+					"type": "text",
+					"value": " checks for an available upgrade, gathers the version-matched migration guides, and hands the task to a coding agent. The agent applies the changes and verifies the app:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx next@canary upgrade --agent=latest"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The experimental "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/agentUpgrade",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "agentUpgrade"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " option shows security upgrade reminders during "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " by default. See "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/upgrading/agent-upgrade",
+					"children": [
+						{
+							"type": "text",
+							"value": "Upgrade with a coding agent"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " for the available policies and workflow."
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "<span id=\"step-2-give-agents-runtime-visibility\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Runtime visibility"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Agents need both framework and browser state to verify a running application. Next.js and its supporting tools expose these complementary views as structured text."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "First, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " forwards browser console errors and warnings to the terminal (the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/logging",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "logging.browserToTerminal"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " config), so the output agents already read carries the client-side failures they're asked to fix."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " also writes its PID, port, and URL to "
+				},
+				{
+					"type": "inlineCode",
+					"value": ".next/dev/lock"
+				},
+				{
+					"type": "text",
+					"value": ". If you run "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " while another development server is already running for the project, the command prints the existing server's URL and PID, along with a command to stop it. Continue with the existing server when possible to avoid interrupting the active development session."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "framework's view"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " comes from the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/mcp",
+					"children": [
+						{
+							"type": "text",
+							"value": "Next.js MCP server"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " at "
+				},
+				{
+					"type": "inlineCode",
+					"value": "/_next/mcp"
+				},
+				{
+					"type": "text",
+					"value": ", which exposes the running dev server's routes, server logs, and compilation issues. Its "
+				},
+				{
+					"type": "inlineCode",
+					"value": "get_compilation_issues"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "compile_route"
+				},
+				{
+					"type": "text",
+					"value": " tools report whether the code compiles straight from the dev server, so an agent doesn't have to run a full "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " to find out."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#next-dev-loop",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next-dev-loop"
+						},
+						{
+							"type": "text",
+							"value": " skill"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " adds the "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "browser's view"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " through "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel-labs/agent-browser",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "agent-browser"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", a CLI that exposes the DOM, console, network, and Web Vitals as structured text. The Skill opens "
+				},
+				{
+					"type": "inlineCode",
+					"value": "agent-browser"
+				},
+				{
+					"type": "text",
+					"value": " with React DevTools enabled, which also exposes the component tree and pending Suspense boundaries. An agent can run a command such as "
+				},
+				{
+					"type": "inlineCode",
+					"value": "react tree"
+				},
+				{
+					"type": "text",
+					"value": " and use the structured output to decide what to inspect next."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Together with the Next.js MCP server, "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next-dev-loop"
+				},
+				{
+					"type": "text",
+					"value": " combines the framework's and the browser's perspectives into one edit-and-verify loop."
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "<span id=\"step-3-let-errors-drive-the-fixes\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Built-in guidance for errors"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "With "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/config/next-config-js/cacheComponents",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " enabled, a blocking error presents labeled fixes, each making a different trade-off. The dev overlay adds a "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "Copy prompt"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " button that packages the chosen fix into a paste-ready prompt. The prompt walks the agent through reading the matching error page, applying the canonical pattern, and verifying the result at runtime."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The same menu prints in the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " terminal and in "
+				},
+				{
+					"type": "inlineCode",
+					"value": "next build"
+				},
+				{
+					"type": "text",
+					"value": " output, so an agent reading CI logs sees it too:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "txt",
+			"meta": "filename=\"Terminal\"",
+			"value": "Route \"/products/[slug]\": Next.js encountered uncached data during prerendering.\n\n`fetch(...)` or `connection()` accessed outside of `<Suspense>` prevents the route\nfrom being prerendered, blocking the page load and leading to a slower user experience.\n\nWays to fix this:\n  - [stream] Provide a placeholder with `<Suspense fallback={...}>` around the data access\n  - [cache] Cache the data access with `\"use cache\"` (does not apply to `connection()`)\n  - [block] Set `export const instant = false` to allow a blocking route\n\nLearn more: https://nextjs.org/docs/messages/blocking-prerender-dynamic\n    at ProductPage (app/products/[slug]/page.tsx:52:32)\n    ..."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next dev"
+				},
+				{
+					"type": "text",
+					"value": " shows all validation errors with source-mapped stacks in the overlay and terminal. Production builds minify server code and stop after a route fails. Use "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/building#debug-prerender-errors",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next build --debug-prerender"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to enable server source maps and continue checking other routes."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "inlineCode",
+					"value": "Learn more"
+				},
+				{
+					"type": "text",
+					"value": " link resolves to a per-error page under "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nextjs.org/docs/messages/blocking-prerender-dynamic",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "/docs/messages"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " written for agents to read. Each page follows the same shape, with the canonical patterns for every fix, the trade-offs against the other fixes, and the gotchas an agent is likely to miss on a first attempt. The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/instant-navigation#ai-workflow",
+					"children": [
+						{
+							"type": "text",
+							"value": "Instant navigation guide"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " walks through the full loop an agent runs on these errors, from reading the insight to writing an "
+				},
+				{
+					"type": "inlineCode",
+					"value": "instant()"
+				},
+				{
+					"type": "text",
+					"value": " test that fails before the fix and passes once it's in place."
+				}
+			]
+		},
+		{
+			"type": "html",
+			"value": "<span id=\"step-4-hand-multi-step-workflows-to-skills\" />"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Skills for multi-step workflows"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Framework knowledge comes from the bundled docs, not from Skills. "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://nextjs.org/evals",
+					"children": [
+						{
+							"type": "text",
+							"value": "Benchmark results"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " show that always-available context outperforms on-demand retrieval. Skills cover the tasks that are workflows rather than lookups, such as adopting Cache Components or Partial Prefetching across an app. Next.js Skills package these as structured instructions an agent installs and follows, sequencing the work and pointing at the relevant docs and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#runtime-visibility",
+					"children": [
+						{
+							"type": "text",
+							"value": "runtime tooling"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " along the way."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://github.com/vercel/next.js/tree/canary/skills",
+					"children": [
+						{
+							"type": "text",
+							"value": "browse the source for these Skills"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " in the Next.js repository and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.skills.sh/vercel/next.js",
+					"children": [
+						{
+							"type": "text",
+							"value": "find them on skills.sh"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The Skills serve three different workflow types:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Runtime foundations"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " such as "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next-dev-loop"
+								},
+								{
+									"type": "text",
+									"value": " give any coding task a repeatable inspect, edit, and verify cycle."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Interactive workflows"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " make broader changes with user checkpoints, such as adopting Cache Components or Partial Prefetching across an app."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "strong",
+									"children": [
+										{
+											"type": "text",
+											"value": "Unattended loops"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " work toward a verifiable goal and stop only for genuine decisions."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next-dev-loop"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.skills.sh/vercel/next.js/next-dev-loop",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next-dev-loop"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " runtime foundation verifies changes against a running dev server using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/mcp",
+					"children": [
+						{
+							"type": "text",
+							"value": "MCP server"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and browser."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx skills add vercel/next.js --skill next-dev-loop"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then give the agent this prompt:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "prompt",
+			"meta": null,
+			"value": "After every edit, verify the page still works at runtime using the next-dev-loop Skill."
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next-bundle-optimizer"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.skills.sh/vercel/next.js/next-bundle-optimizer",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next-bundle-optimizer"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " skill uses Turbopack's bundle analyzer to identify sources of large client-side bundles that impact your site's initial load performance."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx skills add vercel/next.js --skill next-bundle-optimizer"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In audit-only mode, it produces a report without making any changes:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "prompt",
+			"meta": null,
+			"value": "Use the next-bundle-optimizer skill to produce a report of the initial load performance of this site."
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can also tell your agent to fix any issues, and it will optimize your site based on its findings. Or have it focus on a specific route by providing the route in the prompt."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next-cache-components-adoption"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.skills.sh/vercel/next.js/next-cache-components-adoption",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next-cache-components-adoption"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " Skill migrates an app to "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ":"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Turns the flag on and finds the routes that can't prerender."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Fixes them one feature at a time, checking in with you before moving on."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Confirms a feature against "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next dev"
+								},
+								{
+									"type": "text",
+									"value": " and "
+								},
+								{
+									"type": "inlineCode",
+									"value": "next build"
+								},
+								{
+									"type": "text",
+									"value": " before leaving it."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The Skill supports both a series of pull requests and a single-branch migration."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx skills add vercel/next.js --skill next-cache-components-adoption"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then give the agent this prompt:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "prompt",
+			"meta": null,
+			"value": "Adopt Cache Components in this project using the next-cache-components-adoption Skill."
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next-cache-components-optimizer"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.skills.sh/vercel/next.js/next-cache-components-optimizer",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next-cache-components-optimizer"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " Skill expands a target route's static shell to include the useful UI you want available on an initial load:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Writes a failing "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/instant-navigation#prevent-regressions-with-e2e-tests",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "instant()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " test for the static-shell UI you named."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Refactors the route until it passes, often by moving a data read below a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Suspense>"
+								},
+								{
+									"type": "text",
+									"value": " boundary."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Commits the passing test with the refactoring, so it catches future regressions."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Use it after adopting "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to optimize an initial load or client navigation. To prefetch URL-specific content for an already-instant destination, use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#next-partial-prefetching-optimizer",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next-partial-prefetching-optimizer"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " instead."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx skills add vercel/next.js --skill next-cache-components-optimizer"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then give the agent a prompt like:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "prompt",
+			"meta": null,
+			"value": "Optimize the static shell for /dashboard using the next-cache-components-optimizer Skill. On an initial load, the header and project list should be available immediately."
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next-partial-prefetching-adoption"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.skills.sh/vercel/next.js/next-partial-prefetching-adoption",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next-partial-prefetching-adoption"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " Skill moves an app onto "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/adopting-partial-prefetching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Partial Prefetching"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ", where links share one App Shell:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Audits existing "
+								},
+								{
+									"type": "inlineCode",
+									"value": "<Link prefetch={true}>"
+								},
+								{
+									"type": "text",
+									"value": " navigations and identifies the prefetched UI to preserve."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Captures that UI in passing "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/instant-navigation#prevent-regressions-with-e2e-tests",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "instant()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " tests before enabling Partial Prefetching, then migrates each destination until the same tests pass unchanged."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enables the flag, resolves the URL-data insights it surfaces, and marks optional per-link prefetching candidates for later."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "It needs "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/caching",
+					"children": [
+						{
+							"type": "text",
+							"value": "Cache Components"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " already adopted and a production-like build it can run for prefetch verification."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx skills add vercel/next.js --skill next-partial-prefetching-adoption"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then give the agent this prompt:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "prompt",
+			"meta": null,
+			"value": "Adopt Partial Prefetching in this project using the next-partial-prefetching-adoption Skill."
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "next-partial-prefetching-optimizer"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://www.skills.sh/vercel/next.js/next-partial-prefetching-optimizer",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "next-partial-prefetching-optimizer"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " Skill takes a target navigation or set of navigations and works toward the UI you want ready before each click:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": true,
+			"start": 1,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Turns the requested behavior for each navigation into a contract for what is prefetched, what waits for navigation, and when prefetching begins."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Captures each contract in an "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/instant-navigation#prevent-regressions-with-e2e-tests",
+									"children": [
+										{
+											"type": "inlineCode",
+											"value": "instant()"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " test."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Applies the "
+								},
+								{
+									"type": "link",
+									"title": null,
+									"url": "/docs/app/guides/optimizing-prefetching",
+									"children": [
+										{
+											"type": "text",
+											"value": "Optimizing prefetching"
+										}
+									]
+								},
+								{
+									"type": "text",
+									"value": " patterns and keeps the passing tests as regression coverage."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "It needs Cache Components and Partial Prefetching already adopted."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "filename=\"Terminal\"",
+			"value": "npx skills add vercel/next.js --skill next-partial-prefetching-optimizer"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then give the agent a prompt like:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "prompt",
+			"meta": null,
+			"value": "Make the product title instant when navigating from /products to /products/[id]. Use the next-partial-prefetching-optimizer Skill."
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v16.4.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "next-bundle-optimizer"
+								},
+								{
+									"type": "text",
+									"value": " skill added."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

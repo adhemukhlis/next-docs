@@ -1,0 +1,650 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: unstable_cache\ndescription: API Reference for the unstable_cache function."
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Note:"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " This API has been replaced by "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/api-reference/directives/use-cache",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "use cache"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " in Next.js 16. We recommend opting into "
+						},
+						{
+							"type": "link",
+							"title": null,
+							"url": "/docs/app/getting-started/caching",
+							"children": [
+								{
+									"type": "text",
+									"value": "Cache Components"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": " and replacing "
+						},
+						{
+							"type": "inlineCode",
+							"value": "unstable_cache"
+						},
+						{
+							"type": "text",
+							"value": " with the "
+						},
+						{
+							"type": "inlineCode",
+							"value": "use cache"
+						},
+						{
+							"type": "text",
+							"value": " directive."
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "unstable_cache"
+				},
+				{
+					"type": "text",
+					"value": " allows you to cache the results of expensive operations, like database queries, and reuse them across multiple requests."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "import { getUser } from './data';\nimport { unstable_cache } from 'next/cache';\n\nconst getCachedUser = unstable_cache(\n  async (id) => getUser(id),\n  ['my-app-user']\n);\n\nexport default async function Component({ userID }) {\n  const user = await getCachedUser(userID);\n  ...\n}"
+		},
+		{
+			"type": "blockquote",
+			"children": [
+				{
+					"type": "paragraph",
+					"children": [
+						{
+							"type": "strong",
+							"children": [
+								{
+									"type": "text",
+									"value": "Good to know"
+								}
+							]
+						},
+						{
+							"type": "text",
+							"value": ":"
+						}
+					]
+				},
+				{
+					"type": "list",
+					"ordered": false,
+					"start": null,
+					"spread": false,
+					"children": [
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "Accessing request data such as "
+										},
+										{
+											"type": "inlineCode",
+											"value": "headers"
+										},
+										{
+											"type": "text",
+											"value": " or "
+										},
+										{
+											"type": "inlineCode",
+											"value": "cookies"
+										},
+										{
+											"type": "text",
+											"value": " inside a cache scope is not supported. Read the data outside the cached function and pass the values you need as arguments."
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "listItem",
+							"spread": false,
+							"checked": null,
+							"children": [
+								{
+									"type": "paragraph",
+									"children": [
+										{
+											"type": "text",
+											"value": "This API uses Next.js' built-in cache to persist the result across requests and deployments. See "
+										},
+										{
+											"type": "link",
+											"title": null,
+											"url": "/docs/app/getting-started/caching",
+											"children": [
+												{
+													"type": "text",
+													"value": "Caching and Revalidating"
+												}
+											]
+										},
+										{
+											"type": "text",
+											"value": "."
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Unsupported operations"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The function passed to "
+				},
+				{
+					"type": "inlineCode",
+					"value": "unstable_cache"
+				},
+				{
+					"type": "text",
+					"value": " cannot depend on the incoming request. Read values from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "cookies()"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "headers()"
+				},
+				{
+					"type": "text",
+					"value": " before calling the cached function, then pass those values as arguments so they become part of the cache key."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "The cached function also cannot:"
+				}
+			]
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Call "
+								},
+								{
+									"type": "inlineCode",
+									"value": "connection()"
+								},
+								{
+									"type": "text",
+									"value": ", which requires an incoming request"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Enable or disable draft mode"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Call "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidateTag()"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "updateTag()"
+								},
+								{
+									"type": "text",
+									"value": ", or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "revalidatePath()"
+								},
+								{
+									"type": "text",
+									"value": " during cache execution"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Call a function that uses the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "use cache: private"
+								},
+								{
+									"type": "text",
+									"value": " directive"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Perform request-dependent work before calling the cached function. Perform mutations and revalidation afterward from a Server Action or Route Handler."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Parameters"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": null,
+			"value": "const data = unstable_cache(fetchData, keyParts, options)()"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "fetchData"
+								},
+								{
+									"type": "text",
+									"value": ": This is an asynchronous function that fetches the data you want to cache. It must be a function that returns a "
+								},
+								{
+									"type": "inlineCode",
+									"value": "Promise"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "keyParts"
+								},
+								{
+									"type": "text",
+									"value": ": This is an extra array of keys that further adds identification to the cache. By default, "
+								},
+								{
+									"type": "inlineCode",
+									"value": "unstable_cache"
+								},
+								{
+									"type": "text",
+									"value": " already uses the arguments and the stringified version of your function as the cache key. It is optional in most cases; the only time you need to use it is when you use external variables without passing them as parameters. However, it is important to add closures used within the function if you do not pass them as parameters."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "options"
+								},
+								{
+									"type": "text",
+									"value": ": This is an object that controls how the cache behaves. It can contain the following properties:"
+								}
+							]
+						},
+						{
+							"type": "list",
+							"ordered": false,
+							"start": null,
+							"spread": false,
+							"children": [
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "tags"
+												},
+												{
+													"type": "text",
+													"value": ": An array of tags that can be used to control cache invalidation. Next.js will not use this to uniquely identify the function."
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "listItem",
+									"spread": false,
+									"checked": null,
+									"children": [
+										{
+											"type": "paragraph",
+											"children": [
+												{
+													"type": "inlineCode",
+													"value": "revalidate"
+												},
+												{
+													"type": "text",
+													"value": ": The number of seconds after which the cache should be revalidated. Omit or pass "
+												},
+												{
+													"type": "inlineCode",
+													"value": "false"
+												},
+												{
+													"type": "text",
+													"value": " to cache indefinitely or until matching "
+												},
+												{
+													"type": "inlineCode",
+													"value": "revalidateTag()"
+												},
+												{
+													"type": "text",
+													"value": " or "
+												},
+												{
+													"type": "inlineCode",
+													"value": "revalidatePath()"
+												},
+												{
+													"type": "text",
+													"value": " methods are called."
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Returns"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "unstable_cache"
+				},
+				{
+					"type": "text",
+					"value": " returns a function that when invoked, returns a Promise that resolves to the cached data. If the data is not in the cache, the provided function will be invoked, and its result will be cached and returned."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Example"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "import { unstable_cache } from 'next/cache'\n\nexport default async function Page({ params }: { params: Promise<{ userId: string }> }) {\n\tconst { userId } = await params\n\tconst getCachedUser = unstable_cache(\n\t\tasync () => {\n\t\t\treturn { id: userId }\n\t\t},\n\t\t[userId], // add the user ID to the cache key\n\t\t{\n\t\t\ttags: ['users'],\n\t\t\trevalidate: 60,\n\t\t},\n\t)\n\n\t//...\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.jsx\" switcher",
+			"value": "import { unstable_cache } from 'next/cache'\n\nexport default async function Page({ params }) {\n\tconst { userId } = await params\n\tconst getCachedUser = unstable_cache(\n\t\tasync () => {\n\t\t\treturn { id: userId }\n\t\t},\n\t\t[userId], // add the user ID to the cache key\n\t\t{\n\t\t\ttags: ['users'],\n\t\t\trevalidate: 60,\n\t\t},\n\t)\n\n\t//...\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Version History"
+				}
+			]
+		},
+		{
+			"type": "table",
+			"align": [
+				null,
+				null
+			],
+			"children": [
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Version"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "text",
+									"value": "Changes"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "tableRow",
+					"children": [
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "v14.0.0"
+								}
+							]
+						},
+						{
+							"type": "tableCell",
+							"children": [
+								{
+									"type": "inlineCode",
+									"value": "unstable_cache"
+								},
+								{
+									"type": "text",
+									"value": " introduced."
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

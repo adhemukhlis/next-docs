@@ -1,0 +1,681 @@
+{
+	"type": "root",
+	"children": [
+		{
+			"type": "yaml",
+			"value": "title: Error Handling\ndescription: Learn how to display expected errors and handle uncaught exceptions.\nrelated:\n title: API Reference\n description: Learn more about the features mentioned in this page by reading the API Reference.\n links:\n  - app/api-reference/functions/redirect\n  - app/api-reference/file-conventions/error\n  - app/api-reference/functions/catchError\n  - app/api-reference/functions/not-found\n  - app/api-reference/file-conventions/not-found"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Errors can be divided into two categories: "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#handling-expected-errors",
+					"children": [
+						{
+							"type": "text",
+							"value": "expected errors"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "#handling-uncaught-exceptions",
+					"children": [
+						{
+							"type": "text",
+							"value": "uncaught exceptions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". This page will walk you through how you can handle these errors in your Next.js application."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Handling expected errors"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Expected errors are those that can occur during the normal operation of the application, such as those from "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/forms",
+					"children": [
+						{
+							"type": "text",
+							"value": "server-side form validation"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " or failed requests. These errors should be handled explicitly and returned to the client."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Functions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/useActionState",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "useActionState"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " hook to handle expected errors in "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/rsc/server-functions",
+					"children": [
+						{
+							"type": "text",
+							"value": "Server Functions"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For these errors, avoid using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "try"
+				},
+				{
+					"type": "text",
+					"value": "/"
+				},
+				{
+					"type": "inlineCode",
+					"value": "catch"
+				},
+				{
+					"type": "text",
+					"value": " blocks and throw errors. Instead, model expected errors as return values."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "ts",
+			"meta": "filename=\"app/actions.ts\" switcher",
+			"value": "'use server'\n\nexport async function createPost(prevState: any, formData: FormData) {\n\tconst title = formData.get('title')\n\tconst content = formData.get('content')\n\n\tconst res = await fetch('https://api.vercel.app/posts', {\n\t\tmethod: 'POST',\n\t\tbody: { title, content },\n\t})\n\tconst json = await res.json()\n\n\tif (!res.ok) {\n\t\treturn { message: 'Failed to create post' }\n\t}\n}"
+		},
+		{
+			"type": "code",
+			"lang": "js",
+			"meta": "filename=\"app/actions.js\" switcher",
+			"value": "'use server'\n\nexport async function createPost(prevState, formData) {\n\tconst title = formData.get('title')\n\tconst content = formData.get('content')\n\n\tconst res = await fetch('https://api.vercel.app/posts', {\n\t\tmethod: 'POST',\n\t\tbody: { title, content },\n\t})\n\tconst json = await res.json()\n\n\tif (!res.ok) {\n\t\treturn { message: 'Failed to create post' }\n\t}\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can pass your action to the "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useActionState"
+				},
+				{
+					"type": "text",
+					"value": " hook and use the returned "
+				},
+				{
+					"type": "inlineCode",
+					"value": "state"
+				},
+				{
+					"type": "text",
+					"value": " to display an error message."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/ui/form.tsx\" highlight={11,19} switcher",
+			"value": "'use client'\n\nimport { useActionState } from 'react'\nimport { createPost } from '@/app/actions'\n\nconst initialState = {\n\tmessage: '',\n}\n\nexport function Form() {\n\tconst [state, formAction, pending] = useActionState(createPost, initialState)\n\n\treturn (\n\t\t<form action={formAction}>\n\t\t\t<label htmlFor=\"title\">Title</label>\n\t\t\t<input\n\t\t\t\ttype=\"text\"\n\t\t\t\tid=\"title\"\n\t\t\t\tname=\"title\"\n\t\t\t\trequired\n\t\t\t/>\n\t\t\t<label htmlFor=\"content\">Content</label>\n\t\t\t<textarea\n\t\t\t\tid=\"content\"\n\t\t\t\tname=\"content\"\n\t\t\t\trequired\n\t\t\t/>\n\t\t\t{state?.message && <p aria-live=\"polite\">{state.message}</p>}\n\t\t\t<button disabled={pending}>Create Post</button>\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/ui/form.js\" highlight={11,19} switcher",
+			"value": "'use client'\n\nimport { useActionState } from 'react'\nimport { createPost } from '@/app/actions'\n\nconst initialState = {\n\tmessage: '',\n}\n\nexport function Form() {\n\tconst [state, formAction, pending] = useActionState(createPost, initialState)\n\n\treturn (\n\t\t<form action={formAction}>\n\t\t\t<label htmlFor=\"title\">Title</label>\n\t\t\t<input\n\t\t\t\ttype=\"text\"\n\t\t\t\tid=\"title\"\n\t\t\t\tname=\"title\"\n\t\t\t\trequired\n\t\t\t/>\n\t\t\t<label htmlFor=\"content\">Content</label>\n\t\t\t<textarea\n\t\t\t\tid=\"content\"\n\t\t\t\tname=\"content\"\n\t\t\t\trequired\n\t\t\t/>\n\t\t\t{state?.message && <p aria-live=\"polite\">{state.message}</p>}\n\t\t\t<button disabled={pending}>Create Post</button>\n\t\t</form>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Server Components"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "When fetching data inside of a Server Component, you can use the response to conditionally render an error message or "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/redirect",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "redirect"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/page.tsx\" switcher",
+			"value": "export default async function Page() {\n\tconst res = await fetch(`https://...`)\n\tconst data = await res.json()\n\n\tif (!res.ok) {\n\t\treturn 'There was an error.'\n\t}\n\n\treturn '...'\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/page.js\" switcher",
+			"value": "export default async function Page() {\n\tconst res = await fetch(`https://...`)\n\tconst data = await res.json()\n\n\tif (!res.ok) {\n\t\treturn 'There was an error.'\n\t}\n\n\treturn '...'\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Not found"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "You can call the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/not-found",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "notFound"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " function within a route segment and use the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/not-found",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "not-found.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " file to show a 404 UI."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/page.tsx\" switcher",
+			"value": "import { notFound } from 'next/navigation'\nimport { getPostBySlug } from '@/lib/posts'\n\nexport default async function Page({ params }: { params: Promise<{ slug: string }> }) {\n\tconst { slug } = await params\n\tconst post = getPostBySlug(slug)\n\n\tif (!post) {\n\t\tnotFound()\n\t}\n\n\treturn <div>{post.title}</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/page.js\" switcher",
+			"value": "import { notFound } from 'next/navigation'\nimport { getPostBySlug } from '@/lib/posts'\n\nexport default async function Page({ params }) {\n\tconst { slug } = await params\n\tconst post = getPostBySlug(slug)\n\n\tif (!post) {\n\t\tnotFound()\n\t}\n\n\treturn <div>{post.title}</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/blog/[slug]/not-found.tsx\" switcher",
+			"value": "export default function NotFound() {\n\treturn <div>404 - Page Not Found</div>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/blog/[slug]/not-found.js\" switcher",
+			"value": "export default function NotFound() {\n\treturn <div>404 - Page Not Found</div>\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 2,
+			"children": [
+				{
+					"type": "text",
+					"value": "Handling uncaught exceptions"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Uncaught exceptions are unexpected errors that indicate bugs or issues that should not occur during the normal flow of your application. These should be handled by throwing errors, which will then be caught by error boundaries."
+				}
+			]
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Nested error boundaries"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Next.js uses error boundaries to handle uncaught exceptions. Error boundaries catch errors in their child components and display a fallback UI instead of the component tree that crashed."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Create an error boundary by adding an "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/error",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "error.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " file inside a route segment and exporting a React component:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/dashboard/error.tsx\" switcher",
+			"value": "'use client' // Error boundaries must be Client Components\n\nimport { useEffect } from 'react'\n\nexport default function ErrorPage({ error, retry }: { error: unknown; retry: () => void }) {\n\tuseEffect(() => {\n\t\t// Log the error to an error reporting service\n\t\tconsole.error(error)\n\t}, [error])\n\n\treturn (\n\t\t<div>\n\t\t\t<h2>Something went wrong!</h2>\n\t\t\t<button\n\t\t\t\tonClick={\n\t\t\t\t\t// Attempt to recover by re-fetching and re-rendering the segment\n\t\t\t\t\t() => retry()\n\t\t\t\t}>\n\t\t\t\tTry again\n\t\t\t</button>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/dashboard/error.js\" switcher",
+			"value": "'use client' // Error boundaries must be Client Components\n\nimport { useEffect } from 'react'\n\nexport default function ErrorPage({ error, retry }) {\n\tuseEffect(() => {\n\t\t// Log the error to an error reporting service\n\t\tconsole.error(error)\n\t}, [error])\n\n\treturn (\n\t\t<div>\n\t\t\t<h2>Something went wrong!</h2>\n\t\t\t<button\n\t\t\t\tonClick={\n\t\t\t\t\t// Attempt to recover by re-fetching and re-rendering the segment\n\t\t\t\t\t() => retry()\n\t\t\t\t}>\n\t\t\t\tTry again\n\t\t\t</button>\n\t\t</div>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Errors will bubble up to the nearest parent error boundary. This allows for granular error handling by placing "
+				},
+				{
+					"type": "inlineCode",
+					"value": "error.tsx"
+				},
+				{
+					"type": "text",
+					"value": " files at different levels in the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/getting-started/project-structure#component-hierarchy",
+					"children": [
+						{
+							"type": "text",
+							"value": "route hierarchy"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": "."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "html",
+					"value": "<Image\nalt=\"Nested Error Component Hierarchy\"\nsrcLight=\"/docs/light/nested-error-component-hierarchy.png\"\nsrcDark=\"/docs/dark/nested-error-component-hierarchy.png\"\nwidth=\"1600\"\nheight=\"687\"\n/>"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "For component-level error recovery, the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/functions/catchError",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "catchError"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " function lets you create error boundaries that can wrap any part of your component tree:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/custom-error-boundary.tsx\" switcher",
+			"value": "'use client'\n\nimport { catchError, type ErrorInfo } from 'next/error'\n\nfunction ErrorFallback(props: { title: string }, { error, retry }: ErrorInfo) {\n\tconst message = error instanceof Error ? error.message : String(error)\n\n\treturn (\n\t\t<div>\n\t\t\t<h2>{props.title}</h2>\n\t\t\t<p>{message}</p>\n\t\t\t<button onClick={() => retry()}>Try again</button>\n\t\t</div>\n\t)\n}\n\nexport default catchError(ErrorFallback)"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/custom-error-boundary.js\" switcher",
+			"value": "'use client'\n\nimport { catchError } from 'next/error'\n\nfunction ErrorFallback(props, { error, retry }) {\n\tconst message = error instanceof Error ? error.message : String(error)\n\n\treturn (\n\t\t<div>\n\t\t\t<h2>{props.title}</h2>\n\t\t\t<p>{message}</p>\n\t\t\t<button onClick={() => retry()}>Try again</button>\n\t\t</div>\n\t)\n}\n\nexport default catchError(ErrorFallback)"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Then use the returned component as a wrapper in any layout or page:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/some-component.tsx\" switcher",
+			"value": "import ErrorBoundary from './custom-error-boundary'\n\nexport default function Component({ children }: { children: React.ReactNode }) {\n\treturn <ErrorBoundary title=\"Dashboard Error\">{children}</ErrorBoundary>\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/some-component.js\" switcher",
+			"value": "import ErrorBoundary from './custom-error-boundary'\n\nexport default function Component({ children }) {\n\treturn <ErrorBoundary title=\"Dashboard Error\">{children}</ErrorBoundary>\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Error boundaries don't catch errors inside event handlers. They're designed to catch errors "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "https://react.dev/reference/react/Component#static-getderivedstatefromerror",
+					"children": [
+						{
+							"type": "text",
+							"value": "during rendering"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " to show a "
+				},
+				{
+					"type": "strong",
+					"children": [
+						{
+							"type": "text",
+							"value": "fallback UI"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " instead of crashing the whole app."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "In general, errors in event handlers or async code aren’t handled by error boundaries because they run after rendering."
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "To handle these cases, catch the error manually and store it using "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useState"
+				},
+				{
+					"type": "text",
+					"value": " or "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useReducer"
+				},
+				{
+					"type": "text",
+					"value": ", then update the UI to inform the user."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "'use client'\n\nimport { useState } from 'react'\n\nexport function Button() {\n\tconst [error, setError] = useState(null)\n\n\tconst handleClick = () => {\n\t\ttry {\n\t\t\t// do some work that might fail\n\t\t\tthrow new Error('Exception')\n\t\t} catch (reason) {\n\t\t\tsetError(reason)\n\t\t}\n\t}\n\n\tif (error) {\n\t\t/* render fallback UI */\n\t}\n\n\treturn (\n\t\t<button\n\t\t\ttype=\"button\"\n\t\t\tonClick={handleClick}>\n\t\t\tClick me\n\t\t</button>\n\t)\n}"
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "Note that unhandled errors inside "
+				},
+				{
+					"type": "inlineCode",
+					"value": "startTransition"
+				},
+				{
+					"type": "text",
+					"value": " from "
+				},
+				{
+					"type": "inlineCode",
+					"value": "useTransition"
+				},
+				{
+					"type": "text",
+					"value": ", will bubble up to the nearest error boundary."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": null,
+			"value": "'use client'\n\nimport { useTransition } from 'react'\n\nexport function Button() {\n\tconst [pending, startTransition] = useTransition()\n\n\tconst handleClick = () =>\n\t\tstartTransition(() => {\n\t\t\tthrow new Error('Exception')\n\t\t})\n\n\treturn (\n\t\t<button\n\t\t\ttype=\"button\"\n\t\t\tonClick={handleClick}>\n\t\t\tClick me\n\t\t</button>\n\t)\n}"
+		},
+		{
+			"type": "heading",
+			"depth": 3,
+			"children": [
+				{
+					"type": "text",
+					"value": "Global errors"
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "text",
+					"value": "While less common, you can handle errors in the root layout using the "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/api-reference/file-conventions/error#global-error",
+					"children": [
+						{
+							"type": "inlineCode",
+							"value": "global-error.js"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": " file, located in the root app directory, even when leveraging "
+				},
+				{
+					"type": "link",
+					"title": null,
+					"url": "/docs/app/guides/internationalization",
+					"children": [
+						{
+							"type": "text",
+							"value": "internationalization"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"value": ". Global error UI must define its own "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<html>"
+				},
+				{
+					"type": "text",
+					"value": " and "
+				},
+				{
+					"type": "inlineCode",
+					"value": "<body>"
+				},
+				{
+					"type": "text",
+					"value": " tags, since it is replacing the root layout or template when active."
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "tsx",
+			"meta": "filename=\"app/global-error.tsx\" switcher",
+			"value": "'use client' // Error boundaries must be Client Components\n\nexport default function GlobalError({ error, retry }: { error: unknown; retry: () => void }) {\n\treturn (\n\t\t// global-error must include html and body tags\n\t\t<html>\n\t\t\t<body>\n\t\t\t\t<h2>Something went wrong!</h2>\n\t\t\t\t<button onClick={() => retry()}>Try again</button>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		},
+		{
+			"type": "code",
+			"lang": "jsx",
+			"meta": "filename=\"app/global-error.js\" switcher",
+			"value": "'use client' // Error boundaries must be Client Components\n\nexport default function GlobalError({ error, retry }) {\n\treturn (\n\t\t// global-error must include html and body tags\n\t\t<html>\n\t\t\t<body>\n\t\t\t\t<h2>Something went wrong!</h2>\n\t\t\t\t<button onClick={() => retry()}>Try again</button>\n\t\t\t</body>\n\t\t</html>\n\t)\n}"
+		}
+	]
+}
