@@ -3,7 +3,7 @@ title: create-next-app
 description: Create Next.js apps using one command with the create-next-app CLI.
 ---
 
-The `create-next-app` CLI allow you to create a new Next.js application using the default template or an [example](https://github.com/vercel/next.js/tree/canary/examples) from a public GitHub repository. It is the easiest way to get started with Next.js.
+The `create-next-app` CLI allows you to create a new Next.js application using the default template or an [example](https://github.com/vercel/next.js/tree/canary/examples) from a public GitHub repository.
 
 Basic usage:
 
@@ -13,14 +13,6 @@ pnpm create next-app [project-name] [options]
 
 ```bash package="npm"
 npx create-next-app@latest [project-name] [options]
-```
-
-```bash package="yarn"
-yarn create next-app [project-name] [options]
-```
-
-```bash package="bun"
-bun create next-app [project-name] [options]
 ```
 
 ## Reference
@@ -75,14 +67,6 @@ pnpm create next-app
 npx create-next-app@latest
 ```
 
-```bash package="yarn"
-yarn create next-app
-```
-
-```bash package="bun"
-bun create next-app
-```
-
 On installation, you'll see the following prompts:
 
 ```txt filename="Terminal"
@@ -113,13 +97,11 @@ After the prompts, `create-next-app` will create a folder with your project name
 
 ### Linter Options
 
-**ESLint**: The traditional and most popular JavaScript linter. Includes Next.js-specific rules from `@next/eslint-plugin-next`.
+**ESLint**: Sets up ESLint with the Next.js-specific rules from `@next/eslint-plugin-next`.
 
-**Biome**: A fast, modern linter and formatter that combines the functionality of ESLint and Prettier. Includes built-in Next.js and React domain support for optimal performance.
+**Biome**: Sets up Biome, a linter and formatter, with its built-in Next.js and React domain support.
 
-**None**: Skip linter configuration entirely. You can always add a linter later.
-
-Once you've answered the prompts, a new project will be created with your chosen configuration.
+**None**: Skips linter configuration. You can add a linter later.
 
 ### With an official Next.js example
 
@@ -131,14 +113,6 @@ pnpm create next-app --example [example-name] [your-project-name]
 
 ```bash package="npm"
 npx create-next-app@latest --example [example-name] [your-project-name]
-```
-
-```bash package="yarn"
-yarn create next-app --example [example-name] [your-project-name]
-```
-
-```bash package="bun"
-bun create next-app --example [example-name] [your-project-name]
 ```
 
 You can view a list of all available examples along with setup instructions in the [Next.js repository](https://github.com/vercel/next.js/tree/canary/examples).
@@ -153,12 +127,4 @@ pnpm create next-app --example "https://github.com/.../" [your-project-name]
 
 ```bash package="npm"
 npx create-next-app@latest --example "https://github.com/.../" [your-project-name]
-```
-
-```bash package="yarn"
-yarn create next-app --example "https://github.com/.../" [your-project-name]
-```
-
-```bash package="bun"
-bun create next-app --example "https://github.com/.../" [your-project-name]
 ```
