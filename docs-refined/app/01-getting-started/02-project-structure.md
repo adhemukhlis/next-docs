@@ -35,7 +35,7 @@ Top-level files are used to configure your application, manage dependencies, run
 | ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
 | **Next.js**                                                                   |                                                                                    |
 | [`next.config.js`](../03-api-reference/05-config/01-next-config-js/index.md)  | Configuration file for Next.js                                                     |
-| [`package.json`](./01-installation.md#manual-installation)                    | Project dependencies and scripts                                                   |
+| [`package.json`](./01-installation.md)                                        | Project dependencies and scripts                                                   |
 | [`instrumentation.ts`](../02-guides/instrumentation.md)                       | OpenTelemetry and Instrumentation file                                             |
 | [`proxy.ts`](../03-api-reference/03-file-conventions/proxy.md)                | Next.js request proxy                                                              |
 | [`.env`](../02-guides/environment-variables.md)                               | Environment variables (should not be tracked by version control)                   |

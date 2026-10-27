@@ -252,7 +252,7 @@ export function generateStaticParams() {
 export const dynamicParams = false
 ```
 
-> **Good to know**: Ensure you specify the `.mdx` file extension in your import. While it is not required to use [module path aliases](../01-getting-started/01-installation.md#set-up-absolute-imports-and-module-path-aliases) (e.g., `@/content`), it does simplify your import path.
+> **Good to know**: Ensure you specify the `.mdx` file extension in your import. While it is not required to use [module path aliases](../03-api-reference/05-config/02-typescript.md) (e.g., `@/content`), it does simplify your import path.
 
 ## Using custom styles and components
 

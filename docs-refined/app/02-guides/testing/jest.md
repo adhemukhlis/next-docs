@@ -127,7 +127,7 @@ Under the hood, `next/jest` is automatically configuring Jest for you, including
 
 ## Optional: Handling Absolute Imports and Module Path Aliases
 
-If your project is using [Module Path Aliases](../../01-getting-started/01-installation.md#set-up-absolute-imports-and-module-path-aliases), you will need to configure Jest to resolve the imports by matching the paths option in the `jsconfig.json` file with the `moduleNameMapper` option in the `jest.config.js` file. For example:
+If your project is using [Module Path Aliases](../../03-api-reference/05-config/02-typescript.md), you will need to configure Jest to resolve the imports by matching the paths option in the `jsconfig.json` file with the `moduleNameMapper` option in the `jest.config.js` file. For example:
 
 ```json filename="tsconfig.json or jsconfig.json"
 {

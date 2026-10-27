@@ -96,7 +96,7 @@ React's process of attaching event handlers to the DOM to make server-rendered s
 
 ## Import Aliases
 
-Custom path mappings that provide shorthand references for frequently used directories. Import aliases reduce the complexity of relative imports and make code more readable and maintainable. Learn more in [Absolute Imports and Module Path Aliases](./01-getting-started/01-installation.md#set-up-absolute-imports-and-module-path-aliases).
+Custom path mappings that provide shorthand references for frequently used directories. Import aliases reduce the complexity of relative imports and make code more readable and maintainable. Learn more in [Absolute Imports and Module Path Aliases](./03-api-reference/05-config/02-typescript.md).
 
 ## Incremental Static Regeneration (ISR)
 

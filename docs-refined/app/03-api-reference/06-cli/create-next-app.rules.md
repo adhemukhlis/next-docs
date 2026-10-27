@@ -13,7 +13,7 @@ Reference for the `create-next-app` CLI: how to invoke it, every option it accep
 3. `## Reference`: one line, then the options table (`Options` | `Description`).
 4. `## Examples`, with these subsections:
    1. `### With the default template`: `my-app --yes` commands (pnpm, npm), one line on what `--yes` does.
-   2. `### With explicit options`: one multi-line command per package manager (pnpm with `--use-pnpm`, npm with `--use-npm`) passing `--app`, `--src-dir`, `--typescript`, `--import-alias "@/*"`, `--turbopack`, `--cache-components`, `--react-compiler`, `--biome`, `--tailwind`; then bullets: essential flags, optional flags, linter flags (`--eslint`, `--biome`, `--no-linter`); then one line on the folder it creates and `--skip-install`.
+   2. `### With explicit options`: one multi-line command per package manager (pnpm with `--use-pnpm`, npm with `--use-npm`) passing `--app`, `--src-dir`, `--typescript`, `--import-alias "@/*"`, `--turbopack`, `--cache-components`, `--biome`, `--tailwind`; then bullets: essential flags, optional flags, linter flags (`--eslint`, `--biome`, `--no-linter`); then one line on the folder it creates and `--skip-install`.
 
 ## Keep
 
