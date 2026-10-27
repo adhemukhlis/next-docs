@@ -8,8 +8,8 @@ Refined Next.js documentation: consistent, lightweight, and free of legacy bagga
 upstream ──fetch.mjs──▶ docs/ ──AI refine──▶ docs-refined/ ──md-json.mjs──▶ docs-json/ ──md-json.mjs──▶ docs-context/
 ```
 
-- `docs/` — upstream mirror from [vercel/next.js](https://github.com/vercel/next.js/tree/canary/docs) (`canary`). Kept original: only `fetch.mjs` writes here (sparse clone, `.mdx` → `.md`, MDX cleanup, `ignoreList`, format). Its git diff is how upstream changes are detected. **Never edit by hand.**
-- `docs-refined/` — AI-refined docs. Same directories and file names as `docs/`, always. The only place content is edited.
+- `docs/` — upstream mirror from [vercel/next.js](https://github.com/vercel/next.js/tree/canary/docs) (`canary`). Kept original: only `fetch.mjs` writes here (sparse clone, `.mdx` → `.md`, MDX cleanup, `ignoreList`, format, GFM alerts, internal links → relative file paths). Its git diff is how upstream changes are detected. **Never edit by hand.**
+- `docs-refined/` — AI-refined docs. Same directories and file names as `docs/`, always. The only place content is edited. `global.rules.md` holds content rules for every document; a `<name>.rules.md` next to a file is that file's lock/brief (overrides global). Read both before editing `<name>.md`.
 - `docs-json/` — mdast JSON of `docs-refined/`, validated by the `rules` in `md-json.mjs`. Generated.
 - `docs-context/` — final Markdown rebuilt from `docs-json/`, used as context. Generated.
 - `commit-hash.txt` — upstream commit `docs/` was fetched from.
@@ -25,8 +25,8 @@ upstream ──fetch.mjs──▶ docs/ ──AI refine──▶ docs-refined/ �
 ## Workflow
 
 1. `bun run pull`, commit nothing yet.
-2. Refine only the reported files in `docs-refined/`: added → refine whole file; modified → port `git diff -- docs/<file>` into `docs-refined/<file>`, keeping existing refinements.
-3. To drop a page/section entirely, add its path to `ignoreList` in `fetch.mjs` (relative to `docs/`), then `bun run sync`.
+2. Handle only the reported files in `docs-refined/`. Refine a file only if it has a `<name>.rules.md`; otherwise keep it as the upstream copy (modified → port `git diff -- docs/<file>` as-is).
+3. To drop a document/section entirely, add its path to `ignoreList` in `fetch.mjs` (relative to `docs/`), then `bun run sync`.
 4. `bun run fmt`, `bun run build`, commit `docs/`, `docs-refined/`, `docs-json/`, `docs-context/` and `commit-hash.txt` together.
 
 ## Tooling

@@ -6,8 +6,8 @@ related:
  title: Related
  description: View related API references and guides.
  links:
-  - app/api-reference/components/link
-  - app/guides/prefetching
+  - ../../02-components/link.md
+  - ../../../02-guides/prefetching.md
 ---
 
 When the App Router prefetches a route, it can bundle small segment responses into a single response instead of requesting each one separately. This reduces the number of prefetch requests at the cost of duplicating some shared segment data across routes. This behavior is on by default, and most apps should leave it that way.

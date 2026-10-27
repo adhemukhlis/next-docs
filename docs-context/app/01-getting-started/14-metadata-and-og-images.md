@@ -1,26 +1,13 @@
 ---
 title: Metadata and OG images
 description: Learn how to add metadata to your pages and create dynamic OG images.
-related:
- title: API Reference
- description: Learn more about the Metadata APIs mentioned in this page.
- links:
-  - app/api-reference/functions/generate-metadata
-  - app/api-reference/functions/generate-viewport
-  - app/api-reference/functions/image-response
-  - app/api-reference/file-conventions/metadata
-  - app/api-reference/file-conventions/metadata/app-icons
-  - app/api-reference/file-conventions/metadata/opengraph-image
-  - app/api-reference/file-conventions/metadata/robots
-  - app/api-reference/file-conventions/metadata/sitemap
-  - app/api-reference/config/next-config-js/htmlLimitedBots
 ---
 
 The Metadata APIs can be used to define your application metadata for improved SEO and web shareability and include:
 
 1. [The static `metadata` object](#static-metadata)
 2. [The dynamic `generateMetadata` function](#generated-metadata)
-3. Special [file conventions](/docs/app/api-reference/file-conventions/metadata) that can be used to add static or dynamically generated [favicons](#favicons) and [OG images](#static-open-graph-images).
+3. Special [file conventions](../03-api-reference/03-file-conventions/01-metadata/index.md) that can be used to add static or dynamically generated [favicons](#favicons) and [OG images](#static-open-graph-images).
 
 With all the options above, Next.js will automatically generate the relevant `<head>` tags for your page, which can be inspected in the browser's developer tools.
 
@@ -44,7 +31,7 @@ The other metadata fields can be defined with the `Metadata` object (for [static
 
 ## Static metadata
 
-To define static metadata, export a [`Metadata` object](/docs/app/api-reference/functions/generate-metadata#metadata-object) from a static [`layout.js`](/docs/app/api-reference/file-conventions/layout) or [`page.js`](/docs/app/api-reference/file-conventions/page) file. For example, to add a title and description to the blog route:
+To define static metadata, export a [`Metadata` object](../03-api-reference/04-functions/generate-metadata.md#metadata-object) from a static [`layout.js`](../03-api-reference/03-file-conventions/layout.md) or [`page.js`](../03-api-reference/03-file-conventions/page.md) file. For example, to add a title and description to the blog route:
 
 ```tsx filename="app/blog/layout.tsx" switcher
 import type { Metadata } from 'next'
@@ -66,11 +53,11 @@ export const metadata = {
 export default function Layout() {}
 ```
 
-You can view a full list of available options, in the [`generateMetadata` documentation](/docs/app/api-reference/functions/generate-metadata#metadata-fields).
+You can view a full list of available options, in the [`generateMetadata` documentation](../03-api-reference/04-functions/generate-metadata.md#metadata-fields).
 
 ## Generated metadata
 
-You can use [`generateMetadata`](/docs/app/api-reference/functions/generate-metadata) function to `fetch` metadata that depends on data. For example, to fetch the title and description for a specific blog post:
+You can use [`generateMetadata`](../03-api-reference/04-functions/generate-metadata.md) function to `fetch` metadata that depends on data. For example, to fetch the title and description for a specific blog post:
 
 ```tsx filename="app/blog/[slug]/page.tsx" switcher
 import type { Metadata, ResolvingMetadata } from 'next'
@@ -119,11 +106,11 @@ Streaming metadata improves perceived performance by allowing visual content to 
 
 Streaming metadata is **disabled for bots and crawlers** that expect metadata to be in the `<head>` tag (e.g. `Twitterbot`, `Slackbot`, `Bingbot`). These are detected by using the User Agent header from the incoming request.
 
-You can customize or **disable** streaming metadata completely, with the [`htmlLimitedBots`](/docs/app/api-reference/config/next-config-js/htmlLimitedBots#disabling) option in your Next.js config file.
+You can customize or **disable** streaming metadata completely, with the [`htmlLimitedBots`](../03-api-reference/05-config/01-next-config-js/htmlLimitedBots.md#disabling) option in your Next.js config file.
 
 Prerendered pages don’t use streaming since metadata is resolved at build time.
 
-Learn more about [streaming metadata](/docs/app/api-reference/functions/generate-metadata#streaming-metadata).
+Learn more about [streaming metadata](../03-api-reference/04-functions/generate-metadata.md#streaming-metadata).
 
 ### Memoizing data requests
 
@@ -193,10 +180,10 @@ export default async function Page({ params }) {
 
 The following special files are available for metadata:
 
-- [favicon.ico, apple-icon.jpg, and icon.jpg](/docs/app/api-reference/file-conventions/metadata/app-icons)
-- [opengraph-image.jpg and twitter-image.jpg](/docs/app/api-reference/file-conventions/metadata/opengraph-image)
-- [robots.txt](/docs/app/api-reference/file-conventions/metadata/robots)
-- [sitemap.xml](/docs/app/api-reference/file-conventions/metadata/sitemap)
+- [favicon.ico, apple-icon.jpg, and icon.jpg](../03-api-reference/03-file-conventions/01-metadata/app-icons.md)
+- [opengraph-image.jpg and twitter-image.jpg](../03-api-reference/03-file-conventions/01-metadata/opengraph-image.md)
+- [robots.txt](../03-api-reference/03-file-conventions/01-metadata/robots.md)
+- [sitemap.xml](../03-api-reference/03-file-conventions/01-metadata/sitemap.md)
 
 You can use these for static metadata, or you can programmatically generate these files with code.
 
@@ -212,7 +199,7 @@ width="1600"
 height="444"
 />
 
-> You can also programmatically generate favicons using code. See the [favicon docs](/docs/app/api-reference/file-conventions/metadata/app-icons) for more information.
+> You can also programmatically generate favicons using code. See the [favicon docs](../03-api-reference/03-file-conventions/01-metadata/app-icons.md) for more information.
 
 ## Static Open Graph images
 
@@ -238,11 +225,11 @@ height="525"
 
 The more specific image will take precedence over any OG images above it in the folder structure.
 
-> Other image formats such as `jpeg`, `png`, and `gif` are also supported. See the [Open Graph Image docs](/docs/app/api-reference/file-conventions/metadata/opengraph-image) for more information.
+> Other image formats such as `jpeg`, `png`, and `gif` are also supported. See the [Open Graph Image docs](../03-api-reference/03-file-conventions/01-metadata/opengraph-image.md) for more information.
 
 ## Generated Open Graph images
 
-The [`ImageResponse` constructor](/docs/app/api-reference/functions/image-response) allows you to generate dynamic images using JSX and CSS. This is useful for OG images that depend on data.
+The [`ImageResponse` constructor](../03-api-reference/04-functions/image-response.md) allows you to generate dynamic images using JSX and CSS. This is useful for OG images that depend on data.
 
 For example, to generate a unique OG image for each blog post, add an `opengraph-image.tsx` file inside the `blog/[slug]` folder, and import the `ImageResponse` constructor from `next/og`:
 
@@ -316,10 +303,24 @@ export default async function Image({ params }) {
 }
 ```
 
-`ImageResponse` supports common CSS properties including flexbox and absolute positioning, custom fonts, text wrapping, centering, and nested images. [See the full list of supported CSS properties](/docs/app/api-reference/functions/image-response).
+`ImageResponse` supports common CSS properties including flexbox and absolute positioning, custom fonts, text wrapping, centering, and nested images. [See the full list of supported CSS properties](../03-api-reference/04-functions/image-response.md).
 
 > **Good to know**:
 >
 > - Examples are available in the [Vercel OG Playground](https://og-playground.vercel.app/).
 > - `ImageResponse` uses [`@vercel/og`](https://vercel.com/docs/og-image-generation), [`satori`](https://github.com/vercel/satori), and `resvg` to convert HTML and CSS into PNG.
 > - Only flexbox and a subset of CSS properties are supported. Advanced layouts (e.g. `display: grid`) will not work.
+
+## INDEX
+
+Learn more about the Metadata APIs mentioned in this page.
+
+- [generateMetadata](../03-api-reference/04-functions/generate-metadata.md)
+- [generateViewport](../03-api-reference/04-functions/generate-viewport.md)
+- [ImageResponse](../03-api-reference/04-functions/image-response.md)
+- [Metadata Files API Reference](../03-api-reference/03-file-conventions/01-metadata/index.md)
+- [favicon, icon, and apple-icon](../03-api-reference/03-file-conventions/01-metadata/app-icons.md)
+- [opengraph-image and twitter-image](../03-api-reference/03-file-conventions/01-metadata/opengraph-image.md)
+- [robots.txt](../03-api-reference/03-file-conventions/01-metadata/robots.md)
+- [sitemap.xml](../03-api-reference/03-file-conventions/01-metadata/sitemap.md)
+- [htmlLimitedBots](../03-api-reference/05-config/01-next-config-js/htmlLimitedBots.md)

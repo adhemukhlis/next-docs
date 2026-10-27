@@ -132,7 +132,7 @@ export default function Page() {
 
 ### Image Optimization
 
-[Image Optimization](/docs/app/api-reference/components/image) through `next/image` can be used with a static export by defining a custom image loader in `next.config.js`. For example, you can optimize images with a service like Cloudinary:
+[Image Optimization](../03-api-reference/02-components/image.md) through `next/image` can be used with a static export by defining a custom image loader in `next.config.js`. For example, you can optimize images with a service like Cloudinary:
 
 ```js filename="next.config.js"
 /** @type {import('next').NextConfig} */
@@ -242,21 +242,21 @@ export default function ClientComponent() {
 
 Features that require a Node.js server, or dynamic logic that cannot be computed during the build process, are **not** supported:
 
-- [Dynamic Routes](/docs/app/api-reference/file-conventions/dynamic-routes) with `dynamicParams: true`
-- [Dynamic Routes](/docs/app/api-reference/file-conventions/dynamic-routes) without `generateStaticParams()`
-- [Route Handlers](/docs/app/api-reference/file-conventions/route) that rely on Request
-- [Cookies](/docs/app/api-reference/functions/cookies)
-- [Rewrites](/docs/app/api-reference/config/next-config-js/rewrites)
-- [Redirects](/docs/app/api-reference/config/next-config-js/redirects)
-- [Headers](/docs/app/api-reference/config/next-config-js/headers)
-- [Proxy](/docs/app/api-reference/file-conventions/proxy)
-- [Incremental Static Regeneration](/docs/app/guides/incremental-static-regeneration)
-- [Image Optimization](/docs/app/api-reference/components/image) with the default `loader`
-- [Draft Mode](/docs/app/guides/draft-mode)
-- [Server Actions](/docs/app/getting-started/mutating-data)
-- [Intercepting Routes](/docs/app/api-reference/file-conventions/intercepting-routes)
+- [Dynamic Routes](../03-api-reference/03-file-conventions/dynamic-routes.md) with `dynamicParams: true`
+- [Dynamic Routes](../03-api-reference/03-file-conventions/dynamic-routes.md) without `generateStaticParams()`
+- [Route Handlers](../03-api-reference/03-file-conventions/route.md) that rely on Request
+- [Cookies](../03-api-reference/04-functions/cookies.md)
+- [Rewrites](../03-api-reference/05-config/01-next-config-js/rewrites.md)
+- [Redirects](../03-api-reference/05-config/01-next-config-js/redirects.md)
+- [Headers](../03-api-reference/05-config/01-next-config-js/headers.md)
+- [Proxy](../03-api-reference/03-file-conventions/proxy.md)
+- [Incremental Static Regeneration](./incremental-static-regeneration.md)
+- [Image Optimization](../03-api-reference/02-components/image.md) with the default `loader`
+- [Draft Mode](./draft-mode.md)
+- [Server Actions](../01-getting-started/07-mutating-data.md)
+- [Intercepting Routes](../03-api-reference/03-file-conventions/intercepting-routes.md)
 
-Attempting to use any of these features with `next dev` will result in an error, similar to setting the [`dynamic`](/docs/app/guides/caching-without-cache-components#dynamic) option to `error` in the root layout.
+Attempting to use any of these features with `next dev` will result in an error, similar to setting the [`dynamic`](./caching-without-cache-components.md#dynamic) option to `error` in the root layout.
 
 ```jsx
 export const dynamic = 'error'

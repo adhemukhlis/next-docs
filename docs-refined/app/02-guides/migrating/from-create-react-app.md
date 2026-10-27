@@ -12,7 +12,7 @@ There are several reasons why you might want to switch from Create React App to 
 
 ### Slow initial page loading time
 
-Create React App uses purely client-side rendering. Client-side only applications, also known as [single-page applications (SPAs)](/docs/app/guides/single-page-applications), often experience slow initial page loading time. This happens due to a couple of reasons:
+Create React App uses purely client-side rendering. Client-side only applications, also known as [single-page applications (SPAs)](../single-page-applications.md), often experience slow initial page loading time. This happens due to a couple of reasons:
 
 1. The browser needs to wait for the React code and your entire application bundle to download and run before your code is able to send requests to load data.
 2. Your application code grows with every new feature and dependency you add.
@@ -23,13 +23,13 @@ The previous issue of slow loading times can be somewhat mitigated with code spl
 
 ### Network waterfalls
 
-A common cause of poor performance occurs when applications make sequential client-server requests to fetch data. One pattern for data fetching in a [SPA](/docs/app/guides/single-page-applications) is to render a placeholder, and then fetch data after the component has mounted. Unfortunately, a child component can only begin fetching data after its parent has finished loading its own data, resulting in a “waterfall” of requests.
+A common cause of poor performance occurs when applications make sequential client-server requests to fetch data. One pattern for data fetching in a [SPA](../single-page-applications.md) is to render a placeholder, and then fetch data after the component has mounted. Unfortunately, a child component can only begin fetching data after its parent has finished loading its own data, resulting in a “waterfall” of requests.
 
 While client-side data fetching is supported in Next.js, Next.js also lets you move data fetching to the server. This often eliminates client-server waterfalls altogether.
 
 ### Fast and intentional loading states
 
-With built-in support for [streaming through React Suspense](/docs/app/getting-started/linking-and-navigating#streaming), you can define which parts of your UI load first and in what order, without creating network waterfalls.
+With built-in support for [streaming through React Suspense](../../01-getting-started/04-linking-and-navigating.md#streaming), you can define which parts of your UI load first and in what order, without creating network waterfalls.
 
 This enables you to build pages that are faster to load and eliminate [layout shifts](https://vercel.com/blog/how-core-web-vitals-affect-seo).
 
@@ -39,15 +39,15 @@ Depending on your needs, Next.js allows you to choose your data fetching strateg
 
 ### Proxy
 
-[Next.js Proxy](/docs/app/api-reference/file-conventions/proxy) allows you to run code on the server before a request is completed. For instance, you can avoid a flash of unauthenticated content by redirecting a user to a login page in the proxy for authenticated-only pages. You can also use it for features like A/B testing, experimentation, and [internationalization](/docs/app/guides/internationalization).
+[Next.js Proxy](../../03-api-reference/03-file-conventions/proxy.md) allows you to run code on the server before a request is completed. For instance, you can avoid a flash of unauthenticated content by redirecting a user to a login page in the proxy for authenticated-only pages. You can also use it for features like A/B testing, experimentation, and [internationalization](../internationalization.md).
 
 ### Built-in Optimizations
 
-[Images](/docs/app/api-reference/components/image), [fonts](/docs/app/api-reference/components/font), and [third-party scripts](/docs/app/guides/scripts) often have a large impact on an application’s performance. Next.js includes specialized components and APIs that automatically optimize them for you.
+[Images](../../03-api-reference/02-components/image.md), [fonts](../../03-api-reference/02-components/font.md), and [third-party scripts](../scripts.md) often have a large impact on an application’s performance. Next.js includes specialized components and APIs that automatically optimize them for you.
 
 ## Migration Steps
 
-Our goal is to get a working Next.js application as quickly as possible so that you can then adopt Next.js features incrementally. To begin with, we’ll treat your application as a purely client-side application ([SPA](/docs/app/guides/single-page-applications)) without immediately replacing your existing router. This reduces complexity and merge conflicts.
+Our goal is to get a working Next.js application as quickly as possible so that you can then adopt Next.js features incrementally. To begin with, we’ll treat your application as a purely client-side application ([SPA](../single-page-applications.md)) without immediately replacing your existing router. This reduces complexity and merge conflicts.
 
 > **Note**: If you are using advanced CRA configurations such as a custom `homepage` field in your `package.json`, a custom service worker, or specific Babel/webpack tweaks, please see the **Additional Considerations** section at the end of this guide for tips on replicating or adapting these features in Next.js.
 
@@ -73,7 +73,7 @@ bun add next@latest
 
 ### Step 2: Create the Next.js Configuration File
 
-Create a `next.config.ts` at the root of your project (same level as your `package.json`). This file holds your [Next.js configuration options](/docs/app/api-reference/config/next-config-js).
+Create a `next.config.ts` at the root of your project (same level as your `package.json`). This file holds your [Next.js configuration options](../../03-api-reference/05-config/01-next-config-js/index.md).
 
 ```js filename="next.config.ts"
 import type { NextConfig } from 'next'
@@ -90,7 +90,7 @@ export default nextConfig
 
 ### Step 3: Create the Root Layout
 
-A Next.js [App Router](/docs/app) application must include a [root layout](/docs/app/api-reference/file-conventions/layout#root-layout) file, which is a [React Server Component](/docs/app/getting-started/server-and-client-components) that will wrap all your pages.
+A Next.js [App Router](../../index.md) application must include a [root layout](../../03-api-reference/03-file-conventions/layout.md#root-layout) file, which is a [React Server Component](../../01-getting-started/05-server-and-client-components.md) that will wrap all your pages.
 
 The closest equivalent of the root layout file in a CRA application is `public/index.html`, which includes your `<html>`, `<head>`, and `<body>` tags.
 
@@ -167,7 +167,7 @@ export default function RootLayout({ children }) {
 }
 ```
 
-> **Good to know**: Next.js ignores CRA’s `public/manifest.json`, additional iconography, and [testing configuration](/docs/app/guides/testing) by default. If you need these, Next.js has support with its [Metadata API](/docs/app/getting-started/metadata-and-og-images) and [Testing](/docs/app/guides/testing) setup.
+> **Good to know**: Next.js ignores CRA’s `public/manifest.json`, additional iconography, and [testing configuration](../testing/index.md) by default. If you need these, Next.js has support with its [Metadata API](../../01-getting-started/14-metadata-and-og-images.md) and [Testing](../testing/index.md) setup.
 
 ### Step 4: Metadata
 
@@ -219,7 +219,7 @@ export default function RootLayout({ children }) {
 }
 ```
 
-Any [metadata files](/docs/app/getting-started/metadata-and-og-images#file-based-metadata) such as `favicon.ico`, `icon.png`, `robots.txt` are automatically added to the application `<head>` tag as long as you have them placed into the top level of the `app` directory. After moving [all supported files](/docs/app/getting-started/metadata-and-og-images#file-based-metadata) into the `app` directory you can safely delete their `<link>` tags:
+Any [metadata files](../../01-getting-started/14-metadata-and-og-images.md#file-based-metadata) such as `favicon.ico`, `icon.png`, `robots.txt` are automatically added to the application `<head>` tag as long as you have them placed into the top level of the `app` directory. After moving [all supported files](../../01-getting-started/14-metadata-and-og-images.md#file-based-metadata) into the `app` directory you can safely delete their `<link>` tags:
 
 ```tsx filename="app/layout.tsx" switcher
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -259,7 +259,7 @@ export default function RootLayout({ children }) {
 }
 ```
 
-Finally, Next.js can manage your last `<head>` tags with the [Metadata API](/docs/app/getting-started/metadata-and-og-images). Move your final metadata info into an exported [`metadata` object](/docs/app/api-reference/functions/generate-metadata#metadata-object):
+Finally, Next.js can manage your last `<head>` tags with the [Metadata API](../../01-getting-started/14-metadata-and-og-images.md). Move your final metadata info into an exported [`metadata` object](../../03-api-reference/04-functions/generate-metadata.md#metadata-object):
 
 ```tsx filename="app/layout.tsx" switcher
 import type { Metadata } from 'next'
@@ -297,11 +297,11 @@ export default function RootLayout({ children }) {
 }
 ```
 
-With the above changes, you shifted from declaring everything in your `index.html` to using Next.js' convention-based approach built into the framework ([Metadata API](/docs/app/getting-started/metadata-and-og-images)). This approach enables you to more easily improve your SEO and web shareability of your pages.
+With the above changes, you shifted from declaring everything in your `index.html` to using Next.js' convention-based approach built into the framework ([Metadata API](../../01-getting-started/14-metadata-and-og-images.md)). This approach enables you to more easily improve your SEO and web shareability of your pages.
 
 ### Step 5: Styles
 
-Like CRA, Next.js supports [CSS Modules](/docs/app/getting-started/css#css-modules) out of the box. It also supports [global CSS imports](/docs/app/getting-started/css#global-css).
+Like CRA, Next.js supports [CSS Modules](../../01-getting-started/11-css.md#css-modules) out of the box. It also supports [global CSS imports](../../01-getting-started/11-css.md#global-css).
 
 If you have a global CSS file, import it into your `app/layout.tsx`:
 
@@ -324,13 +324,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-If you're using Tailwind CSS, see our [installation docs](/docs/app/getting-started/css#tailwind-css).
+If you're using Tailwind CSS, see our [installation docs](../../01-getting-started/11-css.md#tailwind-css).
 
 ### Step 6: Create the Entrypoint Page
 
 Create React App uses `src/index.tsx` (or `index.js`) as the entry point. In Next.js (App Router), each folder inside the `app` directory corresponds to a route, and each folder should have a `page.tsx`.
 
-Since we want to keep the app as an SPA for now and intercept **all** routes, we’ll use an [optional catch-all route](/docs/app/api-reference/file-conventions/dynamic-routes#optional-catch-all-segments).
+Since we want to keep the app as an SPA for now and intercept **all** routes, we’ll use an [optional catch-all route](../../03-api-reference/03-file-conventions/dynamic-routes.md#optional-catch-all-segments).
 
 1. **Create a `[[...slug]]` directory inside `app`.**
 
@@ -363,11 +363,11 @@ export default function Page() {
 }
 ```
 
-This tells Next.js to generate a single route for the empty slug (`/`), effectively mapping **all** routes to the same page. This page is a [Server Component](/docs/app/getting-started/server-and-client-components), prerendered into static HTML.
+This tells Next.js to generate a single route for the empty slug (`/`), effectively mapping **all** routes to the same page. This page is a [Server Component](../../01-getting-started/05-server-and-client-components.md), prerendered into static HTML.
 
 ### Step 7: Add a Client-Only Entrypoint
 
-Next, we’ll embed your CRA’s root App component inside a [Client Component](/docs/app/getting-started/server-and-client-components) so that all logic remains client-side. If this is your first time using Next.js, it's worth knowing that Client Components (by default) are still prerendered on the server. You can think about them as having the additional capability of running client-side JavaScript.
+Next, we’ll embed your CRA’s root App component inside a [Client Component](../../01-getting-started/05-server-and-client-components.md) so that all logic remains client-side. If this is your first time using Next.js, it's worth knowing that Client Components (by default) are still prerendered on the server. You can think about them as having the additional capability of running client-side JavaScript.
 
 Create a `client.tsx` (or `client.js`) in `app/[[...slug]]/`:
 
@@ -436,11 +436,11 @@ export default function App() {
 }
 ```
 
-With Next.js, static image imports return an object. The object can then be used directly with the Next.js [`<Image>` component](/docs/app/api-reference/components/image), or you can use the object's `src` property with your existing `<img>` tag.
+With Next.js, static image imports return an object. The object can then be used directly with the Next.js [`<Image>` component](../../03-api-reference/02-components/image.md), or you can use the object's `src` property with your existing `<img>` tag.
 
-The `<Image>` component has the added benefits of [automatic image optimization](/docs/app/api-reference/components/image). The `<Image>` component automatically sets the `width` and `height` attributes of the resulting `<img>` based on the image's dimensions. This prevents layout shifts when the image loads. However, this can cause issues if your app contains images with only one of their dimensions being styled without the other styled to `auto`. When not styled to `auto`, the dimension will default to the `<img>` dimension attribute's value, which can cause the image to appear distorted.
+The `<Image>` component has the added benefits of [automatic image optimization](../../03-api-reference/02-components/image.md). The `<Image>` component automatically sets the `width` and `height` attributes of the resulting `<img>` based on the image's dimensions. This prevents layout shifts when the image loads. However, this can cause issues if your app contains images with only one of their dimensions being styled without the other styled to `auto`. When not styled to `auto`, the dimension will default to the `<img>` dimension attribute's value, which can cause the image to appear distorted.
 
-Keeping the `<img>` tag will reduce the amount of changes in your application and prevent the above issues. You can then optionally later migrate to the `<Image>` component to take advantage of optimizing images by [configuring a loader](/docs/app/api-reference/components/image#loader), or moving to the default Next.js server which has automatic image optimization.
+Keeping the `<img>` tag will reduce the amount of changes in your application and prevent the above issues. You can then optionally later migrate to the `<Image>` component to take advantage of optimizing images by [configuring a loader](../../03-api-reference/02-components/image.md#loader), or moving to the default Next.js server which has automatic image optimization.
 
 **Convert absolute import paths for images imported from `/public` into relative imports:**
 
@@ -468,7 +468,7 @@ Alternatively, you can reference the public URL for the image asset based on the
 
 ### Step 9: Migrate Environment Variables
 
-Next.js supports [environment variables](/docs/app/guides/environment-variables) similarly to CRA but **requires** a `NEXT_PUBLIC_` prefix for any variable you want to expose in the browser.
+Next.js supports [environment variables](../environment-variables.md) similarly to CRA but **requires** a `NEXT_PUBLIC_` prefix for any variable you want to expose in the browser.
 
 The main difference is the prefix used to expose environment variables on the client-side. Change all environment variables with the `REACT_APP_` prefix to `NEXT_PUBLIC_`.
 
@@ -526,7 +526,7 @@ You can now remove artifacts that are specific to Create React App:
 
 ### Using a Custom `homepage` in CRA
 
-If you used the `homepage` field in your CRA `package.json` to serve the app under a specific subpath, you can replicate that in Next.js using the [`basePath` configuration](/docs/app/api-reference/config/next-config-js/basePath) in `next.config.ts`:
+If you used the `homepage` field in your CRA `package.json` to serve the app under a specific subpath, you can replicate that in Next.js using the [`basePath` configuration](../../03-api-reference/05-config/01-next-config-js/basePath.md) in `next.config.ts`:
 
 ```ts filename="next.config.ts"
 import { NextConfig } from 'next'
@@ -547,11 +547,11 @@ If you used CRA’s service worker (e.g., `serviceWorker.js` from `create-react-
 await navigator.serviceWorker.register(new URL('../serviceWorker.js', import.meta.url), ...)
 ```
 
-Learn more about how to create [Progressive Web Applications (PWAs)](/docs/app/guides/progressive-web-apps) with Next.js.
+Learn more about how to create [Progressive Web Applications (PWAs)](../progressive-web-apps.md) with Next.js.
 
 ### Proxying API Requests
 
-If your CRA app used the `proxy` field in `package.json` to forward requests to a backend server, you can replicate this with [Next.js rewrites](/docs/app/api-reference/config/next-config-js/rewrites) in `next.config.ts`:
+If your CRA app used the `proxy` field in `package.json` to forward requests to a backend server, you can replicate this with [Next.js rewrites](../../03-api-reference/05-config/01-next-config-js/rewrites.md) in `next.config.ts`:
 
 ```ts filename="next.config.ts"
 import { NextConfig } from 'next'
@@ -599,7 +599,7 @@ Next.js automatically sets up TypeScript if you have a `tsconfig.json`. Make sur
 
 ## Bundler Compatibility
 
-Create React App uses webpack for bundling. Next.js now defaults to [Turbopack](/docs/app/api-reference/config/next-config-js/turbopack) for faster local development:
+Create React App uses webpack for bundling. Next.js now defaults to [Turbopack](../../03-api-reference/05-config/01-next-config-js/turbopack.md) for faster local development:
 
 ```bash
 next dev  # Uses Turbopack by default
@@ -611,19 +611,19 @@ To use Webpack instead (similar to CRA):
 next dev --webpack
 ```
 
-You can still provide a [custom webpack configuration](/docs/app/api-reference/config/next-config-js/webpack) if you need to migrate advanced webpack settings from CRA.
+You can still provide a [custom webpack configuration](../../03-api-reference/05-config/01-next-config-js/webpack.md) if you need to migrate advanced webpack settings from CRA.
 
 ## Next Steps
 
 If everything worked, you now have a functioning Next.js application running as a single-page application. You aren’t yet leveraging Next.js features like server-side rendering or file-based routing, but you can now do so incrementally:
 
-- **Migrate from React Router** to the [Next.js App Router](/docs/app) for:
+- **Migrate from React Router** to the [Next.js App Router](../../index.md) for:
   - Automatic code splitting
-  - [Streaming server rendering](/docs/app/api-reference/file-conventions/loading)
-  - [React Server Components](/docs/app/getting-started/server-and-client-components)
-- **Optimize images** with the [`<Image>` component](/docs/app/api-reference/components/image)
-- **Optimize fonts** with [`next/font`](/docs/app/api-reference/components/font)
-- **Optimize third-party scripts** with the [`<Script>` component](/docs/app/guides/scripts)
-- **Enable ESLint** with Next.js [recommended rules](/docs/app/api-reference/config/eslint#setup-eslint)
+  - [Streaming server rendering](../../03-api-reference/03-file-conventions/loading.md)
+  - [React Server Components](../../01-getting-started/05-server-and-client-components.md)
+- **Optimize images** with the [`<Image>` component](../../03-api-reference/02-components/image.md)
+- **Optimize fonts** with [`next/font`](../../03-api-reference/02-components/font.md)
+- **Optimize third-party scripts** with the [`<Script>` component](../scripts.md)
+- **Enable ESLint** with Next.js [recommended rules](../../03-api-reference/05-config/03-eslint.md#setup-eslint)
 
 > **Note**: Using a static export (`output: 'export'`) [does not currently support](https://github.com/vercel/next.js/issues/54393) the `useParams` hook or other server features. To use all Next.js features, remove `output: 'export'` from your `next.config.ts`.

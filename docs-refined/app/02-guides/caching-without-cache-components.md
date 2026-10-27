@@ -4,11 +4,11 @@ nav_title: Caching (Previous Model)
 description: Learn how to cache and revalidate data using fetch options, unstable_cache, and route segment configs for projects not using Cache Components.
 ---
 
-> This guide assumes you are **not** using [Cache Components](/docs/app/getting-started/caching) which was introduced in version 16 under the [`cacheComponents` flag](/docs/app/api-reference/config/next-config-js/cacheComponents).
+> This guide assumes you are **not** using [Cache Components](../01-getting-started/08-caching.md) which was introduced in version 16 under the [`cacheComponents` flag](../03-api-reference/05-config/01-next-config-js/cacheComponents.md).
 
 ## Caching `fetch` requests
 
-By default, [`fetch`](/docs/app/api-reference/functions/fetch) requests are not cached. You can cache individual requests by setting the `cache` option to `'force-cache'`.
+By default, [`fetch`](../03-api-reference/04-functions/fetch.md) requests are not cached. You can cache individual requests by setting the `cache` option to `'force-cache'`.
 
 ```tsx filename="app/page.tsx" switcher
 export default async function Page() {
@@ -22,7 +22,7 @@ export default async function Page() {
 }
 ```
 
-See the [`fetch` API reference](/docs/app/api-reference/functions/fetch) to learn more.
+See the [`fetch` API reference](../03-api-reference/04-functions/fetch.md) to learn more.
 
 ### `unstable_cache` for non-`fetch` functions
 
@@ -73,11 +73,11 @@ The third argument accepts:
 - `tags`: an array of tags for on-demand revalidation with `revalidateTag`.
 - `revalidate`: the number of seconds before the cache is revalidated.
 
-See the [`unstable_cache` API reference](/docs/app/api-reference/functions/unstable_cache) to learn more.
+See the [`unstable_cache` API reference](../03-api-reference/04-functions/unstable_cache.md) to learn more.
 
 ### Route segment config
 
-You can configure caching behavior at the route level by exporting config options from a [Page](/docs/app/api-reference/file-conventions/page), [Layout](/docs/app/api-reference/file-conventions/layout), or [Route Handler](/docs/app/api-reference/file-conventions/route).
+You can configure caching behavior at the route level by exporting config options from a [Page](../03-api-reference/03-file-conventions/page.md), [Layout](../03-api-reference/03-file-conventions/layout.md), or [Route Handler](../03-api-reference/03-file-conventions/route.md).
 
 #### `dynamic`
 
@@ -94,14 +94,14 @@ export const dynamic = 'auto'
 ```
 
 - **`'auto'`** (default): The default option to cache as much as possible without preventing any components from opting into dynamic behavior.
-- **`'force-dynamic'`**: Force [dynamic rendering](/docs/app/glossary#dynamic-rendering), which will result in routes being rendered for each user at request time. This option is equivalent to:
+- **`'force-dynamic'`**: Force [dynamic rendering](../04-glossary.md#dynamic-rendering), which will result in routes being rendered for each user at request time. This option is equivalent to:
   - Setting the option of every `fetch()` request in a layout or page to `{ cache: 'no-store', next: { revalidate: 0 } }`.
   - Setting the segment config to `export const fetchCache = 'force-no-store'`
 - **`'error'`**: Force prerendering and cache the data of a layout or page by causing an error if any components use Request-time APIs or uncached data. This option is equivalent to:
   - `getStaticProps()` in the `pages` directory.
   - Setting the option of every `fetch()` request in a layout or page to `{ cache: 'force-cache' }`.
   - Setting the segment config to `fetchCache = 'only-cache'`.
-- **`'force-static'`**: Force prerendering and cache the data of a layout or page by forcing [`cookies`](/docs/app/api-reference/functions/cookies), [`headers()`](/docs/app/api-reference/functions/headers) and [`useSearchParams()`](/docs/app/api-reference/functions/use-search-params) to return empty values. It is possible to [`revalidate`](#route-segment-config-revalidate), [`revalidatePath`](/docs/app/api-reference/functions/revalidatePath), or [`revalidateTag`](/docs/app/api-reference/functions/revalidateTag), in pages or layouts rendered with `force-static`.
+- **`'force-static'`**: Force prerendering and cache the data of a layout or page by forcing [`cookies`](../03-api-reference/04-functions/cookies.md), [`headers()`](../03-api-reference/04-functions/headers.md) and [`useSearchParams()`](../03-api-reference/04-functions/use-search-params.md) to return empty values. It is possible to [`revalidate`](#route-segment-config-revalidate), [`revalidatePath`](../03-api-reference/04-functions/revalidatePath.md), or [`revalidateTag`](../03-api-reference/04-functions/revalidateTag.md), in pages or layouts rendered with `force-static`.
 
 #### `fetchCache`
 
@@ -193,7 +193,7 @@ export const revalidate = false
 
 ## On-demand revalidation
 
-To revalidate cached data after an event, use [`revalidateTag`](/docs/app/api-reference/functions/revalidateTag) or [`revalidatePath`](/docs/app/api-reference/functions/revalidatePath) in a [Server Action](/docs/app/getting-started/mutating-data) or [Route Handler](/docs/app/api-reference/file-conventions/route).
+To revalidate cached data after an event, use [`revalidateTag`](../03-api-reference/04-functions/revalidateTag.md) or [`revalidatePath`](../03-api-reference/04-functions/revalidatePath.md) in a [Server Action](../01-getting-started/07-mutating-data.md) or [Route Handler](../03-api-reference/03-file-conventions/route.md).
 
 ### Tagging cached data
 
@@ -219,7 +219,7 @@ For non-`fetch` functions, `unstable_cache` also accepts a `tags` option (see [e
 
 ### `revalidateTag`
 
-Invalidate cached data by tag using [`revalidateTag`](/docs/app/api-reference/functions/revalidateTag):
+Invalidate cached data by tag using [`revalidateTag`](../03-api-reference/04-functions/revalidateTag.md):
 
 ```tsx filename="app/lib/actions.ts" switcher
 import { revalidateTag } from 'next/cache'
@@ -241,7 +241,7 @@ export async function updateUser(id) {
 
 ### `revalidatePath`
 
-Invalidate all cached data for a specific route path using [`revalidatePath`](/docs/app/api-reference/functions/revalidatePath):
+Invalidate all cached data for a specific route path using [`revalidatePath`](../03-api-reference/04-functions/revalidatePath.md):
 
 ```tsx filename="app/lib/actions.ts" switcher
 import { revalidatePath } from 'next/cache'
@@ -263,7 +263,7 @@ export async function updateUser(id) {
 
 ## Deduplicating requests
 
-If you are not using `fetch` (which is [automatically memoized](/docs/app/api-reference/functions/fetch#memoization)), and instead using an ORM or database directly, you can wrap your data access with the [React `cache`](https://react.dev/reference/react/cache) function to deduplicate requests within a single render pass:
+If you are not using `fetch` (which is [automatically memoized](../03-api-reference/04-functions/fetch.md#memoization)), and instead using an ORM or database directly, you can wrap your data access with the [React `cache`](https://react.dev/reference/react/cache) function to deduplicate requests within a single render pass:
 
 ```tsx filename="app/lib/data.ts" switcher
 import { cache } from 'react'
@@ -361,4 +361,4 @@ async function Item({ id }) {
 
 ## Statically generating dynamic routes
 
-To prerender dynamic routes with [`generateStaticParams`](/docs/app/api-reference/functions/generate-static-params) and revalidate them over time, see the [Incremental Static Regeneration](/docs/app/guides/incremental-static-regeneration) guide.
+To prerender dynamic routes with [`generateStaticParams`](../03-api-reference/04-functions/generate-static-params.md) and revalidate them over time, see the [Incremental Static Regeneration](./incremental-static-regeneration.md) guide.

@@ -1,17 +1,9 @@
 ---
 title: cacheHandlers
 description: Configure custom cache handlers for use cache directives in Next.js.
-related:
- title: Related
- description: View related API references.
- links:
-  - app/api-reference/directives/use-cache
-  - app/api-reference/directives/use-cache-remote
-  - app/api-reference/directives/use-cache-private
-  - app/api-reference/config/next-config-js/cacheLife
 ---
 
-The `cacheHandlers` configuration allows you to define custom cache storage implementations for [`'use cache'`](/docs/app/api-reference/directives/use-cache) and [`'use cache: remote'`](/docs/app/api-reference/directives/use-cache-remote). This enables you to store cached components and functions in external services or customize the caching behavior. [`'use cache: private'`](/docs/app/api-reference/directives/use-cache-private) is not configurable.
+The `cacheHandlers` configuration allows you to define custom cache storage implementations for [`'use cache'`](../../01-directives/use-cache.md) and [`'use cache: remote'`](../../01-directives/use-cache-remote.md). This enables you to store cached components and functions in external services or customize the caching behavior. [`'use cache: private'`](../../01-directives/use-cache-private.md) is not configurable.
 
 ## When to use custom cache handlers
 
@@ -284,7 +276,7 @@ Whether `durations` is present tells you which kind of invalidation this is:
 
 Returns `Promise<void>`.
 
-Your handler should record when each tag was invalidated. [`get()`](#get) compares those times against an entry's `timestamp`, and [`getExpiration()`](#getexpiration) does the same for [soft tags](#soft-tags). Soft tags are not stored in an entry's `tags`, so deleting the entries that carry a tag does not cover [`revalidatePath()`](/docs/app/api-reference/functions/revalidatePath).
+Your handler should record when each tag was invalidated. [`get()`](#get) compares those times against an entry's `timestamp`, and [`getExpiration()`](#getexpiration) does the same for [soft tags](#soft-tags). Soft tags are not stored in an entry's `tags`, so deleting the entries that carry a tag does not cover [`revalidatePath()`](../../04-functions/revalidatePath.md).
 
 ```js
 const cacheHandler = {
@@ -312,7 +304,7 @@ const cacheHandler = {
 
 Soft tags are implicit tags that Next.js automatically generates based on the route path. Every segment in the path gets a layout tag, plus the leaf route itself. For example, the route `/blog/hello` generates soft tags for `/layout`, `/blog/layout`, `/blog/hello/layout`, and `/blog/hello`. These tags are prefixed internally with `_N_T_`.
 
-Soft tags enable [`revalidatePath()`](/docs/app/api-reference/functions/revalidatePath) to work through the same tag-based cache system. When `revalidatePath('/blog/hello')` is called, it invalidates all cache entries associated with that path's soft tags.
+Soft tags enable [`revalidatePath()`](../../04-functions/revalidatePath.md) to work through the same tag-based cache system. When `revalidatePath('/blog/hello')` is called, it invalidates all cache entries associated with that path's soft tags.
 
 In the cache handler API, soft tags are passed to the [`get()`](#get) method as the `softTags` parameter. Your handler should check whether any soft tag has been invalidated (via `getExpiration()` or direct timestamp comparison) after the cache entry's `timestamp`.
 
@@ -372,7 +364,7 @@ module.exports = {
 }
 ```
 
-For a full explanation of the tag architecture (including soft tags and multi-instance considerations), see [How Revalidation Works](/docs/app/guides/how-revalidation-works).
+For a full explanation of the tag architecture (including soft tags and multi-instance considerations), see [How Revalidation Works](../../../02-guides/how-revalidation-works.md).
 
 ## Error Handling
 
@@ -569,13 +561,22 @@ module.exports = {
 
 | Deployment Option | Supported |
 | - | - |
-| [Node.js server](/docs/app/getting-started/deploying#nodejs-server) | Yes |
-| [Docker container](/docs/app/getting-started/deploying#docker) | Yes |
-| [Static export](/docs/app/getting-started/deploying#static-export) | No |
-| [Adapters](/docs/app/getting-started/deploying#adapters) | Platform-specific |
+| [Node.js server](../../../01-getting-started/17-deploying.md#nodejs-server) | Yes |
+| [Docker container](../../../01-getting-started/17-deploying.md#docker) | Yes |
+| [Static export](../../../01-getting-started/17-deploying.md#static-export) | No |
+| [Adapters](../../../01-getting-started/17-deploying.md#adapters) | Platform-specific |
 
 ## Version History
 
 | Version | Changes |
 | - | - |
 | `v16.0.0` | `cacheHandlers` stabilized and moved from `experimental.cacheHandlers` to the top-level `cacheHandlers` option. |
+
+## INDEX
+
+View related API references.
+
+- [use cache](../../01-directives/use-cache.md)
+- [use cache: remote](../../01-directives/use-cache-remote.md)
+- [use cache: private](../../01-directives/use-cache-private.md)
+- [cacheLife](./cacheLife.md)

@@ -2,15 +2,6 @@
 title: Ensuring instant navigations
 description: Learn how to structure your app to prefetch and prerender more content, providing instant page loads and client navigations.
 nav_title: Instant navigation
-related:
- title: Learn more
- description: Explore the full instant API, caching, and revalidation.
- links:
-  - app/api-reference/file-conventions/route-segment-config/instant
-  - app/guides/optimizing-prefetching
-  - app/getting-started/caching
-  - app/getting-started/revalidating
-  - app/guides/prefetching
 ---
 
 This guide walks through understanding instant navigations, writing a route that navigates instantly, visualizing what's in the initial UI, and locking the behavior in with end-to-end tests.
@@ -21,7 +12,7 @@ A navigation is **instant** when the browser can start rendering the new page th
 
 > **Good to know:** This definition assumes caches are warm. Cold caches still require the server to compute the cached result once, so the first navigation to a route may still wait.
 
-A direct visit and a client navigation to the same route can produce different initial UI. **Direct visits** get the [**static shell**](/docs/app/glossary#static-shell) as HTML, typically from a CDN. **Client navigations** only re-render below the layout the current and destination routes share, so the fallback UI defined by a `<Suspense>` boundary above that point can't be used during the transition.
+A direct visit and a client navigation to the same route can produce different initial UI. **Direct visits** get the [**static shell**](../04-glossary.md#static-shell) as HTML, typically from a CDN. **Client navigations** only re-render below the layout the current and destination routes share, so the fallback UI defined by a `<Suspense>` boundary above that point can't be used during the transition.
 
 Whether the new page appears instantly depends on the `<Suspense>` boundaries and caching present below the shared layout.
 
@@ -36,11 +27,11 @@ This is also why client-side hooks behave differently. `useSearchParams()` suspe
 
 </details>
 
-With `prefetch={true}`, per-link prefetching resolves a link's URL data (`searchParams` and `params`) before navigation. First make the route instant with its App Shell. Per-link prefetching cannot fix a route that blocks without it. See [Optimizing prefetching](/docs/app/guides/optimizing-prefetching) for the patterns.
+With `prefetch={true}`, per-link prefetching resolves a link's URL data (`searchParams` and `params`) before navigation. First make the route instant with its App Shell. Per-link prefetching cannot fix a route that blocks without it. See [Optimizing prefetching](./optimizing-prefetching.md) for the patterns.
 
 ## Quick start
 
-Getting the most out of Instant Navigation requires enabling [Cache Components](/docs/app/guides/migrating-to-cache-components) and [Partial Prefetching](/docs/app/guides/adopting-partial-prefetching), then following the [validation errors](#validate-instant-navigation) that appear:
+Getting the most out of Instant Navigation requires enabling [Cache Components](./migrating-to-cache-components.md) and [Partial Prefetching](./adopting-partial-prefetching.md), then following the [validation errors](#validate-instant-navigation) that appear:
 
 ```ts filename="next.config.ts"
 import type { NextConfig } from 'next'
@@ -78,19 +69,19 @@ The rest of this guide covers the tools these migrations use, walks a navigation
 
 With Cache Components, **caching directives** (`"use cache"` and its variants) assign a lifetime to an async function's result, which is what lets Next.js include it in the static shell.
 
-> **Good to know:** [`"use cache: private"`](/docs/app/api-reference/directives/use-cache-private) is a variant for caching functions that read runtime APIs like `cookies()` and `headers()`. The result is cached in the browser only, not on the server. **It can't be part of the static shell.** See [`"use cache: private"`](/docs/app/guides/optimizing-prefetching#use-cache-private) in the Optimizing prefetching guide for how it pairs with prefetching.
+> **Good to know:** [`"use cache: private"`](../03-api-reference/01-directives/use-cache-private.md) is a variant for caching functions that read runtime APIs like `cookies()` and `headers()`. The result is cached in the browser only, not on the server. **It can't be part of the static shell.** See [`"use cache: private"`](./optimizing-prefetching.md#use-cache-private) in the Optimizing prefetching guide for how it pairs with prefetching.
 
 **`<Suspense>`** declares fallback UI for parts of the tree that read uncached data or runtime APIs like `cookies()` and `headers()`; the content streams into the fallback when it resolves.
 
-> **Good to know:** A fallback may access `cookies()`, `headers()`, or the full URL. At build time, the fallback itself suspends, and a `<Suspense>` boundary further up the tree is needed. For a link with `prefetch={true}`, [per-link prefetching](/docs/app/guides/optimizing-prefetching) makes URL data available before navigation, so the fallback can become part of the prefetched UI. Cached values like timestamps or data fetches can sit directly inside the fallback.
+> **Good to know:** A fallback may access `cookies()`, `headers()`, or the full URL. At build time, the fallback itself suspends, and a `<Suspense>` boundary further up the tree is needed. For a link with `prefetch={true}`, [per-link prefetching](./optimizing-prefetching.md) makes URL data available before navigation, so the fallback can become part of the prefetched UI. Cached values like timestamps or data fetches can sit directly inside the fallback.
 
-Next.js can also generate an [**App Shell**](/docs/app/glossary#app-shell) per route, which renders during client navigations while remaining content streams. Partial Prefetching uses the App Shell as the default `<Link>` prefetch. A link with `prefetch={true}` can also resolve cached content that depends on that link's URL data.
+Next.js can also generate an [**App Shell**](../04-glossary.md#app-shell) per route, which renders during client navigations while remaining content streams. Partial Prefetching uses the App Shell as the default `<Link>` prefetch. A link with `prefetch={true}` can also resolve cached content that depends on that link's URL data.
 
 ### Prefetch URL data for a link
 
-Under [Partial Prefetching](/docs/app/guides/adopting-partial-prefetching), each visible `<Link>` prefetches the destination's App Shell by default. Links to the same route share one App Shell instead of triggering a separate App Shell request for each link.
+Under [Partial Prefetching](./adopting-partial-prefetching.md), each visible `<Link>` prefetches the destination's App Shell by default. Links to the same route share one App Shell instead of triggering a separate App Shell request for each link.
 
-To prefetch the page content alongside the shell for a specific link, set [`prefetch={true}`](/docs/app/api-reference/components/link#prefetch):
+To prefetch the page content alongside the shell for a specific link, set [`prefetch={true}`](../03-api-reference/02-components/link.md#prefetch):
 
 ```tsx
 <Link
@@ -100,13 +91,13 @@ To prefetch the page content alongside the shell for a specific link, set [`pref
 </Link>
 ```
 
-With Partial Prefetching enabled, `prefetch={true}` also opts the link into [per-link prefetching](/docs/app/guides/optimizing-prefetching), which resolves the per-link URL data (`params`, `searchParams`, the full URL) ahead of the click.
+With Partial Prefetching enabled, `prefetch={true}` also opts the link into [per-link prefetching](./optimizing-prefetching.md), which resolves the per-link URL data (`params`, `searchParams`, the full URL) ahead of the click.
 
 ### Validate instant navigation
 
 By **default** (`validationLevel: 'warning'`), Cache Components apps validate every Page and Default segment in development. Validation surfaces what would keep navigations into a segment from being instant — which navigations would block, where a `<Suspense>` boundary is missing, and which data is reaching the user uncached.
 
-To opt out of automatic validation and only validate segments that explicitly export `instant`, set [`validationLevel`](/docs/app/api-reference/file-conventions/route-segment-config/instant#configuring-validation-defaults) to `'manual-warning'`:
+To opt out of automatic validation and only validate segments that explicitly export `instant`, set [`validationLevel`](../03-api-reference/03-file-conventions/02-route-segment-config/instant.md#configuring-validation-defaults) to `'manual-warning'`:
 
 ```ts filename="next.config.ts" highlight={7}
 import type { NextConfig } from 'next'
@@ -139,7 +130,7 @@ Each case is validated independently. A `<Suspense>` boundary that covers one na
 
 ### Test it in CI
 
-The `@next/playwright` package provides an [`instant()`](/docs/app/api-reference/file-conventions/route-segment-config/instant#testing-instant-navigation) helper that scopes your assertions to the UI that's immediately available on navigation, so regressions surface in CI. See [Prevent regressions with e2e tests](#prevent-regressions-with-e2e-tests) for the pattern.
+The `@next/playwright` package provides an [`instant()`](../03-api-reference/03-file-conventions/02-route-segment-config/instant.md#testing-instant-navigation) helper that scopes your assertions to the UI that's immediately available on navigation, so regressions surface in CI. See [Prevent regressions with e2e tests](#prevent-regressions-with-e2e-tests) for the pattern.
 
 ### Inspect loading states
 
@@ -147,7 +138,7 @@ The **Navigation Inspector** in the Next.js DevTools freezes the page at its ini
 
 Pair it with the React DevTools Suspense panel to see exactly which boundary covers which part of the page. See [Visualize loading states with the Next.js DevTools](#visualize-loading-states-with-the-nextjs-devtools) for the workflow.
 
-See [Optimizing the static shell](/docs/app/guides/optimizing-the-static-shell) for patterns to reduce fallback coverage and make more completed UI available immediately.
+See [Optimizing the static shell](./optimizing-the-static-shell.md) for patterns to reduce fallback coverage and make more completed UI available immediately.
 
 ## A page that navigates instantly
 
@@ -332,7 +323,7 @@ bun add -D @next/playwright @playwright/test
 A route can be reached two ways, and a `<Suspense>` boundary can cover one without covering the other:
 
 - **Initial page load**: Use `page.goto()` to test the static UI from the document response.
-- **Client navigation**: Click a `<Link>` to test the destination's prefetched UI. [Per-link prefetching](/docs/app/guides/optimizing-prefetching) can add request-specific content to this UI.
+- **Client navigation**: Click a `<Link>` to test the destination's prefetched UI. [Per-link prefetching](./optimizing-prefetching.md) can add request-specific content to this UI.
 
 ```typescript filename="e2e/navigation.test.ts" highlight={6-14,20-25}
 import { test, expect } from '@playwright/test'
@@ -373,7 +364,7 @@ Inside the callback, an initial page load shows the static UI and a client navig
 
 For client navigations, wait for the destination URL before asserting on its UI. Otherwise, a shared selector can match the source page before the destination commits. If the prefetched destination cannot commit, the URL wait times out and the test fails.
 
-Run these against `next dev`, where the testing API is enabled automatically. For CI with a production build, enable [`exposeTestingApiInProductionBuild`](/docs/app/api-reference/config/next-config-js/exposeTestingApiInProductionBuild) only for the test build:
+Run these against `next dev`, where the testing API is enabled automatically. For CI with a production build, enable [`exposeTestingApiInProductionBuild`](../03-api-reference/05-config/01-next-config-js/exposeTestingApiInProductionBuild.md) only for the test build:
 
 ```ts filename="next.config.ts" highlight={3,8}
 import type { NextConfig } from 'next'
@@ -510,7 +501,7 @@ async function getFeatured() {
 
 The result is cached at the fetch level. The featured list ships with the App Shell.
 
-> **Good to know:** In serverless deployments, in-memory caching with `"use cache"` will not persist across instances. Consider using [`"use cache: remote"`](/docs/app/api-reference/directives/use-cache-remote) for persistent caching.
+> **Good to know:** In serverless deployments, in-memory caching with `"use cache"` will not persist across instances. Consider using [`"use cache: remote"`](../03-api-reference/01-directives/use-cache-remote.md) for persistent caching.
 
 Validation passes. Open the DevTools and try a client navigation. The featured section appears immediately, and **"Loading product..."** shows where the product details will stream in.
 
@@ -538,14 +529,14 @@ For [iterating on loading states](#iterate-on-loading-states), a prompt like "ma
 Agents working on a Cache Components route typically reach for three levers:
 
 - **Push down**: extract I/O into a Suspense-wrapped child so the parent stays static and static siblings lift into the shell.
-- **Cache**: pair `'use cache'` with [`cacheLife`](/docs/app/api-reference/functions/cacheLife) to assign a freshness profile.
-- **Per-link prefetching** (nav-only): when a route reads URL data (`searchParams` or `params`), opt it into [per-link prefetching](/docs/app/guides/optimizing-prefetching) so the framework resolves that data at link-prefetch time. Session data from `cookies()` or `headers()` already lands in the App Shell without it.
+- **Cache**: pair `'use cache'` with [`cacheLife`](../03-api-reference/04-functions/cacheLife.md) to assign a freshness profile.
+- **Per-link prefetching** (nav-only): when a route reads URL data (`searchParams` or `params`), opt it into [per-link prefetching](./optimizing-prefetching.md) so the framework resolves that data at link-prefetch time. Session data from `cookies()` or `headers()` already lands in the App Shell without it.
 
 Each refactor should pair with a before/after capture to verify the change actually landed. Identical-looking captures mean the refactor didn't take effect.
 
-For agents to see what their changes actually render, pair this with [agent-browser](https://github.com/vercel-labs/agent-browser). With React DevTools enabled it reports the component tree and which `<Suspense>` boundaries are still pending, so an agent can make a change, snapshot the shell, check what landed, and adjust. See [Runtime visibility](/docs/app/guides/ai-agents#runtime-visibility) in the AI agents guide for the setup.
+For agents to see what their changes actually render, pair this with [agent-browser](https://github.com/vercel-labs/agent-browser). With React DevTools enabled it reports the component tree and which `<Suspense>` boundaries are still pending, so an agent can make a change, snapshot the shell, check what landed, and adjust. See [Runtime visibility](./ai-agents.md#runtime-visibility) in the AI agents guide for the setup.
 
-The [`next-cache-components-optimizer`](/docs/app/guides/ai-agents#next-cache-components-optimizer) Skill packages this loop. It confirms the target UI renders normally, writes an `instant()` test that fails before the fix, then works it to green against a production-like build and ships it as a regression guard. Use it for the initial load (hard navigation), client-side navigation (soft navigation), or both.
+The [`next-cache-components-optimizer`](./ai-agents.md#next-cache-components-optimizer) Skill packages this loop. It confirms the target UI renders normally, writes an `instant()` test that fails before the fix, then works it to green against a production-like build and ships it as a regression guard. Use it for the initial load (hard navigation), client-side navigation (soft navigation), or both.
 
 ## Opting out
 
@@ -573,12 +564,22 @@ export const instant = false
 
 With `false` on `/dashboard/layout.tsx`, validation no longer flags navigations into `/dashboard` from outside; navigations between `/dashboard/a` and `/dashboard/b` are still checked.
 
-For opted-out segments, the navigation blocks on the server. If the content depends on cookies or headers but has a known cache lifetime, caching it with [`use cache: private`](/docs/app/api-reference/directives/use-cache-private) lets the App Shell carry it ahead of the click instead of opting out, as long as its [`stale`](/docs/app/api-reference/functions/cacheLife#stale) time is at least 5 minutes.
+For opted-out segments, the navigation blocks on the server. If the content depends on cookies or headers but has a known cache lifetime, caching it with [`use cache: private`](../03-api-reference/01-directives/use-cache-private.md) lets the App Shell carry it ahead of the click instead of opting out, as long as its [`stale`](../03-api-reference/04-functions/cacheLife.md#stale) time is at least 5 minutes.
 
 ## Next steps
 
-- [Adopting Partial Prefetching](/docs/app/guides/adopting-partial-prefetching) for the recommended `<Link>` defaults and a step-by-step adoption path
-- [`instant` API reference](/docs/app/api-reference/file-conventions/route-segment-config/instant) for the full configuration
-- [Optimizing prefetching](/docs/app/guides/optimizing-prefetching) when parts of your route depend on URL data (`searchParams` or `params`) and should resolve before navigation
-- [Caching](/docs/app/getting-started/caching) for background on `use cache`, Suspense, and Partial Prerendering
-- [Revalidating](/docs/app/getting-started/revalidating) for how to expire cached data with `cacheLife` and `updateTag`
+- [Adopting Partial Prefetching](./adopting-partial-prefetching.md) for the recommended `<Link>` defaults and a step-by-step adoption path
+- [`instant` API reference](../03-api-reference/03-file-conventions/02-route-segment-config/instant.md) for the full configuration
+- [Optimizing prefetching](./optimizing-prefetching.md) when parts of your route depend on URL data (`searchParams` or `params`) and should resolve before navigation
+- [Caching](../01-getting-started/08-caching.md) for background on `use cache`, Suspense, and Partial Prerendering
+- [Revalidating](../01-getting-started/09-revalidating.md) for how to expire cached data with `cacheLife` and `updateTag`
+
+## INDEX
+
+Explore the full instant API, caching, and revalidation.
+
+- [instant](../03-api-reference/03-file-conventions/02-route-segment-config/instant.md)
+- [Optimizing prefetching](./optimizing-prefetching.md)
+- [Caching](../01-getting-started/08-caching.md)
+- [Revalidating](../01-getting-started/09-revalidating.md)
+- [Prefetching](./prefetching.md)

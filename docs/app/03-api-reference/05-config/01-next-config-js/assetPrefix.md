@@ -3,15 +3,15 @@ title: assetPrefix
 description: Learn how to use the assetPrefix config option to configure your CDN.
 ---
 
-> **Attention**: [Deploying to Vercel](/docs/app/getting-started/deploying) automatically configures a global CDN for your Next.js project. You do not need to manually set up an Asset Prefix.
+> **Attention**: [Deploying to Vercel](../../../01-getting-started/17-deploying.md) automatically configures a global CDN for your Next.js project. You do not need to manually set up an Asset Prefix.
 
-> **Good to know**: Next.js 9.5+ added support for a customizable [Base Path](/docs/app/api-reference/config/next-config-js/basePath), which is better suited for hosting your application on a sub-path like `/docs`. We do not suggest you use a custom Asset Prefix for this use case.
+> **Good to know**: Next.js 9.5+ added support for a customizable [Base Path](./basePath.md), which is better suited for hosting your application on a sub-path like `/docs`. We do not suggest you use a custom Asset Prefix for this use case.
 
 ## Set up a CDN
 
 To set up a [CDN](https://en.wikipedia.org/wiki/Content_delivery_network), you can set up an asset prefix and configure your CDN's origin to resolve to the domain that Next.js is hosted on.
 
-Open `next.config.mjs` and add the `assetPrefix` config based on the [phase](/docs/app/api-reference/config/next-config-js#async-configuration):
+Open `next.config.mjs` and add the `assetPrefix` config based on the [phase](./index.md#async-configuration):
 
 ```js filename="next.config.mjs"
 // @ts-check
@@ -45,4 +45,4 @@ The exact configuration for uploading your files to a given CDN will depend on y
 
 While `assetPrefix` covers requests to `_next/static`, it does not influence the following paths:
 
-- Files in the [public](/docs/app/api-reference/file-conventions/public-folder) folder; if you want to serve those assets over a CDN, you'll have to introduce the prefix yourself
+- Files in the [public](../../03-file-conventions/public-folder.md) folder; if you want to serve those assets over a CDN, you'll have to introduce the prefix yourself

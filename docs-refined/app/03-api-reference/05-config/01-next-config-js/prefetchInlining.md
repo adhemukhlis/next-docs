@@ -2,12 +2,6 @@
 title: prefetchInlining
 description: Override how the App Router bundles small prefetch responses together.
 version: experimental
-related:
- title: Related
- description: View related API references and guides.
- links:
-  - app/api-reference/components/link
-  - app/guides/prefetching
 ---
 
 When the App Router prefetches a route, it can bundle small segment responses into a single response instead of requesting each one separately. This reduces the number of prefetch requests at the cost of duplicating some shared segment data across routes. This behavior is on by default, and most apps should leave it that way.
@@ -97,3 +91,10 @@ Lower thresholds keep more per-segment deduplication; higher thresholds inline m
 | ------- | --------------------------------------------------- |
 | 16.3.0  | `experimental.prefetchInlining` enabled by default. |
 | 16.2.0  | `experimental.prefetchInlining` added.              |
+
+## INDEX
+
+View related API references and guides.
+
+- [Link Component](../../02-components/link.md)
+- [Prefetching](../../../02-guides/prefetching.md)

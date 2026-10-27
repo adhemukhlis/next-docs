@@ -2,13 +2,9 @@
 title: useOffline
 description: Learn how to enable the experimental `useOffline` configuration option to detect connectivity and retry failed requests automatically.
 version: experimental
-related:
- links:
-  - app/api-reference/functions/use-offline
-  - app/guides/progressive-web-apps
 ---
 
-The `useOffline` configuration option enables offline connectivity detection and automatic retry of failed navigation, prefetch, and Server Action requests. When enabled, it also exposes the [`useOffline`](/docs/app/api-reference/functions/use-offline) hook for reading the current offline state from Client Components.
+The `useOffline` configuration option enables offline connectivity detection and automatic retry of failed navigation, prefetch, and Server Action requests. When enabled, it also exposes the [`useOffline`](../../04-functions/use-offline.md) hook for reading the current offline state from Client Components.
 
 ```ts filename="next.config.ts" switcher
 import type { NextConfig } from 'next'
@@ -36,7 +32,7 @@ When enabled, Next.js will:
 - Detect network failures on navigation, prefetch, and Server Action requests.
 - Poll for connectivity using [`HEAD`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/HEAD) requests with backoff while offline.
 - Automatically retry blocked requests once connectivity is restored.
-- Make the [`useOffline`](/docs/app/api-reference/functions/use-offline) hook available from `next/offline`.
+- Make the [`useOffline`](../../04-functions/use-offline.md) hook available from `next/offline`.
 
 ## How retry works
 
@@ -88,7 +84,7 @@ A single client does not produce a runaway burst of traffic against its origin:
 - While the client is offline, a failed `fetch()` rejects locally at the browser's network layer. The request never reaches the origin.
 - The polling loop issues one `HEAD` request at a time, with delays capped at 3 seconds. No other framework requests are sent to the origin during the offline period.
 - When connectivity returns, each pending navigation and Server Action fires once. Only the last navigation attempt is kept pending, and a typical form button is disabled while its action is pending.
-- Prefetches run through the [existing prefetch queue](/docs/app/guides/prefetching#prefetch-scheduling), not all at once.
+- Prefetches run through the [existing prefetch queue](../../../02-guides/prefetching.md#prefetch-scheduling), not all at once.
 
 In practice, this feature is unlikely to flood your server. The only extra traffic it generates per offline user is the HEAD polling, which stops as soon as connectivity returns. Prefetches, Server Actions, and navigations fire the same number of times they would have without an outage, just delayed.
 
@@ -97,3 +93,8 @@ In practice, this feature is unlikely to flood your server. The only extra traff
 | Version   | Changes                                                    |
 | --------- | ---------------------------------------------------------- |
 | `v16.x.0` | `experimental.useOffline` configuration option introduced. |
+
+## INDEX
+
+- [useOffline](../../04-functions/use-offline.md)
+- [How to build a Progressive Web Application (PWA) with Next.js](../../../02-guides/progressive-web-apps.md)

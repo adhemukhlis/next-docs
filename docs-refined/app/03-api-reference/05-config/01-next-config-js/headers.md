@@ -288,7 +288,7 @@ module.exports = {
 
 ## Headers with basePath support
 
-When leveraging [`basePath` support](/docs/app/api-reference/config/next-config-js/basePath) with headers each `source` is automatically prefixed with the `basePath` unless you add `basePath: false` to the header:
+When leveraging [`basePath` support](./basePath.md) with headers each `source` is automatically prefixed with the `basePath` unless you add `basePath: false` to the header:
 
 ```js filename="next.config.js"
 module.exports = {
@@ -322,7 +322,7 @@ module.exports = {
 
 ## Headers with i18n support
 
-When leveraging [`i18n` support](/docs/app/guides/internationalization) with headers each `source` is automatically prefixed to handle the configured `locales` unless you add `locale: false` to the header. If `locale: false` is used you must prefix the `source` with a locale for it to be matched correctly.
+When leveraging [`i18n` support](../../../02-guides/internationalization.md) with headers each `source` is automatically prefixed to handle the configured `locales` unless you add `locale: false` to the header. If `locale: false` is used you must prefix the `source` with a locale for it to be matched correctly.
 
 ```js filename="next.config.js"
 module.exports = {
@@ -382,11 +382,11 @@ module.exports = {
 
 ## Cache-Control
 
-Next.js sets the `Cache-Control` header of `public, max-age=31536000, immutable` for truly immutable assets. It cannot be overridden. These immutable files contain a SHA-hash in the file name, so they can be safely cached indefinitely. For example, [Static Image Imports](/docs/app/getting-started/images#local-images). You cannot set `Cache-Control` headers in `next.config.js` for these assets.
+Next.js sets the `Cache-Control` header of `public, max-age=31536000, immutable` for truly immutable assets. It cannot be overridden. These immutable files contain a SHA-hash in the file name, so they can be safely cached indefinitely. For example, [Static Image Imports](../../../01-getting-started/12-images.md#local-images). You cannot set `Cache-Control` headers in `next.config.js` for these assets.
 
 However, you can set `Cache-Control` headers for other responses or data.
 
-Learn more about [caching](/docs/app/getting-started/caching) with the App Router.
+Learn more about [caching](../../../01-getting-started/08-caching.md) with the App Router.
 
 ## Options
 
@@ -444,7 +444,7 @@ headers() {
 
 [This header](https://developer.mozilla.org/docs/Web/HTTP/Headers/X-Frame-Options) indicates whether the site should be allowed to be displayed within an `iframe`. This can prevent against clickjacking attacks.
 
-**This header has been superseded by CSP's `frame-ancestors` option**, which has better support in modern browsers (see [Content Security Policy](/docs/app/guides/content-security-policy) for configuration details).
+**This header has been superseded by CSP's `frame-ancestors` option**, which has better support in modern browsers (see [Content Security Policy](../../../02-guides/content-security-policy.md) for configuration details).
 
 ```js
 {
@@ -490,7 +490,7 @@ For example, a user trying to download an image, but having it treated as a diff
 
 ### Content-Security-Policy
 
-Learn more about adding a [Content Security Policy](/docs/app/guides/content-security-policy) to your application.
+Learn more about adding a [Content Security Policy](../../../02-guides/content-security-policy.md) to your application.
 
 ## Version History
 

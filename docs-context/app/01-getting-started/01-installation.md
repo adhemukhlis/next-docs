@@ -57,7 +57,7 @@ Learn more about [browser support](/docs/architecture/supported-browsers), inclu
 
 ## Create with the CLI
 
-The quickest way to create a new Next.js app is using [`create-next-app`](/docs/app/api-reference/cli/create-next-app), which sets up everything automatically for you. To create a project, run:
+The quickest way to create a new Next.js app is using [`create-next-app`](../03-api-reference/06-cli/create-next-app.md), which sets up everything automatically for you. To create a project, run:
 
 ```bash package="pnpm"
 pnpm create next-app
@@ -100,7 +100,7 @@ What import alias would you like configured? @/*
 Would you like to include AGENTS.md to guide coding agents to write up-to-date Next.js code? No / Yes
 ```
 
-After the prompts, [`create-next-app`](/docs/app/api-reference/cli/create-next-app) will create a folder with your project name and install the required dependencies.
+After the prompts, [`create-next-app`](../03-api-reference/06-cli/create-next-app.md) will create a folder with your project name and install the required dependencies.
 
 ## Manual installation
 
@@ -148,13 +148,13 @@ These scripts refer to the different stages of developing an application:
 - `next start`: Starts the production server.
 - `eslint`: Runs ESLint.
 
-Turbopack is now the default bundler. To use Webpack run `next dev --webpack` or `next build --webpack`. See the [Turbopack docs](/docs/app/api-reference/turbopack) for configuration details.
+Turbopack is now the default bundler. To use Webpack run `next dev --webpack` or `next build --webpack`. See the [Turbopack docs](../03-api-reference/08-turbopack.md) for configuration details.
 
 ### Create the `app` directory
 
 Next.js uses file-system routing, which means the routes in your application are determined by how you structure your files.
 
-Create an `app` folder. Then, inside `app`, create a `layout.tsx` file. This file is the [root layout](/docs/app/api-reference/file-conventions/layout#root-layout). It's required and must contain the `<html>` and `<body>` tags.
+Create an `app` folder. Then, inside `app`, create a `layout.tsx` file. This file is the [root layout](../03-api-reference/03-file-conventions/layout.md#root-layout). It's required and must contain the `<html>` and `<body>` tags.
 
 ```tsx filename="app/layout.tsx" switcher
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -203,11 +203,11 @@ height="363"
 > **Good to know**:
 >
 > - If you forget to create the root layout, Next.js will automatically create this file when running the development server with `next dev`.
-> - You can optionally use a [`src` folder](/docs/app/api-reference/file-conventions/src-folder) in the root of your project to separate your application's code from configuration files.
+> - You can optionally use a [`src` folder](../03-api-reference/03-file-conventions/src-folder.md) in the root of your project to separate your application's code from configuration files.
 
 ### Create the `public` folder (optional)
 
-Create a [`public` folder](/docs/app/api-reference/file-conventions/public-folder) at the root of your project to store static assets such as images, fonts, etc. Files inside `public` can then be referenced by your code starting from the base URL (`/`).
+Create a [`public` folder](../03-api-reference/03-file-conventions/public-folder.md) at the root of your project to store static assets such as images, fonts, etc. Files inside `public` can then be referenced by your code starting from the base URL (`/`).
 
 You can then reference these assets using the root path (`/`). For example, `public/profile.png` can be referenced as `/profile.png`:
 
@@ -271,7 +271,7 @@ width="1600"
 height="637"
 />
 
-See the [TypeScript reference](/docs/app/api-reference/config/typescript) page for more information.
+See the [TypeScript reference](../03-api-reference/05-config/02-typescript.md) page for more information.
 
 ## Set up your editor
 
@@ -334,11 +334,11 @@ If your project previously used `next lint`, migrate your scripts to the ESLint 
 npx @next/codemod@canary next-lint-to-eslint-cli .
 ```
 
-If you use ESLint, create an explicit config (recommended `eslint.config.mjs`). ESLint supports both [the legacy `.eslintrc.*` and the newer `eslint.config.mjs` formats](https://eslint.org/docs/latest/use/configure/configuration-files#configuring-eslint). See the [ESLint API reference](/docs/app/api-reference/config/eslint#with-core-web-vitals) for a recommended setup.
+If you use ESLint, create an explicit config (recommended `eslint.config.mjs`). ESLint supports both [the legacy `.eslintrc.*` and the newer `eslint.config.mjs` formats](https://eslint.org/docs/latest/use/configure/configuration-files#configuring-eslint). See the [ESLint API reference](../03-api-reference/05-config/03-eslint.md#with-core-web-vitals) for a recommended setup.
 
 > **Good to know**: Starting with Next.js 16, `next build` no longer runs the linter automatically. Instead, you can run your linter through NPM scripts.
 
-See the [ESLint Plugin](/docs/app/api-reference/config/eslint) page for more information.
+See the [ESLint Plugin](../03-api-reference/05-config/03-eslint.md) page for more information.
 
 ## Set up Absolute Imports and Module Path Aliases
 
@@ -402,8 +402,8 @@ yarn next upgrade
 bunx next upgrade
 ```
 
-Upgrading also updates the documentation bundled inside the `next` package at `node_modules/next/dist/docs/`. New features arrive with their docs, and existing pages pick up new guidance and pitfalls discovered along the way. [AI coding agents](/docs/app/guides/ai-agents) in your project then work from the version you have installed rather than their training data.
+Upgrading also updates the documentation bundled inside the `next` package at `node_modules/next/dist/docs/`. New features arrive with their docs, and existing pages pick up new guidance and pitfalls discovered along the way. [AI coding agents](../02-guides/ai-agents.md) in your project then work from the version you have installed rather than their training data.
 
-To have a coding agent perform and verify the upgrade, run `npx next@canary upgrade --agent=latest`. See [Upgrade with a coding agent](/docs/app/guides/upgrading/agent-upgrade) for other policies.
+To have a coding agent perform and verify the upgrade, run `npx next@canary upgrade --agent=latest`. See [Upgrade with a coding agent](../02-guides/upgrading/agent-upgrade.md) for other policies.
 
-See [Upgrading](/docs/app/getting-started/upgrading) for version guides and manual upgrade steps, or the [preview docs](https://preview.nextjs.org) to explore features before they ship in a stable version.
+See [Upgrading](./18-upgrading.md) for version guides and manual upgrade steps, or the [preview docs](https://preview.nextjs.org) to explore features before they ship in a stable version.

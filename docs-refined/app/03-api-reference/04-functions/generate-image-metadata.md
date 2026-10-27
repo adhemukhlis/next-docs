@@ -1,11 +1,6 @@
 ---
 title: generateImageMetadata
 description: Learn how to generate multiple images in a single Metadata API special file.
-related:
- title: Next Steps
- description: View all the Metadata API options.
- links:
-  - app/api-reference/file-conventions/metadata
 ---
 
 You can use `generateImageMetadata` to generate different versions of one image or return multiple images for one route segment. This is useful for when you want to avoid hard-coding metadata values, such as for icons.
@@ -16,7 +11,7 @@ You can use `generateImageMetadata` to generate different versions of one image 
 
 #### `params` (optional)
 
-An object containing the [dynamic route parameters](/docs/app/api-reference/file-conventions/dynamic-routes) object from the root segment down to the segment `generateImageMetadata` is called from.
+An object containing the [dynamic route parameters](../03-file-conventions/dynamic-routes.md) object from the root segment down to the segment `generateImageMetadata` is called from.
 
 ```tsx filename="icon.tsx" switcher
 export function generateImageMetadata({ params }: { params: { slug: string } }) {
@@ -147,7 +142,7 @@ export default async function Icon({ id }) {
 
 #### `params` (optional)
 
-A promise that resolves to an object containing the [dynamic route parameters](/docs/app/api-reference/file-conventions/dynamic-routes) from the root segment down to the segment the image is colocated in.
+A promise that resolves to an object containing the [dynamic route parameters](../03-file-conventions/dynamic-routes.md) from the root segment down to the segment the image is colocated in.
 
 ```tsx filename="icon.tsx" switcher
 export default async function Icon({ params }: { params: Promise<{ slug: string }> }) {
@@ -167,7 +162,7 @@ export default async function Icon({ params }) {
 
 #### Using external data
 
-This example uses the `params` object and external data to generate multiple [Open Graph images](/docs/app/api-reference/file-conventions/metadata/opengraph-image) for a route segment.
+This example uses the `params` object and external data to generate multiple [Open Graph images](../03-file-conventions/01-metadata/opengraph-image.md) for a route segment.
 
 ```tsx filename="app/products/[id]/opengraph-image.tsx" switcher
 import { ImageResponse } from 'next/og'
@@ -242,3 +237,9 @@ export default async function Image({ params, id }) {
 | `v16.0.0` | `id` passed to the Image generation function is now a promise that resolves to `string` or `number` |
 | `v16.0.0` | `params` passed to the Image generation function is now a promise that resolves to an object        |
 | `v13.3.0` | `generateImageMetadata` introduced.                                                                 |
+
+## INDEX
+
+View all the Metadata API options.
+
+- [Metadata Files API Reference](../03-file-conventions/01-metadata/index.md)

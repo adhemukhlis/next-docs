@@ -113,7 +113,7 @@ To embed videos from external platforms, you can use Next.js to fetch the video 
 
 **1. Create a Server Component for video embedding**
 
-The first step is to create a [Server Component](/docs/app/getting-started/server-and-client-components) that generates the appropriate iframe for embedding the video. This component will fetch the source URL for the video and render the iframe.
+The first step is to create a [Server Component](../01-getting-started/05-server-and-client-components.md) that generates the appropriate iframe for embedding the video. This component will fetch the source URL for the video and render the iframe.
 
 ```jsx filename="app/ui/video-component.jsx"
 export default async function VideoComponent() {
@@ -130,7 +130,7 @@ export default async function VideoComponent() {
 
 **2. Stream the video component using React Suspense**
 
-After creating the Server Component to embed the video, the next step is to [stream](/docs/app/api-reference/file-conventions/loading) the component using [React Suspense](https://react.dev/reference/react/Suspense).
+After creating the Server Component to embed the video, the next step is to [stream](../03-api-reference/03-file-conventions/loading.md) the component using [React Suspense](https://react.dev/reference/react/Suspense).
 
 ```jsx filename="app/page.jsx"
 import { Suspense } from 'react'

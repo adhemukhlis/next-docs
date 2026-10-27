@@ -4,7 +4,7 @@ description: Use the native Rust port of the React Compiler with Turbopack inste
 version: experimental
 ---
 
-The `experimental.turbopackRustReactCompiler` option enables the native Rust version of the [React Compiler](/docs/app/api-reference/config/next-config-js/reactCompiler), running it directly inside Turbopack as native code instead of through Node.js as it does with the standard Babel version. This typically results in a noticeable performance improvement.
+The `experimental.turbopackRustReactCompiler` option enables the native Rust version of the [React Compiler](./reactCompiler.md), running it directly inside Turbopack as native code instead of through Node.js as it does with the standard Babel version. This typically results in a noticeable performance improvement.
 
 This option is released as experimental to gather feedback before it becomes the default.
 
@@ -39,11 +39,11 @@ module.exports = nextConfig
 
 ## Good to know
 
-> - This option requires [`reactCompiler`](/docs/app/api-reference/config/next-config-js/reactCompiler) to be enabled. It selects which implementation runs, but does not turn the compiler on by itself.
+> - This option requires [`reactCompiler`](./reactCompiler.md) to be enabled. It selects which implementation runs, but does not turn the compiler on by itself.
 > - This option is only supported with Turbopack. Using it with webpack will throw an error.
 > - When enabled, you do not need to install `babel-plugin-react-compiler`. The Rust compiler runs natively inside Turbopack.
 
-See the [`reactCompiler` option documentation](/docs/app/api-reference/config/next-config-js/reactCompiler) for details on how to use the compiler.
+See the [`reactCompiler` option documentation](./reactCompiler.md) for details on how to use the compiler.
 
 ## Version History
 

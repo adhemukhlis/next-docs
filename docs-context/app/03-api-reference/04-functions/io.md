@@ -3,9 +3,9 @@ title: io
 description: API Reference for the io function.
 ---
 
-When [Cache Components](/docs/app/api-reference/config/next-config-js/cacheComponents) is enabled, Next.js needs you to decide whether to capture a synchronous value like `new Date()` or `Math.random()` once and reuse it for every visitor, or produce it fresh for each request.
+When [Cache Components](../05-config/01-next-config-js/cacheComponents.md) is enabled, Next.js needs you to decide whether to capture a synchronous value like `new Date()` or `Math.random()` once and reuse it for every visitor, or produce it fresh for each request.
 
-To capture the value in the [static shell](/docs/app/glossary#static-shell), wrap it in [`"use cache"`](/docs/app/api-reference/directives/use-cache). To keep it out of the static shell, use `await io()`, which suspends during prerendering.
+To capture the value in the [static shell](../../04-glossary.md#static-shell), wrap it in [`"use cache"`](../01-directives/use-cache.md). To keep it out of the static shell, use `await io()`, which suspends during prerendering.
 
 During a request, inside cached scopes, in the browser, and apps without Cache Components (including the Pages Router), calling `io()` resolves immediately.
 
@@ -51,7 +51,7 @@ async function CurrentTime() {
 }
 ```
 
-In this route `CurrentTime` is wrapped in a `<Suspense>` boundary, during prerender, the `await io()` suspends and the fallback ships in the static shell. If `CurrentTime` were rendered inside a [`"use cache"`](/docs/app/api-reference/directives/use-cache) scope instead, `io()` would be a no-op, the value is captured into the static shell and no `<Suspense>` boundary is required.
+In this route `CurrentTime` is wrapped in a `<Suspense>` boundary, during prerender, the `await io()` suspends and the fallback ships in the static shell. If `CurrentTime` were rendered inside a [`"use cache"`](../01-directives/use-cache.md) scope instead, `io()` would be a no-op, the value is captured into the static shell and no `<Suspense>` boundary is required.
 
 In a Client Component, call `io()` with React's [`use`](https://react.dev/reference/react/use) hook before reading a synchronous source like `Date.now()`. Client Components prerender on the server during SSR, where the read would otherwise be included in the static shell:
 
@@ -79,12 +79,12 @@ export function CurrentTime() {
 
 ## When you don't need `io()`
 
-- The component already uses a [Request-time API](/docs/app/glossary#request-time-apis) like `cookies()` or `headers()`. The request-time API is itself the suspension point.
+- The component already uses a [Request-time API](../../04-glossary.md#request-time-apis) like `cookies()` or `headers()`. The request-time API is itself the suspension point.
 - The data comes from an awaited `fetch` or async database query wrapped in `<Suspense>`. The `await` is the suspension point.
 
 ## How `io()` differs from `connection()`
 
-The [`connection()`](/docs/app/api-reference/functions/connection) function excludes the code that follows it from the static shell, but it stays suspended until a full user navigation reaches the server, so it also blocks [prefetches](/docs/app/guides/prefetching). `io()` suspends like any other asynchronous function, so the code after it can be wrapped in [`"use cache"`](/docs/app/api-reference/directives/use-cache) and prefetched and cached on the client. Prefer `io()` over `connection()`, and reach for `connection()` only when you need to wait for a real user request.
+The [`connection()`](./connection.md) function excludes the code that follows it from the static shell, but it stays suspended until a full user navigation reaches the server, so it also blocks [prefetches](../../02-guides/prefetching.md). `io()` suspends like any other asynchronous function, so the code after it can be wrapped in [`"use cache"`](../01-directives/use-cache.md) and prefetched and cached on the client. Prefer `io()` over `connection()`, and reach for `connection()` only when you need to wait for a real user request.
 
 ## Reference
 
@@ -100,7 +100,7 @@ function io(): Promise<void>
 
 ### Returns
 
-A `Promise<void>`. With Cache Components enabled, awaiting this promise stops prerendering so the code that follows is excluded from the prerender output. In every other context (real requests, cache scopes, [`generateStaticParams`](/docs/app/api-reference/functions/generate-static-params), the browser, and routes without Cache Components), it resolves immediately.
+A `Promise<void>`. With Cache Components enabled, awaiting this promise stops prerendering so the code that follows is excluded from the prerender output. In every other context (real requests, cache scopes, [`generateStaticParams`](./generate-static-params.md), the browser, and routes without Cache Components), it resolves immediately.
 
 ## Version History
 

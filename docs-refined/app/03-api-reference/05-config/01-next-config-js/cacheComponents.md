@@ -1,19 +1,13 @@
 ---
 title: cacheComponents
 description: Learn how to enable the cacheComponents flag in Next.js.
-related:
- links:
-  - app/getting-started/caching
-  - app/guides/incremental-static-regeneration-cache-components
-  - app/api-reference/directives/use-cache
-  - app/api-reference/directives/use-cache-remote
 ---
 
-Cache Components enables component and function-level caching using the [`use cache`](/docs/app/api-reference/directives/use-cache) directive. Data fetching is dynamic by default, and you choose what to cache at the page, component, or function level. Next.js prerenders a static HTML shell that is served immediately while dynamic content streams in when ready, letting you mix static and dynamic content within a single route.
+Cache Components enables component and function-level caching using the [`use cache`](../../01-directives/use-cache.md) directive. Data fetching is dynamic by default, and you choose what to cache at the page, component, or function level. Next.js prerenders a static HTML shell that is served immediately while dynamic content streams in when ready, letting you mix static and dynamic content within a single route.
 
 ## Usage
 
-To enable the `cacheComponents` flag, set it to `true` in your `next.config.ts` file, together with [`partialPrefetching`](/docs/app/api-reference/config/next-config-js/partialPrefetching):
+To enable the `cacheComponents` flag, set it to `true` in your `next.config.ts` file, together with [`partialPrefetching`](./partialPrefetching.md):
 
 ```ts filename="next.config.ts"
 import type { NextConfig } from 'next'
@@ -26,23 +20,23 @@ const nextConfig: NextConfig = {
 export default nextConfig
 ```
 
-Set `partialPrefetching` explicitly. Leaving it unset logs a warning, because the first release of Cache Components did not include Partial Prefetching. Set it to `false` only while [migrating an app that adopted Cache Components before Partial Prefetching](/docs/app/guides/adopting-partial-prefetching). Both features will be enabled everywhere in the next major release, and the options will be removed.
+Set `partialPrefetching` explicitly. Leaving it unset logs a warning, because the first release of Cache Components did not include Partial Prefetching. Set it to `false` only while [migrating an app that adopted Cache Components before Partial Prefetching](../../../02-guides/adopting-partial-prefetching.md). Both features will be enabled everywhere in the next major release, and the options will be removed.
 
-> **Good to know**: Cache Components requires the Node.js runtime and does not support the [`runtime` route segment config](/docs/app/api-reference/file-conventions/route-segment-config/runtime). Remove any `runtime` export, including `runtime = 'nodejs'` and the deprecated `runtime = 'edge'`. Other server-side JavaScript runtimes are not guaranteed to work. See [Migrating to Cache Components](/docs/app/guides/migrating-to-cache-components#runtime--edge).
+> **Good to know**: Cache Components requires the Node.js runtime and does not support the [`runtime` route segment config](../../03-file-conventions/02-route-segment-config/runtime.md). Remove any `runtime` export, including `runtime = 'nodejs'` and the deprecated `runtime = 'edge'`. Other server-side JavaScript runtimes are not guaranteed to work. See [Migrating to Cache Components](../../../02-guides/migrating-to-cache-components.md#runtime--edge).
 
 When `cacheComponents` is enabled, you can use the following cache functions and configurations:
 
-- The [`use cache` directive](/docs/app/api-reference/directives/use-cache)
-- The [`cacheLife` function](/docs/app/api-reference/config/next-config-js/cacheLife) with `use cache`
-- The [`cacheTag` function](/docs/app/api-reference/functions/cacheTag)
+- The [`use cache` directive](../../01-directives/use-cache.md)
+- The [`cacheLife` function](./cacheLife.md) with `use cache`
+- The [`cacheTag` function](../../04-functions/cacheTag.md)
 
-> **Good to know**: If you used `experimental.useCache` or `experimental.dynamicIO`, migrate using the [Version 16 upgrade guide](/docs/app/guides/upgrading/version-16#experimentaldynamicio-and-experimentalusecache). To migrate route segment configs and other caching patterns, see [Migrating to Cache Components](/docs/app/guides/migrating-to-cache-components).
+> **Good to know**: If you used `experimental.useCache` or `experimental.dynamicIO`, migrate using the [Version 16 upgrade guide](../../../02-guides/upgrading/version-16.md#experimentaldynamicio-and-experimentalusecache). To migrate route segment configs and other caching patterns, see [Migrating to Cache Components](../../../02-guides/migrating-to-cache-components.md).
 
-Additionally, `cacheComponents` implements **[Partial Prerendering (PPR)](/docs/app/glossary#partial-prerendering-ppr)** as the default behavior in the App Router. This means the `experimental.ppr` configuration flag and the `experimental_ppr` route segment configuration are no longer necessary and have been removed.
+Additionally, `cacheComponents` implements **[Partial Prerendering (PPR)](../../../04-glossary.md#partial-prerendering-ppr)** as the default behavior in the App Router. This means the `experimental.ppr` configuration flag and the `experimental_ppr` route segment configuration are no longer necessary and have been removed.
 
-Read [Prerendering](/docs/app/getting-started/caching#prerendering) for how the static shell and streaming fit together.
+Read [Prerendering](../../../01-getting-started/08-caching.md#prerendering) for how the static shell and streaming fit together.
 
-> **Good to know**: If you used experimental PPR in Next.js 15, refer to the [Partial Prerendering (PPR)](/docs/app/guides/upgrading/version-16#partial-prerendering-ppr) section of the Version 16 upgrade guide when migrating.
+> **Good to know**: If you used experimental PPR in Next.js 15, refer to the [Partial Prerendering (PPR)](../../../02-guides/upgrading/version-16.md#partial-prerendering-ppr) section of the Version 16 upgrade guide when migrating.
 
 ## Navigation with Activity
 
@@ -58,10 +52,17 @@ This behavior improves the navigation experience by maintaining UI state (form i
 
 > **Good to know**: Next.js uses heuristics to keep a few recently visited routes `"hidden"`, while older routes are removed from the DOM to prevent excessive growth.
 
-Some UI patterns behave differently when components stay mounted instead of unmounting. See the [Preserving UI state guide](/docs/app/guides/preserving-ui-state) for handling common patterns like dropdowns, dialogs, and testing.
+Some UI patterns behave differently when components stay mounted instead of unmounting. See the [Preserving UI state guide](../../../02-guides/preserving-ui-state.md) for handling common patterns like dropdowns, dialogs, and testing.
 
 ## Version History
 
 | Version | Change |
 | --- | --- |
 | 16.0.0 | `cacheComponents` stabilized and moved from `experimental.cacheComponents` to the top-level `cacheComponents` option. This flag controls the `ppr`, `useCache`, and `dynamicIO` flags as a single, unified configuration. |
+
+## INDEX
+
+- [Caching](../../../01-getting-started/08-caching.md)
+- [Incremental Static Regeneration with Cache Components](../../../02-guides/incremental-static-regeneration-cache-components.md)
+- [use cache](../../01-directives/use-cache.md)
+- [use cache: remote](../../01-directives/use-cache-remote.md)

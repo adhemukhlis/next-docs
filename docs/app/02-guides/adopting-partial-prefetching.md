@@ -6,23 +6,23 @@ related:
  title: Next Steps
  description: Learn more about prefetching and instant navigations.
  links:
-  - app/guides/instant-navigation
-  - app/guides/optimizing-prefetching
-  - app/api-reference/config/next-config-js/partialPrefetching
-  - app/api-reference/file-conventions/route-segment-config/prefetch
+  - ./instant-navigation.md
+  - ./optimizing-prefetching.md
+  - ../03-api-reference/05-config/01-next-config-js/partialPrefetching.md
+  - ../03-api-reference/03-file-conventions/02-route-segment-config/prefetch.md
 ---
 
-[Partial Prefetching](/docs/app/glossary#partial-prefetching) changes what a `<Link>` downloads for a Cache Components route. With Partial Prefetching enabled, a `<Link>` prefetches the route's [App Shell](/docs/app/glossary#app-shell): its static content and the cached content that doesn't depend on the URL. Next.js builds one App Shell per route and reuses it for every link to that route, rather than prefetching each link separately as it did before.
+[Partial Prefetching](../04-glossary.md#partial-prefetching) changes what a `<Link>` downloads for a Cache Components route. With Partial Prefetching enabled, a `<Link>` prefetches the route's [App Shell](../04-glossary.md#app-shell): its static content and the cached content that doesn't depend on the URL. Next.js builds one App Shell per route and reuses it for every link to that route, rather than prefetching each link separately as it did before.
 
-To prefetch more than the App Shell, a link can opt into [per-link prefetching](/docs/app/guides/optimizing-prefetching) with [`<Link prefetch={true}>`](/docs/app/api-reference/components/link#prefetch). The prefetch can then resolve cached URL-specific content that depends on `params`, `searchParams`, or the full URL.
+To prefetch more than the App Shell, a link can opt into [per-link prefetching](./optimizing-prefetching.md) with [`<Link prefetch={true}>`](../03-api-reference/02-components/link.md#prefetch). The prefetch can then resolve cached URL-specific content that depends on `params`, `searchParams`, or the full URL.
 
-Along the way, Next.js surfaces [instant navigation](/docs/app/guides/instant-navigation) insights in development, naming the link or route to change.
+Along the way, Next.js surfaces [instant navigation](./instant-navigation.md) insights in development, naming the link or route to change.
 
-> **Good to know**: Partial Prefetching only works when [`cacheComponents`](/docs/app/api-reference/config/next-config-js/cacheComponents) is enabled.
+> **Good to know**: Partial Prefetching only works when [`cacheComponents`](../03-api-reference/05-config/01-next-config-js/cacheComponents.md) is enabled.
 
 ## Use the adoption skill (recommended)
 
-The [`next-partial-prefetching-adoption`](/docs/app/guides/ai-agents#next-partial-prefetching-adoption) skill drives this adoption with a coding agent. It reviews your `<Link prefetch={true}>` calls, captures the prefetched UI to preserve with [`instant()` tests](#verify-prefetched-ui-with-tests) when a production test rig is available, then enables the flag and checks each route for the insights this guide covers.
+The [`next-partial-prefetching-adoption`](./ai-agents.md#next-partial-prefetching-adoption) skill drives this adoption with a coding agent. It reviews your `<Link prefetch={true}>` calls, captures the prefetched UI to preserve with [`instant()` tests](#verify-prefetched-ui-with-tests) when a production test rig is available, then enables the flag and checks each route for the insights this guide covers.
 
 Install the skill:
 
@@ -45,13 +45,13 @@ To adopt an existing app by hand:
 3. [Move URL data behind Suspense](#move-url-data-behind-suspense), resolving the [URL data outside of Suspense](/docs/messages/instant-shell-url-data) insight.
 4. Optionally, [prefetch URL data](#prefetching-url-data) on the routes where streaming in after navigation isn't enough.
 
-Both insights are development-only and never block the build. They appear in the dev overlay with fix cards that link the docs page for each fix. If a route isn't ready to adopt, export [`instant = false`](/docs/app/api-reference/file-conventions/route-segment-config/instant) from its page or layout to opt the route out of instant-navigation validation, and return to it later.
+Both insights are development-only and never block the build. They appear in the dev overlay with fix cards that link the docs page for each fix. If a route isn't ready to adopt, export [`instant = false`](../03-api-reference/03-file-conventions/02-route-segment-config/instant.md) from its page or layout to opt the route out of instant-navigation validation, and return to it later.
 
 ## Enable Partial Prefetching
 
 > **Good to know**: In an existing app, review the UI delivered by [`<Link prefetch={true}>`](#migrate-existing-full-prefetches) before enabling Partial Prefetching. These links use the legacy full prefetch, and enabling Partial Prefetching changes their behavior.
 
-Enable [`partialPrefetching`](/docs/app/api-reference/config/next-config-js/partialPrefetching) in `next.config.ts`:
+Enable [`partialPrefetching`](../03-api-reference/05-config/01-next-config-js/partialPrefetching.md) in `next.config.ts`:
 
 ```ts filename="next.config.ts" highlight={5}
 import type { NextConfig } from 'next'
@@ -73,7 +73,7 @@ After enabling the flag, links using the default behavior, `prefetch="auto"`, or
 | `<Link>` prop | Before (Cache Components default) | After Partial Prefetching |
 | --- | --- | --- |
 | `<Link href="/x">` | Prefetched the cached page render. | Prefetches the shared App Shell for `/x`. |
-| `<Link href="/x" prefetch>` | Prefetched the cached page render **and** any dynamic content. | Prefetches the App Shell, plus cached URL-specific content through [per-link prefetching](/docs/app/guides/optimizing-prefetching) when `/x` reads it. |
+| `<Link href="/x" prefetch>` | Prefetched the cached page render **and** any dynamic content. | Prefetches the App Shell, plus cached URL-specific content through [per-link prefetching](./optimizing-prefetching.md) when `/x` reads it. |
 | `<Link href="/x" prefetch={false}>` | Disabled prefetching for this link. | Unchanged. Still disabled. |
 
 The App Shell is shared across every link to a given route, regardless of dynamic params, so rendering many `<Link>`s to the same destination doesn't multiply the work.
@@ -84,11 +84,11 @@ Before Partial Prefetching, a `<Link>` whose effective `prefetch` value is `true
 
 A legacy full prefetch can include more UI than the navigation needs. In most cases, the primary content at the top of the destination should be available before navigation, while secondary or frequently changing content can stream afterward.
 
-> **Good to know**: `cookies()` and `headers()` don't tie a prefetch to a URL. They vary per session, not per link, so the App Shell still carries session content. Only `params` and `searchParams` are [URL data](/docs/app/glossary#url-data), which varies per link and can't be included in the shared App Shell.
+> **Good to know**: `cookies()` and `headers()` don't tie a prefetch to a URL. They vary per session, not per link, so the App Shell still carries session content. Only `params` and `searchParams` are [URL data](../04-glossary.md#url-data), which varies per link and can't be included in the shared App Shell.
 
 ### Verify prefetched UI with tests
 
-To verify the migration programmatically, an [`instant()`](/docs/app/guides/instant-navigation#prevent-regressions-with-e2e-tests) test can capture the UI that should stay available from an existing full prefetch. Test the exact source link because different links to the same destination can use different prefetch settings:
+To verify the migration programmatically, an [`instant()`](./instant-navigation.md#prevent-regressions-with-e2e-tests) test can capture the UI that should stay available from an existing full prefetch. Test the exact source link because different links to the same destination can use different prefetch settings:
 
 ```ts filename="e2e/product-navigation.test.ts" highlight={7-16}
 import { expect, test } from '@playwright/test'
@@ -168,11 +168,11 @@ export default async function Page() {
 }
 ```
 
-> **Good to know**: The App Shell carries cached content whose [`stale`](/docs/app/api-reference/functions/cacheLife#stale) time is at least 5 minutes, which holds for the `default` profile used above and every preset except `seconds`. Shorter-lived content streams in after the navigation instead. See [Prerendering behavior](/docs/app/api-reference/functions/cacheLife#prerendering-behavior).
+> **Good to know**: The App Shell carries cached content whose [`stale`](../03-api-reference/04-functions/cacheLife.md#stale) time is at least 5 minutes, which holds for the `default` profile used above and every preset except `seconds`. Shorter-lived content streams in after the navigation instead. See [Prerendering behavior](../03-api-reference/04-functions/cacheLife.md#prerendering-behavior).
 
 ### Session content
 
-Content behind [`cookies()`](/docs/app/api-reference/functions/cookies) or [`headers()`](/docs/app/api-reference/functions/headers) varies per session, not per link, and [session data resolves in the App Shell](/docs/app/guides/optimizing-prefetching#include-session-data-in-the-shell), so cached session content still gets included. Read the session value outside the cached function and pass it in, then remove `prefetch={true}` from the links:
+Content behind [`cookies()`](../03-api-reference/04-functions/cookies.md) or [`headers()`](../03-api-reference/04-functions/headers.md) varies per session, not per link, and [session data resolves in the App Shell](./optimizing-prefetching.md#include-session-data-in-the-shell), so cached session content still gets included. Read the session value outside the cached function and pass it in, then remove `prefetch={true}` from the links:
 
 ```tsx filename="app/dashboard/page.tsx" switcher
 // Before
@@ -264,7 +264,7 @@ export default function Page() {
 
 ### URL data
 
-[URL data](/docs/app/glossary#url-data) (`params`, `searchParams`) varies per link, so content that depends on it can't be included in the shared App Shell and streams in after navigation from behind its `<Suspense>` boundary. The links keep `prefetch={true}`, and [Prefetching URL data](#prefetching-url-data) covers prefetching the content ahead of the click.
+[URL data](../04-glossary.md#url-data) (`params`, `searchParams`) varies per link, so content that depends on it can't be included in the shared App Shell and streams in after navigation from behind its `<Suspense>` boundary. The links keep `prefetch={true}`, and [Prefetching URL data](#prefetching-url-data) covers prefetching the content ahead of the click.
 
 ### Real-time content
 
@@ -280,7 +280,7 @@ A prefetch of real-time content would be stale by the click, so there is nothing
 
 ## Adopting incrementally
 
-Adoption doesn't have to happen in one change. [`prefetch = 'partial'`](/docs/app/api-reference/file-conventions/route-segment-config/prefetch) is the global flag scoped to one route, so with the global flag still off, you can adopt and deploy each destination on its own.
+Adoption doesn't have to happen in one change. [`prefetch = 'partial'`](../03-api-reference/03-file-conventions/02-route-segment-config/prefetch.md) is the global flag scoped to one route, so with the global flag still off, you can adopt and deploy each destination on its own.
 
 Before a destination opts into Partial Prefetching, `prefetch={true}` performs the legacy full prefetch. Navigating through one of these links in development surfaces the [dynamic data during prefetching](/docs/messages/instant-link-prefetch-partial) insight, naming the destination and pointing at its fixes:
 
@@ -342,12 +342,12 @@ Each card is clickable and opens a page with patterns, code samples, and trade-o
    }
    ```
 
-   > **Good to know**: If the page or layout already calls [`prefetch()`](/docs/app/api-reference/functions/prefetch), import it under another name, for example `import { prefetch as prefetchStage } from 'next/cache'`, so it doesn't collide with the `prefetch` export.
+   > **Good to know**: If the page or layout already calls [`prefetch()`](../03-api-reference/04-functions/prefetch.md), import it under another name, for example `import { prefetch as prefetchStage } from 'next/cache'`, so it doesn't collide with the `prefetch` export.
 
 2. Deploy the change. Links to the adopted destination load the App Shell, and the insight keeps surfacing for the destinations you haven't reached.
 3. Repeat until every destination in scope is adopted, then [enable the flag](#enable-partial-prefetching).
 
-The per-route `prefetch = 'partial'` exports are now redundant. Remove them in one pass with the [`remove-partial-prefetch`](/docs/app/guides/upgrading/codemods#remove-partial-prefetch) codemod, which strips `export const prefetch = 'partial'` from every `page` and `layout`:
+The per-route `prefetch = 'partial'` exports are now redundant. Remove them in one pass with the [`remove-partial-prefetch`](./upgrading/codemods.md#remove-partial-prefetch) codemod, which strips `export const prefetch = 'partial'` from every `page` and `layout`:
 
 ```bash filename="Terminal"
 npx @next/codemod@canary remove-partial-prefetch ./app
@@ -359,7 +359,7 @@ The codemod removes only the `'partial'` value and leaves other values such as `
 
 ## Move URL data behind Suspense
 
-With the flag enabled, Next.js validates each App Shell as you navigate in development. The App Shell is shared across every link to a route, so it can't contain data that belongs to a single URL. Reading [`params`](/docs/app/api-reference/file-conventions/page#params-optional) or [`searchParams`](/docs/app/api-reference/file-conventions/page#searchparams-optional) outside a [`<Suspense>`](https://react.dev/reference/react/Suspense) boundary ties the shell to the link's URL and surfaces the [URL data outside of Suspense](/docs/messages/instant-shell-url-data) insight, naming the route and pointing at its fixes:
+With the flag enabled, Next.js validates each App Shell as you navigate in development. The App Shell is shared across every link to a route, so it can't contain data that belongs to a single URL. Reading [`params`](../03-api-reference/03-file-conventions/page.md#params-optional) or [`searchParams`](../03-api-reference/03-file-conventions/page.md#searchparams-optional) outside a [`<Suspense>`](https://react.dev/reference/react/Suspense) boundary ties the shell to the link's URL and surfaces the [URL data outside of Suspense](/docs/messages/instant-shell-url-data) insight, naming the route and pointing at its fixes:
 
 <FixCardGrid>
   <FixCard
@@ -465,11 +465,11 @@ export async function ProductDetails({ params }) {
 
 Everything outside the boundary stays in the shared App Shell, and only the URL-specific region renders per navigation. Load or navigate to the route again to confirm the insight is gone and the page still paints meaningful UI.
 
-> **Good to know**: A `params` or `searchParams` read inside [`generateMetadata`](/docs/app/api-reference/functions/generate-metadata) surfaces as [URL data in `generateMetadata()`](/docs/messages/blocking-prerender-metadata-runtime) instead.
+> **Good to know**: A `params` or `searchParams` read inside [`generateMetadata`](../03-api-reference/04-functions/generate-metadata.md) surfaces as [URL data in `generateMetadata()`](/docs/messages/blocking-prerender-metadata-runtime) instead.
 
 ## Prefetching URL data
 
-Content that depends on [URL data](/docs/app/glossary#url-data) (`params`, `searchParams`) can't be included in the shared App Shell, so it streams in after navigation. [Per-link prefetching](/docs/app/guides/optimizing-prefetching) resolves it ahead of the click for links with `prefetch={true}`, at the cost of a server invocation per prefetchable link. To make the content resolvable at prefetch time, cache it behind the read with [`use cache`](/docs/app/api-reference/directives/use-cache). For a search page that reads `searchParams`:
+Content that depends on [URL data](../04-glossary.md#url-data) (`params`, `searchParams`) can't be included in the shared App Shell, so it streams in after navigation. [Per-link prefetching](./optimizing-prefetching.md) resolves it ahead of the click for links with `prefetch={true}`, at the cost of a server invocation per prefetchable link. To make the content resolvable at prefetch time, cache it behind the read with [`use cache`](../03-api-reference/01-directives/use-cache.md). For a search page that reads `searchParams`:
 
 ```tsx filename="app/search/page.tsx" switcher
 // Before - the results stream in after navigation
@@ -565,4 +565,4 @@ export default function Page({ searchParams }) {
 }
 ```
 
-The [Optimizing prefetching guide](/docs/app/guides/optimizing-prefetching) covers when the cost pays off and the caching patterns behind runtime reads.
+The [Optimizing prefetching guide](./optimizing-prefetching.md) covers when the cost pays off and the caching patterns behind runtime reads.

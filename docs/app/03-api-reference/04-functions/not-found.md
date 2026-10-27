@@ -3,16 +3,16 @@ title: notFound
 description: API Reference for the notFound function.
 related:
  links:
-  - app/api-reference/file-conventions/not-found
-  - app/api-reference/functions/forbidden
-  - app/api-reference/functions/unauthorized
+  - ../03-file-conventions/not-found.md
+  - ./forbidden.md
+  - ./unauthorized.md
 ---
 
-The `notFound` function throws an error that renders a Next.js 404 page. It's useful for handling missing resources in your application. You can customize the UI using the [`not-found.js` file](/docs/app/api-reference/file-conventions/not-found).
+The `notFound` function throws an error that renders a Next.js 404 page. It's useful for handling missing resources in your application. You can customize the UI using the [`not-found.js` file](../03-file-conventions/not-found.md).
 
 Invoking `notFound()` throws a `NEXT_HTTP_ERROR_FALLBACK;404` error and terminates rendering of the route segment where it was thrown. Next.js also injects a `<meta name="robots" content="noindex" />` tag so the page is not indexed. Because it works by throwing, call it in the render path: a component, or a function a component `await`s. A call left in an un-awaited promise throws where nothing catches it, and no not-found UI renders (in development the server logs `⨯ unhandledRejection: NEXT_HTTP_ERROR_FALLBACK;404`).
 
-`notFound()` can be invoked in [Server Components](/docs/app/getting-started/server-and-client-components), [Server Functions](/docs/app/getting-started/mutating-data), and [Route Handlers](/docs/app/api-reference/file-conventions/route).
+`notFound()` can be invoked in [Server Components](../../01-getting-started/05-server-and-client-components.md), [Server Functions](../../01-getting-started/07-mutating-data.md), and [Route Handlers](../03-file-conventions/route.md).
 
 ```tsx filename="app/user/[id]/page.tsx" switcher
 import { notFound } from 'next/navigation'
@@ -72,7 +72,7 @@ if (!user) {
 return <Profile user={user} />
 ```
 
-Like any exception, it travels up the call stack until something catches it. A `try/catch` around the call suppresses it, and the not-found UI won't render. If you need to catch errors near the call, use [`unstable_rethrow`](/docs/app/api-reference/functions/unstable_rethrow) to let the interrupt through first.
+Like any exception, it travels up the call stack until something catches it. A `try/catch` around the call suppresses it, and the not-found UI won't render. If you need to catch errors near the call, use [`unstable_rethrow`](./unstable_rethrow.md) to let the interrupt through first.
 
 ## Examples
 
@@ -160,7 +160,7 @@ export default async function PostPage({ params }) {
 }
 ```
 
-When the post doesn't exist, `getPost` calls `notFound()`, which throws. Because this happens during rendering, the exception propagates to the nearest [`not-found`](/docs/app/api-reference/file-conventions/not-found) boundary, which renders in place of the streamed-in content, even though the page shell has already been sent.
+When the post doesn't exist, `getPost` calls `notFound()`, which throws. Because this happens during rendering, the exception propagates to the nearest [`not-found`](../03-file-conventions/not-found.md) boundary, which renders in place of the streamed-in content, even though the page shell has already been sent.
 
 Add a `not-found.tsx` alongside the route to define that UI. Without one, the nearest parent `not-found` boundary renders, falling back to Next.js's default 404 page:
 
@@ -188,11 +188,11 @@ export default function NotFound() {
 
 The response starts streaming from the `<Suspense>` boundary before `notFound()` runs, so it keeps its `200` status. Next.js adds a `noindex` tag.
 
-Calling `notFound()` before streaming starts returns a `404`. A page that reaches `notFound()` during prerendering can remain `○` Static and serve a `404`. A request-time check can run in [Proxy](/docs/app/api-reference/file-conventions/proxy) before the page renders. See [Status codes](/docs/app/api-reference/file-conventions/loading#status-codes).
+Calling `notFound()` before streaming starts returns a `404`. A page that reaches `notFound()` during prerendering can remain `○` Static and serve a `404`. A request-time check can run in [Proxy](../03-file-conventions/proxy.md) before the page renders. See [Status codes](../03-file-conventions/loading.md#status-codes).
 
 ### Serving a 404 from a Route Handler
 
-`notFound()` also works in a [Route Handler](/docs/app/api-reference/file-conventions/route), where it serves a `404` to the caller.
+`notFound()` also works in a [Route Handler](../03-file-conventions/route.md), where it serves a `404` to the caller.
 
 ```tsx filename="app/api/posts/[slug]/route.ts" switcher
 import { NextResponse } from 'next/server'

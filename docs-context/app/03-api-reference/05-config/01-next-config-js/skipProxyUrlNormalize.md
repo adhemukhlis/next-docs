@@ -3,9 +3,9 @@ title: skipProxyUrlNormalize
 description: Let Proxy see the original request instead of Next.js's normalized version. Formerly skipMiddlewareUrlNormalize.
 ---
 
-Enabling `skipProxyUrlNormalize` lets [Proxy](/docs/app/api-reference/file-conventions/proxy) see the original request instead of Next.js's normalized version. This includes internal URLs, query parameters, and headers used during client-side navigation.
+Enabling `skipProxyUrlNormalize` lets [Proxy](../../03-file-conventions/proxy.md) see the original request instead of Next.js's normalized version. This includes internal URLs, query parameters, and headers used during client-side navigation.
 
-**Most projects don't need this option.** It is one of the [advanced Proxy flags](/docs/app/api-reference/file-conventions/proxy#advanced-proxy-flags), meant for specific routing cases and debugging.
+**Most projects don't need this option.** It is one of the [advanced Proxy flags](../../03-file-conventions/proxy.md#advanced-proxy-flags), meant for specific routing cases and debugging.
 
 ```ts filename="next.config.ts" switcher
 import type { NextConfig } from 'next'
@@ -42,7 +42,7 @@ With `skipProxyUrlNormalize: true`, neither normalization runs. Proxy receives t
 | Next.js internal navigation headers (`rsc`, `next-router-state-tree`, `next-router-prefetch`, `next-router-segment-prefetch`, `next-hmr-refresh`) are removed from `request.headers` | Preserved |
 | `NextResponse.rewrite()` destinations are re-serialized with the build ID | Sent as written |
 | `NextResponse.redirect()` `Location` is rewritten to a relative URL | Sent as written, trailing slash preserved |
-| With [`trailingSlash: true`](/docs/app/api-reference/config/next-config-js/trailingSlash), a trailing slash is appended before Proxy runs | Pathname passed through unchanged |
+| With [`trailingSlash: true`](./trailingSlash.md), a trailing slash is appended before Proxy runs | Pathname passed through unchanged |
 
 ### Deprecated alias
 
@@ -52,12 +52,12 @@ The former name of this option is `skipMiddlewareUrlNormalize`, from when Proxy 
 Config options `skipProxyUrlNormalize` and `skipMiddlewareUrlNormalize` cannot be set at the same time. Please use `skipProxyUrlNormalize` instead.
 ```
 
-The [version 16 codemod](/docs/app/guides/upgrading/codemods#160) renames it for you.
+The [version 16 codemod](../../../02-guides/upgrading/codemods.md#160) renames it for you.
 
 ## Good to know
 
 - Avoid using the internal navigation headers to return different content for client-side navigation and full page loads.
-- You do not need this option to limit which routes Proxy runs on. The [`matcher`](/docs/app/api-reference/file-conventions/proxy#matcher) config still matches the destination URL either way.
+- You do not need this option to limit which routes Proxy runs on. The [`matcher`](../../03-file-conventions/proxy.md#matcher) config still matches the destination URL either way.
 - Only the request and response Proxy sees change. Filesystem routing, `redirects`, and `rewrites` from `next.config.js` behave the same.
 
 ## Examples

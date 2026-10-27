@@ -1,13 +1,9 @@
 ---
 title: mdx-components.js
 description: API reference for the mdx-components.js file.
-related:
- title: Learn more about MDX Components
- links:
-  - app/guides/mdx
 ---
 
-The `mdx-components.js|tsx` file is **required** to use [`@next/mdx` with App Router](/docs/app/guides/mdx) and will not work without it. Additionally, you can use it to [customize styles](/docs/app/guides/mdx#using-custom-styles-and-components).
+The `mdx-components.js|tsx` file is **required** to use [`@next/mdx` with App Router](../../02-guides/mdx.md) and will not work without it. Additionally, you can use it to [customize styles](../../02-guides/mdx.md#using-custom-styles-and-components).
 
 Use the file `mdx-components.tsx` (or `.js`) in the root of your project to define MDX Components. For example, at the same level as `pages` or `app`, or inside `src` if applicable.
 
@@ -58,3 +54,7 @@ export function useMDXComponents() {
 | Version   | Changes              |
 | --------- | -------------------- |
 | `v13.1.2` | MDX Components added |
+
+## INDEX
+
+- [How to use markdown and MDX in Next.js](../../02-guides/mdx.md)

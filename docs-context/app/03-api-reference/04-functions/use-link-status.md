@@ -1,20 +1,14 @@
 ---
 title: useLinkStatus
 description: API Reference for the useLinkStatus hook.
-related:
- title: Next Steps
- description: Learn more about the features mentioned in this page by reading the API Reference.
- links:
-  - app/api-reference/components/link
-  - app/api-reference/file-conventions/loading
 ---
 
 The `useLinkStatus` hook lets you track the **pending** state of a `<Link>`. Use it for subtle, inline feedback, for example a shimmer effect over the clicked link, while navigation completes. Prefer route-level fallbacks with `loading.js`, and prefetching for instant transitions.
 
 `useLinkStatus` is useful when:
 
-- [Prefetching](/docs/app/getting-started/linking-and-navigating#prefetching) is disabled or in progress meaning navigation is blocked.
-- The destination route is dynamic **and** doesn't include a [`loading.js`](/docs/app/api-reference/file-conventions/loading) file that would allow an instant navigation.
+- [Prefetching](../../01-getting-started/04-linking-and-navigating.md#prefetching) is disabled or in progress meaning navigation is blocked.
+- The destination route is dynamic **and** doesn't include a [`loading.js`](../03-file-conventions/loading.md) file that would allow an instant navigation.
 
 ```tsx filename="app/hint.tsx" switcher
 'use client'
@@ -260,3 +254,10 @@ If the navigation to a new route is fast, users may see an unnecessary flash of 
 | Version | Changes |
 | - | - |
 | `v15.3.0` | `useLinkStatus` introduced. |
+
+## INDEX
+
+Learn more about the features mentioned in this page by reading the API Reference.
+
+- [Link Component](../02-components/link.md)
+- [loading.js](../03-file-conventions/loading.md)

@@ -2,13 +2,9 @@
 title: turbopackGc
 description: Configure Turbopack to remove unreachable work from memory and the persistent cache.
 version: experimental
-related:
- links:
-  - app/api-reference/config/next-config-js/turbopackFileSystemCache
-  - app/api-reference/config/next-config-js/turbopackMemoryEviction
 ---
 
-The `experimental.turbopackGc` option enables garbage collection for Turbopack's in-memory and [persistent caches](/docs/app/api-reference/config/next-config-js/turbopackFileSystemCache).
+The `experimental.turbopackGc` option enables garbage collection for Turbopack's in-memory and [persistent caches](./turbopackFileSystemCache.md).
 
 ```ts filename="next.config.ts" switcher highlight={5}
 import type { NextConfig } from 'next'
@@ -47,8 +43,8 @@ When enabled, Turbopack removes unreachable work from memory and its persistent 
 
 > **Good to know:**
 >
-> - Garbage collection requires the [Turbopack FileSystem Cache](/docs/app/api-reference/config/next-config-js/turbopackFileSystemCache). The option has no effect when the cache is disabled for the current command.
-> - In long-running read-write sessions, Turbopack disables garbage collection when [`turbopackMemoryEviction`](/docs/app/api-reference/config/next-config-js/turbopackMemoryEviction) is set to `false`.
+> - Garbage collection requires the [Turbopack FileSystem Cache](./turbopackFileSystemCache.md). The option has no effect when the cache is disabled for the current command.
+> - In long-running read-write sessions, Turbopack disables garbage collection when [`turbopackMemoryEviction`](./turbopackMemoryEviction.md) is set to `false`.
 
 ### Options
 
@@ -95,3 +91,8 @@ module.exports = nextConfig
 | Version   | Changes                                                |
 | --------- | ------------------------------------------------------ |
 | `v16.4.0` | `experimental.turbopackGc` configuration option added. |
+
+## INDEX
+
+- [Turbopack FileSystem Caching](./turbopackFileSystemCache.md)
+- [Turbopack Memory Eviction](./turbopackMemoryEviction.md)

@@ -5,10 +5,10 @@ nav_title: Interactive apps
 related:
  description: Learn more about the APIs used in this guide.
  links:
-  - app/api-reference/functions/refresh
-  - app/api-reference/directives/use-cache
-  - app/api-reference/functions/cacheTag
-  - app/api-reference/functions/updateTag
+  - ../03-api-reference/04-functions/refresh.md
+  - ../03-api-reference/01-directives/use-cache.md
+  - ../03-api-reference/04-functions/cacheTag.md
+  - ../03-api-reference/04-functions/updateTag.md
 ---
 
 When a user interaction requires server-side work, the result is not available immediately. Network requests take an unknown amount of time to complete and may succeed or fail. While waiting, the client should provide feedback and respond to those states. Otherwise, users are left looking at stale data and may wonder whether anything is happening.
@@ -25,7 +25,7 @@ The companion [Taskboard demo](https://async-react-demo.labs.vercel.dev) ([sourc
 
 The app is organized by feature. Everything for the task domain (queries, Server Functions, and components) lives under `features/task/`. Shared UI primitives live in `components/ui/`, and pages in `app/` compose feature components. The file paths throughout this guide follow that structure.
 
-The starting point is a Server Component app that reads tasks and comments from a database, with no [`<Suspense>`](/docs/app/guides/streaming) boundaries and no caching. Client Components call [Server Functions](/docs/app/getting-started/mutating-data) to mutate that data. After each mutation, the Server Function calls [`refresh()`](/docs/app/api-reference/functions/refresh) so the server re-renders with fresh data:
+The starting point is a Server Component app that reads tasks and comments from a database, with no [`<Suspense>`](./streaming.md) boundaries and no caching. Client Components call [Server Functions](../01-getting-started/07-mutating-data.md) to mutate that data. After each mutation, the Server Function calls [`refresh()`](../03-api-reference/04-functions/refresh.md) so the server re-renders with fresh data:
 
 ```ts filename="features/task/task-actions.ts"
 'use server'
@@ -106,7 +106,7 @@ Calling `params.then()` inline in JSX keeps the page synchronous. The outer `<Su
 
 The page shell now paints immediately, the task header streams in when `getTask` resolves, and the comments section follows when `getComments` resolves.
 
-For more on streaming patterns, see the [Streaming](/docs/app/guides/streaming) guide.
+For more on streaming patterns, see the [Streaming](./streaming.md) guide.
 
 ### Step 2: Respond instantly to a toggle
 
@@ -166,7 +166,7 @@ export function TaskCard({ id, priority }) {
 
 The `setOptimisticPriority` call updates the UI on the current frame with the next value in the cycle. Reading from `optimisticPriority` instead of the prop means rapid double-clicks cycle correctly rather than reading a stale closure value.
 
-When the transition ends and fresh data arrives, the optimistic value reverts to the new server-rendered prop. If the Server Function inside `useTransition` throws, the error is forwarded to the nearest [error boundary](/docs/app/api-reference/file-conventions/error) without a manual `try`/`catch`.
+When the transition ends and fresh data arrives, the optimistic value reverts to the new server-rendered prop. If the Server Function inside `useTransition` throws, the error is forwarded to the nearest [error boundary](../03-api-reference/03-file-conventions/error.md) without a manual `try`/`catch`.
 
 The color now changes the moment the mouse lifts. Clicking again cycles to the next value without waiting for the first mutation to finish.
 
@@ -475,7 +475,7 @@ export function Board({ tasksPromise }) {
 
 The reducer maps over the task list and updates the status of the dragged card, leaving the rest unchanged. If a background refresh arrives mid-drag, for example from polling or another user's mutation, React re-runs the reducer with the updated base data so the optimistic move sits on top of fresh data. The Server Function returns an error result when the task no longer exists, which the client displays in a toast.
 
-This step uses the standalone `startTransition` instead of `useTransition` because the hook's `isPending` would trigger the board fade from Step 3. The optimistic move already covers the visual feedback, so no pending indicator is needed. If the Server Function returns an expected error, the card reverts. Unexpected errors are forwarded to the nearest [error boundary](/docs/app/getting-started/error-handling).
+This step uses the standalone `startTransition` instead of `useTransition` because the hook's `isPending` would trigger the board fade from Step 3. The optimistic move already covers the visual feedback, so no pending indicator is needed. If the Server Function returns an expected error, the card reverts. Unexpected errors are forwarded to the nearest [error boundary](../01-getting-started/10-error-handling.md).
 
 A card dragged from "Todo" to "In Progress" now lands in the target column the moment you release.
 
@@ -691,9 +691,9 @@ The card now fades to 30% opacity the moment the click registers. When the serve
 
 ### Step 8: Make repeat navigation instant
 
-Every pattern so far smooths a single interaction. Across navigations, the same reads rerun and the same fallbacks paint again. [Caching](/docs/app/getting-started/caching) the reusable reads and [prefetching](/docs/app/guides/prefetching) them with the real request closes that gap without moving the data model into the browser.
+Every pattern so far smooths a single interaction. Across navigations, the same reads rerun and the same fallbacks paint again. [Caching](../01-getting-started/08-caching.md) the reusable reads and [prefetching](./prefetching.md) them with the real request closes that gap without moving the data model into the browser.
 
-This step uses [Cache Components](/docs/app/api-reference/config/next-config-js/cacheComponents), introduced in Next.js 16. Steps 1 through 7 work without it. If you aren't using Cache Components, see [Caching without Cache Components](/docs/app/guides/caching-without-cache-components).
+This step uses [Cache Components](../03-api-reference/05-config/01-next-config-js/cacheComponents.md), introduced in Next.js 16. Steps 1 through 7 work without it. If you aren't using Cache Components, see [Caching without Cache Components](./caching-without-cache-components.md).
 
 Enable it in `next.config.ts`:
 
@@ -707,7 +707,7 @@ const nextConfig: NextConfig = {
 export default nextConfig
 ```
 
-Enabling Cache Components applies prerender validation across every route, not just the ones in this step. A route that reads request data such as `cookies()`, `headers()`, or `searchParams` outside [`<Suspense>`](https://react.dev/reference/react/Suspense) now blocks prerendering and needs the Step 1 treatment. To turn it on in an existing app, see [Migrating to Cache Components](/docs/app/guides/migrating-to-cache-components).
+Enabling Cache Components applies prerender validation across every route, not just the ones in this step. A route that reads request data such as `cookies()`, `headers()`, or `searchParams` outside [`<Suspense>`](https://react.dev/reference/react/Suspense) now blocks prerendering and needs the Step 1 treatment. To turn it on in an existing app, see [Migrating to Cache Components](./migrating-to-cache-components.md).
 
 #### Cache reusable reads
 
@@ -726,11 +726,11 @@ export async function getTask(id: string) {
 }
 ```
 
-The per-id tag `task-${id}` gives a single task its own handle. The broader `tasks` tag covers the list. See the [Caching guide](/docs/app/getting-started/caching) for cache scoping (`'use cache: private'`, `'use cache: remote'`), cache lifetimes, and tag patterns.
+The per-id tag `task-${id}` gives a single task its own handle. The broader `tasks` tag covers the list. See the [Caching guide](../01-getting-started/08-caching.md) for cache scoping (`'use cache: private'`, `'use cache: remote'`), cache lifetimes, and tag patterns.
 
 #### Invalidate from mutations
 
-[`refresh()`](/docs/app/api-reference/functions/refresh) reruns dynamic work but leaves cached entries in place. Replace it with [`updateTag`](/docs/app/api-reference/functions/updateTag) for the tags each write touched:
+[`refresh()`](../03-api-reference/04-functions/refresh.md) reruns dynamic work but leaves cached entries in place. Replace it with [`updateTag`](../03-api-reference/04-functions/updateTag.md) for the tags each write touched:
 
 ```ts filename="features/task/task-actions.ts"
 'use server'
@@ -752,11 +752,11 @@ export async function updateStatus(taskId: string, newStatus: Status) {
 
 Every Server Function follows the same shape: run the write, then call `updateTag` for the cached reads that changed. Dynamic reads do not have tags to invalidate, so use `refresh()` for those mutations.
 
-In this demo, the comment thread stays dynamic because readers expect the current discussion to update immediately on the open task page. Adding or deleting a comment calls `refresh()`, which reruns the dynamic comment read for the current route while leaving the task caches in place. See the [Revalidating guide](/docs/app/getting-started/revalidating) for tag patterns, time-based revalidation, and on-demand invalidation from route handlers.
+In this demo, the comment thread stays dynamic because readers expect the current discussion to update immediately on the open task page. Adding or deleting a comment calls `refresh()`, which reruns the dynamic comment read for the current route while leaving the task caches in place. See the [Revalidating guide](../01-getting-started/09-revalidating.md) for tag patterns, time-based revalidation, and on-demand invalidation from route handlers.
 
 #### Prefetch the destination with the real request
 
-Under [Partial Prefetching](/docs/app/guides/adopting-partial-prefetching) (Next.js 16.3 and later), `<Link>` prefetches the destination's [App Shell](/docs/app/glossary#app-shell): the route output that is shared across links for the current user. The shell does not include [URL data](/docs/app/glossary#url-data), because `params` and `searchParams` are link-specific. Opt the link into [per-link prefetching](/docs/app/guides/optimizing-prefetching) with `prefetch={true}` to resolve that URL data ahead of the click:
+Under [Partial Prefetching](./adopting-partial-prefetching.md) (Next.js 16.3 and later), `<Link>` prefetches the destination's [App Shell](../04-glossary.md#app-shell): the route output that is shared across links for the current user. The shell does not include [URL data](../04-glossary.md#url-data), because `params` and `searchParams` are link-specific. Opt the link into [per-link prefetching](./optimizing-prefetching.md) with `prefetch={true}` to resolve that URL data ahead of the click:
 
 ```tsx filename="features/task/components/task-card.tsx"
 <Link
@@ -766,7 +766,7 @@ Under [Partial Prefetching](/docs/app/guides/adopting-partial-prefetching) (Next
 </Link>
 ```
 
-Per-link prefetching is most valuable when the destination has URL-specific work that users are likely to need next. Cached reads make the prefetched output reusable and tag-invalidatable in the [Client Cache](/docs/app/glossary#client-cache); dynamic reads can still resolve before the click, but each prefetch can do real server work. In the companion app, the task cards prefetch the detail page as they scroll into view, so it paints instantly by the time the user clicks.
+Per-link prefetching is most valuable when the destination has URL-specific work that users are likely to need next. Cached reads make the prefetched output reusable and tag-invalidatable in the [Client Cache](../04-glossary.md#client-cache); dynamic reads can still resolve before the click, but each prefetch can do real server work. In the companion app, the task cards prefetch the detail page as they scroll into view, so it paints instantly by the time the user clicks.
 
 ## Next steps
 
@@ -779,15 +779,15 @@ The patterns in this guide combine a handful of primitives:
 | Async work needs pending state, error handling, or coordinated UI updates | [`useTransition`](https://react.dev/reference/react/useTransition) |
 | A form needs pending, reset, and result state | [`useActionState`](https://react.dev/reference/react/useActionState) |
 | An ancestor should show pending state for work happening elsewhere | [`data-pending`](https://react.dev/reference/react-dom/components/form#props) attribute styled with CSS |
-| Reusable reads should survive across requests and stay fresh after writes | [`'use cache'`](/docs/app/api-reference/directives/use-cache) with [`cacheTag`](/docs/app/api-reference/functions/cacheTag), revalidated by [`updateTag`](/docs/app/api-reference/functions/updateTag) or [`revalidateTag`](/docs/app/api-reference/functions/revalidateTag) |
-| Navigation between pages of an interactive app should feel instant | [`<Link>`](/docs/app/api-reference/components/link) prefetching with [Partial Prefetching](/docs/app/guides/adopting-partial-prefetching), and [per-link prefetching](/docs/app/guides/optimizing-prefetching) via `prefetch={true}` for content that depends on URL data |
+| Reusable reads should survive across requests and stay fresh after writes | [`'use cache'`](../03-api-reference/01-directives/use-cache.md) with [`cacheTag`](../03-api-reference/04-functions/cacheTag.md), revalidated by [`updateTag`](../03-api-reference/04-functions/updateTag.md) or [`revalidateTag`](../03-api-reference/04-functions/revalidateTag.md) |
+| Navigation between pages of an interactive app should feel instant | [`<Link>`](../03-api-reference/02-components/link.md) prefetching with [Partial Prefetching](./adopting-partial-prefetching.md), and [per-link prefetching](./optimizing-prefetching.md) via `prefetch={true}` for content that depends on URL data |
 
 Most patterns mix two or more of these. Reach for whichever primitive fits the constraint you're solving.
 
 Related guides:
 
-- [Client-side data fetching](/docs/app/guides/client-side-data-fetching) for direct browser fetching, providing initial data from a Server Component, and client cache coordination
-- [Streaming](/docs/app/guides/streaming) for loading boundaries and `<Suspense>` patterns
-- [Instant Navigation](/docs/app/guides/instant-navigation) for validating that navigations stay instant
-- [View Transitions](/docs/app/guides/view-transitions) for animating state changes
-- [Single-page applications](/docs/app/guides/single-page-applications#mutating-data-with-server-actions) for a shared-reducer `useOptimistic` example that keeps client and server list updates in sync
+- [Client-side data fetching](./client-side-data-fetching/index.md) for direct browser fetching, providing initial data from a Server Component, and client cache coordination
+- [Streaming](./streaming.md) for loading boundaries and `<Suspense>` patterns
+- [Instant Navigation](./instant-navigation.md) for validating that navigations stay instant
+- [View Transitions](./view-transitions.md) for animating state changes
+- [Single-page applications](./single-page-applications.md#mutating-data-with-server-actions) for a shared-reducer `useOptimistic` example that keeps client and server list updates in sync

@@ -78,7 +78,7 @@ Generate an app icon by creating an `icon` or `apple-icon` route that default ex
 | `icon` | `.js`, `.ts`, `.tsx` |
 | `apple-icon` | `.js`, `.ts`, `.tsx` |
 
-The easiest way to generate an icon is to use the [`ImageResponse`](/docs/app/api-reference/functions/image-response) API from `next/og`.
+The easiest way to generate an icon is to use the [`ImageResponse`](../../04-functions/image-response.md) API from `next/og`.
 
 ```tsx filename="app/icon.tsx" switcher
 import { ImageResponse } from 'next/og'
@@ -164,10 +164,10 @@ export default function Icon() {
 
 > **Good to know**:
 >
-> - By default, generated icons are [**statically optimized**](/docs/app/glossary#prerendering) (generated at build time and cached) unless they use [Request-time APIs](/docs/app/glossary#request-time-apis) or uncached data.
-> - You can generate multiple icons in the same file using [`generateImageMetadata`](/docs/app/api-reference/functions/generate-image-metadata).
+> - By default, generated icons are [**statically optimized**](../../../04-glossary.md#prerendering) (generated at build time and cached) unless they use [Request-time APIs](../../../04-glossary.md#request-time-apis) or uncached data.
+> - You can generate multiple icons in the same file using [`generateImageMetadata`](../../04-functions/generate-image-metadata.md).
 > - You cannot generate a `favicon` icon. Use [`icon`](#icon) or a [favicon.ico](#favicon) file instead.
-> - App icons are special Route Handlers that are cached by default unless they use a [Request-time API](/docs/app/glossary#request-time-apis) or [dynamic config](/docs/app/guides/caching-without-cache-components#dynamic) option.
+> - App icons are special Route Handlers that are cached by default unless they use a [Request-time API](../../../04-glossary.md#request-time-apis) or [dynamic config](../../../02-guides/caching-without-cache-components.md#dynamic) option.
 
 ### Props
 
@@ -175,9 +175,9 @@ The default export function receives the following props:
 
 #### `params` (optional)
 
-A promise that resolves to an object containing the [dynamic route parameters](/docs/app/api-reference/file-conventions/dynamic-routes) object from the root segment down to the segment `icon` or `apple-icon` is colocated in.
+A promise that resolves to an object containing the [dynamic route parameters](../dynamic-routes.md) object from the root segment down to the segment `icon` or `apple-icon` is colocated in.
 
-> **Good to know**: If you use [`generateImageMetadata`](/docs/app/api-reference/functions/generate-image-metadata), the function will also receive an `id` prop that is a promise resolving to the `id` value from one of the items returned by `generateImageMetadata`.
+> **Good to know**: If you use [`generateImageMetadata`](../../04-functions/generate-image-metadata.md), the function will also receive an `id` prop that is a promise resolving to the `id` value from one of the items returned by `generateImageMetadata`.
 
 ```tsx filename="app/shop/[slug]/icon.tsx" switcher
 export default async function Icon({ params }: { params: Promise<{ slug: string }> }) {
@@ -256,7 +256,7 @@ export default function Icon() {}
 
 #### Route Segment Config
 
-`icon` and `apple-icon` are specialized [Route Handlers](/docs/app/api-reference/file-conventions/route) that can use the same [route segment configuration](/docs/app/api-reference/file-conventions/route-segment-config) options as Pages and Layouts.
+`icon` and `apple-icon` are specialized [Route Handlers](../route.md) that can use the same [route segment configuration](../02-route-segment-config/index.md) options as Pages and Layouts.
 
 ## Version History
 

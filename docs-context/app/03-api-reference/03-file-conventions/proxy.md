@@ -1,16 +1,11 @@
 ---
 title: proxy.js
 description: API reference for the proxy.js file.
-related:
- title: Learn more about Proxy
- links:
-  - app/api-reference/functions/next-request
-  - app/api-reference/functions/next-response
 ---
 
 > **Note**: The `middleware` file convention is deprecated and has been renamed to `proxy`. See [Migration to Proxy](#migration-to-proxy) for more details.
 
-The `proxy.js|ts` file is used to write [Proxy](/docs/app/getting-started/proxy) and run code on the server before a request is completed. Then, based on the incoming request, you can modify the response by rewriting, redirecting, modifying the request or response headers, or responding directly.
+The `proxy.js|ts` file is used to write [Proxy](../../01-getting-started/16-proxy.md) and run code on the server before a request is completed. Then, based on the incoming request, you can modify the response by rewriting, redirecting, modifying the request or response headers, or responding directly.
 
 Proxy executes before routes are rendered. It's particularly useful for implementing custom server-side logic like authentication, logging, or handling redirects.
 
@@ -18,11 +13,11 @@ Proxy executes before routes are rendered. It's particularly useful for implemen
 >
 > Proxy is meant to be invoked separately of your render code and in optimized cases deployed to your CDN for fast redirect/rewrite handling, you should not attempt relying on shared modules or globals.
 >
-> To pass information from Proxy to your application, use [headers](#setting-headers), [cookies](#using-cookies), [rewrites](/docs/app/api-reference/functions/next-response#rewrite), [redirects](/docs/app/api-reference/functions/next-response#redirect), or the URL.
+> To pass information from Proxy to your application, use [headers](#setting-headers), [cookies](#using-cookies), [rewrites](../04-functions/next-response.md#rewrite), [redirects](../04-functions/next-response.md#redirect), or the URL.
 
 Create a `proxy.ts` (or `.js`) file in the project root, or inside `src` if applicable, so that it is located at the same level as `pages` or `app`.
 
-If you’ve customized [`pageExtensions`](/docs/app/api-reference/config/next-config-js/pageExtensions), for example to `.page.ts` or `.page.js`, name your file `proxy.page.ts` or `proxy.page.js` accordingly.
+If you’ve customized [`pageExtensions`](../05-config/01-next-config-js/pageExtensions.md), for example to `.page.ts` or `.page.js`, name your file `proxy.page.ts` or `proxy.page.js` accordingly.
 
 ```tsx filename="proxy.ts" switcher
 import { NextResponse } from 'next/server'
@@ -215,7 +210,7 @@ The `NextResponse` API allows you to:
 
 To produce a response from Proxy, you can:
 
-1. `rewrite` to a route ([Page](/docs/app/api-reference/file-conventions/page) or [Route Handler](/docs/app/api-reference/file-conventions/route)) that produces a response
+1. `rewrite` to a route ([Page](./page.md) or [Route Handler](./route.md)) that produces a response
 2. return a `NextResponse` directly. See [Producing a Response](#producing-a-response)
 
 > **Good to know**: For redirects, you can also use `Response.redirect` instead of `NextResponse.redirect`.
@@ -233,17 +228,17 @@ Proxy will be invoked for **every route in your project**. Given this, it's cruc
 7. Dynamic Routes (`/blog/[slug]`)
 8. `fallback` (`rewrites`) from `next.config.js`
 
-> **Good to know:** [Server Functions](/docs/app/api-reference/directives/use-server) are not separate routes in this chain. They are handled as POST requests to the route where they are used, so a Proxy matcher that excludes a path will also skip Server Function calls on that path.
+> **Good to know:** [Server Functions](../01-directives/use-server.md) are not separate routes in this chain. They are handled as POST requests to the route where they are used, so a Proxy matcher that excludes a path will also skip Server Function calls on that path.
 >
-> A matcher change or a refactor that moves a Server Function to a different route can silently remove Proxy coverage. Always verify authentication and authorization inside each Server Function rather than relying on Proxy alone. See the [Data Security guide](/docs/app/guides/data-security#authentication-and-authorization) for recommended patterns.
+> A matcher change or a refactor that moves a Server Function to a different route can silently remove Proxy coverage. Always verify authentication and authorization inside each Server Function rather than relying on Proxy alone. See the [Data Security guide](../../02-guides/data-security.md#authentication-and-authorization) for recommended patterns.
 
 ## Runtime
 
-Proxy defaults to using the Node.js runtime. The [`runtime`](/docs/app/api-reference/file-conventions/route-segment-config/runtime) config option is not available in Proxy files. Setting the `runtime` config option in Proxy will throw an error.
+Proxy defaults to using the Node.js runtime. The [`runtime`](./02-route-segment-config/runtime.md) config option is not available in Proxy files. Setting the `runtime` config option in Proxy will throw an error.
 
 ## Advanced Proxy flags
 
-In `v13.1` of Next.js two additional flags were introduced for proxy, [`skipProxyUrlNormalize`](/docs/app/api-reference/config/next-config-js/skipProxyUrlNormalize) (formerly `skipMiddlewareUrlNormalize`) and [`skipTrailingSlashRedirect`](/docs/app/api-reference/config/next-config-js/skipTrailingSlashRedirect) to handle advanced use cases.
+In `v13.1` of Next.js two additional flags were introduced for proxy, [`skipProxyUrlNormalize`](../05-config/01-next-config-js/skipProxyUrlNormalize.md) (formerly `skipMiddlewareUrlNormalize`) and [`skipTrailingSlashRedirect`](../05-config/01-next-config-js/skipTrailingSlashRedirect.md) to handle advanced use cases.
 
 `skipTrailingSlashRedirect` disables Next.js redirects for adding or removing trailing slashes. This allows custom handling inside proxy to maintain the trailing slash for some paths but not others, which can make incremental migrations easier.
 
@@ -447,7 +442,7 @@ Note that the snippet uses:
 - `NextResponse.next({ request: { headers: requestHeaders } })` to make `requestHeaders` available upstream
 - **NOT** `NextResponse.next({ headers: requestHeaders })` which makes `requestHeaders` available to clients
 
-Learn more in [NextResponse headers in Proxy](/docs/app/api-reference/functions/next-response#next).
+Learn more in [NextResponse headers in Proxy](../04-functions/next-response.md#next).
 
 > **Good to know**: Avoid setting large headers as it might cause [431 Request Header Fields Too Large](https://developer.mozilla.org/docs/Web/HTTP/Status/431) error depending on your backend web server configuration.
 
@@ -459,7 +454,7 @@ When you use `NextResponse.rewrite()`, Next.js automatically propagates the requ
 
 If you implement custom rewrite logic with `fetch()` instead of `NextResponse.rewrite()`, you can run into missing RSC headers unless you forward them manually.
 
-For custom `fetch` rewrite setups, you can also enable [`skipProxyUrlNormalize`](/docs/app/api-reference/config/next-config-js/skipProxyUrlNormalize) in `next.config.js` so your rewrite logic can receive the necessary URL shape and RSC headers from the provided request object:
+For custom `fetch` rewrite setups, you can also enable [`skipProxyUrlNormalize`](../05-config/01-next-config-js/skipProxyUrlNormalize.md) in `next.config.js` so your rewrite logic can receive the necessary URL shape and RSC headers from the provided request object:
 
 ```js filename="next.config.js"
 module.exports = {
@@ -562,7 +557,7 @@ export const config = {
 }
 ```
 
-> **Good to know:** You can configure CORS headers for individual routes in [Route Handlers](/docs/app/api-reference/file-conventions/route#cors).
+> **Good to know:** You can configure CORS headers for individual routes in [Route Handlers](./route.md#cors).
 
 ### Producing a response
 
@@ -727,12 +722,12 @@ expect(getRewrittenUrl(response)).toEqual('https://other-domain.com/docs')
 
 | Deployment Option | Supported |
 | - | - |
-| [Node.js server](/docs/app/getting-started/deploying#nodejs-server) | Yes |
-| [Docker container](/docs/app/getting-started/deploying#docker) | Yes |
-| [Static export](/docs/app/getting-started/deploying#static-export) | No |
-| [Adapters](/docs/app/getting-started/deploying#adapters) | Platform-specific |
+| [Node.js server](../../01-getting-started/17-deploying.md#nodejs-server) | Yes |
+| [Docker container](../../01-getting-started/17-deploying.md#docker) | Yes |
+| [Static export](../../01-getting-started/17-deploying.md#static-export) | No |
+| [Adapters](../../01-getting-started/17-deploying.md#adapters) | Platform-specific |
 
-Learn how to [configure Proxy](/docs/app/guides/self-hosting#proxy) when self-hosting Next.js.
+Learn how to [configure Proxy](../../02-guides/self-hosting.md#proxy) when self-hosting Next.js.
 
 ## Migration to Proxy
 
@@ -779,3 +774,8 @@ The codemod will rename the file and the function name from `middleware` to `pro
 | `v12.2.0` | Middleware is stable, please see the [upgrade guide](/docs/messages/middleware-upgrade-guide) |
 | `v12.0.9` | Enforce absolute URLs in Edge Runtime ([PR](https://github.com/vercel/next.js/pull/33410)) |
 | `v12.0.0` | Middleware (Beta) added |
+
+## INDEX
+
+- [NextRequest](../04-functions/next-request.md)
+- [NextResponse](../04-functions/next-response.md)

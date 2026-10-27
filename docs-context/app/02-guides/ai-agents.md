@@ -2,15 +2,6 @@
 title: How Next.js supports AI coding agents
 nav_title: AI Coding Agents
 description: Learn how Next.js helps AI coding agents use current framework guidance, inspect applications, verify changes, and report issues.
-related:
- title: Next Steps
- description: Learn more about the APIs and tools described in this guide.
- links:
-  - app/guides/mcp
-  - app/getting-started/upgrading
-  - app/api-reference/config/next-config-js/agentRules
-  - app/api-reference/config/next-config-js/agentFeedback
-  - app/api-reference/config/next-config-js/agentUpgrade
 ---
 
 AI coding agents may rely on training data that predates the Next.js version installed in a project. To help agents use current APIs and verify their work, Next.js provides and evaluates version-matched documentation, managed project instructions, agent-guided upgrades, runtime tools, structured errors, reusable Skills, and optional agent feedback. See the results in the [Next.js agent evaluations](https://nextjs.org/evals).
@@ -34,13 +25,13 @@ node_modules/next/dist/docs/
 └── index.mdx
 ```
 
-The bundled copy gives coding agents access to the APIs and patterns supported by the project without a network request or external lookup. [Upgrading Next.js](/docs/app/getting-started/upgrading) also updates the bundled documentation.
+The bundled copy gives coding agents access to the APIs and patterns supported by the project without a network request or external lookup. [Upgrading Next.js](../01-getting-started/18-upgrading.md) also updates the bundled documentation.
 
 ### Managed documentation instructions
 
 Next.js makes the bundled documentation discoverable through managed instructions in `AGENTS.md` at the project root. Coding agents such as Claude Code, Codex, Cursor, and GitHub Copilot read this file when they start a session.
 
-[`create-next-app`](/docs/app/api-reference/cli/create-next-app) creates the agent files for new projects. When `next dev` detects a coding agent, it creates or updates the managed instructions for existing projects. The block directs the agent to the documentation installed with the project:
+[`create-next-app`](../03-api-reference/06-cli/create-next-app.md) creates the agent files for new projects. When `next dev` detects a coding agent, it creates or updates the managed instructions for existing projects. The block directs the agent to the documentation installed with the project:
 
 ```md filename="AGENTS.md"
 <!-- BEGIN:nextjs-agent-rules -->
@@ -58,7 +49,7 @@ Next.js updates only the content between the agent rules markers and preserves t
 
 [Research comparing `AGENTS.md` with knowledge Skills](https://vercel.com/blog/agents-md-outperforms-skills-in-our-agent-evals) found a 100% pass rate with bundled documentation, compared with up to 79% for Skill-based approaches. See the current [Next.js agent evaluation results](https://nextjs.org/evals).
 
-Managed documentation instructions are enabled by default in Next.js 16.3 and later. See the [`agentRules` API reference](/docs/app/api-reference/config/next-config-js/agentRules) to configure or disable them.
+Managed documentation instructions are enabled by default in Next.js 16.3 and later. See the [`agentRules` API reference](../03-api-reference/05-config/01-next-config-js/agentRules.md) to configure or disable them.
 
 ### Version support
 
@@ -109,7 +100,7 @@ Before the final response, run one reporting pass. If candidates remain, from th
 
 Next.js updates only the content between the agent feedback markers and preserves the rest of the file.
 
-Automatic agent feedback is experimental, disabled by default, and available only when [Next.js Telemetry](/telemetry) is enabled. It does not run in CI. See the [`agentFeedback` API reference](/docs/app/api-reference/config/next-config-js/agentFeedback) to enable it.
+Automatic agent feedback is experimental, disabled by default, and available only when [Next.js Telemetry](/telemetry) is enabled. It does not run in CI. See the [`agentFeedback` API reference](../03-api-reference/05-config/01-next-config-js/agentFeedback.md) to enable it.
 
 ## Agent-guided upgrades
 
@@ -119,7 +110,7 @@ Automatic agent feedback is experimental, disabled by default, and available onl
 npx next@canary upgrade --agent=latest
 ```
 
-The experimental [`agentUpgrade`](/docs/app/api-reference/config/next-config-js/agentUpgrade) option shows security upgrade reminders during `next dev` and `next build` by default. See [Upgrade with a coding agent](/docs/app/guides/upgrading/agent-upgrade) for the available policies and workflow.
+The experimental [`agentUpgrade`](../03-api-reference/05-config/01-next-config-js/agentUpgrade.md) option shows security upgrade reminders during `next dev` and `next build` by default. See [Upgrade with a coding agent](./upgrading/agent-upgrade.md) for the available policies and workflow.
 
 <span id="step-2-give-agents-runtime-visibility" />
 
@@ -127,11 +118,11 @@ The experimental [`agentUpgrade`](/docs/app/api-reference/config/next-config-js/
 
 Agents need both framework and browser state to verify a running application. Next.js and its supporting tools expose these complementary views as structured text.
 
-First, `next dev` forwards browser console errors and warnings to the terminal (the [`logging.browserToTerminal`](/docs/app/api-reference/config/next-config-js/logging) config), so the output agents already read carries the client-side failures they're asked to fix.
+First, `next dev` forwards browser console errors and warnings to the terminal (the [`logging.browserToTerminal`](../03-api-reference/05-config/01-next-config-js/logging.md) config), so the output agents already read carries the client-side failures they're asked to fix.
 
 `next dev` also writes its PID, port, and URL to `.next/dev/lock`. If you run `next dev` while another development server is already running for the project, the command prints the existing server's URL and PID, along with a command to stop it. Continue with the existing server when possible to avoid interrupting the active development session.
 
-The **framework's view** comes from the [Next.js MCP server](/docs/app/guides/mcp) at `/_next/mcp`, which exposes the running dev server's routes, server logs, and compilation issues. Its `get_compilation_issues` and `compile_route` tools report whether the code compiles straight from the dev server, so an agent doesn't have to run a full `next build` to find out.
+The **framework's view** comes from the [Next.js MCP server](./mcp.md) at `/_next/mcp`, which exposes the running dev server's routes, server logs, and compilation issues. Its `get_compilation_issues` and `compile_route` tools report whether the code compiles straight from the dev server, so an agent doesn't have to run a full `next build` to find out.
 
 The [`next-dev-loop` skill](#next-dev-loop) adds the **browser's view** through [`agent-browser`](https://github.com/vercel-labs/agent-browser), a CLI that exposes the DOM, console, network, and Web Vitals as structured text. The Skill opens `agent-browser` with React DevTools enabled, which also exposes the component tree and pending Suspense boundaries. An agent can run a command such as `react tree` and use the structured output to decide what to inspect next.
 
@@ -141,7 +132,7 @@ Together with the Next.js MCP server, `next-dev-loop` combines the framework's a
 
 ## Built-in guidance for errors
 
-With [Cache Components](/docs/app/api-reference/config/next-config-js/cacheComponents) enabled, a blocking error presents labeled fixes, each making a different trade-off. The dev overlay adds a **Copy prompt** button that packages the chosen fix into a paste-ready prompt. The prompt walks the agent through reading the matching error page, applying the canonical pattern, and verifying the result at runtime.
+With [Cache Components](../03-api-reference/05-config/01-next-config-js/cacheComponents.md) enabled, a blocking error presents labeled fixes, each making a different trade-off. The dev overlay adds a **Copy prompt** button that packages the chosen fix into a paste-ready prompt. The prompt walks the agent through reading the matching error page, applying the canonical pattern, and verifying the result at runtime.
 
 The same menu prints in the `next dev` terminal and in `next build` output, so an agent reading CI logs sees it too:
 
@@ -161,9 +152,9 @@ Learn more: https://nextjs.org/docs/messages/blocking-prerender-dynamic
     ...
 ```
 
-`next dev` shows all validation errors with source-mapped stacks in the overlay and terminal. Production builds minify server code and stop after a route fails. Use [`next build --debug-prerender`](/docs/app/guides/building#debug-prerender-errors) to enable server source maps and continue checking other routes.
+`next dev` shows all validation errors with source-mapped stacks in the overlay and terminal. Production builds minify server code and stop after a route fails. Use [`next build --debug-prerender`](./building.md#debug-prerender-errors) to enable server source maps and continue checking other routes.
 
-The `Learn more` link resolves to a per-error page under [`/docs/messages`](https://nextjs.org/docs/messages/blocking-prerender-dynamic) written for agents to read. Each page follows the same shape, with the canonical patterns for every fix, the trade-offs against the other fixes, and the gotchas an agent is likely to miss on a first attempt. The [Instant navigation guide](/docs/app/guides/instant-navigation#ai-workflow) walks through the full loop an agent runs on these errors, from reading the insight to writing an `instant()` test that fails before the fix and passes once it's in place.
+The `Learn more` link resolves to a per-error page under [`/docs/messages`](https://nextjs.org/docs/messages/blocking-prerender-dynamic) written for agents to read. Each page follows the same shape, with the canonical patterns for every fix, the trade-offs against the other fixes, and the gotchas an agent is likely to miss on a first attempt. The [Instant navigation guide](./instant-navigation.md#ai-workflow) walks through the full loop an agent runs on these errors, from reading the insight to writing an `instant()` test that fails before the fix and passes once it's in place.
 
 <span id="step-4-hand-multi-step-workflows-to-skills" />
 
@@ -181,7 +172,7 @@ The Skills serve three different workflow types:
 
 ### `next-dev-loop`
 
-The [`next-dev-loop`](https://www.skills.sh/vercel/next.js/next-dev-loop) runtime foundation verifies changes against a running dev server using the [MCP server](/docs/app/guides/mcp) and browser.
+The [`next-dev-loop`](https://www.skills.sh/vercel/next.js/next-dev-loop) runtime foundation verifies changes against a running dev server using the [MCP server](./mcp.md) and browser.
 
 ```bash filename="Terminal"
 npx skills add vercel/next.js --skill next-dev-loop
@@ -211,7 +202,7 @@ You can also tell your agent to fix any issues, and it will optimize your site b
 
 ### `next-cache-components-adoption`
 
-The [`next-cache-components-adoption`](https://www.skills.sh/vercel/next.js/next-cache-components-adoption) Skill migrates an app to [Cache Components](/docs/app/getting-started/caching):
+The [`next-cache-components-adoption`](https://www.skills.sh/vercel/next.js/next-cache-components-adoption) Skill migrates an app to [Cache Components](../01-getting-started/08-caching.md):
 
 1. Turns the flag on and finds the routes that can't prerender.
 2. Fixes them one feature at a time, checking in with you before moving on.
@@ -233,11 +224,11 @@ Adopt Cache Components in this project using the next-cache-components-adoption 
 
 The [`next-cache-components-optimizer`](https://www.skills.sh/vercel/next.js/next-cache-components-optimizer) Skill expands a target route's static shell to include the useful UI you want available on an initial load:
 
-1. Writes a failing [`instant()`](/docs/app/guides/instant-navigation#prevent-regressions-with-e2e-tests) test for the static-shell UI you named.
+1. Writes a failing [`instant()`](./instant-navigation.md#prevent-regressions-with-e2e-tests) test for the static-shell UI you named.
 2. Refactors the route until it passes, often by moving a data read below a `<Suspense>` boundary.
 3. Commits the passing test with the refactoring, so it catches future regressions.
 
-Use it after adopting [Cache Components](/docs/app/getting-started/caching) to optimize an initial load or client navigation. To prefetch URL-specific content for an already-instant destination, use the [`next-partial-prefetching-optimizer`](#next-partial-prefetching-optimizer) instead.
+Use it after adopting [Cache Components](../01-getting-started/08-caching.md) to optimize an initial load or client navigation. To prefetch URL-specific content for an already-instant destination, use the [`next-partial-prefetching-optimizer`](#next-partial-prefetching-optimizer) instead.
 
 ```bash filename="Terminal"
 npx skills add vercel/next.js --skill next-cache-components-optimizer
@@ -251,13 +242,13 @@ Optimize the static shell for /dashboard using the next-cache-components-optimiz
 
 ### `next-partial-prefetching-adoption`
 
-The [`next-partial-prefetching-adoption`](https://www.skills.sh/vercel/next.js/next-partial-prefetching-adoption) Skill moves an app onto [Partial Prefetching](/docs/app/guides/adopting-partial-prefetching), where links share one App Shell:
+The [`next-partial-prefetching-adoption`](https://www.skills.sh/vercel/next.js/next-partial-prefetching-adoption) Skill moves an app onto [Partial Prefetching](./adopting-partial-prefetching.md), where links share one App Shell:
 
 1. Audits existing `<Link prefetch={true}>` navigations and identifies the prefetched UI to preserve.
-2. Captures that UI in passing [`instant()`](/docs/app/guides/instant-navigation#prevent-regressions-with-e2e-tests) tests before enabling Partial Prefetching, then migrates each destination until the same tests pass unchanged.
+2. Captures that UI in passing [`instant()`](./instant-navigation.md#prevent-regressions-with-e2e-tests) tests before enabling Partial Prefetching, then migrates each destination until the same tests pass unchanged.
 3. Enables the flag, resolves the URL-data insights it surfaces, and marks optional per-link prefetching candidates for later.
 
-It needs [Cache Components](/docs/app/getting-started/caching) already adopted and a production-like build it can run for prefetch verification.
+It needs [Cache Components](../01-getting-started/08-caching.md) already adopted and a production-like build it can run for prefetch verification.
 
 ```bash filename="Terminal"
 npx skills add vercel/next.js --skill next-partial-prefetching-adoption
@@ -274,8 +265,8 @@ Adopt Partial Prefetching in this project using the next-partial-prefetching-ado
 The [`next-partial-prefetching-optimizer`](https://www.skills.sh/vercel/next.js/next-partial-prefetching-optimizer) Skill takes a target navigation or set of navigations and works toward the UI you want ready before each click:
 
 1. Turns the requested behavior for each navigation into a contract for what is prefetched, what waits for navigation, and when prefetching begins.
-2. Captures each contract in an [`instant()`](/docs/app/guides/instant-navigation#prevent-regressions-with-e2e-tests) test.
-3. Applies the [Optimizing prefetching](/docs/app/guides/optimizing-prefetching) patterns and keeps the passing tests as regression coverage.
+2. Captures each contract in an [`instant()`](./instant-navigation.md#prevent-regressions-with-e2e-tests) test.
+3. Applies the [Optimizing prefetching](./optimizing-prefetching.md) patterns and keeps the passing tests as regression coverage.
 
 It needs Cache Components and Partial Prefetching already adopted.
 
@@ -294,3 +285,13 @@ Make the product title instant when navigating from /products to /products/[id].
 | Version | Changes |
 | - | - |
 | `v16.4.0` | `next-bundle-optimizer` skill added. |
+
+## INDEX
+
+Learn more about the APIs and tools described in this guide.
+
+- [Connecting coding agents to the Next.js MCP server](./mcp.md)
+- [Upgrading](../01-getting-started/18-upgrading.md)
+- [agentRules](../03-api-reference/05-config/01-next-config-js/agentRules.md)
+- [agentFeedback](../03-api-reference/05-config/01-next-config-js/agentFeedback.md)
+- [agentUpgrade](../03-api-reference/05-config/01-next-config-js/agentUpgrade.md)

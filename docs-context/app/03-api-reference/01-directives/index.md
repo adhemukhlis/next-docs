@@ -7,11 +7,11 @@ Directives are string literals that tell the compiler and bundler how to treat t
 
 | Directive | Defined by | Effect |
 | - | - | - |
-| [`'use client'`](/docs/app/api-reference/directives/use-client) | React | Creates a client entry point from Server Components |
-| [`'use server'`](/docs/app/api-reference/directives/use-server) | React | Exposes server-side functions as Server Functions |
-| [`'use cache'`](/docs/app/api-reference/directives/use-cache) | Next.js | Caches and reuses output based on the code's inputs |
+| [`'use client'`](./use-client.md) | React | Creates a client entry point from Server Components |
+| [`'use server'`](./use-server.md) | React | Exposes server-side functions as Server Functions |
+| [`'use cache'`](./use-cache.md) | Next.js | Caches and reuses output based on the code's inputs |
 
-The `'use cache'` directive also has [`'use cache: remote'`](/docs/app/api-reference/directives/use-cache-remote) and [`'use cache: private'`](/docs/app/api-reference/directives/use-cache-private) variants. Configure custom [cache handlers](/docs/app/api-reference/config/next-config-js/cacheHandlers) to control where cached entries are stored.
+The `'use cache'` directive also has [`'use cache: remote'`](./use-cache-remote.md) and [`'use cache: private'`](./use-cache-private.md) variants. Configure custom [cache handlers](../05-config/01-next-config-js/cacheHandlers.md) to control where cached entries are stored.
 
 > **Good to know:** Next.js applies directives during compilation in both development and production.
 >
@@ -70,7 +70,7 @@ Every exported function covered by a file-level `'use server'` or `'use cache'` 
 A directive imposes rules on the code it covers:
 
 - **`'use client'`** marks its exports as the boundary between server and client. Client Component props that cross the boundary must be [serializable](https://react.dev/reference/rsc/use-client#serializable-types). Ordinary functions, such as event handlers, cannot cross, but Server Functions can cross as references.
-- **`'use server'`** marks the functions it covers as [Server Functions](/docs/app/glossary#server-function). Server Functions must be `async`. When invoked from a Client Component, their arguments and return values are serialized across the network. The Client Component receives a reference that invokes the function on the server, not the function's code.
+- **`'use server'`** marks the functions it covers as [Server Functions](../../04-glossary.md#server-function). Server Functions must be `async`. When invoked from a Client Component, their arguments and return values are serialized across the network. The Client Component receives a reference that invokes the function on the server, not the function's code.
 - **`'use cache'`** caches the output of the functions or components it covers based on their inputs. Cached functions and components must be `async`. Their arguments and return values must be serializable, except for non-serializable values that the cached code passes through without inspecting. Cached code cannot read request-time APIs like `cookies()`, `headers()`, or `searchParams` directly.
 
 With `'use cache'` at the top of a page or layout file, exported functions such as `generateMetadata` and `generateStaticParams` must be `async`.
@@ -79,4 +79,14 @@ With `'use cache'` at the top of a page or layout file, exported functions such 
 
 With `'use cache'`, placement determines the scope of a cache entry. A directive at the top of a page caches the page's output and the components it imports. The same directive inside a data function caches only that function's result. When one data request performs the expensive work, cache that function instead of the page.
 
-With [`'use cache: remote'`](/docs/app/api-reference/directives/use-cache-remote), a remote cache handler stores entries. Larger entries can increase storage and network costs.
+With [`'use cache: remote'`](./use-cache-remote.md), a remote cache handler stores entries. Larger entries can increase storage and network costs.
+
+## INDEX
+
+Documents in this section:
+
+- [use cache: private](./use-cache-private.md)
+- [use cache: remote](./use-cache-remote.md)
+- [use cache](./use-cache.md)
+- [use client](./use-client.md)
+- [use server](./use-server.md)

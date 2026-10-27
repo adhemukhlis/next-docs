@@ -5,7 +5,7 @@ description: Add rewrites to your Next.js app.
 
 Rewrites allow you to map an incoming request path to a different destination path.
 
-Rewrites act as a URL proxy and mask the destination path, making it appear the user hasn't changed their location on the site. In contrast, [redirects](/docs/app/api-reference/config/next-config-js/redirects) will reroute to a new page and show the URL changes.
+Rewrites act as a URL proxy and mask the destination path, making it appear the user hasn't changed their location on the site. In contrast, [redirects](./redirects.md) will reroute to a new page and show the URL changes.
 
 To use rewrites you can use the `rewrites` key in `next.config.js`:
 
@@ -74,11 +74,11 @@ module.exports = {
 
 The order Next.js routes are checked is:
 
-1. [headers](/docs/app/api-reference/config/next-config-js/headers) are checked/applied
-2. [redirects](/docs/app/api-reference/config/next-config-js/redirects) are checked/applied
-3. [proxy](/docs/app/api-reference/file-conventions/proxy)
+1. [headers](./headers.md) are checked/applied
+2. [redirects](./redirects.md) are checked/applied
+3. [proxy](../../03-file-conventions/proxy.md)
 4. `beforeFiles` rewrites: for each entry, if `source`, `has`, and `missing` matches the request, it's rewritten to `destination`.
-5. static files from the [public directory](/docs/app/api-reference/file-conventions/public-folder), `_next/static` files, and non-dynamic pages are checked/served
+5. static files from the [public directory](../../03-file-conventions/public-folder.md), `_next/static` files, and non-dynamic pages are checked/served
 6. `afterFiles` rewrites are tried in order. If a `source`, `has`, and `missing` matches the request, it's rewritten to `destination`; the first rewrite that resolves to a static file, page, or dynamic route is served.
 7. dynamic routes (e.g., `app/blog/[slug]/page.tsx`) are matched against the current path
 8. `fallback` rewrites are checked/applied, these are applied before rendering the 404 page and after dynamic routes/all static assets have been checked. If you use [fallback: true/'blocking'](/docs/pages/api-reference/functions/get-static-paths#fallback-true) in `getStaticPaths`, those dynamic routes take priority over the fallback `rewrites` defined in your `next.config.js`.
@@ -368,7 +368,7 @@ module.exports = {
 
 ### Rewrites with basePath support
 
-When leveraging [`basePath` support](/docs/app/api-reference/config/next-config-js/basePath) with rewrites each `source` and `destination` is automatically prefixed with the `basePath` unless you add `basePath: false` to the rewrite:
+When leveraging [`basePath` support](./basePath.md) with rewrites each `source` and `destination` is automatically prefixed with the `basePath` unless you add `basePath: false` to the rewrite:
 
 ```js filename="next.config.js"
 module.exports = {

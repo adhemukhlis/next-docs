@@ -4,7 +4,7 @@ description: Compile client-side dynamic imports when they are first requested d
 version: experimental
 related:
  links:
-  - app/api-reference/config/next-config-js/turbopackLazyDynamicImportsSSR
+  - ./turbopackLazyDynamicImportsSSR.md
 ---
 
 The `experimental.turbopackLazyDynamicImports` option defers compiling client-side dynamic `import()` targets until the browser first requests them during `next dev`.
@@ -86,8 +86,8 @@ export function GreetingButton() {
 >
 > - The option defaults to `false` and only affects Turbopack during `next dev`. It does not change production builds.
 > - Errors in a deferred module appear when Turbopack first compiles that module.
-> - Some [`next/dynamic`](/docs/app/guides/lazy-loading#nextdynamic) targets are still compiled eagerly.
-> - To defer dynamic imports reached while rendering Client Components on the server, use [`turbopackLazyDynamicImportsSSR`](/docs/app/api-reference/config/next-config-js/turbopackLazyDynamicImportsSSR).
+> - Some [`next/dynamic`](../../../02-guides/lazy-loading.md#nextdynamic) targets are still compiled eagerly.
+> - To defer dynamic imports reached while rendering Client Components on the server, use [`turbopackLazyDynamicImportsSSR`](./turbopackLazyDynamicImportsSSR.md).
 
 ## Version History
 

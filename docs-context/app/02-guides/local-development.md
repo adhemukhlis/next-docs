@@ -66,7 +66,7 @@ For the best development experience:
 - If you're using Docker Desktop, evaluate using [synchronized file shares](https://docs.docker.com/desktop/features/synchronized-file-sharing/). Synchronized file shares still add latency compared to running Next.js directly on the host, but can improve file-watching reliability without resorting to polling.
 - Avoid using `watchOptions.pollIntervalMs` in `next.config.js` to work around Fast Refresh issues. Only use it as a last resort. Polling adds significant latency and can drastically increase CPU and I/O usage.
 
-[Learn more about Docker deployment](/docs/app/getting-started/deploying#docker) for production use.
+[Learn more about Docker deployment](../01-getting-started/17-deploying.md#docker) for production use.
 
 ### 3. (Windows) Use Dev Drive or WSL 2
 
@@ -122,11 +122,11 @@ yarn dev --webpack
 bun run dev --webpack
 ```
 
-[Learn more about Turbopack](/blog/turbopack-for-development-stable). See our [upgrade guides](/docs/app/guides/upgrading) and codemods for more information.
+[Learn more about Turbopack](/blog/turbopack-for-development-stable). See our [upgrade guides](./upgrading/index.md) and codemods for more information.
 
 ### 2. Check your imports
 
-The way you import code can greatly affect compilation and bundling time. Learn more about [optimizing package bundling](/docs/app/guides/package-bundling) and explore tools like [Dependency Cruiser](https://github.com/sverweij/dependency-cruiser) or [Madge](https://github.com/pahen/madge).
+The way you import code can greatly affect compilation and bundling time. Learn more about [optimizing package bundling](./package-bundling.md) and explore tools like [Dependency Cruiser](https://github.com/sverweij/dependency-cruiser) or [Madge](https://github.com/pahen/madge).
 
 #### Icon libraries
 
@@ -209,13 +209,13 @@ Tailwind CSS version 3.4.8 or newer will warn you about settings that might slow
 
 If you've added custom webpack settings, they might be slowing down compilation.
 
-Consider if you really need them for local development. You can optionally only include certain tools for production builds, or explore using the default Turbopack bundler and configuring [loaders](/docs/app/api-reference/config/next-config-js/turbopack#configuring-webpack-loaders) instead.
+Consider if you really need them for local development. You can optionally only include certain tools for production builds, or explore using the default Turbopack bundler and configuring [loaders](../03-api-reference/05-config/01-next-config-js/turbopack.md#configuring-webpack-loaders) instead.
 
 ### 5. Optimize memory usage
 
 If your app is very large, it might need more memory.
 
-[Learn more about optimizing memory usage](/docs/app/guides/memory-usage).
+[Learn more about optimizing memory usage](./memory-usage.md).
 
 ### 6. Server Components and data fetching
 
@@ -223,7 +223,7 @@ Changes to Server Components cause the entire page to re-render locally in order
 
 The experimental `serverComponentsHmrCache` option allows you to cache `fetch` responses in Server Components across Hot Module Replacement (HMR) refreshes in local development. This results in faster responses and reduced costs for billed API calls.
 
-[Learn more about the experimental option](/docs/app/api-reference/config/next-config-js/serverComponentsHmrCache).
+[Learn more about the experimental option](../03-api-reference/05-config/01-next-config-js/serverComponentsHmrCache.md).
 
 ## Tools for finding problems
 
@@ -241,7 +241,7 @@ module.exports = {
 }
 ```
 
-[Learn more about fetch logging](/docs/app/api-reference/config/next-config-js/logging).
+[Learn more about fetch logging](../03-api-reference/05-config/01-next-config-js/logging.md).
 
 ### Turbopack tracing
 

@@ -6,7 +6,7 @@ description: Configure the Next.js cache used for storing and revalidating data 
 
 You can configure the Next.js cache location if you want to persist cached pages and data to durable storage, or share the cache across multiple containers or instances of your Next.js application.
 
-> **Good to know**: The `cacheHandler` (singular) configuration is specifically used by Next.js for server cache operations such as storing and revalidating ISR, route handler responses, and optimized images. It is **not** used by `'use cache'` directives. For `'use cache'` directives, use [`cacheHandlers`](/docs/app/api-reference/config/next-config-js/cacheHandlers) (plural) instead. [`cacheMaxMemorySize`](/docs/app/api-reference/config/next-config-js/cacheMaxMemorySize) is separate from both, and sizes the in-memory cache for each.
+> **Good to know**: The `cacheHandler` (singular) configuration is specifically used by Next.js for server cache operations such as storing and revalidating ISR, route handler responses, and optimized images. It is **not** used by `'use cache'` directives. For `'use cache'` directives, use [`cacheHandlers`](./cacheHandlers.md) (plural) instead. [`cacheMaxMemorySize`](./cacheMaxMemorySize.md) is separate from both, and sizes the in-memory cache for each.
 
 ```js filename="next.config.js"
 module.exports = {
@@ -15,7 +15,7 @@ module.exports = {
 }
 ```
 
-See the [Redis `cacheHandler` example](https://github.com/vercel/next.js/tree/canary/examples/cache-handler-redis) for a working implementation, and [Configuring Caching](/docs/app/guides/self-hosting#configuring-caching) for what a handler backed by a shared store needs.
+See the [Redis `cacheHandler` example](https://github.com/vercel/next.js/tree/canary/examples/cache-handler-redis) for a working implementation, and [Configuring Caching](../../../02-guides/self-hosting.md#configuring-caching) for what a handler backed by a shared store needs.
 
 ## API Reference
 
@@ -60,7 +60,7 @@ Returns `Promise<void>`.
 | - | - | - |
 | `tag` | `string` or `string[]` | The cache tags to revalidate. |
 
-Returns `Promise<void>`. Learn more about [revalidating data](/docs/app/guides/incremental-static-regeneration) or the [`revalidateTag()`](/docs/app/api-reference/functions/revalidateTag) function.
+Returns `Promise<void>`. Learn more about [revalidating data](../../../02-guides/incremental-static-regeneration.md) or the [`revalidateTag()`](../../04-functions/revalidateTag.md) function.
 
 ### `resetRequestCache()`
 
@@ -95,12 +95,12 @@ When handling image cache entries, the `kind` will be `'IMAGE'` and the data wil
 
 | Deployment Option | Supported |
 | - | - |
-| [Node.js server](/docs/app/getting-started/deploying#nodejs-server) | Yes |
-| [Docker container](/docs/app/getting-started/deploying#docker) | Yes |
-| [Static export](/docs/app/getting-started/deploying#static-export) | No |
-| [Adapters](/docs/app/getting-started/deploying#adapters) | Platform-specific |
+| [Node.js server](../../../01-getting-started/17-deploying.md#nodejs-server) | Yes |
+| [Docker container](../../../01-getting-started/17-deploying.md#docker) | Yes |
+| [Static export](../../../01-getting-started/17-deploying.md#static-export) | No |
+| [Adapters](../../../01-getting-started/17-deploying.md#adapters) | Platform-specific |
 
-Learn how to [configure ISR](/docs/app/guides/self-hosting#caching-and-isr) when self-hosting Next.js.
+Learn how to [configure ISR](../../../02-guides/self-hosting.md#caching-and-isr) when self-hosting Next.js.
 
 ## Version History
 

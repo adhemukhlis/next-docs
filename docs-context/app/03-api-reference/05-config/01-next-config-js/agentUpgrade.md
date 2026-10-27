@@ -2,14 +2,9 @@
 title: agentUpgrade
 description: Configure coding agent upgrades and reminders.
 version: experimental
-related:
- links:
-  - app/guides/upgrading/agent-upgrade
-  - app/guides/ai-agents
-  - app/api-reference/cli/next
 ---
 
-The `experimental.agentUpgrade` option selects the default policy for [`next upgrade --agent`](/docs/app/guides/upgrading/agent-upgrade) and controls upgrade reminders during `next dev` and `next build`. It uses the `security` policy by default.
+The `experimental.agentUpgrade` option selects the default policy for [`next upgrade --agent`](../../../02-guides/upgrading/agent-upgrade.md) and controls upgrade reminders during `next dev` and `next build`. It uses the `security` policy by default.
 
 ```ts filename="next.config.ts" switcher highlight={5}
 import type { NextConfig } from 'next'
@@ -41,7 +36,7 @@ The option accepts these values:
 | `false` | Disables upgrade reminders. |
 | `security` (default) | Checks stable installations for security advisories and recommends a safe upgrade when one is available. |
 | `latest` | Recommends a newer major or minor release on the app's current stable or canary channel. |
-| `experimental-future` | Uses the `latest` policy and also recommends applicable [Future Defaults](/docs/app/guides/upgrading/agent-upgrade#adopt-future-defaults). |
+| `experimental-future` | Uses the `latest` policy and also recommends applicable [Future Defaults](../../../02-guides/upgrading/agent-upgrade.md#adopt-future-defaults). |
 
 The option does not upgrade the app automatically. It only controls reminders and the policy used when `next upgrade --agent` does not include a value.
 
@@ -80,3 +75,9 @@ During `next dev`, Next.js DevTools can also show a **Vulnerability Insight** wh
 | Version | Changes |
 | - | - |
 | `v16.4.0` | `experimental.agentUpgrade` configuration option added. |
+
+## INDEX
+
+- [Upgrade with a coding agent](../../../02-guides/upgrading/agent-upgrade.md)
+- [How Next.js supports AI coding agents](../../../02-guides/ai-agents.md)
+- [next CLI](../../06-cli/next.md)

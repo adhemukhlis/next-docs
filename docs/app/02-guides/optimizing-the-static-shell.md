@@ -6,13 +6,13 @@ related:
  title: Learn more
  description: Learn more about the APIs used in this guide.
  links:
-  - app/api-reference/directives/use-cache
-  - app/api-reference/directives/use-cache-remote
-  - app/api-reference/functions/cacheLife
-  - app/api-reference/file-conventions/loading
+  - ../03-api-reference/01-directives/use-cache.md
+  - ../03-api-reference/01-directives/use-cache-remote.md
+  - ../03-api-reference/04-functions/cacheLife.md
+  - ../03-api-reference/03-file-conventions/loading.md
 ---
 
-[Cache Components](/docs/app/getting-started/caching) can prerender a static shell while request-time content streams in. The shell can keep the route's layout, navigation, headings, and focused loading states visible instead of replacing the page with one broad fallback.
+[Cache Components](../01-getting-started/08-caching.md) can prerender a static shell while request-time content streams in. The shell can keep the route's layout, navigation, headings, and focused loading states visible instead of replacing the page with one broad fallback.
 
 Apps written before Cache Components often await request data near the top of a layout or page. With Cache Components enabled, those routes may already have a small static shell, sometimes made up of one broad loading state.
 
@@ -22,9 +22,9 @@ In this guide, you'll learn how to expand the shell by tracing each data read to
 
 ## Use the optimizer skill (recommended)
 
-The [`next-cache-components-optimizer`](/docs/app/guides/ai-agents#next-cache-components-optimizer) skill applies this guide with a coding agent. It uses the [`instant()` verification loop](#step-4-verify-the-instant-ui) below to capture the intended static shell, prove the current behavior, and keep the passing test as regression coverage.
+The [`next-cache-components-optimizer`](./ai-agents.md#next-cache-components-optimizer) skill applies this guide with a coding agent. It uses the [`instant()` verification loop](#step-4-verify-the-instant-ui) below to capture the intended static shell, prove the current behavior, and keep the passing test as regression coverage.
 
-The skill can also target a client navigation whose destination UI does not commit immediately. It applies the same patterns to the destination segments that change, then verifies the named navigation through its real link. If the destination already has instant UI and you want to include additional URL-specific content before the click, use [Optimizing prefetching](/docs/app/guides/optimizing-prefetching) instead.
+The skill can also target a client navigation whose destination UI does not commit immediately. It applies the same patterns to the destination segments that change, then verifies the named navigation through its real link. If the destination already has instant UI and you want to include additional URL-specific content before the click, use [Optimizing prefetching](./optimizing-prefetching.md) instead.
 
 Install the skill:
 
@@ -40,7 +40,7 @@ Optimize the static shell for /[team]/settings using the next-cache-components-o
 
 ## Prerequisites
 
-Enable [`cacheComponents`](/docs/app/api-reference/config/next-config-js/cacheComponents) and resolve the route's blocking validation errors first. For the migration workflow, see [Migrating to Cache Components](/docs/app/guides/migrating-to-cache-components).
+Enable [`cacheComponents`](../03-api-reference/05-config/01-next-config-js/cacheComponents.md) and resolve the route's blocking validation errors first. For the migration workflow, see [Migrating to Cache Components](./migrating-to-cache-components.md).
 
 ```ts filename="next.config.ts" highlight={4}
 import type { NextConfig } from 'next'
@@ -52,7 +52,7 @@ const nextConfig: NextConfig = {
 export default nextConfig
 ```
 
-For client navigations, consider enabling [Partial Prefetching](/docs/app/guides/adopting-partial-prefetching) as well. With Partial Prefetching enabled, `<Link prefetch={true}>` can include cached URL-specific content before the click, making more UI available immediately on navigation. See [Optimizing prefetching](/docs/app/guides/optimizing-prefetching) to choose which content to prefetch.
+For client navigations, consider enabling [Partial Prefetching](./adopting-partial-prefetching.md) as well. With Partial Prefetching enabled, `<Link prefetch={true}>` can include cached URL-specific content before the click, making more UI available immediately on navigation. See [Optimizing prefetching](./optimizing-prefetching.md) to choose which content to prefetch.
 
 ## Patterns
 
@@ -90,7 +90,7 @@ To keep headings, navigation, cached content, and other stable UI visible, take 
 </main>
 ```
 
-When the primary heading or other [Largest Contentful Paint candidate](/docs/app/guides/streaming#lcp-largest-contentful-paint) depends on reusable data, [cache that data](#cache-reusable-work) so the completed content can render in the shell. If the data must wait for the request, keep its loading state focused so it does not hold back the rest of the page.
+When the primary heading or other [Largest Contentful Paint candidate](./streaming.md#lcp-largest-contentful-paint) depends on reusable data, [cache that data](#cache-reusable-work) so the completed content can render in the shell. If the data must wait for the request, keep its loading state focused so it does not hold back the rest of the page.
 
 ### Stream request-time work
 
@@ -229,13 +229,13 @@ export function ActivityChart({ dataPromise }: { dataPromise: Promise<Activity[]
 }
 ```
 
-For URL data, a Client Component can often call [`useParams()`](/docs/app/api-reference/functions/use-params) or [`useSearchParams()`](/docs/app/api-reference/functions/use-search-params) instead of receiving a promise. Both hooks resolve synchronously during a client navigation because the router already has the URL.
+For URL data, a Client Component can often call [`useParams()`](../03-api-reference/04-functions/use-params.md) or [`useSearchParams()`](../03-api-reference/04-functions/use-search-params.md) instead of receiving a promise. Both hooks resolve synchronously during a client navigation because the router already has the URL.
 
-See [Push dynamic access down](/docs/app/guides/streaming#push-dynamic-access-down) for more examples of resolving request-time work closer to the UI that uses it.
+See [Push dynamic access down](./streaming.md#push-dynamic-access-down) for more examples of resolving request-time work closer to the UI that uses it.
 
 #### Design loading states
 
-Before this refactor, a route might rely on one [`loading.tsx` file](/docs/app/api-reference/file-conventions/loading) for the whole segment. That is often enough while the page loads as one unit. As you push data access down to reveal more completed UI, use focused [`<Suspense>` boundaries](/docs/app/guides/streaming#granular-streaming-with-suspense) and choose their loading states more deliberately. The `loading.tsx` file can remain as an outer fallback, or be removed when the route no longer needs it.
+Before this refactor, a route might rely on one [`loading.tsx` file](../03-api-reference/03-file-conventions/loading.md) for the whole segment. That is often enough while the page loads as one unit. As you push data access down to reveal more completed UI, use focused [`<Suspense>` boundaries](./streaming.md#granular-streaming-with-suspense) and choose their loading states more deliberately. The `loading.tsx` file can remain as an outer fallback, or be removed when the route no longer needs it.
 
 **Reveal independent regions separately.** Use sibling boundaries when each completed region has predictable dimensions and can appear on its own. Each fallback should reserve the space its completed region needs:
 
@@ -263,7 +263,7 @@ React can still start independently reachable work during the same render. Nesti
 
 For variable-length content, another option is to render a predictable collapsed state with a Show more or Load more control so content below can appear without shifting later.
 
-When a route uses parallel slots, each slot can stream with its own loading state. See [Loading and Error UI with Parallel Routes](/docs/app/api-reference/file-conventions/parallel-routes#loading-and-error-ui).
+When a route uses parallel slots, each slot can stream with its own loading state. See [Loading and Error UI with Parallel Routes](../03-api-reference/03-file-conventions/parallel-routes.md#loading-and-error-ui).
 
 **Use the same layout for loading and completed UI.** Fallbacks can drift away from the completed UI as components and responsive layouts change. Keep the container that owns the layout outside the boundary. In this example, the skeleton cards and completed product cards both use the same responsive grid:
 
@@ -281,8 +281,8 @@ Use an empty fallback only when the resolved component also has no visual footpr
 
 **Related data-fetching patterns.** After splitting work into streamed regions, these patterns can prevent the requests themselves from starting later than necessary:
 
-- When multiple independent requests must stay in one region, use [parallel data fetching](/docs/app/getting-started/fetching-data#parallel-data-fetching) to start them together.
-- When React reaches a data dependency later in the render, use [preloading](/docs/app/getting-started/fetching-data#preloading-data) to start it sooner.
+- When multiple independent requests must stay in one region, use [parallel data fetching](../01-getting-started/06-fetching-data.md#parallel-data-fetching) to start them together.
+- When React reaches a data dependency later in the render, use [preloading](../01-getting-started/06-fetching-data.md#preloading-data) to start it sooner.
 
 ### Cache reusable work
 
@@ -309,19 +309,19 @@ export async function ProductList() {
 }
 ```
 
-If the application can change a cached result, connect the cached read to its writes with [on-demand revalidation](/docs/app/getting-started/revalidating).
+If the application can change a cached result, connect the cached read to its writes with [on-demand revalidation](../01-getting-started/09-revalidating.md).
 
 **Related caching patterns.** These patterns cover values derived from a request, reuse within one request, and dynamic routes:
 
-- To cache a result using a value from `cookies()`, `headers()`, or another runtime API, [read the value outside the cached scope and pass it as an argument](/docs/app/getting-started/caching#passing-runtime-values-to-cached-functions).
-- To deduplicate matching calls during one server request without persisting the result across requests, use [React `cache()`](/docs/app/getting-started/fetching-data#reusing-data-with-reactcache).
-- To prerender known dynamic routes and generate others on demand, see [ISR with Cache Components](/docs/app/guides/incremental-static-regeneration-cache-components).
+- To cache a result using a value from `cookies()`, `headers()`, or another runtime API, [read the value outside the cached scope and pass it as an argument](../01-getting-started/08-caching.md#passing-runtime-values-to-cached-functions).
+- To deduplicate matching calls during one server request without persisting the result across requests, use [React `cache()`](../01-getting-started/06-fetching-data.md#reusing-data-with-reactcache).
+- To prerender known dynamic routes and generate others on demand, see [ISR with Cache Components](./incremental-static-regeneration-cache-components.md).
 
-Learn more about cache scopes and lifetimes in [Caching](/docs/app/getting-started/caching#usage).
+Learn more about cache scopes and lifetimes in [Caching](../01-getting-started/08-caching.md#usage).
 
 ## Follow validation as you refactor
 
-With Cache Components enabled, [`next dev` validates whether each page load or client navigation has instant UI](/docs/app/guides/instant-navigation#validate-instant-navigation). A route may already have instant UI for one entry point but show an insight for another. For example, a fallback in a shared layout may cover a page load without covering a client navigation within that layout.
+With Cache Components enabled, [`next dev` validates whether each page load or client navigation has instant UI](./instant-navigation.md#validate-instant-navigation). A route may already have instant UI for one entry point but show an insight for another. For example, a fallback in a shared layout may cover a page load without covering a client navigation within that layout.
 
 If an insight appears while you refactor, that specific page load or client navigation needs an immediate result or fallback. It is a useful target for the patterns above or the optimizer skill, even when another entry point to the same route is already instant. The suggested fixes map to the patterns above:
 
@@ -348,11 +348,11 @@ If an insight appears while you refactor, that specific page load or client navi
   />
 </FixCardGrid>
 
-Resolving the insight makes that entry point instant. It does not decide which UI should be available immediately. Use the [Navigation Inspector](/docs/app/guides/instant-navigation#visualize-loading-states-with-the-nextjs-devtools) to inspect what appears and apply the patterns above to include more useful UI, or give the route and the intended instant UI to the [optimizer skill](#use-the-optimizer-skill-recommended).
+Resolving the insight makes that entry point instant. It does not decide which UI should be available immediately. Use the [Navigation Inspector](./instant-navigation.md#visualize-loading-states-with-the-nextjs-devtools) to inspect what appears and apply the patterns above to include more useful UI, or give the route and the intended instant UI to the [optimizer skill](#use-the-optimizer-skill-recommended).
 
 ## Example
 
-Consider a team settings route that awaits request data near the top of both its layout and page. This structure may feel natural in an App Router application written before Cache Components. It can also carry over from the [Pages Router](/docs/app/guides/migrating/app-router-migration#step-6-migrating-data-fetching-methods), where a route-level function such as `getServerSideProps` loads data before rendering the page. In the App Router, the same structure leaves none of the settings UI in the static shell.
+Consider a team settings route that awaits request data near the top of both its layout and page. This structure may feel natural in an App Router application written before Cache Components. It can also carry over from the [Pages Router](./migrating/app-router-migration.md#step-6-migrating-data-fetching-methods), where a route-level function such as `getServerSideProps` loads data before rendering the page. In the App Router, the same structure leaves none of the settings UI in the static shell.
 
 The example starts with one layout and one page:
 
@@ -561,9 +561,9 @@ async function AuthGate() {
 
 `AuthGate` is the only component that needs the request values, so it owns those reads. Its boundary lets the settings frame and page stay in the shell. An empty fallback fits this boundary because an authorized gate also returns `null`.
 
-> **Good to know:** If an authorization interrupt such as [`unauthorized()`](/docs/app/api-reference/functions/unauthorized) or [`forbidden()`](/docs/app/api-reference/functions/forbidden) runs after streaming starts, it can render its UI, but the response status remains `200`. If the HTTP `401` or `403` status matters, check access before streaming begins. See [Status codes](/docs/app/api-reference/file-conventions/loading#status-codes).
+> **Good to know:** If an authorization interrupt such as [`unauthorized()`](../03-api-reference/04-functions/unauthorized.md) or [`forbidden()`](../03-api-reference/04-functions/forbidden.md) runs after streaming starts, it can render its UI, but the response status remains `200`. If the HTTP `401` or `403` status matters, check access before streaming begins. See [Status codes](../03-api-reference/03-file-conventions/loading.md#status-codes).
 
-A layout redirect does not protect a database query or Server Action by itself. Keep authorization checks in the data access functions used by the page, and include only safe UI in the shell before authentication completes. See [Authentication with Cache Components](/docs/app/guides/authentication-with-cache-components) for the complete pattern.
+A layout redirect does not protect a database query or Server Action by itself. Keep authorization checks in the data access functions used by the page, and include only safe UI in the shell before authentication completes. See [Authentication with Cache Components](./authentication-with-cache-components.md) for the complete pattern.
 
 ### Step 3: Cache the reusable plan data
 
@@ -592,7 +592,7 @@ export async function PlanOptions() {
 
 `PlanOptions` has no request-time dependency, so Next.js can resolve it while generating the static shell. Its existing `<Suspense>` boundary does not prevent that. The fallback is not needed for this route, so the boundary may be removed. Keep a boundary when a cached component is first reached after request-time data so it can cover a cold cache.
 
-If a write changes the plan descriptions, use [on-demand revalidation](/docs/app/getting-started/revalidating) from the corresponding mutation.
+If a write changes the plan descriptions, use [on-demand revalidation](../01-getting-started/09-revalidating.md) from the corresponding mutation.
 
 ```tsx filename="app/[team]/settings/page.tsx" highlight={3}
 <main>
@@ -642,7 +642,7 @@ The page now renders useful UI immediately while request-specific content stream
 
 ### Step 4: Verify the instant UI
 
-Use [`instant()`](/docs/app/guides/instant-navigation#prevent-regressions-with-e2e-tests) to hold back request-time server content and assert which parts of the page are available immediately. Playwright makes these assertions after hydration, so Client Components that can resolve without server content may already be visible inside the callback.
+Use [`instant()`](./instant-navigation.md#prevent-regressions-with-e2e-tests) to hold back request-time server content and assert which parts of the page are available immediately. Playwright makes these assertions after hydration, so Client Components that can resolve without server content may already be visible inside the callback.
 
 ```ts filename="e2e/settings-navigation.test.ts" highlight={7-10,17,20-21,26-27}
 import { expect, test, type Page } from '@playwright/test'
@@ -674,7 +674,7 @@ test('shows settings UI before request-time work completes', async ({ page, base
 
 Inside the callback, the heading and cached plan options stay visible. Hydration has already rendered the tabs from the browser URL, while `instant()` keeps the request-time form behind `SettingsFormSkeleton`. The final assertions confirm that the completed form replaces its loading state after the pause is released.
 
-The testing API is available automatically in `next dev`. When running the test against a production build with `next start`, enable [`experimental.exposeTestingApiInProductionBuild`](/docs/app/api-reference/config/next-config-js/exposeTestingApiInProductionBuild) for the test build.
+The testing API is available automatically in `next dev`. When running the test against a production build with `next start`, enable [`experimental.exposeTestingApiInProductionBuild`](../03-api-reference/05-config/01-next-config-js/exposeTestingApiInProductionBuild.md) for the test build.
 
 The completed route should have the same settings data, redirects, error states, and interactions as the original route.
 
@@ -684,4 +684,4 @@ The direct visit starts with the shared static shell and `SettingsContentSkeleto
 
 During a client navigation, `SettingsTabs` can read the URL synchronously. Other server content that depends on the destination's `params` or `searchParams` is not part of the shared shell. If that work is cacheable, a per-link prefetch can resolve it before the click instead of streaming it afterward.
 
-Use [Optimizing prefetching](/docs/app/guides/optimizing-prefetching) when URL-specific content should be ready before a selected link is clicked. The guide also covers how to choose a prefetch policy based on the cost of the work.
+Use [Optimizing prefetching](./optimizing-prefetching.md) when URL-specific content should be ready before a selected link is clicked. The guide also covers how to choose a prefetch policy based on the cost of the work.

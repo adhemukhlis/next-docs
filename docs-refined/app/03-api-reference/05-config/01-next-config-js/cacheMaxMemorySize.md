@@ -26,8 +26,8 @@ module.exports = nextConfig
 
 The option sizes two separate caches:
 
-- The server cache that stores prerendered pages, route handler responses, and optimized images. Set this to `0` when adopting a [custom `cacheHandler`](/docs/app/api-reference/config/next-config-js/incrementalCacheHandlerPath), so reads go to your store rather than a per-instance copy.
-- The built-in handler behind [`'use cache'`](/docs/app/api-reference/directives/use-cache). If you register your own handler through [`cacheHandlers`](/docs/app/api-reference/config/next-config-js/cacheHandlers), that handler manages its own memory and this option no longer applies to it.
+- The server cache that stores prerendered pages, route handler responses, and optimized images. Set this to `0` when adopting a [custom `cacheHandler`](./incrementalCacheHandlerPath.md), so reads go to your store rather than a per-instance copy.
+- The built-in handler behind [`'use cache'`](../../01-directives/use-cache.md). If you register your own handler through [`cacheHandlers`](./cacheHandlers.md), that handler manages its own memory and this option no longer applies to it.
 
 Setting `cacheMaxMemorySize: 0` disables both in-memory caches. It is also a way to mimic how `use cache` behaves in a serverless environment, where entries rarely survive between requests.
 

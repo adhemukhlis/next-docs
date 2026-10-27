@@ -2,15 +2,11 @@
 title: Building public pages
 description: Learn how to build public, "static" pages that share data across users, such as landing pages, list pages (products, blogs, etc.), marketing and news sites.
 nav_title: Public pages
-related:
- links:
-  - app/guides/keeping-pages-static
-  - app/guides/incremental-static-regeneration-cache-components
 ---
 
 Public pages show the same content to every user. Common examples include landing pages, marketing pages, and product pages.
 
-Since data is shared, these kind of pages can be [prerendered](/docs/app/glossary#prerendering) ahead of time and reused. This leads to faster page loads and lower server costs.
+Since data is shared, these kind of pages can be [prerendered](../04-glossary.md#prerendering) ahead of time and reused. This leads to faster page loads and lower server costs.
 
 This guide will show you how to build public pages that share data across users.
 
@@ -18,7 +14,7 @@ This guide will show you how to build public pages that share data across users.
 
 As an example, we'll build a product list page.
 
-We'll start with a static header, add a product list with async external data, and learn how to render it without blocking the response. Finally, we'll add a user-specific promotion banner without switching the entire page to [dynamic rendering](/docs/app/glossary#dynamic-rendering).
+We'll start with a static header, add a product list with async external data, and learn how to render it without blocking the response. Finally, we'll add a user-specific promotion banner without switching the entire page to [dynamic rendering](../04-glossary.md#dynamic-rendering).
 
 You can find the resources used in this example here:
 
@@ -49,11 +45,11 @@ export default async function Page() {
 
 The `<Header />` component doesn't depend on any inputs that change between requests, such as: external data, request headers, route params, the current time, or random values.
 
-> **Good to know**: If you need to display locale-aware dates or times without a visible flash, see [Preventing flash before hydration](/docs/app/guides/preventing-flash-before-hydration).
+> **Good to know**: If you need to display locale-aware dates or times without a visible flash, see [Preventing flash before hydration](./preventing-flash-before-hydration.md).
 
-Since its output never changes and can be determined ahead of time, this kind of component is called a **static** component. With no reason to wait for a request, Next.js can safely **prerender** the page at [build time](/docs/app/glossary#build-time).
+Since its output never changes and can be determined ahead of time, this kind of component is called a **static** component. With no reason to wait for a request, Next.js can safely **prerender** the page at [build time](../04-glossary.md#build-time).
 
-We can confirm this by running [`next build`](/docs/app/api-reference/cli/next#next-build-options).
+We can confirm this by running [`next build`](../03-api-reference/06-cli/next.md#next-build-options).
 
 ```bash filename="Terminal"
 Route (app)      Revalidate  Expire
@@ -107,14 +103,14 @@ To protect us from this performance cliff, the first time we **await** this unca
 
 At this point, we have to decide how to **unblock** the response. Either:
 
-- [**Cache**](/docs/app/glossary#cache-components) the component, so it becomes **stable** and can be prerendered with the rest of the page.
-- [**Stream**](/docs/app/glossary#streaming) the component, so it becomes **non-blocking** and the rest of the page doesn't have to wait for it.
+- [**Cache**](../04-glossary.md#cache-components) the component, so it becomes **stable** and can be prerendered with the rest of the page.
+- [**Stream**](../04-glossary.md#streaming) the component, so it becomes **non-blocking** and the rest of the page doesn't have to wait for it.
 
 In our case, the product catalog is shared across all users, so caching is the right choice.
 
 ### Cache components
 
-We can mark a function as cacheable using the [`'use cache'`](/docs/app/api-reference/directives/use-cache) directive.
+We can mark a function as cacheable using the [`'use cache'`](../03-api-reference/01-directives/use-cache.md) directive.
 
 ```tsx filename="app/products/page.tsx"
 import db from '@/db'
@@ -139,7 +135,7 @@ export default async function Page() {
 }
 ```
 
-This turns it into a [cache component](/docs/app/glossary#cache-components). The first time it runs, whatever we return will be cached and reused.
+This turns it into a [cache component](../04-glossary.md#cache-components). The first time it runs, whatever we return will be cached and reused.
 
 If a cache component's inputs are available **before** the request arrives, it can be prerendered just like a static component.
 
@@ -193,7 +189,7 @@ Last time, the data was shared, so it could be cached. This time, the promotion 
 
 Adding dynamic content doesn't mean we have to go back to a fully blocking render. We can unblock the response with streaming.
 
-Next.js supports streaming by default. We can use a [Suspense boundary](/docs/app/glossary#suspense-boundary) to tell the framework where to slice the streamed response into _chunks_, and what fallback UI to show while content loads.
+Next.js supports streaming by default. We can use a [Suspense boundary](../04-glossary.md#suspense-boundary) to tell the framework where to slice the streamed response into _chunks_, and what fallback UI to show while content loads.
 
 ```tsx filename="app/products/page.tsx"
 import { Suspense } from 'react'
@@ -226,7 +222,7 @@ export default async function Page() {
 
 The fallback is prerendered alongside the rest of our static and cached content. The inner component streams in later, once its async work completes.
 
-With this change, Next.js can separate prerenderable work from request-time work and the route becomes [partially prerendered](/docs/app/glossary#partial-prerendering-ppr).
+With this change, Next.js can separate prerenderable work from request-time work and the route becomes [partially prerendered](../04-glossary.md#partial-prerendering-ppr).
 
 Again, we can confirm this by running `next build`:
 
@@ -238,9 +234,9 @@ Route (app)      Revalidate  Expire
 ◐  (Partial Prerender)  Prerendered as static HTML with dynamic server-streamed content
 ```
 
-At [**build time**](/docs/app/glossary#build-time), most of the page, including the header, product list and promotion fallback, is rendered, cached and pushed to a content delivery network.
+At [**build time**](../04-glossary.md#build-time), most of the page, including the header, product list and promotion fallback, is rendered, cached and pushed to a content delivery network.
 
-At [**request time**](/docs/app/glossary#dynamic-rendering), the prerendered part is served instantly from a CDN node close to the user.
+At [**request time**](../04-glossary.md#dynamic-rendering), the prerendered part is served instantly from a CDN node close to the user.
 
 In parallel, the user specific promotion is rendered on the server, streamed to the client, and swapped into the fallback slot.
 
@@ -252,7 +248,12 @@ We've learned how to build mostly static pages that include pockets of dynamic c
 
 We started with a static page, added async work, and resolved the blocking behavior by caching what could be prerendered and streaming what could not. From here, you can:
 
-- [Keep selected route output static](/docs/app/guides/keeping-pages-static) as the application changes.
-- [Revalidate prerendered pages or cached data](/docs/app/guides/incremental-static-regeneration-cache-components).
-- [Create variants with route parameters](/docs/app/api-reference/functions/generate-static-params).
-- [Add authentication to a Cache Components application](/docs/app/guides/authentication-with-cache-components).
+- [Keep selected route output static](./keeping-pages-static.md) as the application changes.
+- [Revalidate prerendered pages or cached data](./incremental-static-regeneration-cache-components.md).
+- [Create variants with route parameters](../03-api-reference/04-functions/generate-static-params.md).
+- [Add authentication to a Cache Components application](./authentication-with-cache-components.md).
+
+## INDEX
+
+- [Keeping pages static](./keeping-pages-static.md)
+- [Incremental Static Regeneration with Cache Components](./incremental-static-regeneration-cache-components.md)

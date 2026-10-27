@@ -3,7 +3,7 @@ title: Form Component
 description: Learn how to use the `<Form>` component to handle form submissions and search params updates with client-side navigation.
 ---
 
-The `<Form>` component extends the HTML `<form>` element to provide [**prefetching**](/docs/app/getting-started/linking-and-navigating#prefetching) of [loading UI](/docs/app/api-reference/file-conventions/loading), **client-side navigation** on submission, and **progressive enhancement**.
+The `<Form>` component extends the HTML `<form>` element to provide [**prefetching**](../../01-getting-started/04-linking-and-navigating.md#prefetching) of [loading UI](../03-file-conventions/loading.md), **client-side navigation** on submission, and **progressive enhancement**.
 
 It's useful for forms that update URL search params as it reduces the boilerplate code needed to achieve the above.
 
@@ -44,8 +44,8 @@ export default function Search() {
 The behavior of the `<Form>` component depends on whether the `action` prop is passed a `string` or `function`.
 
 - When `action` is a **string**, the `<Form>` behaves like a native HTML form that uses a **`GET`** method. The form data is encoded into the URL as search params, and when the form is submitted, it navigates to the specified URL. In addition, Next.js:
-  - [Prefetches](/docs/app/getting-started/linking-and-navigating#prefetching) the path when the form becomes visible, this preloads shared UI (e.g. `layout.js` and `loading.js`), resulting in faster navigation.
-  - Performs a [client-side navigation](/docs/app/getting-started/linking-and-navigating#client-side-transitions) instead of a full page reload when the form is submitted. This retains shared UI and client-side state.
+  - [Prefetches](../../01-getting-started/04-linking-and-navigating.md#prefetching) the path when the form becomes visible, this preloads shared UI (e.g. `layout.js` and `loading.js`), resulting in faster navigation.
+  - Performs a [client-side navigation](../../01-getting-started/04-linking-and-navigating.md#client-side-transitions) instead of a full page reload when the form is submitted. This retains shared UI and client-side state.
 - When `action` is a **function** (Server Action), `<Form>` behaves like a [React form](https://react.dev/reference/react-dom/components/form), executing the action when the form is submitted.
 
 ### `action` (string) Props
@@ -80,7 +80,7 @@ When `action` is a function, the `<Form>` component supports the following prop:
 ### Caveats
 
 - **`formAction`**: Can be used in a `<button>` or `<input type="submit">` fields to override the `action` prop. Next.js will perform a client-side navigation, however, this approach doesn't support prefetching.
-  - When using [`basePath`](/docs/app/api-reference/config/next-config-js/basePath), you must also include it in the `formAction` path. e.g. `formAction="/base-path/search"`.
+  - When using [`basePath`](../05-config/01-next-config-js/basePath.md), you must also include it in the `formAction` path. e.g. `formAction="/base-path/search"`.
 
 - **`key`**: Passing a `key` prop to a string `action` is not supported. If you'd like to trigger a re-render or perform a mutation, consider using a function `action` instead.
 
@@ -128,7 +128,7 @@ When the user updates the query input field and submits the form, the form data 
 
 > **Good to know**: If you pass an empty string `""` to `action`, the form will navigate to the same route with updated search params.
 
-On the results page, you can access the query using the [`searchParams`](/docs/app/api-reference/file-conventions/page#searchparams-optional) `page.js` prop and use it to fetch data from an external source.
+On the results page, you can access the query using the [`searchParams`](../03-file-conventions/page.md#searchparams-optional) `page.js` prop and use it to fetch data from an external source.
 
 ```tsx filename="/app/search/page.tsx" switcher
 import { getSearchResults } from '@/lib/search'
@@ -150,7 +150,7 @@ export default async function SearchPage({ searchParams }) {
 }
 ```
 
-When the `<Form>` becomes visible in the user's viewport, shared UI (such as `layout.js` and `loading.js`) on the `/search` page will be prefetched. On submission, the form will immediately navigate to the new route and show loading UI while the results are being fetched. You can design the fallback UI using [`loading.js`](/docs/app/api-reference/file-conventions/loading):
+When the `<Form>` becomes visible in the user's viewport, shared UI (such as `layout.js` and `loading.js`) on the `/search` page will be prefetched. On submission, the form will immediately navigate to the new route and show loading UI while the results are being fetched. You can design the fallback UI using [`loading.js`](../03-file-conventions/loading.md):
 
 ```tsx filename="/app/search/loading.tsx" switcher
 export default function Loading() {
@@ -252,7 +252,7 @@ export default function Page() {
 }
 ```
 
-After a mutation, it's common to redirect to the new resource. You can use the [`redirect`](/docs/app/guides/redirecting) function from `next/navigation` to navigate to the new post page.
+After a mutation, it's common to redirect to the new resource. You can use the [`redirect`](../../02-guides/redirecting.md) function from `next/navigation` to navigate to the new post page.
 
 > **Good to know**: Since the "destination" of the form submission is not known until the action is executed, `<Form>` cannot automatically prefetch shared UI.
 
@@ -316,4 +316,4 @@ export default async function PostPage({ params }) {
 }
 ```
 
-See [Mutating data](/docs/app/getting-started/mutating-data) for more examples.
+See [Mutating data](../../01-getting-started/07-mutating-data.md) for more examples.

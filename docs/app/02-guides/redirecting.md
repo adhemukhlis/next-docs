@@ -4,10 +4,10 @@ nav_title: Redirecting
 description: Learn the different ways to handle redirects in Next.js.
 related:
  links:
-  - app/api-reference/functions/redirect
-  - app/api-reference/functions/permanentRedirect
-  - app/api-reference/file-conventions/proxy
-  - app/api-reference/config/next-config-js/redirects
+  - ../03-api-reference/04-functions/redirect.md
+  - ../03-api-reference/04-functions/permanentRedirect.md
+  - ../03-api-reference/03-file-conventions/proxy.md
+  - ../03-api-reference/05-config/01-next-config-js/redirects.md
 ---
 
 There are a few ways you can handle redirects in Next.js. This page will go through each available option, use cases, and how to manage large numbers of redirects.
@@ -22,7 +22,7 @@ There are a few ways you can handle redirects in Next.js. This page will go thro
 
 ## `redirect` function
 
-The `redirect` function allows you to redirect the user to another URL. You can call `redirect` in [Server Components](/docs/app/getting-started/server-and-client-components), [Route Handlers](/docs/app/api-reference/file-conventions/route), and [Server Functions](/docs/app/getting-started/mutating-data).
+The `redirect` function allows you to redirect the user to another URL. You can call `redirect` in [Server Components](../01-getting-started/05-server-and-client-components.md), [Route Handlers](../03-api-reference/03-file-conventions/route.md), and [Server Functions](../01-getting-started/07-mutating-data.md).
 
 `redirect` is often used after a mutation or event. For example, creating a post:
 
@@ -70,11 +70,11 @@ export async function createPost(id) {
 > - `redirect` also accepts absolute URLs and can be used to redirect to external links.
 > - If you'd like to redirect before the render process, use [`next.config.js`](#redirects-in-nextconfigjs) or [Proxy](#nextresponseredirect-in-proxy).
 
-See the [`redirect` API reference](/docs/app/api-reference/functions/redirect) for more information.
+See the [`redirect` API reference](../03-api-reference/04-functions/redirect.md) for more information.
 
 ## `permanentRedirect` function
 
-The `permanentRedirect` function allows you to **permanently** redirect the user to another URL. You can call `permanentRedirect` in [Server Components](/docs/app/getting-started/server-and-client-components), [Route Handlers](/docs/app/api-reference/file-conventions/route), and [Server Functions](/docs/app/getting-started/mutating-data).
+The `permanentRedirect` function allows you to **permanently** redirect the user to another URL. You can call `permanentRedirect` in [Server Components](../01-getting-started/05-server-and-client-components.md), [Route Handlers](../03-api-reference/03-file-conventions/route.md), and [Server Functions](../01-getting-started/07-mutating-data.md).
 
 `permanentRedirect` is often used after a mutation or event that changes an entity's canonical URL, such as updating a user's profile URL after they change their username:
 
@@ -120,7 +120,7 @@ export async function updateUsername(username, formData) {
 > - `permanentRedirect` also accepts absolute URLs and can be used to redirect to external links.
 > - If you'd like to redirect before the render process, use [`next.config.js`](#redirects-in-nextconfigjs) or [Proxy](#nextresponseredirect-in-proxy).
 
-See the [`permanentRedirect` API reference](/docs/app/api-reference/functions/permanentRedirect) for more information.
+See the [`permanentRedirect` API reference](../03-api-reference/04-functions/permanentRedirect.md) for more information.
 
 ## `useRouter()` hook
 
@@ -164,15 +164,15 @@ export default function Page() {
 
 > **Good to know**:
 >
-> - If you don't need to programmatically navigate a user, you should use a [`<Link>`](/docs/app/api-reference/components/link) component.
+> - If you don't need to programmatically navigate a user, you should use a [`<Link>`](../03-api-reference/02-components/link.md) component.
 
-See the [`useRouter` API reference](/docs/app/api-reference/functions/use-router) for more information.
+See the [`useRouter` API reference](../03-api-reference/04-functions/use-router.md) for more information.
 
 ## `redirects` in `next.config.js`
 
 The `redirects` option in the `next.config.js` file allows you to redirect an incoming request path to a different destination path. This is useful when you change the URL structure of pages or have a list of redirects that are known ahead of time.
 
-`redirects` supports [path](/docs/app/api-reference/config/next-config-js/redirects#path-matching), [header, cookie, and query matching](/docs/app/api-reference/config/next-config-js/redirects#header-cookie-and-query-matching), giving you the flexibility to redirect users based on an incoming request.
+`redirects` supports [path](../03-api-reference/05-config/01-next-config-js/redirects.md#path-matching), [header, cookie, and query matching](../03-api-reference/05-config/01-next-config-js/redirects.md#header-cookie-and-query-matching), giving you the flexibility to redirect users based on an incoming request.
 
 To use `redirects`, add the option to your `next.config.js` file:
 
@@ -222,12 +222,12 @@ module.exports = {
 }
 ```
 
-See the [`redirects` API reference](/docs/app/api-reference/config/next-config-js/redirects) for more information.
+See the [`redirects` API reference](../03-api-reference/05-config/01-next-config-js/redirects.md) for more information.
 
 > **Good to know**:
 >
 > - `redirects` can return a 307 (Temporary Redirect) or 308 (Permanent Redirect) status code with the `permanent` option.
-> - `redirects` may have a limit on platforms. For example, on Vercel, there's a limit of 1,024 redirects. To manage a large number of redirects (1000+), consider creating a custom solution using [Proxy](/docs/app/api-reference/file-conventions/proxy). See [managing redirects at scale](#managing-redirects-at-scale-advanced) for more.
+> - `redirects` may have a limit on platforms. For example, on Vercel, there's a limit of 1,024 redirects. To manage a large number of redirects (1000+), consider creating a custom solution using [Proxy](../03-api-reference/03-file-conventions/proxy.md). See [managing redirects at scale](#managing-redirects-at-scale-advanced) for more.
 > - `redirects` runs **before** Proxy.
 
 ## `NextResponse.redirect` in Proxy
@@ -282,7 +282,7 @@ export const config = {
 >
 > - Proxy runs **after** `redirects` in `next.config.js` and **before** rendering.
 
-See the [Proxy](/docs/app/api-reference/file-conventions/proxy) documentation for more information.
+See the [Proxy](../03-api-reference/03-file-conventions/proxy.md) documentation for more information.
 
 ## Managing redirects at scale (advanced)
 
@@ -314,7 +314,7 @@ Consider the following data structure:
 }
 ```
 
-In [Proxy](/docs/app/api-reference/file-conventions/proxy), you can read from a database such as Vercel's [Global Config](https://vercel.com/docs/global-config/get-started) or [Redis](https://vercel.com/docs/redis), and redirect the user based on the incoming request:
+In [Proxy](../03-api-reference/03-file-conventions/proxy.md), you can read from a database such as Vercel's [Global Config](https://vercel.com/docs/global-config/get-started) or [Redis](https://vercel.com/docs/redis), and redirect the user based on the incoming request:
 
 ```ts filename="proxy.ts" switcher
 import { NextResponse, NextRequest } from 'next/server'
@@ -368,7 +368,7 @@ Reading a large dataset for every incoming request can be slow and expensive. Th
 
 Considering the previous example, you can import a generated bloom filter file into Proxy, then, check if the incoming request pathname exists in the bloom filter.
 
-If it does, forward the request to a [Route Handler](/docs/app/api-reference/file-conventions/route) which will check the actual file and redirect the user to the appropriate URL. This avoids importing a large redirects file into Proxy, which can slow down every incoming request.
+If it does, forward the request to a [Route Handler](../03-api-reference/03-file-conventions/route.md) which will check the actual file and redirect the user to the appropriate URL. This avoids importing a large redirects file into Proxy, which can slow down every incoming request.
 
 ```ts filename="proxy.ts" switcher
 import { NextResponse, NextRequest } from 'next/server'

@@ -5,9 +5,10 @@
 //   --check          verifikasi round-trip: docs-context/ di-parse ulang harus identik dengan docs-json/
 
 import { rm } from 'node:fs/promises'
-import { join } from 'node:path'
+import { join, dirname } from 'node:path'
 import { fromMarkdown } from 'mdast-util-from-markdown'
 import { toMarkdown } from 'mdast-util-to-markdown'
+import { toString } from 'mdast-util-to-string'
 import { gfm } from 'micromark-extension-gfm'
 import { gfmFromMarkdown, gfmToMarkdown } from 'mdast-util-gfm'
 import { frontmatter } from 'micromark-extension-frontmatter'
@@ -20,14 +21,53 @@ const contextDir = join(rootDir, 'docs-context')
 const keepPosition = Bun.argv.includes('--keep-position')
 const check = Bun.argv.includes('--check')
 
-// Rules: setiap rule menerima tree (mdast) dan mengembalikan daftar pelanggaran (string)
+// Rules: setiap rule menerima (tree, file, files) dan mengembalikan daftar pelanggaran (string)
+// file = path relatif ke docs-refined/, files = Set semua dokumen
 const rules = [
 	function frontmatterRequired(tree) {
 		const fm = tree.children[0]
 		if (fm?.type !== 'yaml') return ['frontmatter YAML harus ada di awal file']
 		return ['title', 'description'].filter((key) => !new RegExp(`^${key}:`, 'm').test(fm.value)).map((key) => `frontmatter wajib punya "${key}"`)
 	},
+	// Frontmatter hanya metadata: tanpa link, tanpa blok `related` (pakai `## INDEX` di body)
+	function frontmatterMetadataOnly(tree) {
+		const fm = tree.children[0]
+		if (fm?.type !== 'yaml') return []
+		const allowed = ['title', 'description', 'nav_title', 'version']
+		const keys = Object.keys(Bun.YAML.parse(fm.value) ?? {})
+		return keys
+			.filter((key) => !allowed.includes(key))
+			.map((key) =>
+				key === 'related'
+					? 'frontmatter tidak boleh punya "related", pindahkan ke section `## INDEX` di akhir dokumen'
+					: `key frontmatter "${key}" tidak diizinkan (hanya ${allowed.join(', ')})`,
+			)
+	},
+	// `## INDEX`, kalau ada, harus section terakhir
+	function indexIsLastSection(tree) {
+		const headings = tree.children.filter((node) => node.type === 'heading' && node.depth === 2).map((node) => toString(node))
+		const at = headings.indexOf('INDEX')
+		return at !== -1 && at !== headings.length - 1 ? ['section `## INDEX` harus jadi section terakhir'] : []
+	},
+	// Link internal = path file relatif yang beneran ada, bukan URL /docs/app/...
+	function internalLinksRelative(tree, file, files) {
+		const messages = []
+		for (const url of collectUrls(tree)) {
+			if (url.startsWith('/docs/app')) messages.push(`link "${url}" harus path file relatif (mis. ../02-guides/forms.md)`)
+			else if (url.startsWith('./') || url.startsWith('../')) {
+				const target = join(dirname(file), url.replace(/#.*$/, ''))
+				if (!files.has(target)) messages.push(`link "${url}" tidak mengarah ke dokumen yang ada`)
+			}
+		}
+		return messages
+	},
 ]
+
+function collectUrls(node, urls = []) {
+	if (node.type === 'link' || node.type === 'definition') urls.push(node.url)
+	for (const child of node.children ?? []) collectUrls(child, urls)
+	return urls
+}
 
 // Markdown string -> mdast
 function mdToTree(markdown) {
@@ -38,7 +78,12 @@ function mdToTree(markdown) {
 }
 
 // mdast -> Markdown string
+// toMarkdown meng-escape "[" jadi "\[", yang merusak GFM alert (> [!NOTE], > [!CAUTION], ...)
 function treeToMd(tree) {
+	return toMarkdownRaw(tree).replace(/^((?:> ?)+)\\\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]/gm, '$1[!$2]')
+}
+
+function toMarkdownRaw(tree) {
 	return toMarkdown(tree, {
 		bullet: '-',
 		emphasis: '_',
@@ -56,13 +101,15 @@ function treeToJson(tree, withPosition = keepPosition) {
 }
 
 // 1. Parse + validasi semua file dulu; kalau ada pelanggaran, tidak ada yang ditulis
-const files = (await Array.fromAsync(new Bun.Glob('**/*.md').scan({ cwd: refinedDir }))).sort()
+// *.rules.md (global.rules.md & <name>.rules.md) adalah brief refinement, bukan konten — di-skip
+const files = (await Array.fromAsync(new Bun.Glob('**/*.md').scan({ cwd: refinedDir }))).filter((file) => !file.endsWith('.rules.md')).sort()
 const trees = new Map()
 const violations = []
+const fileSet = new Set(files)
 for (const file of files) {
 	const tree = mdToTree(await Bun.file(join(refinedDir, file)).text())
 	for (const rule of rules) {
-		for (const message of rule(tree)) violations.push(`  - ${file}: ${message} (${rule.name})`)
+		for (const message of rule(tree, file, fileSet)) violations.push(`  - ${file}: ${message} (${rule.name})`)
 	}
 	trees.set(file, tree)
 }

@@ -5,12 +5,12 @@ description: Next.js fully supports building Single-Page Applications (SPAs).
 related:
  description: Related guides and references.
  links:
-  - app/guides/client-side-data-fetching
-  - app/guides/interactive-apps
-  - app/guides/server-actions
-  - app/guides/forms
-  - app/guides/streaming
-  - app/guides/static-exports
+  - ./client-side-data-fetching/index.md
+  - ./interactive-apps.md
+  - ./server-actions.md
+  - ./forms.md
+  - ./streaming.md
+  - ./static-exports.md
 ---
 
 Build Single-Page Applications (SPAs) with client-side navigation and data fetching. Next.js supports client and server patterns in the same app, and existing SPAs can migrate without a full rewrite.
@@ -28,9 +28,9 @@ Strict SPAs often require large amounts of JavaScript to load before the page ca
 
 Next.js can automatically code split your JavaScript bundles, and generate multiple HTML entry points into different routes. This avoids loading unnecessary JavaScript code on the client-side, reducing the bundle size and enabling faster page loads.
 
-The [`next/link`](/docs/app/api-reference/components/link) component automatically [prefetches](/docs/app/api-reference/components/link#prefetch) routes, giving you the fast page transitions of a strict SPA, but with the advantage of persisting application routing state to the URL for linking and sharing.
+The [`next/link`](../03-api-reference/02-components/link.md) component automatically [prefetches](../03-api-reference/02-components/link.md#prefetch) routes, giving you the fast page transitions of a strict SPA, but with the advantage of persisting application routing state to the URL for linking and sharing.
 
-Next.js can start as a static site or even a strict SPA where everything is rendered client-side. If your project grows, you can progressively add more server features (e.g. [React Server Components](/docs/app/getting-started/server-and-client-components), [Server Actions](/docs/app/guides/server-actions), and more) as needed.
+Next.js can start as a static site or even a strict SPA where everything is rendered client-side. If your project grows, you can progressively add more server features (e.g. [React Server Components](../01-getting-started/05-server-and-client-components.md), [Server Actions](./server-actions.md), and more) as needed.
 
 ## Build common SPA patterns
 
@@ -44,7 +44,7 @@ Starting the request on the server, before the rest of the app renders, lets the
 
 You can pass a single Promise as a prop and unwrap it with `use()`, or pair it with a React context provider so any Client Component can read the value through a custom hook.
 
-When a Client Component needs focus revalidation, polling, mutations, or request deduplication, use a library such as SWR or TanStack Query. See [Client-side data fetching](/docs/app/guides/client-side-data-fetching) for direct browser fetching, providing initial data from a Server Component, and coordinating the library cache with the Next.js server and client caches.
+When a Client Component needs focus revalidation, polling, mutations, or request deduplication, use a library such as SWR or TanStack Query. See [Client-side data fetching](./client-side-data-fetching/index.md) for direct browser fetching, providing initial data from a Server Component, and coordinating the library cache with the Next.js server and client caches.
 
 Start the request in a Server Component (here, the root layout) without awaiting it, and pass the Promise to the provider:
 
@@ -84,7 +84,7 @@ export default function RootLayout({ children }) {
 
 > **Good to know:** Refetching a Promise set high in the tree re-runs the Server Component that set it, so for data only part of the app needs, place the provider on that subtree instead of the root layout. See React's [caveat on reading a Promise from context](https://react.dev/reference/react/use#reading-a-promise-from-context).
 
-If several components read the same data in one request, wrap `getUser` in React's [`cache`](https://react.dev/reference/react/cache) so they share a single call. See [Reusing data with `React.cache`](/docs/app/getting-started/fetching-data#reusing-data-with-reactcache) for more on this pattern.
+If several components read the same data in one request, wrap `getUser` in React's [`cache`](https://react.dev/reference/react/cache) so they share a single call. See [Reusing data with `React.cache`](../01-getting-started/06-fetching-data.md#reusing-data-with-reactcache) for more on this pattern.
 
 The provider forwards the Promise through context:
 
@@ -194,7 +194,7 @@ See the [live demo](https://next-spa-patterns.labs.vercel.dev/use-context) and i
 
 ### Rendering components only in the browser
 
-Client components are [prerendered](https://github.com/reactwg/server-components/discussions/4) during `next build`. If you want to disable prerendering for a Client Component and only load it in the browser environment, you can use [`next/dynamic`](/docs/app/guides/lazy-loading#nextdynamic):
+Client components are [prerendered](https://github.com/reactwg/server-components/discussions/4) during `next build`. If you want to disable prerendering for a Client Component and only load it in the browser environment, you can use [`next/dynamic`](./lazy-loading.md#nextdynamic):
 
 ```jsx
 import dynamic from 'next/dynamic'
@@ -259,11 +259,11 @@ See both approaches in the [live demo](https://next-spa-patterns.labs.vercel.dev
 
 ### Shallow routing on the client
 
-If you are migrating from a strict SPA like [Create React App](/docs/app/guides/migrating/from-create-react-app) or [Vite](/docs/app/guides/migrating/from-vite), you might have existing code which shallow routes to update the URL state. This can be useful for manual transitions between views in your application _without_ using the default Next.js file-system routing.
+If you are migrating from a strict SPA like [Create React App](./migrating/from-create-react-app.md) or [Vite](./migrating/from-vite.md), you might have existing code which shallow routes to update the URL state. This can be useful for manual transitions between views in your application _without_ using the default Next.js file-system routing.
 
 Next.js lets you use the native [`window.history.pushState`](https://developer.mozilla.org/en-US/docs/Web/API/History/pushState) and [`window.history.replaceState`](https://developer.mozilla.org/en-US/docs/Web/API/History/replaceState) methods to update the browser's history stack without reloading the page.
 
-The `pushState` and `replaceState` calls integrate into the Next.js Router, allowing you to sync with [`usePathname`](/docs/app/api-reference/functions/use-pathname) and [`useSearchParams`](/docs/app/api-reference/functions/use-search-params).
+The `pushState` and `replaceState` calls integrate into the Next.js Router, allowing you to sync with [`usePathname`](../03-api-reference/04-functions/use-pathname.md) and [`useSearchParams`](../03-api-reference/04-functions/use-search-params.md).
 
 ```tsx filename="app/ui/sort-products.tsx" switcher
 'use client'
@@ -311,13 +311,13 @@ export default function SortProducts() {
 }
 ```
 
-Learn more about how [routing and navigation](/docs/app/getting-started/linking-and-navigating#how-navigation-works) work in Next.js.
+Learn more about how [routing and navigation](../01-getting-started/04-linking-and-navigating.md#how-navigation-works) work in Next.js.
 
 See the [live demo](https://next-spa-patterns.labs.vercel.dev/shallow-routing) and its [source code](https://github.com/nextjs/next-spa-patterns/tree/main/app/shallow-routing).
 
 ### Mutating data with Server Actions
 
-Interactivity often requires writing data. A Client Component can call a [Server Action](/docs/app/guides/server-actions) to run the mutation on the server. A client data-fetching library can coordinate an optimistic browser update around the same Server Action, as shown in the [client-side data fetching guide](/docs/app/guides/client-side-data-fetching#coordinate-mutations). The rest of this section coordinates the Server Action with React's built-in state APIs.
+Interactivity often requires writing data. A Client Component can call a [Server Action](./server-actions.md) to run the mutation on the server. A client data-fetching library can coordinate an optimistic browser update around the same Server Action, as shown in the [client-side data fetching guide](./client-side-data-fetching/index.md#coordinate-mutations). The rest of this section coordinates the Server Action with React's built-in state APIs.
 
 A Server Action takes time and can fail. React has useful tools to keep the UI responsive while it runs, so a mutation can feel as instant as a client-rendered SPA: [transitions](https://react.dev/reference/react/useTransition), [`useOptimistic`](https://react.dev/reference/react/useOptimistic), [`useActionState`](https://react.dev/reference/react/useActionState), and [`useFormStatus`](https://react.dev/reference/react-dom/hooks/useFormStatus).
 
@@ -535,11 +535,11 @@ The optimistic update shows instantly, while `useActionState`'s pending flag let
 
 See the [live demo](https://next-spa-patterns.labs.vercel.dev/mutations) and its [source code](https://github.com/nextjs/next-spa-patterns/tree/main/app/mutations).
 
-To learn more about adding interactivity on top of server-rendered apps so they feel like SPAs, see the [Building interactive apps](/docs/app/guides/interactive-apps) guide and its runnable demo.
+To learn more about adding interactivity on top of server-rendered apps so they feel like SPAs, see the [Building interactive apps](./interactive-apps.md) guide and its runnable demo.
 
 ## Static export (optional)
 
-Next.js also supports generating a fully [static site](/docs/app/guides/static-exports). This has some advantages over strict SPAs:
+Next.js also supports generating a fully [static site](./static-exports.md). This has some advantages over strict SPAs:
 
 - **Automatic code-splitting**: Instead of shipping a single `index.html`, Next.js will generate an HTML file per route, so your visitors get the content faster without waiting for the client JavaScript bundle.
 - **Improved user experience:** Instead of a minimal skeleton for all routes, you get fully rendered pages for each route. When users navigate client side, transitions are still instant and SPA-like.
@@ -558,13 +558,13 @@ export default nextConfig
 
 After running `next build`, Next.js will create an `out` folder with the HTML/CSS/JS assets for your application.
 
-> **Note:** Next.js server features are not supported with static exports. [Learn more](/docs/app/guides/static-exports#unsupported-features).
+> **Note:** Next.js server features are not supported with static exports. [Learn more](./static-exports.md#unsupported-features).
 
 ## Migrating existing projects to Next.js
 
 You can incrementally migrate to Next.js by following our guides:
 
-- [Migrating from Create React App](/docs/app/guides/migrating/from-create-react-app)
-- [Migrating from Vite](/docs/app/guides/migrating/from-vite)
+- [Migrating from Create React App](./migrating/from-create-react-app.md)
+- [Migrating from Vite](./migrating/from-vite.md)
 
-If you are already using a SPA with the Pages Router, you can learn how to [incrementally adopt the App Router](/docs/app/guides/migrating/app-router-migration).
+If you are already using a SPA with the Pages Router, you can learn how to [incrementally adopt the App Router](./migrating/app-router-migration.md).

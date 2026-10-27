@@ -1,12 +1,9 @@
 ---
 title: serverActions
 description: Configure Server Actions behavior in your Next.js application.
-related:
- links:
-  - app/guides/server-actions
 ---
 
-Options for configuring Server Actions behavior in your Next.js application. For how Server Actions work, including the security boundary these options tune, see the [Server Actions guide](/docs/app/guides/server-actions).
+Options for configuring Server Actions behavior in your Next.js application. For how Server Actions work, including the security boundary these options tune, see the [Server Actions guide](../../../02-guides/server-actions.md).
 
 ## `allowedOrigins`
 
@@ -41,7 +38,7 @@ Behind a reverse proxy, no entry is needed as long as the proxy forwards the pub
 
 The check runs in production as well as in development, so the list applies to your deployed app and not only to local work.
 
-For example, remote development through a tunnel needs the tunnel hostname in two places: in [`allowedDevOrigins`](/docs/app/api-reference/config/next-config-js/allowedDevOrigins), so the dev server serves its own assets and endpoints, and here, so actions from it are accepted:
+For example, remote development through a tunnel needs the tunnel hostname in two places: in [`allowedDevOrigins`](./allowedDevOrigins.md), so the dev server serves its own assets and endpoints, and here, so actions from it are accepted:
 
 ```js filename="next.config.js"
 /** @type {import('next').NextConfig} */
@@ -90,3 +87,7 @@ const config = {
 
 module.exports = config
 ```
+
+## INDEX
+
+- [Server Actions and Mutations](../../../02-guides/server-actions.md)

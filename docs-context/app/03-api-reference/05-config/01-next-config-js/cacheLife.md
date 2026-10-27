@@ -1,20 +1,13 @@
 ---
 title: cacheLife
 description: Learn how to set up cacheLife configurations in Next.js.
-related:
- title: Related
- description: View related API references.
- links:
-  - app/api-reference/directives/use-cache
-  - app/api-reference/config/next-config-js/cacheHandlers
-  - app/api-reference/functions/cacheLife
 ---
 
-The `cacheLife` option allows you to define **custom cache profiles** when using the [`cacheLife`](/docs/app/api-reference/functions/cacheLife) function inside components or functions, and within the scope of the [`use cache` directive](/docs/app/api-reference/directives/use-cache).
+The `cacheLife` option allows you to define **custom cache profiles** when using the [`cacheLife`](../../04-functions/cacheLife.md) function inside components or functions, and within the scope of the [`use cache` directive](../../01-directives/use-cache.md).
 
 ## Usage
 
-To define a profile, enable the [`cacheComponents` flag](/docs/app/api-reference/config/next-config-js/cacheComponents) and add the cache profile in the `cacheLife` object in the `next.config.js` file. For example, a `blog` profile:
+To define a profile, enable the [`cacheComponents` flag](./cacheComponents.md) and add the cache profile in the `cacheLife` object in the `next.config.js` file. For example, a `blog` profile:
 
 ```ts filename="next.config.ts" switcher
 import type { NextConfig } from 'next'
@@ -72,7 +65,7 @@ export async function getCachedData() {
 }
 ```
 
-You can also override a built-in profile by defining one with the same name (`default`, `seconds`, `minutes`, `hours`, `days`, `weeks`, or `max`). See [Overriding the default cache profiles](/docs/app/api-reference/functions/cacheLife#overriding-the-default-cache-profiles).
+You can also override a built-in profile by defining one with the same name (`default`, `seconds`, `minutes`, `hours`, `days`, `weeks`, or `max`). See [Overriding the default cache profiles](../../04-functions/cacheLife.md#overriding-the-default-cache-profiles).
 
 ## Reference
 
@@ -89,3 +82,11 @@ The configuration object has key values with the following format:
 | Version | Changes |
 | - | - |
 | `v16.0.0` | `cacheLife` stabilized and moved from `experimental.cacheLife` to the top-level `cacheLife` option. |
+
+## INDEX
+
+View related API references.
+
+- [use cache](../../01-directives/use-cache.md)
+- [cacheHandlers](./cacheHandlers.md)
+- [cacheLife](../../04-functions/cacheLife.md)

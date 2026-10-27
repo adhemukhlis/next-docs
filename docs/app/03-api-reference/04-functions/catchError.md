@@ -4,19 +4,19 @@ description: API Reference for the catchError function.
 related:
  title: Learn more about error handling
  links:
-  - app/getting-started/error-handling
-  - app/api-reference/file-conventions/error
+  - ../../01-getting-started/10-error-handling.md
+  - ../03-file-conventions/error.md
 ---
 
-The `catchError` function creates a component that wraps its children in an error boundary. It provides a programmatic alternative to the [`error.js`](/docs/app/api-reference/file-conventions/error) file convention, enabling component-level error recovery anywhere in your component tree.
+The `catchError` function creates a component that wraps its children in an error boundary. It provides a programmatic alternative to the [`error.js`](../03-file-conventions/error.md) file convention, enabling component-level error recovery anywhere in your component tree.
 
 Compared to a custom React error boundary, `catchError` is designed to work with Next.js out of the box:
 
-- **Built-in error recovery** — [`retry()`](/docs/app/api-reference/file-conventions/error#retry) re-renders the page inside a [Transition](https://react.dev/reference/react/startTransition), preserving Client Components state outside of the error boundary.
+- **Built-in error recovery** — [`retry()`](../03-file-conventions/error.md#retry) re-renders the page inside a [Transition](https://react.dev/reference/react/startTransition), preserving Client Components state outside of the error boundary.
 - **Framework-aware integration** — APIs like `redirect()` and `notFound()` work by throwing special errors under the hood. `catchError` handles these seamlessly, so they're not accidentally caught by your error boundary.
 - **Client navigation handling** — The error state automatically clears when you do a client navigation to a different route.
 
-`catchError` can be called from [Client Components](/docs/app/getting-started/server-and-client-components).
+`catchError` can be called from [Client Components](../../01-getting-started/05-server-and-client-components.md).
 
 ```tsx filename="app/custom-error-boundary.tsx" switcher
 'use client'
@@ -75,11 +75,11 @@ A function that renders the error UI when an error is caught. It receives two ar
 - `props` — The props passed to the wrapper component (excluding `children`).
 - `errorInfo` — An object containing information about the error:
 
-| Property | Type         | Description                                                                                                                                     |
-| -------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `error`  | `unknown`    | The value that was thrown. Narrow it, for example with `instanceof Error`, before reading properties like `message`.                            |
-| `retry`  | `() => void` | Re-fetches and re-renders the error boundary's children. If successful, the fallback is replaced with the re-rendered result.                   |
-| `reset`  | `() => void` | Resets the error state and re-renders without re-fetching. Use [`retry()`](/docs/app/api-reference/file-conventions/error#retry) in most cases. |
+| Property | Type         | Description                                                                                                                      |
+| -------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| `error`  | `unknown`    | The value that was thrown. Narrow it, for example with `instanceof Error`, before reading properties like `message`.             |
+| `retry`  | `() => void` | Re-fetches and re-renders the error boundary's children. If successful, the fallback is replaced with the re-rendered result.    |
+| `reset`  | `() => void` | Resets the error state and re-renders without re-fetching. Use [`retry()`](../03-file-conventions/error.md#retry) in most cases. |
 
 The `fallback` function must be a Client Component (or defined in a `'use client'` module).
 
@@ -219,7 +219,7 @@ export default function Component({ children }) {
 >
 > - Unlike the `error.js` file convention which is scoped to route segments, `catchError` can be used to wrap any part of your component tree for component-level error recovery.
 > - Props passed to the wrapper component are forwarded to the fallback function, making it easy to create reusable error UIs with different configurations.
-> - You don't need to wrap `error.js` default exports with `catchError`. The [`error.js`](/docs/app/api-reference/file-conventions/error) file convention already renders inside a built-in error boundary provided by Next.js.
+> - You don't need to wrap `error.js` default exports with `catchError`. The [`error.js`](../03-file-conventions/error.md) file convention already renders inside a built-in error boundary provided by Next.js.
 
 ## Version History
 

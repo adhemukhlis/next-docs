@@ -2,9 +2,6 @@
 title: src Folder
 nav_title: src
 description: Save pages under the `src` folder as an alternative to the root `pages` directory.
-related:
- links:
-  - app/getting-started/project-structure
 ---
 
 As an alternative to having the special Next.js `app` or `pages` directories in the root of your project, Next.js also supports the common pattern of placing application code under the `src` folder.
@@ -31,3 +28,7 @@ To use the `src` folder, move the `app` Router folder or `pages` Router folder t
 > - If you're using Proxy, ensure it is placed inside the `src` folder.
 > - If you're using Tailwind CSS, you'll need to add the `/src` prefix to the `tailwind.config.js` file in the [content section](https://tailwindcss.com/docs/content-configuration).
 > - If you are using TypeScript paths for imports such as `@/*`, you should update the `paths` object in `tsconfig.json` to include `src/`.
+
+## INDEX
+
+- [Project structure and organization](../../01-getting-started/02-project-structure.md)

@@ -4,12 +4,12 @@ description: API Reference for the default.js file.
 related:
  title: Learn more about Parallel Routes
  links:
-  - app/api-reference/file-conventions/parallel-routes
+  - ./parallel-routes.md
 ---
 
-The `default.js` file is used to render a fallback within [Parallel Routes](/docs/app/api-reference/file-conventions/parallel-routes) when Next.js cannot recover a [slot's](/docs/app/api-reference/file-conventions/parallel-routes#slots) active state after a full-page load.
+The `default.js` file is used to render a fallback within [Parallel Routes](./parallel-routes.md) when Next.js cannot recover a [slot's](./parallel-routes.md#slots) active state after a full-page load.
 
-During [soft navigation](/docs/app/getting-started/linking-and-navigating#client-side-transitions), Next.js keeps track of the active _state_ (subpage) for each slot. However, for hard navigations (full-page load), Next.js cannot recover the active state. In this case, a `default.js` file can be rendered for subpages that don't match the current URL.
+During [soft navigation](../../01-getting-started/04-linking-and-navigating.md#client-side-transitions), Next.js keeps track of the active _state_ (subpage) for each slot. However, for hard navigations (full-page load), Next.js cannot recover the active state. In this case, a `default.js` file can be rendered for subpages that don't match the current URL.
 
 Consider the following folder structure. The `@team` slot has a `settings` page, but `@analytics` does not.
 
@@ -39,7 +39,7 @@ Additionally, since `children` is an implicit slot, you also need to create a `d
 
 ### `params` (optional)
 
-A promise that resolves to an object containing the [dynamic route parameters](/docs/app/api-reference/file-conventions/dynamic-routes) from the root segment down to the slot's subpages. For example:
+A promise that resolves to an object containing the [dynamic route parameters](./dynamic-routes.md) from the root segment down to the slot's subpages. For example:
 
 ```tsx filename="app/[artist]/@sidebar/default.js" switcher
 export default async function Default({ params }: { params: Promise<{ artist: string }> }) {

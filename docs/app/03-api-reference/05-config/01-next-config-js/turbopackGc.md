@@ -4,11 +4,11 @@ description: Configure Turbopack to remove unreachable work from memory and the 
 version: experimental
 related:
  links:
-  - app/api-reference/config/next-config-js/turbopackFileSystemCache
-  - app/api-reference/config/next-config-js/turbopackMemoryEviction
+  - ./turbopackFileSystemCache.md
+  - ./turbopackMemoryEviction.md
 ---
 
-The `experimental.turbopackGc` option enables garbage collection for Turbopack's in-memory and [persistent caches](/docs/app/api-reference/config/next-config-js/turbopackFileSystemCache).
+The `experimental.turbopackGc` option enables garbage collection for Turbopack's in-memory and [persistent caches](./turbopackFileSystemCache.md).
 
 ```ts filename="next.config.ts" switcher highlight={5}
 import type { NextConfig } from 'next'
@@ -47,8 +47,8 @@ When enabled, Turbopack removes unreachable work from memory and its persistent 
 
 > **Good to know:**
 >
-> - Garbage collection requires the [Turbopack FileSystem Cache](/docs/app/api-reference/config/next-config-js/turbopackFileSystemCache). The option has no effect when the cache is disabled for the current command.
-> - In long-running read-write sessions, Turbopack disables garbage collection when [`turbopackMemoryEviction`](/docs/app/api-reference/config/next-config-js/turbopackMemoryEviction) is set to `false`.
+> - Garbage collection requires the [Turbopack FileSystem Cache](./turbopackFileSystemCache.md). The option has no effect when the cache is disabled for the current command.
+> - In long-running read-write sessions, Turbopack disables garbage collection when [`turbopackMemoryEviction`](./turbopackMemoryEviction.md) is set to `false`.
 
 ### Options
 

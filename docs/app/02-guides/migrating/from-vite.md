@@ -29,7 +29,7 @@ While fetching data on the client is supported with Next.js, it also gives you t
 
 ### Fast and intentional loading states
 
-With built-in support for [streaming through React Suspense](/docs/app/getting-started/linking-and-navigating#streaming), you can be more intentional about which parts of your UI you want to load first and in what order without introducing network waterfalls.
+With built-in support for [streaming through React Suspense](../../01-getting-started/04-linking-and-navigating.md#streaming), you can be more intentional about which parts of your UI you want to load first and in what order without introducing network waterfalls.
 
 This enables you to build pages that are faster to load and eliminate [layout shifts](https://vercel.com/blog/how-core-web-vitals-affect-seo).
 
@@ -39,11 +39,11 @@ Depending on your needs, Next.js allows you to choose your data fetching strateg
 
 ### Proxy
 
-[Next.js Proxy](/docs/app/api-reference/file-conventions/proxy) allows you to run code on the server before a request is completed. This is especially useful to avoid having a flash of unauthenticated content when the user visits an authenticated-only page by redirecting the user to a login page. The proxy is also useful for experimentation and [internationalization](/docs/app/guides/internationalization).
+[Next.js Proxy](../../03-api-reference/03-file-conventions/proxy.md) allows you to run code on the server before a request is completed. This is especially useful to avoid having a flash of unauthenticated content when the user visits an authenticated-only page by redirecting the user to a login page. The proxy is also useful for experimentation and [internationalization](../internationalization.md).
 
 ### Built-in Optimizations
 
-[Images](/docs/app/api-reference/components/image), [fonts](/docs/app/api-reference/components/font), and [third-party scripts](/docs/app/guides/scripts) often have significant impact on an application's performance. Next.js comes with built-in components that automatically optimize those for you.
+[Images](../../03-api-reference/02-components/image.md), [fonts](../../03-api-reference/02-components/font.md), and [third-party scripts](../scripts.md) often have significant impact on an application's performance. Next.js comes with built-in components that automatically optimize those for you.
 
 ## Migration Steps
 
@@ -71,7 +71,7 @@ bun add next@latest
 
 ### Step 2: Create the Next.js Configuration File
 
-Create a `next.config.mjs` at the root of your project. This file will hold your [Next.js configuration options](/docs/app/api-reference/config/next-config-js).
+Create a `next.config.mjs` at the root of your project. This file will hold your [Next.js configuration options](../../03-api-reference/05-config/01-next-config-js/index.md).
 
 ```js filename="next.config.mjs"
 /** @type {import('next').NextConfig} */
@@ -130,11 +130,11 @@ Here's an example of a working `tsconfig.json` with those changes:
 }
 ```
 
-You can find more information about configuring TypeScript on the [Next.js docs](/docs/app/api-reference/config/typescript#ide-plugin).
+You can find more information about configuring TypeScript on the [Next.js docs](../../03-api-reference/05-config/02-typescript.md#ide-plugin).
 
 ### Step 4: Create the Root Layout
 
-A Next.js [App Router](/docs/app) application must include a [root layout](/docs/app/api-reference/file-conventions/layout#root-layout) file, which is a [React Server Component](/docs/app/getting-started/server-and-client-components) that will wrap all pages in your application. This file is defined at the top level of the `app` directory.
+A Next.js [App Router](../../index.md) application must include a [root layout](../../03-api-reference/03-file-conventions/layout.md#root-layout) file, which is a [React Server Component](../../01-getting-started/05-server-and-client-components.md) that will wrap all pages in your application. This file is defined at the top level of the `app` directory.
 
 The closest equivalent to the root layout file in a Vite application is the [`index.html` file](https://vitejs.dev/guide/#index-html-and-project-root), which contains your `<html>`, `<head>`, and `<body>` tags.
 
@@ -267,7 +267,7 @@ export default function RootLayout({ children }) {
 }
 ```
 
-5. Any [metadata files](/docs/app/getting-started/metadata-and-og-images#file-based-metadata) such as `favicon.ico`, `icon.png`, `robots.txt` are automatically added to the application `<head>` tag as long as you have them placed into the top level of the `app` directory. After moving [all supported files](/docs/app/getting-started/metadata-and-og-images#file-based-metadata) into the `app` directory you can safely delete their `<link>` tags:
+5. Any [metadata files](../../01-getting-started/14-metadata-and-og-images.md#file-based-metadata) such as `favicon.ico`, `icon.png`, `robots.txt` are automatically added to the application `<head>` tag as long as you have them placed into the top level of the `app` directory. After moving [all supported files](../../01-getting-started/14-metadata-and-og-images.md#file-based-metadata) into the `app` directory you can safely delete their `<link>` tags:
 
 ```tsx filename="app/layout.tsx" switcher
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -307,7 +307,7 @@ export default function RootLayout({ children }) {
 }
 ```
 
-6. Finally, Next.js can manage your last `<head>` tags with the [Metadata API](/docs/app/getting-started/metadata-and-og-images). Move your final metadata info into an exported [`metadata` object](/docs/app/api-reference/functions/generate-metadata#metadata-object):
+6. Finally, Next.js can manage your last `<head>` tags with the [Metadata API](../../01-getting-started/14-metadata-and-og-images.md). Move your final metadata info into an exported [`metadata` object](../../03-api-reference/04-functions/generate-metadata.md#metadata-object):
 
 ```tsx filename="app/layout.tsx" switcher
 import type { Metadata } from 'next'
@@ -345,7 +345,7 @@ export default function RootLayout({ children }) {
 }
 ```
 
-With the above changes, you shifted from declaring everything in your `index.html` to using Next.js' convention-based approach built into the framework ([Metadata API](/docs/app/getting-started/metadata-and-og-images)). This approach enables you to more easily improve your SEO and web shareability of your pages.
+With the above changes, you shifted from declaring everything in your `index.html` to using Next.js' convention-based approach built into the framework ([Metadata API](../../01-getting-started/14-metadata-and-og-images.md)). This approach enables you to more easily improve your SEO and web shareability of your pages.
 
 ### Step 5: Create the Entrypoint Page
 
@@ -355,7 +355,7 @@ On Next.js you declare an entrypoint for your application by creating a `page.ts
 
 Since in this guide we're aiming first to set up our Next.js as an SPA (Single Page Application), you need your page entrypoint to catch all possible routes of your application. For that, create a new `[[...slug]]` directory in your `app` directory.
 
-This directory is what is called an [optional catch-all route segment](/docs/app/api-reference/file-conventions/dynamic-routes#optional-catch-all-segments). Next.js uses a file-system based router where folders are used to define routes. This special directory will make sure that all routes of your application will be directed to its containing `page.tsx` file.
+This directory is what is called an [optional catch-all route segment](../../03-api-reference/03-file-conventions/dynamic-routes.md#optional-catch-all-segments). Next.js uses a file-system based router where folders are used to define routes. This special directory will make sure that all routes of your application will be directed to its containing `page.tsx` file.
 
 2. **Create a new `page.tsx` file inside the `app/[[...slug]]` directory with the following content:**
 
@@ -385,9 +385,9 @@ export default function Page() {
 
 > **Good to know**: `.js`, `.jsx`, or `.tsx` extensions can be used for Page files.
 
-This file is a [Server Component](/docs/app/getting-started/server-and-client-components). When you run `next build`, the file is prerendered into a static asset. It does _not_ require any dynamic code.
+This file is a [Server Component](../../01-getting-started/05-server-and-client-components.md). When you run `next build`, the file is prerendered into a static asset. It does _not_ require any dynamic code.
 
-This file imports our global CSS and tells [`generateStaticParams`](/docs/app/api-reference/functions/generate-static-params) we are only going to generate one route, the index route at `/`.
+This file imports our global CSS and tells [`generateStaticParams`](../../03-api-reference/04-functions/generate-static-params.md) we are only going to generate one route, the index route at `/`.
 
 Now, let's move the rest of our Vite application which will run client-only.
 
@@ -417,7 +417,7 @@ export function ClientOnly() {
 }
 ```
 
-This file is a [Client Component](/docs/app/getting-started/server-and-client-components), defined by the `'use client'` directive. Client Components are still [prerendered to HTML](/docs/app/getting-started/server-and-client-components#how-do-server-and-client-components-work-in-nextjs) on the server before being sent to the client.
+This file is a [Client Component](../../01-getting-started/05-server-and-client-components.md), defined by the `'use client'` directive. Client Components are still [prerendered to HTML](../../01-getting-started/05-server-and-client-components.md#how-do-server-and-client-components-work-in-nextjs) on the server before being sent to the client.
 
 Since we want a client-only application to start, we can configure Next.js to disable prerendering from the `App` component down.
 
@@ -465,11 +465,11 @@ export default function App() {
 }
 ```
 
-With Next.js, static image imports return an object. The object can then be used directly with the Next.js [`<Image>` component](/docs/app/api-reference/components/image), or you can use the object's `src` property with your existing `<img>` tag.
+With Next.js, static image imports return an object. The object can then be used directly with the Next.js [`<Image>` component](../../03-api-reference/02-components/image.md), or you can use the object's `src` property with your existing `<img>` tag.
 
-The `<Image>` component has the added benefits of [automatic image optimization](/docs/app/api-reference/components/image). The `<Image>` component automatically sets the `width` and `height` attributes of the resulting `<img>` based on the image's dimensions. This prevents layout shifts when the image loads. However, this can cause issues if your app contains images with only one of their dimensions being styled without the other styled to `auto`. When not styled to `auto`, the dimension will default to the `<img>` dimension attribute's value, which can cause the image to appear distorted.
+The `<Image>` component has the added benefits of [automatic image optimization](../../03-api-reference/02-components/image.md). The `<Image>` component automatically sets the `width` and `height` attributes of the resulting `<img>` based on the image's dimensions. This prevents layout shifts when the image loads. However, this can cause issues if your app contains images with only one of their dimensions being styled without the other styled to `auto`. When not styled to `auto`, the dimension will default to the `<img>` dimension attribute's value, which can cause the image to appear distorted.
 
-Keeping the `<img>` tag will reduce the amount of changes in your application and prevent the above issues. You can then optionally later migrate to the `<Image>` component to take advantage of optimizing images by [configuring a loader](/docs/app/api-reference/components/image#loader), or moving to the default Next.js server which has automatic image optimization.
+Keeping the `<img>` tag will reduce the amount of changes in your application and prevent the above issues. You can then optionally later migrate to the `<Image>` component to take advantage of optimizing images by [configuring a loader](../../03-api-reference/02-components/image.md#loader), or moving to the default Next.js server which has automatic image optimization.
 
 1. **Convert absolute import paths for images imported from `/public` into relative imports:**
 
@@ -497,11 +497,11 @@ Alternatively, you can reference the public URL for the image asset based on the
 
 ### Step 7: Migrate the Environment Variables
 
-Next.js has support for `.env` [environment variables](/docs/app/guides/environment-variables) similar to Vite. The main difference is the prefix used to expose environment variables on the client-side.
+Next.js has support for `.env` [environment variables](../environment-variables.md) similar to Vite. The main difference is the prefix used to expose environment variables on the client-side.
 
 - Change all environment variables with the `VITE_` prefix to `NEXT_PUBLIC_`.
 
-Turbopack supports Vite's built-in `import.meta.env.MODE`, `DEV`, `PROD`, `BASE_URL`, and `SSR` properties with no changes needed. `BASE_URL` reflects the Next.js [`basePath`](/docs/app/api-reference/config/next-config-js/basePath) configuration and includes a trailing slash, matching Vite's format.
+Turbopack supports Vite's built-in `import.meta.env.MODE`, `DEV`, `PROD`, `BASE_URL`, and `SSR` properties with no changes needed. `BASE_URL` reflects the Next.js [`basePath`](../../03-api-reference/05-config/01-next-config-js/basePath.md) configuration and includes a trailing slash, matching Vite's format.
 
 **`import.meta.glob`** is supported by Turbopack (the default Next.js bundler) with no changes needed.
 
@@ -530,9 +530,9 @@ const nextConfig: NextConfig = {
 export default nextConfig
 ```
 
-See the [import.meta.glob docs](/docs/app/api-reference/turbopack#importmetaglob) for the full API.
+See the [import.meta.glob docs](../../03-api-reference/08-turbopack.md#importmetaglob) for the full API.
 
-If your Vite application configured a custom base URL, set the equivalent [`basePath`](/docs/app/api-reference/config/next-config-js/basePath) in your `next.config.mjs` file:
+If your Vite application configured a custom base URL, set the equivalent [`basePath`](../../03-api-reference/05-config/01-next-config-js/basePath.md) in your `next.config.mjs` file:
 
 ```js filename="next.config.mjs"
 /** @type {import('next').NextConfig} */
@@ -585,11 +585,11 @@ You can now clean up your codebase from Vite related artifacts:
 
 If everything went according to plan, you now have a functioning Next.js application running as a single-page application. However, you aren't yet taking advantage of most of Next.js' benefits, but you can now start making incremental changes to reap all the benefits. Here's what you might want to do next:
 
-- Migrate from React Router to the [Next.js App Router](/docs/app) to get:
+- Migrate from React Router to the [Next.js App Router](../../index.md) to get:
   - Automatic code splitting
-  - [Streaming Server-Rendering](/docs/app/api-reference/file-conventions/loading)
-  - [React Server Components](/docs/app/getting-started/server-and-client-components)
-- [Optimize images with the `<Image>` component](/docs/app/api-reference/components/image)
-- [Optimize fonts with `next/font`](/docs/app/api-reference/components/font)
-- [Optimize third-party scripts with the `<Script>` component](/docs/app/guides/scripts)
-- [Update your ESLint configuration to support Next.js rules](/docs/app/api-reference/config/eslint)
+  - [Streaming Server-Rendering](../../03-api-reference/03-file-conventions/loading.md)
+  - [React Server Components](../../01-getting-started/05-server-and-client-components.md)
+- [Optimize images with the `<Image>` component](../../03-api-reference/02-components/image.md)
+- [Optimize fonts with `next/font`](../../03-api-reference/02-components/font.md)
+- [Optimize third-party scripts with the `<Script>` component](../scripts.md)
+- [Update your ESLint configuration to support Next.js rules](../../03-api-reference/05-config/03-eslint.md)

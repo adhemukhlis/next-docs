@@ -5,14 +5,14 @@ description: Learn how to use instrumentation to run code at server startup in y
 related:
  title: Learn more about Instrumentation
  links:
-  - app/api-reference/file-conventions/instrumentation
+  - ../03-api-reference/03-file-conventions/instrumentation.md
 ---
 
 Instrumentation is the process of using code to integrate monitoring and logging tools into your application. This allows you to track the performance and behavior of your application, and to debug issues in production.
 
 ## Convention
 
-To set up instrumentation, create `instrumentation.ts|js` file in the **root directory** of your project (or inside the [`src`](/docs/app/api-reference/file-conventions/src-folder) folder if using one).
+To set up instrumentation, create `instrumentation.ts|js` file in the **root directory** of your project (or inside the [`src`](../03-api-reference/03-file-conventions/src-folder.md) folder if using one).
 
 Then, export a `register` function in the file. This function will be called **once** when a new Next.js server instance is initiated, and must complete before the server is ready to handle requests.
 
@@ -39,7 +39,7 @@ See the [Next.js with OpenTelemetry example](https://github.com/vercel/next.js/t
 > **Good to know**:
 >
 > - The `instrumentation` file should be in the root of your project and not inside the `app` or `pages` directory. If you're using the `src` folder, then place the file inside `src` alongside `pages` and `app`.
-> - If you use the [`pageExtensions` config option](/docs/app/api-reference/config/next-config-js/pageExtensions) to add a suffix, you will also need to update the `instrumentation` filename to match.
+> - If you use the [`pageExtensions` config option](../03-api-reference/05-config/01-next-config-js/pageExtensions.md) to add a suffix, you will also need to update the `instrumentation` filename to match.
 
 ## Examples
 
@@ -67,7 +67,7 @@ export async function register() {
 
 ### Importing runtime-specific code
 
-Next.js calls `register` in all environments, so it's important to conditionally import any code that doesn't support specific runtimes (e.g. [Edge or Node.js](/docs/app/api-reference/edge)). You can use the `NEXT_RUNTIME` environment variable to get the current environment:
+Next.js calls `register` in all environments, so it's important to conditionally import any code that doesn't support specific runtimes (e.g. [Edge or Node.js](../03-api-reference/07-edge.md)). You can use the `NEXT_RUNTIME` environment variable to get the current environment:
 
 ```ts filename="instrumentation.ts" switcher
 export async function register() {

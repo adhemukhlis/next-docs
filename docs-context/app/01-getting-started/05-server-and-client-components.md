@@ -1,19 +1,13 @@
 ---
 title: Server and Client Components
 description: Learn how you can use React Server and Client Components to render parts of your application on the server or the client.
-related:
- title: Next Steps
- description: Learn more about the APIs mentioned in this page.
- links:
-  - app/api-reference/directives/use-client
-  - app/guides/server-and-client-boundary
 ---
 
 By default, layouts and pages are [Server Components](https://react.dev/reference/rsc/server-components), which lets you fetch data and render parts of your UI on the server, optionally cache the result, and stream it to the client. When you need interactivity or browser APIs, you can use [Client Components](https://react.dev/reference/rsc/use-client) to layer in functionality.
 
 This page explains how Server and Client Components work in Next.js and when to use them, with examples of how to compose them together in your application.
 
-> **Good to know:** For an explanation of where each component type runs and how the boundary works, see [The Server and Client Boundary](/docs/app/guides/server-and-client-boundary).
+> **Good to know:** For an explanation of where each component type runs and how the boundary works, see [The Server and Client Boundary](../02-guides/server-and-client-boundary.md).
 
 ## When to use Server and Client Components?
 
@@ -99,10 +93,10 @@ export default function LikeButton({ likes }) {
 
 ### On the server
 
-On the server, Next.js uses React's APIs to orchestrate rendering. The rendering work is split into chunks, by individual route segments ([layouts and pages](/docs/app/getting-started/layouts-and-pages)), including [parallel route slots](/docs/app/api-reference/file-conventions/parallel-routes) whether or not they are displayed:
+On the server, Next.js uses React's APIs to orchestrate rendering. The rendering work is split into chunks, by individual route segments ([layouts and pages](./03-layouts-and-pages.md)), including [parallel route slots](../03-api-reference/03-file-conventions/parallel-routes.md) whether or not they are displayed:
 
 - **Server Components** are rendered into a special data format called the React Server Component Payload (RSC Payload).
-- **Client Components** and the RSC Payload are used to [prerender](/docs/app/glossary#prerendering) HTML.
+- **Client Components** and the RSC Payload are used to [prerender](../04-glossary.md#prerendering) HTML.
 
 > **What is the React Server Component Payload (RSC)?**
 >
@@ -175,9 +169,9 @@ export default function Counter() {
 
 Once a file is marked with `"use client"`, **all of its imports and the components it directly renders are included in the client bundle**. This means you don’t need to add the directive to every component that is intended for the client.
 
-This behavior applies to components that are part of the Client Component’s [module graph](/docs/app/glossary#module-graph), which includes the modules it imports and the components it renders directly. It does not apply to Server Components passed as children or other props. Those components are not imported into the Client Component’s module graph. They are rendered on the server and passed to the Client Component as rendered output.
+This behavior applies to components that are part of the Client Component’s [module graph](../04-glossary.md#module-graph), which includes the modules it imports and the components it renders directly. It does not apply to Server Components passed as children or other props. Those components are not imported into the Client Component’s module graph. They are rendered on the server and passed to the Client Component as rendered output.
 
-See [Interleaving Server and Client Components](/docs/app/getting-started/server-and-client-components#interleaving-server-and-client-components) for how Server and Client Components can be combined.
+See [Interleaving Server and Client Components](./05-server-and-client-components.md#interleaving-server-and-client-components) for how Server and Client Components can be combined.
 
 ### Reducing JS bundle size
 
@@ -285,7 +279,7 @@ export default function LikeButton({ likes }) {
 }
 ```
 
-Alternatively, you can stream data from a Server Component to a Client Component with the [`use` API](https://react.dev/reference/react/use). See an [example](/docs/app/getting-started/fetching-data#streaming-data-with-the-use-api).
+Alternatively, you can stream data from a Server Component to a Client Component with the [`use` API](https://react.dev/reference/react/use). See an [example](./06-fetching-data.md#streaming-data-with-the-use-api).
 
 > **Good to know**: Props passed to Client Components need to be [serializable](https://react.dev/reference/react/use-server#serializable-parameters-and-return-values) by React.
 
@@ -405,7 +399,7 @@ Your Server Component will now be able to directly render your provider, and all
 
 > **Good to know**: You should render providers as deep as possible in the tree – notice how `ThemeProvider` only wraps `{children}` instead of the entire `<html>` document. This makes it easier for Next.js to optimize the static parts of your Server Components.
 
-To pass server-fetched data through context and read it in Client Components with `use()`, see [Using React's `use` within a Context Provider](/docs/app/guides/single-page-applications#using-reacts-use-within-a-context-provider).
+To pass server-fetched data through context and read it in Client Components with `use()`, see [Using React's `use` within a Context Provider](../02-guides/single-page-applications.md#using-reacts-use-within-a-context-provider).
 
 ### Third-party components
 
@@ -586,3 +580,10 @@ bun add server-only
 Next.js handles `server-only` and `client-only` imports internally to provide clearer error messages when a module is used in the wrong environment. The contents of these packages from NPM are not used by Next.js.
 
 Next.js also provides its own type declarations for `server-only` and `client-only`, for TypeScript configurations where [`noUncheckedSideEffectImports`](https://www.typescriptlang.org/tsconfig/#noUncheckedSideEffectImports) is active.
+
+## INDEX
+
+Learn more about the APIs mentioned in this page.
+
+- [use client](../03-api-reference/01-directives/use-client.md)
+- [The Server and Client Boundary](../02-guides/server-and-client-boundary.md)

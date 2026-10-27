@@ -5,13 +5,13 @@ related:
  title: Next steps
  description: Learn more about Server Actions and the APIs mentioned in this page.
  links:
-  - app/guides/server-actions
-  - app/api-reference/functions/revalidatePath
-  - app/api-reference/functions/revalidateTag
-  - app/api-reference/functions/redirect
+  - ../02-guides/server-actions.md
+  - ../03-api-reference/04-functions/revalidatePath.md
+  - ../03-api-reference/04-functions/revalidateTag.md
+  - ../03-api-reference/04-functions/redirect.md
 ---
 
-You can mutate data in Next.js using [React Server Functions](https://react.dev/reference/rsc/server-functions). This page will go through how you can [create](#creating-server-functions) and [invoke](#invoking-server-functions) Server Functions. For Next.js-specific behaviors (single-roundtrip response, sequential dispatch, security, deployment), see [Server Actions and Mutations](/docs/app/guides/server-actions).
+You can mutate data in Next.js using [React Server Functions](https://react.dev/reference/rsc/server-functions). This page will go through how you can [create](#creating-server-functions) and [invoke](#invoking-server-functions) Server Functions. For Next.js-specific behaviors (single-roundtrip response, sequential dispatch, security, deployment), see [Server Actions and Mutations](../02-guides/server-actions.md).
 
 ## What are Server Functions?
 
@@ -28,7 +28,8 @@ When an action is invoked, Next.js can return both the updated UI and new data i
 
 Behind the scenes, actions use the `POST` method, and only this HTTP method can invoke them.
 
-> [!WARNING] Server Functions are reachable via direct POST requests, not just through your application's UI. Always verify authentication and authorization inside every Server Function. See the [Data Security guide](/docs/app/guides/data-security#authentication-and-authorization) for recommended patterns.
+> [!WARNING]
+> Server Functions are reachable via direct POST requests, not just through your application's UI. Always verify authentication and authorization inside every Server Function. See the [Data Security guide](../02-guides/data-security.md#authentication-and-authorization) for recommended patterns.
 
 > **Good to know:** A Server Action is a Server Function used in a specific way (for handling form submissions and mutations). Server Function is the broader term.
 
@@ -199,7 +200,7 @@ There are two main ways you can invoke a Server Function:
 1. [Forms](#forms) in Server and Client Components
 2. [Event Handlers](#event-handlers) and [useEffect](#useeffect) in Client Components
 
-> **Good to know:** Server Functions are designed for server-side mutations. The client dispatches and awaits them one at a time. See [Sequential dispatch on the client](/docs/app/guides/server-actions#sequential-dispatch-on-the-client). If you need parallel data fetching, use [data fetching](/docs/app/getting-started/fetching-data#server-components) in Server Components, or perform parallel work inside a single Server Function or [Route Handler](/docs/app/guides/backend-for-frontend#manipulating-data).
+> **Good to know:** Server Functions are designed for server-side mutations. The client dispatches and awaits them one at a time. See [Sequential dispatch on the client](../02-guides/server-actions.md#sequential-dispatch-on-the-client). If you need parallel data fetching, use [data fetching](./06-fetching-data.md#server-components) in Server Components, or perform parallel work inside a single Server Function or [Route Handler](../02-guides/backend-for-frontend.md#manipulating-data).
 
 ### Forms
 
@@ -371,13 +372,13 @@ export function Button() {
 }
 ```
 
-See the [Building interactive apps](/docs/app/guides/interactive-apps) guide for a deeper walkthrough of responsive interactions, including pending feedback, optimistic UI, transitions, and error handling.
+See the [Building interactive apps](../02-guides/interactive-apps.md) guide for a deeper walkthrough of responsive interactions, including pending feedback, optimistic UI, transitions, and error handling.
 
-> **Good to know**: With the **experimental** [`useOffline`](/docs/app/guides/offline-support) config enabled, a Server Action interrupted by a connectivity drop stays pending and completes when the network returns.
+> **Good to know**: With the **experimental** [`useOffline`](../02-guides/offline-support.md) config enabled, a Server Action interrupted by a connectivity drop stays pending and completes when the network returns.
 
 ### Refresh data
 
-After a mutation, you may want to refresh the current page to show the latest data. You can do this by calling [`refresh`](/docs/app/api-reference/functions/refresh) from `next/cache` in a Server Action:
+After a mutation, you may want to refresh the current page to show the latest data. You can do this by calling [`refresh`](../03-api-reference/04-functions/refresh.md) from `next/cache` in a Server Action:
 
 ```ts filename="app/lib/actions.ts" switcher
 'use server'
@@ -415,11 +416,11 @@ export async function updatePost(formData) {
 }
 ```
 
-This refreshes the client router, ensuring the UI reflects the latest state. The `refresh()` function does not revalidate tagged data. To revalidate tagged data, use [`updateTag`](/docs/app/api-reference/functions/updateTag) or [`revalidateTag`](/docs/app/api-reference/functions/revalidateTag) instead.
+This refreshes the client router, ensuring the UI reflects the latest state. The `refresh()` function does not revalidate tagged data. To revalidate tagged data, use [`updateTag`](../03-api-reference/04-functions/updateTag.md) or [`revalidateTag`](../03-api-reference/04-functions/revalidateTag.md) instead.
 
 ### Revalidate data
 
-After performing a mutation, you can revalidate the Next.js cache and show the updated data by calling [`revalidatePath`](/docs/app/api-reference/functions/revalidatePath) or [`revalidateTag`](/docs/app/api-reference/functions/revalidateTag) within the Server Function:
+After performing a mutation, you can revalidate the Next.js cache and show the updated data by calling [`revalidatePath`](../03-api-reference/04-functions/revalidatePath.md) or [`revalidateTag`](../03-api-reference/04-functions/revalidateTag.md) within the Server Function:
 
 ```ts filename="app/lib/actions.ts" switcher
 import { auth } from '@/lib/auth'
@@ -456,7 +457,7 @@ export async function createPost(formData) {
 
 ### Redirect after a mutation
 
-You may want to redirect the user to a different page after a mutation. You can do this by calling [`redirect`](/docs/app/api-reference/functions/redirect) within the Server Function.
+You may want to redirect the user to a different page after a mutation. You can do this by calling [`redirect`](../03-api-reference/04-functions/redirect.md) within the Server Function.
 
 ```ts filename="app/lib/actions.ts" switcher
 'use server'
@@ -498,13 +499,13 @@ export async function createPost(formData) {
 }
 ```
 
-Calling `redirect` [throws](/docs/app/api-reference/functions/redirect#behavior) a framework handled control-flow exception. Any code after it won't execute. If you need fresh data, call [`revalidatePath`](/docs/app/api-reference/functions/revalidatePath) or [`revalidateTag`](/docs/app/api-reference/functions/revalidateTag) beforehand.
+Calling `redirect` [throws](../03-api-reference/04-functions/redirect.md#behavior) a framework handled control-flow exception. Any code after it won't execute. If you need fresh data, call [`revalidatePath`](../03-api-reference/04-functions/revalidatePath.md) or [`revalidateTag`](../03-api-reference/04-functions/revalidateTag.md) beforehand.
 
 ### Cookies
 
-You can `get`, `set`, and `delete` cookies inside a Server Action using the [`cookies`](/docs/app/api-reference/functions/cookies) API.
+You can `get`, `set`, and `delete` cookies inside a Server Action using the [`cookies`](../03-api-reference/04-functions/cookies.md) API.
 
-When you [set or delete](/docs/app/api-reference/functions/cookies#understanding-cookie-behavior-in-server-functions) a cookie in a Server Action, Next.js re-renders the current page and its layouts on the server so the **UI reflects the new cookie value**.
+When you [set or delete](../03-api-reference/04-functions/cookies.md#understanding-cookie-behavior-in-server-functions) a cookie in a Server Action, Next.js re-renders the current page and its layouts on the server so the **UI reflects the new cookie value**.
 
 > **Good to know**: The server update applies to the current React tree, re-rendering, mounting, or unmounting components, as needed. Client state is preserved for re-rendered components, and effects re-run if their dependencies changed.
 

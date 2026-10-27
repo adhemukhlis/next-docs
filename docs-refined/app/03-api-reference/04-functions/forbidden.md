@@ -2,19 +2,13 @@
 title: forbidden
 description: API Reference for the forbidden function.
 version: experimental
-related:
- links:
-  - app/api-reference/file-conventions/forbidden
-  - app/api-reference/functions/not-found
-  - app/api-reference/functions/unauthorized
-  - app/api-reference/config/next-config-js/authInterrupts
 ---
 
-The `forbidden` function throws an error that renders a Next.js 403 page. It's useful for handling authorization errors in your application. You can customize the UI using the [`forbidden.js` file](/docs/app/api-reference/file-conventions/forbidden).
+The `forbidden` function throws an error that renders a Next.js 403 page. It's useful for handling authorization errors in your application. You can customize the UI using the [`forbidden.js` file](../03-file-conventions/forbidden.md).
 
 Invoking `forbidden()` throws a `NEXT_HTTP_ERROR_FALLBACK;403` error and terminates rendering of the route segment where it was thrown. Next.js also injects a `<meta name="robots" content="noindex" />` tag so the page is not indexed. Because it works by throwing, call it in the render path: a component, or a function a component `await`s. A call left in an un-awaited promise throws where nothing catches it, and no forbidden UI renders.
 
-To start using `forbidden`, enable the experimental [`authInterrupts`](/docs/app/api-reference/config/next-config-js/authInterrupts) configuration option in your `next.config.js` file:
+To start using `forbidden`, enable the experimental [`authInterrupts`](../05-config/01-next-config-js/authInterrupts.md) configuration option in your `next.config.js` file:
 
 ```ts filename="next.config.ts" switcher
 import type { NextConfig } from 'next'
@@ -36,7 +30,7 @@ module.exports = {
 }
 ```
 
-`forbidden` can be invoked in [Server Components](/docs/app/getting-started/server-and-client-components), [Server Functions](/docs/app/getting-started/mutating-data), and [Route Handlers](/docs/app/api-reference/file-conventions/route).
+`forbidden` can be invoked in [Server Components](../../01-getting-started/05-server-and-client-components.md), [Server Functions](../../01-getting-started/07-mutating-data.md), and [Route Handlers](../03-file-conventions/route.md).
 
 ```tsx filename="app/admin/page.tsx" switcher
 import { verifySession } from '@/app/lib/dal'
@@ -74,15 +68,15 @@ export default async function AdminPage() {
 
 ## Good to know
 
-- The `forbidden` function cannot be called in the [root layout](/docs/app/api-reference/file-conventions/layout#root-layout).
-- You do not need to write `return forbidden()`. It throws (its TypeScript [`never`](https://www.typescriptlang.org/docs/handbook/2/functions.html#never) return type), so execution stops. A `try/catch` around the call suppresses the interrupt and no forbidden UI renders. Use [`unstable_rethrow`](/docs/app/api-reference/functions/unstable_rethrow) to let it through.
+- The `forbidden` function cannot be called in the [root layout](../03-file-conventions/layout.md#root-layout).
+- You do not need to write `return forbidden()`. It throws (its TypeScript [`never`](https://www.typescriptlang.org/docs/handbook/2/functions.html#never) return type), so execution stops. A `try/catch` around the call suppresses the interrupt and no forbidden UI renders. Use [`unstable_rethrow`](./unstable_rethrow.md) to let it through.
 - A `forbidden()` left in an un-awaited promise throws where nothing catches it, so no forbidden UI renders. In development the server logs `⨯ unhandledRejection: NEXT_HTTP_ERROR_FALLBACK;403`. Always `await` the function that may call it.
 
 ## Examples
 
 ### Calling `forbidden()` after streaming has started
 
-To keep the page's shell and loading UI visible while the session is checked, put the role check in the [Data Access Layer](/docs/app/guides/authentication#creating-a-data-access-layer-dal) function that loads the data, and render it in a component wrapped in [`<Suspense>`](https://react.dev/reference/react/Suspense). The check runs inside the boundary, so the shell streams while the session resolves:
+To keep the page's shell and loading UI visible while the session is checked, put the role check in the [Data Access Layer](../../02-guides/authentication.md#creating-a-data-access-layer-dal) function that loads the data, and render it in a component wrapped in [`<Suspense>`](https://react.dev/reference/react/Suspense). The check runs inside the boundary, so the shell streams while the session resolves:
 
 ```tsx filename="app/projects/page.tsx" switcher highlight={8}
 import { Suspense } from 'react'
@@ -156,7 +150,7 @@ export default function ProjectsPage() {
 }
 ```
 
-When the session lacks access, `getProjects` calls `forbidden()`, which throws. Because this happens during rendering, the exception propagates to the nearest [`forbidden`](/docs/app/api-reference/file-conventions/forbidden) boundary, which renders in place of the streamed-in content, even though the page shell has already been sent.
+When the session lacks access, `getProjects` calls `forbidden()`, which throws. Because this happens during rendering, the exception propagates to the nearest [`forbidden`](../03-file-conventions/forbidden.md) boundary, which renders in place of the streamed-in content, even though the page shell has already been sent.
 
 Add a `forbidden.tsx` alongside the route to define that UI:
 
@@ -184,7 +178,7 @@ export default function Forbidden() {
 
 The response starts streaming from the `<Suspense>` boundary before `forbidden()` runs, so it keeps its `200` status. Next.js adds a `noindex` tag.
 
-Calling `forbidden()` before streaming starts returns a `403`. A page that reaches `forbidden()` during prerendering can remain `○` Static and serve a `403`. A request-time check can run in [Proxy](/docs/app/api-reference/file-conventions/proxy) before the page renders. See [Status codes](/docs/app/api-reference/file-conventions/loading#status-codes).
+Calling `forbidden()` before streaming starts returns a `403`. A page that reaches `forbidden()` during prerendering can remain `○` Static and serve a `403`. A request-time check can run in [Proxy](../03-file-conventions/proxy.md) before the page renders. See [Status codes](../03-file-conventions/loading.md#status-codes).
 
 ### Role-based route protection
 
@@ -283,3 +277,10 @@ export async function updateRole(formData) {
 | Version   | Changes                 |
 | --------- | ----------------------- |
 | `v15.1.0` | `forbidden` introduced. |
+
+## INDEX
+
+- [forbidden.js](../03-file-conventions/forbidden.md)
+- [notFound](./not-found.md)
+- [unauthorized](./unauthorized.md)
+- [authInterrupts](../05-config/01-next-config-js/authInterrupts.md)

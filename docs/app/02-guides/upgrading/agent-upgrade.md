@@ -5,15 +5,15 @@ description: Use a coding agent to upgrade and verify a Next.js app.
 version: experimental
 related:
  links:
-  - app/getting-started/upgrading
-  - app/api-reference/cli/next
-  - app/api-reference/config/next-config-js/agentUpgrade
-  - app/guides/ai-agents
+  - ../../01-getting-started/18-upgrading.md
+  - ../../03-api-reference/06-cli/next.md
+  - ../../03-api-reference/05-config/01-next-config-js/agentUpgrade.md
+  - ../ai-agents.md
 ---
 
 Use `next upgrade --agent` to have a coding agent upgrade and verify your app. The command determines the target version from the configured policy, prepares the relevant migration guides and Skills, and hands the task to the agent.
 
-The command supports App Router and Pages Router projects. Without `--agent`, [`next upgrade`](/docs/app/api-reference/cli/next#next-upgrade-options) runs the interactive codemod workflow instead.
+The command supports App Router and Pages Router projects. Without `--agent`, [`next upgrade`](../../03-api-reference/06-cli/next.md#next-upgrade-options) runs the interactive codemod workflow instead.
 
 ## Start an upgrade
 
@@ -39,7 +39,7 @@ Using `next@canary` runs the latest upgrade tooling, even when the app uses an o
 | `latest`              | Moves stable, RC, beta, and preview apps to npm's `latest` stable release, or a canary app to the `canary` release. |
 | `experimental-future` | Applies the `latest` policy, then adopts applicable [Future Defaults](#adopt-future-defaults).                      |
 
-Omit the policy to use the string value from [`experimental.agentUpgrade`](/docs/app/api-reference/config/next-config-js/agentUpgrade). Otherwise, the command uses `security`:
+Omit the policy to use the string value from [`experimental.agentUpgrade`](../../03-api-reference/05-config/01-next-config-js/agentUpgrade.md). Otherwise, the command uses `security`:
 
 ```bash filename="Terminal"
 npx next@canary upgrade --agent
@@ -61,7 +61,7 @@ npx next@canary upgrade --agent=experimental-future
 
 Pages Router projects can use it for version upgrades, but it does not offer Cache Components until the project uses the App Router.
 
-To adopt new features today, use their adoption Skills directly. See [Migrating to Cache Components](/docs/app/guides/migrating-to-cache-components#use-the-adoption-skill-recommended) and [Adopting Partial Prefetching](/docs/app/guides/adopting-partial-prefetching#use-the-adoption-skill-recommended).
+To adopt new features today, use their adoption Skills directly. See [Migrating to Cache Components](../migrating-to-cache-components.md#use-the-adoption-skill-recommended) and [Adopting Partial Prefetching](../adopting-partial-prefetching.md#use-the-adoption-skill-recommended).
 
 ## What the command does
 
@@ -116,7 +116,7 @@ When you run the command from an existing coding agent, it provides the prepared
 
 ## Configure upgrade reminders
 
-Upgrade reminders are enabled by default with the `security` policy. Set [`experimental.agentUpgrade`](/docs/app/api-reference/config/next-config-js/agentUpgrade) to choose another policy or disable reminders:
+Upgrade reminders are enabled by default with the `security` policy. Set [`experimental.agentUpgrade`](../../03-api-reference/05-config/01-next-config-js/agentUpgrade.md) to choose another policy or disable reminders:
 
 ```ts filename="next.config.ts"
 import type { NextConfig } from 'next'
@@ -132,7 +132,7 @@ export default nextConfig
 
 Set the option to `false` to disable reminders.
 
-The option does not upgrade the app automatically. In an interactive terminal, `next dev` or `next build` continues while the reminder is open and buffers its output. **Upgrade now** stops the command before starting the upgrade. **Skip** returns to the running command and replays that output. **Skip until next version** dismisses the reminder for the installed version. See [Reminder behavior](/docs/app/api-reference/config/next-config-js/agentUpgrade#reminder-behavior) for details.
+The option does not upgrade the app automatically. In an interactive terminal, `next dev` or `next build` continues while the reminder is open and buffers its output. **Upgrade now** stops the command before starting the upgrade. **Skip** returns to the running command and replays that output. **Skip until next version** dismisses the reminder for the installed version. See [Reminder behavior](../../03-api-reference/05-config/01-next-config-js/agentUpgrade.md#reminder-behavior) for details.
 
 When a coding agent encounters a reminder, it reports the available upgrade and can continue the original task after retrying the command.
 

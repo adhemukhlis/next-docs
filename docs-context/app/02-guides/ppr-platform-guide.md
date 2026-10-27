@@ -2,13 +2,6 @@
 title: Implementing Partial Prerendering on your platform
 nav_title: PPR Platform Guide
 description: A guide for platform engineers on implementing PPR support, from basic origin rendering to optimized CDN integration.
-related:
- description: Related guides and references.
- links:
-  - app/guides/rendering-philosophy
-  - app/guides/streaming
-  - app/guides/deploying-to-platforms
-  - app/api-reference/config/next-config-js/adapterPath
 ---
 
 Partial Prerendering (PPR) combines static and dynamic rendering in a single route. At build time, Next.js generates a static HTML shell and a `postponedState` blob for each PPR-enabled route. At request time, the shell is served immediately and dynamic portions are rendered and streamed to the client.
@@ -21,7 +14,7 @@ This page explains how platforms can implement PPR support at different levels o
 
 For each PPR route, Next.js produces:
 
-- A **static HTML shell** containing all the content that can be prerendered, with [Suspense](/docs/app/guides/streaming#what-is-streaming) fallbacks where dynamic content will appear.
+- A **static HTML shell** containing all the content that can be prerendered, with [Suspense](./streaming.md#what-is-streaming) fallbacks where dynamic content will appear.
 - A **`postponedState`** value: a serialized string. Treat it as opaque: pass it through without parsing or modifying it. Altering `postponedState` produces incorrect dynamic rendering output.
 - An **RSC payload** for the static portions of the page.
 
@@ -42,9 +35,9 @@ Each PPR route requires two artifacts to be stored together:
 1. The static HTML shell.
 2. The `postponedState` blob.
 
-These must be stored and updated atomically. When a PPR route is revalidated (via [time-based](/docs/app/guides/incremental-static-regeneration) or [on-demand revalidation](/docs/app/api-reference/functions/revalidateTag)), Next.js regenerates both the shell and the postponed state together. Serving a new shell with an old postponed state, or vice versa, will produce incorrect dynamic content.
+These must be stored and updated atomically. When a PPR route is revalidated (via [time-based](./incremental-static-regeneration.md) or [on-demand revalidation](../03-api-reference/04-functions/revalidateTag.md)), Next.js regenerates both the shell and the postponed state together. Serving a new shell with an old postponed state, or vice versa, will produce incorrect dynamic content.
 
-Use [`requestMeta.onCacheEntryV2`](/docs/app/api-reference/adapters/implementing-ppr-in-an-adapter) in your adapter to observe cache updates and propagate them to your storage backend.
+Use [`requestMeta.onCacheEntryV2`](../03-api-reference/07-adapters/06-implementing-ppr-in-an-adapter.md) in your adapter to observe cache updates and propagate them to your storage backend.
 
 ## Origin-Only Implementation
 
@@ -93,11 +86,11 @@ When the platform invokes the handler function directly:
 
 ### Finding PPR routes in build output
 
-In the [adapter output](/docs/app/api-reference/adapters/output-types), PPR routes are identified by `renderingMode: 'PARTIALLY_STATIC'` in the prerenders array. Iterate `outputs.prerenders` to find these entries and read `fallback.postponedState`.
+In the [adapter output](../03-api-reference/07-adapters/09-output-types.md), PPR routes are identified by `renderingMode: 'PARTIALLY_STATIC'` in the prerenders array. Iterate `outputs.prerenders` to find these entries and read `fallback.postponedState`.
 
 `pprChain.headers` contains the headers needed for the resume protocol: `{ 'next-resume': '1' }`.
 
-For detailed implementation with code examples, see [Implementing PPR in an Adapter](/docs/app/api-reference/adapters/implementing-ppr-in-an-adapter).
+For detailed implementation with code examples, see [Implementing PPR in an Adapter](../03-api-reference/07-adapters/06-implementing-ppr-in-an-adapter.md).
 
 ## Implementation Checklist
 
@@ -111,4 +104,13 @@ For detailed implementation with code examples, see [Implementing PPR in an Adap
 
 5. **Support graceful degradation.** If the postponed state is unavailable or stale, fall back to a full server render. The user gets a complete page without the shell-first optimization.
 
-For the complete adapter API reference and implementation examples, see the [Deployment Adapter API](/docs/app/api-reference/config/next-config-js/adapterPath).
+For the complete adapter API reference and implementation examples, see the [Deployment Adapter API](../03-api-reference/05-config/01-next-config-js/adapterPath.md).
+
+## INDEX
+
+Related guides and references.
+
+- [Next.js Rendering Philosophy](./rendering-philosophy.md)
+- [Streaming](./streaming.md)
+- [Deploying Next.js to different platforms](./deploying-to-platforms.md)
+- [adapterPath](../03-api-reference/05-config/01-next-config-js/adapterPath.md)

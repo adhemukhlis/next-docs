@@ -108,7 +108,7 @@ export async function GET() {
 
 ### File-based Metadata
 
-You can use `ImageResponse` in a [`opengraph-image.tsx`](/docs/app/api-reference/file-conventions/metadata/opengraph-image) file to generate Open Graph images at build time or dynamically at request time.
+You can use `ImageResponse` in a [`opengraph-image.tsx`](../03-file-conventions/01-metadata/opengraph-image.md) file to generate Open Graph images at build time or dynamically at request time.
 
 ```tsx filename="app/opengraph-image.tsx"
 import { ImageResponse } from 'next/og'
@@ -150,7 +150,7 @@ export default async function Image() {
 
 ### Custom fonts
 
-You can use custom fonts in your `ImageResponse` by providing a `fonts` array in the options. The font doesn't depend on request data, so read it once at module scope. See [Predictable values](/docs/app/getting-started/caching#predictable-values).
+You can use custom fonts in your `ImageResponse` by providing a `fonts` array in the options. The font doesn't depend on request data, so read it once at module scope. See [Predictable values](../../01-getting-started/08-caching.md#predictable-values).
 
 ```tsx filename="app/opengraph-image.tsx"
 import { ImageResponse } from 'next/og'

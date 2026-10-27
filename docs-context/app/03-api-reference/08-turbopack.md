@@ -76,7 +76,7 @@ Turbopack in Next.js has **zero-configuration** for the common use cases. Below 
 
 [babel-config]: https://babeljs.io/docs/config-files
 
-[manual-loader]: /docs/app/api-reference/config/next-config-js/turbopack#configuring-webpack-loaders
+[manual-loader]: ./05-config/01-next-config-js/turbopack.md#configuring-webpack-loaders
 
 ### Framework and React features
 
@@ -112,8 +112,8 @@ Turbopack in Next.js has **zero-configuration** for the common use cases. Below 
 | Feature | Status | Notes |
 | - | - | - |
 | **Path Aliases** | **Supported** | Reads `tsconfig.json`'s `paths` and `baseUrl`, matching Next.js behavior. |
-| **Manual Aliases** | **Supported** | [Configure `resolveAlias` in `next.config.js`](/docs/app/api-reference/config/next-config-js/turbopack#resolving-aliases) (similar to `webpack.resolve.alias`). |
-| **Custom Extensions** | **Supported** | [Configure `resolveExtensions` in `next.config.js`](/docs/app/api-reference/config/next-config-js/turbopack#resolving-custom-extensions). |
+| **Manual Aliases** | **Supported** | [Configure `resolveAlias` in `next.config.js`](./05-config/01-next-config-js/turbopack.md#resolving-aliases) (similar to `webpack.resolve.alias`). |
+| **Custom Extensions** | **Supported** | [Configure `resolveExtensions` in `next.config.js`](./05-config/01-next-config-js/turbopack.md#resolving-custom-extensions). |
 | **AMD** | Partially Supported | Basic transforms work; advanced AMD usage is limited. |
 
 ### Performance and Fast Refresh
@@ -122,7 +122,7 @@ Turbopack in Next.js has **zero-configuration** for the common use cases. Below 
 | - | - | - |
 | **Fast Refresh** | **Supported** | Updates JavaScript, TypeScript, and CSS without a full refresh. |
 | **Incremental Bundling** | **Supported** | Turbopack lazily builds only what's requested by the dev server, speeding up large apps. |
-| **FileSystem Cache** | **Supported** | Persists compiler artifacts to disk between runs. See [`turbopackFileSystemCache`](/docs/app/api-reference/config/next-config-js/turbopackFileSystemCache). |
+| **FileSystem Cache** | **Supported** | Persists compiler artifacts to disk between runs. See [`turbopackFileSystemCache`](./05-config/01-next-config-js/turbopackFileSystemCache.md). |
 
 ### Magic Comments
 
@@ -135,7 +135,7 @@ Turbopack supports webpack-compatible magic comments for controlling import beha
 | `turbopackOptional: true` | ✗ | ✓ | Suppress resolve errors |
 | `webpackOptional: true` | ✗ | ✗ | Not supported |
 
-See [Lazy Loading](/docs/app/guides/lazy-loading#magic-comments) for usage examples.
+See [Lazy Loading](../02-guides/lazy-loading.md#magic-comments) for usage examples.
 
 ## import.meta.env
 
@@ -164,7 +164,7 @@ const { MODE, SSR } = import.meta.env
 const baseUrl = import.meta.env['BASE_URL']
 ```
 
-> **Good to know**: `import.meta.env` requires Turbopack. Custom `VITE_*` variables, Vite custom modes, `envPrefix`, and `envDir` are not supported. `BASE_URL` reflects the Next.js [`basePath`](/docs/app/api-reference/config/next-config-js/basePath) configuration and includes a trailing slash to match Vite's format.
+> **Good to know**: `import.meta.env` requires Turbopack. Custom `VITE_*` variables, Vite custom modes, `envPrefix`, and `envDir` are not supported. `BASE_URL` reflects the Next.js [`basePath`](./05-config/01-next-config-js/basePath.md) configuration and includes a trailing slash to match Vite's format.
 
 ## import.meta.glob
 
@@ -253,7 +253,7 @@ const modules = import.meta.glob('./*.ts', {
 // equivalent to: { query: '?bar=foo&raw=true' }
 ```
 
-The query is passed through to the module rules, it has no meaning on its own. Unlike Vite, Turbopack has no built-in `?raw` or `?url` handling, so match the query with a [rule](/docs/app/api-reference/config/next-config-js/turbopack#module-types) to decide how those files are loaded:
+The query is passed through to the module rules, it has no meaning on its own. Unlike Vite, Turbopack has no built-in `?raw` or `?url` handling, so match the query with a [rule](./05-config/01-next-config-js/turbopack.md#module-types) to decide how those files are loaded:
 
 ```ts filename="next.config.ts"
 import type { NextConfig } from 'next'
@@ -343,13 +343,13 @@ There are a number of non-trivial behavior differences between webpack and Turbo
 
 Turbopack uses the root directory to resolve modules. Files outside of the project root are not resolved.
 
-For example, linked dependencies outside the project root (via `npm link`, `yarn link`, `pnpm link`, etc.) are not resolved by default. Configure [`experimental.turbopackAdditionalRoots`](/docs/app/api-reference/config/next-config-js/turbopack#additional-roots-experimental) for symlinked dependencies.
+For example, linked dependencies outside the project root (via `npm link`, `yarn link`, `pnpm link`, etc.) are not resolved by default. Configure [`experimental.turbopackAdditionalRoots`](./05-config/01-next-config-js/turbopack.md#additional-roots-experimental) for symlinked dependencies.
 
-Use [`turbopack.root`](/docs/app/api-reference/config/next-config-js/turbopack#root-directory) when your application directly imports files outside the detected root rather than reaching them through symlinks.
+Use [`turbopack.root`](./05-config/01-next-config-js/turbopack.md#root-directory) when your application directly imports files outside the detected root rather than reaching them through symlinks.
 
 ### CSS Module Ordering
 
-Turbopack will follow JS import order to order [CSS modules](/docs/app/getting-started/css#css-modules) which are not otherwise ordered. For example:
+Turbopack will follow JS import order to order [CSS modules](../01-getting-started/11-css.md#css-modules) which are not otherwise ordered. For example:
 
 ```jsx filename="components/BlogPost.jsx"
 import utilStyles from './utils.module.css'
@@ -408,7 +408,7 @@ This can lead to subtle rendering differences when migrating from webpack to Tur
 
 ### Webpack plugins
 
-Turbopack does not support webpack plugins. This affects third-party tools that rely on webpack's plugin system for integration. We do support [webpack loaders](/docs/app/api-reference/config/next-config-js/turbopack#configuring-webpack-loaders). If you depend on webpack plugins, you'll need to find Turbopack-compatible alternatives or continue using webpack until equivalent functionality is available.
+Turbopack does not support webpack plugins. This affects third-party tools that rely on webpack's plugin system for integration. We do support [webpack loaders](./05-config/01-next-config-js/turbopack.md#configuring-webpack-loaders). If you depend on webpack plugins, you'll need to find Turbopack-compatible alternatives or continue using webpack until equivalent functionality is available.
 
 ## Unsupported and unplanned features
 
@@ -421,7 +421,7 @@ Some features are not yet implemented or not planned:
   - `composes` in `.module.css` composing a `.css` file. In webpack this would treat the `.css` file as a CSS Module, with Turbopack the `.css` file will always be global. This means that if you want to use `composes` in a CSS Module, you need to change the `.css` file to a `.module.css` file.
   - `@import` in CSS Modules importing `.css` as a CSS Module. In webpack this would treat the `.css` file as a CSS Module, with Turbopack the `.css` file will always be global. This means that if you want to use `@import` in a CSS Module, you need to change the `.css` file to a `.module.css` file.
 - **`sassOptions.functions`** Custom Sass functions defined in `sassOptions.functions` are not supported. This feature allows defining JavaScript functions that can be called from Sass code during compilation. Turbopack's Rust-based architecture cannot directly execute JavaScript functions passed through `sassOptions.functions`, unlike webpack's Node.js-based sass-loader which runs entirely in JavaScript. If you're using custom Sass functions, you'll need to use webpack instead of Turbopack.
-- **`webpack()` configuration** in `next.config.js` Turbopack replaces webpack, so `webpack()` configs are not recognized. Use the [`turbopack` config](/docs/app/api-reference/config/next-config-js/turbopack) instead.
+- **`webpack()` configuration** in `next.config.js` Turbopack replaces webpack, so `webpack()` configs are not recognized. Use the [`turbopack` config](./05-config/01-next-config-js/turbopack.md) instead.
 - **Yarn PnP** Not planned for Turbopack support in Next.js.
 - **`experimental.urlImports`** Not planned for Turbopack.
 - **`experimental.esmExternals`** Not planned. Turbopack does not support the legacy `esmExternals` configuration in Next.js.
@@ -429,27 +429,27 @@ Some features are not yet implemented or not planned:
   - `experimental.nextScriptWorkers`
   - `experimental.fallbackNodePolyfills` We plan to implement these in the future.
 
-For a full, detailed breakdown of each feature flag and its status, see the [Turbopack API Reference](/docs/app/api-reference/config/next-config-js/turbopack).
+For a full, detailed breakdown of each feature flag and its status, see the [Turbopack API Reference](./05-config/01-next-config-js/turbopack.md).
 
 ## Configuration
 
 Turbopack can be configured via `next.config.js` (or `next.config.ts`) under the `turbopack` key. Configuration options include:
 
-- **`rules`** Define additional [webpack loaders](/docs/app/api-reference/config/next-config-js/turbopack#configuring-webpack-loaders) for file transformations.
+- **`rules`** Define additional [webpack loaders](./05-config/01-next-config-js/turbopack.md#configuring-webpack-loaders) for file transformations.
 - **`resolveAlias`** Create manual aliases (like `resolve.alias` in webpack).
 - **`resolveExtensions`** Change or extend file extensions for module resolution.
-- **[`ignoreIssue`](/docs/app/api-reference/config/next-config-js/turbopackIgnoreIssue)** Suppress specific Turbopack errors and warnings from the CLI output and error overlay.
+- **[`ignoreIssue`](./05-config/01-next-config-js/turbopackIgnoreIssue.md)** Suppress specific Turbopack errors and warnings from the CLI output and error overlay.
 
 Additionally, the following experimental options are available under `experimental` in `next.config.js`:
 
 | Option | Description | Default (dev) | Default (build) |
 | - | - | - | - |
-| [`turbopackFileSystemCacheForDev`](/docs/app/api-reference/config/next-config-js/turbopackFileSystemCache) | Enable filesystem cache for the dev server. | `true` | N/A |
-| [`turbopackFileSystemCacheForBuild`](/docs/app/api-reference/config/next-config-js/turbopackFileSystemCache) | Enable filesystem cache for builds. | N/A | `true`<sup>1</sup> |
-| [`turbopackGc`](/docs/app/api-reference/config/next-config-js/turbopackGc) | Remove unreachable work from memory and the persistent cache. | `false` | `false` |
-| [`turbopackLazyDynamicImports`](/docs/app/api-reference/config/next-config-js/turbopackLazyDynamicImports) | Compile client-side dynamic import targets when the browser first requests them. | `false` | N/A |
-| [`turbopackLazyDynamicImportsSSR`](/docs/app/api-reference/config/next-config-js/turbopackLazyDynamicImportsSSR) | Compile dynamic import targets when server rendering first reaches them. | `false` | N/A |
-| [`turbopackPluginRuntimeStrategy`](/docs/app/api-reference/config/next-config-js/turbopackPluginRuntimeStrategy) | Choose whether Node.js evaluation runs in child processes or worker threads. | `'childProcesses'` | `'childProcesses'` |
+| [`turbopackFileSystemCacheForDev`](./05-config/01-next-config-js/turbopackFileSystemCache.md) | Enable filesystem cache for the dev server. | `true` | N/A |
+| [`turbopackFileSystemCacheForBuild`](./05-config/01-next-config-js/turbopackFileSystemCache.md) | Enable filesystem cache for builds. | N/A | `true`<sup>1</sup> |
+| [`turbopackGc`](./05-config/01-next-config-js/turbopackGc.md) | Remove unreachable work from memory and the persistent cache. | `false` | `false` |
+| [`turbopackLazyDynamicImports`](./05-config/01-next-config-js/turbopackLazyDynamicImports.md) | Compile client-side dynamic import targets when the browser first requests them. | `false` | N/A |
+| [`turbopackLazyDynamicImportsSSR`](./05-config/01-next-config-js/turbopackLazyDynamicImportsSSR.md) | Compile dynamic import targets when server rendering first reaches them. | `false` | N/A |
+| [`turbopackPluginRuntimeStrategy`](./05-config/01-next-config-js/turbopackPluginRuntimeStrategy.md) | Choose whether Node.js evaluation runs in child processes or worker threads. | `'childProcesses'` | `'childProcesses'` |
 | `turbopackMinify` | Enable minification. Accepts a boolean, or `{ server, client, edge }` to configure each environment separately. | `false` | `true` |
 | `turbopackSourceMaps` | Enable source maps. | `true` | `productionBrowserSourceMaps` |
 | `turbopackInputSourceMaps` | Enable extraction of source maps from input files. | `true` | `true` |
@@ -467,7 +467,7 @@ Additionally, the following experimental options are available under `experiment
 | `turbopackUseBuiltinBabel` | Enable automatic Babel loader configuration when a Babel config file is present. | `true` | `true` |
 | `turbopackUseBuiltinSass` | Enable automatic Sass loader configuration. | `true` | `true` |
 | `turbopackModuleIds` | Module ID strategy: `'named'` or `'deterministic'`. | `'named'` | `'deterministic'` |
-| [`turbopackLocalPostcssConfig`](/docs/app/api-reference/config/next-config-js/turbopackLocalPostcssConfig) | Resolve `postcss.config.js` from the CSS file's directory first, then the project root. | `false` | `false` |
+| [`turbopackLocalPostcssConfig`](./05-config/01-next-config-js/turbopackLocalPostcssConfig.md) | Resolve `postcss.config.js` from the CSS file's directory first, then the project root. | `false` | `false` |
 | `turbopackWorkerAssetPrefix` | Custom asset prefix for Web Worker URLs (entrypoint + module chunks), overriding `assetPrefix`. Mirrors webpack's `output.workerPublicPath`. | `undefined` | `undefined` |
 
 **Table notes:**
@@ -487,7 +487,7 @@ module.exports = {
 }
 ```
 
-For more in-depth configuration examples, see the [Turbopack config documentation](/docs/app/api-reference/config/next-config-js/turbopack).
+For more in-depth configuration examples, see the [Turbopack config documentation](./05-config/01-next-config-js/turbopack.md).
 
 ## Generating trace files for performance debugging
 

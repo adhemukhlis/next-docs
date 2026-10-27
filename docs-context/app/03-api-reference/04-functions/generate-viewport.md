@@ -1,13 +1,6 @@
 ---
 title: generateViewport
 description: API Reference for the generateViewport function.
-related:
- title: Next Steps
- description: View all the Metadata API options.
- links:
-  - app/api-reference/file-conventions/metadata
-  - app/getting-started/caching
-  - app/api-reference/config/next-config-js/cacheComponents
 ---
 
 You can customize the initial viewport of the page with the static `viewport` object or the dynamic `generateViewport` function.
@@ -16,7 +9,7 @@ You can customize the initial viewport of the page with the static `viewport` ob
 >
 > - The `viewport` object and `generateViewport` function exports are **only supported in Server Components**.
 > - You cannot export both the `viewport` object and `generateViewport` function from the same route segment.
-> - If you're coming from migrating `metadata` exports, you can use [metadata-to-viewport-export codemod](/docs/app/guides/upgrading/codemods#metadata-to-viewport-export) to update your changes.
+> - If you're coming from migrating `metadata` exports, you can use [metadata-to-viewport-export codemod](../../02-guides/upgrading/codemods.md#metadata-to-viewport-export) to update your changes.
 
 ## The `viewport` object
 
@@ -52,7 +45,7 @@ export function generateViewport({ params }) {
 }
 ```
 
-In TypeScript, the `params` argument can be typed via [`PageProps<'/route'>`](/docs/app/api-reference/file-conventions/page#page-props-helper) or [`LayoutProps<'/route'>`](/docs/app/api-reference/file-conventions/layout#layout-props-helper) depending on where `generateViewport` is defined.
+In TypeScript, the `params` argument can be typed via [`PageProps<'/route'>`](../03-file-conventions/page.md#page-props-helper) or [`LayoutProps<'/route'>`](../03-file-conventions/layout.md#layout-props-helper) depending on where `generateViewport` is defined.
 
 ```jsx filename="layout.js | page.js" switcher
 export function generateViewport({ params }) {
@@ -187,7 +180,7 @@ export const viewport = {
 
 ## With Cache Components
 
-When [Cache Components](/docs/app/getting-started/caching) is enabled, `generateViewport` follows the same rules as other components. If viewport accesses runtime data (`cookies()`, `headers()`, `params`, `searchParams`) or performs uncached data fetching, it defers to request time.
+When [Cache Components](../../01-getting-started/08-caching.md) is enabled, `generateViewport` follows the same rules as other components. If viewport accesses runtime data (`cookies()`, `headers()`, `params`, `searchParams`) or performs uncached data fetching, it defers to request time.
 
 Unlike metadata, viewport cannot be streamed because it affects initial page load UI. If `generateViewport` defers to request time, the page would need to block until resolved.
 
@@ -225,7 +218,7 @@ export default function RootLayout({ children }) {
 }
 ```
 
-Alternatively, opt the segment out of instant-navigation validation with [`instant = false`](/docs/app/api-reference/file-conventions/route-segment-config/instant). The route renders on every request and the navigation blocks until the render completes:
+Alternatively, opt the segment out of instant-navigation validation with [`instant = false`](../03-file-conventions/02-route-segment-config/instant.md). The route renders on every request and the navigation blocks until the render completes:
 
 ```tsx filename="app/dashboard/layout.tsx" highlight={1,3}
 import { cookies } from 'next/headers'
@@ -246,11 +239,11 @@ export default function DashboardLayout({ children }) {
 
 Setting `instant = false` opts only the segment that exports it out. Descendant segments are still validated by the global default. See [Next.js encountered runtime data in `generateViewport()`](/docs/messages/blocking-prerender-viewport-runtime) for the full set of fix options, trade-offs, and the subtree-wide opt-out.
 
-> **Good to know**: Use [multiple root layouts](/docs/app/api-reference/file-conventions/layout#root-layout) to isolate fully dynamic viewport to specific routes, while still letting other routes in your application generate a static shell.
+> **Good to know**: Use [multiple root layouts](../03-file-conventions/layout.md#root-layout) to isolate fully dynamic viewport to specific routes, while still letting other routes in your application generate a static shell.
 
 ## Types
 
-You can add type safety to your viewport object by using the `Viewport` type. If you are using the [built-in TypeScript plugin](/docs/app/api-reference/config/typescript) in your IDE, you do not need to manually add the type, but you can still explicitly add it if you want.
+You can add type safety to your viewport object by using the `Viewport` type. If you are using the [built-in TypeScript plugin](../05-config/02-typescript.md) in your IDE, you do not need to manually add the type, but you can still explicitly add it if you want.
 
 ### `viewport` object
 
@@ -311,3 +304,11 @@ export const viewport = {
 | Version | Changes |
 | - | - |
 | `v14.0.0` | `viewport` and `generateViewport` introduced. |
+
+## INDEX
+
+View all the Metadata API options.
+
+- [Metadata Files API Reference](../03-file-conventions/01-metadata/index.md)
+- [Caching](../../01-getting-started/08-caching.md)
+- [cacheComponents](../05-config/01-next-config-js/cacheComponents.md)

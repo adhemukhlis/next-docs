@@ -12,5 +12,5 @@ Once a file is defined, Next.js will automatically serve the file (with hashes i
 
 > **Good to know**:
 >
-> - Special Route Handlers like [`sitemap.ts`](/docs/app/api-reference/file-conventions/metadata/sitemap), [`opengraph-image.tsx`](/docs/app/api-reference/file-conventions/metadata/opengraph-image), and [`icon.tsx`](/docs/app/api-reference/file-conventions/metadata/app-icons), and other [metadata files](/docs/app/api-reference/file-conventions/metadata) are cached by default.
-> - If using along with [`proxy.ts`](/docs/app/api-reference/file-conventions/proxy), [configure the matcher](/docs/app/api-reference/file-conventions/proxy#matcher) to exclude the metadata files.
+> - Special Route Handlers like [`sitemap.ts`](./sitemap.md), [`opengraph-image.tsx`](./opengraph-image.md), and [`icon.tsx`](./app-icons.md), and other [metadata files](./index.md) are cached by default.
+> - If using along with [`proxy.ts`](../proxy.md), [configure the matcher](../proxy.md#matcher) to exclude the metadata files.

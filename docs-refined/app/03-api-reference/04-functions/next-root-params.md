@@ -2,16 +2,9 @@
 title: next/root-params
 nav_title: root-params
 description: API Reference for the next/root-params module that provides access to root-level route parameters.
-related:
- description: Related API references and conventions.
- links:
-  - app/api-reference/file-conventions/layout
-  - app/api-reference/functions/generate-static-params
-  - app/api-reference/directives/use-cache
-  - app/api-reference/file-conventions/dynamic-routes
 ---
 
-The `next/root-params` module provides getter functions for accessing root-level [parameters](/docs/app/api-reference/file-conventions/dynamic-routes) in [**Server Components**](/docs/app/glossary#server-component). Each root parameter is exported as an async function that resolves to the parameter value for the current route.
+The `next/root-params` module provides getter functions for accessing root-level [parameters](../03-file-conventions/dynamic-routes.md) in [**Server Components**](../../04-glossary.md#server-component). Each root parameter is exported as an async function that resolves to the parameter value for the current route.
 
 The export names are generated from your dynamic segment folder names. For example, if your root layout is inside `app/[locale]`, you import `locale` from `next/root-params`.
 
@@ -41,17 +34,17 @@ export default async function RootLayout({ children }) {
 }
 ```
 
-Root parameters are the [dynamic segments](/docs/app/api-reference/file-conventions/dynamic-routes) that appear before the [root layout](/docs/app/api-reference/file-conventions/layout#root-layout). Unlike the regular [`params` prop](/docs/app/api-reference/file-conventions/page#params-optional), root parameter getters can be called from any Server Component in your application without prop drilling. See [Why root parameters are special](#why-root-parameters-are-special) for more details.
+Root parameters are the [dynamic segments](../03-file-conventions/dynamic-routes.md) that appear before the [root layout](../03-file-conventions/layout.md#root-layout). Unlike the regular [`params` prop](../03-file-conventions/page.md#params-optional), root parameter getters can be called from any Server Component in your application without prop drilling. See [Why root parameters are special](#why-root-parameters-are-special) for more details.
 
 > **Good to know:**
 >
 > - Root parameter names must be valid JavaScript function identifiers. Kebab-cased segment names (e.g. `[post-slug]`) are not supported and will cause an error at dev time or during build.
-> - `next/root-params` can be used in Server Components. It cannot be used in Client Components, Server Actions, or [Route Handlers](/docs/app/api-reference/file-conventions/route). Support for Route Handlers is planned for a future release.
-> - Types for the `next/root-params` exports are generated during `next dev`, `next build`, or [`next typegen`](/docs/app/api-reference/cli/next#next-typegen-options), the same as [`PageProps` and `LayoutProps`](/docs/app/api-reference/config/typescript#route-aware-type-helpers).
+> - `next/root-params` can be used in Server Components. It cannot be used in Client Components, Server Actions, or [Route Handlers](../03-file-conventions/route.md). Support for Route Handlers is planned for a future release.
+> - Types for the `next/root-params` exports are generated during `next dev`, `next build`, or [`next typegen`](../06-cli/next.md#next-typegen-options), the same as [`PageProps` and `LayoutProps`](../05-config/02-typescript.md#route-aware-type-helpers).
 
 ## Root parameters and `generateStaticParams`
 
-Root parameters are available as soon as you create the routes that define them. A [`generateStaticParams`](/docs/app/api-reference/functions/generate-static-params) function is only required with [Cache Components](/docs/app/api-reference/config/next-config-js/cacheComponents), where each root parameter must have at least one value or the build fails.
+Root parameters are available as soon as you create the routes that define them. A [`generateStaticParams`](./generate-static-params.md) function is only required with [Cache Components](../05-config/01-next-config-js/cacheComponents.md), where each root parameter must have at least one value or the build fails.
 
 With a single root parameter:
 
@@ -100,7 +93,7 @@ export async function generateStaticParams() {
 
 ### Reading root parameters in a nested `generateStaticParams`
 
-Inside a nested segment's [`generateStaticParams`](/docs/app/api-reference/functions/generate-static-params), you can read a root parameter directly with its getter, instead of destructuring it from the `params` argument:
+Inside a nested segment's [`generateStaticParams`](./generate-static-params.md), you can read a root parameter directly with its getter, instead of destructuring it from the `params` argument:
 
 ```tsx filename="app/[lang]/posts/[slug]/page.tsx" highlight={1,4} switcher
 import { lang } from 'next/root-params'
@@ -132,7 +125,7 @@ export default async function Page() {
 
 ## Root parameters and other route parameters
 
-Root parameters are the route parameters from [dynamic segments](/docs/app/glossary#dynamic-route-segments) that appear in the path up to the root layout file. Other route parameters deeper in the route tree are accessed through the [`params` prop](/docs/app/api-reference/file-conventions/page#params-optional).
+Root parameters are the route parameters from [dynamic segments](../../04-glossary.md#dynamic-route-segments) that appear in the path up to the root layout file. Other route parameters deeper in the route tree are accessed through the [`params` prop](../03-file-conventions/page.md#params-optional).
 
 Given this file structure:
 
@@ -191,7 +184,7 @@ export async function getTranslations() {
 
 ## Behavior with caching directives
 
-Because root parameter getters are imported functions, Next.js can track which ones a [cached](/docs/app/api-reference/directives/use-cache) function uses. Only those root parameters become part of the [cache key](/docs/app/api-reference/directives/use-cache#cache-keys), so cache entries are not split across unrelated parameter values.
+Because root parameter getters are imported functions, Next.js can track which ones a [cached](../01-directives/use-cache.md) function uses. Only those root parameters become part of the [cache key](../01-directives/use-cache.md#cache-keys), so cache entries are not split across unrelated parameter values.
 
 ```tsx filename="app/[lang]/components/cached-nav.tsx" highlight={7} switcher
 import { lang } from 'next/root-params'
@@ -308,7 +301,7 @@ Since `id` does not exist in the marketing root layout, `await id()` returns `un
 
 ## Catch-all and optional catch-all segments
 
-Root parameters work with [catch-all and optional catch-all](/docs/app/api-reference/file-conventions/dynamic-routes#catch-all-segments) segments:
+Root parameters work with [catch-all and optional catch-all](../03-file-conventions/dynamic-routes.md#catch-all-segments) segments:
 
 ```tsx filename="app/docs/[...path]/layout.tsx" highlight={6} switcher
 import { path } from 'next/root-params'
@@ -352,7 +345,7 @@ If the parameter does not exist in the current route's root layout (see [Multipl
 
 ## Restrictions
 
-Most of these are permanent constraints of how root parameters work. The exception is [Route Handlers](/docs/app/api-reference/file-conventions/route), which are not supported yet but are planned for a future release.
+Most of these are permanent constraints of how root parameters work. The exception is [Route Handlers](../03-file-conventions/route.md), which are not supported yet but are planned for a future release.
 
 ### Server Components only
 
@@ -367,7 +360,7 @@ import { lang } from 'next/root-params' // Error: Cannot import in Client Compon
 
 ### Not available in `unstable_cache`
 
-Calling a root parameter getter inside `unstable_cache` will throw a runtime error. Use [`"use cache"`](/docs/app/api-reference/directives/use-cache) instead.
+Calling a root parameter getter inside `unstable_cache` will throw a runtime error. Use [`"use cache"`](../01-directives/use-cache.md) instead.
 
 ```tsx
 import { lang } from 'next/root-params'
@@ -392,7 +385,7 @@ async function submitForm() {
 
 ## Why root parameters are special
 
-The [root layout](/docs/app/api-reference/file-conventions/layout#root-layout) is the top-level rendering boundary. The route parameters before it are shared by all routes under that root layout, which is what makes them safe to access from any Server Component in that tree. Route parameters deeper in the route vary depending on which child page is being rendered, so they are only available through the [`params` prop](/docs/app/api-reference/file-conventions/page#params-optional) in the page or layout that defines them.
+The [root layout](../03-file-conventions/layout.md#root-layout) is the top-level rendering boundary. The route parameters before it are shared by all routes under that root layout, which is what makes them safe to access from any Server Component in that tree. Route parameters deeper in the route vary depending on which child page is being rendered, so they are only available through the [`params` prop](../03-file-conventions/page.md#params-optional) in the page or layout that defines them.
 
 ```txt
 app/
@@ -416,3 +409,12 @@ The exception is [multiple root layouts](#multiple-root-layouts). When different
 | Version   | Changes                        |
 | --------- | ------------------------------ |
 | `v16.3.0` | `next/root-params` introduced. |
+
+## INDEX
+
+Related API references and conventions.
+
+- [layout.js](../03-file-conventions/layout.md)
+- [generateStaticParams](./generate-static-params.md)
+- [use cache](../01-directives/use-cache.md)
+- [Dynamic Route Segments](../03-file-conventions/dynamic-routes.md)

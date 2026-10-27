@@ -12,7 +12,7 @@ This guide explains how prefetching works, what Next.js prefetches for you, and 
 - [Controlling prefetching](#controlling-prefetching)
 - [Troubleshooting](#troubleshooting)
 
-> **Using Partial Prefetching?** With [`partialPrefetching`](/docs/app/api-reference/config/next-config-js/partialPrefetching) enabled, `<Link>` defaults to prefetching a per-route [App Shell](/docs/app/glossary#app-shell) rather than the full page. See [Partial Prefetching](#partial-prefetching) below and [Adopting Partial Prefetching](/docs/app/guides/adopting-partial-prefetching) for the adoption path.
+> **Using Partial Prefetching?** With [`partialPrefetching`](../03-api-reference/05-config/01-next-config-js/partialPrefetching.md) enabled, `<Link>` defaults to prefetching a per-route [App Shell](../04-glossary.md#app-shell) rather than the full page. See [Partial Prefetching](#partial-prefetching) below and [Adopting Partial Prefetching](./adopting-partial-prefetching.md) for the adoption path.
 
 ## How does prefetching work?
 
@@ -20,7 +20,7 @@ When navigating between routes, the browser requests assets for the page like HT
 
 Next.js automatically splits your application into smaller JavaScript chunks based on routes. Instead of loading all the code upfront like traditional SPAs, only the code needed for the current route is loaded. This reduces the initial load time while other parts of the app are loaded in the background. By the time you click the link, the resources for the new route have already been loaded into the browser cache.
 
-When navigating to the new page, there's no full page reload or browser loading spinner. Instead, Next.js performs a [client-side transition](/docs/app/getting-started/linking-and-navigating#client-side-transitions), making the page navigation feel instant.
+When navigating to the new page, there's no full page reload or browser loading spinner. Instead, Next.js performs a [client-side transition](../01-getting-started/04-linking-and-navigating.md#client-side-transitions), making the page navigation feel instant.
 
 ## What Next.js prefetches automatically
 
@@ -28,13 +28,13 @@ Next.js prefetches automatically in production. As each `<Link>` enters the view
 
 ### Prefetching static vs. dynamic routes
 
-Without Cache Components, a static route is prefetched in full, while a dynamic route is skipped unless it has a [`loading.js`](/docs/app/api-reference/file-conventions/loading) boundary.
+Without Cache Components, a static route is prefetched in full, while a dynamic route is skipped unless it has a [`loading.js`](../03-api-reference/03-file-conventions/loading.md) boundary.
 
 | | **Static page** | **Dynamic page** |
 | - | - | - |
-| **Prefetched** | Yes, full route | No, unless [`loading.js`](/docs/app/api-reference/file-conventions/loading) |
-| [**Client Cache TTL**](/docs/app/glossary#client-cache) | 5 min (default) | Off, unless [enabled](/docs/app/api-reference/config/next-config-js/staleTimes) |
-| **Server roundtrip on click** | No | Yes, streamed after [shell](/docs/app/getting-started/caching) |
+| **Prefetched** | Yes, full route | No, unless [`loading.js`](../03-api-reference/03-file-conventions/loading.md) |
+| [**Client Cache TTL**](../04-glossary.md#client-cache) | 5 min (default) | Off, unless [enabled](../03-api-reference/05-config/01-next-config-js/staleTimes.md) |
+| **Server roundtrip on click** | No | Yes, streamed after [shell](../01-getting-started/08-caching.md) |
 
 > **Good to know:** During the initial navigation, the browser fetches the HTML, JavaScript, and React Server Components (RSC) Payload. For subsequent navigations, the browser will fetch the RSC Payload for Server Components and JS bundle for Client Components.
 
@@ -58,8 +58,8 @@ export default function NavLink() {
 
 | **Context** | **Prefetched payload** | **Client Cache TTL** |
 | - | - | - |
-| No `loading.js` | Entire page | 5 min ([`staleTimes.static`](/docs/app/api-reference/config/next-config-js/staleTimes)) |
-| With `loading.js` | Layout to first loading boundary | Off by default ([`staleTimes.dynamic`](/docs/app/api-reference/config/next-config-js/staleTimes)) |
+| No `loading.js` | Entire page | 5 min ([`staleTimes.static`](../03-api-reference/05-config/01-next-config-js/staleTimes.md)) |
+| With `loading.js` | Layout to first loading boundary | Off by default ([`staleTimes.dynamic`](../03-api-reference/05-config/01-next-config-js/staleTimes.md)) |
 
 Automatic prefetching runs only in production. Disable with `prefetch={false}` or use the wrapper in [Disabled Prefetch](#disabled-prefetch).
 
@@ -74,7 +74,7 @@ Next.js maintains a small task queue, which prefetches in the following order:
 
 The scheduler prioritizes likely navigations while minimizing unused downloads.
 
-> **Good to know**: With the **experimental** [`useOffline`](/docs/app/guides/offline-support) config enabled, pending prefetches resume through this queue when the app recovers from a connectivity drop.
+> **Good to know**: With the **experimental** [`useOffline`](./offline-support.md) config enabled, pending prefetches resume through this queue when the app recovers from a connectivity drop.
 
 ### Client cache
 
@@ -82,13 +82,13 @@ Next.js stores prefetched React Server Component payloads in memory, keyed by ro
 
 ### Partial Prefetching
 
-With [Partial Prefetching](/docs/app/glossary#partial-prefetching) enabled via the [`partialPrefetching`](/docs/app/api-reference/config/next-config-js/partialPrefetching) config (which requires [Cache Components](/docs/app/getting-started/caching)), prefetching switches from the all-or-nothing model above to a per-route [App Shell](/docs/app/glossary#app-shell):
+With [Partial Prefetching](../04-glossary.md#partial-prefetching) enabled via the [`partialPrefetching`](../03-api-reference/05-config/01-next-config-js/partialPrefetching.md) config (which requires [Cache Components](../01-getting-started/08-caching.md)), prefetching switches from the all-or-nothing model above to a per-route [App Shell](../04-glossary.md#app-shell):
 
 - **One shell per route, shared across links.** `<Link>` prefetches the route's App Shell, which holds its static and session output. Any number of links to the same route reuse that one shell, fetched once as the first link enters the viewport, so a page with many links makes fewer prefetch requests than prefetching each route in full.
-- **The rest streams in.** Uncached data streams in after navigation, behind the shell's `<Suspense>` boundaries. A link can also resolve its URL data (`searchParams`, `params`) at prefetch time with [`prefetch={true}`](/docs/app/guides/optimizing-prefetching).
+- **The rest streams in.** Uncached data streams in after navigation, behind the shell's `<Suspense>` boundaries. A link can also resolve its URL data (`searchParams`, `params`) at prefetch time with [`prefetch={true}`](./optimizing-prefetching.md).
 - **Invalidations refresh prefetches.** Data invalidations (`revalidateTag`, `revalidatePath`) silently refresh associated prefetches.
 
-See [Adopting Partial Prefetching](/docs/app/guides/adopting-partial-prefetching) for the behavior change and the recommended adoption path. See [Optimizing prefetching](/docs/app/guides/optimizing-prefetching) to resolve cached URL-specific content before navigation with `prefetch={true}`.
+See [Adopting Partial Prefetching](./adopting-partial-prefetching.md) for the behavior change and the recommended adoption path. See [Optimizing prefetching](./optimizing-prefetching.md) to resolve cached URL-specific content before navigation with `prefetch={true}`.
 
 ## Controlling prefetching
 
@@ -98,7 +98,7 @@ Next.js prefetches with defaults you can tune per link when they don't fit your 
 
 To prefetch manually, import the `useRouter` hook from `next/navigation`, then call `router.prefetch()` to warm routes outside the viewport or in response to analytics, hover, or scroll.
 
-With [Partial Prefetching](#partial-prefetching), `router.prefetch(href)` requests the same App Shell as a default `<Link>`. Pass `{ kind: 'full' }` to also request the per-link stage, matching `<Link prefetch={true}>`. The per-link stage can include cacheable content below [`await prefetch()`](/docs/app/api-reference/functions/prefetch).
+With [Partial Prefetching](#partial-prefetching), `router.prefetch(href)` requests the same App Shell as a default `<Link>`. Pass `{ kind: 'full' }` to also request the per-link stage, matching `<Link prefetch={true}>`. The per-link stage can include cacheable content below [`await prefetch()`](../03-api-reference/04-functions/prefetch.md).
 
 ```tsx
 'use client'
@@ -148,13 +148,13 @@ export function HoverPrefetchLink({ href, children }: { href: string; children: 
 
 `prefetch={null}` restores default prefetching once the user shows intent.
 
-With [Partial Prefetching](/docs/app/guides/adopting-partial-prefetching), use `prefetch={active ? true : 'auto'}` instead. The `'auto'` value keeps the shared App Shell prefetched before the user shows intent, while `true` resolves cached URL-specific content before navigation after they do. Using `false` before intent disables the App Shell prefetch.
+With [Partial Prefetching](./adopting-partial-prefetching.md), use `prefetch={active ? true : 'auto'}` instead. The `'auto'` value keeps the shared App Shell prefetched before the user shows intent, while `true` resolves cached URL-specific content before navigation after they do. Using `false` before intent disables the App Shell prefetch.
 
 ### Extending or ejecting link
 
 You can extend the `<Link>` component to create your own custom prefetching strategy. For example, using the [ForesightJS](https://foresightjs.com/docs/integrations/nextjs) library which prefetches links by predicting the direction of the user's cursor.
 
-Alternatively, you can use [`useRouter`](/docs/app/api-reference/functions/use-router) to recreate some of the native `<Link>` behavior. However, be aware this opts you into maintaining prefetching and cache invalidation.
+Alternatively, you can use [`useRouter`](../03-api-reference/04-functions/use-router.md) to recreate some of the native `<Link>` behavior. However, be aware this opts you into maintaining prefetching and cache invalidation.
 
 ```tsx
 'use client'
@@ -189,7 +189,7 @@ function ManualPrefetchLink({ href, children }: { href: string; children: React.
 }
 ```
 
-Next.js invokes [`onInvalidate`](/docs/app/api-reference/functions/use-router#userouter) when it suspects cached data is stale, so you can refresh the prefetch.
+Next.js invokes [`onInvalidate`](../03-api-reference/04-functions/use-router.md#userouter) when it suspects cached data is stale, so you can refresh the prefetch.
 
 > **Good to know:** An `a` tag triggers a full page navigation. Use `onClick` to prevent it, then call `router.push` to navigate on the client.
 

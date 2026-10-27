@@ -45,9 +45,9 @@ export default function ExampleClientComponent() {
 
 > **Good to know**:
 >
-> - Since `useSelectedLayoutSegments` is a [Client Component](/docs/app/getting-started/server-and-client-components) hook, and Layouts are [Server Components](/docs/app/getting-started/server-and-client-components) by default, `useSelectedLayoutSegments` is usually called via a Client Component that is imported into a Layout.
-> - The returned segments include [Route Groups](/docs/app/api-reference/file-conventions/route-groups), which you might not want to be included in your UI. You can use the [`filter`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) array method to remove items that start with a bracket.
-> - For [catch-all](/docs/app/api-reference/file-conventions/dynamic-routes#catch-all-segments) routes, the matched segments are returned as a single joined string within the array. For example, given `app/blog/[...slug]/page.js`, calling from `app/layout.js` when visiting `/blog/a/b/c` returns `['blog', 'a/b/c']`, not `['blog', 'a', 'b', 'c']`.
+> - Since `useSelectedLayoutSegments` is a [Client Component](../../01-getting-started/05-server-and-client-components.md) hook, and Layouts are [Server Components](../../01-getting-started/05-server-and-client-components.md) by default, `useSelectedLayoutSegments` is usually called via a Client Component that is imported into a Layout.
+> - The returned segments include [Route Groups](../03-file-conventions/route-groups.md), which you might not want to be included in your UI. You can use the [`filter`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) array method to remove items that start with a bracket.
+> - For [catch-all](../03-file-conventions/dynamic-routes.md#catch-all-segments) routes, the matched segments are returned as a single joined string within the array. For example, given `app/blog/[...slug]/page.js`, calling from `app/layout.js` when visiting `/blog/a/b/c` returns `['blog', 'a/b/c']`, not `['blog', 'a', 'b', 'c']`.
 
 ## Parameters
 
@@ -55,7 +55,7 @@ export default function ExampleClientComponent() {
 const segments = useSelectedLayoutSegments(parallelRouteKey?: string)
 ```
 
-`useSelectedLayoutSegments` _optionally_ accepts a [`parallelRouteKey`](/docs/app/api-reference/file-conventions/parallel-routes#with-useselectedlayoutsegments), which allows you to read the active route segment within that slot.
+`useSelectedLayoutSegments` _optionally_ accepts a [`parallelRouteKey`](../03-file-conventions/parallel-routes.md#with-useselectedlayoutsegments), which allows you to read the active route segment within that slot.
 
 ## Returns
 
@@ -82,10 +82,10 @@ For catch-all routes (`[...slug]`), all matched path segments are returned as a 
 
 ### Cache Components
 
-When [`cacheComponents`](/docs/app/api-reference/config/next-config-js/cacheComponents) is enabled, `useSelectedLayoutSegments` may require a [`Suspense`](https://react.dev/reference/react/Suspense) boundary. This depends on whether the active segments can be resolved during prerendering.
+When [`cacheComponents`](../05-config/01-next-config-js/cacheComponents.md) is enabled, `useSelectedLayoutSegments` may require a [`Suspense`](https://react.dev/reference/react/Suspense) boundary. This depends on whether the active segments can be resolved during prerendering.
 
-- **Static routes and routes with [`generateStaticParams`](/docs/app/api-reference/functions/generate-static-params)**: every route segment, including dynamic params, is known at build time. The active segments can be resolved during prerendering, so `useSelectedLayoutSegments` resolves on the server and no `Suspense` boundary is required.
-- **Routes with dynamic params not covered by `generateStaticParams`**: the param is a [fallback param](/docs/app/api-reference/functions/generate-static-params#all-paths-at-build-time) that is not known until request time. The active segments cannot be resolved during prerendering, so `useSelectedLayoutSegments` suspends. Wrap the component (or a parent) in a `Suspense` boundary so its fallback can be rendered during prerendering; otherwise, the build fails.
+- **Static routes and routes with [`generateStaticParams`](./generate-static-params.md)**: every route segment, including dynamic params, is known at build time. The active segments can be resolved during prerendering, so `useSelectedLayoutSegments` resolves on the server and no `Suspense` boundary is required.
+- **Routes with dynamic params not covered by `generateStaticParams`**: the param is a [fallback param](./generate-static-params.md#all-paths-at-build-time) that is not known until request time. The active segments cannot be resolved during prerendering, so `useSelectedLayoutSegments` suspends. Wrap the component (or a parent) in a `Suspense` boundary so its fallback can be rendered during prerendering; otherwise, the build fails.
 
 This applies even when the component that calls `useSelectedLayoutSegments` is itself static. For example, a breadcrumb component rendered in a parent layout suspends on any page below it that has an unknown dynamic param. To keep the rest of the layout prerendered, wrap the component that calls `useSelectedLayoutSegments` (or a parent) in a `Suspense` boundary with a fallback.
 

@@ -1,14 +1,9 @@
 ---
 title: Font Optimization
 description: Learn how to optimize fonts in Next.js
-related:
- title: API Reference
- description: See the API Reference for the full feature set of Next.js Font
- links:
-  - app/api-reference/components/font
 ---
 
-The [`next/font`](/docs/app/api-reference/components/font) module automatically optimizes your fonts and removes external network requests for improved privacy and performance.
+The [`next/font`](../03-api-reference/02-components/font.md) module automatically optimizes your fonts and removes external network requests for improved privacy and performance.
 
 It includes **built-in self-hosting** for any font file. This means you can optimally load web fonts with no layout shift.
 
@@ -48,7 +43,7 @@ export default function Layout({ children }) {
 }
 ```
 
-Fonts are scoped to the component they're used in. To apply a font to your entire application, add it to the [Root Layout](/docs/app/api-reference/file-conventions/layout#root-layout).
+Fonts are scoped to the component they're used in. To apply a font to your entire application, add it to the [Root Layout](../03-api-reference/03-file-conventions/layout.md#root-layout).
 
 ## Google fonts
 
@@ -134,7 +129,7 @@ export default function RootLayout({ children }) {
 
 ## Local fonts
 
-To use a local font, import the `localFont` function from `next/font/local` and specify the [`src`](/docs/app/api-reference/components/font#src) of your local font file. The path is resolved relative to the file where `localFont` is called. Fonts can be stored anywhere in the project, including the [`public`](/docs/app/api-reference/file-conventions/public-folder) folder or co-located inside the `app` folder. For example, to use a font stored in `app/fonts/`:
+To use a local font, import the `localFont` function from `next/font/local` and specify the [`src`](../03-api-reference/02-components/font.md#src) of your local font file. The path is resolved relative to the file where `localFont` is called. Fonts can be stored anywhere in the project, including the [`public`](../03-api-reference/03-file-conventions/public-folder.md) folder or co-located inside the `app` folder. For example, to use a font stored in `app/fonts/`:
 
 ```tsx filename="app/layout.tsx" switcher
 import localFont from 'next/font/local'
@@ -200,3 +195,9 @@ const roboto = localFont({
 	],
 })
 ```
+
+## INDEX
+
+See the API Reference for the full feature set of Next.js Font
+
+- [Font Module](../03-api-reference/02-components/font.md)

@@ -6,7 +6,7 @@ description: Style your Next.js Application using Tailwind CSS v3 for broader br
 
 This guide will walk you through how to install [Tailwind CSS v3](https://v3.tailwindcss.com/) in your Next.js application.
 
-> **Good to know:** For the latest Tailwind 4 setup, see the [Tailwind CSS setup instructions](/docs/app/getting-started/css#tailwind-css).
+> **Good to know:** For the latest Tailwind 4 setup, see the [Tailwind CSS setup instructions](../01-getting-started/11-css.md#tailwind-css).
 
 ## Installing Tailwind v3
 

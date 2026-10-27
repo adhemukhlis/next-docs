@@ -4,12 +4,12 @@ description: Configure coding agent upgrades and reminders.
 version: experimental
 related:
  links:
-  - app/guides/upgrading/agent-upgrade
-  - app/guides/ai-agents
-  - app/api-reference/cli/next
+  - ../../../02-guides/upgrading/agent-upgrade.md
+  - ../../../02-guides/ai-agents.md
+  - ../../06-cli/next.md
 ---
 
-The `experimental.agentUpgrade` option selects the default policy for [`next upgrade --agent`](/docs/app/guides/upgrading/agent-upgrade) and controls upgrade reminders during `next dev` and `next build`. It uses the `security` policy by default.
+The `experimental.agentUpgrade` option selects the default policy for [`next upgrade --agent`](../../../02-guides/upgrading/agent-upgrade.md) and controls upgrade reminders during `next dev` and `next build`. It uses the `security` policy by default.
 
 ```ts filename="next.config.ts" switcher highlight={5}
 import type { NextConfig } from 'next'
@@ -36,12 +36,12 @@ module.exports = nextConfig
 
 The option accepts these values:
 
-| Value                 | Behavior                                                                                                                                   |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `false`               | Disables upgrade reminders.                                                                                                                |
-| `security` (default)  | Checks stable installations for security advisories and recommends a safe upgrade when one is available.                                   |
-| `latest`              | Recommends a newer major or minor release on the app's current stable or canary channel.                                                   |
-| `experimental-future` | Uses the `latest` policy and also recommends applicable [Future Defaults](/docs/app/guides/upgrading/agent-upgrade#adopt-future-defaults). |
+| Value                 | Behavior                                                                                                                                        |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `false`               | Disables upgrade reminders.                                                                                                                     |
+| `security` (default)  | Checks stable installations for security advisories and recommends a safe upgrade when one is available.                                        |
+| `latest`              | Recommends a newer major or minor release on the app's current stable or canary channel.                                                        |
+| `experimental-future` | Uses the `latest` policy and also recommends applicable [Future Defaults](../../../02-guides/upgrading/agent-upgrade.md#adopt-future-defaults). |
 
 The option does not upgrade the app automatically. It only controls reminders and the policy used when `next upgrade --agent` does not include a value.
 

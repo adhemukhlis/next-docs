@@ -3,15 +3,15 @@ title: redirect
 description: API Reference for the redirect function.
 related:
  links:
-  - app/api-reference/functions/permanentRedirect
-  - app/guides/server-actions
+  - ./permanentRedirect.md
+  - ../../02-guides/server-actions.md
 ---
 
-The `redirect` function allows you to redirect the user to another URL. `redirect` can be used while rendering in [Server and Client Components](/docs/app/getting-started/server-and-client-components), [Route Handlers](/docs/app/api-reference/file-conventions/route), and [Server Functions](/docs/app/getting-started/mutating-data).
+The `redirect` function allows you to redirect the user to another URL. `redirect` can be used while rendering in [Server and Client Components](../../01-getting-started/05-server-and-client-components.md), [Route Handlers](../03-file-conventions/route.md), and [Server Functions](../../01-getting-started/07-mutating-data.md).
 
-When used in a [streaming context](/docs/app/getting-started/linking-and-navigating#streaming), this will insert a meta tag to emit the redirect on the client side. In a Server Action, `redirect` performs a client-side navigation when JavaScript is available. For progressive enhancement form submissions, it serves a 303 HTTP redirect response. Otherwise, it serves a 307 HTTP redirect response.
+When used in a [streaming context](../../01-getting-started/04-linking-and-navigating.md#streaming), this will insert a meta tag to emit the redirect on the client side. In a Server Action, `redirect` performs a client-side navigation when JavaScript is available. For progressive enhancement form submissions, it serves a 303 HTTP redirect response. Otherwise, it serves a 307 HTTP redirect response.
 
-If a resource doesn't exist, you can use the [`notFound` function](/docs/app/api-reference/functions/not-found) instead.
+If a resource doesn't exist, you can use the [`notFound` function](./not-found.md) instead.
 
 ## Reference
 
@@ -28,7 +28,7 @@ redirect(path, type)
 | `path`    | `string`                                                      | The URL to redirect to. Can be a relative or absolute path. |
 | `type`    | `'replace'` (default) or `'push'` (default in Server Actions) | The type of redirect to perform.                            |
 
-By default, `redirect` will use `push` (adding a new entry to the browser history stack) in [Server Actions](/docs/app/getting-started/mutating-data) and `replace` (replacing the current URL in the browser history stack) everywhere else. You can override this behavior by specifying the `type` parameter.
+By default, `redirect` will use `push` (adding a new entry to the browser history stack) in [Server Actions](../../01-getting-started/07-mutating-data.md) and `replace` (replacing the current URL in the browser history stack) everywhere else. You can override this behavior by specifying the `type` parameter.
 
 The `RedirectType` object contains the available options for the `type` parameter.
 
@@ -49,11 +49,11 @@ The `type` parameter has no effect when used in Server Components.
 ## Behavior
 
 - In Server Actions and Route Handlers, redirect should be called **outside** the `try` block when using `try/catch` statements.
-- If you prefer to return a 308 (Permanent) HTTP redirect instead of 307 (Temporary), you can use the [`permanentRedirect` function](/docs/app/api-reference/functions/permanentRedirect) instead.
+- If you prefer to return a 308 (Permanent) HTTP redirect instead of 307 (Temporary), you can use the [`permanentRedirect` function](./permanentRedirect.md) instead.
 - `redirect` throws an error so it should be called **outside** the `try` block when using `try/catch` statements.
-- `redirect` can be called in Client Components during the rendering process but not in event handlers. You can use the [`useRouter` hook](/docs/app/api-reference/functions/use-router) instead.
+- `redirect` can be called in Client Components during the rendering process but not in event handlers. You can use the [`useRouter` hook](./use-router.md) instead.
 - `redirect` also accepts absolute URLs and can be used to redirect to external links.
-- If you'd like to redirect before the render process, use [`next.config.js`](/docs/app/guides/redirecting#redirects-in-nextconfigjs) or [Proxy](/docs/app/guides/redirecting#nextresponseredirect-in-proxy).
+- If you'd like to redirect before the render process, use [`next.config.js`](../../02-guides/redirecting.md#redirects-in-nextconfigjs) or [Proxy](../../02-guides/redirecting.md#nextresponseredirect-in-proxy).
 
 ## Example
 
@@ -143,7 +143,7 @@ export function ClientRedirect() {
 
 > **Good to know**: When using `redirect` in a Client Component on initial page load during Server-Side Rendering (SSR), it will perform a server-side redirect.
 
-`redirect` can be used in a Client Component through a Server Action. If you need to use an event handler to redirect the user, you can use the [`useRouter`](/docs/app/api-reference/functions/use-router) hook.
+`redirect` can be used in a Client Component through a Server Action. If you need to use an event handler to redirect the user, you can use the [`useRouter`](./use-router.md) hook.
 
 ```tsx filename="app/client-redirect.tsx" switcher
 'use client'

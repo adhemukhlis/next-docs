@@ -5,19 +5,19 @@ description: Fetch client-side data with SWR, optionally provide initial data fr
 related:
  description: Related guides and references.
  links:
-  - app/getting-started/fetching-data
-  - app/guides/single-page-applications
-  - app/getting-started/caching
-  - app/api-reference/directives/use-cache
-  - app/api-reference/file-conventions/route
-  - app/api-reference/functions/updateTag
+  - ../../01-getting-started/06-fetching-data.md
+  - ../single-page-applications.md
+  - ../../01-getting-started/08-caching.md
+  - ../../03-api-reference/01-directives/use-cache.md
+  - ../../03-api-reference/03-file-conventions/route.md
+  - ../../03-api-reference/04-functions/updateTag.md
 ---
 
-Use [SWR](https://swr.vercel.app) to fetch data in Client Components, provide initial data from Server Components, and coordinate browser mutations with cached server data. See [Client-side data fetching](/docs/app/guides/client-side-data-fetching) to choose a pattern.
+Use [SWR](https://swr.vercel.app) to fetch data in Client Components, provide initial data from Server Components, and coordinate browser mutations with cached server data. See [Client-side data fetching](./index.md) to choose a pattern.
 
 ## Fetch data on the client
 
-SWR can fetch entirely in the browser when the initial view can wait for a browser request after hydration. Choose an [inline or Suspense loading state](/docs/app/guides/client-side-data-fetching#choose-a-client-fetching-pattern) based on where the loading UI should appear. In these examples, `query` starts empty and updates from client state after hydration.
+SWR can fetch entirely in the browser when the initial view can wait for a browser request after hydration. Choose an [inline or Suspense loading state](./index.md#choose-a-client-fetching-pattern) based on where the loading UI should appear. In these examples, `query` starts empty and updates from client state after hydration.
 
 Use `useSWR` when the component should render its own loading and error states. A conditional key delays the request until the interaction provides an input:
 
@@ -92,7 +92,7 @@ function ProductResults({ query }: { query: string }) {
 }
 ```
 
-With an unconditional key, SWR defines `data` after Suspense resolves. Handle request errors with the nearest [error boundary](/docs/app/getting-started/error-handling#nested-error-boundaries).
+With an unconditional key, SWR defines `data` after Suspense resolves. Handle request errors with the nearest [error boundary](../../01-getting-started/10-error-handling.md#nested-error-boundaries).
 
 The `isLoading` value is `true` when a request is running and there is no loaded data to display. The `isValidating` value is `true` whenever a request is running, including background revalidation.
 
@@ -100,11 +100,11 @@ With `suspense: true`, Suspense handles the initial no-data state. Later revalid
 
 Learn more: [SWR data fetching](https://swr.vercel.app/docs/data-fetching).
 
-> **Good to know:** Independent Suspense reads can start in parallel when they render in sibling components. Multiple Suspense reads in one component run sequentially. Learn more about [network waterfalls](/docs/app/guides/migrating/from-create-react-app#network-waterfalls) and [SWR Suspense](https://swr.vercel.app/docs/suspense).
+> **Good to know:** Independent Suspense reads can start in parallel when they render in sibling components. Multiple Suspense reads in one component run sequentially. Learn more about [network waterfalls](../migrating/from-create-react-app.md#network-waterfalls) and [SWR Suspense](https://swr.vercel.app/docs/suspense).
 
 ## Provide initial data from a Server Component
 
-Use the [server-provided data pattern](/docs/app/guides/client-side-data-fetching#choose-a-client-fetching-pattern) when the initial render needs the data and SWR should continue managing it in the browser. With SWR 2.3.0 and React 19, a Server Component can provide fallback data before the client takes over.
+Use the [server-provided data pattern](./index.md#choose-a-client-fetching-pattern) when the initial render needs the data and SWR should continue managing it in the browser. With SWR 2.3.0 and React 19, a Server Component can provide fallback data before the client takes over.
 
 Scope `<SWRConfig>` to the route segment that owns the data. The provider keeps the `fallback` close to its consumer and avoids adding feature data to a shared layout:
 
@@ -238,13 +238,13 @@ SWR does not provide a time-based freshness window for fallback data. Setting `r
 
 Focus, reconnect, polling, and `mutate` can still revalidate the key. To refresh on a schedule, set [`refreshInterval`](https://swr.vercel.app/docs/revalidation#revalidate-on-interval).
 
-The SWR key points to a [Route Handler](/docs/app/api-reference/file-conventions/route) with a `GET` method. The Route Handler can call the same `getProduct` function that provides the fallback, while the browser uses the URL for revalidation and polling.
+The SWR key points to a [Route Handler](../../03-api-reference/03-file-conventions/route.md) with a `GET` method. The Route Handler can call the same `getProduct` function that provides the fallback, while the browser uses the URL for revalidation and polling.
 
 Learn more: [SWR arguments and keys](https://swr.vercel.app/docs/arguments) and [SWR with Next.js App Router](https://swr.vercel.app/docs/with-nextjs).
 
 ## Cache server-provided data with Cache Components
 
-Enable [`cacheComponents`](/docs/app/api-reference/config/next-config-js/cacheComponents) in `next.config.ts` before using this pattern. You can then cache the server data used as the SWR fallback. Add [`use cache`](/docs/app/api-reference/directives/use-cache), choose a [`cacheLife`](/docs/app/api-reference/functions/cacheLife) profile, and apply [`cacheTag`](/docs/app/api-reference/functions/cacheTag) so mutations can invalidate it:
+Enable [`cacheComponents`](../../03-api-reference/05-config/01-next-config-js/cacheComponents.md) in `next.config.ts` before using this pattern. You can then cache the server data used as the SWR fallback. Add [`use cache`](../../03-api-reference/01-directives/use-cache.md), choose a [`cacheLife`](../../03-api-reference/04-functions/cacheLife.md) profile, and apply [`cacheTag`](../../03-api-reference/04-functions/cacheTag.md) so mutations can invalidate it:
 
 ```ts filename="app/products/[id]/data.ts" switcher
 import { cacheLife, cacheTag } from 'next/cache'
@@ -376,7 +376,7 @@ export function MarkReadButton() {
 }
 ```
 
-The Server Action writes to the database and expires the tagged server data with [`updateTag`](/docs/app/api-reference/functions/updateTag). Tag the cached server query with [`cacheTag`](/docs/app/api-reference/functions/cacheTag) so the tag matches:
+The Server Action writes to the database and expires the tagged server data with [`updateTag`](../../03-api-reference/04-functions/updateTag.md). Tag the cached server query with [`cacheTag`](../../03-api-reference/04-functions/cacheTag.md) so the tag matches:
 
 ```ts filename="app/activity/actions.ts" switcher
 'use server'
@@ -408,6 +408,6 @@ export async function markActivityReadAction() {
 
 The optimistic SWR value updates the current screen. `updateTag` ensures the next cached server read returns fresh activity.
 
-> **Good to know:** Call `updateTag` when a Server Action changes a cached read that must reflect the write immediately. An uncached read does not have a server tag to update. See [Client-side data fetching](/docs/app/guides/client-side-data-fetching#coordinate-mutations) for other invalidation behaviors.
+> **Good to know:** Call `updateTag` when a Server Action changes a cached read that must reflect the write immediately. An uncached read does not have a server tag to update. See [Client-side data fetching](./index.md#coordinate-mutations) for other invalidation behaviors.
 
 See the [live `next-spa-patterns` demo](https://next-spa-patterns.labs.vercel.dev/swr) and its [source code](https://github.com/nextjs/next-spa-patterns/tree/main/app/swr). Learn more about [SWR mutation and optimistic updates](https://swr.vercel.app/docs/mutation) and the [SWR documentation](https://swr.vercel.app/docs/getting-started).

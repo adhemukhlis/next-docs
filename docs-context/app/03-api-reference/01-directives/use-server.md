@@ -5,7 +5,7 @@ description: Learn how to use the use server directive to execute code on the se
 
 The `use server` directive designates a function or file to be executed on the **server side**. It can be used at the top of a file to indicate that all functions in the file are server-side, or inline at the top of a function to mark the function as a [Server Function](https://19.react.dev/reference/rsc/server-functions). This is a React feature.
 
-For Next.js-specific Server Action behaviors (response model, security, configuration, deployment), see [Server Actions and Mutations](/docs/app/guides/server-actions).
+For Next.js-specific Server Action behaviors (response model, security, configuration, deployment), see [Server Actions and Mutations](../../02-guides/server-actions.md).
 
 ## Using `use server` at the top of a file
 
@@ -159,7 +159,7 @@ export default async function PostPage({ params }) {
 
 ## Security considerations
 
-Design your data access functions as secure primitives: validate inputs, check authentication and authorization, and constrain return types to only what the caller needs. When Server Functions delegate to a [Data Access Layer](/docs/app/guides/data-security#using-a-data-access-layer-for-mutations), these guarantees live in one place and apply consistently.
+Design your data access functions as secure primitives: validate inputs, check authentication and authorization, and constrain return types to only what the caller needs. When Server Functions delegate to a [Data Access Layer](../../02-guides/data-security.md#using-a-data-access-layer-for-mutations), these guarantees live in one place and apply consistently.
 
 ### Authentication and authorization
 
@@ -199,7 +199,7 @@ export async function createUser(data) {
 
 ### Return values
 
-Server Function return values are serialized and sent to the client. Only return data the UI needs, not raw database records. See the [Data Security guide](/docs/app/guides/data-security#controlling-return-values) for more details.
+Server Function return values are serialized and sent to the client. Only return data the UI needs, not raw database records. See the [Data Security guide](../../02-guides/data-security.md#controlling-return-values) for more details.
 
 ## Reference
 

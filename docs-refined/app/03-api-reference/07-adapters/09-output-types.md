@@ -207,7 +207,7 @@ Static assets and auto-statically optimized pages:
 }
 ```
 
-See [Supporting immutable static assets](/docs/app/api-reference/adapters/immutable-static-assets) for more information about `immutableHash`.
+See [Supporting immutable static assets](./12-immutable-static-assets.md) for more information about `immutableHash`.
 
 ## Middleware (`outputs.middleware`)
 

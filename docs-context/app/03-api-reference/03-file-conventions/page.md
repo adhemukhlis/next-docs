@@ -23,7 +23,7 @@ export default function Page({ params, searchParams }) {
 - A `page` is always the **leaf** of the route subtree.
 - A `page` file is required to make a route segment **publicly accessible**.
 - Pages are [Server Components](https://react.dev/reference/rsc/server-components) by default, but can be set to a [Client Component](https://react.dev/reference/rsc/use-client).
-- In the [component hierarchy](/docs/app/getting-started/project-structure#component-hierarchy), `page.js` is the innermost file convention. It is wrapped by `loading.js` (Suspense boundary), `error.js` (error boundary), `template.js`, and `layout.js` in the same segment.
+- In the [component hierarchy](../../01-getting-started/02-project-structure.md#component-hierarchy), `page.js` is the innermost file convention. It is wrapped by `loading.js` (Suspense boundary), `error.js` (error boundary), `template.js`, and `layout.js` in the same segment.
 
 ## Reference
 
@@ -31,7 +31,7 @@ export default function Page({ params, searchParams }) {
 
 #### `params` (optional)
 
-A promise that resolves to an object containing the [dynamic route parameters](/docs/app/api-reference/file-conventions/dynamic-routes) from the root segment down to that page.
+A promise that resolves to an object containing the [dynamic route parameters](./dynamic-routes.md) from the root segment down to that page.
 
 ```tsx filename="app/shop/[slug]/page.tsx" switcher
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
@@ -98,8 +98,8 @@ export default function Page({ searchParams }) {
 
 - Since the `searchParams` prop is a promise. You must use `async/await` or React's [`use`](https://react.dev/reference/react/use) function to access the values.
   - In version 14 and earlier, `searchParams` was a synchronous prop. To help with backwards compatibility, you can still access it synchronously in Next.js 15, but this behavior will be deprecated in the future.
-- `searchParams` is a **[Request-time API](/docs/app/glossary#request-time-apis)** whose values cannot be known ahead of time. Using it will opt the page into **[dynamic rendering](/docs/app/glossary#dynamic-rendering)** at request time.
-- With [Cache Components](/docs/app/getting-started/caching), where you access `searchParams` in the component tree determines how much of the page can be prerendered. See [Maximizing the static shell](/docs/app/getting-started/caching#maximizing-the-static-shell).
+- `searchParams` is a **[Request-time API](../../04-glossary.md#request-time-apis)** whose values cannot be known ahead of time. Using it will opt the page into **[dynamic rendering](../../04-glossary.md#dynamic-rendering)** at request time.
+- With [Cache Components](../../01-getting-started/08-caching.md), where you access `searchParams` in the component tree determines how much of the page can be prerendered. See [Maximizing the static shell](../../01-getting-started/08-caching.md#maximizing-the-static-shell).
 - `searchParams` is a plain JavaScript object, not a `URLSearchParams` instance.
 
 ### Page Props Helper
@@ -125,7 +125,7 @@ export default async function Page(props: PageProps<'/blog/[slug]'>) {
 
 ### Displaying content based on `params`
 
-Using [dynamic route segments](/docs/app/api-reference/file-conventions/dynamic-routes), you can display or fetch specific content for the page based on the `params` prop.
+Using [dynamic route segments](./dynamic-routes.md), you can display or fetch specific content for the page based on the `params` prop.
 
 ```tsx filename="app/blog/[slug]/page.tsx" switcher
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
@@ -205,5 +205,5 @@ export default function Page({ params, searchParams }) {
 
 | Version | Changes |
 | - | - |
-| `v15.0.0-RC` | `params` and `searchParams` are now promises. A [codemod](/docs/app/guides/upgrading/codemods#150) is available. |
+| `v15.0.0-RC` | `params` and `searchParams` are now promises. A [codemod](../../02-guides/upgrading/codemods.md#150) is available. |
 | `v13.0.0` | `page` introduced. |

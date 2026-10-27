@@ -4,12 +4,12 @@ description: API reference for the instrumentation.js file.
 related:
  title: Learn more about Instrumentation
  links:
-  - app/guides/instrumentation
+  - ../../02-guides/instrumentation.md
 ---
 
 The `instrumentation.js|ts` file is used to integrate observability tools into your application, allowing you to track the performance and behavior, and to debug issues in production.
 
-To use it, place the file in the **root** of your application or inside a [`src` folder](/docs/app/api-reference/file-conventions/src-folder) if using one.
+To use it, place the file in the **root** of your application or inside a [`src` folder](./src-folder.md) if using one.
 
 ## Exports
 

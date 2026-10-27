@@ -3,7 +3,7 @@ title: htmlLimitedBots
 description: Specify a list of user agents that should receive blocking metadata.
 ---
 
-The `htmlLimitedBots` config allows you to specify a list of user agents that should receive blocking metadata instead of [streaming metadata](/docs/app/api-reference/functions/generate-metadata#streaming-metadata).
+The `htmlLimitedBots` config allows you to specify a list of user agents that should receive blocking metadata instead of [streaming metadata](../../04-functions/generate-metadata.md#streaming-metadata).
 
 ```ts filename="next.config.ts" switcher
 import type { NextConfig } from 'next'

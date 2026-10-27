@@ -2,25 +2,18 @@
 title: How revalidation works in Next.js
 nav_title: How Revalidation Works
 description: A deep dive into how Next.js revalidates cached content, including the tag system, cache consistency, and multi-instance coordination.
-related:
- description: Related guides and references.
- links:
-  - app/getting-started/caching
-  - app/guides/incremental-static-regeneration
-  - app/api-reference/config/next-config-js/cacheHandlers
-  - app/api-reference/functions/revalidateTag
 ---
 
-The [Caching](/docs/app/getting-started/caching) page covers how to use `use cache`, `cacheTag`, and `cacheLife`. This page explains **how revalidation works internally**, for platform engineers and advanced users who need to understand the system to implement [custom cache handlers](/docs/app/api-reference/config/next-config-js/cacheHandlers) or debug revalidation behavior.
+The [Caching](../01-getting-started/08-caching.md) page covers how to use `use cache`, `cacheTag`, and `cacheLife`. This page explains **how revalidation works internally**, for platform engineers and advanced users who need to understand the system to implement [custom cache handlers](../03-api-reference/05-config/01-next-config-js/cacheHandlers.md) or debug revalidation behavior.
 
 ## The Revalidation Model
 
-Most routes in Next.js can be revalidated on demand. This includes App Router routes and Pages Router routes that produce ISR/prerender cache entries. Pages Router routes that are automatically statically optimized (pure static output) are not revalidated on demand. The ability to update cached content without redeploying is a core part of Next.js's [rendering model](/docs/app/guides/rendering-philosophy).
+Most routes in Next.js can be revalidated on demand. This includes App Router routes and Pages Router routes that produce ISR/prerender cache entries. Pages Router routes that are automatically statically optimized (pure static output) are not revalidated on demand. The ability to update cached content without redeploying is a core part of Next.js's [rendering model](./rendering-philosophy.md).
 
 There are two types of revalidation:
 
-- **Time-based revalidation** uses a stale-while-revalidate pattern. The cached content is served immediately, and a background regeneration is triggered when the content's age exceeds the [`cacheLife`](/docs/app/api-reference/functions/cacheLife) or `revalidate` duration. The stale content continues to be served until the fresh content is ready.
-- **On-demand revalidation** explicitly invalidates cached content by calling [`revalidateTag()`](/docs/app/api-reference/functions/revalidateTag) or [`revalidatePath()`](/docs/app/api-reference/functions/revalidatePath). The next request to that content triggers a fresh render.
+- **Time-based revalidation** uses a stale-while-revalidate pattern. The cached content is served immediately, and a background regeneration is triggered when the content's age exceeds the [`cacheLife`](../03-api-reference/04-functions/cacheLife.md) or `revalidate` duration. The stale content continues to be served until the fresh content is ready.
+- **On-demand revalidation** explicitly invalidates cached content by calling [`revalidateTag()`](../03-api-reference/04-functions/revalidateTag.md) or [`revalidatePath()`](../03-api-reference/04-functions/revalidatePath.md). The next request to that content triggers a fresh render.
 
 > **Good to know:** Pages Router on-demand ISR APIs (for example `res.revalidate()` and the `x-prerender-revalidate` flow) are still supported and use the server cache handler (`cacheHandler`, singular). The `cacheHandlers` option (plural) is for `'use cache'` directives.
 
@@ -32,9 +25,9 @@ This consistency matters because the RSC payload is used for client-side navigat
 
 ### What happens if they get out of sync
 
-If a platform's cache serves HTML from one render and an RSC payload from a different render, users may see stale or mismatched content during client-side navigation. The primary mitigation is to cache HTML and RSC responses together with the same TTL and invalidation policy, and to respect the [`Vary` header](/docs/app/guides/cdn-caching) that Next.js sets. See [CDN Caching](/docs/app/guides/cdn-caching) for details.
+If a platform's cache serves HTML from one render and an RSC payload from a different render, users may see stale or mismatched content during client-side navigation. The primary mitigation is to cache HTML and RSC responses together with the same TTL and invalidation policy, and to respect the [`Vary` header](./cdn-caching.md) that Next.js sets. See [CDN Caching](./cdn-caching.md) for details.
 
-A separate but related problem is **cross-deployment skew**: during rolling deployments, a client built with deploy A may receive responses from a server running deploy B. [`deploymentId`](/docs/app/api-reference/config/next-config-js/deploymentId) mitigates this: when the client detects a different deployment ID from the server, it triggers a hard navigation to fetch consistent content.
+A separate but related problem is **cross-deployment skew**: during rolling deployments, a client built with deploy A may receive responses from a server running deploy B. [`deploymentId`](../03-api-reference/05-config/01-next-config-js/deploymentId.md) mitigates this: when the client detects a different deployment ID from the server, it triggers a hard navigation to fetch consistent content.
 
 ## Tag System Architecture
 
@@ -42,15 +35,15 @@ Next.js uses a tag-based system to track which cached content needs to be invali
 
 ### Explicit tags
 
-Explicit tags are set by the developer using [`cacheTag()`](/docs/app/api-reference/functions/cacheTag) inside a `use cache` function, or via `next: { tags: [...] }` on a `fetch` call. When [`revalidateTag('my-tag', 'max')`](/docs/app/api-reference/functions/revalidateTag) is called, all cache entries with that tag are invalidated.
+Explicit tags are set by the developer using [`cacheTag()`](../03-api-reference/04-functions/cacheTag.md) inside a `use cache` function, or via `next: { tags: [...] }` on a `fetch` call. When [`revalidateTag('my-tag', 'max')`](../03-api-reference/04-functions/revalidateTag.md) is called, all cache entries with that tag are invalidated.
 
 ### Soft tags
 
 Soft tags are automatically generated by Next.js based on the route path, prefixed with `_N_T_`. For example, the route `/blog/hello` generates soft tags like `_N_T_/layout`, `_N_T_/blog/layout`, `_N_T_/blog/hello/layout`, and `_N_T_/blog/hello`. Each segment in the path gets a layout tag, plus the leaf route itself.
 
-Soft tags enable [`revalidatePath()`](/docs/app/api-reference/functions/revalidatePath) to work through the same tag-based system. When `revalidatePath('/blog/hello')` is called, it invalidates cache entries associated with that path's leaf route tag and its ancestor layout soft tags (for example `_N_T_/layout`, `_N_T_/blog/layout`, `_N_T_/blog/hello/layout`, and `_N_T_/blog/hello`).
+Soft tags enable [`revalidatePath()`](../03-api-reference/04-functions/revalidatePath.md) to work through the same tag-based system. When `revalidatePath('/blog/hello')` is called, it invalidates cache entries associated with that path's leaf route tag and its ancestor layout soft tags (for example `_N_T_/layout`, `_N_T_/blog/layout`, `_N_T_/blog/hello/layout`, and `_N_T_/blog/hello`).
 
-In the [cache handler API](/docs/app/api-reference/config/next-config-js/cacheHandlers), soft tags are passed to the `get()` method as the `softTags` parameter. Your handler should check whether any soft tag has been invalidated after the cache entry's timestamp. The `getExpiration()` method returns the most recent revalidation timestamp across all provided tags, or `0` if none have been revalidated. It can also return `Infinity` to signal that the soft tags should instead be passed to `get()` and checked for expiration there. Your handler should treat an entry as stale if the returned timestamp is newer than the entry's own timestamp. See the [cache handler API reference](/docs/app/api-reference/config/next-config-js/cacheHandlers#getexpiration) for the full semantics.
+In the [cache handler API](../03-api-reference/05-config/01-next-config-js/cacheHandlers.md), soft tags are passed to the `get()` method as the `softTags` parameter. Your handler should check whether any soft tag has been invalidated after the cache entry's timestamp. The `getExpiration()` method returns the most recent revalidation timestamp across all provided tags, or `0` if none have been revalidated. It can also return `Infinity` to signal that the soft tags should instead be passed to `get()` and checked for expiration there. Your handler should treat an entry as stale if the returned timestamp is newer than the entry's own timestamp. See the [cache handler API reference](../03-api-reference/05-config/01-next-config-js/cacheHandlers.md#getexpiration) for the full semantics.
 
 ## Multi-Instance Considerations
 
@@ -61,7 +54,7 @@ The cache handler API provides two hooks for distributed coordination:
 - **`updateTags()`** is called when `revalidateTag()` is invoked. Your handler should write the invalidation event to shared storage (for example, Redis or a database) so other instances can discover it.
 - **`refreshTags()`** is called periodically, but always before starting a new request. Your handler should check shared storage for recent invalidation events and update its local tag state accordingly.
 
-For implementation details and a Redis example, see [Custom Cache Handlers](/docs/app/api-reference/config/next-config-js/cacheHandlers).
+For implementation details and a Redis example, see [Custom Cache Handlers](../03-api-reference/05-config/01-next-config-js/cacheHandlers.md).
 
 ## Implementation Patterns for Platforms
 
@@ -82,7 +75,7 @@ To reduce this window and ensure revalidation propagates across instances:
 
 ### CDN integration
 
-If a CDN caches Next.js responses, it should respect the `Vary` header and the `Cache-Control` directives that Next.js sets. Do not cache HTML and RSC payload responses separately with different TTLs. See [CDN Caching](/docs/app/guides/cdn-caching) for details.
+If a CDN caches Next.js responses, it should respect the `Vary` header and the `Cache-Control` directives that Next.js sets. Do not cache HTML and RSC payload responses separately with different TTLs. See [CDN Caching](./cdn-caching.md) for details.
 
 ## Graceful Degradation
 
@@ -91,6 +84,15 @@ The revalidation system prioritizes availability over strict consistency. Conten
 - **Cache write failure**: the response is still served to the user because writes are asynchronous. The cache entry is lost, and the next request triggers a fresh render.
 - **Cache read failure**: your handler should catch internal errors and return `undefined` (the cache miss signal). The route is then server-rendered fresh. A thrown error is not treated as a cache miss; it propagates as a render error, so always return `undefined` to signal a miss.
 - **HTML/RSC cache inconsistency**: if a CDN caches HTML and RSC responses with different TTLs or invalidation timing, users may see mismatched content during client-side navigation. Cache them together and respect the `Vary` header to avoid this.
-- **Cross-deployment skew**: during rolling deployments, configure [`deploymentId`](/docs/app/api-reference/config/next-config-js/deploymentId) so that a build ID change triggers a hard navigation to fetch consistent content.
+- **Cross-deployment skew**: during rolling deployments, configure [`deploymentId`](../03-api-reference/05-config/01-next-config-js/deploymentId.md) so that a build ID change triggers a hard navigation to fetch consistent content.
 
 Cache failures result in degraded performance (stale content, extra renders), not broken applications.
+
+## INDEX
+
+Related guides and references.
+
+- [Caching](../01-getting-started/08-caching.md)
+- [How to implement Incremental Static Regeneration (ISR)](./incremental-static-regeneration.md)
+- [cacheHandlers](../03-api-reference/05-config/01-next-config-js/cacheHandlers.md)
+- [revalidateTag](../03-api-reference/04-functions/revalidateTag.md)

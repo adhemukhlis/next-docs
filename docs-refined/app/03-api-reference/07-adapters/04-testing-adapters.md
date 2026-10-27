@@ -156,7 +156,7 @@ The `upload-results` job above sends your results to the adapter test-results en
 
 The upload authenticates with a GitHub Actions OIDC token, so it needs the `id-token: write` permission shown above. No secret is issued or stored: the provider name and commit SHA are derived from the token claims, which means results can only be attributed to the repository and workflow that produced them.
 
-**Getting listed:** the matrix is open to adapters in the [Ecosystem Working Group](https://nextjs.org/ecosystem-working-group). See [Deploying to Platforms](/docs/app/guides/deploying-to-platforms) for how verified adapters and the working group operate. Your repository and workflow are registered as part of that process. Your results appear on the matrix after your next workflow run. Until then the upload returns `403 Forbidden`.
+**Getting listed:** the matrix is open to adapters in the [Ecosystem Working Group](https://nextjs.org/ecosystem-working-group). See [Deploying to Platforms](../../02-guides/deploying-to-platforms.md) for how verified adapters and the working group operate. Your repository and workflow are registered as part of that process. Your results appear on the matrix after your next workflow run. Until then the upload returns `403 Forbidden`.
 
 The test harness looks for these environment variables:
 

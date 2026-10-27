@@ -5,18 +5,18 @@ related:
  title: Related
  description: View related API references.
  links:
-  - app/api-reference/config/next-config-js/cacheComponents
-  - app/api-reference/directives/use-cache
-  - app/api-reference/functions/revalidateTag
-  - app/api-reference/functions/updateTag
-  - app/api-reference/functions/cacheLife
+  - ../05-config/01-next-config-js/cacheComponents.md
+  - ../01-directives/use-cache.md
+  - ./revalidateTag.md
+  - ./updateTag.md
+  - ./cacheLife.md
 ---
 
 The `cacheTag` function allows you to tag cached data for on-demand invalidation. By associating tags with cache entries, you can selectively purge or revalidate specific cache entries without affecting other cached data.
 
 ## Usage
 
-To use `cacheTag`, enable the [`cacheComponents` flag](/docs/app/api-reference/config/next-config-js/cacheComponents) in your `next.config.js` file:
+To use `cacheTag`, enable the [`cacheComponents` flag](../05-config/01-next-config-js/cacheComponents.md) in your `next.config.js` file:
 
 ```ts filename="next.config.ts" switcher
 import type { NextConfig } from 'next'
@@ -62,10 +62,10 @@ export async function getData() {
 }
 ```
 
-You can then purge the cache on-demand from a [Server Function](/docs/app/getting-started/mutating-data) or [Route Handler](/docs/app/api-reference/file-conventions/route):
+You can then purge the cache on-demand from a [Server Function](../../01-getting-started/07-mutating-data.md) or [Route Handler](../03-file-conventions/route.md):
 
-- Use [`updateTag`](/docs/app/api-reference/functions/updateTag) for read-your-own-writes scenarios, such as forms and other user-triggered mutations, where a user makes a change and the next read should fetch fresh data immediately. `updateTag` is only available inside Server Functions.
-- Use [`revalidateTag`](/docs/app/api-reference/functions/revalidateTag) when it is acceptable to serve stale data while revalidation happens in the background, or when revalidating from a [Route Handler](/docs/app/api-reference/file-conventions/route) or other context.
+- Use [`updateTag`](./updateTag.md) for read-your-own-writes scenarios, such as forms and other user-triggered mutations, where a user makes a change and the next read should fetch fresh data immediately. `updateTag` is only available inside Server Functions.
+- Use [`revalidateTag`](./revalidateTag.md) when it is acceptable to serve stale data while revalidation happens in the background, or when revalidating from a [Route Handler](../03-file-conventions/route.md) or other context.
 
 For example, this Server Function adds a post and then purges every cache entry tagged `'my-data'` so the next read reflects the change:
 
@@ -186,7 +186,7 @@ export async function Bookings({ type = 'haircut' }) {
 
 ### Invalidating tagged cache
 
-Using [`revalidateTag`](/docs/app/api-reference/functions/revalidateTag), you can invalidate the cache for a specific tag when needed:
+Using [`revalidateTag`](./revalidateTag.md), you can invalidate the cache for a specific tag when needed:
 
 ```tsx filename="app/actions.ts" switcher
 'use server'
@@ -216,4 +216,4 @@ export async function updateBookings() {
 | --------- | ------------------------------------------------------ |
 | `v16.0.0` | `cacheTag` stabilized. `unstable_cacheTag` deprecated. |
 
-See the [Next.js 16 upgrade guide](/docs/app/guides/upgrading/version-16#cachelife-and-cachetag) to update imports from `unstable_cacheTag` to `cacheTag`.
+See the [Next.js 16 upgrade guide](../../02-guides/upgrading/version-16.md#cachelife-and-cachetag) to update imports from `unstable_cacheTag` to `cacheTag`.

@@ -212,7 +212,7 @@ export default eslintConfig
 
 `eslint-config-next/core-web-vitals` upgrades certain lint rules in `@next/eslint-plugin-next` from warnings to errors to help improve your [Core Web Vitals](https://web.dev/vitals/) metrics.
 
-> The `eslint-config-next/core-web-vitals` configuration is automatically included for new applications built with [Create Next App](/docs/app/api-reference/cli/create-next-app).
+> The `eslint-config-next/core-web-vitals` configuration is automatically included for new applications built with [Create Next App](../06-cli/create-next-app.md).
 
 ### With TypeScript
 
@@ -383,4 +383,4 @@ When you spread `...nextConfig`, you're adding multiple config objects that incl
 | Version | Changes |
 | - | - |
 | `v16.4.0` | `eslint-config-next` added ESLint 10 compatibility, including support for default React version detection. |
-| `v16.0.0` | `next lint` and the `eslint` next.config.js option were removed in favor of the ESLint CLI. A [codemod](/docs/app/guides/upgrading/codemods#migrate-from-next-lint-to-eslint-cli) is available to help you migrate. |
+| `v16.0.0` | `next lint` and the `eslint` next.config.js option were removed in favor of the ESLint CLI. A [codemod](../../02-guides/upgrading/codemods.md#migrate-from-next-lint-to-eslint-cli) is available to help you migrate. |

@@ -2,23 +2,17 @@
 title: How Next.js preserves UI state with Activity
 nav_title: Preserving UI state
 description: Learn how React's Activity component preserves UI state across navigations in Next.js and how to control what resets.
-related:
- title: Related
- description: Learn more about Cache Components and preserving UI state.
- links:
-  - app/getting-started/caching
-  - app/guides/migrating-to-cache-components
 ---
 
-> **Good to know:** This guide assumes [Cache Components](/docs/app/getting-started/caching) is enabled. Enable it by setting [`cacheComponents: true`](/docs/app/api-reference/config/next-config-js/cacheComponents) in your Next config file.
+> **Good to know:** This guide assumes [Cache Components](../01-getting-started/08-caching.md) is enabled. Enable it by setting [`cacheComponents: true`](../03-api-reference/05-config/01-next-config-js/cacheComponents.md) in your Next config file.
 
-Before Cache Components, preserving page-level state across navigations required workarounds like hoisting state to a [shared layout](/docs/app/getting-started/layouts-and-pages#nesting-layouts) or using an external store. With Cache Components, Next.js preserves state and DOM out of the box.
+Before Cache Components, preserving page-level state across navigations required workarounds like hoisting state to a [shared layout](../01-getting-started/03-layouts-and-pages.md#nesting-layouts) or using an external store. With Cache Components, Next.js preserves state and DOM out of the box.
 
 Instead of unmounting pages on navigation, Next.js hides them using React's [`<Activity>`](https://react.dev/reference/react/Activity) component. Activity keeps the DOM in the document (hidden with `display: none`), so both React state and DOM state are preserved: form drafts, scroll positions, expanded `<details>` elements, video playback progress, and more.
 
 Next.js preserves up to 3 routes. Beyond that, the oldest route is evicted and will re-render fresh.
 
-> **Good to know:** Use [`useRouter().bfcacheId`](/docs/app/api-reference/functions/use-router#bfcacheid) as a [React `key`](https://react.dev/learn/preserving-and-resetting-state#option-2-resetting-state-with-a-key): a single `<Fragment key={bfcacheId}>` resets an entire subtree on push or replace navigations (including `<Link>` clicks and `router.push` / `router.replace`) while still restoring state on browser back/forward. `bfcacheId` is mainly a migration tool. For new code, prefer the per-pattern resets below.
+> **Good to know:** Use [`useRouter().bfcacheId`](../03-api-reference/04-functions/use-router.md#bfcacheid) as a [React `key`](https://react.dev/learn/preserving-and-resetting-state#option-2-resetting-state-with-a-key): a single `<Fragment key={bfcacheId}>` resets an entire subtree on push or replace navigations (including `<Link>` clicks and `router.push` / `router.replace`) while still restoring state on browser back/forward. `bfcacheId` is mainly a migration tool. For new code, prefer the per-pattern resets below.
 
 ## Choosing what to preserve
 
@@ -69,7 +63,7 @@ function SettingsDropdown() {
 
 When Activity hides this component, the cleanup function runs and resets `isOpen`. When the page becomes visible again, the dropdown is closed. Using `useLayoutEffect` ensures the cleanup runs synchronously before the component is hidden, avoiding any flash of stale state.
 
-You can also use `Link`'s [`onNavigate`](/docs/app/api-reference/components/link#onnavigate) callback to close dropdowns immediately when a navigation link is clicked.
+You can also use `Link`'s [`onNavigate`](../03-api-reference/02-components/link.md#onnavigate) callback to close dropdowns immediately when a navigation link is clicked.
 
 ### Dialog and initialization logic
 
@@ -234,7 +228,7 @@ function ContactForm() {
 
 The `shouldReset` ref ensures the cleanup only runs after a successful submission. If the user navigates away mid-draft without submitting, their input is preserved.
 
-If you use [`useActionState`](https://react.dev/reference/react/useActionState), the same approach applies. See [Reset state](https://react.dev/reference/react/useActionState#reset-state) in the React docs for how to add a `RESET` action to your reducer. For more on building responsive interactions with these hooks, see the [Building interactive apps](/docs/app/guides/interactive-apps) guide.
+If you use [`useActionState`](https://react.dev/reference/react/useActionState), the same approach applies. See [Reset state](https://react.dev/reference/react/useActionState#reset-state) in the React docs for how to add a `RESET` action to your reducer. For more on building responsive interactions with these hooks, see the [Building interactive apps](./interactive-apps.md) guide.
 
 <details>
 <summary>Resetting all form fields with a callback ref</summary>
@@ -551,3 +545,10 @@ The [Activity Patterns Demo](https://react-activity-patterns.labs.vercel.dev) ([
 - **Data** — sortable table and selectable list that keep their state across navigations, plus a reviews section that prerenders in the background
 - **Forms** — filter panel with DOM state (`<details>`, checkboxes, text inputs) that persists, and a newsletter form that resets after submission using `useLayoutEffect` cleanup
 - **Side Effects** — a live timer that pauses when you navigate away and resumes when you return, and a video player that auto-pauses with playback position preserved
+
+## INDEX
+
+Learn more about Cache Components and preserving UI state.
+
+- [Caching](../01-getting-started/08-caching.md)
+- [Migrating to Cache Components](./migrating-to-cache-components.md)

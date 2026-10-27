@@ -6,7 +6,7 @@ version: unstable
 
 `unstable_rethrow` can be used to avoid catching internal errors thrown by Next.js when attempting to handle errors thrown in your application code.
 
-For example, calling the `notFound` function will throw an internal Next.js error and render the [`not-found.js`](/docs/app/api-reference/file-conventions/not-found) component. However, if used inside the `try` block of a `try/catch` statement, the error will be caught, preventing `not-found.js` from rendering:
+For example, calling the `notFound` function will throw an internal Next.js error and render the [`not-found.js`](../03-file-conventions/not-found.md) component. However, if used inside the `try` block of a `try/catch` statement, the error will be caught, preventing `not-found.js` from rendering:
 
 ```tsx filename="@/app/ui/component.tsx"
 import { notFound } from 'next/navigation'
@@ -45,15 +45,15 @@ export default async function Page() {
 
 The following Next.js APIs rely on throwing an error which should be rethrown and handled by Next.js itself:
 
-- [`notFound()`](/docs/app/api-reference/functions/not-found)
-- [`redirect()`](/docs/app/guides/redirecting#redirect-function)
-- [`permanentRedirect()`](/docs/app/guides/redirecting#permanentredirect-function)
+- [`notFound()`](./not-found.md)
+- [`redirect()`](../../02-guides/redirecting.md#redirect-function)
+- [`permanentRedirect()`](../../02-guides/redirecting.md#permanentredirect-function)
 
 If a route segment is marked to throw an error unless it's static, a Request-time API call will also throw an error that should similarly not be caught by the developer. Note that Partial Prerendering (PPR) affects this behavior as well. These APIs are:
 
-- [`cookies`](/docs/app/api-reference/functions/cookies)
-- [`headers`](/docs/app/api-reference/functions/headers)
-- [`searchParams`](/docs/app/api-reference/file-conventions/page#searchparams-optional)
+- [`cookies`](./cookies.md)
+- [`headers`](./headers.md)
+- [`searchParams`](../03-file-conventions/page.md#searchparams-optional)
 - `fetch(..., { cache: 'no-store' })`
 - `fetch(..., { next: { revalidate: 0 } })`
 

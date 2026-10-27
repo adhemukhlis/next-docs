@@ -3,7 +3,7 @@ title: next/image-optimizer-transform
 description: API Reference for the next/image-optimizer-transform module, the standalone sharp-based image resizing and format conversion pipeline behind Next.js Image Optimization.
 ---
 
-The `next/image-optimizer-transform` module exposes the transformation step of Next.js [Image Optimization](/docs/app/api-reference/components/image) as a standalone Node.js module with a small dependency graph, so image resizing and format conversion (powered by [sharp](https://sharp.pixelplumbing.com/)) can run outside the main server process.
+The `next/image-optimizer-transform` module exposes the transformation step of Next.js [Image Optimization](../02-components/image.md) as a standalone Node.js module with a small dependency graph, so image resizing and format conversion (powered by [sharp](https://sharp.pixelplumbing.com/)) can run outside the main server process.
 
 ```ts filename="optimize.ts" highlight={1,3} switcher
 import { imageOptimizerTransform } from 'next/image-optimizer-transform'
@@ -103,7 +103,7 @@ Validates an upstream image, optimizes it with sharp, and returns the result wit
 | `experimental.imgOptTimeoutInSeconds` | `number`          | Per-image processing timeout. Default `7`.                                |
 | `experimental.imgOptMozjpeg`          | `boolean`         | Encodes JPEG output with mozjpeg. Default `true`.                         |
 
-See [`images` configuration](/docs/app/api-reference/config/next-config-js/images) for the `images` options.
+See [`images` configuration](../05-config/01-next-config-js/images.md) for the `images` options.
 
 #### opts
 

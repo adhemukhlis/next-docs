@@ -6,7 +6,7 @@
 
 import { $ } from 'bun'
 import { rm, rename, readdir, mkdir } from 'node:fs/promises'
-import { join } from 'node:path'
+import { join, relative, dirname } from 'node:path'
 
 const rootDir = import.meta.dir
 const nextJsDir = join(rootDir, 'next.js')
@@ -124,9 +124,60 @@ console.log('\n🎉 All steps completed successfully!')
 // Formatting options live here, inline — the repo has no formatter config file
 async function format() {
 	await $`bun fmt --no-script --no-config --log-level silent --ignore-pattern node_modules --ignore-pattern docs-json --ignore-pattern docs-context --use-tabs --tab-width 1 --bracket-same-line --single-quote --trailing-comma all --arrow-parens always --no-semi --prose-wrap never --print-width 180 --single-attribute-per-line --object-wrap preserve --end-of-line lf .`
+
+	// Markdown fixes bun fmt can't do, for docs/ and docs-refined/
+	for (const dir of [docsDir, refinedDir]) {
+		if (!(await isDir(dir))) continue
+		const files = await Array.fromAsync(new Bun.Glob('**/*.md').scan({ cwd: dir }))
+		const fileByUrl = new Map(files.filter((file) => !file.endsWith('.rules.md')).map((file) => [docsUrl(file), file]))
+		for (const file of files) {
+			const path = join(dir, file)
+			const content = await Bun.file(path).text()
+			const fixed = relativeLinks(fixAlerts(content), file, fileByUrl)
+			if (fixed !== content) await Bun.write(path, fixed)
+		}
+	}
 }
 
-// docs-refined/ must have exactly the same files as docs/:
+// GFM alerts need the marker on its own line ("> [!NOTE]\n> text"),
+// but --prose-wrap never joins it with the text that follows
+function fixAlerts(content) {
+	return content.replace(/^((?:> ?)+)\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\][ \t]+(\S.*)$/gm, '$1[!$2]\n$1$3')
+}
+
+// Public URL of a docs file: app/01-getting-started/index.md -> /docs/app/getting-started
+function docsUrl(file) {
+	const segments = file
+		.replace(/\.md$/, '')
+		.split('/')
+		.map((segment) => segment.replace(/^\d+-/, ''))
+	if (segments.at(-1) === 'index') segments.pop()
+	return '/docs/' + segments.join('/')
+}
+
+// Internal links -> file paths relative to the linking file: (/docs/app/guides/forms#x) -> (../02-guides/forms.md#x)
+// Covers Markdown links, reference definitions and frontmatter related.links; code blocks are left alone.
+// Links to files that don't exist here (e.g. ignored sections) are kept as-is.
+function relativeLinks(content, file, fileByUrl) {
+	const toRelative = (url, hash = '') => {
+		const target = fileByUrl.get(url.replace(/\/$/, ''))
+		if (!target) return null
+		const path = relative(dirname(file), target)
+		return (path.startsWith('../') ? path : './' + path) + hash
+	}
+	const [, frontmatter = '', body = content] = content.match(/^(---\n[\s\S]*?\n---\n)?([\s\S]*)$/)
+	const fixedFrontmatter = frontmatter.replace(/^(\s*- )(app\/[^\s#]*)(#\S*)?$/gm, (match, prefix, url, hash) => {
+		const path = toRelative('/docs/' + url, hash)
+		return path ? prefix + path : match
+	})
+	const fixedBody = body.replace(/(```[\s\S]*?```|~~~[\s\S]*?~~~)|(\]\(|^\[[^\]]+\]: )(\/docs\/[^)\s#]*)(#[^)\s]*)?/gm, (match, codeBlock, prefix, url, hash) => {
+		if (codeBlock) return codeBlock
+		const path = toRelative(url, hash)
+		return path ? prefix + path : match
+	})
+	return fixedFrontmatter + fixedBody
+}
+// docs-refined/ must have exactly the same files as docs/ (plus *.rules.md briefs):
 // new upstream files are copied in raw, files gone upstream are removed.
 // Upstream edits to existing files are only reported — re-refine them from `git diff -- docs/<file>`.
 async function syncRefined() {
@@ -159,8 +210,10 @@ async function syncRefined() {
 	}
 }
 
+// *.rules.md are per-file refinement briefs, they live only in docs-refined/
 async function listMd(dir) {
-	return new Set(await Array.fromAsync(new Bun.Glob('**/*.md').scan({ cwd: dir })))
+	const files = await Array.fromAsync(new Bun.Glob('**/*.md').scan({ cwd: dir }))
+	return new Set(files.filter((file) => !file.endsWith('.rules.md')))
 }
 
 async function isDir(path) {

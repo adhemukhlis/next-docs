@@ -1,67 +1,319 @@
 ---
 title: Next.js Docs
-description: Welcome to the Next.js Documentation.
-related:
- title: Next Steps
- description: Create your first application and learn the core Next.js features.
- links:
-  - app/getting-started
+description: Next.js documentation for the App Router, covering stable, first-class APIs only.
 ---
 
-Welcome to the Next.js documentation!
+This is the documentation for [Next.js](https://nextjs.org), the React framework for building full-stack web applications. It covers the **App Router** only, using stable, first-class APIs.
 
-## What is Next.js?
+> [!CAUTION]
+> **REFINED, not official.** This is an AI-refined version of the official Next.js docs, not the docs published by Vercel. Use it with these risks in mind:
+>
+> - **No legacy:** the Pages Router, legacy APIs, and older patterns are removed. If you maintain a Pages Router or older app, use the [official docs](https://nextjs.org/docs).
+> - **Canary snapshot:** the content follows the `canary` branch at the time it was fetched, so it may describe features not yet in a stable release, and it may lag behind upstream changes.
+> - **AI-edited:** refinement can introduce mistakes or omissions. Verify critical details against the official docs.
+> - **Removed information:** links to content outside the App Router docs (Pages Router, architecture, community, error messages) may be missing or dead.
 
-Next.js is a React framework for building full-stack web applications. You use React Components to build user interfaces, and Next.js for additional features and optimizations.
+## INDEX
 
-It also automatically configures lower-level tools like bundlers and compilers. You can instead focus on building your product and shipping quickly.
+Every document in this documentation, nested by section, with its relative path:
 
-Whether you're an individual developer or part of a larger team, Next.js can help you build interactive, dynamic, and fast React applications.
-
-## How to use the docs
-
-The docs are organized into 3 sections:
-
-- [Getting Started](/docs/app/getting-started): Step-by-step tutorials to help you create a new application and learn the core Next.js features.
-- [Guides](/docs/app/guides): Tutorials on specific use cases, choose what's relevant to you.
-- [API Reference](/docs/app/api-reference): Detailed technical reference for every feature.
-
-Use the sidebar to navigate through the sections, or search (`Ctrl+K` or `Cmd+K`) to quickly find a page.
-
-## App Router and Pages Router
-
-Next.js has two different routers:
-
-- **App Router**: The newer router that supports new React features like Server Components.
-- **Pages Router**: The original router, still supported and being improved.
-
-At the top of the sidebar, you'll notice a dropdown menu that allows you to switch between the [App Router](/docs/app) and the [Pages Router](/docs/pages) docs.
-
-### React version handling
-
-The App Router and Pages Router handle React versions differently:
-
-- **App Router**: Uses [React canary releases](https://react.dev/blog/2023/05/03/react-canaries) built-in, which include all the stable React 19 changes, as well as newer features being validated in frameworks, prior to a new React release.
-
-- **Pages Router**: Uses the React version installed in your project's `package.json`.
-
-This approach ensures new React features work reliably in the App Router while maintaining backwards compatibility for existing Pages Router applications.
-
-## Pre-requisite knowledge
-
-Our documentation assumes some familiarity with web development. Before getting started, it'll help if you're comfortable with:
-
-- HTML
-- CSS
-- JavaScript
-- React
-
-If you're new to React or need a refresher, we recommend starting with our [React Foundations course](/learn/react-foundations), and the [Next.js Foundations course](/learn/dashboard-app) that has you building an application as you learn.
-
-## Accessibility
-
-For the best experience when using a screen reader, we recommend using Firefox and NVDA, or Safari and VoiceOver.
-
-## Join our Community
-
-If you have questions about anything related to Next.js, you're always welcome to ask our community on [GitHub Discussions](https://github.com/vercel/next.js/discussions), [Discord](https://discord.com/invite/bUG2bvbtHy), [X (Twitter)](https://x.com/nextjs), and [Reddit](https://www.reddit.com/r/nextjs).
+- [App Router](./app/index.md)
+  - [Getting Started](./app/01-getting-started/index.md)
+    - [Installation](./app/01-getting-started/01-installation.md)
+    - [Project structure and organization](./app/01-getting-started/02-project-structure.md)
+    - [Layouts and Pages](./app/01-getting-started/03-layouts-and-pages.md)
+    - [Linking and Navigating](./app/01-getting-started/04-linking-and-navigating.md)
+    - [Server and Client Components](./app/01-getting-started/05-server-and-client-components.md)
+    - [Fetching Data](./app/01-getting-started/06-fetching-data.md)
+    - [Mutating Data](./app/01-getting-started/07-mutating-data.md)
+    - [Caching](./app/01-getting-started/08-caching.md)
+    - [Revalidating](./app/01-getting-started/09-revalidating.md)
+    - [Error Handling](./app/01-getting-started/10-error-handling.md)
+    - [CSS](./app/01-getting-started/11-css.md)
+    - [Image Optimization](./app/01-getting-started/12-images.md)
+    - [Font Optimization](./app/01-getting-started/13-fonts.md)
+    - [Metadata and OG images](./app/01-getting-started/14-metadata-and-og-images.md)
+    - [Route Handlers](./app/01-getting-started/15-route-handlers.md)
+    - [Proxy](./app/01-getting-started/16-proxy.md)
+    - [Deploying](./app/01-getting-started/17-deploying.md)
+    - [Upgrading](./app/01-getting-started/18-upgrading.md)
+  - [Guides](./app/02-guides/index.md)
+    - [Adopting Partial Prefetching](./app/02-guides/adopting-partial-prefetching.md)
+    - [How Next.js supports AI coding agents](./app/02-guides/ai-agents.md)
+    - [How to add analytics to your Next.js application](./app/02-guides/analytics.md)
+    - [How to implement authentication with Cache Components](./app/02-guides/authentication-with-cache-components.md)
+    - [How to implement authentication in Next.js](./app/02-guides/authentication.md)
+    - [How to use Next.js as a backend for your frontend](./app/02-guides/backend-for-frontend.md)
+    - [Building your application](./app/02-guides/building.md)
+    - [Caching and Revalidating (Previous Model)](./app/02-guides/caching-without-cache-components.md)
+    - [Using a CDN with Next.js](./app/02-guides/cdn-caching.md)
+    - [How to configure Continuous Integration (CI) build caching](./app/02-guides/ci-build-caching.md)
+    - [Client-side data fetching](./app/02-guides/client-side-data-fetching/index.md)
+      - [How to fetch client-side data with SWR](./app/02-guides/client-side-data-fetching/swr.md)
+      - [How to fetch client-side data with TanStack Query](./app/02-guides/client-side-data-fetching/tanstack-query.md)
+    - [How to set a Content Security Policy (CSP) for your Next.js application](./app/02-guides/content-security-policy.md)
+    - [How to use CSS-in-JS libraries](./app/02-guides/css-in-js.md)
+    - [How to set up a custom server in Next.js](./app/02-guides/custom-server.md)
+    - [How to use a custom webpack version in Next.js](./app/02-guides/custom-webpack.md)
+    - [How to think about data security in Next.js](./app/02-guides/data-security.md)
+    - [How to use debugging tools with Next.js](./app/02-guides/debugging.md)
+    - [Deploying Next.js to different platforms](./app/02-guides/deploying-to-platforms.md)
+    - [How to preview content with Draft Mode in Next.js](./app/02-guides/draft-mode.md)
+    - [How to use environment variables in Next.js](./app/02-guides/environment-variables.md)
+    - [How to create forms with Server Actions](./app/02-guides/forms.md)
+    - [How revalidation works in Next.js](./app/02-guides/how-revalidation-works.md)
+    - [Incremental Static Regeneration with Cache Components](./app/02-guides/incremental-static-regeneration-cache-components.md)
+    - [How to implement Incremental Static Regeneration (ISR)](./app/02-guides/incremental-static-regeneration.md)
+    - [Ensuring instant navigations](./app/02-guides/instant-navigation.md)
+    - [How to set up instrumentation](./app/02-guides/instrumentation.md)
+    - [Building interactive apps](./app/02-guides/interactive-apps.md)
+    - [Internationalization](./app/02-guides/internationalization.md)
+    - [How to implement JSON-LD in your Next.js application](./app/02-guides/json-ld.md)
+    - [Keeping pages static](./app/02-guides/keeping-pages-static.md)
+    - [How to lazy load Client Components and libraries](./app/02-guides/lazy-loading.md)
+    - [How to optimize your local development environment](./app/02-guides/local-development.md)
+    - [Connecting coding agents to the Next.js MCP server](./app/02-guides/mcp.md)
+    - [How to use markdown and MDX in Next.js](./app/02-guides/mdx.md)
+    - [How to optimize memory usage](./app/02-guides/memory-usage.md)
+    - [Migrating to Cache Components](./app/02-guides/migrating-to-cache-components.md)
+    - [Migrating](./app/02-guides/migrating/index.md)
+      - [How to migrate from Pages to the App Router](./app/02-guides/migrating/app-router-migration.md)
+      - [How to migrate from Create React App to Next.js](./app/02-guides/migrating/from-create-react-app.md)
+      - [How to migrate from Vite to Next.js](./app/02-guides/migrating/from-vite.md)
+    - [How to build multi-tenant apps in Next.js](./app/02-guides/multi-tenant.md)
+    - [How to build micro-frontends using multi-zones and Next.js](./app/02-guides/multi-zones.md)
+    - [Handling connectivity drops](./app/02-guides/offline-support.md)
+    - [How to set up instrumentation with OpenTelemetry](./app/02-guides/open-telemetry.md)
+    - [Optimizing prefetching](./app/02-guides/optimizing-prefetching.md)
+    - [Optimizing the static shell](./app/02-guides/optimizing-the-static-shell.md)
+    - [Optimizing package bundling](./app/02-guides/package-bundling.md)
+    - [Implementing Partial Prerendering on your platform](./app/02-guides/ppr-platform-guide.md)
+    - [Prefetching](./app/02-guides/prefetching.md)
+    - [How Next.js preserves UI state with Activity](./app/02-guides/preserving-ui-state.md)
+    - [How to prevent flash before hydration](./app/02-guides/preventing-flash-before-hydration.md)
+    - [How to optimize your Next.js application for production](./app/02-guides/production-checklist.md)
+    - [How to build a Progressive Web Application (PWA) with Next.js](./app/02-guides/progressive-web-apps.md)
+    - [Building public pages](./app/02-guides/public-static-pages.md)
+    - [How to handle redirects in Next.js](./app/02-guides/redirecting.md)
+    - [Next.js Rendering Philosophy](./app/02-guides/rendering-philosophy.md)
+    - [How to use Sass](./app/02-guides/sass.md)
+    - [How to load and optimize scripts](./app/02-guides/scripts.md)
+    - [How to self-host your Next.js application](./app/02-guides/self-hosting.md)
+    - [Server Actions and Mutations](./app/02-guides/server-actions.md)
+    - [The Server and Client Boundary](./app/02-guides/server-and-client-boundary.md)
+    - [How to build single-page applications with Next.js](./app/02-guides/single-page-applications.md)
+    - [How to create a static export of your Next.js application](./app/02-guides/static-exports.md)
+    - [Streaming](./app/02-guides/streaming.md)
+    - [How to install Tailwind CSS v3 in your Next.js application](./app/02-guides/tailwind-v3-css.md)
+    - [Testing](./app/02-guides/testing/index.md)
+      - [How to set up Cypress with Next.js](./app/02-guides/testing/cypress.md)
+      - [How to set up Jest with Next.js](./app/02-guides/testing/jest.md)
+      - [How to set up Playwright with Next.js](./app/02-guides/testing/playwright.md)
+      - [How to set up Vitest with Next.js](./app/02-guides/testing/vitest.md)
+    - [How to optimize third-party libraries](./app/02-guides/third-party-libraries.md)
+    - [Upgrade Guides](./app/02-guides/upgrading/index.md)
+      - [Upgrade with a coding agent](./app/02-guides/upgrading/agent-upgrade.md)
+      - [Codemods](./app/02-guides/upgrading/codemods.md)
+      - [How to upgrade to version 14](./app/02-guides/upgrading/version-14.md)
+      - [How to upgrade to version 15](./app/02-guides/upgrading/version-15.md)
+      - [How to upgrade to version 16](./app/02-guides/upgrading/version-16.md)
+    - [How to use and optimize videos](./app/02-guides/videos.md)
+    - [Designing view transitions](./app/02-guides/view-transitions.md)
+  - [API Reference](./app/03-api-reference/index.md)
+    - [Directives](./app/03-api-reference/01-directives/index.md)
+      - [use cache: private](./app/03-api-reference/01-directives/use-cache-private.md)
+      - [use cache: remote](./app/03-api-reference/01-directives/use-cache-remote.md)
+      - [use cache](./app/03-api-reference/01-directives/use-cache.md)
+      - [use client](./app/03-api-reference/01-directives/use-client.md)
+      - [use server](./app/03-api-reference/01-directives/use-server.md)
+    - [Components](./app/03-api-reference/02-components/index.md)
+      - [Font Module](./app/03-api-reference/02-components/font.md)
+      - [Form Component](./app/03-api-reference/02-components/form.md)
+      - [Image Component](./app/03-api-reference/02-components/image.md)
+      - [Link Component](./app/03-api-reference/02-components/link.md)
+      - [Script Component](./app/03-api-reference/02-components/script.md)
+    - [File-system conventions](./app/03-api-reference/03-file-conventions/index.md)
+      - [Metadata Files API Reference](./app/03-api-reference/03-file-conventions/01-metadata/index.md)
+        - [favicon, icon, and apple-icon](./app/03-api-reference/03-file-conventions/01-metadata/app-icons.md)
+        - [manifest.json](./app/03-api-reference/03-file-conventions/01-metadata/manifest.md)
+        - [opengraph-image and twitter-image](./app/03-api-reference/03-file-conventions/01-metadata/opengraph-image.md)
+        - [robots.txt](./app/03-api-reference/03-file-conventions/01-metadata/robots.md)
+        - [sitemap.xml](./app/03-api-reference/03-file-conventions/01-metadata/sitemap.md)
+      - [Route Segment Config](./app/03-api-reference/03-file-conventions/02-route-segment-config/index.md)
+        - [dynamicParams](./app/03-api-reference/03-file-conventions/02-route-segment-config/dynamicParams.md)
+        - [ensureStatic](./app/03-api-reference/03-file-conventions/02-route-segment-config/ensureStatic.md)
+        - [instant](./app/03-api-reference/03-file-conventions/02-route-segment-config/instant.md)
+        - [maxDuration](./app/03-api-reference/03-file-conventions/02-route-segment-config/maxDuration.md)
+        - [preferredRegion (deprecated)](./app/03-api-reference/03-file-conventions/02-route-segment-config/preferredRegion.md)
+        - [prefetch](./app/03-api-reference/03-file-conventions/02-route-segment-config/prefetch.md)
+        - [runtime](./app/03-api-reference/03-file-conventions/02-route-segment-config/runtime.md)
+      - [default.js](./app/03-api-reference/03-file-conventions/default.md)
+      - [Dynamic Route Segments](./app/03-api-reference/03-file-conventions/dynamic-routes.md)
+      - [error.js](./app/03-api-reference/03-file-conventions/error.md)
+      - [forbidden.js](./app/03-api-reference/03-file-conventions/forbidden.md)
+      - [instrumentation-client.js](./app/03-api-reference/03-file-conventions/instrumentation-client.md)
+      - [instrumentation.js](./app/03-api-reference/03-file-conventions/instrumentation.md)
+      - [Intercepting Routes](./app/03-api-reference/03-file-conventions/intercepting-routes.md)
+      - [layout.js](./app/03-api-reference/03-file-conventions/layout.md)
+      - [loading.js](./app/03-api-reference/03-file-conventions/loading.md)
+      - [mdx-components.js](./app/03-api-reference/03-file-conventions/mdx-components.md)
+      - [middleware.js](./app/03-api-reference/03-file-conventions/middleware.md)
+      - [not-found.js](./app/03-api-reference/03-file-conventions/not-found.md)
+      - [page.js](./app/03-api-reference/03-file-conventions/page.md)
+      - [Parallel Routes](./app/03-api-reference/03-file-conventions/parallel-routes.md)
+      - [proxy.js](./app/03-api-reference/03-file-conventions/proxy.md)
+      - [public Folder](./app/03-api-reference/03-file-conventions/public-folder.md)
+      - [Route Groups](./app/03-api-reference/03-file-conventions/route-groups.md)
+      - [route.js](./app/03-api-reference/03-file-conventions/route.md)
+      - [src Folder](./app/03-api-reference/03-file-conventions/src-folder.md)
+      - [template.js](./app/03-api-reference/03-file-conventions/template.md)
+      - [unauthorized.js](./app/03-api-reference/03-file-conventions/unauthorized.md)
+    - [Functions](./app/03-api-reference/04-functions/index.md)
+      - [after](./app/03-api-reference/04-functions/after.md)
+      - [cacheLife](./app/03-api-reference/04-functions/cacheLife.md)
+      - [cacheTag](./app/03-api-reference/04-functions/cacheTag.md)
+      - [catchError](./app/03-api-reference/04-functions/catchError.md)
+      - [connection](./app/03-api-reference/04-functions/connection.md)
+      - [cookies](./app/03-api-reference/04-functions/cookies.md)
+      - [draftMode](./app/03-api-reference/04-functions/draft-mode.md)
+      - [fetch](./app/03-api-reference/04-functions/fetch.md)
+      - [forbidden](./app/03-api-reference/04-functions/forbidden.md)
+      - [generateImageMetadata](./app/03-api-reference/04-functions/generate-image-metadata.md)
+      - [generateMetadata](./app/03-api-reference/04-functions/generate-metadata.md)
+      - [generateSitemaps](./app/03-api-reference/04-functions/generate-sitemaps.md)
+      - [generateStaticParams](./app/03-api-reference/04-functions/generate-static-params.md)
+      - [generateViewport](./app/03-api-reference/04-functions/generate-viewport.md)
+      - [headers](./app/03-api-reference/04-functions/headers.md)
+      - [next/image-optimizer-transform](./app/03-api-reference/04-functions/image-optimizer-transform.md)
+      - [ImageResponse](./app/03-api-reference/04-functions/image-response.md)
+      - [io](./app/03-api-reference/04-functions/io.md)
+      - [navigation](./app/03-api-reference/04-functions/navigation.md)
+      - [NextRequest](./app/03-api-reference/04-functions/next-request.md)
+      - [NextResponse](./app/03-api-reference/04-functions/next-response.md)
+      - [next/root-params](./app/03-api-reference/04-functions/next-root-params.md)
+      - [notFound](./app/03-api-reference/04-functions/not-found.md)
+      - [permanentRedirect](./app/03-api-reference/04-functions/permanentRedirect.md)
+      - [prefetch](./app/03-api-reference/04-functions/prefetch.md)
+      - [redirect](./app/03-api-reference/04-functions/redirect.md)
+      - [refresh](./app/03-api-reference/04-functions/refresh.md)
+      - [revalidatePath](./app/03-api-reference/04-functions/revalidatePath.md)
+      - [revalidateTag](./app/03-api-reference/04-functions/revalidateTag.md)
+      - [unauthorized](./app/03-api-reference/04-functions/unauthorized.md)
+      - [unstable_cache](./app/03-api-reference/04-functions/unstable_cache.md)
+      - [unstable_noStore](./app/03-api-reference/04-functions/unstable_noStore.md)
+      - [unstable_rethrow](./app/03-api-reference/04-functions/unstable_rethrow.md)
+      - [updateTag](./app/03-api-reference/04-functions/updateTag.md)
+      - [useLinkStatus](./app/03-api-reference/04-functions/use-link-status.md)
+      - [useOffline](./app/03-api-reference/04-functions/use-offline.md)
+      - [useParams](./app/03-api-reference/04-functions/use-params.md)
+      - [usePathname](./app/03-api-reference/04-functions/use-pathname.md)
+      - [useReportWebVitals](./app/03-api-reference/04-functions/use-report-web-vitals.md)
+      - [useRouter](./app/03-api-reference/04-functions/use-router.md)
+      - [useSearchParams](./app/03-api-reference/04-functions/use-search-params.md)
+      - [useSelectedLayoutSegment](./app/03-api-reference/04-functions/use-selected-layout-segment.md)
+      - [useSelectedLayoutSegments](./app/03-api-reference/04-functions/use-selected-layout-segments.md)
+      - [userAgent](./app/03-api-reference/04-functions/userAgent.md)
+    - [Configuration](./app/03-api-reference/05-config/index.md)
+      - [next.config.js](./app/03-api-reference/05-config/01-next-config-js/index.md)
+        - [adapterPath](./app/03-api-reference/05-config/01-next-config-js/adapterPath.md)
+        - [agentFeedback](./app/03-api-reference/05-config/01-next-config-js/agentFeedback.md)
+        - [agentRules](./app/03-api-reference/05-config/01-next-config-js/agentRules.md)
+        - [agentUpgrade](./app/03-api-reference/05-config/01-next-config-js/agentUpgrade.md)
+        - [allowedDevOrigins](./app/03-api-reference/05-config/01-next-config-js/allowedDevOrigins.md)
+        - [appDir](./app/03-api-reference/05-config/01-next-config-js/appDir.md)
+        - [assetPrefix](./app/03-api-reference/05-config/01-next-config-js/assetPrefix.md)
+        - [authInterrupts](./app/03-api-reference/05-config/01-next-config-js/authInterrupts.md)
+        - [basePath](./app/03-api-reference/05-config/01-next-config-js/basePath.md)
+        - [cacheComponents](./app/03-api-reference/05-config/01-next-config-js/cacheComponents.md)
+        - [cacheHandlers](./app/03-api-reference/05-config/01-next-config-js/cacheHandlers.md)
+        - [cacheLife](./app/03-api-reference/05-config/01-next-config-js/cacheLife.md)
+        - [cacheMaxMemorySize](./app/03-api-reference/05-config/01-next-config-js/cacheMaxMemorySize.md)
+        - [compress](./app/03-api-reference/05-config/01-next-config-js/compress.md)
+        - [crossOrigin](./app/03-api-reference/05-config/01-next-config-js/crossOrigin.md)
+        - [cssChunking](./app/03-api-reference/05-config/01-next-config-js/cssChunking.md)
+        - [deploymentId](./app/03-api-reference/05-config/01-next-config-js/deploymentId.md)
+        - [devIndicators](./app/03-api-reference/05-config/01-next-config-js/devIndicators.md)
+        - [distDir](./app/03-api-reference/05-config/01-next-config-js/distDir.md)
+        - [enablePrerenderSourceMaps](./app/03-api-reference/05-config/01-next-config-js/enablePrerenderSourceMaps.md)
+        - [env](./app/03-api-reference/05-config/01-next-config-js/env.md)
+        - [expireTime](./app/03-api-reference/05-config/01-next-config-js/expireTime.md)
+        - [exportPathMap](./app/03-api-reference/05-config/01-next-config-js/exportPathMap.md)
+        - [exposeTestingApiInProductionBuild](./app/03-api-reference/05-config/01-next-config-js/exposeTestingApiInProductionBuild.md)
+        - [generateBuildId](./app/03-api-reference/05-config/01-next-config-js/generateBuildId.md)
+        - [generateEtags](./app/03-api-reference/05-config/01-next-config-js/generateEtags.md)
+        - [headers](./app/03-api-reference/05-config/01-next-config-js/headers.md)
+        - [htmlLimitedBots](./app/03-api-reference/05-config/01-next-config-js/htmlLimitedBots.md)
+        - [httpAgentOptions](./app/03-api-reference/05-config/01-next-config-js/httpAgentOptions.md)
+        - [images](./app/03-api-reference/05-config/01-next-config-js/images.md)
+        - [Custom Next.js Cache Handler](./app/03-api-reference/05-config/01-next-config-js/incrementalCacheHandlerPath.md)
+        - [inlineCss](./app/03-api-reference/05-config/01-next-config-js/inlineCss.md)
+        - [instrumentationClientInject](./app/03-api-reference/05-config/01-next-config-js/instrumentationClientInject.md)
+        - [logging](./app/03-api-reference/05-config/01-next-config-js/logging.md)
+        - [mdxRs](./app/03-api-reference/05-config/01-next-config-js/mdxRs.md)
+        - [onDemandEntries](./app/03-api-reference/05-config/01-next-config-js/onDemandEntries.md)
+        - [optimizePackageImports](./app/03-api-reference/05-config/01-next-config-js/optimizePackageImports.md)
+        - [output](./app/03-api-reference/05-config/01-next-config-js/output.md)
+        - [outputHashSalt](./app/03-api-reference/05-config/01-next-config-js/outputHashSalt.md)
+        - [pageExtensions](./app/03-api-reference/05-config/01-next-config-js/pageExtensions.md)
+        - [partialPrefetching](./app/03-api-reference/05-config/01-next-config-js/partialPrefetching.md)
+        - [poweredByHeader](./app/03-api-reference/05-config/01-next-config-js/poweredByHeader.md)
+        - [prefetchInlining](./app/03-api-reference/05-config/01-next-config-js/prefetchInlining.md)
+        - [productionBrowserSourceMaps](./app/03-api-reference/05-config/01-next-config-js/productionBrowserSourceMaps.md)
+        - [proxyClientMaxBodySize](./app/03-api-reference/05-config/01-next-config-js/proxyClientMaxBodySize.md)
+        - [reactCompiler](./app/03-api-reference/05-config/01-next-config-js/reactCompiler.md)
+        - [reactMaxHeadersLength](./app/03-api-reference/05-config/01-next-config-js/reactMaxHeadersLength.md)
+        - [reactStrictMode](./app/03-api-reference/05-config/01-next-config-js/reactStrictMode.md)
+        - [redirects](./app/03-api-reference/05-config/01-next-config-js/redirects.md)
+        - [rewrites](./app/03-api-reference/05-config/01-next-config-js/rewrites.md)
+        - [sassOptions](./app/03-api-reference/05-config/01-next-config-js/sassOptions.md)
+        - [serverActions](./app/03-api-reference/05-config/01-next-config-js/serverActions.md)
+        - [serverComponentsHmrCache](./app/03-api-reference/05-config/01-next-config-js/serverComponentsHmrCache.md)
+        - [serverExternalPackages](./app/03-api-reference/05-config/01-next-config-js/serverExternalPackages.md)
+        - [skipProxyUrlNormalize](./app/03-api-reference/05-config/01-next-config-js/skipProxyUrlNormalize.md)
+        - [skipTrailingSlashRedirect](./app/03-api-reference/05-config/01-next-config-js/skipTrailingSlashRedirect.md)
+        - [staleTimes](./app/03-api-reference/05-config/01-next-config-js/staleTimes.md)
+        - [staticGeneration*](./app/03-api-reference/05-config/01-next-config-js/staticGeneration.md)
+        - [supportsImmutableAssets](./app/03-api-reference/05-config/01-next-config-js/supportsImmutableAssets.md)
+        - [taint](./app/03-api-reference/05-config/01-next-config-js/taint.md)
+        - [trailingSlash](./app/03-api-reference/05-config/01-next-config-js/trailingSlash.md)
+        - [transpilePackages](./app/03-api-reference/05-config/01-next-config-js/transpilePackages.md)
+        - [turbopack](./app/03-api-reference/05-config/01-next-config-js/turbopack.md)
+        - [turbopackChunking](./app/03-api-reference/05-config/01-next-config-js/turbopackChunking.md)
+        - [Turbopack FileSystem Caching](./app/03-api-reference/05-config/01-next-config-js/turbopackFileSystemCache.md)
+        - [turbopackGc](./app/03-api-reference/05-config/01-next-config-js/turbopackGc.md)
+        - [turbopack.ignoreIssue](./app/03-api-reference/05-config/01-next-config-js/turbopackIgnoreIssue.md)
+        - [turbopackLazyDynamicImports](./app/03-api-reference/05-config/01-next-config-js/turbopackLazyDynamicImports.md)
+        - [turbopackLazyDynamicImportsSSR](./app/03-api-reference/05-config/01-next-config-js/turbopackLazyDynamicImportsSSR.md)
+        - [turbopackLocalPostcssConfig](./app/03-api-reference/05-config/01-next-config-js/turbopackLocalPostcssConfig.md)
+        - [Turbopack Memory Eviction](./app/03-api-reference/05-config/01-next-config-js/turbopackMemoryEviction.md)
+        - [turbopackPluginRuntimeStrategy](./app/03-api-reference/05-config/01-next-config-js/turbopackPluginRuntimeStrategy.md)
+        - [turbopackRustReactCompiler](./app/03-api-reference/05-config/01-next-config-js/turbopackRustReactCompiler.md)
+        - [typedRoutes](./app/03-api-reference/05-config/01-next-config-js/typedRoutes.md)
+        - [typescript](./app/03-api-reference/05-config/01-next-config-js/typescript.md)
+        - [urlImports](./app/03-api-reference/05-config/01-next-config-js/urlImports.md)
+        - [useLightningcss](./app/03-api-reference/05-config/01-next-config-js/useLightningcss.md)
+        - [useOffline](./app/03-api-reference/05-config/01-next-config-js/useOffline.md)
+        - [useTypeScriptCli](./app/03-api-reference/05-config/01-next-config-js/useTypeScriptCli.md)
+        - [webVitalsAttribution](./app/03-api-reference/05-config/01-next-config-js/webVitalsAttribution.md)
+        - [Custom Webpack Config](./app/03-api-reference/05-config/01-next-config-js/webpack.md)
+      - [TypeScript](./app/03-api-reference/05-config/02-typescript.md)
+      - [ESLint Plugin](./app/03-api-reference/05-config/03-eslint.md)
+    - [CLI](./app/03-api-reference/06-cli/index.md)
+      - [create-next-app](./app/03-api-reference/06-cli/create-next-app.md)
+      - [next CLI](./app/03-api-reference/06-cli/next.md)
+    - [Adapters](./app/03-api-reference/07-adapters/index.md)
+      - [Configuration](./app/03-api-reference/07-adapters/01-configuration.md)
+      - [Creating an Adapter](./app/03-api-reference/07-adapters/02-creating-an-adapter.md)
+      - [API Reference](./app/03-api-reference/07-adapters/03-api-reference.md)
+      - [Testing Adapters](./app/03-api-reference/07-adapters/04-testing-adapters.md)
+      - [Routing with @next/routing](./app/03-api-reference/07-adapters/05-routing-with-next-routing.md)
+      - [Implementing PPR in an Adapter](./app/03-api-reference/07-adapters/06-implementing-ppr-in-an-adapter.md)
+      - [Runtime Integration](./app/03-api-reference/07-adapters/07-runtime-integration.md)
+      - [Invoking Entrypoints](./app/03-api-reference/07-adapters/08-invoking-entrypoints.md)
+      - [Output Types](./app/03-api-reference/07-adapters/09-output-types.md)
+      - [Routing Information](./app/03-api-reference/07-adapters/10-routing-information.md)
+      - [Use Cases](./app/03-api-reference/07-adapters/11-use-cases.md)
+      - [Supporting Immutable Static Assets](./app/03-api-reference/07-adapters/12-immutable-static-assets.md)
+    - [Edge Runtime](./app/03-api-reference/07-edge.md)
+    - [Turbopack](./app/03-api-reference/08-turbopack.md)
+  - [Next.js Glossary](./app/04-glossary.md)

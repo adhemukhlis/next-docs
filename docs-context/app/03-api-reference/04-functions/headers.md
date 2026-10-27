@@ -3,7 +3,7 @@ title: headers
 description: API reference for the headers function.
 ---
 
-`headers` is an **async** function that allows you to **read** the HTTP incoming request headers from a [Server Component](/docs/app/getting-started/server-and-client-components).
+`headers` is an **async** function that allows you to **read** the HTTP incoming request headers from a [Server Component](../../01-getting-started/05-server-and-client-components.md).
 
 ```tsx filename="app/page.tsx" switcher
 import { headers } from 'next/headers'
@@ -45,8 +45,8 @@ export default async function Page() {
 - `headers` is an **asynchronous** function that returns a promise. You must use `async/await` or React's [`use`](https://react.dev/reference/react/use) function.
   - In version 14 and earlier, `headers` was a synchronous function. To help with backwards compatibility, you can still access it synchronously in Next.js 15, but this behavior will be deprecated in the future.
 - Since `headers` is read-only, you cannot `set` or `delete` the outgoing request headers.
-- `headers` is a [Request-time API](/docs/app/glossary#request-time-apis) whose returned values cannot be known ahead of time. Using it in will opt a route into **[dynamic rendering](/docs/app/glossary#dynamic-rendering)**.
-- With [Cache Components](/docs/app/getting-started/caching), calling `headers()` outside of a [`<Suspense>`](https://react.dev/reference/react/Suspense) boundary prevents the route from being prerendered. See [Next.js encountered runtime data during prerendering](/docs/messages/blocking-prerender-runtime) for fix options.
+- `headers` is a [Request-time API](../../04-glossary.md#request-time-apis) whose returned values cannot be known ahead of time. Using it in will opt a route into **[dynamic rendering](../../04-glossary.md#dynamic-rendering)**.
+- With [Cache Components](../../01-getting-started/08-caching.md), calling `headers()` outside of a [`<Suspense>`](https://react.dev/reference/react/Suspense) boundary prevents the route from being prerendered. See [Next.js encountered runtime data during prerendering](/docs/messages/blocking-prerender-runtime) for fix options.
 
 ## Examples
 
@@ -70,5 +70,5 @@ export default async function Page() {
 
 | Version | Changes |
 | - | - |
-| `v15.0.0-RC` | `headers` is now an async function. A [codemod](/docs/app/guides/upgrading/codemods#150) is available. |
+| `v15.0.0-RC` | `headers` is now an async function. A [codemod](../../02-guides/upgrading/codemods.md#150) is available. |
 | `v13.0.0` | `headers` introduced. |

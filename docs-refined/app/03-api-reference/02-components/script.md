@@ -3,7 +3,7 @@ title: Script Component
 description: Optimize third-party scripts in your Next.js application using the built-in `next/script` Component.
 ---
 
-This API reference will help you understand how to use [props](#props) available for the Script Component. For features and usage, please see the [Optimizing Scripts](/docs/app/guides/scripts) page.
+This API reference will help you understand how to use [props](#props) available for the Script Component. For features and usage, please see the [Optimizing Scripts](../../02-guides/scripts.md) page.
 
 ```tsx filename="app/dashboard/page.tsx" switcher
 import Script from 'next/script'
@@ -68,7 +68,7 @@ Scripts that load with the `beforeInteractive` strategy are injected into the in
 
 Scripts denoted with this strategy are preloaded and fetched before any first-party code, but their execution **does not block page hydration from occurring**.
 
-Scripts with the `beforeInteractive` strategy must be placed inside a [root layout](/docs/app/api-reference/file-conventions/layout#root-layout), such as `app/layout.tsx` or `app/[locale]/layout.tsx`, and are designed to load scripts that are needed by the entire site (i.e. the script will load when any page in the application has been loaded server-side).
+Scripts with the `beforeInteractive` strategy must be placed inside a [root layout](../03-file-conventions/layout.md#root-layout), such as `app/layout.tsx` or `app/[locale]/layout.tsx`, and are designed to load scripts that are needed by the entire site (i.e. the script will load when any page in the application has been loaded server-side).
 
 **This strategy should only be used for critical scripts that need to be fetched as soon as possible.**
 

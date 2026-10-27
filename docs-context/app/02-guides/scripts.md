@@ -2,11 +2,6 @@
 title: How to load and optimize scripts
 nav_title: Scripts
 description: Optimize 3rd party scripts with the built-in Script component.
-related:
- title: API Reference
- description: Learn more about the next/script API.
- links:
-  - app/api-reference/components/script
 ---
 
 ### Layout Scripts
@@ -84,7 +79,7 @@ Although the default behavior of `next/script` allows you to load third-party sc
 - `lazyOnload`: Load the script later during browser idle time.
 - `worker`: (experimental) Load the script in a web worker.
 
-Refer to the [`next/script`](/docs/app/api-reference/components/script#strategy) API reference documentation to learn more about each strategy and their use cases.
+Refer to the [`next/script`](../03-api-reference/02-components/script.md#strategy) API reference documentation to learn more about each strategy and their use cases.
 
 ### Offloading Scripts To A Web Worker (experimental)
 
@@ -185,7 +180,7 @@ Event handlers can be used with the Script component to execute additional code 
 - `onReady`: Execute code after the script has finished loading and every time the component is mounted.
 - `onError`: Execute code if the script fails to load.
 
-These handlers will only work when `next/script` is imported and used inside of a [Client Component](/docs/app/getting-started/server-and-client-components). To create a client entry point, add `"use client"` at the top of the file, before any imports:
+These handlers will only work when `next/script` is imported and used inside of a [Client Component](../01-getting-started/05-server-and-client-components.md). To create a client entry point, add `"use client"` at the top of the file, before any imports:
 
 ```tsx filename="app/page.tsx" switcher
 'use client'
@@ -225,7 +220,7 @@ export default function Page() {
 }
 ```
 
-Refer to the [`next/script`](/docs/app/api-reference/components/script#onload) API reference to learn more about each event handler and view examples.
+Refer to the [`next/script`](../03-api-reference/02-components/script.md#onload) API reference to learn more about each event handler and view examples.
 
 ### Additional Attributes
 
@@ -264,3 +259,9 @@ export default function Page() {
 	)
 }
 ```
+
+## INDEX
+
+Learn more about the next/script API.
+
+- [Script Component](../03-api-reference/02-components/script.md)

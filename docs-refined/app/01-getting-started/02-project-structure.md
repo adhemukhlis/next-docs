@@ -20,49 +20,49 @@ Top-level folders are used to organize your application's code and static assets
   height="525"
 />
 
-|                                                                    |                                    |
-| ------------------------------------------------------------------ | ---------------------------------- |
-| [`app`](/docs/app)                                                 | App Router                         |
-| [`pages`](/docs/pages/building-your-application/routing)           | Pages Router                       |
-| [`public`](/docs/app/api-reference/file-conventions/public-folder) | Static assets to be served         |
-| [`src`](/docs/app/api-reference/file-conventions/src-folder)       | Optional application source folder |
+|                                                                      |                                    |
+| -------------------------------------------------------------------- | ---------------------------------- |
+| [`app`](../index.md)                                                 | App Router                         |
+| [`pages`](/docs/pages/building-your-application/routing)             | Pages Router                       |
+| [`public`](../03-api-reference/03-file-conventions/public-folder.md) | Static assets to be served         |
+| [`src`](../03-api-reference/03-file-conventions/src-folder.md)       | Optional application source folder |
 
 ### Top-level files
 
 Top-level files are used to configure your application, manage dependencies, run proxy, integrate monitoring tools, and define environment variables.
 
-|                                                                              |                                                                                    |
-| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| **Next.js**                                                                  |                                                                                    |
-| [`next.config.js`](/docs/app/api-reference/config/next-config-js)            | Configuration file for Next.js                                                     |
-| [`package.json`](/docs/app/getting-started/installation#manual-installation) | Project dependencies and scripts                                                   |
-| [`instrumentation.ts`](/docs/app/guides/instrumentation)                     | OpenTelemetry and Instrumentation file                                             |
-| [`proxy.ts`](/docs/app/api-reference/file-conventions/proxy)                 | Next.js request proxy                                                              |
-| [`.env`](/docs/app/guides/environment-variables)                             | Environment variables (should not be tracked by version control)                   |
-| [`.env.local`](/docs/app/guides/environment-variables)                       | Local environment variables (should not be tracked by version control)             |
-| [`.env.production`](/docs/app/guides/environment-variables)                  | Production environment variables (should not be tracked by version control)        |
-| [`.env.development`](/docs/app/guides/environment-variables)                 | Development environment variables (should not be tracked by version control)       |
-| [`eslint.config.mjs`](/docs/app/api-reference/config/eslint)                 | Configuration file for ESLint                                                      |
-| `.gitignore`                                                                 | Git files and folders to ignore                                                    |
-| [`next-env.d.ts`](/docs/app/api-reference/config/typescript#next-envdts)     | TypeScript declaration file for Next.js (should not be tracked by version control) |
-| `tsconfig.json`                                                              | Configuration file for TypeScript                                                  |
-| `jsconfig.json`                                                              | Configuration file for JavaScript                                                  |
+|                                                                               |                                                                                    |
+| ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| **Next.js**                                                                   |                                                                                    |
+| [`next.config.js`](../03-api-reference/05-config/01-next-config-js/index.md)  | Configuration file for Next.js                                                     |
+| [`package.json`](./01-installation.md#manual-installation)                    | Project dependencies and scripts                                                   |
+| [`instrumentation.ts`](../02-guides/instrumentation.md)                       | OpenTelemetry and Instrumentation file                                             |
+| [`proxy.ts`](../03-api-reference/03-file-conventions/proxy.md)                | Next.js request proxy                                                              |
+| [`.env`](../02-guides/environment-variables.md)                               | Environment variables (should not be tracked by version control)                   |
+| [`.env.local`](../02-guides/environment-variables.md)                         | Local environment variables (should not be tracked by version control)             |
+| [`.env.production`](../02-guides/environment-variables.md)                    | Production environment variables (should not be tracked by version control)        |
+| [`.env.development`](../02-guides/environment-variables.md)                   | Development environment variables (should not be tracked by version control)       |
+| [`eslint.config.mjs`](../03-api-reference/05-config/03-eslint.md)             | Configuration file for ESLint                                                      |
+| `.gitignore`                                                                  | Git files and folders to ignore                                                    |
+| [`next-env.d.ts`](../03-api-reference/05-config/02-typescript.md#next-envdts) | TypeScript declaration file for Next.js (should not be tracked by version control) |
+| `tsconfig.json`                                                               | Configuration file for TypeScript                                                  |
+| `jsconfig.json`                                                               | Configuration file for JavaScript                                                  |
 
 ### Routing Files
 
 Add `page` to expose a route, `layout` for shared UI such as header, nav, or footer, `loading` for skeletons, `error` for error boundaries, and `route` for APIs.
 
-|                                                                               |                     |                              |
-| ----------------------------------------------------------------------------- | ------------------- | ---------------------------- |
-| [`layout`](/docs/app/api-reference/file-conventions/layout)                   | `.js` `.jsx` `.tsx` | Layout                       |
-| [`page`](/docs/app/api-reference/file-conventions/page)                       | `.js` `.jsx` `.tsx` | Page                         |
-| [`loading`](/docs/app/api-reference/file-conventions/loading)                 | `.js` `.jsx` `.tsx` | Loading UI                   |
-| [`not-found`](/docs/app/api-reference/file-conventions/not-found)             | `.js` `.jsx` `.tsx` | Not found UI                 |
-| [`error`](/docs/app/api-reference/file-conventions/error)                     | `.js` `.jsx` `.tsx` | Error UI                     |
-| [`global-error`](/docs/app/api-reference/file-conventions/error#global-error) | `.js` `.jsx` `.tsx` | Global error UI              |
-| [`route`](/docs/app/api-reference/file-conventions/route)                     | `.js` `.ts`         | API endpoint                 |
-| [`template`](/docs/app/api-reference/file-conventions/template)               | `.js` `.jsx` `.tsx` | Re-rendered layout           |
-| [`default`](/docs/app/api-reference/file-conventions/default)                 | `.js` `.jsx` `.tsx` | Parallel route fallback page |
+|                                                                                 |                     |                              |
+| ------------------------------------------------------------------------------- | ------------------- | ---------------------------- |
+| [`layout`](../03-api-reference/03-file-conventions/layout.md)                   | `.js` `.jsx` `.tsx` | Layout                       |
+| [`page`](../03-api-reference/03-file-conventions/page.md)                       | `.js` `.jsx` `.tsx` | Page                         |
+| [`loading`](../03-api-reference/03-file-conventions/loading.md)                 | `.js` `.jsx` `.tsx` | Loading UI                   |
+| [`not-found`](../03-api-reference/03-file-conventions/not-found.md)             | `.js` `.jsx` `.tsx` | Not found UI                 |
+| [`error`](../03-api-reference/03-file-conventions/error.md)                     | `.js` `.jsx` `.tsx` | Error UI                     |
+| [`global-error`](../03-api-reference/03-file-conventions/error.md#global-error) | `.js` `.jsx` `.tsx` | Global error UI              |
+| [`route`](../03-api-reference/03-file-conventions/route.md)                     | `.js` `.ts`         | API endpoint                 |
+| [`template`](../03-api-reference/03-file-conventions/template.md)               | `.js` `.jsx` `.tsx` | Re-rendered layout           |
+| [`default`](../03-api-reference/03-file-conventions/default.md)                 | `.js` `.jsx` `.tsx` | Parallel route fallback page |
 
 ### Nested routes
 
@@ -78,7 +78,7 @@ Folders define URL segments. Nesting folders nests segments. Layouts at any leve
 
 ### Dynamic routes
 
-Parameterize segments with square brackets. Use `[segment]` for a single param, `[...segment]` for catch‑all, and `[[...segment]]` for optional catch‑all. Access values via the [`params`](/docs/app/api-reference/file-conventions/page#params-optional) prop.
+Parameterize segments with square brackets. Use `[segment]` for a single param, `[...segment]` for catch‑all, and `[[...segment]]` for optional catch‑all. Access values via the [`params`](../03-api-reference/03-file-conventions/page.md#params-optional) prop.
 
 | Path                            | URL pattern                                                          |
 | ------------------------------- | -------------------------------------------------------------------- |
@@ -88,7 +88,7 @@ Parameterize segments with square brackets. Use `[segment]` for a single param, 
 
 ### Route groups and private folders
 
-Organize code without changing URLs with route groups [`(group)`](/docs/app/api-reference/file-conventions/route-groups#convention), and colocate non-routable files with private folders [`_folder`](#private-folders).
+Organize code without changing URLs with route groups [`(group)`](../03-api-reference/03-file-conventions/route-groups.md#convention), and colocate non-routable files with private folders [`_folder`](#private-folders).
 
 | Path                            | URL pattern | Notes                                     |
 | ------------------------------- | ----------- | ----------------------------------------- |
@@ -103,43 +103,43 @@ These features fit specific UI patterns, such as slot-based layouts or modal rou
 
 Use `@slot` for named slots rendered by a parent layout. Use intercept patterns to render another route inside the current layout without changing the URL, for example, to show a details view as a modal over a list.
 
-| Pattern (docs)                                                                              | Meaning              | Typical use case                         |
-| ------------------------------------------------------------------------------------------- | -------------------- | ---------------------------------------- |
-| [`@folder`](/docs/app/api-reference/file-conventions/parallel-routes#slots)                 | Named slot           | Sidebar + main content                   |
-| [`(.)folder`](/docs/app/api-reference/file-conventions/intercepting-routes#convention)      | Intercept same level | Preview sibling route in a modal         |
-| [`(..)folder`](/docs/app/api-reference/file-conventions/intercepting-routes#convention)     | Intercept parent     | Open a child of the parent as an overlay |
-| [`(..)(..)folder`](/docs/app/api-reference/file-conventions/intercepting-routes#convention) | Intercept two levels | Deeply nested overlay                    |
-| [`(...)folder`](/docs/app/api-reference/file-conventions/intercepting-routes#convention)    | Intercept from root  | Show arbitrary route in current view     |
+| Pattern (docs)                                                                                | Meaning              | Typical use case                         |
+| --------------------------------------------------------------------------------------------- | -------------------- | ---------------------------------------- |
+| [`@folder`](../03-api-reference/03-file-conventions/parallel-routes.md#slots)                 | Named slot           | Sidebar + main content                   |
+| [`(.)folder`](../03-api-reference/03-file-conventions/intercepting-routes.md#convention)      | Intercept same level | Preview sibling route in a modal         |
+| [`(..)folder`](../03-api-reference/03-file-conventions/intercepting-routes.md#convention)     | Intercept parent     | Open a child of the parent as an overlay |
+| [`(..)(..)folder`](../03-api-reference/03-file-conventions/intercepting-routes.md#convention) | Intercept two levels | Deeply nested overlay                    |
+| [`(...)folder`](../03-api-reference/03-file-conventions/intercepting-routes.md#convention)    | Intercept from root  | Show arbitrary route in current view     |
 
 ### Metadata file conventions
 
 #### App icons
 
-|                                                                                                                 |                                     |                          |
-| --------------------------------------------------------------------------------------------------------------- | ----------------------------------- | ------------------------ |
-| [`favicon`](/docs/app/api-reference/file-conventions/metadata/app-icons#favicon)                                | `.ico`                              | Favicon file             |
-| [`icon`](/docs/app/api-reference/file-conventions/metadata/app-icons#icon)                                      | `.ico` `.jpg` `.jpeg` `.png` `.svg` | App Icon file            |
-| [`icon`](/docs/app/api-reference/file-conventions/metadata/app-icons#generate-icons-using-code-js-ts-tsx)       | `.js` `.ts` `.tsx`                  | Generated App Icon       |
-| [`apple-icon`](/docs/app/api-reference/file-conventions/metadata/app-icons#apple-icon)                          | `.jpg` `.jpeg` `.png`               | Apple App Icon file      |
-| [`apple-icon`](/docs/app/api-reference/file-conventions/metadata/app-icons#generate-icons-using-code-js-ts-tsx) | `.js` `.ts` `.tsx`                  | Generated Apple App Icon |
+|  |  |  |
+| --- | --- | --- |
+| [`favicon`](../03-api-reference/03-file-conventions/01-metadata/app-icons.md#favicon) | `.ico` | Favicon file |
+| [`icon`](../03-api-reference/03-file-conventions/01-metadata/app-icons.md#icon) | `.ico` `.jpg` `.jpeg` `.png` `.svg` | App Icon file |
+| [`icon`](../03-api-reference/03-file-conventions/01-metadata/app-icons.md#generate-icons-using-code-js-ts-tsx) | `.js` `.ts` `.tsx` | Generated App Icon |
+| [`apple-icon`](../03-api-reference/03-file-conventions/01-metadata/app-icons.md#apple-icon) | `.jpg` `.jpeg` `.png` | Apple App Icon file |
+| [`apple-icon`](../03-api-reference/03-file-conventions/01-metadata/app-icons.md#generate-icons-using-code-js-ts-tsx) | `.js` `.ts` `.tsx` | Generated Apple App Icon |
 
 #### Open Graph and Twitter images
 
 |  |  |  |
 | --- | --- | --- |
-| [`opengraph-image`](/docs/app/api-reference/file-conventions/metadata/opengraph-image#opengraph-image) | `.jpg` `.jpeg` `.png` `.gif` | Open Graph image file |
-| [`opengraph-image`](/docs/app/api-reference/file-conventions/metadata/opengraph-image#generate-images-using-code-js-ts-tsx) | `.js` `.ts` `.tsx` | Generated Open Graph image |
-| [`twitter-image`](/docs/app/api-reference/file-conventions/metadata/opengraph-image#twitter-image) | `.jpg` `.jpeg` `.png` `.gif` | Twitter image file |
-| [`twitter-image`](/docs/app/api-reference/file-conventions/metadata/opengraph-image#generate-images-using-code-js-ts-tsx) | `.js` `.ts` `.tsx` | Generated Twitter image |
+| [`opengraph-image`](../03-api-reference/03-file-conventions/01-metadata/opengraph-image.md#opengraph-image) | `.jpg` `.jpeg` `.png` `.gif` | Open Graph image file |
+| [`opengraph-image`](../03-api-reference/03-file-conventions/01-metadata/opengraph-image.md#generate-images-using-code-js-ts-tsx) | `.js` `.ts` `.tsx` | Generated Open Graph image |
+| [`twitter-image`](../03-api-reference/03-file-conventions/01-metadata/opengraph-image.md#twitter-image) | `.jpg` `.jpeg` `.png` `.gif` | Twitter image file |
+| [`twitter-image`](../03-api-reference/03-file-conventions/01-metadata/opengraph-image.md#generate-images-using-code-js-ts-tsx) | `.js` `.ts` `.tsx` | Generated Twitter image |
 
 #### SEO
 
-|                                                                                                              |             |                       |
-| ------------------------------------------------------------------------------------------------------------ | ----------- | --------------------- |
-| [`sitemap`](/docs/app/api-reference/file-conventions/metadata/sitemap#sitemap-files-xml)                     | `.xml`      | Sitemap file          |
-| [`sitemap`](/docs/app/api-reference/file-conventions/metadata/sitemap#generating-a-sitemap-using-code-js-ts) | `.js` `.ts` | Generated Sitemap     |
-| [`robots`](/docs/app/api-reference/file-conventions/metadata/robots#static-robotstxt)                        | `.txt`      | Robots file           |
-| [`robots`](/docs/app/api-reference/file-conventions/metadata/robots#generate-a-robots-file)                  | `.js` `.ts` | Generated Robots file |
+|                                                                                                                   |             |                       |
+| ----------------------------------------------------------------------------------------------------------------- | ----------- | --------------------- |
+| [`sitemap`](../03-api-reference/03-file-conventions/01-metadata/sitemap.md#sitemap-files-xml)                     | `.xml`      | Sitemap file          |
+| [`sitemap`](../03-api-reference/03-file-conventions/01-metadata/sitemap.md#generating-a-sitemap-using-code-js-ts) | `.js` `.ts` | Generated Sitemap     |
+| [`robots`](../03-api-reference/03-file-conventions/01-metadata/robots.md#static-robotstxt)                        | `.txt`      | Robots file           |
+| [`robots`](../03-api-reference/03-file-conventions/01-metadata/robots.md#generate-a-robots-file)                  | `.js` `.ts` | Generated Robots file |
 
 ## Organizing your project
 
@@ -235,7 +235,7 @@ Since files in the `app` directory can be [safely colocated by default](#colocat
 >
 > - While not a framework convention, you might also consider marking files outside private folders as "private" using the same underscore pattern.
 > - You can create URL segments that start with an underscore by prefixing the folder name with `%5F` (the URL-encoded form of an underscore): `%5FfolderName`.
-> - If you don't use private folders, it would be helpful to know Next.js [special file conventions](/docs/app/getting-started/project-structure#routing-files) to prevent unexpected naming conflicts.
+> - If you don't use private folders, it would be helpful to know Next.js [special file conventions](./02-project-structure.md#routing-files) to prevent unexpected naming conflicts.
 
 ### Route groups
 
@@ -260,7 +260,7 @@ Route groups are useful for:
 
 ### `src` folder
 
-Next.js supports storing application code (including `app`) inside an optional [`src` folder](/docs/app/api-reference/file-conventions/src-folder). This separates application code from project configuration files which mostly live in the root of a project.
+Next.js supports storing application code (including `app`) inside an optional [`src` folder](../03-api-reference/03-file-conventions/src-folder.md). This separates application code from project configuration files which mostly live in the root of a project.
 
 <Image
   alt="An example folder structure with the `src` folder"
@@ -348,7 +348,7 @@ To opt specific routes into a layout, create a new route group (e.g. `(shop)`) a
 
 ### Opting for loading skeletons on a specific route
 
-To apply a [loading skeleton](/docs/app/api-reference/file-conventions/loading) via a `loading.js` file to a specific route, create a new route group (e.g., `/(overview)`) and then move your `loading.tsx` inside that route group.
+To apply a [loading skeleton](../03-api-reference/03-file-conventions/loading.md) via a `loading.js` file to a specific route, create a new route group (e.g., `/(overview)`) and then move your `loading.tsx` inside that route group.
 
 <Image
   alt="Folder structure showing a loading.tsx and a page.tsx inside the route group"
@@ -362,7 +362,7 @@ Now, the `loading.tsx` file will only apply to your dashboard → overview page 
 
 ### Creating multiple root layouts
 
-To create multiple [root layouts](/docs/app/api-reference/file-conventions/layout#root-layout), remove the top-level `layout.js` file, and add a `layout.js` file inside each route group. This is useful for partitioning an application into sections that have a completely different UI or experience. The `<html>` and `<body>` tags need to be added to each root layout.
+To create multiple [root layouts](../03-api-reference/03-file-conventions/layout.md#root-layout), remove the top-level `layout.js` file, and add a `layout.js` file inside each route group. This is useful for partitioning an application into sections that have a completely different UI or experience. The `<html>` and `<body>` tags need to be added to each root layout.
 
 <Image
   alt="Route Groups with Multiple Root Layouts"

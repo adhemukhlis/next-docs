@@ -5,9 +5,9 @@ related:
  title: Next Steps
  description: Learn more about the alternatives ways you can use CSS in your application.
  links:
-  - app/guides/tailwind-v3-css
-  - app/guides/sass
-  - app/guides/css-in-js
+  - ../02-guides/tailwind-v3-css.md
+  - ../02-guides/sass.md
+  - ../02-guides/css-in-js.md
 ---
 
 Next.js provides several ways to style your application using CSS, including:
@@ -16,8 +16,8 @@ Next.js provides several ways to style your application using CSS, including:
 - [CSS Modules](#css-modules)
 - [Global CSS](#global-css)
 - [External Stylesheets](#external-stylesheets)
-- [Sass](/docs/app/guides/sass)
-- [CSS-in-JS](/docs/app/guides/css-in-js)
+- [Sass](../02-guides/sass.md)
+- [CSS-in-JS](../02-guides/css-in-js.md)
 
 ## Tailwind CSS
 
@@ -105,7 +105,7 @@ export default function Page() {
 }
 ```
 
-> **Good to know:** If you need broader browser support for very old browsers, see the [Tailwind CSS v3 setup instructions](/docs/app/guides/tailwind-v3-css).
+> **Good to know:** If you need broader browser support for very old browsers, see the [Tailwind CSS v3 setup instructions](../02-guides/tailwind-v3-css.md).
 
 ## CSS Modules
 
@@ -258,7 +258,7 @@ To keep CSS ordering predictable:
 - Use a consistent naming convention for your CSS modules. For example, using `<name>.module.css` over `<name>.tsx`.
 - Extract shared styles into shared components to avoid duplicate imports.
 - Turn off linters or formatters that auto-sort imports like ESLint’s [`sort-imports`](https://eslint.org/docs/latest/rules/sort-imports).
-- You can use the [`cssChunking`](/docs/app/api-reference/config/next-config-js/cssChunking) option in `next.config.js` to control how CSS is chunked.
+- You can use the [`cssChunking`](../03-api-reference/05-config/01-next-config-js/cssChunking.md) option in `next.config.js` to control how CSS is chunked.
 
 ## Development vs Production
 

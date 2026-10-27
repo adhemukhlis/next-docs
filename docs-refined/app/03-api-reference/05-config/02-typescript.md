@@ -29,12 +29,12 @@ yarn add -D typescript@^7
 bun add -D typescript@^7
 ```
 
-Next.js uses the project-local `tsc` CLI by default, so no additional configuration is required. To use the JavaScript compiler API instead, set [`experimental.useTypeScriptCli`](/docs/app/api-reference/config/next-config-js/useTypeScriptCli) to `false`.
+Next.js uses the project-local `tsc` CLI by default, so no additional configuration is required. To use the JavaScript compiler API instead, set [`experimental.useTypeScriptCli`](./01-next-config-js/useTypeScriptCli.md) to `false`.
 
 > **Good to know**:
 >
 > - CLI type checking prints the native `tsc` diagnostics. It does not apply Next.js-specific code frames or rewrite errors for routes, pages, layouts, or route handlers.
-> - The CLI checks the complete project selected by your `tsconfig` file. This includes test files and `.next/dev/types` when they are included by that configuration. [`next build --debug-build-paths`](/docs/app/api-reference/cli/next#next-build-options) does not narrow the files that are type checked and produces a warning when used with this option.
+> - The CLI checks the complete project selected by your `tsconfig` file. This includes test files and `.next/dev/types` when they are included by that configuration. [`next build --debug-build-paths`](../06-cli/next.md#next-build-options) does not narrow the files that are type checked and produces a warning when used with this option.
 > - [`typescript.tsconfigPath`](#custom-tsconfig-path) continues to select the configuration passed to `tsc`. [`typescript.ignoreBuildErrors`](#disabling-typescript-errors-in-production) skips the type-checking step, including the CLI checker.
 > - `experimental.useTypeScriptCli` is experimental and its behavior may change.
 
@@ -60,7 +60,7 @@ Now, when editing files, the custom plugin will be enabled. By default, the proj
 
 The TypeScript plugin can help with:
 
-- Warning if invalid values for [segment config options](/docs/app/api-reference/file-conventions/route-segment-config) are passed.
+- Warning if invalid values for [segment config options](../03-file-conventions/02-route-segment-config/index.md) are passed.
 - Showing available options and in-context documentation.
 - Ensuring the `'use client'` directive is used correctly.
 - Ensuring client hooks (like `useState`) are only used in Client Components.
@@ -72,9 +72,9 @@ The TypeScript plugin can help with:
 The Next.js App Router has **enhanced type safety**. This includes:
 
 1. **No serialization of data between fetching function and page**: You can `fetch` directly in components, layouts, and pages on the server. This data _does not_ need to be serialized (converted to a string) to be passed to the client side for consumption in React. Instead, since `app` uses Server Components by default, we can use values like `Date`, `Map`, `Set`, and more without any extra steps. Previously, you needed to manually type the boundary between server and client with Next.js-specific types.
-2. **Streamlined data flow between components**: With the removal of `_app` in favor of root layouts, it is now easier to visualize the data flow between components and pages. Previously, data flowing between individual `pages` and `_app` were difficult to type and could introduce confusing bugs. With [colocated data fetching](/docs/app/getting-started/fetching-data) in the App Router, this is no longer an issue.
+2. **Streamlined data flow between components**: With the removal of `_app` in favor of root layouts, it is now easier to visualize the data flow between components and pages. Previously, data flowing between individual `pages` and `_app` were difficult to type and could introduce confusing bugs. With [colocated data fetching](../../01-getting-started/06-fetching-data.md) in the App Router, this is no longer an issue.
 
-[Data Fetching in Next.js](/docs/app/getting-started/fetching-data) now provides as close to end-to-end type safety as possible without being prescriptive about your database or content provider selection.
+[Data Fetching in Next.js](../../01-getting-started/06-fetching-data.md) now provides as close to end-to-end type safety as possible without being prescriptive about your database or content provider selection.
 
 We're able to type the response data as you would expect with normal TypeScript. For example:
 
@@ -97,17 +97,17 @@ For _complete_ end-to-end type safety, this also requires your database or conte
 
 ## Route-Aware Type Helpers
 
-Next.js generates global helpers for App Router route types. These are available without imports and are generated during `next dev`, `next build`, or via [`next typegen`](/docs/app/api-reference/cli/next#next-typegen-options):
+Next.js generates global helpers for App Router route types. These are available without imports and are generated during `next dev`, `next build`, or via [`next typegen`](../06-cli/next.md#next-typegen-options):
 
-- [`PageProps`](/docs/app/api-reference/file-conventions/page#page-props-helper)
-- [`LayoutProps`](/docs/app/api-reference/file-conventions/layout#layout-props-helper)
-- [`RouteContext`](/docs/app/api-reference/file-conventions/route#route-context-helper)
+- [`PageProps`](../03-file-conventions/page.md#page-props-helper)
+- [`LayoutProps`](../03-file-conventions/layout.md#layout-props-helper)
+- [`RouteContext`](../03-file-conventions/route.md#route-context-helper)
 
 ## `next-env.d.ts`
 
 Next.js generates a `next-env.d.ts` file in your project root. This file references Next.js type definitions, allowing TypeScript to recognize non-code imports (images, stylesheets, etc.) and Next.js-specific types.
 
-Running `next dev`, `next build`, or [`next typegen`](/docs/app/api-reference/cli/next#next-typegen-options) regenerates this file.
+Running `next dev`, `next build`, or [`next typegen`](../06-cli/next.md#next-typegen-options) regenerates this file.
 
 > **Good to know**:
 >
@@ -324,7 +324,7 @@ export function Nav() {
 
 ### Type IntelliSense for Environment Variables
 
-During development, Next.js generates a `.d.ts` file in `.next/types` that contains information about the loaded environment variables for your editor's IntelliSense. If the same environment variable key is defined in multiple files, it is deduplicated according to the [Environment Variable Load Order](/docs/app/guides/environment-variables#environment-variable-load-order).
+During development, Next.js generates a `.d.ts` file in `.next/types` that contains information about the loaded environment variables for your editor's IntelliSense. If the same environment variable key is defined in multiple files, it is deduplicated according to the [Environment Variable Load Order](../../02-guides/environment-variables.md#environment-variable-load-order).
 
 To opt-into this feature, `experimental.typedEnv` needs to be enabled and the project needs to be using TypeScript.
 
@@ -418,7 +418,7 @@ If you'd like Next.js to dangerously produce production code even when your appl
 
 If disabled, be sure you are running type checks as part of your build or deploy process, otherwise this can be very dangerous.
 
-Open `next.config.ts` and enable the `ignoreBuildErrors` option in the [`typescript`](/docs/app/api-reference/config/next-config-js/typescript) config:
+Open `next.config.ts` and enable the `ignoreBuildErrors` option in the [`typescript`](./01-next-config-js/typescript.md) config:
 
 ```ts filename="next.config.ts"
 import type { NextConfig } from 'next'

@@ -26,57 +26,57 @@ Alternatively `NEXT_ADAPTER_PATH` can be set to enable zero-config usage in depl
 
 For full adapter implementation details, use the dedicated Adapters section:
 
-- [Configuration](/docs/app/api-reference/adapters/configuration)
-- [Creating an Adapter](/docs/app/api-reference/adapters/creating-an-adapter)
-- [API Reference](/docs/app/api-reference/adapters/api-reference)
-- [Testing Adapters](/docs/app/api-reference/adapters/testing-adapters)
-- [Routing with `@next/routing`](/docs/app/api-reference/adapters/routing-with-next-routing)
-- [Implementing PPR in an Adapter](/docs/app/api-reference/adapters/implementing-ppr-in-an-adapter)
-- [Runtime Integration](/docs/app/api-reference/adapters/runtime-integration)
-- [Invoking Entrypoints](/docs/app/api-reference/adapters/invoking-entrypoints)
-- [Output Types](/docs/app/api-reference/adapters/output-types)
-- [Routing Information](/docs/app/api-reference/adapters/routing-information)
-- [Use Cases](/docs/app/api-reference/adapters/use-cases)
+- [Configuration](../../07-adapters/01-configuration.md)
+- [Creating an Adapter](../../07-adapters/02-creating-an-adapter.md)
+- [API Reference](../../07-adapters/03-api-reference.md)
+- [Testing Adapters](../../07-adapters/04-testing-adapters.md)
+- [Routing with `@next/routing`](../../07-adapters/05-routing-with-next-routing.md)
+- [Implementing PPR in an Adapter](../../07-adapters/06-implementing-ppr-in-an-adapter.md)
+- [Runtime Integration](../../07-adapters/07-runtime-integration.md)
+- [Invoking Entrypoints](../../07-adapters/08-invoking-entrypoints.md)
+- [Output Types](../../07-adapters/09-output-types.md)
+- [Routing Information](../../07-adapters/10-routing-information.md)
+- [Use Cases](../../07-adapters/11-use-cases.md)
 
 ## Creating an Adapter
 
-See [Creating an Adapter](/docs/app/api-reference/adapters/creating-an-adapter).
+See [Creating an Adapter](../../07-adapters/02-creating-an-adapter.md).
 
 ## API Reference
 
-See [API Reference](/docs/app/api-reference/adapters/api-reference).
+See [API Reference](../../07-adapters/03-api-reference.md).
 
 ## Testing Adapters
 
-See [Testing Adapters](/docs/app/api-reference/adapters/testing-adapters).
+See [Testing Adapters](../../07-adapters/04-testing-adapters.md).
 
 ## Routing with `@next/routing`
 
-See [Routing with `@next/routing`](/docs/app/api-reference/adapters/routing-with-next-routing).
+See [Routing with `@next/routing`](../../07-adapters/05-routing-with-next-routing.md).
 
 ## Implementing PPR in an Adapter
 
-See [Implementing PPR in an Adapter](/docs/app/api-reference/adapters/implementing-ppr-in-an-adapter).
+See [Implementing PPR in an Adapter](../../07-adapters/06-implementing-ppr-in-an-adapter.md).
 
 ## Runtime Integration
 
-See [Runtime Integration](/docs/app/api-reference/adapters/runtime-integration).
+See [Runtime Integration](../../07-adapters/07-runtime-integration.md).
 
 ## Invoking Entrypoints
 
-See [Invoking Entrypoints](/docs/app/api-reference/adapters/invoking-entrypoints).
+See [Invoking Entrypoints](../../07-adapters/08-invoking-entrypoints.md).
 
 ## Output Types
 
-See [Output Types](/docs/app/api-reference/adapters/output-types).
+See [Output Types](../../07-adapters/09-output-types.md).
 
 ## Routing Information
 
-See [Routing Information](/docs/app/api-reference/adapters/routing-information).
+See [Routing Information](../../07-adapters/10-routing-information.md).
 
 ## Use Cases
 
-See [Use Cases](/docs/app/api-reference/adapters/use-cases).
+See [Use Cases](../../07-adapters/11-use-cases.md).
 
 ## Version History
 

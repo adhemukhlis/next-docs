@@ -2,12 +2,6 @@
 title: Route Handlers
 nav_title: Route Handlers
 description: Create custom request handlers with Next.js Route Handlers using the Web Request and Response APIs.
-related:
- title: API Reference
- description: Learn more about Route Handlers
- links:
-  - app/api-reference/file-conventions/route
-  - app/guides/backend-for-frontend
 ---
 
 ## Route Handlers
@@ -26,7 +20,7 @@ height="444"
 
 ### Convention
 
-Route Handlers are defined in a [`route.js|ts` file](/docs/app/api-reference/file-conventions/route) inside the `app` directory:
+Route Handlers are defined in a [`route.js|ts` file](../03-api-reference/03-file-conventions/route.md) inside the `app` directory:
 
 ```ts filename="app/api/route.ts" switcher
 export async function GET(request: Request) {}
@@ -44,11 +38,11 @@ The following [HTTP methods](https://developer.mozilla.org/docs/Web/HTTP/Methods
 
 ### Extended `NextRequest` and `NextResponse` APIs
 
-In addition to supporting the native [Request](https://developer.mozilla.org/docs/Web/API/Request) and [Response](https://developer.mozilla.org/docs/Web/API/Response) APIs, Next.js extends them with [`NextRequest`](/docs/app/api-reference/functions/next-request) and [`NextResponse`](/docs/app/api-reference/functions/next-response) to provide convenient helpers for advanced use cases.
+In addition to supporting the native [Request](https://developer.mozilla.org/docs/Web/API/Request) and [Response](https://developer.mozilla.org/docs/Web/API/Response) APIs, Next.js extends them with [`NextRequest`](../03-api-reference/04-functions/next-request.md) and [`NextResponse`](../03-api-reference/04-functions/next-response.md) to provide convenient helpers for advanced use cases.
 
 ### Caching
 
-Route Handlers are not cached by default. You can, however, opt into caching for `GET` methods. Other supported HTTP methods are **not** cached. To cache a `GET` method, use a [route config option](/docs/app/guides/caching-without-cache-components#dynamic) such as `export const dynamic = 'force-static'` in your Route Handler file.
+Route Handlers are not cached by default. You can, however, opt into caching for `GET` methods. Other supported HTTP methods are **not** cached. To cache a `GET` method, use a [route config option](../02-guides/caching-without-cache-components.md#dynamic) such as `export const dynamic = 'force-static'` in your Route Handler file.
 
 ```ts filename="app/items/route.ts" switcher
 export const dynamic = 'force-static'
@@ -86,7 +80,7 @@ export async function GET() {
 
 #### With Cache Components
 
-When [Cache Components](/docs/app/getting-started/caching) is enabled, `GET` Route Handlers follow the same model as normal UI routes in your application. They run at request time by default, can be prerendered when they don't access uncached or runtime data, and you can use `use cache` to include uncached data in the static response.
+When [Cache Components](./08-caching.md) is enabled, `GET` Route Handlers follow the same model as normal UI routes in your application. They run at request time by default, can be prerendered when they don't access uncached or runtime data, and you can use `use cache` to include uncached data in the static response.
 
 **Static example** - doesn't access uncached or runtime data, so it will be prerendered at build time:
 
@@ -121,7 +115,7 @@ export async function GET() {
 }
 ```
 
-> **Good to know**: Prerendering stops if the `GET` handler accesses network requests, database queries, async file system operations, request object properties (like `req.url`, `request.headers`, `request.cookies`, `request.body`), runtime APIs like [`cookies()`](/docs/app/api-reference/functions/cookies), [`headers()`](/docs/app/api-reference/functions/headers), [`connection()`](/docs/app/api-reference/functions/connection), or non-deterministic operations.
+> **Good to know**: Prerendering stops if the `GET` handler accesses network requests, database queries, async file system operations, request object properties (like `req.url`, `request.headers`, `request.cookies`, `request.body`), runtime APIs like [`cookies()`](../03-api-reference/04-functions/cookies.md), [`headers()`](../03-api-reference/04-functions/headers.md), [`connection()`](../03-api-reference/04-functions/connection.md), or non-deterministic operations.
 
 **Cached example** - accesses uncached data (database query) but caches it with `use cache`, allowing it to be included in the prerendered response:
 
@@ -145,7 +139,7 @@ async function getProducts() {
 
 ### Special Route Handlers
 
-Special Route Handlers like [`sitemap.ts`](/docs/app/api-reference/file-conventions/metadata/sitemap), [`opengraph-image.tsx`](/docs/app/api-reference/file-conventions/metadata/opengraph-image), and [`icon.tsx`](/docs/app/api-reference/file-conventions/metadata/app-icons), and other [metadata files](/docs/app/api-reference/file-conventions/metadata) remain static by default unless they use Request-time APIs or dynamic config options.
+Special Route Handlers like [`sitemap.ts`](../03-api-reference/03-file-conventions/01-metadata/sitemap.md), [`opengraph-image.tsx`](../03-api-reference/03-file-conventions/01-metadata/opengraph-image.md), and [`icon.tsx`](../03-api-reference/03-file-conventions/01-metadata/app-icons.md), and other [metadata files](../03-api-reference/03-file-conventions/01-metadata/index.md) remain static by default unless they use Request-time APIs or dynamic config options.
 
 ### Route Resolution
 
@@ -182,11 +176,11 @@ export default function Page() {
 export async function POST(request) {}
 ```
 
-Read more about how Route Handlers [complement your frontend application](/docs/app/guides/backend-for-frontend), or explore the Route Handlers [API Reference](/docs/app/api-reference/file-conventions/route).
+Read more about how Route Handlers [complement your frontend application](../02-guides/backend-for-frontend.md), or explore the Route Handlers [API Reference](../03-api-reference/03-file-conventions/route.md).
 
 ### Route Context Helper
 
-In TypeScript, you can type the `context` parameter for Route Handlers with the globally available [`RouteContext`](/docs/app/api-reference/file-conventions/route#route-context-helper) helper:
+In TypeScript, you can type the `context` parameter for Route Handlers with the globally available [`RouteContext`](../03-api-reference/03-file-conventions/route.md#route-context-helper) helper:
 
 ```ts filename="app/users/[id]/route.ts" switcher
 import type { NextRequest } from 'next/server'
@@ -200,3 +194,10 @@ export async function GET(_req: NextRequest, ctx: RouteContext<'/users/[id]'>) {
 > **Good to know**
 >
 > - Types are generated during `next dev`, `next build` or `next typegen`.
+
+## INDEX
+
+Learn more about Route Handlers
+
+- [route.js](../03-api-reference/03-file-conventions/route.md)
+- [How to use Next.js as a backend for your frontend](../02-guides/backend-for-frontend.md)

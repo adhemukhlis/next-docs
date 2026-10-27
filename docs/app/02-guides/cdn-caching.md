@@ -5,10 +5,10 @@ description: Learn how CDN caching works with Next.js, including what works toda
 related:
  description: Related guides and references.
  links:
-  - app/guides/deploying-to-platforms
-  - app/guides/self-hosting
-  - app/guides/streaming
-  - app/api-reference/config/next-config-js/assetPrefix
+  - ./deploying-to-platforms.md
+  - ./self-hosting.md
+  - ./streaming.md
+  - ../03-api-reference/05-config/01-next-config-js/assetPrefix.md
 ---
 
 Next.js sets standard `Cache-Control` headers that CDNs can use to cache responses at the edge. This page covers what works today, where CDN caching is challenging, and the direction toward eliminating custom-header dependencies.
@@ -20,16 +20,16 @@ Next.js sets standard `Cache-Control` headers that CDNs can use to cache respons
 Next.js sets `Cache-Control` headers based on the rendering strategy of each route:
 
 - **Static pages** (no revalidation): `s-maxage=31536000` (one year)
-- **ISR pages** (time-based revalidation): `s-maxage={revalidate}, stale-while-revalidate={expire - revalidate}`. The default `expire` is one year, so `stale-while-revalidate` is included in the response header by default. You can customize this with [`cacheLife`](/docs/app/api-reference/functions/cacheLife).
+- **ISR pages** (time-based revalidation): `s-maxage={revalidate}, stale-while-revalidate={expire - revalidate}`. The default `expire` is one year, so `stale-while-revalidate` is included in the response header by default. You can customize this with [`cacheLife`](../03-api-reference/04-functions/cacheLife.md).
 - **Dynamic pages** (no caching): `private, no-cache, no-store, max-age=0, must-revalidate`
 
-CDNs that respect `s-maxage` and `stale-while-revalidate` can cache static and ISR pages at the edge. However, CDN-level caching alone does not support on-demand revalidation ([`revalidateTag()`](/docs/app/api-reference/functions/revalidateTag) / [`revalidatePath()`](/docs/app/api-reference/functions/revalidatePath)): those calls invalidate the Next.js server cache, but the CDN will continue serving its cached copy until the `s-maxage` TTL expires. To propagate on-demand revalidation to the CDN, trigger CDN purges alongside your revalidation call. A common pattern is: call `revalidateTag()`/`revalidatePath()` to invalidate the Next.js server cache, then call your CDN purge API for the affected keys (including both HTML and RSC variants).
+CDNs that respect `s-maxage` and `stale-while-revalidate` can cache static and ISR pages at the edge. However, CDN-level caching alone does not support on-demand revalidation ([`revalidateTag()`](../03-api-reference/04-functions/revalidateTag.md) / [`revalidatePath()`](../03-api-reference/04-functions/revalidatePath.md)): those calls invalidate the Next.js server cache, but the CDN will continue serving its cached copy until the `s-maxage` TTL expires. To propagate on-demand revalidation to the CDN, trigger CDN purges alongside your revalidation call. A common pattern is: call `revalidateTag()`/`revalidatePath()` to invalidate the Next.js server cache, then call your CDN purge API for the affected keys (including both HTML and RSC variants).
 
 ### Static assets
 
 Static assets (JavaScript, CSS, images, fonts) served from `/_next/static/` include content hashes in their filenames and have a 1 year `max-age` and `immutable` directive: `public, max-age=31536000, immutable`
 
-You can use [`assetPrefix`](/docs/app/api-reference/config/next-config-js/assetPrefix) to serve static assets from a different domain or CDN origin.
+You can use [`assetPrefix`](../03-api-reference/05-config/01-next-config-js/assetPrefix.md) to serve static assets from a different domain or CDN origin.
 
 ### Static prefetches (PPR-enabled routes)
 
@@ -50,9 +50,9 @@ App Router responses can vary based on several custom request headers. Next.js s
 - `next-router-state-tree` — the client's current router state, used for targeted segment updates during dynamic navigations
 - `next-router-prefetch` — whether this is a prefetch request
 - `next-router-segment-prefetch` — the specific segment being prefetched
-- `next-url` — added only for routes that use [interception routes](/docs/app/api-reference/file-conventions/intercepting-routes), carries the URL being intercepted
+- `next-url` — added only for routes that use [interception routes](../03-api-reference/03-file-conventions/intercepting-routes.md), carries the URL being intercepted
 
-> **Good to know:** [`proxy.js`](/docs/app/api-reference/file-conventions/proxy) (previously Middleware) should run before the CDN cache so it remains the source of truth for auth, redirects, and rewrites. If your deployment places `proxy.js` behind the CDN, configure the cache layer to bypass caching for routes that depend on `proxy.js` decisions.
+> **Good to know:** [`proxy.js`](../03-api-reference/03-file-conventions/proxy.md) (previously Middleware) should run before the CDN cache so it remains the source of truth for auth, redirects, and rewrites. If your deployment places `proxy.js` behind the CDN, configure the cache layer to bypass caching for routes that depend on `proxy.js` decisions.
 
 Many CDNs don't support `Vary` without additional configuration. Next.js addresses this with the `_rsc` search parameter: a hash of the relevant request header values that acts as a cache-key, ensuring different response variants get different cache keys. This ensures correct responses even on CDNs that ignore `Vary`.
 
@@ -66,7 +66,7 @@ These headers can be omitted in specific cases without causing protocol errors. 
 
 **`next-router-segment-prefetch`**: when omitted on prefetch requests, the server falls back to a broader prefetch payload instead of a segment-specific one.
 
-**`next-url`**: used for [interception routes](/docs/app/api-reference/file-conventions/intercepting-routes) to vary the response based on the referring page. If omitted, interception routes are not supported as the server doesn't know what original path to match against. The response returned is for regular navigation when `next-url` is omitted: the user sees the target page instead of the intercepted target page.
+**`next-url`**: used for [interception routes](../03-api-reference/03-file-conventions/intercepting-routes.md) to vary the response based on the referring page. If omitted, interception routes are not supported as the server doesn't know what original path to match against. The response returned is for regular navigation when `next-url` is omitted: the user sees the target page instead of the intercepted target page.
 
 ### What you must preserve
 
@@ -84,7 +84,7 @@ The Next.js team is working on moving all cache-affecting inputs into the URL pa
 
 ### How it works
 
-The approach extends the routing scheme that [`output: 'export'`](/docs/app/guides/static-exports) and segment prefetches already use today. File extensions in the pathname identify the response type:
+The approach extends the routing scheme that [`output: 'export'`](./static-exports.md) and segment prefetches already use today. File extensions in the pathname identify the response type:
 
 - **Full page RSC**: `/my/page.rsc` returns the RSC payload for the entire page
 - **Segment RSC**: `/my/page.segments/path/to/segment.segment.rsc` returns the RSC payload for a specific segment
@@ -113,4 +113,4 @@ This direction extends patterns that are already operational in the codebase (se
 
 ## CDN Feature Compatibility
 
-For a full table showing the infrastructure primitives available on every major CDN (edge compute, key-value storage, blob storage, PPR resuming), see [Deploying to Platforms](/docs/app/guides/deploying-to-platforms#cdn-infrastructure-compatibility).
+For a full table showing the infrastructure primitives available on every major CDN (edge compute, key-value storage, blob storage, PPR resuming), see [Deploying to Platforms](./deploying-to-platforms.md#cdn-infrastructure-compatibility).

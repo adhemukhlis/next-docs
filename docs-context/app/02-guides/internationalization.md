@@ -1,10 +1,6 @@
 ---
 title: Internationalization
 description: Add support for multiple languages with internationalized routing and localized content.
-related:
- description: Related API references and conventions.
- links:
-  - app/api-reference/functions/next-root-params
 ---
 
 Next.js enables you to configure the routing and rendering of content to support multiple languages. Making your site adaptive to different locales includes translated content (localization) and internationalized routes.
@@ -34,7 +30,7 @@ let defaultLocale = 'en-US'
 match(languages, locales, defaultLocale) // -> 'en-US'
 ```
 
-Routing can be internationalized by either the sub-path (`/fr/products`) or domain (`my-site.fr/products`). With this information, you can now redirect the user based on the locale inside [Proxy](/docs/app/api-reference/file-conventions/proxy).
+Routing can be internationalized by either the sub-path (`/fr/products`) or domain (`my-site.fr/products`). With this information, you can now redirect the user based on the locale inside [Proxy](../03-api-reference/03-file-conventions/proxy.md).
 
 ```js filename="proxy.js"
 import { NextResponse } from "next/server";
@@ -91,7 +87,7 @@ export default async function Page({ params }) {
 }
 ```
 
-> **Good to know:** `PageProps` and `LayoutProps` are globally available TypeScript helpers that provide strong typing for route parameters. See [PageProps](/docs/app/api-reference/file-conventions/page#page-props-helper) and [LayoutProps](/docs/app/api-reference/file-conventions/layout#layout-props-helper) for more details.
+> **Good to know:** `PageProps` and `LayoutProps` are globally available TypeScript helpers that provide strong typing for route parameters. See [PageProps](../03-api-reference/03-file-conventions/page.md#page-props-helper) and [LayoutProps](../03-api-reference/03-file-conventions/layout.md#layout-props-helper) for more details.
 
 The root layout can also be nested in the new folder (e.g. `app/[lang]/layout.js`).
 
@@ -179,11 +175,11 @@ export default async function Page({ params }) {
 }
 ```
 
-Because all layouts and pages in the `app/` directory default to [Server Components](/docs/app/getting-started/server-and-client-components), we do not need to worry about the size of the translation files affecting our client-side JavaScript bundle size. This code will **only run on the server**, and only the resulting HTML will be sent to the browser.
+Because all layouts and pages in the `app/` directory default to [Server Components](../01-getting-started/05-server-and-client-components.md), we do not need to worry about the size of the translation files affecting our client-side JavaScript bundle size. This code will **only run on the server**, and only the resulting HTML will be sent to the browser.
 
 ## Sharing the locale across your app
 
-The locale is often needed beyond the page that receives it, such as in shared data-fetching utilities or deeply nested components. Instead of prop drilling `lang` through each layer, we can read it directly with [`next/root-params`](/docs/app/api-reference/functions/next-root-params).
+The locale is often needed beyond the page that receives it, such as in shared data-fetching utilities or deeply nested components. Instead of prop drilling `lang` through each layer, we can read it directly with [`next/root-params`](../03-api-reference/04-functions/next-root-params.md).
 
 `next/root-params` exports a getter for each dynamic segment above the root layout. Since every route is nested under `app/[lang]`, `lang` is a root parameter, and any Server Component or server-side utility can call its getter. We can move the locale lookup into `getDictionary`, so callers no longer pass `lang`:
 
@@ -247,7 +243,7 @@ export default async function Page() {
 }
 ```
 
-> **Good to know:** Root parameter getters run in Server Components and server-side utilities, but not in Client Components, Server Actions, or Route Handlers. See [`next/root-params`](/docs/app/api-reference/functions/next-root-params) for the full API and its behavior with caching.
+> **Good to know:** Root parameter getters run in Server Components and server-side utilities, but not in Client Components, Server Actions, or Route Handlers. See [`next/root-params`](../03-api-reference/04-functions/next-root-params.md) for the full API and its behavior with caching.
 
 ## Static Rendering
 
@@ -292,3 +288,9 @@ export default async function RootLayout({ children, params }) {
 - [`tolgee`](https://tolgee.io/apps-integrations/next)
 - [`next-intlayer`](https://intlayer.org/doc/environment/nextjs)
 - [`gt-next`](https://generaltranslation.com/en/docs/next)
+
+## INDEX
+
+Related API references and conventions.
+
+- [next/root-params](../03-api-reference/04-functions/next-root-params.md)

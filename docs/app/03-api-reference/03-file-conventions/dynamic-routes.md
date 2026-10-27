@@ -6,7 +6,7 @@ related:
  title: Next Steps
  description: For more information on what to do next, we recommend the following sections
  links:
-  - app/api-reference/functions/generate-static-params
+  - ../04-functions/generate-static-params.md
 ---
 
 A URL path is a sequence of path segments. In the App Router, a segment may be **static** (a literal value matched exactly) or **dynamic** (a placeholder that captures a value from the URL). When you don't know a segment's value ahead of time, define a Dynamic Segment to create routes from dynamic data. Next.js passes the captured values to your page via the path `params` prop, either filled in at request time or prerendered at build time.
@@ -31,7 +31,7 @@ export default async function Page({ params }) {
 }
 ```
 
-Dynamic Segments are passed as the `params` prop to [`layout`](/docs/app/api-reference/file-conventions/layout), [`page`](/docs/app/api-reference/file-conventions/page), [`route`](/docs/app/api-reference/file-conventions/route), and [`generateMetadata`](/docs/app/api-reference/functions/generate-metadata#generatemetadata-function) functions.
+Dynamic Segments are passed as the `params` prop to [`layout`](./layout.md), [`page`](./page.md), [`route`](./route.md), and [`generateMetadata`](../04-functions/generate-metadata.md#generatemetadata-function) functions.
 
 | Route                     | Example URL | `params`        |
 | ------------------------- | ----------- | --------------- |
@@ -39,7 +39,7 @@ Dynamic Segments are passed as the `params` prop to [`layout`](/docs/app/api-ref
 | `app/blog/[slug]/page.js` | `/blog/b`   | `{ slug: 'b' }` |
 | `app/blog/[slug]/page.js` | `/blog/c`   | `{ slug: 'c' }` |
 
-Dynamic segments that appear before the [root layout](/docs/app/api-reference/file-conventions/layout#root-layout) are **root parameters**, which can additionally be read from any Server Component with [`next/root-params`](/docs/app/api-reference/functions/next-root-params).
+Dynamic segments that appear before the [root layout](./layout.md#root-layout) are **root parameters**, which can additionally be read from any Server Component with [`next/root-params`](../04-functions/next-root-params.md).
 
 ### In Client Components
 
@@ -75,7 +75,7 @@ export default function BlogPostPage({ params }) {
 }
 ```
 
-Alternatively Client Components can use the [`useParams`](/docs/app/api-reference/functions/use-params) hook to access the `params` anywhere in the Client Component tree.
+Alternatively Client Components can use the [`useParams`](../04-functions/use-params.md) hook to access the `params` anywhere in the Client Component tree.
 
 ### Catch-all Segments
 
@@ -106,7 +106,7 @@ The difference between **catch-all** and **optional catch-all** segments is that
 
 ### TypeScript
 
-When using TypeScript, you can add types for `params` depending on your configured route segment — use [`PageProps<'/route'>`](/docs/app/api-reference/file-conventions/page#page-props-helper), [`LayoutProps<'/route'>`](/docs/app/api-reference/file-conventions/layout#layout-props-helper), or [`RouteContext<'/route'>`](/docs/app/api-reference/file-conventions/route#route-context-helper) to type `params` in `page`, `layout`, and `route` respectively.
+When using TypeScript, you can add types for `params` depending on your configured route segment — use [`PageProps<'/route'>`](./page.md#page-props-helper), [`LayoutProps<'/route'>`](./layout.md#layout-props-helper), or [`RouteContext<'/route'>`](./route.md#route-context-helper) to type `params` in `page`, `layout`, and `route` respectively.
 
 Route `params` values are typed as `string`, `string[]`, or `undefined` (for optional catch-all segments), because their values aren't known until runtime. Users can enter any URL into the address bar, and these broad types help ensure that your application code handles all these possible cases.
 
@@ -142,7 +142,7 @@ export default async function Page(props: PageProps<'/[locale]'>) {
 
 ### With Cache Components
 
-When using [Cache Components](/docs/app/getting-started/caching) with dynamic route segments, how you handle params depends on whether you use [`generateStaticParams`](/docs/app/api-reference/functions/generate-static-params).
+When using [Cache Components](../../01-getting-started/08-caching.md) with dynamic route segments, how you handle params depends on whether you use [`generateStaticParams`](../04-functions/generate-static-params.md).
 
 Without `generateStaticParams`, param values are unknown during prerendering, making params runtime data. You must wrap param access in `<Suspense>` boundaries to provide fallback UI.
 
@@ -156,8 +156,8 @@ All params are runtime data. Param access must be wrapped by Suspense fallback U
 
 > **Good to know**:
 >
-> - You can also use [`loading.tsx`](/docs/app/api-reference/file-conventions/loading) for page-level fallback UI.
-> - In layouts, avoid awaiting `params` at the top level. Doing so prevents the layout from being prerendered. Instead, pass the params promise down to the component that needs it and await there. See [Maximizing the static shell](/docs/app/getting-started/caching#maximizing-the-static-shell) for examples.
+> - You can also use [`loading.tsx`](./loading.md) for page-level fallback UI.
+> - In layouts, avoid awaiting `params` at the top level. Doing so prevents the layout from being prerendered. Instead, pass the params promise down to the component that needs it and await there. See [Maximizing the static shell](../../01-getting-started/08-caching.md#maximizing-the-static-shell) for examples.
 
 ```tsx filename="app/blog/[slug]/page.tsx"
 import { Suspense } from 'react'
@@ -292,7 +292,7 @@ async function PrivatePost({ slug }: { slug: string }) {
 
 ### With `generateStaticParams`
 
-The [`generateStaticParams`](/docs/app/api-reference/functions/generate-static-params) function can be used to [statically generate](/docs/app/glossary#prerendering) routes at build time instead of on-demand at request time.
+The [`generateStaticParams`](../04-functions/generate-static-params.md) function can be used to [statically generate](../../04-glossary.md#prerendering) routes at build time instead of on-demand at request time.
 
 ```tsx filename="app/blog/[slug]/page.tsx" switcher
 export async function generateStaticParams() {
@@ -314,11 +314,11 @@ export async function generateStaticParams() {
 }
 ```
 
-When using `fetch` inside the `generateStaticParams` function, the requests are [automatically deduplicated](/docs/app/glossary#memoization). This avoids multiple network calls for the same data Layouts, Pages, and other `generateStaticParams` functions, speeding up build time.
+When using `fetch` inside the `generateStaticParams` function, the requests are [automatically deduplicated](../../04-glossary.md#memoization). This avoids multiple network calls for the same data Layouts, Pages, and other `generateStaticParams` functions, speeding up build time.
 
 ### Dynamic GET Route Handlers with `generateStaticParams`
 
-`generateStaticParams` also works with dynamic [Route Handlers](/docs/app/api-reference/file-conventions/route) to statically generate API responses at build time:
+`generateStaticParams` also works with dynamic [Route Handlers](./route.md) to statically generate API responses at build time:
 
 ```ts filename="app/api/posts/[id]/route.ts" switcher
 export async function generateStaticParams() {

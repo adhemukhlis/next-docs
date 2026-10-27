@@ -55,4 +55,4 @@ module.exports = {
 }
 ```
 
-See the [TypeScript configuration](/docs/app/api-reference/config/typescript#custom-tsconfig-path) page for more details.
+See the [TypeScript configuration](../02-typescript.md#custom-tsconfig-path) page for more details.

@@ -2,15 +2,9 @@
 title: exposeTestingApiInProductionBuild
 description: Expose the Instant Navigation testing API in production builds for end-to-end tests.
 version: experimental
-related:
- title: Related
- description: Learn how to inspect and test instant navigation.
- links:
-  - app/api-reference/file-conventions/route-segment-config/instant
-  - app/guides/instant-navigation
 ---
 
-`experimental.exposeTestingApiInProductionBuild` includes the Instant Navigation testing API in a production build. The [`instant()` helper from `@next/playwright`](/docs/app/guides/instant-navigation#prevent-regressions-with-e2e-tests) uses this API to pause request-time content while an end-to-end test asserts on the UI available immediately.
+`experimental.exposeTestingApiInProductionBuild` includes the Instant Navigation testing API in a production build. The [`instant()` helper from `@next/playwright`](../../../02-guides/instant-navigation.md#prevent-regressions-with-e2e-tests) uses this API to pause request-time content while an end-to-end test asserts on the UI available immediately.
 
 Enable the option only for a dedicated test build:
 
@@ -59,7 +53,7 @@ Setting the condition only for `next start` does not add the testing API to an e
 | `false` or unset | Excludes the testing API from production builds. This is the default. |
 | `true`           | Includes the testing API in the production build.                     |
 
-The option requires [`cacheComponents`](/docs/app/api-reference/config/next-config-js/cacheComponents). Development builds expose the testing API automatically when Cache Components is enabled.
+The option requires [`cacheComponents`](./cacheComponents.md). Development builds expose the testing API automatically when Cache Components is enabled.
 
 > **Good to know:** Do not enable this option for a user-facing production deployment. Restrict it to local production builds, preview deployments, or other environments used for end-to-end tests.
 
@@ -68,3 +62,10 @@ The option requires [`cacheComponents`](/docs/app/api-reference/config/next-conf
 | Version   | Changes                                                      |
 | --------- | ------------------------------------------------------------ |
 | `v16.2.0` | `experimental.exposeTestingApiInProductionBuild` introduced. |
+
+## INDEX
+
+Learn how to inspect and test instant navigation.
+
+- [instant](../../03-file-conventions/02-route-segment-config/instant.md)
+- [Ensuring instant navigations](../../../02-guides/instant-navigation.md)

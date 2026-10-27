@@ -1,14 +1,9 @@
 ---
 title: draftMode
 description: API Reference for the draftMode function.
-related:
- title: Next Steps
- description: Learn how to use Draft Mode with this step-by-step guide.
- links:
-  - app/guides/draft-mode
 ---
 
-`draftMode` is an **async** function allows you to enable and disable [Draft Mode](/docs/app/guides/draft-mode), as well as check if Draft Mode is enabled in a [Server Component](/docs/app/getting-started/server-and-client-components).
+`draftMode` is an **async** function allows you to enable and disable [Draft Mode](../../02-guides/draft-mode.md), as well as check if Draft Mode is enabled in a [Server Component](../../01-getting-started/05-server-and-client-components.md).
 
 ```tsx filename="app/page.ts" switcher
 import { draftMode } from 'next/headers'
@@ -42,7 +37,7 @@ The following methods and properties are available:
   - In version 14 and earlier, `draftMode` was a synchronous function. To help with backwards compatibility, you can still access it synchronously in Next.js 15, but this behavior will be deprecated in the future.
 - A new bypass cookie value will be generated each time you run `next build`. This ensures that the bypass cookie can’t be guessed.
 - To test Draft Mode locally over HTTP, your browser will need to allow third-party cookies and local storage access.
-- [`isEnabled`](#checking-if-draft-mode-is-enabled) is readable inside a [caching directive](/docs/app/api-reference/directives/use-cache) scope. Other runtime APIs like `cookies()` and `headers()` are not allowed inside caching directive scopes, even when Draft Mode is active.
+- [`isEnabled`](#checking-if-draft-mode-is-enabled) is readable inside a [caching directive](../01-directives/use-cache.md) scope. Other runtime APIs like `cookies()` and `headers()` are not allowed inside caching directive scopes, even when Draft Mode is active.
 - Calling `enable()` or `disable()` inside a caching directive scope will throw an error.
 - When Draft Mode is enabled, all functions and components under a caching directive scope re-execute on every request and results are not saved to the cache. This ensures draft content is always fresh.
 
@@ -50,7 +45,7 @@ The following methods and properties are available:
 
 ### Enabling Draft Mode
 
-To enable Draft Mode, create a new [Route Handler](/docs/app/api-reference/file-conventions/route) and call the `enable()` method:
+To enable Draft Mode, create a new [Route Handler](../03-file-conventions/route.md) and call the `enable()` method:
 
 ```tsx filename="app/draft/route.ts" switcher
 import { draftMode } from 'next/headers'
@@ -76,7 +71,7 @@ export async function GET(request) {
 
 By default, the Draft Mode session ends when the browser is closed.
 
-To disable Draft Mode manually, call the `disable()` method in your [Route Handler](/docs/app/api-reference/file-conventions/route):
+To disable Draft Mode manually, call the `disable()` method in your [Route Handler](../03-file-conventions/route.md):
 
 ```tsx filename="app/draft/route.ts" switcher
 import { draftMode } from 'next/headers'
@@ -98,7 +93,7 @@ export async function GET(request) {
 }
 ```
 
-Then, send a request to invoke the Route Handler. If calling the route using the [`<Link>` component](/docs/app/api-reference/components/link), you must pass `prefetch={false}` to prevent accidentally deleting the cookie on prefetch.
+Then, send a request to invoke the Route Handler. If calling the route using the [`<Link>` component](../02-components/link.md), you must pass `prefetch={false}` to prevent accidentally deleting the cookie on prefetch.
 
 ### Checking if Draft Mode is enabled
 
@@ -134,7 +129,13 @@ export default async function Page() {
 
 ## Version History
 
-| Version      | Changes                                                                                                  |
-| ------------ | -------------------------------------------------------------------------------------------------------- |
-| `v15.0.0-RC` | `draftMode` is now an async function. A [codemod](/docs/app/guides/upgrading/codemods#150) is available. |
-| `v13.4.0`    | `draftMode` introduced.                                                                                  |
+| Version      | Changes                                                                                                    |
+| ------------ | ---------------------------------------------------------------------------------------------------------- |
+| `v15.0.0-RC` | `draftMode` is now an async function. A [codemod](../../02-guides/upgrading/codemods.md#150) is available. |
+| `v13.4.0`    | `draftMode` introduced.                                                                                    |
+
+## INDEX
+
+Learn how to use Draft Mode with this step-by-step guide.
+
+- [How to preview content with Draft Mode in Next.js](../../02-guides/draft-mode.md)

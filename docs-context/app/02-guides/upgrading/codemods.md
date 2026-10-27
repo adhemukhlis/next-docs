@@ -26,7 +26,7 @@ Replacing `<transform>` and `<path>` with appropriate values.
 
 Upgrades your Next.js application, automatically running codemods and updating Next.js, React, and React DOM.
 
-To have a coding agent run the codemods, complete the remaining migration work, and verify the app, run `npx next@canary upgrade --agent=latest` instead. See [Upgrade with a coding agent](/docs/app/guides/upgrading/agent-upgrade) for details.
+To have a coding agent run the codemods, complete the remaining migration work, and verify the app, run `npx next@canary upgrade --agent=latest` instead. See [Upgrade with a coding agent](./agent-upgrade.md) for details.
 
 ```bash filename="Terminal"
 npx @next/codemod upgrade [revision]
@@ -81,7 +81,7 @@ npx @next/codemod upgrade canary --yes
 npx @next/codemod@canary cache-components-instant-false ./app
 ```
 
-This codemod adds `export const instant = false` to every `{page,layout,default}` file in your app directory that doesn't already export `instant`, so you can enable [`cacheComponents`](/docs/app/api-reference/config/next-config-js/cacheComponents) and then remove the opt-outs route by route. It skips Client Components (`"use client"`) and files that already declare `instant`. The generated `@next-codemod-ignore` comment marks the intentional opt-out without blocking compilation.
+This codemod adds `export const instant = false` to every `{page,layout,default}` file in your app directory that doesn't already export `instant`, so you can enable [`cacheComponents`](../../03-api-reference/05-config/01-next-config-js/cacheComponents.md) and then remove the opt-outs route by route. It skips Client Components (`"use client"`) and files that already declare `instant`. The generated `@next-codemod-ignore` comment marks the intentional opt-out without blocking compilation.
 
 > **Good to know**: Pass `./src/app` in a `src/` project. A wrong path reports `0 ok` instead of failing, so check the file count.
 
@@ -96,7 +96,7 @@ This codemod adds `export const instant = false` to every `{page,layout,default}
   }
 ```
 
-See the [Migrating to Cache Components](/docs/app/guides/migrating-to-cache-components) guide for the full adoption path.
+See the [Migrating to Cache Components](../migrating-to-cache-components.md) guide for the full adoption path.
 
 #### Remove `prefetch = 'partial'` Route Segment Config after enabling Partial Prefetching
 
@@ -106,7 +106,7 @@ See the [Migrating to Cache Components](/docs/app/guides/migrating-to-cache-comp
 npx @next/codemod@canary remove-partial-prefetch ./app
 ```
 
-This codemod removes `export const prefetch = 'partial'` from the `{page,layout}` files in your app directory, so you can enable [`partialPrefetching`](/docs/app/api-reference/config/next-config-js/partialPrefetching) globally and then drop the now-redundant per-route opt-ins. It removes only the `'partial'` value and leaves other values such as `prefetch = 'force-disabled'` in place.
+This codemod removes `export const prefetch = 'partial'` from the `{page,layout}` files in your app directory, so you can enable [`partialPrefetching`](../../03-api-reference/05-config/01-next-config-js/partialPrefetching.md) globally and then drop the now-redundant per-route opt-ins. It removes only the `'partial'` value and leaves other values such as `prefetch = 'force-disabled'` in place.
 
 > **Good to know**: Pass `./src/app` in a `src/` project. A wrong path reports `0 ok` instead of failing, so check the file count.
 
@@ -114,7 +114,7 @@ This codemod removes `export const prefetch = 'partial'` from the `{page,layout}
 - export const prefetch = 'partial'
 ```
 
-See the [Adopting Partial Prefetching](/docs/app/guides/adopting-partial-prefetching) guide for the full adoption path.
+See the [Adopting Partial Prefetching](../adopting-partial-prefetching.md) guide for the full adoption path.
 
 ### 16.0
 
@@ -282,7 +282,7 @@ export const runtime = 'edge'
 
 #### Migrate to async Dynamic APIs
 
-APIs that opted into dynamic rendering that previously supported synchronous access are now asynchronous. You can read more about this breaking change in the [upgrade guide](/docs/app/guides/upgrading/version-15).
+APIs that opted into dynamic rendering that previously supported synchronous access are now asynchronous. You can read more about this breaking change in the [upgrade guide](./version-15.md).
 
 ##### `next-async-request-api`
 
@@ -292,7 +292,7 @@ npx @next/codemod@latest next-async-request-api .
 
 This codemod will transform dynamic APIs (`cookies()`, `headers()` and `draftMode()` from `next/headers`) that are now asynchronous to be properly awaited or wrapped with `React.use()` if applicable. When automatic migration isn't possible, the codemod adds an `@next-codemod-error` comment and may add a temporary `UnsafeUnwrapped*` cast. Complete the migration before removing them. If the suggested change doesn't apply, replace the directive with `@next-codemod-ignore` and explain why.
 
-See the [Async Request APIs migration guide](/docs/app/guides/upgrading/version-15#async-request-apis-breaking-change) for examples.
+See the [Async Request APIs migration guide](./version-15.md#async-request-apis-breaking-change) for examples.
 
 For example:
 
@@ -426,7 +426,7 @@ export function GET(req: NextRequest) {
 npx @next/codemod@latest next-og-import .
 ```
 
-This codemod moves transforms imports from `next/server` to `next/og` for usage of [Dynamic OG Image Generation](/docs/app/getting-started/metadata-and-og-images#generated-open-graph-images).
+This codemod moves transforms imports from `next/server` to `next/og` for usage of [Dynamic OG Image Generation](../../01-getting-started/14-metadata-and-og-images.md#generated-open-graph-images).
 
 For example:
 
@@ -585,7 +585,7 @@ Dangerously migrates from `next/legacy/image` to the new `next/image` by adding 
 npx @next/codemod@latest new-link .
 ```
 
-Remove `<a>` tags inside [Link Components](/docs/app/api-reference/components/link).
+Remove `<a>` tags inside [Link Components](../../03-api-reference/02-components/link.md).
 
 For example:
 

@@ -3,7 +3,7 @@ title: Link Component
 description: Enable fast client-side navigation with the built-in `next/link` component.
 ---
 
-`<Link>` is a React component that extends the HTML `<a>` element to provide [prefetching](/docs/app/getting-started/linking-and-navigating#prefetching) and client-side navigation between routes. It is the primary way to navigate between routes in Next.js.
+`<Link>` is a React component that extends the HTML `<a>` element to provide [prefetching](../../01-getting-started/04-linking-and-navigating.md#prefetching) and client-side navigation between routes. It is the primary way to navigate between routes in Next.js.
 
 Basic usage:
 
@@ -110,7 +110,7 @@ export default function Page() {
 
 ### `scroll`
 
-**Defaults to `true`.** The default scrolling behavior of `<Link>` in Next.js **is to maintain scroll position**, similar to how browsers handle back and forwards navigation. When you navigate to a new [Page](/docs/app/api-reference/file-conventions/page), scroll position will stay the same as long as the Page is visible in the viewport. However, if the Page is not visible in the viewport, Next.js will scroll to the top of the first Page element.
+**Defaults to `true`.** The default scrolling behavior of `<Link>` in Next.js **is to maintain scroll position**, similar to how browsers handle back and forwards navigation. When you navigate to a new [Page](../03-file-conventions/page.md), scroll position will stay the same as long as the Page is visible in the viewport. However, if the Page is not visible in the viewport, Next.js will scroll to the top of the first Page element.
 
 When `scroll = {false}`, Next.js will not attempt to scroll to the first Page element.
 
@@ -150,11 +150,11 @@ Prefetching happens when a `<Link />` component enters the user's viewport (init
 
 The following values can be passed to the `prefetch` prop:
 
-- **`"auto"` or `null` (default)**: Prefetch behavior depends on whether the route is static or dynamic. For static routes, the full route will be prefetched (including all its data). For dynamic routes, the partial route down to the nearest segment with a [`loading.js`](/docs/app/api-reference/file-conventions/loading#instant-loading-states) boundary will be prefetched.
-- **`true`**: The full route is prefetched for both static and dynamic routes. With [Partial Prefetching](/docs/app/guides/adopting-partial-prefetching) enabled, the prefetch includes the [App Shell](/docs/app/glossary#app-shell) and cached content that depends on the link's URL data. See [Optimizing prefetching](/docs/app/guides/optimizing-prefetching).
+- **`"auto"` or `null` (default)**: Prefetch behavior depends on whether the route is static or dynamic. For static routes, the full route will be prefetched (including all its data). For dynamic routes, the partial route down to the nearest segment with a [`loading.js`](../03-file-conventions/loading.md#instant-loading-states) boundary will be prefetched.
+- **`true`**: The full route is prefetched for both static and dynamic routes. With [Partial Prefetching](../../02-guides/adopting-partial-prefetching.md) enabled, the prefetch includes the [App Shell](../../04-glossary.md#app-shell) and cached content that depends on the link's URL data. See [Optimizing prefetching](../../02-guides/optimizing-prefetching.md).
 - `false`: Prefetching will never happen both on entering the viewport and on hover.
 
-> **With Partial Prefetching enabled** ([`partialPrefetching: true`](/docs/app/api-reference/config/next-config-js/partialPrefetching)): the default changes. `auto` prefetches the per-route [App Shell](/docs/app/glossary#app-shell) (the route's static and cached content) instead of the full page. See [Adopting Partial Prefetching](/docs/app/guides/adopting-partial-prefetching) for the full behavior change.
+> **With Partial Prefetching enabled** ([`partialPrefetching: true`](../05-config/01-next-config-js/partialPrefetching.md)): the default changes. `auto` prefetches the per-route [App Shell](../../04-glossary.md#app-shell) (the route's static and cached content) instead of the full page. See [Adopting Partial Prefetching](../../02-guides/adopting-partial-prefetching.md) for the full behavior change.
 
 ```tsx filename="app/page.tsx" switcher
 import Link from 'next/link'
@@ -272,7 +272,7 @@ The following examples demonstrate how to use the `<Link>` component in differen
 
 ### Linking to dynamic route segments
 
-When linking to [dynamic segments](/docs/app/api-reference/file-conventions/dynamic-routes), you can use [template literals and interpolation](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Template_literals) to generate a list of links. For example, to generate a list of blog posts:
+When linking to [dynamic segments](../03-file-conventions/dynamic-routes.md), you can use [template literals and interpolation](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Template_literals) to generate a list of links. For example, to generate a list of blog posts:
 
 ```tsx filename="app/blog/post-list.tsx" switcher
 import Link from 'next/link'
@@ -314,7 +314,7 @@ export default function PostList({ posts }) {
 
 ### Checking active links
 
-You can use [`usePathname()`](/docs/app/api-reference/functions/use-pathname) to determine if a link is active. For example, to add a class to the active link, you can check if the current `pathname` matches the `href` of the link:
+You can use [`usePathname()`](../04-functions/use-pathname.md) to determine if a link is active. For example, to add a class to the active link, you can check if the current `pathname` matches the `href` of the link:
 
 ```tsx filename="app/ui/nav-links.tsx" switcher
 'use client'
@@ -383,7 +383,7 @@ If you'd like to scroll to a specific `id` on navigation, you can append your UR
 
 > **Good to know**:
 >
-> - Next.js will scroll to the [Page](/docs/app/api-reference/file-conventions/page) if it is not visible in the viewport upon navigation.
+> - Next.js will scroll to the [Page](../03-file-conventions/page.md) if it is not visible in the viewport upon navigation.
 
 ### Replace the URL instead of push
 
@@ -419,7 +419,7 @@ export default function Page() {
 
 ### Disable scrolling to the top of the page
 
-The default scrolling behavior of `<Link>` in Next.js **is to maintain scroll position**, similar to how browsers handle back and forwards navigation. When you navigate to a new [Page](/docs/app/api-reference/file-conventions/page), scroll position will stay the same as long as the Page is visible in the viewport.
+The default scrolling behavior of `<Link>` in Next.js **is to maintain scroll position**, similar to how browsers handle back and forwards navigation. When you navigate to a new [Page](../03-file-conventions/page.md), scroll position will stay the same as long as the Page is visible in the viewport.
 
 However, if the Page is not visible in the viewport, Next.js will scroll to the top of the first Page element. If you'd like to disable this behavior, you can pass `scroll={false}` to the `<Link>` component, or `scroll: false` to `router.push()` or `router.replace()`.
 
@@ -508,7 +508,7 @@ This is a browser CSS property that offsets scroll-based positioning. It applies
 
 ### Prefetching links in Proxy
 
-It's common to use [Proxy](/docs/app/api-reference/file-conventions/proxy) for authentication or other purposes that involve rewriting the user to a different page. In order for the `<Link />` component to properly prefetch links with rewrites via Proxy, you need to tell Next.js both the URL to display and the URL to prefetch. This is required to avoid un-necessary fetches to proxy to know the correct route to prefetch.
+It's common to use [Proxy](../03-file-conventions/proxy.md) for authentication or other purposes that involve rewriting the user to a different page. In order for the `<Link />` component to properly prefetch links with rewrites via Proxy, you need to tell Next.js both the URL to display and the URL to prefetch. This is required to avoid un-necessary fetches to proxy to know the correct route to prefetch.
 
 For example, if you want to serve a `/dashboard` route that has authenticated and visitor views, you can add the following in your Proxy to redirect the user to the correct page:
 
@@ -845,7 +845,7 @@ When a user tries to navigate away using `CustomLink` while the form has unsaved
 | `v16.2.0` | Add `transitionTypes` prop. |
 | `v15.4.0` | Add `auto` as an alias to the default `prefetch` behavior. |
 | `v15.3.0` | Add `onNavigate` API |
-| `v13.0.0` | No longer requires a child `<a>` tag. A [codemod](/docs/app/guides/upgrading/codemods#remove-a-tags-from-link-components) is provided to automatically update your codebase. |
+| `v13.0.0` | No longer requires a child `<a>` tag. A [codemod](../../02-guides/upgrading/codemods.md#remove-a-tags-from-link-components) is provided to automatically update your codebase. |
 | `v10.0.0` | `href` props pointing to a dynamic route are automatically resolved and no longer require an `as` prop. |
 | `v8.0.0` | Improved prefetching performance. |
 | `v1.0.0` | `next/link` introduced. |

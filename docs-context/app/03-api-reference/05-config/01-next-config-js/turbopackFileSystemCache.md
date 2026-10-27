@@ -2,9 +2,6 @@
 title: Turbopack FileSystem Caching
 nav_title: turbopackFileSystemCache
 description: Learn how to enable and configure FileSystem Caching for Turbopack builds
-related:
- links:
-  - app/api-reference/config/next-config-js/turbopackGc
 ---
 
 ## Usage
@@ -50,7 +47,7 @@ Set either option to `false` to opt out.
 The build cache lives in `.next/cache`. Builds only get faster when that directory is restored before each build.
 
 - **Self-hosted builds**: reuse the same working directory between builds. Containerized builds start from a clean layer and do not carry `.next/cache` over unless you cache or mount it explicitly.
-- **CI providers**: [configure build caching](/docs/app/guides/ci-build-caching) for `.next/cache`.
+- **CI providers**: [configure build caching](../../../02-guides/ci-build-caching.md) for `.next/cache`.
 
 If your build environment never preserves `.next/cache`, set `turbopackFileSystemCacheForBuild: false` to skip writing a cache that will not be read.
 
@@ -62,3 +59,7 @@ If your build environment never preserves `.next/cache`, set `turbopackFileSyste
 | `v16.1.0` | FileSystem caching is enabled by default for development |
 | `v16.0.0` | Beta release with separate flags for build and dev |
 | `v15.5.0` | Persistent caching released as experimental on canary releases |
+
+## INDEX
+
+- [turbopackGc](./turbopackGc.md)

@@ -2,12 +2,6 @@
 title: Proxy
 nav_title: Proxy
 description: Use Next.js Proxy to rewrite, redirect, modify headers, or respond directly before a request completes.
-related:
- title: API Reference
- description: Learn more about Proxy
- links:
-  - app/api-reference/file-conventions/proxy
-  - app/guides/backend-for-frontend
 ---
 
 ## Proxy
@@ -24,9 +18,9 @@ Some common scenarios where Proxy is effective include:
 - Rewriting to different pages based on A/B tests or experiments
 - Programmatic redirects based on incoming request properties
 
-For simple redirects, consider using the [`redirects`](/docs/app/api-reference/config/next-config-js/redirects) configuration in `next.config.ts` first. Proxy should be used when you need access to request data or more complex logic.
+For simple redirects, consider using the [`redirects`](../03-api-reference/05-config/01-next-config-js/redirects.md) configuration in `next.config.ts` first. Proxy should be used when you need access to request data or more complex logic.
 
-Proxy is _not_ intended for slow data fetching. While Proxy can be helpful for [optimistic checks](/docs/app/guides/authentication#optimistic-checks-with-proxy-optional) such as permission-based redirects, it should not be used as a full session management or authorization solution.
+Proxy is _not_ intended for slow data fetching. While Proxy can be helpful for [optimistic checks](../02-guides/authentication.md#optimistic-checks-with-proxy-optional) such as permission-based redirects, it should not be used as a full session management or authorization solution.
 
 Using fetch with `options.cache`, `options.next.revalidate`, or `options.next.tags`, has no effect in Proxy.
 
@@ -73,6 +67,13 @@ export const config = {
 }
 ```
 
-The `matcher` config allows you to filter Proxy to run on specific paths. See the [Matcher](/docs/app/api-reference/file-conventions/proxy#matcher) documentation for more details on path matching.
+The `matcher` config allows you to filter Proxy to run on specific paths. See the [Matcher](../03-api-reference/03-file-conventions/proxy.md#matcher) documentation for more details on path matching.
 
-Read more about [using `proxy`](/docs/app/guides/backend-for-frontend#proxy), or refer to the `proxy` [API reference](/docs/app/api-reference/file-conventions/proxy).
+Read more about [using `proxy`](../02-guides/backend-for-frontend.md#proxy), or refer to the `proxy` [API reference](../03-api-reference/03-file-conventions/proxy.md).
+
+## INDEX
+
+Learn more about Proxy
+
+- [proxy.js](../03-api-reference/03-file-conventions/proxy.md)
+- [How to use Next.js as a backend for your frontend](../02-guides/backend-for-frontend.md)

@@ -108,11 +108,11 @@ Generate a route segment's shared image by creating an `opengraph-image` or `twi
 
 > **Good to know**:
 >
-> - By default, generated images are [**statically optimized**](/docs/app/glossary#prerendering) (generated at build time and cached) unless they use [Request-time APIs](/docs/app/glossary#request-time-apis) or uncached data.
-> - You can generate multiple Images in the same file using [`generateImageMetadata`](/docs/app/api-reference/functions/generate-image-metadata).
-> - `opengraph-image.js` and `twitter-image.js` are special Route Handlers that are cached by default unless it uses a [Request-time API](/docs/app/glossary#request-time-apis) or [dynamic config](/docs/app/guides/caching-without-cache-components#dynamic) option.
+> - By default, generated images are [**statically optimized**](../../../04-glossary.md#prerendering) (generated at build time and cached) unless they use [Request-time APIs](../../../04-glossary.md#request-time-apis) or uncached data.
+> - You can generate multiple Images in the same file using [`generateImageMetadata`](../../04-functions/generate-image-metadata.md).
+> - `opengraph-image.js` and `twitter-image.js` are special Route Handlers that are cached by default unless it uses a [Request-time API](../../../04-glossary.md#request-time-apis) or [dynamic config](../../../02-guides/caching-without-cache-components.md#dynamic) option.
 
-The easiest way to generate an image is to use the [ImageResponse](/docs/app/api-reference/functions/image-response) API from `next/og`.
+The easiest way to generate an image is to use the [ImageResponse](../../04-functions/image-response.md) API from `next/og`.
 
 ```tsx filename="app/about/opengraph-image.tsx" switcher
 import { ImageResponse } from 'next/og'
@@ -238,9 +238,9 @@ The default export function receives the following props:
 
 #### `params` (optional)
 
-A promise that resolves to an object containing the [dynamic route parameters](/docs/app/api-reference/file-conventions/dynamic-routes) object from the root segment down to the segment `opengraph-image` or `twitter-image` is colocated in.
+A promise that resolves to an object containing the [dynamic route parameters](../dynamic-routes.md) object from the root segment down to the segment `opengraph-image` or `twitter-image` is colocated in.
 
-> **Good to know**: If you use [`generateImageMetadata`](/docs/app/api-reference/functions/generate-image-metadata), the function will also receive an `id` prop that is a promise resolving to the `id` value from one of the items returned by `generateImageMetadata`.
+> **Good to know**: If you use [`generateImageMetadata`](../../04-functions/generate-image-metadata.md), the function will also receive an `id` prop that is a promise resolving to the `id` value from one of the items returned by `generateImageMetadata`.
 
 ```tsx filename="app/shop/[slug]/opengraph-image.tsx" switcher
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
@@ -343,7 +343,7 @@ export default function Image() {}
 
 #### Route Segment Config
 
-`opengraph-image` and `twitter-image` are specialized [Route Handlers](/docs/app/api-reference/file-conventions/route) that can use the same [route segment configuration](/docs/app/api-reference/file-conventions/route-segment-config) options as Pages and Layouts.
+`opengraph-image` and `twitter-image` are specialized [Route Handlers](../route.md) that can use the same [route segment configuration](../02-route-segment-config/index.md) options as Pages and Layouts.
 
 ### Examples
 
@@ -351,7 +351,7 @@ export default function Image() {}
 
 This example uses the `params` object and external data to generate the image.
 
-> **Good to know**: By default, this generated image will be statically optimized. You can configure the individual `fetch` [`options`](/docs/app/api-reference/functions/fetch) or route segments [options](/docs/app/guides/caching-without-cache-components#route-segment-config-revalidate) to change this behavior.
+> **Good to know**: By default, this generated image will be statically optimized. You can configure the individual `fetch` [`options`](../../04-functions/fetch.md) or route segments [options](../../../02-guides/caching-without-cache-components.md#route-segment-config-revalidate) to change this behavior.
 
 ```tsx filename="app/posts/[slug]/opengraph-image.tsx" switcher
 import { ImageResponse } from 'next/og'
@@ -425,7 +425,7 @@ export default async function Image({ params }) {
 
 These examples use the Node.js runtime to fetch a local image from the file system and pass it to the `<img>` `src` attribute, either as a base64 string or an `ArrayBuffer`. Place the local asset relative to the project root, not the example source file.
 
-The asset doesn't depend on request data, so read it once at module scope. See [Predictable values](/docs/app/getting-started/caching#predictable-values).
+The asset doesn't depend on request data, so read it once at module scope. See [Predictable values](../../../01-getting-started/08-caching.md#predictable-values).
 
 ```tsx filename="app/opengraph-image.tsx" switcher
 import { ImageResponse } from 'next/og'

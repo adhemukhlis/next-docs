@@ -3,8 +3,8 @@ title: Parallel Routes
 description: Simultaneously render one or more pages in the same view that can be navigated independently. A pattern for highly dynamic applications.
 related:
  links:
-  - app/api-reference/file-conventions/default
-  - app/guides/authentication
+  - ./default.md
+  - ../../02-guides/authentication.md
 ---
 
 Parallel Routes allows you to simultaneously or conditionally render one or more pages within the same layout. They are useful for highly dynamic sections of an app, such as dashboards and feeds on social sites.
@@ -59,7 +59,7 @@ export default function Layout({ children, team, analytics }) {
 }
 ```
 
-However, slots are **not** route segments and do not affect the URL structure. For example, for `/@analytics/views`, the URL will be `/views` since `@analytics` is a slot. Slots are combined with the regular [Page](/docs/app/api-reference/file-conventions/page) component to form the final page associated with the route segment. Because of this, you cannot have separate [prerendered](/docs/app/glossary#prerendering) and [dynamically rendered](/docs/app/glossary#dynamic-rendering) slots at the same route segment level. If one slot is dynamic, all slots at that level must be dynamic.
+However, slots are **not** route segments and do not affect the URL structure. For example, for `/@analytics/views`, the URL will be `/views` since `@analytics` is a slot. Slots are combined with the regular [Page](./page.md) component to form the final page associated with the route segment. Because of this, you cannot have separate [prerendered](../../04-glossary.md#prerendering) and [dynamically rendered](../../04-glossary.md#dynamic-rendering) slots at the same route segment level. If one slot is dynamic, all slots at that level must be dynamic.
 
 > **Good to know**:
 >
@@ -89,7 +89,7 @@ Additionally, since `children` is an implicit slot, you also need to create a `d
 
 By default, Next.js keeps track of the active _state_ (or subpage) for each slot. However, the content rendered within a slot will depend on the type of navigation:
 
-- [**Soft Navigation**](/docs/app/getting-started/linking-and-navigating#client-side-transitions): During client-side navigation, Next.js will perform a [partial render](/docs/app/getting-started/linking-and-navigating#client-side-transitions), changing the subpage within the slot, while maintaining the other slot's active subpages, even if they don't match the current URL.
+- [**Soft Navigation**](../../01-getting-started/04-linking-and-navigating.md#client-side-transitions): During client-side navigation, Next.js will perform a [partial render](../../01-getting-started/04-linking-and-navigating.md#client-side-transitions), changing the subpage within the slot, while maintaining the other slot's active subpages, even if they don't match the current URL.
 - **Hard Navigation**: After a full-page load (browser refresh), Next.js cannot determine the active state for the slots that don't match the current URL. Instead, it will render a [`default.js`](#defaultjs) file for the unmatched slots, or `404` if `default.js` doesn't exist.
 
 > **Good to know**:
@@ -100,7 +100,7 @@ By default, Next.js keeps track of the active _state_ (or subpage) for each slot
 
 ### With `useSelectedLayoutSegment(s)`
 
-Both [`useSelectedLayoutSegment`](/docs/app/api-reference/functions/use-selected-layout-segment) and [`useSelectedLayoutSegments`](/docs/app/api-reference/functions/use-selected-layout-segments) accept a `parallelRouteKey` parameter, which allows you to read the active route segment within a slot.
+Both [`useSelectedLayoutSegment`](../04-functions/use-selected-layout-segment.md) and [`useSelectedLayoutSegments`](../04-functions/use-selected-layout-segments.md) accept a `parallelRouteKey` parameter, which allows you to read the active route segment within a slot.
 
 ```tsx filename="app/layout.tsx" switcher
 'use client'
@@ -156,7 +156,7 @@ export default function Layout({ user, admin }) {
 }
 ```
 
-Both slots render on the server, regardless of which one the layout returns. The conditional decides what the user sees, not what runs: `@admin/page.js` executes its data fetches for every user, and its output is included in the response sent to the browser. Authorize inside each slot's page, or in your [Data Access Layer](/docs/app/guides/authentication#creating-a-data-access-layer-dal):
+Both slots render on the server, regardless of which one the layout returns. The conditional decides what the user sees, not what runs: `@admin/page.js` executes its data fetches for every user, and its output is included in the response sent to the browser. Authorize inside each slot's page, or in your [Data Access Layer](../../02-guides/authentication.md#creating-a-data-access-layer-dal):
 
 ```tsx filename="app/dashboard/@admin/page.tsx" switcher
 import { getAdminStats } from '@/lib/dal'
@@ -190,7 +190,7 @@ For example, the `@analytics` slot has two subpages: `/page-views` and `/visitor
   height="768"
 />
 
-Within `@analytics`, create a [`layout`](/docs/app/api-reference/file-conventions/layout) file to share the tabs between the two pages:
+Within `@analytics`, create a [`layout`](./layout.md) file to share the tabs between the two pages:
 
 ```tsx filename="app/@analytics/layout.tsx" switcher
 import Link from 'next/link'
@@ -226,7 +226,7 @@ export default function Layout({ children }) {
 
 ### Modals
 
-Parallel Routes can be used together with [Intercepting Routes](/docs/app/api-reference/file-conventions/intercepting-routes) to create modals that support deep linking. This allows you to solve common challenges when building modals, such as:
+Parallel Routes can be used together with [Intercepting Routes](./intercepting-routes.md) to create modals that support deep linking. This allows you to solve common challenges when building modals, such as:
 
 - Making the modal content **shareable through a URL**.
 - **Preserving context** when the page is refreshed, instead of closing the modal.
@@ -269,7 +269,7 @@ export default function Page() {
 }
 ```
 
-Then, inside the `@auth` slot, add [`default.js`](/docs/app/api-reference/file-conventions/default) file that returns `null`. This ensures that the modal is not rendered when it's not active.
+Then, inside the `@auth` slot, add [`default.js`](./default.md) file that returns `null`. This ensures that the modal is not rendered when it's not active.
 
 ```tsx filename="app/@auth/default.tsx" switcher
 export default function Default() {
@@ -313,8 +313,8 @@ export default function Page() {
 
 > **Good to know:**
 >
-> - The convention `(.)` is used for intercepting routes. See [Intercepting Routes](/docs/app/api-reference/file-conventions/intercepting-routes#convention) docs for more information.
-> - By separating the `<Modal>` functionality from the modal content (`<Login>`), you can ensure any content inside the modal, e.g. [forms](/docs/app/guides/forms), are Server Components. See [Interleaving Client and Server Components](/docs/app/getting-started/server-and-client-components#interleaving-server-and-client-components) for more information.
+> - The convention `(.)` is used for intercepting routes. See [Intercepting Routes](./intercepting-routes.md#convention) docs for more information.
+> - By separating the `<Modal>` functionality from the modal content (`<Login>`), you can ensure any content inside the modal, e.g. [forms](../../02-guides/forms.md), are Server Components. See [Interleaving Client and Server Components](../../01-getting-started/05-server-and-client-components.md#interleaving-server-and-client-components) for more information.
 
 #### Opening the modal
 
@@ -476,4 +476,4 @@ Parallel Routes can be streamed independently, allowing you to define independen
   height="1218"
 />
 
-See the [Loading UI](/docs/app/api-reference/file-conventions/loading) and [Error Handling](/docs/app/getting-started/error-handling) documentation for more information.
+See the [Loading UI](./loading.md) and [Error Handling](../../01-getting-started/10-error-handling.md) documentation for more information.

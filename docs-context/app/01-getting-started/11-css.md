@@ -1,13 +1,6 @@
 ---
 title: CSS
 description: Learn about the different ways to add CSS to your application, including Tailwind CSS, CSS Modules, Global CSS, and more.
-related:
- title: Next Steps
- description: Learn more about the alternatives ways you can use CSS in your application.
- links:
-  - app/guides/tailwind-v3-css
-  - app/guides/sass
-  - app/guides/css-in-js
 ---
 
 Next.js provides several ways to style your application using CSS, including:
@@ -16,8 +9,8 @@ Next.js provides several ways to style your application using CSS, including:
 - [CSS Modules](#css-modules)
 - [Global CSS](#global-css)
 - [External Stylesheets](#external-stylesheets)
-- [Sass](/docs/app/guides/sass)
-- [CSS-in-JS](/docs/app/guides/css-in-js)
+- [Sass](../02-guides/sass.md)
+- [CSS-in-JS](../02-guides/css-in-js.md)
 
 ## Tailwind CSS
 
@@ -105,7 +98,7 @@ export default function Page() {
 }
 ```
 
-> **Good to know:** If you need broader browser support for very old browsers, see the [Tailwind CSS v3 setup instructions](/docs/app/guides/tailwind-v3-css).
+> **Good to know:** If you need broader browser support for very old browsers, see the [Tailwind CSS v3 setup instructions](../02-guides/tailwind-v3-css.md).
 
 ## CSS Modules
 
@@ -258,7 +251,7 @@ To keep CSS ordering predictable:
 - Use a consistent naming convention for your CSS modules. For example, using `<name>.module.css` over `<name>.tsx`.
 - Extract shared styles into shared components to avoid duplicate imports.
 - Turn off linters or formatters that auto-sort imports like ESLint’s [`sort-imports`](https://eslint.org/docs/latest/rules/sort-imports).
-- You can use the [`cssChunking`](/docs/app/api-reference/config/next-config-js/cssChunking) option in `next.config.js` to control how CSS is chunked.
+- You can use the [`cssChunking`](../03-api-reference/05-config/01-next-config-js/cssChunking.md) option in `next.config.js` to control how CSS is chunked.
 
 ## Development vs Production
 
@@ -266,3 +259,11 @@ To keep CSS ordering predictable:
 - In production (`next build`), all CSS files are automatically concatenated into **many minified and code-split** `.css` files, ensuring the minimal amount of CSS is loaded for a route.
 - CSS still loads with JavaScript disabled in production, but JavaScript is required in development for Fast Refresh.
 - CSS ordering can behave differently in development, always ensure to check the build (`next build`) to verify the final CSS order.
+
+## INDEX
+
+Learn more about the alternatives ways you can use CSS in your application.
+
+- [How to install Tailwind CSS v3 in your Next.js application](../02-guides/tailwind-v3-css.md)
+- [How to use Sass](../02-guides/sass.md)
+- [How to use CSS-in-JS libraries](../02-guides/css-in-js.md)

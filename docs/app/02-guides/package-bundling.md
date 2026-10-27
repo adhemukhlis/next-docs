@@ -5,7 +5,7 @@ description: Learn how to analyze and optimize your application's server and cli
 related:
  description: Learn more about optimizing your application for production.
  links:
-  - app/guides/production-checklist
+  - ./production-checklist.md
 ---
 
 Bundling is the process of combining your application code and its dependencies into optimized output files for the client and server. Smaller bundles load faster, reduce JavaScript execution time, improve [Core Web Vitals](https://web.dev/articles/vitals), and lower server cold start times.
@@ -122,7 +122,7 @@ bunx next analyze --output --snapshot before
 bunx next analyze export --snapshot before > bundle-graph.jsonl
 ```
 
-See the [CLI reference](/docs/app/api-reference/cli/next#next-analyze-export-options) for export options.
+See the [CLI reference](../03-api-reference/06-cli/next.md#next-analyze-export-options) for export options.
 
 > More options are available for the Bundle Analyzer, see Next.js CLI reference docs for the full list.
 
@@ -146,7 +146,7 @@ You can also tell your agent to fix any issues, and it will optimize your site b
 
 ## `@next/bundle-analyzer` for Webpack
 
-The [`@next/bundle-analyzer`](https://www.npmjs.com/package/@next/bundle-analyzer) is a plugin that helps you manage the size of your application bundles. It generates a visual report of the size of each package and their dependencies. You can use the information to remove large dependencies, split, or [lazy-load](/docs/app/guides/lazy-loading) your code.
+The [`@next/bundle-analyzer`](https://www.npmjs.com/package/@next/bundle-analyzer) is a plugin that helps you manage the size of your application bundles. It generates a visual report of the size of each package and their dependencies. You can use the information to remove large dependencies, split, or [lazy-load](./lazy-loading.md) your code.
 
 ### Step 1: Installation
 
@@ -201,7 +201,7 @@ Once you've identified a large module, the solution will depend on your use case
 
 ### Packages with many exports
 
-If you're using a package that exports hundreds of modules (such as icon and utility libraries), you can optimize how those imports are resolved using the [`optimizePackageImports`](/docs/app/api-reference/config/next-config-js/optimizePackageImports) option in your `next.config.js` file. This option will only load the modules you _actually_ use, while still giving you the convenience of writing import statements with many named exports.
+If you're using a package that exports hundreds of modules (such as icon and utility libraries), you can optimize how those imports are resolved using the [`optimizePackageImports`](../03-api-reference/05-config/01-next-config-js/optimizePackageImports.md) option in your `next.config.js` file. This option will only load the modules you _actually_ use, while still giving you the convenience of writing import statements with many named exports.
 
 ```js filename="next.config.js"
 /** @type {import('next').NextConfig} */
@@ -214,7 +214,7 @@ const nextConfig = {
 module.exports = nextConfig
 ```
 
-> **Good to know:** Next.js also optimizes some libraries automatically, thus they do not need to be included in the `optimizePackageImports` list. See the [full list](/docs/app/api-reference/config/next-config-js/optimizePackageImports) of supported packages.
+> **Good to know:** Next.js also optimizes some libraries automatically, thus they do not need to be included in the `optimizePackageImports` list. See the [full list](../03-api-reference/05-config/01-next-config-js/optimizePackageImports.md) of supported packages.
 
 ### Heavy client workloads
 
@@ -305,7 +305,7 @@ export default async function Page() {
 
 Packages imported inside Server Components and Route Handlers are automatically bundled by Next.js.
 
-You can opt specific packages out of bundling using the [`serverExternalPackages`](/docs/app/api-reference/config/next-config-js/serverExternalPackages) option in your `next.config.js`.
+You can opt specific packages out of bundling using the [`serverExternalPackages`](../03-api-reference/05-config/01-next-config-js/serverExternalPackages.md) option in your `next.config.js`.
 
 ```js filename="next.config.js"
 /** @type {import('next').NextConfig} */

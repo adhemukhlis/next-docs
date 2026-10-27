@@ -6,7 +6,7 @@ related:
  title: Next Steps
  description: Learn how to create sitemaps for your Next.js application.
  links:
-  - app/api-reference/file-conventions/metadata/sitemap
+  - ../03-file-conventions/01-metadata/sitemap.md
 ---
 
 You can use the `generateSitemaps` function to generate multiple sitemaps for your application.

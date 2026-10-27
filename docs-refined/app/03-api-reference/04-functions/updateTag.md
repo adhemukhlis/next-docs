@@ -3,15 +3,15 @@ title: updateTag
 description: API Reference for the updateTag function.
 ---
 
-`updateTag` allows you to update cached data on-demand for a specific cache tag from within [Server Actions](/docs/app/getting-started/mutating-data).
+`updateTag` allows you to update cached data on-demand for a specific cache tag from within [Server Actions](../../01-getting-started/07-mutating-data.md).
 
 This function is designed for **read-your-own-writes** scenarios, where a user makes a change (like creating a post), and the UI immediately shows the change, rather than stale data.
 
 ## Usage
 
-`updateTag` can **only** be called from within [Server Actions](/docs/app/getting-started/mutating-data). It cannot be used in Route Handlers, Client Components, or any other context.
+`updateTag` can **only** be called from within [Server Actions](../../01-getting-started/07-mutating-data.md). It cannot be used in Route Handlers, Client Components, or any other context.
 
-If you need to invalidate cache tags in Route Handlers or other contexts, use [`revalidateTag`](/docs/app/api-reference/functions/revalidateTag) instead.
+If you need to invalidate cache tags in Route Handlers or other contexts, use [`revalidateTag`](./revalidateTag.md) instead.
 
 > **Good to know**: `updateTag` immediately expires the cached data for the specified tag. The next request will wait to fetch fresh data rather than serving stale content from the cache, ensuring users see their changes immediately.
 
@@ -25,13 +25,13 @@ updateTag(tag: string): void;
 
 Tags must first be assigned to cached data. You can do this in two ways:
 
-- Using the [`next.tags`](/docs/app/api-reference/functions/fetch) option with `fetch` for caching external API requests:
+- Using the [`next.tags`](./fetch.md) option with `fetch` for caching external API requests:
 
 ```tsx
 fetch(url, { next: { tags: ['posts'] } })
 ```
 
-- Using [`cacheTag`](/docs/app/api-reference/functions/cacheTag) inside cached functions or components with the `'use cache'` directive:
+- Using [`cacheTag`](./cacheTag.md) inside cached functions or components with the `'use cache'` directive:
 
 ```tsx
 import { cacheTag } from 'next/cache'
@@ -149,5 +149,5 @@ Use `revalidateTag` instead when:
 
 ## Related
 
-- [`revalidateTag`](/docs/app/api-reference/functions/revalidateTag) - For invalidating tags in Route Handlers
-- [`revalidatePath`](/docs/app/api-reference/functions/revalidatePath) - For invalidating specific paths
+- [`revalidateTag`](./revalidateTag.md) - For invalidating tags in Route Handlers
+- [`revalidatePath`](./revalidatePath.md) - For invalidating specific paths

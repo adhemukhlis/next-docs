@@ -24,11 +24,11 @@ export default function myImageLoader({ src, width, quality }) {
 }
 ```
 
-Alternatively, you can use the [`loader` prop](/docs/app/api-reference/components/image#loader) to pass the function to each instance of `next/image`.
+Alternatively, you can use the [`loader` prop](../../02-components/image.md#loader) to pass the function to each instance of `next/image`.
 
-> **Good to know**: Customizing the image loader file, which accepts a function, requires using [Client Components](/docs/app/getting-started/server-and-client-components) to serialize the provided function.
+> **Good to know**: Customizing the image loader file, which accepts a function, requires using [Client Components](../../../01-getting-started/05-server-and-client-components.md) to serialize the provided function.
 
-To learn more about configuring the behavior of the built-in [Image Optimization API](/docs/app/api-reference/components/image) and the [Image Component](/docs/app/api-reference/components/image), see [Image Configuration Options](/docs/app/api-reference/components/image#configuration-options) for available options.
+To learn more about configuring the behavior of the built-in [Image Optimization API](../../02-components/image.md) and the [Image Component](../../02-components/image.md), see [Image Configuration Options](../../02-components/image.md#configuration-options) for available options.
 
 ## Example Loader Configuration
 

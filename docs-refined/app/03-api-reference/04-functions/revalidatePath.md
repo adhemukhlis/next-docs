@@ -1,12 +1,9 @@
 ---
 title: revalidatePath
 description: API Reference for the revalidatePath function.
-related:
- links:
-  - app/guides/server-actions
 ---
 
-`revalidatePath` allows you to invalidate [cached data](/docs/app/getting-started/caching) on-demand for a specific path.
+`revalidatePath` allows you to invalidate [cached data](../../01-getting-started/08-caching.md) on-demand for a specific path.
 
 ## Usage
 
@@ -25,7 +22,7 @@ related:
 revalidatePath(path: string, type?: 'page' | 'layout'): void;
 ```
 
-- `path`: Either a string that represents your route file structure. This can be a literal path like `/product/123`, or a route pattern with dynamic segments like `/product/[slug]`. Do not append `/page` or `/layout`, use the `type` parameter instead. Must not exceed 1024 characters. This value is case-sensitive. You do not need to include a trailing slash, regardless of your [`trailingSlash`](/docs/app/api-reference/config/next-config-js/trailingSlash) config.
+- `path`: Either a string that represents your route file structure. This can be a literal path like `/product/123`, or a route pattern with dynamic segments like `/product/[slug]`. Do not append `/page` or `/layout`, use the `type` parameter instead. Must not exceed 1024 characters. This value is case-sensitive. You do not need to include a trailing slash, regardless of your [`trailingSlash`](../05-config/01-next-config-js/trailingSlash.md) config.
 - `type`: (optional) `'page'` or `'layout'` string to change the type of path to revalidate. If `path` contains a dynamic segment, for example `/product/[slug]`, this parameter is required. If `path` is a literal path like `/product/1`, omit `type`.
 
 Use a literal path when you want to refresh a [single page](#revalidating-a-specific-path). Use a route pattern plus `type` to refresh [all matching pages](#revalidating-a-page-path).
@@ -54,7 +51,7 @@ export async function GET() {
 
 ## Using `revalidatePath` with rewrites
 
-When using [rewrites](/docs/app/api-reference/config/next-config-js/rewrites), you must pass the **destination** path (the actual route file location), not the source path that appears in the browser's address bar.
+When using [rewrites](../05-config/01-next-config-js/rewrites.md), you must pass the **destination** path (the actual route file location), not the source path that appears in the browser's address bar.
 
 For example, if you have a rewrite from `/blog` to `/news`:
 
@@ -85,7 +82,7 @@ This is because `revalidatePath` operates on the route file structure, not the U
 
 ## Relationship with `revalidateTag` and `updateTag`
 
-`revalidatePath`, [`revalidateTag`](/docs/app/api-reference/functions/revalidateTag) and [`updateTag`](/docs/app/api-reference/functions/updateTag) serve different purposes:
+`revalidatePath`, [`revalidateTag`](./revalidateTag.md) and [`updateTag`](./updateTag.md) serve different purposes:
 
 - **`revalidatePath`**: Invalidates a specific page or layout path
 - **`revalidateTag`**: Marks data with specific tags as **stale**. Applies across all pages that use those tags
@@ -110,7 +107,7 @@ After calling `revalidatePath('/blog')`:
 - **Page A (/blog)**: Shows fresh data (page re-rendered)
 - **Page B (/dashboard)**: Still shows stale data (cache tag 'posts' not invalidated)
 
-Learn about the difference between [`revalidateTag` and `updateTag`](/docs/app/api-reference/functions/updateTag#differences-from-revalidatetag).
+Learn about the difference between [`revalidateTag` and `updateTag`](./updateTag.md#differences-from-revalidatetag).
 
 ### Building revalidation utilities
 
@@ -172,7 +169,7 @@ import { revalidatePath } from 'next/cache'
 revalidatePath('/', 'layout')
 ```
 
-This will purge the [Client Cache](/docs/app/glossary#client-cache), and invalidate all cached data for revalidation on the next page visit.
+This will purge the [Client Cache](../../04-glossary.md#client-cache), and invalidate all cached data for revalidation on the next page visit.
 
 ### Server Function
 
@@ -227,3 +224,7 @@ export async function GET(request) {
 	})
 }
 ```
+
+## INDEX
+
+- [Server Actions and Mutations](../../02-guides/server-actions.md)

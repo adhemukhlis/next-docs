@@ -1,10 +1,6 @@
 ---
 title: agentRules
 description: Configure whether Next.js creates instructions for AI coding agents.
-related:
- links:
-  - app/guides/ai-agents
-  - app/api-reference/config/next-config-js/agentFeedback
 ---
 
 The `agentRules` option controls whether `next dev` creates and updates version-matched documentation instructions for detected AI coding agents. It is enabled by default.
@@ -52,9 +48,9 @@ The managed block directs agents to documentation bundled with the installed Nex
 
 Set `agentRules` to `false` to stop `next dev` from creating or updating the managed block. The next `next dev` run removes the existing agent rules block and preserves all other content, even when no agent is detected. If the file contained only the managed block, Next.js deletes the file instead of leaving it empty.
 
-To prevent [`create-next-app`](/docs/app/api-reference/cli/create-next-app) from creating agent files in a new project, pass the `--no-agents-md` option.
+To prevent [`create-next-app`](../../06-cli/create-next-app.md) from creating agent files in a new project, pass the `--no-agents-md` option.
 
-`agentRules` and [`experimental.agentFeedback`](/docs/app/api-reference/config/next-config-js/agentFeedback) work independently. Changing one option does not affect the other.
+`agentRules` and [`experimental.agentFeedback`](./agentFeedback.md) work independently. Changing one option does not affect the other.
 
 ## Version History
 
@@ -62,3 +58,8 @@ To prevent [`create-next-app`](/docs/app/api-reference/cli/create-next-app) from
 | --------- | -------------------------------------------------------------------------------- |
 | `v16.4.0` | Setting `agentRules` to `false` removes an existing managed block on `next dev`. |
 | `v16.3.0` | `agentRules` configuration option added.                                         |
+
+## INDEX
+
+- [How Next.js supports AI coding agents](../../../02-guides/ai-agents.md)
+- [agentFeedback](./agentFeedback.md)

@@ -3,10 +3,10 @@ title: refresh
 description: API Reference for the refresh function.
 related:
  links:
-  - app/guides/server-actions
+  - ../../02-guides/server-actions.md
 ---
 
-`refresh` allows you to refresh the client router from within a [Server Action](/docs/app/guides/server-actions).
+`refresh` allows you to refresh the client router from within a [Server Action](../../02-guides/server-actions.md).
 
 ## Usage
 

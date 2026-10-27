@@ -3,14 +3,14 @@ title: permanentRedirect
 description: API Reference for the permanentRedirect function.
 related:
  links:
-  - app/api-reference/functions/redirect
+  - ./redirect.md
 ---
 
-The `permanentRedirect` function allows you to redirect the user to another URL. `permanentRedirect` can be used in Server Components, Client Components, [Route Handlers](/docs/app/api-reference/file-conventions/route), and [Server Functions](/docs/app/getting-started/mutating-data).
+The `permanentRedirect` function allows you to redirect the user to another URL. `permanentRedirect` can be used in Server Components, Client Components, [Route Handlers](../03-file-conventions/route.md), and [Server Functions](../../01-getting-started/07-mutating-data.md).
 
 When used in a streaming context, this will insert a meta tag to emit the redirect on the client side. In a Server Action, `permanentRedirect` performs a client-side navigation when JavaScript is available. For progressive enhancement form submissions, it serves a 303 HTTP redirect response. Otherwise, it serves a 308 (Permanent) HTTP redirect response.
 
-If a resource doesn't exist, you can use the [`notFound` function](/docs/app/api-reference/functions/not-found) instead.
+If a resource doesn't exist, you can use the [`notFound` function](./not-found.md) instead.
 
 ## Parameters
 
@@ -25,7 +25,7 @@ permanentRedirect(path, type)
 | `path`    | `string`                                                      | The URL to redirect to. Can be a relative or absolute path. |
 | `type`    | `'replace'` (default) or `'push'` (default in Server Actions) | The type of redirect to perform.                            |
 
-By default, `permanentRedirect` will use `push` (adding a new entry to the browser history stack) in [Server Actions](/docs/app/getting-started/mutating-data) and `replace` (replacing the current URL in the browser history stack) everywhere else. You can override this behavior by specifying the `type` parameter.
+By default, `permanentRedirect` will use `push` (adding a new entry to the browser history stack) in [Server Actions](../../01-getting-started/07-mutating-data.md) and `replace` (replacing the current URL in the browser history stack) everywhere else. You can override this behavior by specifying the `type` parameter.
 
 The `RedirectType` object contains the available options for the `type` parameter.
 
@@ -46,7 +46,7 @@ The `type` parameter has no effect when used in Server Components.
 ## Behavior
 
 - In Server Actions and Route Handlers, `permanentRedirect` should be called **outside** the `try` block when using `try/catch` statements because it throws an error.
-- If you prefer to return a 307 (Temporary) HTTP redirect instead of 308 (Permanent), you can use the [`redirect` function](/docs/app/api-reference/functions/redirect) instead.
+- If you prefer to return a 307 (Temporary) HTTP redirect instead of 308 (Permanent), you can use the [`redirect` function](./redirect.md) instead.
 
 ## Example
 

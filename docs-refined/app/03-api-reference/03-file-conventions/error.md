@@ -1,10 +1,6 @@
 ---
 title: error.js
 description: API reference for the error.js special file.
-related:
- title: Learn more about error handling
- links:
-  - app/getting-started/error-handling
 ---
 
 An **error** file allows you to handle unexpected runtime errors and display fallback UI.
@@ -83,9 +79,9 @@ export default function Error({ error, retry }) {
 >
 > - The [React DevTools](https://react.dev/learn/react-developer-tools) allow you to toggle error boundaries to test error states.
 > - If you want errors to bubble up to the parent error boundary, you can `throw` when rendering the `error` component.
-> - For component-level error recovery that aren't tied to route segments like [`error.js`](/docs/app/api-reference/file-conventions/error), use the [`catchError`](/docs/app/api-reference/functions/catchError) function.
+> - For component-level error recovery that aren't tied to route segments like [`error.js`](./error.md), use the [`catchError`](../04-functions/catchError.md) function.
 
-In the [component hierarchy](/docs/app/getting-started/project-structure#component-hierarchy), `error.js` wraps `loading.js`, `not-found.js`, `page.js`, and nested `layout.js` files in a React error boundary. It does **not** wrap the `layout.js` or `template.js` above it in the same segment. To handle errors in the root layout, use [`global-error.js`](/docs/app/api-reference/file-conventions/error#global-error).
+In the [component hierarchy](../../01-getting-started/02-project-structure.md#component-hierarchy), `error.js` wraps `loading.js`, `not-found.js`, `page.js`, and nested `layout.js` files in a React error boundary. It does **not** wrap the `layout.js` or `template.js` above it in the same segment. To handle errors in the root layout, use [`global-error.js`](./error.md#global-error).
 
 ## Reference
 
@@ -146,11 +142,11 @@ In most cases, you should use [`retry()`](#retry) instead. However, if you have 
 
 ### Global Error
 
-While less common, you can handle errors in the root layout or template using `global-error.jsx`, located in the root app directory, even when leveraging [internationalization](/docs/app/guides/internationalization). Global error UI must define its own `<html>` and `<body>` tags, global styles, fonts, or other dependencies that your error page requires. This file replaces the root layout or template when active.
+While less common, you can handle errors in the root layout or template using `global-error.jsx`, located in the root app directory, even when leveraging [internationalization](../../02-guides/internationalization.md). Global error UI must define its own `<html>` and `<body>` tags, global styles, fonts, or other dependencies that your error page requires. This file replaces the root layout or template when active.
 
 > **Good to know**: `global-error` and the built-in 500 page render their own document and do **not** include your global styles, so an app-level theme toggle (a class or `data-theme` attribute) won't reach them. The default UI follows the OS color scheme; to match your app's theme, apply it inside your own `global-error` component.
 
-> **Good to know**: Error boundaries must be [Client Components](/docs/app/getting-started/server-and-client-components#using-client-components), which means that [`metadata` and `generateMetadata`](/docs/app/getting-started/metadata-and-og-images) exports are not supported in `global-error.jsx`. As an alternative, you can use the React [`<title>`](https://react.dev/reference/react-dom/components/title) component.
+> **Good to know**: Error boundaries must be [Client Components](../../01-getting-started/05-server-and-client-components.md#using-client-components), which means that [`metadata` and `generateMetadata`](../../01-getting-started/14-metadata-and-og-images.md) exports are not supported in `global-error.jsx`. As an alternative, you can use the React [`<title>`](https://react.dev/reference/react-dom/components/title) component.
 
 ```tsx filename="app/global-error.tsx" switcher
 'use client' // Error boundaries must be Client Components
@@ -306,3 +302,7 @@ export default GracefullyDegradingErrorBoundary
 | `v15.2.0` | Also display `global-error` in development. |
 | `v13.1.0` | `global-error` introduced.                  |
 | `v13.0.0` | `error` introduced.                         |
+
+## INDEX
+
+- [Error Handling](../../01-getting-started/10-error-handling.md)

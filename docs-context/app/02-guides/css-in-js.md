@@ -84,7 +84,7 @@ export default function StyledJsxRegistry({ children }) {
 }
 ```
 
-Then, wrap your [root layout](/docs/app/api-reference/file-conventions/layout#root-layout) with the registry:
+Then, wrap your [root layout](../03-api-reference/03-file-conventions/layout.md#root-layout) with the registry:
 
 ```tsx filename="app/layout.tsx" switcher
 import StyledJsxRegistry from './registry'

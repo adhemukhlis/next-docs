@@ -5,11 +5,11 @@ related:
  title: Next Steps
  description: Learn the fundamentals of building an App Router project, from installation to layouts, navigation, server and client components.
  links:
-  - app/getting-started/installation
-  - app/getting-started/project-structure
-  - app/getting-started/layouts-and-pages
-  - app/getting-started/linking-and-navigating
-  - app/getting-started/server-and-client-components
+  - ./01-getting-started/01-installation.md
+  - ./01-getting-started/02-project-structure.md
+  - ./01-getting-started/03-layouts-and-pages.md
+  - ./01-getting-started/04-linking-and-navigating.md
+  - ./01-getting-started/05-server-and-client-components.md
 ---
 
 The **App Router** is a file-system based router that uses React's latest features such as [Server Components](https://react.dev/reference/rsc/server-components), [Suspense](https://react.dev/reference/react/Suspense), and [Server Functions](https://react.dev/reference/rsc/server-functions).

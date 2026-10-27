@@ -36,7 +36,7 @@ module.exports = {
 
 Redirects are checked before the filesystem which includes pages and `/public` files.
 
-When using the Pages Router, redirects are not applied to client-side routing (`Link`, `router.push`) unless [Proxy](/docs/app/api-reference/file-conventions/proxy) is present and matches the path.
+When using the Pages Router, redirects are not applied to client-side routing (`Link`, `router.push`) unless [Proxy](../../03-file-conventions/proxy.md) is present and matches the path.
 
 When a redirect is applied, any query values provided in the request will be passed through to the redirect destination. For example, see the following redirect configuration:
 
@@ -225,7 +225,7 @@ module.exports = {
 
 ### Redirects with basePath support
 
-When leveraging [`basePath` support](/docs/app/api-reference/config/next-config-js/basePath) with redirects each `source` and `destination` is automatically prefixed with the `basePath` unless you add `basePath: false` to the redirect:
+When leveraging [`basePath` support](./basePath.md) with redirects each `source` and `destination` is automatically prefixed with the `basePath` unless you add `basePath: false` to the redirect:
 
 ```js filename="next.config.js"
 module.exports = {
@@ -254,7 +254,7 @@ module.exports = {
 
 When implementing redirects with internationalization in the App Router, you can include locales in `next.config.js` redirects, but only as hardcoded paths.
 
-For dynamic or per-request locale handling, use [dynamic route segments and proxy](/docs/app/guides/internationalization), which can redirect based on the user's preferred language.
+For dynamic or per-request locale handling, use [dynamic route segments and proxy](../../../02-guides/internationalization.md), which can redirect based on the user's preferred language.
 
 ```js filename="next.config.js"
 module.exports = {
@@ -293,7 +293,7 @@ In some rare cases, you might need to assign a custom status code for older HTTP
 
 ## Other Redirects
 
-- Inside [API Routes](/docs/pages/building-your-application/routing/api-routes) and [Route Handlers](/docs/app/api-reference/file-conventions/route), you can redirect based on the incoming request.
+- Inside [API Routes](/docs/pages/building-your-application/routing/api-routes) and [Route Handlers](../../03-file-conventions/route.md), you can redirect based on the incoming request.
 - Inside [`getStaticProps`](/docs/pages/building-your-application/data-fetching/get-static-props) and [`getServerSideProps`](/docs/pages/building-your-application/data-fetching/get-server-side-props), you can redirect specific pages at request-time.
 
 ## Version History

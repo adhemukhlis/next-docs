@@ -3,7 +3,7 @@ title: turbopack
 description: Configure Next.js with Turbopack-specific options
 ---
 
-The `turbopack` option lets you customize [Turbopack](/docs/app/api-reference/turbopack) to transform different files and change how modules are resolved.
+The `turbopack` option lets you customize [Turbopack](../../08-turbopack.md) to transform different files and change how modules are resolved.
 
 > **Good to know**: The `turbopack` option was previously named `experimental.turbo` in Next.js versions 13.0.0 to 15.2.x, an option which still works as an alias, but new configuration should use the top-level `turbopack` option.
 >
@@ -54,13 +54,13 @@ The following options are available for the `turbopack` configuration:
 
 The following loaders have been tested to work with Turbopack's webpack loader implementation, but many other webpack loaders should work as well even if not listed here:
 
-- [`babel-loader`](https://www.npmjs.com/package/babel-loader) [_(Configured automatically if a Babel configuration file is found)_](/docs/app/api-reference/turbopack#language-features)
+- [`babel-loader`](https://www.npmjs.com/package/babel-loader) [_(Configured automatically if a Babel configuration file is found)_](../../08-turbopack.md#language-features)
 - [`@svgr/webpack`](https://www.npmjs.com/package/@svgr/webpack)
 - [`svg-inline-loader`](https://www.npmjs.com/package/svg-inline-loader)
 - [`yaml-loader`](https://www.npmjs.com/package/yaml-loader)
 - [`string-replace-loader`](https://www.npmjs.com/package/string-replace-loader)
 - [`raw-loader`](https://www.npmjs.com/package/raw-loader)
-- [`sass-loader`](https://www.npmjs.com/package/sass-loader) [_(Configured automatically)_](/docs/app/api-reference/turbopack#css-and-styling)
+- [`sass-loader`](https://www.npmjs.com/package/sass-loader) [_(Configured automatically)_](../../08-turbopack.md#css-and-styling)
 - [`graphql-tag/loader`](https://www.npmjs.com/package/graphql-tag)
 
 #### Missing Webpack loader features
@@ -155,9 +155,9 @@ To ensure portability of your configuration across a variety of platforms, inclu
 
 To avoid ambiguous references to files, additional roots may not overlap `turbopack.root` or one another. This means an additional root cannot be inside `turbopack.root` or contain it. For example, configuring both `foo/` and `foo/bar/` as additional roots would produce a warning, and the overlapping additional root will be ignored.
 
-Additional roots change Next.js's [`trace format`](/docs/app/api-reference/config/next-config-js/output#turbopack-nft-extensions).
+Additional roots change Next.js's [`trace format`](./output.md#turbopack-nft-extensions).
 
-When using [`output: "standalone"`](/docs/app/api-reference/config/next-config-js/output#automatically-copying-traced-files), unbundled files stored in these additional roots will be copied to a subdirectory of the output directory containing the configured name of the root.
+When using [`output: "standalone"`](./output.md#automatically-copying-traced-files), unbundled files stored in these additional roots will be copied to a subdirectory of the output directory containing the configured name of the root.
 
 ### Configuring webpack loaders
 
@@ -265,7 +265,7 @@ In addition, a number of built-in conditions are supported:
 - `development`: Matches when using `next dev`.
 - `production`: Matches when using `next build`.
 - `node`: Matches code that will run on the default Node.js runtime.
-- `edge-light`: Matches code that will run on the [Edge runtime](/docs/app/api-reference/edge) (deprecated).
+- `edge-light`: Matches code that will run on the [Edge runtime](../../07-edge.md) (deprecated).
 
 Rules can be an object or an array of objects. An array is often useful for modeling disjoint conditions:
 

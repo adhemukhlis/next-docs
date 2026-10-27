@@ -3,7 +3,7 @@ title: revalidateTag
 description: API Reference for the revalidateTag function.
 related:
  links:
-  - app/guides/server-actions
+  - ../../02-guides/server-actions.md
 ---
 
 `revalidateTag` allows you to invalidate cached data on-demand for a specific cache tag.
@@ -21,9 +21,9 @@ This function is ideal for content where a slight delay in updates is acceptable
 Calling `revalidateTag` marks the tagged data as stale. The next request for that data kicks off a revalidation and is served stale content while it runs, using stale-while-revalidate semantics. The second argument sets how long stale content may be served. Past that, a request blocks until the revalidation completes.
 
 - **`profile="max"` (recommended)**: A one year window, long enough that requests are always served stale content while the revalidation runs.
-- **Another profile, or an object**: Any other default or custom profile defined in [`cacheLife`](/docs/app/api-reference/config/next-config-js/cacheLife), or an object with an `expire` property, when you want a different window.
-- **`{ expire: 0 }`**: Stale content is never served, so the next request is a blocking revalidate/cache miss. Use it when the caller needs the data gone immediately and you cannot use [`updateTag`](/docs/app/api-reference/functions/updateTag).
-- **No second argument (deprecated)**: Behaves like `{ expire: 0 }`. Migrate to [`updateTag`](/docs/app/api-reference/functions/updateTag) in Server Actions, or `profile="max"`.
+- **Another profile, or an object**: Any other default or custom profile defined in [`cacheLife`](../05-config/01-next-config-js/cacheLife.md), or an object with an `expire` property, when you want a different window.
+- **`{ expire: 0 }`**: Stale content is never served, so the next request is a blocking revalidate/cache miss. Use it when the caller needs the data gone immediately and you cannot use [`updateTag`](./updateTag.md).
+- **No second argument (deprecated)**: Behaves like `{ expire: 0 }`. Migrate to [`updateTag`](./updateTag.md) in Server Actions, or `profile="max"`.
 
 The profile sets the point past which data correctness is more important than being fast.
 
@@ -36,17 +36,17 @@ revalidateTag(tag: string, profile: string | { expire?: number }): void;
 ```
 
 - `tag`: A string representing the cache tag associated with the data you want to revalidate. Tags are case-sensitive and must not exceed 256 characters. A tag that exceeds the limit is never assigned to cached data, so revalidating it does nothing.
-- `profile`: How long stale content may be served, see [Revalidation Behavior](#revalidation-behavior). The recommended value is `"max"`. Any other default or custom profile defined in [`cacheLife`](/docs/app/api-reference/config/next-config-js/cacheLife) is also accepted, and only its `expire` is read. You can also pass an object with an `expire` property, in seconds.
+- `profile`: How long stale content may be served, see [Revalidation Behavior](#revalidation-behavior). The recommended value is `"max"`. Any other default or custom profile defined in [`cacheLife`](../05-config/01-next-config-js/cacheLife.md) is also accepted, and only its `expire` is read. You can also pass an object with an `expire` property, in seconds.
 
 Tags must first be assigned to cached data. You can do this in two ways:
 
-- Using the [`next.tags`](/docs/app/api-reference/functions/fetch) option with `fetch` for caching external API requests:
+- Using the [`next.tags`](./fetch.md) option with `fetch` for caching external API requests:
 
 ```tsx
 fetch(url, { next: { tags: ['posts'] } })
 ```
 
-- Using [`cacheTag`](/docs/app/api-reference/functions/cacheTag) inside cached functions or components with the `'use cache'` directive:
+- Using [`cacheTag`](./cacheTag.md) inside cached functions or components with the `'use cache'` directive:
 
 ```tsx
 import { cacheTag } from 'next/cache'
@@ -66,9 +66,9 @@ async function getData() {
 
 ## Relationship with `revalidatePath`
 
-`revalidateTag` invalidates data with specific tags across all pages that use those tags, while [`revalidatePath`](/docs/app/api-reference/functions/revalidatePath) invalidates specific page or layout paths.
+`revalidateTag` invalidates data with specific tags across all pages that use those tags, while [`revalidatePath`](./revalidatePath.md) invalidates specific page or layout paths.
 
-> **Good to know**: These functions serve different purposes and may need to be used together for comprehensive data consistency. For detailed examples and considerations, see [relationship with revalidateTag and updateTag](/docs/app/api-reference/functions/revalidatePath#relationship-with-revalidatetag-and-updatetag) for more information.
+> **Good to know**: These functions serve different purposes and may need to be used together for comprehensive data consistency. For detailed examples and considerations, see [relationship with revalidateTag and updateTag](./revalidatePath.md#relationship-with-revalidatetag-and-updatetag) for more information.
 
 ## Examples
 
@@ -139,7 +139,7 @@ export async function GET(request) {
 }
 ```
 
-When the invalidation comes from outside a Server Action, for example a webhook or another service calling a Route Handler, [`updateTag`](/docs/app/api-reference/functions/updateTag) is not available. Pass `{ expire: 0 }` to expire the data immediately:
+When the invalidation comes from outside a Server Action, for example a webhook or another service calling a Route Handler, [`updateTag`](./updateTag.md) is not available. Pass `{ expire: 0 }` to expire the data immediately:
 
 ```ts
 revalidateTag(tag, { expire: 0 })

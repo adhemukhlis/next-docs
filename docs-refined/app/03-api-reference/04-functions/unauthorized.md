@@ -2,19 +2,13 @@
 title: unauthorized
 description: API Reference for the unauthorized function.
 version: experimental
-related:
- links:
-  - app/api-reference/file-conventions/unauthorized
-  - app/api-reference/functions/not-found
-  - app/api-reference/functions/forbidden
-  - app/api-reference/config/next-config-js/authInterrupts
 ---
 
-The `unauthorized` function throws an error that renders a Next.js 401 page. It's useful for handling authentication errors, when a request is not signed in. You can customize the UI using the [`unauthorized.js` file](/docs/app/api-reference/file-conventions/unauthorized).
+The `unauthorized` function throws an error that renders a Next.js 401 page. It's useful for handling authentication errors, when a request is not signed in. You can customize the UI using the [`unauthorized.js` file](../03-file-conventions/unauthorized.md).
 
 Invoking `unauthorized()` throws a `NEXT_HTTP_ERROR_FALLBACK;401` error and terminates rendering of the route segment where it was thrown. Next.js also injects a `<meta name="robots" content="noindex" />` tag so the page is not indexed. Because it works by throwing, call it in the render path: a component, or a function a component `await`s. A call left in an un-awaited promise throws where nothing catches it, and no unauthorized UI renders.
 
-To start using `unauthorized`, enable the experimental [`authInterrupts`](/docs/app/api-reference/config/next-config-js/authInterrupts) configuration option in your `next.config.js` file:
+To start using `unauthorized`, enable the experimental [`authInterrupts`](../05-config/01-next-config-js/authInterrupts.md) configuration option in your `next.config.js` file:
 
 ```ts filename="next.config.ts" switcher
 import type { NextConfig } from 'next'
@@ -36,7 +30,7 @@ module.exports = {
 }
 ```
 
-`unauthorized` can be invoked in [Server Components](/docs/app/getting-started/server-and-client-components), [Server Functions](/docs/app/getting-started/mutating-data), and [Route Handlers](/docs/app/api-reference/file-conventions/route).
+`unauthorized` can be invoked in [Server Components](../../01-getting-started/05-server-and-client-components.md), [Server Functions](../../01-getting-started/07-mutating-data.md), and [Route Handlers](../03-file-conventions/route.md).
 
 ```tsx filename="app/dashboard/page.tsx" switcher
 import { verifySession } from '@/app/lib/dal'
@@ -82,15 +76,15 @@ export default async function DashboardPage() {
 
 ## Good to know
 
-- The `unauthorized` function cannot be called in the [root layout](/docs/app/api-reference/file-conventions/layout#root-layout).
-- You do not need to write `return unauthorized()`. It throws (its TypeScript [`never`](https://www.typescriptlang.org/docs/handbook/2/functions.html#never) return type), so execution stops. A `try/catch` around the call suppresses the interrupt and no unauthorized UI renders. Use [`unstable_rethrow`](/docs/app/api-reference/functions/unstable_rethrow) to let it through.
+- The `unauthorized` function cannot be called in the [root layout](../03-file-conventions/layout.md#root-layout).
+- You do not need to write `return unauthorized()`. It throws (its TypeScript [`never`](https://www.typescriptlang.org/docs/handbook/2/functions.html#never) return type), so execution stops. A `try/catch` around the call suppresses the interrupt and no unauthorized UI renders. Use [`unstable_rethrow`](./unstable_rethrow.md) to let it through.
 - An `unauthorized()` left in an un-awaited promise throws where nothing catches it, so no unauthorized UI renders. In development the server logs `⨯ unhandledRejection: NEXT_HTTP_ERROR_FALLBACK;401`. Always `await` the function that may call it.
 
 ## Examples
 
 ### Calling `unauthorized()` after streaming has started
 
-To keep the page's shell and loading UI visible while the session is verified, put the auth check in the [Data Access Layer](/docs/app/guides/authentication#creating-a-data-access-layer-dal) function that loads the data, and render it in a component wrapped in [`<Suspense>`](https://react.dev/reference/react/Suspense). The check runs inside the boundary, so the shell streams while the session resolves:
+To keep the page's shell and loading UI visible while the session is verified, put the auth check in the [Data Access Layer](../../02-guides/authentication.md#creating-a-data-access-layer-dal) function that loads the data, and render it in a component wrapped in [`<Suspense>`](https://react.dev/reference/react/Suspense). The check runs inside the boundary, so the shell streams while the session resolves:
 
 ```tsx filename="app/account/page.tsx" switcher highlight={8}
 import { Suspense } from 'react'
@@ -152,7 +146,7 @@ export default function AccountPage() {
 }
 ```
 
-When the request isn't signed in, `getAccount` calls `unauthorized()`, which throws. Because this happens during rendering, the exception propagates to the nearest [`unauthorized`](/docs/app/api-reference/file-conventions/unauthorized) boundary, which renders in place of the streamed-in content, even though the page shell has already been sent.
+When the request isn't signed in, `getAccount` calls `unauthorized()`, which throws. Because this happens during rendering, the exception propagates to the nearest [`unauthorized`](../03-file-conventions/unauthorized.md) boundary, which renders in place of the streamed-in content, even though the page shell has already been sent.
 
 Add an `unauthorized.tsx` alongside the route to define that UI:
 
@@ -188,7 +182,7 @@ export default function Unauthorized() {
 
 The response starts streaming from the `<Suspense>` boundary before `unauthorized()` runs, so it keeps its `200` status. Next.js adds a `noindex` tag.
 
-Calling `unauthorized()` before streaming starts returns a `401`. A page that reaches `unauthorized()` during prerendering can remain `○` Static and serve a `401`. A request-time check can run in [Proxy](/docs/app/api-reference/file-conventions/proxy) before the page renders. See [Status codes](/docs/app/api-reference/file-conventions/loading#status-codes).
+Calling `unauthorized()` before streaming starts returns a `401`. A page that reaches `unauthorized()` during prerendering can remain `○` Static and serve a `401`. A request-time check can run in [Proxy](../03-file-conventions/proxy.md) before the page renders. See [Status codes](../03-file-conventions/loading.md#status-codes).
 
 ### Displaying login UI to unauthenticated users
 
@@ -341,3 +335,10 @@ export async function GET() {
 | Version   | Changes                    |
 | --------- | -------------------------- |
 | `v15.1.0` | `unauthorized` introduced. |
+
+## INDEX
+
+- [unauthorized.js](../03-file-conventions/unauthorized.md)
+- [notFound](./not-found.md)
+- [forbidden](./forbidden.md)
+- [authInterrupts](../05-config/01-next-config-js/authInterrupts.md)

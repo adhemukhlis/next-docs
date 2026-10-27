@@ -239,7 +239,7 @@ export default async function Page() {
 > **Good to know:**
 >
 > - Use a [`<time>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/time) element with a `dateTime` attribute so search engines and screen readers can parse the ISO string regardless of the displayed text.
-> - Inline scripts with `dangerouslySetInnerHTML` are blocked by strict [Content Security Policies](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) that don't allow `'unsafe-inline'`. If your app uses a CSP, you'll need to add a [nonce](/docs/app/guides/content-security-policy).
+> - Inline scripts with `dangerouslySetInnerHTML` are blocked by strict [Content Security Policies](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) that don't allow `'unsafe-inline'`. If your app uses a CSP, you'll need to add a [nonce](./content-security-policy.md).
 
 ## Themes
 
@@ -301,7 +301,7 @@ The script runs in `<head>`, so the correct theme is applied before any content 
 
 ### Storing the theme in a cookie
 
-Unlike `localStorage`, a cookie is sent with every request, so the server _can_ read it with [`cookies()`](/docs/app/api-reference/functions/cookies). But reading it in the root layout opts the entire app out of static prerendering (and under [Cache Components](/docs/app/api-reference/config/next-config-js/cacheComponents), forces blocking every segment under the layout). To keep the page statically prerendered with a generic default and still avoid the flash, read the cookie in the inline script instead:
+Unlike `localStorage`, a cookie is sent with every request, so the server _can_ read it with [`cookies()`](../03-api-reference/04-functions/cookies.md). But reading it in the root layout opts the entire app out of static prerendering (and under [Cache Components](../03-api-reference/05-config/01-next-config-js/cacheComponents.md), forces blocking every segment under the layout). To keep the page statically prerendered with a generic default and still avoid the flash, read the cookie in the inline script instead:
 
 ```tsx filename="app/layout.tsx" switcher
 export default function RootLayout({ children }: LayoutProps<'/'>) {
@@ -521,10 +521,10 @@ export function ThemeToggle() {
 
 | Situation | Approach |
 | - | - |
-| Date depends on request data (cookies, headers) | Use [`headers()`](/docs/app/api-reference/functions/headers) or [`cookies()`](/docs/app/api-reference/functions/cookies) to read request data and format server-side |
+| Date depends on request data (cookies, headers) | Use [`headers()`](../03-api-reference/04-functions/headers.md) or [`cookies()`](../03-api-reference/04-functions/cookies.md) to read request data and format server-side |
 | Date updates live (countdown timers, clocks) | Use a Client Component with `useEffect` and `suppressHydrationWarning` |
 | Page is already fully dynamic | Format the date on the server using the `Accept-Language` header |
-| Translating content between languages | Use [internationalization](/docs/app/guides/internationalization) with per-locale static builds or dynamic rendering |
+| Translating content between languages | Use [internationalization](./internationalization.md) with per-locale static builds or dynamic rendering |
 
 ### Why not `useEffect`?
 
@@ -538,6 +538,6 @@ Reading `Accept-Language` with `await headers()` lets the server format per-requ
 
 ## Next steps
 
-- [Read cookies](/docs/app/api-reference/functions/cookies) or [headers](/docs/app/api-reference/functions/headers) when you need to format based on request data.
-- [Configure internationalization](/docs/app/guides/internationalization) for multi-language support.
+- [Read cookies](../03-api-reference/04-functions/cookies.md) or [headers](../03-api-reference/04-functions/headers.md) when you need to format based on request data.
+- [Configure internationalization](./internationalization.md) for multi-language support.
 - [React hydration error](/docs/messages/react-hydration-error) for solutions to other common causes of hydration mismatches.

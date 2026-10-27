@@ -3,9 +3,9 @@ title: skipTrailingSlashRedirect
 description: Disable the automatic trailing slash redirects so you can handle trailing slashes yourself in Proxy.
 ---
 
-Enabling `skipTrailingSlashRedirect` turns off the automatic redirects that add or remove a trailing slash. You handle any redirecting you still want in [Proxy](/docs/app/api-reference/file-conventions/proxy).
+Enabling `skipTrailingSlashRedirect` turns off the automatic redirects that add or remove a trailing slash. You handle any redirecting you still want in [Proxy](../../03-file-conventions/proxy.md).
 
-**Most projects don't need this option.** It is one of the [advanced Proxy flags](/docs/app/api-reference/file-conventions/proxy#advanced-proxy-flags), meant for specific routing cases and debugging.
+**Most projects don't need this option.** It is one of the [advanced Proxy flags](../../03-file-conventions/proxy.md#advanced-proxy-flags), meant for specific routing cases and debugging.
 
 ```ts filename="next.config.ts" switcher
 import type { NextConfig } from 'next'
@@ -28,7 +28,7 @@ module.exports = nextConfig
 
 ## Reference
 
-By default, Next.js redirects every request so the trailing slash matches your [`trailingSlash`](/docs/app/api-reference/config/next-config-js/trailingSlash) setting.
+By default, Next.js redirects every request so the trailing slash matches your [`trailingSlash`](./trailingSlash.md) setting.
 
 | `trailingSlash` | Request | Default response |
 | - | - | - |
@@ -40,7 +40,7 @@ By default, Next.js redirects every request so the trailing slash matches your [
 Enabling `skipTrailingSlashRedirect` affects both server responses and client-side navigation:
 
 - Both `/about` and `/about/` return `200`. Neither redirects to the other.
-- Next.js stops changing trailing slashes during client-side navigation. [`<Link>`](/docs/app/api-reference/components/link) and router URLs keep the path exactly as written.
+- Next.js stops changing trailing slashes during client-side navigation. [`<Link>`](../../02-components/link.md) and router URLs keep the path exactly as written.
 
 Your own `redirects` and `rewrites` from `next.config.js` still apply.
 
@@ -61,9 +61,9 @@ With `skipTrailingSlashRedirect` enabled, none of these redirects are generated 
 
 ## Good to know
 
-- Keep setting [`trailingSlash`](/docs/app/api-reference/config/next-config-js/trailingSlash) as you did before. It still controls the URLs Next.js generates and the output filenames for [`output: 'export'`](/docs/app/guides/static-exports).
-- With `output: 'export'`, this preserves the `href` instead of resolving `/me` to `/me/`. See [Static Exports](/docs/app/guides/static-exports).
-- Serving one page at both `/about` and `/about/` gives search engines two URLs for it. Set a [canonical URL](/docs/app/api-reference/functions/generate-metadata#alternates) in your metadata, or redirect in [Proxy](/docs/app/api-reference/file-conventions/proxy).
+- Keep setting [`trailingSlash`](./trailingSlash.md) as you did before. It still controls the URLs Next.js generates and the output filenames for [`output: 'export'`](../../../02-guides/static-exports.md).
+- With `output: 'export'`, this preserves the `href` instead of resolving `/me` to `/me/`. See [Static Exports](../../../02-guides/static-exports.md).
+- Serving one page at both `/about` and `/about/` gives search engines two URLs for it. Set a [canonical URL](../../04-functions/generate-metadata.md#alternates) in your metadata, or redirect in [Proxy](../../03-file-conventions/proxy.md).
 
 ## Examples
 

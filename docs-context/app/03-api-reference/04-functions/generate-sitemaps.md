@@ -2,11 +2,6 @@
 title: generateSitemaps
 nav_title: generateSitemaps
 description: Learn how to use the generateSitemaps function to create multiple sitemaps for your application.
-related:
- title: Next Steps
- description: Learn how to create sitemaps for your Next.js application.
- links:
-  - app/api-reference/file-conventions/metadata/sitemap
 ---
 
 You can use the `generateSitemaps` function to generate multiple sitemaps for your application.
@@ -73,3 +68,9 @@ export default async function sitemap(props) {
 | `v16.0.0` | The `id` values returned from `generateSitemaps` are now passed as a promise that resolves to a `string` to the sitemap function. |
 | `v15.0.0` | `generateSitemaps` now generates consistent URLs between development and production |
 | `v13.3.2` | `generateSitemaps` introduced. In development, you can view the generated sitemap on `/.../sitemap.xml/[id]`. For example, `/product/sitemap.xml/1`. |
+
+## INDEX
+
+Learn how to create sitemaps for your Next.js application.
+
+- [sitemap.xml](../03-file-conventions/01-metadata/sitemap.md)

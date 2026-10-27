@@ -4,7 +4,7 @@ description: Choose how Turbopack runs Node.js evaluation for webpack loaders, B
 version: experimental
 related:
  links:
-  - app/api-reference/config/next-config-js/turbopack
+  - ./turbopack.md
 ---
 
 The `experimental.turbopackPluginRuntimeStrategy` option chooses whether Turbopack runs Node.js evaluation in child processes or worker threads.
@@ -32,7 +32,7 @@ const nextConfig = {
 module.exports = nextConfig
 ```
 
-This runtime executes Node.js-based tools, including [webpack loaders](/docs/app/api-reference/config/next-config-js/turbopack#configuring-webpack-loaders), Babel, and PostCSS.
+This runtime executes Node.js-based tools, including [webpack loaders](./turbopack.md#configuring-webpack-loaders), Babel, and PostCSS.
 
 ## Reference
 

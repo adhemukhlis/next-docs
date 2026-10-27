@@ -62,13 +62,13 @@ bun add next@latest react@latest react-dom@latest eslint-config-next@latest
 
 Previously synchronous Request-time APIs that rely on request information are now **asynchronous**:
 
-- [`cookies`](/docs/app/api-reference/functions/cookies)
-- [`headers`](/docs/app/api-reference/functions/headers)
-- [`draftMode`](/docs/app/api-reference/functions/draft-mode)
-- `params` in [`layout.js`](/docs/app/api-reference/file-conventions/layout), [`page.js`](/docs/app/api-reference/file-conventions/page), [`route.js`](/docs/app/api-reference/file-conventions/route), [`default.js`](/docs/app/api-reference/file-conventions/default), [`opengraph-image`](/docs/app/api-reference/file-conventions/metadata/opengraph-image), [`twitter-image`](/docs/app/api-reference/file-conventions/metadata/opengraph-image), [`icon`](/docs/app/api-reference/file-conventions/metadata/app-icons), and [`apple-icon`](/docs/app/api-reference/file-conventions/metadata/app-icons).
-- `searchParams` in [`page.js`](/docs/app/api-reference/file-conventions/page)
+- [`cookies`](../../03-api-reference/04-functions/cookies.md)
+- [`headers`](../../03-api-reference/04-functions/headers.md)
+- [`draftMode`](../../03-api-reference/04-functions/draft-mode.md)
+- `params` in [`layout.js`](../../03-api-reference/03-file-conventions/layout.md), [`page.js`](../../03-api-reference/03-file-conventions/page.md), [`route.js`](../../03-api-reference/03-file-conventions/route.md), [`default.js`](../../03-api-reference/03-file-conventions/default.md), [`opengraph-image`](../../03-api-reference/03-file-conventions/01-metadata/opengraph-image.md), [`twitter-image`](../../03-api-reference/03-file-conventions/01-metadata/opengraph-image.md), [`icon`](../../03-api-reference/03-file-conventions/01-metadata/app-icons.md), and [`apple-icon`](../../03-api-reference/03-file-conventions/01-metadata/app-icons.md).
+- `searchParams` in [`page.js`](../../03-api-reference/03-file-conventions/page.md)
 
-To ease the burden of migration, a [codemod is available](/docs/app/guides/upgrading/codemods#150) to automate the process and the APIs can temporarily be accessed synchronously.
+To ease the burden of migration, a [codemod is available](./codemods.md#150) to automate the process and the APIs can temporarily be accessed synchronously.
 
 ### `cookies`
 
@@ -427,11 +427,11 @@ export async function GET(request, segmentData) {
 
 ## `runtime` configuration (Breaking change)
 
-The `runtime` [segment configuration](/docs/app/api-reference/file-conventions/route-segment-config/runtime) previously supported a value of `experimental-edge` in addition to `edge`. Both configurations refer to the same thing, and to simplify the options, we will now error if `experimental-edge` is used. To fix this, update your `runtime` configuration to `edge`. A [codemod](/docs/app/guides/upgrading/codemods#app-dir-runtime-config-experimental-edge) is available to automatically do this.
+The `runtime` [segment configuration](../../03-api-reference/03-file-conventions/02-route-segment-config/runtime.md) previously supported a value of `experimental-edge` in addition to `edge`. Both configurations refer to the same thing, and to simplify the options, we will now error if `experimental-edge` is used. To fix this, update your `runtime` configuration to `edge`. A [codemod](./codemods.md#app-dir-runtime-config-experimental-edge) is available to automatically do this.
 
 ## `fetch` requests
 
-[`fetch` requests](/docs/app/api-reference/functions/fetch) are no longer cached by default.
+[`fetch` requests](../../03-api-reference/04-functions/fetch.md) are no longer cached by default.
 
 To opt specific `fetch` requests into caching, you can pass the `cache: 'force-cache'` option.
 
@@ -444,7 +444,7 @@ export default async function RootLayout() {
 }
 ```
 
-To opt all `fetch` requests in a layout or page into caching, you can use the `export const fetchCache = 'default-cache'` [segment config option](/docs/app/api-reference/file-conventions/route-segment-config). If individual `fetch` requests specify a `cache` option, that will be used instead.
+To opt all `fetch` requests in a layout or page into caching, you can use the `export const fetchCache = 'default-cache'` [segment config option](../../03-api-reference/03-file-conventions/02-route-segment-config/index.md). If individual `fetch` requests specify a `cache` option, that will be used instead.
 
 ```js filename="app/layout.js"
 // Since this is the root layout, all fetch requests in the app
@@ -461,7 +461,7 @@ export default async function RootLayout() {
 
 ## Route Handlers
 
-`GET` functions in [Route Handlers](/docs/app/api-reference/file-conventions/route) are no longer cached by default. To opt `GET` methods into caching, you can use a [route config option](/docs/app/api-reference/file-conventions/route-segment-config) such as `export const dynamic = 'force-static'` in your Route Handler file.
+`GET` functions in [Route Handlers](../../03-api-reference/03-file-conventions/route.md) are no longer cached by default. To opt `GET` methods into caching, you can use a [route config option](../../03-api-reference/03-file-conventions/02-route-segment-config/index.md) such as `export const dynamic = 'force-static'` in your Route Handler file.
 
 ```js filename="app/api/route.js"
 export const dynamic = 'force-static'
@@ -471,9 +471,9 @@ export async function GET() {}
 
 ## Client Cache
 
-When navigating between pages via `<Link>` or `useRouter`, [page](/docs/app/api-reference/file-conventions/page) segments are no longer reused from the [Client Cache](/docs/app/glossary#client-cache). However, they are still reused during browser backward and forward navigation and for shared layouts.
+When navigating between pages via `<Link>` or `useRouter`, [page](../../03-api-reference/03-file-conventions/page.md) segments are no longer reused from the [Client Cache](../../04-glossary.md#client-cache). However, they are still reused during browser backward and forward navigation and for shared layouts.
 
-To opt page segments into caching, you can use the [`staleTimes`](/docs/app/api-reference/config/next-config-js/staleTimes) config option:
+To opt page segments into caching, you can use the [`staleTimes`](../../03-api-reference/05-config/01-next-config-js/staleTimes.md) config option:
 
 ```js filename="next.config.js"
 /** @type {import('next').NextConfig} */
@@ -489,11 +489,11 @@ const nextConfig = {
 module.exports = nextConfig
 ```
 
-[Layouts](/docs/app/api-reference/file-conventions/layout) and [loading states](/docs/app/api-reference/file-conventions/loading) are still cached and reused on navigation.
+[Layouts](../../03-api-reference/03-file-conventions/layout.md) and [loading states](../../03-api-reference/03-file-conventions/loading.md) are still cached and reused on navigation.
 
 ## `next/font`
 
-The `@next/font` package has been removed in favor of the built-in [`next/font`](/docs/app/api-reference/components/font). A [codemod is available](/docs/app/guides/upgrading/codemods#built-in-next-font) to safely and automatically rename your imports.
+The `@next/font` package has been removed in favor of the built-in [`next/font`](../../03-api-reference/02-components/font.md). A [codemod is available](./codemods.md#built-in-next-font) to safely and automatically rename your imports.
 
 ```js filename="app/layout.js"
 // Before
@@ -549,7 +549,7 @@ To continue using Speed Insights, follow the [Vercel Speed Insights Quickstart](
 
 ## `NextRequest` Geolocation
 
-The `geo` and `ip` properties on `NextRequest` have been removed as these values are provided by your hosting provider. A [codemod](/docs/app/guides/upgrading/codemods#150) is available to automate this migration.
+The `geo` and `ip` properties on `NextRequest` have been removed as these values are provided by your hosting provider. A [codemod](./codemods.md#150) is available to automate this migration.
 
 If you are using Vercel, you can alternatively use the `geolocation` and `ipAddress` functions from [`@vercel/functions`](https://vercel.com/docs/functions/functions-api-reference/vercel-functions-package) instead:
 

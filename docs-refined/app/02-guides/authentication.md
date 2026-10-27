@@ -24,13 +24,13 @@ This diagram shows the authentication flow using React and Next.js features:
 
 The examples on this page walk through basic username and password auth for educational purposes. While you can implement a custom auth solution, for increased security and simplicity, we recommend using an authentication library. These offer built-in solutions for authentication, session management, and authorization, as well as additional features such as social logins, multi-factor authentication, and role-based access control. You can find a list in the [Auth Libraries](#auth-libraries) section.
 
-> **Good to know:** With [Cache Components](/docs/app/api-reference/config/next-config-js/cacheComponents) enabled, reading the session and caching per-user data follow specific rules. See [Authentication with Cache Components](/docs/app/guides/authentication-with-cache-components).
+> **Good to know:** With [Cache Components](../03-api-reference/05-config/01-next-config-js/cacheComponents.md) enabled, reading the session and caching per-user data follow specific rules. See [Authentication with Cache Components](./authentication-with-cache-components.md).
 
 ## Authentication
 
 ### Sign-up and login functionality
 
-You can use the [`<form>`](https://react.dev/reference/react-dom/components/form) element with React's [Server Actions](/docs/app/getting-started/mutating-data) and `useActionState` to capture user credentials, validate form fields, and call your Authentication Provider's API or database.
+You can use the [`<form>`](https://react.dev/reference/react-dom/components/form) element with React's [Server Actions](../01-getting-started/07-mutating-data.md) and `useActionState` to capture user credentials, validate form fields, and call your Authentication Provider's API or database.
 
 Since Server Actions always execute on the server, they provide a secure environment for handling authentication logic.
 
@@ -442,9 +442,9 @@ There are two types of sessions:
 
 To create and manage stateless sessions, there are a few steps you need to follow:
 
-1. Generate a secret key, which will be used to sign your session, and store it as an [environment variable](/docs/app/guides/environment-variables).
+1. Generate a secret key, which will be used to sign your session, and store it as an [environment variable](./environment-variables.md).
 2. Write logic to encrypt/decrypt session data using a session management library.
-3. Manage cookies using the Next.js [`cookies`](/docs/app/api-reference/functions/cookies) API.
+3. Manage cookies using the Next.js [`cookies`](../03-api-reference/04-functions/cookies.md) API.
 
 In addition to the above, consider adding functionality to [update (or refresh)](#updating-or-refreshing-sessions) the session when the user returns to the application, and [delete](#deleting-the-session) the session when the user logs out.
 
@@ -458,7 +458,7 @@ There are a few ways you can generate secret key to sign your session. For examp
 openssl rand -base64 32
 ```
 
-This command generates a 32-character random string that you can use as your secret key and store in your [environment variables file](/docs/app/guides/environment-variables):
+This command generates a 32-character random string that you can use as your secret key and store in your [environment variables file](./environment-variables.md):
 
 ```bash filename=".env"
 SESSION_SECRET=your_secret_key
@@ -527,7 +527,7 @@ export async function decrypt(session) {
 
 #### 3. Setting cookies (recommended options)
 
-To store the session in a cookie, use the Next.js [`cookies`](/docs/app/api-reference/functions/cookies) API. The cookie should be set on the server, and include the recommended options:
+To store the session in a cookie, use the Next.js [`cookies`](../03-api-reference/04-functions/cookies.md) API. The cookie should be set on the server, and include the recommended options:
 
 - **HttpOnly**: Prevents client-side JavaScript from accessing the cookie.
 - **Secure**: Use https to send the cookie.
@@ -575,7 +575,7 @@ export async function createSession(userId) {
 }
 ```
 
-Back in your Server Action, you can invoke the `createSession()` function, and use the [`redirect()`](/docs/app/guides/redirecting) API to redirect the user to the appropriate page:
+Back in your Server Action, you can invoke the `createSession()` function, and use the [`redirect()`](./redirecting.md) API to redirect the user to the appropriate page:
 
 ```ts filename="app/actions/auth.ts" switcher
 import { createSession } from '@/app/lib/session'
@@ -823,12 +823,12 @@ For both cases, we recommend:
 
 ### Optimistic checks with Proxy (Optional)
 
-There are some cases where you may want to use [Proxy](/docs/app/api-reference/file-conventions/proxy) and redirect users based on permissions:
+There are some cases where you may want to use [Proxy](../03-api-reference/03-file-conventions/proxy.md) and redirect users based on permissions:
 
 - To perform optimistic checks. Since Proxy runs on every route, it's a good way to centralize redirect logic and pre-filter unauthorized users.
 - To protect static routes that share data between users (e.g. content behind a paywall).
 
-However, since Proxy runs on every route, including [prefetched](/docs/app/getting-started/linking-and-navigating#prefetching) routes, it's important to only read the session from the cookie (optimistic checks), and avoid database checks to prevent performance issues.
+However, since Proxy runs on every route, including [prefetched](../01-getting-started/04-linking-and-navigating.md#prefetching) routes, it's important to only read the session from the cookie (optimistic checks), and avoid database checks to prevent performance issues.
 
 For example:
 
@@ -1099,7 +1099,7 @@ By centralizing your data requests and authorization logic in a DAL and using DT
 
 ### Server Components
 
-Auth check in [Server Components](/docs/app/getting-started/server-and-client-components) are useful for role-based access. For example, to conditionally render components based on the user's role:
+Auth check in [Server Components](../01-getting-started/05-server-and-client-components.md) are useful for role-based access. For example, to conditionally render components based on the user's role:
 
 ```tsx filename="app/dashboard/page.tsx" switcher
 import { verifySession } from '@/app/lib/dal'
@@ -1139,9 +1139,9 @@ In the example, we use the `verifySession()` function from our DAL to check for 
 
 ### Layouts and auth checks
 
-Due to [Partial Rendering](/docs/app/getting-started/linking-and-navigating#client-side-transitions), be cautious when doing checks in [Layouts](/docs/app/api-reference/file-conventions/layout) as these don't re-render on navigation, meaning the user session won't be checked on every route change.
+Due to [Partial Rendering](../01-getting-started/04-linking-and-navigating.md#client-side-transitions), be cautious when doing checks in [Layouts](../03-api-reference/03-file-conventions/layout.md) as these don't re-render on navigation, meaning the user session won't be checked on every route change.
 
-A layout also does not control whether the rest of the route renders. Route segments and [parallel route slots](/docs/app/api-reference/file-conventions/parallel-routes#conditional-routes) are rendered by the router, so a layout that hides or swaps them does not stop them from running or from appearing in the [RSC Payload](/docs/app/glossary#rsc-payload).
+A layout also does not control whether the rest of the route renders. Route segments and [parallel route slots](../03-api-reference/03-file-conventions/parallel-routes.md#conditional-routes) are rendered by the router, so a layout that hides or swaps them does not stop them from running or from appearing in the [RSC Payload](../04-glossary.md#rsc-payload).
 
 Instead, you should do the checks close to your data source or the component that'll be conditionally rendered.
 
@@ -1153,9 +1153,9 @@ This guarantees that wherever `getUser()` is called within your application, the
 
 Session and user data often appear in shell UI (header, nav) that repeats across routes. A top-level `await` on `cookies()`, `headers()`, or the DAL in a layout delays the first streamed chunk for that segment and holds `{children}` behind that work.
 
-If only part of the shell needs session data (for example, a user menu), move the `await` into a nested Server Component and wrap it in `<Suspense>` so the rest of the page streams first. See [Push dynamic access down](/docs/app/guides/streaming#push-dynamic-access-down) for the pattern.
+If only part of the shell needs session data (for example, a user menu), move the `await` into a nested Server Component and wrap it in `<Suspense>` so the rest of the page streams first. See [Push dynamic access down](./streaming.md#push-dynamic-access-down) for the pattern.
 
-Client Components can't import the DAL. Run `verifySession()`, `getUser()`, or similar in a parent Server Component, then pass data to client children as props or through a context provider. For that pattern, see [Using React's `use` within a Context Provider](/docs/app/guides/single-page-applications#using-reacts-use-within-a-context-provider), and use React's [`taintUniqueValue`](https://react.dev/reference/react/experimental_taintUniqueValue) API to keep sensitive session fields from reaching the client.
+Client Components can't import the DAL. Run `verifySession()`, `getUser()`, or similar in a parent Server Component, then pass data to client children as props or through a context provider. For that pattern, see [Using React's `use` within a Context Provider](./single-page-applications.md#using-reacts-use-within-a-context-provider), and use React's [`taintUniqueValue`](https://react.dev/reference/react/experimental_taintUniqueValue) API to keep sensitive session fields from reaching the client.
 
 #### Auth checks in page components
 
@@ -1250,7 +1250,7 @@ This pattern allows you to show or hide UI elements based on user permissions wh
 
 ### Server Actions
 
-Treat [Server Actions](/docs/app/guides/server-actions) with the same security considerations as public-facing API endpoints, and verify if the user is allowed to perform a mutation.
+Treat [Server Actions](./server-actions.md) with the same security considerations as public-facing API endpoints, and verify if the user is allowed to perform a mutation.
 
 In the example below, we check the user's role before allowing the action to proceed:
 
@@ -1290,7 +1290,7 @@ export async function serverAction() {
 
 ### Route Handlers
 
-Treat [Route Handlers](/docs/app/api-reference/file-conventions/route) with the same security considerations as public-facing API endpoints, and verify if the user is allowed to access the Route Handler.
+Treat [Route Handlers](../03-api-reference/03-file-conventions/route.md) with the same security considerations as public-facing API endpoints, and verify if the user is allowed to access the Route Handler.
 
 For example:
 

@@ -6,20 +6,20 @@ related:
  title: Next Steps
  description: Learn about other behavior changes when Cache Components is enabled.
  links:
-  - app/guides/optimizing-the-static-shell
-  - app/guides/instant-navigation
-  - app/guides/preserving-ui-state
-  - app/guides/incremental-static-regeneration-cache-components
-  - app/getting-started/caching
+  - ./optimizing-the-static-shell.md
+  - ./instant-navigation.md
+  - ./preserving-ui-state.md
+  - ./incremental-static-regeneration-cache-components.md
+  - ../01-getting-started/08-caching.md
 ---
 
-When [Cache Components](/docs/app/api-reference/config/next-config-js/cacheComponents) is enabled, route segment configs like `dynamic`, `revalidate`, and `fetchCache` are replaced by [`use cache`](/docs/app/api-reference/directives/use-cache) and [`cacheLife`](/docs/app/api-reference/functions/cacheLife).
+When [Cache Components](../03-api-reference/05-config/01-next-config-js/cacheComponents.md) is enabled, route segment configs like `dynamic`, `revalidate`, and `fetchCache` are replaced by [`use cache`](../03-api-reference/01-directives/use-cache.md) and [`cacheLife`](../03-api-reference/04-functions/cacheLife.md).
 
 The migration is driven by **instant navigation validation**. With Cache Components enabled, Next.js validates in development whether navigating into each route renders instantly, and surfaces the code that would block it as an error or insight.
 
 ## Use the adoption skill (recommended)
 
-The [`next-cache-components-adoption`](/docs/app/guides/ai-agents#next-cache-components-adoption) skill drives this migration with a coding agent, one feature at a time, checking in at every feature boundary. It supports two modes:
+The [`next-cache-components-adoption`](./ai-agents.md#next-cache-components-adoption) skill drives this migration with a coding agent, one feature at a time, checking in at every feature boundary. It supports two modes:
 
 - **Incremental.** Opens a single mechanical PR that opts every route out of validation, then ships each feature as a follow-up PR. This automates the [Adopting incrementally](#adopting-incrementally) flow below.
 - **Direct.** Adopts every route in place on one branch.
@@ -42,7 +42,7 @@ Migrating an existing app by hand follows a few steps, in order:
 
 1. [Enable Cache Components](#enable-cache-components) in `next.config.ts`.
 2. Decide your approach: convert every route now, or [adopt incrementally](#adopting-incrementally) by [opting routes out of validation](#opting-out-of-validation) first and converting one at a time.
-3. [Follow the validation errors and insights](#following-validation) it surfaces, replacing each route segment config with its Cache Components equivalent and caching uncached data with [`use cache`](/docs/app/api-reference/directives/use-cache) or wrapping runtime data in [`<Suspense>`](https://react.dev/reference/react/Suspense). The per-key sections below cover each config and API.
+3. [Follow the validation errors and insights](#following-validation) it surfaces, replacing each route segment config with its Cache Components equivalent and caching uncached data with [`use cache`](../03-api-reference/01-directives/use-cache.md) or wrapping runtime data in [`<Suspense>`](https://react.dev/reference/react/Suspense). The per-key sections below cover each config and API.
 
 Your existing `fetch` and `unstable_cache` caching keeps working. Migrating `unstable_cache` is optional and can happen later.
 
@@ -55,9 +55,9 @@ The sections below cover each config and API and what to do with it under Cache 
 
 ## Enable Cache Components
 
-Cache Components requires Next.js 16. If you're on Next.js 15 or earlier, upgrade first by following the [version 16 upgrade guide](/docs/app/guides/upgrading/version-16). Coming from an older version, work through the [upgrade guides](/docs/app/guides/upgrading) to reach 16 before continuing.
+Cache Components requires Next.js 16. If you're on Next.js 15 or earlier, upgrade first by following the [version 16 upgrade guide](./upgrading/version-16.md). Coming from an older version, work through the [upgrade guides](./upgrading/index.md) to reach 16 before continuing.
 
-Then enable the [`cacheComponents`](/docs/app/api-reference/config/next-config-js/cacheComponents) flag in `next.config.ts`:
+Then enable the [`cacheComponents`](../03-api-reference/05-config/01-next-config-js/cacheComponents.md) flag in `next.config.ts`:
 
 ```ts filename="next.config.ts"
 import type { NextConfig } from 'next'
@@ -69,13 +69,13 @@ const nextConfig: NextConfig = {
 export default nextConfig
 ```
 
-> **Good to know:** If you were using `experimental.dynamicIO` or `experimental.useCache`, `cacheComponents` replaces them. See the [version 16 upgrade guide](/docs/app/guides/upgrading/version-16#experimentaldynamicio-and-experimentalusecache).
+> **Good to know:** If you were using `experimental.dynamicIO` or `experimental.useCache`, `cacheComponents` replaces them. See the [version 16 upgrade guide](./upgrading/version-16.md#experimentaldynamicio-and-experimentalusecache).
 
 After enabling the flag, route segments that still export `dynamic`, `revalidate`, or `fetchCache` will error. Start by replacing those configs. The sections below explain what to do for each one.
 
 ## Opting out of validation
 
-A validation insight or error tells you a route won't render instantly. Resolve it by following the recommendation: cache the data with [`use cache`](/docs/app/api-reference/directives/use-cache) or wrap it in [`<Suspense>`](https://react.dev/reference/react/Suspense). If you're not ready to address it yet, set the [`instant`](/docs/app/api-reference/file-conventions/route-segment-config/instant) config to `false` on the segment that raised it (a layout, page, or parallel slot), then come back to it later.
+A validation insight or error tells you a route won't render instantly. Resolve it by following the recommendation: cache the data with [`use cache`](../03-api-reference/01-directives/use-cache.md) or wrap it in [`<Suspense>`](https://react.dev/reference/react/Suspense). If you're not ready to address it yet, set the [`instant`](../03-api-reference/03-file-conventions/02-route-segment-config/instant.md) config to `false` on the segment that raised it (a layout, page, or parallel slot), then come back to it later.
 
 ```tsx filename="app/dashboard/layout.tsx"
 export const instant = false
@@ -88,7 +88,7 @@ export const instant = false
 You don't have to migrate every route at once. `instant = false` lets you get the whole app building and running first, then convert routes one at a time:
 
 1. **Enable the flag and migrate each route segment config.** Follow the relevant sections below for [`dynamic = "force-dynamic"`](#dynamic--force-dynamic), [`dynamic = "force-static"`](#dynamic--force-static), [`dynamic = "error"`](#dynamic--error), [`revalidate`](#revalidate), and [`fetchCache`](#fetchcache). For routes with dynamic params, also follow the [`generateStaticParams`](#generatestaticparams-and-dynamicparams) guidance. Routes that still render instantly need no further work.
-2. **Opt out the routes that aren't ready.** Where an insight or error appears, set `instant = false` on the segment that raised it. To do this in one pass across the whole app, run the [`cache-components-instant-false`](/docs/app/guides/upgrading/codemods#cache-components-instant-false) codemod, which adds the opt-out to every `page`, `layout`, and `default` that doesn't already declare `instant`:
+2. **Opt out the routes that aren't ready.** Where an insight or error appears, set `instant = false` on the segment that raised it. To do this in one pass across the whole app, run the [`cache-components-instant-false`](./upgrading/codemods.md#cache-components-instant-false) codemod, which adds the opt-out to every `page`, `layout`, and `default` that doesn't already declare `instant`:
 
    ```bash filename="Terminal"
    npx @next/codemod@canary cache-components-instant-false ./app
@@ -98,8 +98,8 @@ You don't have to migrate every route at once. `instant = false` lets you get th
 
    The app keeps building and serving, now with validation deferred for the opted-out routes.
 
-3. **Fix synchronous IO. It can't be deferred.** Calls like `new Date()`, `Date.now()`, `Math.random()`, and `crypto.randomUUID()` during prerender throw a build error that `instant = false` does not clear, so a route that uses them won't build until you address it, opt-out or not. Move the call out of the prerendered shell so it runs at request time: wrap the part that needs it in [`<Suspense>`](https://react.dev/reference/react/Suspense) and call [`connection()`](/docs/app/api-reference/functions/connection) before the call, or move it into a Client Component.
-4. **Convert one route at a time.** Remove `instant = false` from a route, then resolve its insights by caching data with [`use cache`](/docs/app/api-reference/directives/use-cache) or wrapping runtime data in [`<Suspense>`](https://react.dev/reference/react/Suspense). Repeat until no routes opt out.
+3. **Fix synchronous IO. It can't be deferred.** Calls like `new Date()`, `Date.now()`, `Math.random()`, and `crypto.randomUUID()` during prerender throw a build error that `instant = false` does not clear, so a route that uses them won't build until you address it, opt-out or not. Move the call out of the prerendered shell so it runs at request time: wrap the part that needs it in [`<Suspense>`](https://react.dev/reference/react/Suspense) and call [`connection()`](../03-api-reference/04-functions/connection.md) before the call, or move it into a Client Component.
+4. **Convert one route at a time.** Remove `instant = false` from a route, then resolve its insights by caching data with [`use cache`](../03-api-reference/01-directives/use-cache.md) or wrapping runtime data in [`<Suspense>`](https://react.dev/reference/react/Suspense). Repeat until no routes opt out.
 
 ## Following validation
 
@@ -129,13 +129,13 @@ Cache Components validates your routes in development and surfaces errors and in
   />
 </FixCardGrid>
 
-Each card is clickable and opens a page with patterns, code samples, and trade-offs. Work through the insights and errors until they're gone. For the full validation workflow, the DevTools, and CI testing, see the [instant navigation guide](/docs/app/guides/instant-navigation).
+Each card is clickable and opens a page with patterns, code samples, and trade-offs. Work through the insights and errors until they're gone. For the full validation workflow, the DevTools, and CI testing, see the [instant navigation guide](./instant-navigation.md).
 
-Insights don't show up in the HTTP response. An offending route still returns `200` with rendered HTML in dev. The insight only appears in the dev overlay, the dev-server log, or the [MCP `get_errors` tool](/docs/app/guides/mcp). To see them, read the overlay (or query the MCP).
+Insights don't show up in the HTTP response. An offending route still returns `200` with rendered HTML in dev. The insight only appears in the dev overlay, the dev-server log, or the [MCP `get_errors` tool](./mcp.md). To see them, read the overlay (or query the MCP).
 
 ## `dynamic = "force-dynamic"`
 
-**Remove the config.** Without Cache Components, `dynamic = 'force-dynamic'` rendered the entire route for every request and made its `fetch` requests uncached. With Cache Components, uncached data and [Request-time APIs](/docs/app/glossary#request-time-apis) already run at request time. Next.js prerenders any static or cached UI around them.
+**Remove the config.** Without Cache Components, `dynamic = 'force-dynamic'` rendered the entire route for every request and made its `fetch` requests uncached. With Cache Components, uncached data and [Request-time APIs](../04-glossary.md#request-time-apis) already run at request time. Next.js prerenders any static or cached UI around them.
 
 After removing the config, [follow any validation errors or insights](#following-validation) that appear.
 
@@ -175,7 +175,7 @@ export default function Page() {
 
 **Remove the config, then make its caching explicit.** Without Cache Components, `dynamic = 'force-static'` forced the route to prerender, cached its data, and made `cookies()`, `headers()`, and `useSearchParams()` return empty values.
 
-Cache data that should be reused with [`use cache`](/docs/app/api-reference/directives/use-cache) and a suitable [`cacheLife`](/docs/app/api-reference/functions/cacheLife). After removing the config, Request-time APIs read actual request values. Remove those dependencies if the route must remain fully prerendered.
+Cache data that should be reused with [`use cache`](../03-api-reference/01-directives/use-cache.md) and a suitable [`cacheLife`](../03-api-reference/04-functions/cacheLife.md). After removing the config, Request-time APIs read actual request values. Remove those dependencies if the route must remain fully prerendered.
 
 ```tsx filename="app/page.tsx" switcher
 // Before
@@ -225,7 +225,7 @@ export default async function Page() {
 
 > **Good to know**: `ensureStatic` is available in Next.js 16.4 and later. This step is optional. Add it only if the route still has a static output requirement after the migration.
 
-To require a completely static route, add [`ensureStatic = 'navigation'`](/docs/app/api-reference/file-conventions/route-segment-config/ensureStatic#navigation) after migrating its caching:
+To require a completely static route, add [`ensureStatic = 'navigation'`](../03-api-reference/03-file-conventions/02-route-segment-config/ensureStatic.md#navigation) after migrating its caching:
 
 ```tsx filename="app/page.tsx" switcher
 export const ensureStatic = 'navigation'
@@ -235,19 +235,19 @@ export const ensureStatic = 'navigation'
 export const ensureStatic = 'navigation'
 ```
 
-Unlike `dynamic = 'force-static'`, `ensureStatic` does not make Request-time APIs return empty values. It reports an error if request-specific server work prevents the route from being prerendered. If only the App Shell or per-link prefetch must stay static, choose a less restrictive level. See [Keeping pages static](/docs/app/guides/keeping-pages-static).
+Unlike `dynamic = 'force-static'`, `ensureStatic` does not make Request-time APIs return empty values. It reports an error if request-specific server work prevents the route from being prerendered. If only the App Shell or per-link prefetch must stay static, choose a less restrictive level. See [Keeping pages static](./keeping-pages-static.md).
 
 ## `dynamic = "error"`
 
 **Remove the config.** Without Cache Components, `dynamic = 'error'` required the route to prerender and treated `fetch` requests as cached by default. It raised an error only when uncached data or a Request-time API prevented prerendering.
 
-After removing the config, `fetch` no longer inherits that cached default. To preserve the route's existing caching behavior, wrap those requests in [`use cache`](/docs/app/api-reference/directives/use-cache) and set their lifetime with [`cacheLife`](/docs/app/api-reference/functions/cacheLife). If the route did not rely on the default, no replacement is needed.
+After removing the config, `fetch` no longer inherits that cached default. To preserve the route's existing caching behavior, wrap those requests in [`use cache`](../03-api-reference/01-directives/use-cache.md) and set their lifetime with [`cacheLife`](../03-api-reference/04-functions/cacheLife.md). If the route did not rely on the default, no replacement is needed.
 
 ### Enforce static validation
 
 > **Good to know**: `ensureStatic` is available in Next.js 16.4 and later. This step is optional. Add it only if the route still has a static output requirement after the migration.
 
-To require a completely static route, add [`ensureStatic = 'navigation'`](/docs/app/api-reference/file-conventions/route-segment-config/ensureStatic#navigation) after making the route's caching explicit:
+To require a completely static route, add [`ensureStatic = 'navigation'`](../03-api-reference/03-file-conventions/02-route-segment-config/ensureStatic.md#navigation) after making the route's caching explicit:
 
 ```tsx filename="app/page.tsx" switcher
 export const ensureStatic = 'navigation'
@@ -257,11 +257,11 @@ export const ensureStatic = 'navigation'
 export const ensureStatic = 'navigation'
 ```
 
-Use a less restrictive level when only the App Shell or per-link prefetch must stay static. See [Keeping pages static](/docs/app/guides/keeping-pages-static) for how to choose a level.
+Use a less restrictive level when only the App Shell or per-link prefetch must stay static. See [Keeping pages static](./keeping-pages-static.md) for how to choose a level.
 
 ## `revalidate`
 
-**Replace revalidation times greater than zero with `cacheLife`.** Without Cache Components, `revalidate` set the default revalidation time for an entire route. With Cache Components, place [`use cache`](/docs/app/api-reference/directives/use-cache) around the data or UI that should be cached, then set its lifetime with [`cacheLife`](/docs/app/api-reference/functions/cacheLife).
+**Replace revalidation times greater than zero with `cacheLife`.** Without Cache Components, `revalidate` set the default revalidation time for an entire route. With Cache Components, place [`use cache`](../03-api-reference/01-directives/use-cache.md) around the data or UI that should be cached, then set its lifetime with [`cacheLife`](../03-api-reference/04-functions/cacheLife.md).
 
 ```tsx filename="app/page.tsx" switcher
 // Before
@@ -303,7 +303,7 @@ export default async function Page() {
 }
 ```
 
-> **Good to know**: If your `revalidate` value doesn't match a built-in [`cacheLife`](/docs/app/api-reference/functions/cacheLife) profile (`'seconds'`, `'minutes'`, `'hours'`, `'days'`, `'weeks'`, `'max'`), pick the closest one or define a [custom profile](/docs/app/api-reference/functions/cacheLife#custom-cache-profiles) to match your conventions. You can also [redefine a built-in profile](/docs/app/api-reference/functions/cacheLife#overriding-the-default-cache-profiles), including `default`, when its timings don't match your application's caching needs.
+> **Good to know**: If your `revalidate` value doesn't match a built-in [`cacheLife`](../03-api-reference/04-functions/cacheLife.md) profile (`'seconds'`, `'minutes'`, `'hours'`, `'days'`, `'weeks'`, `'max'`), pick the closest one or define a [custom profile](../03-api-reference/04-functions/cacheLife.md#custom-cache-profiles) to match your conventions. You can also [redefine a built-in profile](../03-api-reference/04-functions/cacheLife.md#overriding-the-default-cache-profiles), including `default`, when its timings don't match your application's caching needs.
 
 For `revalidate = 0`, remove the config. Uncached data already runs at request time with Cache Components. Keep data outside a `use cache` scope when it must run for every request.
 
@@ -311,7 +311,7 @@ For `revalidate = 0`, remove the config. Uncached data already runs at request t
 
 **Remove the config and set caching at the data source.** Without Cache Components, `fetchCache` changed or restricted the `cache` option for every `fetch` request in a route. With Cache Components, fetches are uncached unless they run inside a `use cache` scope.
 
-For `default-cache`, `only-cache`, or `force-cache`, wrap the data that should remain cached in [`use cache`](/docs/app/api-reference/directives/use-cache). For `default-no-store`, `only-no-store`, or `force-no-store`, leave the data outside a cache scope. If `force-no-store` previously overrode an explicit cache option, remove that option as well.
+For `default-cache`, `only-cache`, or `force-cache`, wrap the data that should remain cached in [`use cache`](../03-api-reference/01-directives/use-cache.md). For `default-no-store`, `only-no-store`, or `force-no-store`, leave the data outside a cache scope. If `force-no-store` previously overrode an explicit cache option, remove that option as well.
 
 ```tsx filename="app/page.tsx" switcher
 // Before
@@ -347,7 +347,7 @@ export default async function Page() {
 
 Without Cache Components, you cache a request with `cache: 'force-cache'` and tune it with `next: { revalidate, tags }`.
 
-With Cache Components, wrap the fetch in a [`use cache`](/docs/app/api-reference/directives/use-cache) function. Fetches inside that scope are cached automatically, and `revalidate` and `tags` become [`cacheLife`](/docs/app/api-reference/functions/cacheLife) and [`cacheTag`](/docs/app/api-reference/functions/cacheTag).
+With Cache Components, wrap the fetch in a [`use cache`](../03-api-reference/01-directives/use-cache.md) function. Fetches inside that scope are cached automatically, and `revalidate` and `tags` become [`cacheLife`](../03-api-reference/04-functions/cacheLife.md) and [`cacheTag`](../03-api-reference/04-functions/cacheTag.md).
 
 ```tsx filename="app/page.tsx" switcher
 // Before
@@ -411,7 +411,7 @@ export default async function Page() {
 
 Note the persistence difference. The `fetch` Data Cache persists cached responses across deployments and across serverless instances.
 
-`use cache` defaults to in-memory storage, so its entries are discarded when the serverless instance is destroyed and are scoped to a single deployment. Use [`use cache: remote`](/docs/app/api-reference/directives/use-cache-remote) or a [cache handler](/docs/app/api-reference/config/next-config-js/cacheHandlers) for storage that survives instance teardown. Even with durable storage, expect cached values to recompute after a new deployment.
+`use cache` defaults to in-memory storage, so its entries are discarded when the serverless instance is destroyed and are scoped to a single deployment. Use [`use cache: remote`](../03-api-reference/01-directives/use-cache-remote.md) or a [cache handler](../03-api-reference/05-config/01-next-config-js/cacheHandlers.md) for storage that survives instance teardown. Even with durable storage, expect cached values to recompute after a new deployment.
 
 ## `unstable_cache`
 
@@ -419,7 +419,7 @@ Note the persistence difference. The `fetch` Data Cache persists cached response
 
 `unstable_cache` continues to work with Cache Components. You can leave it in place and migrate it later.
 
-If you choose to migrate it, turn the wrapped function into a function with the `'use cache'` directive. The cache key is derived automatically from the arguments, so the key-parts array is no longer needed, and the `options` object maps to [`cacheLife`](/docs/app/api-reference/functions/cacheLife) and [`cacheTag`](/docs/app/api-reference/functions/cacheTag).
+If you choose to migrate it, turn the wrapped function into a function with the `'use cache'` directive. The cache key is derived automatically from the arguments, so the key-parts array is no longer needed, and the `options` object maps to [`cacheLife`](../03-api-reference/04-functions/cacheLife.md) and [`cacheTag`](../03-api-reference/04-functions/cacheTag.md).
 
 ```tsx filename="app/lib/data.ts" switcher
 // Before
@@ -483,15 +483,15 @@ Like the `fetch` Data Cache, `unstable_cache` persists cached values across depl
 
 However, each Cache Function has an isolated React cache scope. Calls from separate Cache Functions do not share a `React.cache` result, such as when one Cache Function preloads data and another consumes it.
 
-When a helper reads request data and matching calls need to share work across Cache Function scopes, replace the React wrapper with [`'use cache: private'`](/docs/app/api-reference/directives/use-cache-private). If the function only needs request-scoped deduplication, use `cacheLife({ stale: Infinity })` so it does not lower the route's stale time. Private Cache Function results are not stored in a server cache across production requests.
+When a helper reads request data and matching calls need to share work across Cache Function scopes, replace the React wrapper with [`'use cache: private'`](../03-api-reference/01-directives/use-cache-private.md). If the function only needs request-scoped deduplication, use `cacheLife({ stale: Infinity })` so it does not lower the route's stale time. Private Cache Function results are not stored in a server cache across production requests.
 
 ## On-demand revalidation (`revalidateTag`, `revalidatePath`, `updateTag`)
 
-On-demand invalidation still works by tagging cached data and expiring it after an event. Tag data with [`cacheTag`](/docs/app/api-reference/functions/cacheTag) inside a `use cache` function instead of the `fetch` `next.tags` option, then choose the invalidation API by the behavior you want:
+On-demand invalidation still works by tagging cached data and expiring it after an event. Tag data with [`cacheTag`](../03-api-reference/04-functions/cacheTag.md) inside a `use cache` function instead of the `fetch` `next.tags` option, then choose the invalidation API by the behavior you want:
 
-- [`updateTag`](/docs/app/api-reference/functions/updateTag): for mutations whose result the user must see immediately (read-your-own-writes). Called from a Server Action, it expires the tag so the next request waits for fresh data instead of serving stale content.
-- [`revalidateTag`](/docs/app/api-reference/functions/revalidateTag): for stale-while-revalidate. A cache profile is **required** as the second argument, for example use `'max'` to serve cached data while it refreshes in the background. Works in Server Actions and Route Handlers.
-- [`revalidatePath`](/docs/app/api-reference/functions/revalidatePath): unchanged from the previous caching model.
+- [`updateTag`](../03-api-reference/04-functions/updateTag.md): for mutations whose result the user must see immediately (read-your-own-writes). Called from a Server Action, it expires the tag so the next request waits for fresh data instead of serving stale content.
+- [`revalidateTag`](../03-api-reference/04-functions/revalidateTag.md): for stale-while-revalidate. A cache profile is **required** as the second argument, for example use `'max'` to serve cached data while it refreshes in the background. Works in Server Actions and Route Handlers.
+- [`revalidatePath`](../03-api-reference/04-functions/revalidatePath.md): unchanged from the previous caching model.
 
 `updateTag` isn't exclusive to Cache Components (it also works with the previous caching model), but migrating is a good time to adopt it. After a mutation in a Server Action, reach for it when the user should see their own change right away.
 
@@ -561,7 +561,7 @@ export async function POST() {
 
 ## `unstable_noStore`
 
-**Not needed.** `unstable_noStore` (`noStore()`) opts a component out of caching. With Cache Components, nothing is cached unless you add `use cache`, so you can remove it. If a component must run at request time, call [`connection()`](/docs/app/api-reference/functions/connection) before the work and wrap it in `<Suspense>`.
+**Not needed.** `unstable_noStore` (`noStore()`) opts a component out of caching. With Cache Components, nothing is cached unless you add `use cache`, so you can remove it. If a component must run at request time, call [`connection()`](../03-api-reference/04-functions/connection.md) before the work and wrap it in `<Suspense>`.
 
 ```tsx filename="app/page.tsx" switcher
 // Before
@@ -603,13 +603,13 @@ export default async function Page() {
 
 ## `generateStaticParams` and `dynamicParams`
 
-Cache Components changes how [dynamic routes](/docs/app/api-reference/file-conventions/dynamic-routes) handle params.
+Cache Components changes how [dynamic routes](../03-api-reference/03-file-conventions/dynamic-routes.md) handle params.
 
 ### `generateStaticParams` must return at least one param
 
-**Returning an empty array now errors.** Without Cache Components, returning `[]` defers every path to the first runtime visit. With Cache Components, [`generateStaticParams`](/docs/app/api-reference/functions/generate-static-params) must return at least one param so Next.js can prerender the route and validate it produces a non-empty [static shell](/docs/app/glossary#static-shell). An empty array raises [`empty-generate-static-params`](/docs/messages/empty-generate-static-params).
+**Returning an empty array now errors.** Without Cache Components, returning `[]` defers every path to the first runtime visit. With Cache Components, [`generateStaticParams`](../03-api-reference/04-functions/generate-static-params.md) must return at least one param so Next.js can prerender the route and validate it produces a non-empty [static shell](../04-glossary.md#static-shell). An empty array raises [`empty-generate-static-params`](/docs/messages/empty-generate-static-params).
 
-Keep `generateStaticParams` and return at least one real param. Removing the export opts the route out of ISR, so Next.js renders it on every request, even when it uses `use cache` for data. Read [ISR with Cache Components](/docs/app/guides/incremental-static-regeneration-cache-components) to learn how `generateStaticParams` prerenders dynamic routes and how unlisted paths behave.
+Keep `generateStaticParams` and return at least one real param. Removing the export opts the route out of ISR, so Next.js renders it on every request, even when it uses `use cache` for data. Read [ISR with Cache Components](./incremental-static-regeneration-cache-components.md) to learn how `generateStaticParams` prerenders dynamic routes and how unlisted paths behave.
 
 ```tsx filename="app/blog/[slug]/page.tsx" switcher
 // Before - defer all paths to runtime
@@ -643,7 +643,7 @@ export async function generateStaticParams() {
 
 Paths you don't return are still served at request time.
 
-> **Good to know:** When you use `generateStaticParams` without Partial Prefetching, await `params` outside `<Suspense>` to preserve ISR for unlisted paths. To serve a fallback while an unlisted path renders, enable [Partial Prefetching](/docs/app/api-reference/config/next-config-js/partialPrefetching) and await `params` inside `<Suspense>`. See [ISR with Cache Components](/docs/app/guides/incremental-static-regeneration-cache-components) for details.
+> **Good to know:** When you use `generateStaticParams` without Partial Prefetching, await `params` outside `<Suspense>` to preserve ISR for unlisted paths. To serve a fallback while an unlisted path renders, enable [Partial Prefetching](../03-api-reference/05-config/01-next-config-js/partialPrefetching.md) and await `params` inside `<Suspense>`. See [ISR with Cache Components](./incremental-static-regeneration-cache-components.md) for details.
 
 ### `dynamicParams` is not supported
 
@@ -651,11 +651,11 @@ Paths you don't return are still served at request time.
 
 > Route segment config "dynamicParams" is not compatible with `nextConfig.cacheComponents`.
 
-Params not returned by `generateStaticParams` are rendered on request. If you used `dynamicParams: false` to reject them, call [`notFound()`](/docs/app/api-reference/functions/not-found) in the page when the param doesn't resolve to real data.
+Params not returned by `generateStaticParams` are rendered on request. If you used `dynamicParams: false` to reject them, call [`notFound()`](../03-api-reference/04-functions/not-found.md) in the page when the param doesn't resolve to real data.
 
 ### Await `params` inside `<Suspense>`
 
-For routes that don't use `generateStaticParams`, pass the `params` promise into a [`<Suspense>`](/docs/app/api-reference/file-conventions/loading) boundary instead of awaiting it at the top of the component. This lets Next.js prerender a static shell while the params remain unknown. For routes that use `generateStaticParams`, follow the ISR guidance above.
+For routes that don't use `generateStaticParams`, pass the `params` promise into a [`<Suspense>`](../03-api-reference/03-file-conventions/loading.md) boundary instead of awaiting it at the top of the component. This lets Next.js prerender a static shell while the params remain unknown. For routes that use `generateStaticParams`, follow the ISR guidance above.
 
 ```tsx filename="app/blog/[slug]/page.tsx" switcher
 // Before - awaiting params at the top blocks the shell
@@ -711,16 +711,16 @@ async function Post({ params }) {
 
 Client hooks that read the route follow the same Suspense pattern. When the route's pathname is fully known, they resolve during prerendering and need no boundary. When the pathname depends on dynamic params not yet known, the hooks suspend wherever the component sits. A nav or breadcrumb in a shared layout, for instance, suspends while Next.js generates the static shell for any route below it that has dynamic params. Wrap the component that reads the hook in `<Suspense>` (push the read down to the smallest leaf so the rest stays prerendered), or the build fails:
 
-- [`usePathname`](/docs/app/api-reference/functions/use-pathname)
-- [`useParams`](/docs/app/api-reference/functions/use-params)
-- [`useSelectedLayoutSegment`](/docs/app/api-reference/functions/use-selected-layout-segment)
-- [`useSelectedLayoutSegments`](/docs/app/api-reference/functions/use-selected-layout-segments)
+- [`usePathname`](../03-api-reference/04-functions/use-pathname.md)
+- [`useParams`](../03-api-reference/04-functions/use-params.md)
+- [`useSelectedLayoutSegment`](../03-api-reference/04-functions/use-selected-layout-segment.md)
+- [`useSelectedLayoutSegments`](../03-api-reference/04-functions/use-selected-layout-segments.md)
 
-The [`useSearchParams`](/docs/app/api-reference/functions/use-search-params) hook always needs a `<Suspense>` boundary, since search params are only known at request time. See [Next.js encountered URL data in a Client Component outside of Suspense](/docs/messages/blocking-prerender-client-hook) for fixes.
+The [`useSearchParams`](../03-api-reference/04-functions/use-search-params.md) hook always needs a `<Suspense>` boundary, since search params are only known at request time. See [Next.js encountered URL data in a Client Component outside of Suspense](/docs/messages/blocking-prerender-client-hook) for fixes.
 
 ## `cookies`, `headers`, and `searchParams`
 
-**Wrap runtime data access in `<Suspense>`.** Without Cache Components, reading [`cookies()`](/docs/app/api-reference/functions/cookies), [`headers()`](/docs/app/api-reference/functions/headers), or [`searchParams`](/docs/app/api-reference/file-conventions/page#searchparams-optional) opts the whole route into dynamic rendering. With Cache Components, accessing them outside a [`<Suspense>`](https://react.dev/reference/react/Suspense) boundary surfaces the [**blocking-prerender-runtime** insight](/docs/messages/blocking-prerender-runtime). Move the access into a component wrapped in `<Suspense>` so the rest of the page prerenders as a static shell and the dynamic part streams in at request time.
+**Wrap runtime data access in `<Suspense>`.** Without Cache Components, reading [`cookies()`](../03-api-reference/04-functions/cookies.md), [`headers()`](../03-api-reference/04-functions/headers.md), or [`searchParams`](../03-api-reference/03-file-conventions/page.md#searchparams-optional) opts the whole route into dynamic rendering. With Cache Components, accessing them outside a [`<Suspense>`](https://react.dev/reference/react/Suspense) boundary surfaces the [**blocking-prerender-runtime** insight](/docs/messages/blocking-prerender-runtime). Move the access into a component wrapped in `<Suspense>` so the rest of the page prerenders as a static shell and the dynamic part streams in at request time.
 
 ```tsx filename="app/page.tsx" switcher
 import { cookies } from 'next/headers'
@@ -780,7 +780,7 @@ async function Dashboard() {
 }
 ```
 
-Your page receives `params` and `searchParams` as props, and both are promises. Apply the same pattern: pass the promise straight through to the `<Suspense>`-wrapped component as a prop and `await` it there, rather than at the top of the page. You can also unwrap the promise inline with `.then()` and pass a plain value down; see [Streaming](/docs/app/guides/streaming#push-dynamic-access-down) for a similar pattern.
+Your page receives `params` and `searchParams` as props, and both are promises. Apply the same pattern: pass the promise straight through to the `<Suspense>`-wrapped component as a prop and `await` it there, rather than at the top of the page. You can also unwrap the promise inline with `.then()` and pass a plain value down; see [Streaming](./streaming.md#push-dynamic-access-down) for a similar pattern.
 
 ```tsx filename="app/page.tsx" switcher
 import { Suspense } from 'react'
@@ -816,13 +816,13 @@ async function Results({ searchParams }) {
 }
 ```
 
-> **Good to know**: When a cookie or header value drives an attribute on the `<html>` element in the root layout (`lang`, `dir`, `data-theme`, etc.), reading it on the server makes the whole subtree request-bound, so there's no child to wrap in `<Suspense>`. An inline `<script>` in `<head>` that sets the attribute before paint keeps the shell static; see [Preventing flash before hydration](/docs/app/guides/preventing-flash-before-hydration) for the pattern.
+> **Good to know**: When a cookie or header value drives an attribute on the `<html>` element in the root layout (`lang`, `dir`, `data-theme`, etc.), reading it on the server makes the whole subtree request-bound, so there's no child to wrap in `<Suspense>`. An inline `<script>` in `<head>` that sets the attribute before paint keeps the shell static; see [Preventing flash before hydration](./preventing-flash-before-hydration.md) for the pattern.
 
 ## Route Handlers (`GET`)
 
 **Replace `dynamic = 'force-static'` with `use cache`.**
 
-Without Cache Components, a `GET` [Route Handler](/docs/app/api-reference/file-conventions/route) is dynamic unless you opt into caching with `export const dynamic = 'force-static'`. With Cache Components, `GET` handlers follow the same model as pages: they prerender when they don't access uncached or runtime data, and you cache uncached data with `use cache`. Remove the `dynamic` config and move the data access into a separate function marked with `use cache`. The directive can't be applied to the `GET` export itself, so the handler calls a cached helper.
+Without Cache Components, a `GET` [Route Handler](../03-api-reference/03-file-conventions/route.md) is dynamic unless you opt into caching with `export const dynamic = 'force-static'`. With Cache Components, `GET` handlers follow the same model as pages: they prerender when they don't access uncached or runtime data, and you cache uncached data with `use cache`. Remove the `dynamic` config and move the data access into a separate function marked with `use cache`. The directive can't be applied to the `GET` export itself, so the handler calls a cached helper.
 
 ```ts filename="app/api/products/route.ts" switcher
 // Before
@@ -880,7 +880,7 @@ async function getProducts() {
 
 ## `generateMetadata` and `generateViewport`
 
-**Cache external data with `use cache`, or mark intentionally dynamic pages.** Under Cache Components, [`generateMetadata`](/docs/app/api-reference/functions/generate-metadata) and [`generateViewport`](/docs/app/api-reference/functions/generate-viewport) follow the same rules as components. If they read runtime data (`cookies()`, `headers()`, `params`, `searchParams`) or fetch uncached data while the rest of the page is otherwise prerenderable, Next.js raises an error so the choice is explicit. If the metadata depends on external but not runtime data, add `use cache`.
+**Cache external data with `use cache`, or mark intentionally dynamic pages.** Under Cache Components, [`generateMetadata`](../03-api-reference/04-functions/generate-metadata.md) and [`generateViewport`](../03-api-reference/04-functions/generate-viewport.md) follow the same rules as components. If they read runtime data (`cookies()`, `headers()`, `params`, `searchParams`) or fetch uncached data while the rest of the page is otherwise prerenderable, Next.js raises an error so the choice is explicit. If the metadata depends on external but not runtime data, add `use cache`.
 
 ```tsx filename="app/page.tsx" switcher
 // Before
@@ -933,15 +933,15 @@ export default function Page() {
 }
 ```
 
-See [`generateMetadata` with Cache Components](/docs/app/api-reference/functions/generate-metadata#with-cache-components) and [`generateViewport` with Cache Components](/docs/app/api-reference/functions/generate-viewport#with-cache-components) for the full set of fix options and trade-offs.
+See [`generateMetadata` with Cache Components](../03-api-reference/04-functions/generate-metadata.md#with-cache-components) and [`generateViewport` with Cache Components](../03-api-reference/04-functions/generate-viewport.md#with-cache-components) for the full set of fix options and trade-offs.
 
 ## `runtime = 'edge'`
 
-**Remove the `runtime` export.** Cache Components requires the Node.js runtime, which is the default, and does not support the [`runtime` route segment config](/docs/app/api-reference/file-conventions/route-segment-config/runtime). Remove the export even when it is set to `runtime = 'nodejs'`. If a route uses the [deprecated](/docs/messages/edge-runtime-deprecated) `runtime = 'edge'` export, remove it and use [Proxy](/docs/app/api-reference/file-conventions/proxy) when you need edge behavior.
+**Remove the `runtime` export.** Cache Components requires the Node.js runtime, which is the default, and does not support the [`runtime` route segment config](../03-api-reference/03-file-conventions/02-route-segment-config/runtime.md). Remove the export even when it is set to `runtime = 'nodejs'`. If a route uses the [deprecated](/docs/messages/edge-runtime-deprecated) `runtime = 'edge'` export, remove it and use [Proxy](../03-api-reference/03-file-conventions/proxy.md) when you need edge behavior.
 
 ## `experimental_ppr`
 
-**Removed. Enable `cacheComponents` instead.** Next.js 16 removes the experimental Partial Prerendering flag (`experimental.ppr`) and the `experimental_ppr` route segment config. Partial Prerendering is now part of [Cache Components](/docs/app/api-reference/config/next-config-js/cacheComponents), so remove `experimental.ppr` from `next.config` and `experimental_ppr` from your segments. A [codemod](/docs/app/guides/upgrading/codemods#remove-experimental_ppr-route-segment-config-from-app-router-pages-and-layouts) removes the segment config for you.
+**Removed. Enable `cacheComponents` instead.** Next.js 16 removes the experimental Partial Prerendering flag (`experimental.ppr`) and the `experimental_ppr` route segment config. Partial Prerendering is now part of [Cache Components](../03-api-reference/05-config/01-next-config-js/cacheComponents.md), so remove `experimental.ppr` from `next.config` and `experimental_ppr` from your segments. A [codemod](./upgrading/codemods.md#remove-experimental_ppr-route-segment-config-from-app-router-pages-and-layouts) removes the segment config for you.
 
 ```tsx filename="app/page.tsx" switcher
 // Before - no longer needed
@@ -985,4 +985,4 @@ If your code relied on unmounting to clear state, you may need to add explicit r
 - **Dialogs with initialization logic**: Effects that depend on dialog state (like focusing an input) won't re-fire if the state was preserved. Derive dialog state from the URL instead.
 - **Forms after submission**: input values and `useActionState` results (success/error messages) persist when returning. Reset in the submit handler or user action when possible, otherwise use a cleanup effect.
 
-See [Preserving UI state across navigations](/docs/app/guides/preserving-ui-state) for detailed examples of each pattern.
+See [Preserving UI state across navigations](./preserving-ui-state.md) for detailed examples of each pattern.

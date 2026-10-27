@@ -27,14 +27,14 @@ export default function ExampleClientComponent() {
 }
 ```
 
-`usePathname` intentionally requires using a [Client Component](/docs/app/getting-started/server-and-client-components). It's important to note Client Components are not a de-optimization. They are an integral part of the [Server Components](/docs/app/getting-started/server-and-client-components) architecture.
+`usePathname` intentionally requires using a [Client Component](../../01-getting-started/05-server-and-client-components.md). It's important to note Client Components are not a de-optimization. They are an integral part of the [Server Components](../../01-getting-started/05-server-and-client-components.md) architecture.
 
 For example, a Client Component with `usePathname` will be rendered into HTML on the initial page load. When navigating to a new route, this component does not need to be re-fetched. Instead, the component is downloaded once (in the client JavaScript bundle), and re-renders based on the current state.
 
 > **Good to know**:
 >
-> - Reading the current URL from a [Server Component](/docs/app/getting-started/server-and-client-components) is not supported. This design is intentional to support layout state being preserved across page navigations.
-> - If your page is being statically prerendered and your app has [rewrites](/docs/app/api-reference/config/next-config-js/rewrites) in `next.config` or a [Proxy](/docs/app/api-reference/file-conventions/proxy) file, reading the pathname with `usePathname()` can result in hydration mismatch errors, because the initial value comes from the server and may not match the actual browser pathname after routing. See our [example](#avoid-hydration-mismatch-with-rewrites) for a way to mitigate this issue.
+> - Reading the current URL from a [Server Component](../../01-getting-started/05-server-and-client-components.md) is not supported. This design is intentional to support layout state being preserved across page navigations.
+> - If your page is being statically prerendered and your app has [rewrites](../05-config/01-next-config-js/rewrites.md) in `next.config` or a [Proxy](../03-file-conventions/proxy.md) file, reading the pathname with `usePathname()` can result in hydration mismatch errors, because the initial value comes from the server and may not match the actual browser pathname after routing. See our [example](#avoid-hydration-mismatch-with-rewrites) for a way to mitigate this issue.
 
 <details>
 
@@ -69,10 +69,10 @@ const pathname = usePathname()
 
 ### Cache Components
 
-When [`cacheComponents`](/docs/app/api-reference/config/next-config-js/cacheComponents) is enabled, `usePathname` may require a [`Suspense`](https://react.dev/reference/react/Suspense) boundary. This depends on whether the pathname can be resolved during prerendering.
+When [`cacheComponents`](../05-config/01-next-config-js/cacheComponents.md) is enabled, `usePathname` may require a [`Suspense`](https://react.dev/reference/react/Suspense) boundary. This depends on whether the pathname can be resolved during prerendering.
 
-- **Static routes and routes with [`generateStaticParams`](/docs/app/api-reference/functions/generate-static-params)**: every route segment, including dynamic params, is known at build time. The pathname can be resolved during prerendering, so `usePathname` resolves on the server and no `Suspense` boundary is required.
-- **Routes with dynamic params not covered by `generateStaticParams`**: the param is a [fallback param](/docs/app/api-reference/functions/generate-static-params#all-paths-at-build-time) that is not known until request time. The pathname cannot be resolved during prerendering, so `usePathname` suspends. Wrap the component (or a parent) in a `Suspense` boundary so its fallback can be rendered during prerendering; otherwise, the build fails.
+- **Static routes and routes with [`generateStaticParams`](./generate-static-params.md)**: every route segment, including dynamic params, is known at build time. The pathname can be resolved during prerendering, so `usePathname` resolves on the server and no `Suspense` boundary is required.
+- **Routes with dynamic params not covered by `generateStaticParams`**: the param is a [fallback param](./generate-static-params.md#all-paths-at-build-time) that is not known until request time. The pathname cannot be resolved during prerendering, so `usePathname` suspends. Wrap the component (or a parent) in a `Suspense` boundary so its fallback can be rendered during prerendering; otherwise, the build fails.
 
 This applies even when the component that calls `usePathname` is itself static. For example, a sidebar with active links rendered in a layout suspends on any page below it that has an unknown dynamic param. To keep the rest of the layout prerendered, wrap the component that calls `usePathname` (or a parent) in a `Suspense` boundary with a fallback.
 
@@ -116,7 +116,7 @@ function ExampleClientComponent() {
 
 When a page is prerendered, the HTML is generated for its path, such as `/blog/hello` for `app/blog/[slug]/page.tsx`. If a rewrite in `next.config` or `Proxy` serves that page at a different URL, the browser keeps the URL it requested, and `usePathname()` reads that browser URL on the client rather than the rewrite destination.
 
-To avoid hydration mismatches, design the UI so that only a small, isolated part depends on the client pathname. Render a stable fallback on the server and update that part after mount. The deferred read shows a brief moment of the fallback before the real pathname appears; see [Preventing flash before hydration](/docs/app/guides/preventing-flash-before-hydration) for techniques that eliminate the visible flicker.
+To avoid hydration mismatches, design the UI so that only a small, isolated part depends on the client pathname. Render a stable fallback on the server and update that part after mount. The deferred read shows a brief moment of the fallback before the real pathname appears; see [Preventing flash before hydration](../../02-guides/preventing-flash-before-hydration.md) for techniques that eliminate the visible flicker.
 
 ```tsx filename="app/example-client-component.tsx" switcher
 'use client'

@@ -6,28 +6,28 @@ related:
  title: Next Steps
  description: Learn more about deploying, caching, and configuring production builds.
  links:
-  - app/getting-started/deploying
-  - app/getting-started/caching
-  - app/guides/incremental-static-regeneration-cache-components
-  - app/guides/ci-build-caching
+  - ../01-getting-started/17-deploying.md
+  - ../01-getting-started/08-caching.md
+  - ./incremental-static-regeneration-cache-components.md
+  - ./ci-build-caching.md
 ---
 
-Running `next build` compiles your application for production, [prerenders](/docs/app/glossary#prerendering) eligible routes, and prints a route table showing how each route is served.
+Running `next build` compiles your application for production, [prerenders](../04-glossary.md#prerendering) eligible routes, and prints a route table showing how each route is served.
 
 ## What `next build` does
 
 When you run `next build`, the build moves through these phases:
 
-1. **Setup.** Loads [environment variables](/docs/app/guides/environment-variables) (`.env` files), validates your [`next.config`](/docs/app/api-reference/config/next-config-js), and generates a [build ID](/docs/app/api-reference/config/next-config-js/generateBuildId).
-2. **Route discovery.** Scans the `app/` and `pages/` directories for routes, and detects root-level convention files like [`proxy`](/docs/app/api-reference/file-conventions/proxy) and [`instrumentation`](/docs/app/api-reference/file-conventions/instrumentation). Generates TypeScript route definitions.
-3. **Compilation.** Bundles client, server, and edge code with [Turbopack](/docs/app/api-reference/turbopack) (or webpack). Transpiles TypeScript and JSX, tree-shakes unused code, and optimizes CSS and fonts.
-4. **Static analysis.** Classifies each route for prerendering versus on-demand rendering. Collects [`generateStaticParams`](/docs/app/api-reference/functions/generate-static-params) output. With Cache Components, checks for [prerender-blocking errors](/docs/messages/blocking-prerender-dynamic).
-5. **Prerendering.** Prerenders static pages and PPR shells to HTML. Generates [RSC payloads](/docs/app/getting-started/server-and-client-components#on-the-server) for client-side navigation.
-6. **Output.** Writes the build to `.next/`. For [`output: 'standalone'`](/docs/app/guides/self-hosting), bundles only the files needed at runtime. For [`output: 'export'`](/docs/app/guides/static-exports), generates a full static site. Prints the route table.
+1. **Setup.** Loads [environment variables](./environment-variables.md) (`.env` files), validates your [`next.config`](../03-api-reference/05-config/01-next-config-js/index.md), and generates a [build ID](../03-api-reference/05-config/01-next-config-js/generateBuildId.md).
+2. **Route discovery.** Scans the `app/` and `pages/` directories for routes, and detects root-level convention files like [`proxy`](../03-api-reference/03-file-conventions/proxy.md) and [`instrumentation`](../03-api-reference/03-file-conventions/instrumentation.md). Generates TypeScript route definitions.
+3. **Compilation.** Bundles client, server, and edge code with [Turbopack](../03-api-reference/08-turbopack.md) (or webpack). Transpiles TypeScript and JSX, tree-shakes unused code, and optimizes CSS and fonts.
+4. **Static analysis.** Classifies each route for prerendering versus on-demand rendering. Collects [`generateStaticParams`](../03-api-reference/04-functions/generate-static-params.md) output. With Cache Components, checks for [prerender-blocking errors](/docs/messages/blocking-prerender-dynamic).
+5. **Prerendering.** Prerenders static pages and PPR shells to HTML. Generates [RSC payloads](../01-getting-started/05-server-and-client-components.md#on-the-server) for client-side navigation.
+6. **Output.** Writes the build to `.next/`. For [`output: 'standalone'`](./self-hosting.md), bundles only the files needed at runtime. For [`output: 'export'`](./static-exports.md), generates a full static site. Prints the route table.
 
-The build checks TypeScript unless [`typescript.ignoreBuildErrors`](/docs/app/api-reference/config/next-config-js/typescript) is enabled.
+The build checks TypeScript unless [`typescript.ignoreBuildErrors`](../03-api-reference/05-config/01-next-config-js/typescript.md) is enabled.
 
-`next dev` stores the running development server's state and incremental compilation caches in `.next/dev`. Deleting or moving `.next` discards that state, so the development server has to recreate it. To run an isolated production build, configure a separate [`distDir`](/docs/app/api-reference/config/next-config-js/distDir).
+`next dev` stores the running development server's state and incremental compilation caches in `.next/dev`. Deleting or moving `.next` discards that state, so the development server has to recreate it. To run an isolated production build, configure a separate [`distDir`](../03-api-reference/05-config/01-next-config-js/distDir.md).
 
 ## Reading the build output
 
@@ -65,7 +65,7 @@ Without Cache Components, App Router pages and Pages Router routes use these ren
 
 ### With Cache Components
 
-With [Cache Components](/docs/app/api-reference/config/next-config-js/cacheComponents), [Partial Prerendering](/docs/app/getting-started/caching#static-cached-and-streaming) is the only rendering model for App Router pages. For these pages, the symbols describe how much HTML the build produced:
+With [Cache Components](../03-api-reference/05-config/01-next-config-js/cacheComponents.md), [Partial Prerendering](../01-getting-started/08-caching.md#static-cached-and-streaming) is the only rendering model for App Router pages. For these pages, the symbols describe how much HTML the build produced:
 
 | Symbol | Name              | Behavior                                                                            |
 | ------ | ----------------- | ----------------------------------------------------------------------------------- |
@@ -77,7 +77,7 @@ For a Cache Components page, `ƒ` means the build accepted an empty HTML prerend
 
 ### Other route entries
 
-Request-dependent [Route Handlers](/docs/app/api-reference/file-conventions/route) (API endpoints), Proxy (Middleware), and dynamic metadata routes such as `icon`, `opengraph-image`, and `twitter-image` use `ƒ`. These entries render on demand and do not use PPR.
+Request-dependent [Route Handlers](../03-api-reference/03-file-conventions/route.md) (API endpoints), Proxy (Middleware), and dynamic metadata routes such as `icon`, `opengraph-image`, and `twitter-image` use `ƒ`. These entries render on demand and do not use PPR.
 
 ### Prerender validation
 
@@ -85,7 +85,7 @@ With Cache Components, `next build` validates that each App Router page can prod
 
 ### Debug prerender errors
 
-Production builds minify server code and omit server source maps by default. Use [`--debug-prerender`](/docs/app/api-reference/cli/next#debugging-prerender-errors) for more detailed stack traces and code frames:
+Production builds minify server code and omit server source maps by default. Use [`--debug-prerender`](../03-api-reference/06-cli/next.md#debugging-prerender-errors) for more detailed stack traces and code frames:
 
 ```bash filename="Terminal"
 next build --debug-prerender
@@ -97,13 +97,13 @@ The option disables server minification, enables server source maps, and prevent
 
 ### Build specific routes
 
-Use [`--debug-build-paths`](/docs/app/api-reference/cli/next#building-specific-routes) to compile and prerender selected routes while debugging a large application. The option accepts comma-separated paths and glob patterns. Prefix a pattern with `!` to exclude it. You can also combine it with `--debug-prerender`.
+Use [`--debug-build-paths`](../03-api-reference/06-cli/next.md#building-specific-routes) to compile and prerender selected routes while debugging a large application. The option accepts comma-separated paths and glob patterns. Prefix a pattern with `!` to exclude it. You can also combine it with `--debug-prerender`.
 
 Only matching routes appear in the route table. When you select an App Router route, Next.js also includes the built-in `/_not-found` route.
 
 ## Example
 
-> **Good to know**: The following example uses [Cache Components](/docs/app/api-reference/config/next-config-js/cacheComponents) with [Partial Prefetching](/docs/app/api-reference/config/next-config-js/partialPrefetching), enabled with `cacheComponents: true` and `partialPrefetching: true` in `next.config.ts`. The route symbols and prerender errors differ when Cache Components is disabled. See [Enabling Cache Components](/docs/app/getting-started/caching#enabling-cache-components) for setup.
+> **Good to know**: The following example uses [Cache Components](../03-api-reference/05-config/01-next-config-js/cacheComponents.md) with [Partial Prefetching](../03-api-reference/05-config/01-next-config-js/partialPrefetching.md), enabled with `cacheComponents: true` and `partialPrefetching: true` in `next.config.ts`. The route symbols and prerender errors differ when Cache Components is disabled. See [Enabling Cache Components](../01-getting-started/08-caching.md#enabling-cache-components) for setup.
 
 ### Find blocking work
 
@@ -178,9 +178,9 @@ Error: Route "/products/[id]": Next.js encountered uncached or runtime data duri
   4 |   const product = await res.json()
 ```
 
-The detailed stack identifies the [`params`](/docs/app/api-reference/file-conventions/page#params-optional) read as the first blocked access.
+The detailed stack identifies the [`params`](../03-api-reference/03-file-conventions/page.md#params-optional) read as the first blocked access.
 
-During development, `next dev` shows all validation errors in the dev overlay and terminal with stack frames that resolve to your source. It reruns validation as you edit. See [Ensuring instant navigations](/docs/app/guides/instant-navigation) for the development workflow.
+During development, `next dev` shows all validation errors in the dev overlay and terminal with stack frames that resolve to your source. It reruns validation as you edit. See [Ensuring instant navigations](./instant-navigation.md) for the development workflow.
 
 This guide uses production builds for the rest of the walkthrough so you can compare how each change affects the route table.
 
@@ -188,7 +188,7 @@ The error offers three options based on whether the request-time work can stream
 
 ### A streaming product page
 
-Choose the error's `[stream]` option when the route has useful UI to show while request-time data loads. Next.js prerenders that fallback, then replaces it with the product page after the params and product data resolve. In this route, a [`loading.js`](/docs/app/api-reference/file-conventions/loading) file provides the fallback:
+Choose the error's `[stream]` option when the route has useful UI to show while request-time data loads. Next.js prerenders that fallback, then replaces it with the product page after the params and product data resolve. In this route, a [`loading.js`](../03-api-reference/03-file-conventions/loading.md) file provides the fallback:
 
 ```tsx filename="app/products/[id]/loading.tsx" switcher
 export default function Loading() {
@@ -204,7 +204,7 @@ export default function Loading() {
 
 `loading.js` wraps the page in a `<Suspense>` boundary and uses the loading component as its fallback. Next.js prerenders this fallback as the product route's static shell. The page reads the params and fetches the product at request time, then replaces the fallback with the completed content.
 
-For more granular streaming, add an explicit `<Suspense>` boundary around only the component that needs request-time data. More of the page can then stay in the static shell. See [Streaming](/docs/app/guides/streaming).
+For more granular streaming, add an explicit `<Suspense>` boundary around only the component that needs request-time data. More of the page can then stay in the static shell. See [Streaming](./streaming.md).
 
 Build the application:
 
@@ -228,7 +228,7 @@ The `◐` symbol shows that the route serves a static shell and streams the rema
 
 ### Prerendered product pages
 
-The route now has a segment-wide fallback from `loading.js`. To prerender pages for known products, keep `loading.js` and use [`generateStaticParams`](/docs/app/api-reference/functions/generate-static-params) to provide their IDs:
+The route now has a segment-wide fallback from `loading.js`. To prerender pages for known products, keep `loading.js` and use [`generateStaticParams`](../03-api-reference/04-functions/generate-static-params.md) to provide their IDs:
 
 ```tsx filename="app/products/[id]/page.tsx" switcher
 export async function generateStaticParams() {
@@ -346,9 +346,9 @@ Route (app)
 ◐  (Partial Prerender)  prerendered as static HTML with dynamic server-streamed content
 ```
 
-The `/products/[id]` fallback represents product IDs not returned by `generateStaticParams`. It stays `◐` because the build does not know every product ID. On the first visit to an unlisted product, [Partial Prefetching](/docs/app/api-reference/config/next-config-js/partialPrefetching) serves the `loading.js` fallback immediately while Next.js renders the page for that ID and stores it in the [ISR cache](/docs/app/glossary#incremental-static-regeneration-isr). Later visits receive the completed page instead of the fallback. See [ISR with Cache Components](/docs/app/guides/incremental-static-regeneration-cache-components) for the complete upgrade flow.
+The `/products/[id]` fallback represents product IDs not returned by `generateStaticParams`. It stays `◐` because the build does not know every product ID. On the first visit to an unlisted product, [Partial Prefetching](../03-api-reference/05-config/01-next-config-js/partialPrefetching.md) serves the `loading.js` fallback immediately while Next.js renders the page for that ID and stores it in the [ISR cache](../04-glossary.md#incremental-static-regeneration-isr). Later visits receive the completed page instead of the fallback. See [ISR with Cache Components](./incremental-static-regeneration-cache-components.md) for the complete upgrade flow.
 
-Routes that contain cached functions or components can also show `Revalidate` and `Expire` columns. A route reports the shortest `revalidate` and `expire` across all the caches it contains. Caches use the [`default` profile](/docs/app/api-reference/functions/cacheLife#preset-cache-profiles) when there is no explicit [`cacheLife`](/docs/app/api-reference/functions/cacheLife) call. A `/products` listing page that renders the same cached data produces this output:
+Routes that contain cached functions or components can also show `Revalidate` and `Expire` columns. A route reports the shortest `revalidate` and `expire` across all the caches it contains. Caches use the [`default` profile](../03-api-reference/04-functions/cacheLife.md#preset-cache-profiles) when there is no explicit [`cacheLife`](../03-api-reference/04-functions/cacheLife.md) call. A `/products` listing page that renders the same cached data produces this output:
 
 ```bash filename="Terminal"
 Route (app)           Revalidate  Expire
@@ -362,11 +362,11 @@ Route (app)           Revalidate  Expire
   └ ○ [+10 more paths]
 ```
 
-The default [`use cache` profile](/docs/app/api-reference/functions/cacheLife#preset-cache-profiles) revalidates after 15 minutes. The route's default [`expireTime`](/docs/app/api-reference/config/next-config-js/expireTime) is one year, so the table shows `15m` and `1y`. You can configure both values in `next.config.ts`.
+The default [`use cache` profile](../03-api-reference/04-functions/cacheLife.md#preset-cache-profiles) revalidates after 15 minutes. The route's default [`expireTime`](../03-api-reference/05-config/01-next-config-js/expireTime.md) is one year, so the table shows `15m` and `1y`. You can configure both values in `next.config.ts`.
 
 ### A blocking product page
 
-Choose the error's `[block]` option when waiting for request-time work is the correct behavior for the route. The route may need the completed result before it responds, or you may want to defer a difficult refactor while [adopting Cache Components incrementally](/docs/app/guides/migrating-to-cache-components#adopting-incrementally).
+Choose the error's `[block]` option when waiting for request-time work is the correct behavior for the route. The route may need the completed result before it responds, or you may want to defer a difficult refactor while [adopting Cache Components incrementally](./migrating-to-cache-components.md#adopting-incrementally).
 
 Suppose this product route needs to remain blocking for now. Keep `generateStaticParams`, remove the `loading` file and the `use cache` directive, then set `instant = false`:
 
@@ -416,7 +416,7 @@ export default async function Page({ params }) {
 
 With the `loading` boundary removed, no fallback can render while the page awaits `params` and the product lookup. Removing `use cache` means the lookup also runs for each request. The server waits for both before returning the product page or a `404`. During a client navigation, the destination has no fallback to show until this work completes.
 
-[`instant = false`](/docs/app/api-reference/file-conventions/route-segment-config/instant) disables instant-navigation validation for this route, including the check that its static shell is non-empty. It does not change the rendering model or prevent prerendering.
+[`instant = false`](../03-api-reference/03-file-conventions/02-route-segment-config/instant.md) disables instant-navigation validation for this route, including the check that its static shell is non-empty. It does not change the rendering model or prevent prerendering.
 
 The build output now shows:
 

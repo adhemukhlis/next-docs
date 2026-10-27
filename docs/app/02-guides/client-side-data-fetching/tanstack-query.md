@@ -5,15 +5,15 @@ description: Fetch client-side data with TanStack Query, optionally provide init
 related:
  description: Related guides and references.
  links:
-  - app/getting-started/fetching-data
-  - app/guides/single-page-applications
-  - app/getting-started/caching
-  - app/api-reference/directives/use-cache
-  - app/api-reference/file-conventions/route
-  - app/api-reference/functions/updateTag
+  - ../../01-getting-started/06-fetching-data.md
+  - ../single-page-applications.md
+  - ../../01-getting-started/08-caching.md
+  - ../../03-api-reference/01-directives/use-cache.md
+  - ../../03-api-reference/03-file-conventions/route.md
+  - ../../03-api-reference/04-functions/updateTag.md
 ---
 
-Use [TanStack Query](https://tanstack.com/query) to fetch data in Client Components, provide initial data from Server Components, and coordinate browser mutations with cached server data. See [Client-side data fetching](/docs/app/guides/client-side-data-fetching) to choose a pattern.
+Use [TanStack Query](https://tanstack.com/query) to fetch data in Client Components, provide initial data from Server Components, and coordinate browser mutations with cached server data. See [Client-side data fetching](./index.md) to choose a pattern.
 
 ## Set up the provider
 
@@ -53,7 +53,7 @@ See the [complete provider setup in the demo source](https://github.com/nextjs/n
 
 ## Fetch data on the client
 
-TanStack Query can fetch entirely in the browser when the initial view can wait for a browser request after hydration. Choose an [inline or Suspense loading state](/docs/app/guides/client-side-data-fetching#choose-a-client-fetching-pattern) based on where the loading UI should appear. In these examples, `query` starts empty and updates from client state after hydration.
+TanStack Query can fetch entirely in the browser when the initial view can wait for a browser request after hydration. Choose an [inline or Suspense loading state](./index.md#choose-a-client-fetching-pattern) based on where the loading UI should appear. In these examples, `query` starts empty and updates from client state after hydration.
 
 Use `useQuery` when the component should render its own loading and error states. The `enabled` option delays the request until the interaction provides an input:
 
@@ -141,7 +141,7 @@ function ProductResults({ query }: { query: string }) {
 }
 ```
 
-If the initial request fails, `useSuspenseQuery` propagates the error to the nearest [error boundary](/docs/app/getting-started/error-handling#nested-error-boundaries).
+If the initial request fails, `useSuspenseQuery` propagates the error to the nearest [error boundary](../../01-getting-started/10-error-handling.md#nested-error-boundaries).
 
 After a query has data, later refetches for the same query keep the cached data rendered instead of showing the Suspense fallback again. Use `isFetching` to provide background refresh feedback.
 
@@ -151,7 +151,7 @@ If the initial view needs the data, provide it from a Server Component as shown 
 
 ## Provide initial data from a Server Component
 
-Use the [server-provided data pattern](/docs/app/guides/client-side-data-fetching#choose-a-client-fetching-pattern) when the initial render needs the data and TanStack Query should continue managing it in the browser. A Server Component can provide initial query data before the client takes over.
+Use the [server-provided data pattern](./index.md#choose-a-client-fetching-pattern) when the initial render needs the data and TanStack Query should continue managing it in the browser. A Server Component can provide initial query data before the client takes over.
 
 TanStack Query 5.40.0 or later can dehydrate pending queries. Start `prefetchQuery` without awaiting it, then pass the dehydrated state to `<HydrationBoundary>`. Override `queryFn` on the server because the Route Handler's relative URL only resolves in the browser:
 
@@ -269,7 +269,7 @@ export const productCache = {
 }
 ```
 
-The query function fetches a [Route Handler](/docs/app/api-reference/file-conventions/route) so it can run on the client. The `staleTime` prevents an immediate client refetch by keeping the hydrated data fresh for 30 seconds. Choose a duration based on how quickly the data can change.
+The query function fetches a [Route Handler](../../03-api-reference/03-file-conventions/route.md) so it can run on the client. The `staleTime` prevents an immediate client refetch by keeping the hydrated data fresh for 30 seconds. Choose a duration based on how quickly the data can change.
 
 Larger features can place query options in a separate client-facing module as long as every caller imports the key from the same cache contract. Learn more about [TanStack Query defaults](https://tanstack.com/query/latest/docs/framework/react/guides/important-defaults).
 
@@ -307,7 +307,7 @@ Learn more: [TanStack Query Advanced SSR](https://tanstack.com/query/latest/docs
 
 ## Cache server-provided data with Cache Components
 
-Enable [`cacheComponents`](/docs/app/api-reference/config/next-config-js/cacheComponents) in `next.config.ts` before using this pattern. You can then cache the server data provided to TanStack Query. Add [`use cache`](/docs/app/api-reference/directives/use-cache), choose a [`cacheLife`](/docs/app/api-reference/functions/cacheLife) profile, and apply [`cacheTag`](/docs/app/api-reference/functions/cacheTag) so mutations can invalidate it:
+Enable [`cacheComponents`](../../03-api-reference/05-config/01-next-config-js/cacheComponents.md) in `next.config.ts` before using this pattern. You can then cache the server data provided to TanStack Query. Add [`use cache`](../../03-api-reference/01-directives/use-cache.md), choose a [`cacheLife`](../../03-api-reference/04-functions/cacheLife.md) profile, and apply [`cacheTag`](../../03-api-reference/04-functions/cacheTag.md) so mutations can invalidate it:
 
 ```ts filename="app/products/[id]/data.ts" switcher
 import { cacheLife, cacheTag } from 'next/cache'
@@ -342,7 +342,7 @@ This example uses `cacheLife('max')` because writes invalidate the product tag. 
 
 TanStack Query owns a separate browser cache, so its `staleTime` does not need to match `cacheLife`.
 
-With Cache Components enabled, Next.js also prerenders Client Components. Keep a query needed during the initial render behind [Suspense](/docs/app/getting-started/fetching-data#streaming). TanStack Query can read the current time while creating active query state, and the boundary lets Next.js defer that work instead of raising a [current-time prerender error](/docs/messages/blocking-prerender-current-time-client).
+With Cache Components enabled, Next.js also prerenders Client Components. Keep a query needed during the initial render behind [Suspense](../../01-getting-started/06-fetching-data.md#streaming). TanStack Query can read the current time while creating active query state, and the boundary lets Next.js defer that work instead of raising a [current-time prerender error](/docs/messages/blocking-prerender-current-time-client).
 
 When the same mutation updates the browser cache and invalidates cached server data, you may define both identities in one shared contract:
 
@@ -442,7 +442,7 @@ export function MarkReadButton() {
 }
 ```
 
-The Server Action writes to the database and expires the tagged server data with [`updateTag`](/docs/app/api-reference/functions/updateTag). Tag the cached server query with [`cacheTag`](/docs/app/api-reference/functions/cacheTag) so the tag matches:
+The Server Action writes to the database and expires the tagged server data with [`updateTag`](../../03-api-reference/04-functions/updateTag.md). Tag the cached server query with [`cacheTag`](../../03-api-reference/04-functions/cacheTag.md) so the tag matches:
 
 ```ts filename="app/activity/actions.ts" switcher
 'use server'
@@ -474,13 +474,13 @@ export async function markActivityReadAction() {
 
 The optimistic query value updates the current screen. `updateTag` ensures the next cached server read returns fresh activity.
 
-> **Good to know:** Call `updateTag` when a Server Action changes a cached read that must reflect the write immediately. An uncached read does not have a server tag to update. See [Client-side data fetching](/docs/app/guides/client-side-data-fetching#coordinate-mutations) for other invalidation behaviors.
+> **Good to know:** Call `updateTag` when a Server Action changes a cached read that must reflect the write immediately. An uncached read does not have a server tag to update. See [Client-side data fetching](./index.md#coordinate-mutations) for other invalidation behaviors.
 
 ## Build a prerenderable hydration state
 
 The TanStack Query pattern above uses `dehydrate()` to create the hydration state. With Cache Components, `dehydrate()` reads the current time (`Date.now()`) while prerendering and causes a [current-time prerender error](/docs/messages/blocking-prerender-current-time).
 
-Instead, cache only that timestamp and build the dehydrated state by hand. Wrap the time read in [`use cache`](/docs/app/api-reference/directives/use-cache) with the same tags as the data reads. When a mutation invalidates those tags, the data and its timestamp advance together, so `<HydrationBoundary>` overwrites the client query on the next navigation:
+Instead, cache only that timestamp and build the dehydrated state by hand. Wrap the time read in [`use cache`](../../03-api-reference/01-directives/use-cache.md) with the same tags as the data reads. When a mutation invalidates those tags, the data and its timestamp advance together, so `<HydrationBoundary>` overwrites the client query on the next navigation:
 
 ```tsx filename="app/lib/hydrate.ts" switcher
 import 'server-only'

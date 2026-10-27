@@ -4,8 +4,8 @@ description: Enable a review flow for Next.js issue reports prepared by AI codin
 version: experimental
 related:
  links:
-  - app/guides/ai-agents
-  - app/api-reference/config/next-config-js/agentRules
+  - ../../../02-guides/ai-agents.md
+  - ./agentRules.md
 ---
 
 The `experimental.agentFeedback` option controls whether `next dev` creates and updates instructions that let detected AI coding agents prepare Next.js issue reports for your review. It is disabled by default and requires [Next.js Telemetry](/telemetry) to be enabled. Agent feedback does not run in CI.
@@ -84,7 +84,7 @@ Set `experimental.agentFeedback` to `false` or remove the option to stop `next d
 
 Disabling Next.js Telemetry also removes the managed feedback block the next time you run `next dev`. The feedback command does not return reporting instructions while telemetry is disabled.
 
-`experimental.agentFeedback` and top-level [`agentRules`](/docs/app/api-reference/config/next-config-js/agentRules) work independently. Changing one option does not affect the other.
+`experimental.agentFeedback` and top-level [`agentRules`](./agentRules.md) work independently. Changing one option does not affect the other.
 
 ## Version History
 

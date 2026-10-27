@@ -8,10 +8,10 @@ description: Learn how to customize the webpack config used by Next.js
 
 Before continuing to add custom webpack configuration to your application make sure Next.js doesn't already support your use-case:
 
-- [CSS imports](/docs/app/getting-started/css)
-- [CSS modules](/docs/app/getting-started/css#css-modules)
-- [Sass/SCSS imports](/docs/app/guides/sass)
-- [Sass/SCSS modules](/docs/app/guides/sass)
+- [CSS imports](../../../01-getting-started/11-css.md)
+- [CSS modules](../../../01-getting-started/11-css.md#css-modules)
+- [Sass/SCSS imports](../../../02-guides/sass.md)
+- [Sass/SCSS modules](../../../02-guides/sass.md)
 
 Some commonly asked for features are available as plugins:
 

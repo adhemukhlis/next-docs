@@ -3,7 +3,7 @@ title: unstable_cache
 description: API Reference for the unstable_cache function.
 ---
 
-> **Note:** This API has been replaced by [`use cache`](/docs/app/api-reference/directives/use-cache) in Next.js 16. We recommend opting into [Cache Components](/docs/app/getting-started/caching) and replacing `unstable_cache` with the `use cache` directive.
+> **Note:** This API has been replaced by [`use cache`](../01-directives/use-cache.md) in Next.js 16. We recommend opting into [Cache Components](../../01-getting-started/08-caching.md) and replacing `unstable_cache` with the `use cache` directive.
 
 `unstable_cache` allows you to cache the results of expensive operations, like database queries, and reuse them across multiple requests.
 
@@ -25,7 +25,7 @@ export default async function Component({ userID }) {
 > **Good to know**:
 >
 > - Accessing request data such as `headers` or `cookies` inside a cache scope is not supported. Read the data outside the cached function and pass the values you need as arguments.
-> - This API uses Next.js' built-in cache to persist the result across requests and deployments. See [Caching and Revalidating](/docs/app/getting-started/caching).
+> - This API uses Next.js' built-in cache to persist the result across requests and deployments. See [Caching and Revalidating](../../01-getting-started/08-caching.md).
 
 ## Unsupported operations
 

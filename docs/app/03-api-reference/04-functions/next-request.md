@@ -84,14 +84,14 @@ request.nextUrl.searchParams
 
 The following options are available:
 
-| Property       | Type                    | Description                                                                                                                          |
-| -------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `basePath`     | `string`                | The [base path](/docs/app/api-reference/config/next-config-js/basePath) of the URL.                                                  |
-| `buildId`      | `string` \| `undefined` | The build identifier of the Next.js application. Can be [customized](/docs/app/api-reference/config/next-config-js/generateBuildId). |
-| `pathname`     | `string`                | The pathname of the URL.                                                                                                             |
-| `searchParams` | `Object`                | The search parameters of the URL.                                                                                                    |
+| Property       | Type                    | Description                                                                                                              |
+| -------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `basePath`     | `string`                | The [base path](../05-config/01-next-config-js/basePath.md) of the URL.                                                  |
+| `buildId`      | `string` \| `undefined` | The build identifier of the Next.js application. Can be [customized](../05-config/01-next-config-js/generateBuildId.md). |
+| `pathname`     | `string`                | The pathname of the URL.                                                                                                 |
+| `searchParams` | `Object`                | The search parameters of the URL.                                                                                        |
 
-> **Note:** The internationalization properties from the Pages Router are not available for usage in the App Router. Learn more about [internationalization with the App Router](/docs/app/guides/internationalization).
+> **Note:** The internationalization properties from the Pages Router are not available for usage in the App Router. Learn more about [internationalization with the App Router](../../02-guides/internationalization.md).
 
 ## Version History
 

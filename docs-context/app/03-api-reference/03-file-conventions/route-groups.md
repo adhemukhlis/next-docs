@@ -22,7 +22,7 @@ height="849"
 ## Use cases
 
 - Organizing routes by team, concern, or feature.
-- Defining multiple [root layouts](/docs/app/api-reference/file-conventions/layout#root-layout).
+- Defining multiple [root layouts](./layout.md#root-layout).
 - Opting specific route segments into sharing a layout, while keeping others out.
 
 ## Caveats

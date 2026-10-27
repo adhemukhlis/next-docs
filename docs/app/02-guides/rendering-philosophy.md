@@ -5,10 +5,10 @@ description: Learn how Next.js treats static and dynamic rendering as a spectrum
 related:
  description: Learn more about the features discussed on this page.
  links:
-  - app/getting-started/caching
-  - app/guides/streaming
-  - app/guides/self-hosting
-  - app/guides/deploying-to-platforms
+  - ../01-getting-started/08-caching.md
+  - ./streaming.md
+  - ./self-hosting.md
+  - ./deploying-to-platforms.md
 ---
 
 ## Static and Dynamic as a Spectrum
@@ -17,15 +17,15 @@ Most web frameworks draw a hard line between static and dynamic at the route lev
 
 Next.js takes a different approach: **the boundary between static and dynamic is at the component level, not the route level.** A single page can have a static shell that loads instantly and dynamic sections that stream in as they resolve. A cached function can live inside a dynamic route. A static page can be updated without a redeploy.
 
-This is what Partial Prerendering, [Cache Components](/docs/app/getting-started/caching) (`use cache`), and [on-demand revalidation](/docs/app/api-reference/functions/revalidateTag) enable. They are not incremental features: they represent a rendering model that treats static and dynamic as a spectrum rather than a binary choice.
+This is what Partial Prerendering, [Cache Components](../01-getting-started/08-caching.md) (`use cache`), and [on-demand revalidation](../03-api-reference/04-functions/revalidateTag.md) enable. They are not incremental features: they represent a rendering model that treats static and dynamic as a spectrum rather than a binary choice.
 
 ## What This Enables
 
 This model benefits developers and users in concrete ways:
 
 - **Faster perceived load times.** The static shell renders immediately while dynamic content streams in. Users see useful content right away instead of waiting for the entire page to render.
-- **Incremental caching.** Developers can add caching and revalidation incrementally, without deciding upfront at build time whether a route is static or dynamic. Any page can be revalidated on demand, and any function can be cached with [`use cache`](/docs/app/api-reference/directives/use-cache).
-- **Granular caching.** Cache a function with [`use cache`](/docs/app/api-reference/directives/use-cache), not a route. Revalidate a [tag](/docs/app/api-reference/functions/revalidateTag), not a deployment. This means an expensive database query can be cached independently of the rest of the page.
+- **Incremental caching.** Developers can add caching and revalidation incrementally, without deciding upfront at build time whether a route is static or dynamic. Any page can be revalidated on demand, and any function can be cached with [`use cache`](../03-api-reference/01-directives/use-cache.md).
+- **Granular caching.** Cache a function with [`use cache`](../03-api-reference/01-directives/use-cache.md), not a route. Revalidate a [tag](../03-api-reference/04-functions/revalidateTag.md), not a deployment. This means an expensive database query can be cached independently of the rest of the page.
 
 ## The Trade-Off
 
@@ -49,10 +49,10 @@ The trade-off is infrastructure complexity. A finer-grained rendering boundary t
 
 The component-level rendering model has direct implications for platforms hosting Next.js applications:
 
-- **Streaming** is required because static and dynamic content are served in a single response. The server sends initial content first, then streams dynamic portions as they resolve. See [Streaming](/docs/app/guides/streaming) for details.
-- **Cache coordination** is required when running multiple instances because any cached content can be invalidated on demand via [`revalidateTag()`](/docs/app/api-reference/functions/revalidateTag) or [`revalidatePath()`](/docs/app/api-reference/functions/revalidatePath). See [How Revalidation Works](/docs/app/guides/how-revalidation-works) for the architecture.
-- **Cache consistency** matters because revalidation regenerates both the HTML response and the RSC payload (the serialized React Server Components data used for client-side navigation). If these get out of sync, users may see inconsistent data during navigation. See [How Revalidation Works](/docs/app/guides/how-revalidation-works) for consistency requirements.
-- **PPR shell delivery at CDN latency** can require additional platform integration to store the static shell separately and resume dynamic rendering correctly. See [PPR Platform Guide](/docs/app/guides/ppr-platform-guide) for implementation details.
+- **Streaming** is required because static and dynamic content are served in a single response. The server sends initial content first, then streams dynamic portions as they resolve. See [Streaming](./streaming.md) for details.
+- **Cache coordination** is required when running multiple instances because any cached content can be invalidated on demand via [`revalidateTag()`](../03-api-reference/04-functions/revalidateTag.md) or [`revalidatePath()`](../03-api-reference/04-functions/revalidatePath.md). See [How Revalidation Works](./how-revalidation-works.md) for the architecture.
+- **Cache consistency** matters because revalidation regenerates both the HTML response and the RSC payload (the serialized React Server Components data used for client-side navigation). If these get out of sync, users may see inconsistent data during navigation. See [How Revalidation Works](./how-revalidation-works.md) for consistency requirements.
+- **PPR shell delivery at CDN latency** can require additional platform integration to store the static shell separately and resume dynamic rendering correctly. See [PPR Platform Guide](./ppr-platform-guide.md) for implementation details.
 
 Each of these infrastructure requirements maps directly to a capability: streaming enables progressive delivery, cache coordination propagates invalidations across instances, cache consistency keeps HTML and RSC aligned, and PPR-at-edge often requires extra shell/resume integration.
 
@@ -62,14 +62,14 @@ Next.js runs as a Node.js server process, and a single process handles every fea
 
 To make this concrete, we distinguish between two types of platform support:
 
-**Functional fidelity** means every Next.js feature works correctly on the platform. The [adapter test suite](/docs/app/api-reference/adapters/testing-adapters) is the contract: if a platform's adapter passes the tests, it has full functional fidelity. This is binary: it passes or it doesn't. The test suite is open to contributions from platform partners to ensure it is fair and complete.
+**Functional fidelity** means every Next.js feature works correctly on the platform. The [adapter test suite](../03-api-reference/07-adapters/04-testing-adapters.md) is the contract: if a platform's adapter passes the tests, it has full functional fidelity. This is binary: it passes or it doesn't. The test suite is open to contributions from platform partners to ensure it is fair and complete.
 
 **Performance fidelity** means features achieve their optimal performance characteristics. For example, PPR's static shell served at CDN latency rather than origin latency, or ISR serving stale content instantly while revalidating in the background with sub-second propagation. Performance fidelity is a spectrum: every platform will achieve different levels based on their architecture, and platforms will improve over time.
 
-A platform that achieves functional fidelity is a fully supported deployment target for Next.js. Performance fidelity is how platforms differentiate. See [Deploying to Platforms](/docs/app/guides/deploying-to-platforms) for the full feature compatibility matrix.
+A platform that achieves functional fidelity is a fully supported deployment target for Next.js. Performance fidelity is how platforms differentiate. See [Deploying to Platforms](./deploying-to-platforms.md) for the full feature compatibility matrix.
 
 ## CDN Feature Compatibility
 
-Many CDNs have useful primitives for deeper Next.js integration (edge compute, key-value storage, blob storage), but end-to-end PPR resume support is still emerging and may require bespoke platform work. Most community adapters today deploy Next.js as a Node.js server without leveraging these CDN-specific primitives. See the [Deploying](/docs/app/getting-started/deploying#adapters) page for the current list of adapters.
+Many CDNs have useful primitives for deeper Next.js integration (edge compute, key-value storage, blob storage), but end-to-end PPR resume support is still emerging and may require bespoke platform work. Most community adapters today deploy Next.js as a Node.js server without leveraging these CDN-specific primitives. See the [Deploying](../01-getting-started/17-deploying.md#adapters) page for the current list of adapters.
 
-See [Deploying to Platforms](/docs/app/guides/deploying-to-platforms#cdn-infrastructure-compatibility) for the full CDN compatibility table and [CDN Caching](/docs/app/guides/cdn-caching) for caching behavior details.
+See [Deploying to Platforms](./deploying-to-platforms.md#cdn-infrastructure-compatibility) for the full CDN compatibility table and [CDN Caching](./cdn-caching.md) for caching behavior details.

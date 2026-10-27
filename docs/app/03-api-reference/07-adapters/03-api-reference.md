@@ -10,7 +10,7 @@ Called for any CLI command that loads the `next.config.js` file to allow modific
 **Parameters:**
 
 - `config`: The complete Next.js configuration object
-- `context.phase`: The current build phase (see [phases](/docs/app/api-reference/config/next-config-js#phase))
+- `context.phase`: The current build phase (see [phases](../05-config/01-next-config-js/index.md#phase))
 - `context.nextVersion`: Version of Next.js being used
 - `context.projectDir`: Absolute path to the Next.js project directory
 

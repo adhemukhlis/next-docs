@@ -2,14 +2,6 @@
 title: Streaming
 nav_title: Streaming
 description: Learn how streaming works in Next.js and how to use it to progressively render UI as data becomes available.
-related:
- description: Related API references and guides.
- links:
-  - app/api-reference/file-conventions/loading
-  - app/getting-started/fetching-data
-  - app/getting-started/linking-and-navigating
-  - app/guides/self-hosting
-  - app/guides/rendering-philosophy
 ---
 
 ## What is streaming?
@@ -36,15 +28,15 @@ When a browser requests a page, two streams work together during the initial pag
 
 ### The HTML stream
 
-React's server renderer produces progressive HTML chunks. The static parts of your page (layouts, navigation, Suspense fallbacks) render first and are sent immediately. When a `<Suspense>` boundary's content is ready, for example when an async [Server Component](/docs/app/glossary#server-component) resolves, React streams its completed HTML along with inline `<script>` tags: one that swaps the fallback DOM node with the new content, and another carrying the [component payload](#the-component-payload) so React can later hydrate it. The browser executes the swap instantly, without waiting for the page's JavaScript bundle to load or hydration to complete. This is what the user _sees_: the page painting progressively, section by section.
+React's server renderer produces progressive HTML chunks. The static parts of your page (layouts, navigation, Suspense fallbacks) render first and are sent immediately. When a `<Suspense>` boundary's content is ready, for example when an async [Server Component](../04-glossary.md#server-component) resolves, React streams its completed HTML along with inline `<script>` tags: one that swaps the fallback DOM node with the new content, and another carrying the [component payload](#the-component-payload) so React can later hydrate it. The browser executes the swap instantly, without waiting for the page's JavaScript bundle to load or hydration to complete. This is what the user _sees_: the page painting progressively, section by section.
 
 ### The component payload
 
-The component payload is a serialized representation of the component tree that React uses to [hydrate](/docs/app/glossary#hydration) the page and handle client-side updates. On initial load, it arrives embedded in the HTML stream (as described above). On **client-side navigation**, only the component payload is fetched (with an `rsc: 1` request header) and no HTML is transferred at all. React uses it to update the component tree in place.
+The component payload is a serialized representation of the component tree that React uses to [hydrate](../04-glossary.md#hydration) the page and handle client-side updates. On initial load, it arrives embedded in the HTML stream (as described above). On **client-side navigation**, only the component payload is fetched (with an `rsc: 1` request header) and no HTML is transferred at all. React uses it to update the component tree in place.
 
 ### The static shell
 
-Everything that renders before any async work resolves is called the **static shell**: your layouts, navigation, and the fallback UI defined by your `<Suspense>` boundaries. It is sent immediately, giving the user something to see and interact with while dynamic content streams in. With [Cache Components](/docs/app/getting-started/caching), the static shell is prerendered at build time and served instantly from the edge.
+Everything that renders before any async work resolves is called the **static shell**: your layouts, navigation, and the fallback UI defined by your `<Suspense>` boundaries. It is sent immediately, giving the user something to see and interact with while dynamic content streams in. With [Cache Components](../01-getting-started/08-caching.md), the static shell is prerendered at build time and served instantly from the edge.
 
 <Image
   alt="How Server Rendering with Streaming Works"
@@ -112,7 +104,7 @@ This means:
 
 `loading.js` is useful when there's nothing meaningful to show until the page's data resolves. If the page needs to await data before it can render anything, a full-page skeleton is a reasonable fallback.
 
-See the [`loading.js` API reference](/docs/app/api-reference/file-conventions/loading) for more details.
+See the [`loading.js` API reference](../03-api-reference/03-file-conventions/loading.md) for more details.
 
 ## Granular streaming with `<Suspense>`
 
@@ -369,13 +361,13 @@ Prefer explicit `<Suspense>` boundaries close to the dynamic access. When the pr
 
 ### Error handling mid-stream
 
-If a component throws an error after streaming has started, the nearest [`error.js`](/docs/app/api-reference/file-conventions/error) boundary catches it and renders the error UI in place of the failed component. The rest of the page remains intact, only the section that errored is replaced.
+If a component throws an error after streaming has started, the nearest [`error.js`](../03-api-reference/03-file-conventions/error.md) boundary catches it and renders the error UI in place of the failed component. The rest of the page remains intact, only the section that errored is replaced.
 
 Because the HTTP status code (`200 OK`) has already been sent with the first chunk, it cannot be changed to a `4xx` or `5xx`. The error is handled entirely within the streamed HTML. See [The HTTP contract](#the-http-contract) for more on this constraint.
 
 ## Streaming data to the client
 
-You can start a fetch in a [Server Component](/docs/app/glossary#server-component) and pass the unresolved promise as a prop to a [Client Component](/docs/app/glossary#client-component). The promise can be passed through as many layers as needed. Only the component that calls React's [`use`](https://react.dev/reference/react/use) API to read the value needs a `<Suspense>` boundary around it:
+You can start a fetch in a [Server Component](../04-glossary.md#server-component) and pass the unresolved promise as a prop to a [Client Component](../04-glossary.md#client-component). The promise can be passed through as many layers as needed. Only the component that calls React's [`use`](https://react.dev/reference/react/use) API to read the value needs a `<Suspense>` boundary around it:
 
 ```tsx filename="app/dashboard/page.tsx" switcher
 import { Suspense } from 'react'
@@ -465,11 +457,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 }
 ```
 
-See [Using React's `use` within a Context Provider](/docs/app/guides/single-page-applications#using-reacts-use-within-a-context-provider) for the full pattern.
+See [Using React's `use` within a Context Provider](./single-page-applications.md#using-reacts-use-within-a-context-provider) for the full pattern.
 
 ## Streaming in Route Handlers
 
-The patterns above rely on React and Suspense to stream UI. Outside of React rendering, [Route Handlers](/docs/app/api-reference/file-conventions/route) can stream raw responses using the Web Streams API. This is useful for Server-Sent Events, large file generation, or any response where you want data to arrive progressively:
+The patterns above rely on React and Suspense to stream UI. Outside of React rendering, [Route Handlers](../03-api-reference/03-file-conventions/route.md) can stream raw responses using the Web Streams API. This is useful for Server-Sent Events, large file generation, or any response where you want data to arrive progressively:
 
 ```ts filename="app/api/stream/route.ts" switcher
 export async function GET() {
@@ -555,7 +547,7 @@ export async function GET() {
 }
 ```
 
-See the [Route Handler API reference](/docs/app/api-reference/file-conventions/route) for more details on building streaming endpoints.
+See the [Route Handler API reference](../03-api-reference/03-file-conventions/route.md) for more details on building streaming endpoints.
 
 ## Streaming and Web Vitals
 
@@ -576,7 +568,7 @@ Data fetching is not the only reason a boundary delays your LCP element. React a
 To keep LCP fast:
 
 - Keep LCP elements **outside** or **above** Suspense boundaries so they render as part of the static shell.
-- Use the [`preload`](/docs/app/api-reference/components/image#preload) prop on `next/image` for LCP images. This injects a `<link rel="preload">` into the `<head>`, so the browser starts fetching the image from the very first chunk, before the `<img>` tag even appears in the HTML. It controls when the image is fetched, not when it paints. An image inside a boundary still waits for the swap.
+- Use the [`preload`](../03-api-reference/02-components/image.md#preload) prop on `next/image` for LCP images. This injects a `<link rel="preload">` into the `<head>`, so the browser starts fetching the image from the very first chunk, before the `<img>` tag even appears in the HTML. It controls when the image is fetched, not when it paints. An image inside a boundary still waits for the swap.
 - For non-image LCP elements (text, headings), render them outside Suspense boundaries.
 
 ### CLS (Cumulative Layout Shift)
@@ -602,7 +594,7 @@ Once streaming begins, the HTTP response headers (including the status code) hav
 
 ### Status codes
 
-When a `<Suspense>` fallback renders or a component suspends, the server must commit to `200 OK` in order to start sending the HTML stream. If a [`notFound()`](/docs/app/api-reference/functions/not-found) fires mid-stream, Next.js cannot go back and change the status to 404. Instead, it injects `<meta name="robots" content="noindex">` into the streamed HTML so that search engines don't index the page. Similarly, a [`redirect()`](/docs/app/api-reference/functions/redirect) mid-stream becomes a client-side redirect rather than an HTTP redirect header.
+When a `<Suspense>` fallback renders or a component suspends, the server must commit to `200 OK` in order to start sending the HTML stream. If a [`notFound()`](../03-api-reference/04-functions/not-found.md) fires mid-stream, Next.js cannot go back and change the status to 404. Instead, it injects `<meta name="robots" content="noindex">` into the streamed HTML so that search engines don't index the page. Similarly, a [`redirect()`](../03-api-reference/04-functions/redirect.md) mid-stream becomes a client-side redirect rather than an HTTP redirect header.
 
 ### When does streaming start?
 
@@ -654,17 +646,17 @@ export default async function PostPage({ params }) {
 }
 ```
 
-> **Good to know:** You can also reject requests early using [`proxy`](/docs/app/api-reference/file-conventions/proxy) (for redirects, rewrites, or returning a response) or [`next.config.js` redirects](/docs/app/api-reference/config/next-config-js/redirects). Both run before the page renders, so HTTP status codes are still available.
+> **Good to know:** You can also reject requests early using [`proxy`](../03-api-reference/03-file-conventions/proxy.md) (for redirects, rewrites, or returning a response) or [`next.config.js` redirects](../03-api-reference/05-config/01-next-config-js/redirects.md). Both run before the page renders, so HTTP status codes are still available.
 
 ### Bots and crawlers
 
-HTML-limited bots and crawlers need metadata to be available in the `<head>` of the initial HTML. Next.js detects them by their user agent and waits for [`generateMetadata`](/docs/app/api-reference/functions/generate-metadata) to resolve before streaming the page content. Full browsers and DOM-capable crawlers can instead receive [streaming metadata](/docs/app/api-reference/functions/generate-metadata#streaming-metadata) alongside the page content.
+HTML-limited bots and crawlers need metadata to be available in the `<head>` of the initial HTML. Next.js detects them by their user agent and waits for [`generateMetadata`](../03-api-reference/04-functions/generate-metadata.md) to resolve before streaming the page content. Full browsers and DOM-capable crawlers can instead receive [streaming metadata](../03-api-reference/04-functions/generate-metadata.md#streaming-metadata) alongside the page content.
 
-You can customize which bots receive blocking metadata with the [`htmlLimitedBots`](/docs/app/api-reference/config/next-config-js/htmlLimitedBots) configuration option. See the [`loading.js` SEO section](/docs/app/api-reference/file-conventions/loading#seo) for more details.
+You can customize which bots receive blocking metadata with the [`htmlLimitedBots`](../03-api-reference/05-config/01-next-config-js/htmlLimitedBots.md) configuration option. See the [`loading.js` SEO section](../03-api-reference/03-file-conventions/loading.md#seo) for more details.
 
 #### Cache Components
 
-With [Cache Components](/docs/app/getting-started/caching), visitors and DOM-capable crawlers receive the prerendered shell immediately, and dynamic content streams in as it resolves. HTML-limited bots skip the prerendered shell and render the page dynamically so metadata can be placed in the `<head>`. Once the metadata resolves, the remaining page content can still stream.
+With [Cache Components](../01-getting-started/08-caching.md), visitors and DOM-capable crawlers receive the prerendered shell immediately, and dynamic content streams in as it resolves. HTML-limited bots skip the prerendered shell and render the page dynamically so metadata can be placed in the `<head>`. Once the metadata resolves, the remaining page content can still stream.
 
 Keep this in mind when your prerendered shell depends on inputs that only exist while prerendering, such as build-time data or values that are not reachable in the request-time environment. Visitors and DOM-capable crawlers receive the shell without re-running that code, but an HTML-limited bot re-renders it dynamically, so a page that loads for a person can fail to render for a crawler. Make sure any data the shell relies on is also available at request time.
 
@@ -714,7 +706,7 @@ Command-line tools like `curl` also buffer by default. The `-N` flag disables ou
 
 ### Verifying that streaming works
 
-This section is about confirming the HTTP response is actually arriving in chunks through your infrastructure. For guidance on designing meaningful loading states and placing Suspense boundaries effectively, see [Granular streaming with `<Suspense>`](#granular-streaming-with-suspense) and the [Cache Components](/docs/app/getting-started/caching) guide.
+This section is about confirming the HTTP response is actually arriving in chunks through your infrastructure. For guidance on designing meaningful loading states and placing Suspense boundaries effectively, see [Granular streaming with `<Suspense>`](#granular-streaming-with-suspense) and the [Cache Components](../01-getting-started/08-caching.md) guide.
 
 **Check the Network tab.** In Chrome DevTools, select the document request and look at the "Timing" breakdown. A long "Content Download" phase with an early "Time to First Byte" confirms the response is streaming rather than arriving all at once.
 
@@ -763,22 +755,22 @@ This is the [bots and crawlers](#bots-and-crawlers) behavior: the server waits f
 
 ### Platform support
 
-| Deployment Option                                                   | Supported         |
-| ------------------------------------------------------------------- | ----------------- |
-| [Node.js server](/docs/app/getting-started/deploying#nodejs-server) | Yes               |
-| [Docker container](/docs/app/getting-started/deploying#docker)      | Yes               |
-| [Static export](/docs/app/getting-started/deploying#static-export)  | No                |
-| [Adapters](/docs/app/getting-started/deploying#adapters)            | Platform-specific |
+| Deployment Option                                                     | Supported         |
+| --------------------------------------------------------------------- | ----------------- |
+| [Node.js server](../01-getting-started/17-deploying.md#nodejs-server) | Yes               |
+| [Docker container](../01-getting-started/17-deploying.md#docker)      | Yes               |
+| [Static export](../01-getting-started/17-deploying.md#static-export)  | No                |
+| [Adapters](../01-getting-started/17-deploying.md#adapters)            | Platform-specific |
 
-See the [Self-Hosting guide](/docs/app/guides/self-hosting#streaming-and-suspense) for detailed configuration instructions.
+See the [Self-Hosting guide](./self-hosting.md#streaming-and-suspense) for detailed configuration instructions.
 
 ## Summary
 
 The trigger is **your code**: async work, non-deterministic output, or runtime data. When the framework encounters these, it walks up the tree looking for a `<Suspense>` boundary to use as a fallback. Everything above those boundaries forms the [static shell](#the-static-shell), which is sent immediately. As each boundary resolves, React streams the result into the page.
 
-The key decisions are **what to cache** and **where to place Suspense boundaries**. Cache what you can with [`"use cache"`](/docs/app/api-reference/directives/use-cache) to grow the static shell. Push dynamic access down to the components that need it, and wrap those in `<Suspense>`. Everything else becomes part of the shell.
+The key decisions are **what to cache** and **where to place Suspense boundaries**. Cache what you can with [`"use cache"`](../03-api-reference/01-directives/use-cache.md) to grow the static shell. Push dynamic access down to the components that need it, and wrap those in `<Suspense>`. Everything else becomes part of the shell.
 
-For a step-by-step workflow that applies these patterns to an existing route, see [Optimizing the static shell](/docs/app/guides/optimizing-the-static-shell).
+For a step-by-step workflow that applies these patterns to an existing route, see [Optimizing the static shell](./optimizing-the-static-shell.md).
 
 ## Further reading
 
@@ -786,4 +778,14 @@ For a step-by-step workflow that applies these patterns to an existing route, se
 - [Streams API on web.dev](https://web.dev/articles/streams) - introduction to the Web Streams API that underpins streaming in Route Handlers
 - [Chunked transfer encoding (MDN)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Transfer-Encoding) - the HTTP/1.1 mechanism that enables streaming responses
 - [browser.engineering](https://browser.engineering/) - deep dive into how browsers handle network responses, rendering, and progressive display
-- [Preventing flash before hydration](/docs/app/guides/preventing-flash-before-hydration) - how to update server-rendered HTML with client-specific values (locale, theme, persisted state) before the browser paints
+- [Preventing flash before hydration](./preventing-flash-before-hydration.md) - how to update server-rendered HTML with client-specific values (locale, theme, persisted state) before the browser paints
+
+## INDEX
+
+Related API references and guides.
+
+- [loading.js](../03-api-reference/03-file-conventions/loading.md)
+- [Fetching Data](../01-getting-started/06-fetching-data.md)
+- [Linking and Navigating](../01-getting-started/04-linking-and-navigating.md)
+- [How to self-host your Next.js application](./self-hosting.md)
+- [Next.js Rendering Philosophy](./rendering-philosophy.md)

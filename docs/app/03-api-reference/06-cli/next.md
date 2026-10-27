@@ -63,9 +63,9 @@ The following options are available when running `next dev`:
 | --- | --- |
 | `-h, --help` | Show all available options. |
 | `[directory]` | A directory in which to build the application. If not provided, current directory is used. |
-| `--turbopack` | Force enable [Turbopack](/docs/app/api-reference/turbopack) (enabled by default). Also available as `--turbo`. |
-| `--webpack` | Use the bundled Webpack instead of the default [Turbopack](/docs/app/api-reference/turbopack) bundler for development. |
-| `--custom-webpack` | Use [project-installed webpack](/docs/app/guides/custom-webpack) for development. |
+| `--turbopack` | Force enable [Turbopack](../08-turbopack.md) (enabled by default). Also available as `--turbo`. |
+| `--webpack` | Use the bundled Webpack instead of the default [Turbopack](../08-turbopack.md) bundler for development. |
+| `--custom-webpack` | Use [project-installed webpack](../../02-guides/custom-webpack.md) for development. |
 | `-p` or `--port <port>` | Specify a port number on which to start the application. Default: 3000, env: PORT |
 | `-H` or `--hostname <hostname>` | Specify a hostname on which to start the application. Useful for making the application available for other devices on the network. Default: 0.0.0.0 |
 | `--experimental-https` | Starts the server with HTTPS and generates a self-signed certificate. |
@@ -88,7 +88,7 @@ Route (app)
 ƒ  (Dynamic)  server-rendered on demand
 ```
 
-See the [Building guide](/docs/app/guides/building) to learn how to read the output, prerender dynamic routes, and debug build errors.
+See the [Building guide](../../02-guides/building.md) to learn how to read the output, prerender dynamic routes, and debug build errors.
 
 The following options are available for the `next build` command:
 
@@ -96,9 +96,9 @@ The following options are available for the `next build` command:
 | --- | --- |
 | `-h, --help` | Show all available options. |
 | `[directory]` | A directory on which to build the application. If not provided, the current directory will be used. |
-| `--turbopack` | Force enable [Turbopack](/docs/app/api-reference/turbopack) (enabled by default). Also available as `--turbo`. |
+| `--turbopack` | Force enable [Turbopack](../08-turbopack.md) (enabled by default). Also available as `--turbo`. |
 | `--webpack` | Build using the bundled Webpack. |
-| `--custom-webpack` | Build using [project-installed webpack](/docs/app/guides/custom-webpack). |
+| `--custom-webpack` | Build using [project-installed webpack](../../02-guides/custom-webpack.md). |
 | `--analyze` | Generate bundle analysis data for the interactive analyzer during a Turbopack build. |
 | `-d` or `--debug` | Enables a more verbose build output. With this flag enabled additional build output like rewrites, redirects, and headers will be shown. |
 | `--profile` | Enables production [profiling for React](https://react.dev/reference/react/Profiler). |
@@ -222,11 +222,11 @@ The following options are available for the `next upgrade` command:
 | `[directory]` | A directory with the Next.js application to upgrade. If not provided, the current directory will be used. |
 | `--revision <revision>` | Specify a Next.js version or tag to upgrade to (e.g., `latest`, `canary`, `15.0.0`). Defaults to the release channel you have currently installed. |
 | `--verbose` | Show verbose output during the upgrade process. |
-| `--agent [type]` | [Upgrade with a coding agent](/docs/app/guides/upgrading/agent-upgrade) using `security`, `latest`, or `experimental-future`. Defaults to [`experimental.agentUpgrade`](/docs/app/api-reference/config/next-config-js/agentUpgrade), or `security`. Cannot be combined with `--revision`. |
+| `--agent [type]` | [Upgrade with a coding agent](../../02-guides/upgrading/agent-upgrade.md) using `security`, `latest`, or `experimental-future`. Defaults to [`experimental.agentUpgrade`](../05-config/01-next-config-js/agentUpgrade.md), or `security`. Cannot be combined with `--revision`. |
 
 ### `next analyze` options
 
-`next analyze` analyzes your application's bundle output using [Turbopack](/docs/app/api-reference/turbopack). This command helps you understand the size and composition of your bundles, including JavaScript, CSS, and other assets. This command doesn't produce an application build.
+`next analyze` analyzes your application's bundle output using [Turbopack](../08-turbopack.md). This command helps you understand the size and composition of your bundles, including JavaScript, CSS, and other assets. This command doesn't produce an application build.
 
 ```bash package="pnpm"
 pnpm next analyze
@@ -250,7 +250,7 @@ By default, the command starts a local server after analysis completes, allowing
 - View the full import chain showing why a module is included
 - Trace imports across server-to-client component boundaries and dynamic imports
 
-See [Package Bundling](/docs/app/guides/package-bundling#optimizing-large-bundles) for optimization strategies.
+See [Package Bundling](../../02-guides/package-bundling.md#optimizing-large-bundles) for optimization strategies.
 
 To write the analysis output to disk without starting the server, use `--output`. Snapshot and interactive UI files are written to `<distDir>/diagnostics/analyze` (normally `.next/diagnostics/analyze`).
 

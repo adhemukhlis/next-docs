@@ -3,9 +3,9 @@ title: useRouter
 description: API reference for the useRouter hook.
 ---
 
-The `useRouter` hook allows you to programmatically change routes inside [Client Components](/docs/app/getting-started/server-and-client-components).
+The `useRouter` hook allows you to programmatically change routes inside [Client Components](../../01-getting-started/05-server-and-client-components.md).
 
-> **Recommendation:** Use the [`<Link>` component](/docs/app/api-reference/components/link) for navigation unless you have a specific requirement for using `useRouter`.
+> **Recommendation:** Use the [`<Link>` component](../02-components/link.md) for navigation unless you have a specific requirement for using `useRouter`.
 
 ```tsx filename="app/example-client-component.tsx" switcher
 'use client'
@@ -73,7 +73,7 @@ Perform a client-side navigation to the provided route without adding a new entr
 router.refresh()
 ```
 
-Refresh the current route. Making a new request to the server, re-fetching data requests, and re-rendering Server Components. The client will merge the updated React Server Component payload without losing unaffected client-side React (e.g. `useState`) or browser state (e.g. scroll position). This clears the [Client Cache](/docs/app/glossary#client-cache) for the current route, but does **not** invalidate the server-side cache. Use [`revalidatePath`](/docs/app/api-reference/functions/revalidatePath) or [`revalidateTag`](/docs/app/api-reference/functions/revalidateTag) to invalidate server-side cached data.
+Refresh the current route. Making a new request to the server, re-fetching data requests, and re-rendering Server Components. The client will merge the updated React Server Component payload without losing unaffected client-side React (e.g. `useState`) or browser state (e.g. scroll position). This clears the [Client Cache](../../04-glossary.md#client-cache) for the current route, but does **not** invalidate the server-side cache. Use [`revalidatePath`](./revalidatePath.md) or [`revalidateTag`](./revalidateTag.md) to invalidate server-side cached data.
 
 ### `router.prefetch()`
 
@@ -87,9 +87,9 @@ router.prefetch(
 )
 ```
 
-[Prefetch](/docs/app/getting-started/linking-and-navigating#prefetching) the provided route for faster client-side transitions. The optional `kind` controls how much of the route to prefetch. The optional `onInvalidate` callback is called when the [prefetched data becomes stale](/docs/app/guides/prefetching#extending-or-ejecting-link).
+[Prefetch](../../01-getting-started/04-linking-and-navigating.md#prefetching) the provided route for faster client-side transitions. The optional `kind` controls how much of the route to prefetch. The optional `onInvalidate` callback is called when the [prefetched data becomes stale](../../02-guides/prefetching.md#extending-or-ejecting-link).
 
-With [Partial Prefetching](/docs/app/api-reference/config/next-config-js/partialPrefetching), each `router.prefetch()` call matches a `<Link>` prefetch option:
+With [Partial Prefetching](../05-config/01-next-config-js/partialPrefetching.md), each `router.prefetch()` call matches a `<Link>` prefetch option:
 
 <div style={{ overflowX: 'auto', width: '100%' }}>
 
@@ -101,9 +101,9 @@ With [Partial Prefetching](/docs/app/api-reference/config/next-config-js/partial
 
 </div>
 
-The default and `'auto'` options prefetch the route's [App Shell](/docs/app/glossary#app-shell). The `'full'` option also prefetches the per-link stage, including content below [`await prefetch()`](/docs/app/api-reference/functions/prefetch).
+The default and `'auto'` options prefetch the route's [App Shell](../../04-glossary.md#app-shell). The `'full'` option also prefetches the per-link stage, including content below [`await prefetch()`](./prefetch.md).
 
-Neither value includes content deferred with [`await navigation()`](/docs/app/api-reference/functions/navigation). That content renders when navigation begins.
+Neither value includes content deferred with [`await navigation()`](./navigation.md). That content renders when navigation begins.
 
 ### `router.back()`
 
@@ -135,11 +135,11 @@ An opaque string identifier scoped to the current route segment. It changes when
 ### Migrating from `next/router`
 
 - The `useRouter` hook should be imported from `next/navigation` and not `next/router` when using the App Router
-- The `pathname` string has been removed and is replaced by [`usePathname()`](/docs/app/api-reference/functions/use-pathname)
-- The `query` object has been removed and is replaced by [`useSearchParams()`](/docs/app/api-reference/functions/use-search-params)
+- The `pathname` string has been removed and is replaced by [`usePathname()`](./use-pathname.md)
+- The `query` object has been removed and is replaced by [`useSearchParams()`](./use-search-params.md)
 - `router.events` has been replaced. [See below.](#router-events)
 
-[View the full migration guide](/docs/app/guides/migrating/app-router-migration).
+[View the full migration guide](../../02-guides/migrating/app-router-migration.md).
 
 ## Examples
 
@@ -189,7 +189,7 @@ export default function Layout({ children }) {
 }
 ```
 
-> **Good to know**: `<NavigationEvents>` is wrapped in a [`Suspense` boundary](/docs/app/api-reference/file-conventions/loading#examples) because[`useSearchParams()`](/docs/app/api-reference/functions/use-search-params) causes client-side rendering up to the closest `Suspense` boundary during [prerendering](/docs/app/glossary#prerendering). [Learn more](/docs/app/api-reference/functions/use-search-params#behavior).
+> **Good to know**: `<NavigationEvents>` is wrapped in a [`Suspense` boundary](../03-file-conventions/loading.md#examples) because[`useSearchParams()`](./use-search-params.md) causes client-side rendering up to the closest `Suspense` boundary during [prerendering](../../04-glossary.md#prerendering). [Learn more](./use-search-params.md#behavior).
 
 ### Disabling scroll to top
 
@@ -248,7 +248,7 @@ export default function Page() {
 }
 ```
 
-When `cacheComponents` is enabled, the App Router preserves Client Component state across navigations using React `<Activity>`. Keying a component on `bfcacheId` resets it on each fresh navigation while still preserving its state across browser back/forward navigations. See [Preserving UI state](/docs/app/guides/preserving-ui-state) for the recommended per-pattern resets.
+When `cacheComponents` is enabled, the App Router preserves Client Component state across navigations using React `<Activity>`. Keying a component on `bfcacheId` resets it on each fresh navigation while still preserving its state across browser back/forward navigations. See [Preserving UI state](../../02-guides/preserving-ui-state.md) for the recommended per-pattern resets.
 
 > **Good to know**: Instead of `bfcacheId`, prefer resetting state explicitly in an event handler (for example, `onSubmit`) or deriving a key from your data (for example, a draft id from the server). Use `bfcacheId` only as a last resort, like when migrating an existing codebase.
 

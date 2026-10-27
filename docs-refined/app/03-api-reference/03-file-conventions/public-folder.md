@@ -42,4 +42,4 @@ Cache-Control: public, max-age=0
 
 ## Robots, Favicons, and others
 
-For static metadata files, such as `robots.txt`, `favicon.ico`, etc, you should use [special metadata files](/docs/app/api-reference/file-conventions/metadata) inside the `app` folder.
+For static metadata files, such as `robots.txt`, `favicon.ico`, etc, you should use [special metadata files](./01-metadata/index.md) inside the `app` folder.

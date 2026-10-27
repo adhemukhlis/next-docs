@@ -6,13 +6,13 @@ related:
  title: Next Steps
  description: Learn how to apply this model and where the boundary is defined.
  links:
-  - app/getting-started/server-and-client-components
-  - app/api-reference/directives/use-client
-  - app/getting-started/fetching-data
-  - app/guides/rendering-philosophy
+  - ../01-getting-started/05-server-and-client-components.md
+  - ../03-api-reference/01-directives/use-client.md
+  - ../01-getting-started/06-fetching-data.md
+  - ./rendering-philosophy.md
 ---
 
-React Server Components (RSC) split a component tree between server and client module graphs. This boundary determines where component code runs and whether that code ships to the browser. RSC keeps Server Components exclusively on the server and retains Client Components for interactive UI. Both compose in a single tree, which the server renders into the [RSC Payload](/docs/app/glossary#rsc-payload), a serialized description of the UI that carries references to the Client Components inside it.
+React Server Components (RSC) split a component tree between server and client module graphs. This boundary determines where component code runs and whether that code ships to the browser. RSC keeps Server Components exclusively on the server and retains Client Components for interactive UI. Both compose in a single tree, which the server renders into the [RSC Payload](../04-glossary.md#rsc-payload), a serialized description of the UI that carries references to the Client Components inside it.
 
 Before RSC, React components followed what RSC now calls the Client Component model. React could render these components to HTML on the server, but the same code also shipped to the browser to [hydrate](https://react.dev/reference/react-dom/client/hydrateRoot#hydrating-server-rendered-html) that HTML. Hydration made the initial HTML interactive and required the component to produce matching output on the server and in the browser. Apps rendered entirely on the client could instead begin with an empty shell and mount the component tree in the browser.
 
@@ -23,7 +23,7 @@ Server Component
    └─ Client Component
 ```
 
-Each component's module belongs to the server [module graph](/docs/app/glossary#module-graph), the client module graph, or both. Next.js compiles a module used by both graphs separately for each environment.
+Each component's module belongs to the server [module graph](../04-glossary.md#module-graph), the client module graph, or both. Next.js compiles a module used by both graphs separately for each environment.
 
 During rendering, the server graph produces references to Client Components and serializes the props passed to them. The client graph does not import the server graph. The client graph receives the references and serialized props through the RSC Payload.
 
@@ -64,8 +64,8 @@ Rendering a Client Component on the server produces HTML, but the component rema
 
 Rendering Client Components to HTML predates RSC. Depending on the route, Next.js can generate or regenerate HTML:
 
-- At build time with [Static Site Generation (SSG)](/docs/app/glossary#prerendering).
-- After the build with [Incremental Static Regeneration (ISR)](/docs/app/glossary#incremental-static-regeneration-isr).
+- At build time with [Static Site Generation (SSG)](../04-glossary.md#prerendering).
+- After the build with [Incremental Static Regeneration (ISR)](../04-glossary.md#incremental-static-regeneration-isr).
 - For each request with server-side rendering (SSR).
 
 RSC is a separate process that keeps Server Component code on the server and emits the RSC Payload instead of shipping that code. "Server-rendered" describes how Next.js produced the HTML. "Server Component" describes where the component code runs and whether that code ships to the browser.
@@ -76,7 +76,7 @@ RSC is a separate process that keeps Server Component code on the server and emi
 >
 > SEO depends on whether the server render reaches the content. Content gated behind user interaction or an event does not appear in the HTML available to a crawler that does not run JavaScript.
 
-See [Rendering Philosophy](/docs/app/guides/rendering-philosophy) for details about when a component renders, whether at build time or per request, statically or dynamically.
+See [Rendering Philosophy](./rendering-philosophy.md) for details about when a component renders, whether at build time or per request, statically or dynamically.
 
 ## How data enters the tree
 
@@ -118,15 +118,15 @@ With RSC, a Server Component can fetch data while rendering. A separate data-loa
 
 > **Good to know:** Because a Server Component can read secrets and server-only data directly, be deliberate about what you pass to Client Components.
 >
-> Props are serialized and sent to the browser. See [Data Security](/docs/app/guides/data-security#passing-data-from-server-to-client).
+> Props are serialized and sent to the browser. See [Data Security](./data-security.md#passing-data-from-server-to-client).
 
 Server Components do not have to await all data before returning UI. To stream server-fetched data into a Client Component, start the request in a Server Component and pass the pending promise as a prop.
 
-The Client Component reads the promise as a resource with [`use`](https://react.dev/reference/react/use#streaming-data-from-server-to-client). While the promise is pending, the nearest [Suspense](/docs/app/glossary#suspense-boundary) boundary shows its fallback. The Client Component renders when the promise resolves.
+The Client Component reads the promise as a resource with [`use`](https://react.dev/reference/react/use#streaming-data-from-server-to-client). While the promise is pending, the nearest [Suspense](../04-glossary.md#suspense-boundary) boundary shows its fallback. The Client Component renders when the promise resolves.
 
 Because the request starts before the client runs, the Client Component does not need to fetch the same data after mount. You may still need to start a fetch in the browser when the requested data depends on client-only state or user interaction.
 
-Identical `fetch` requests are [memoized during a server render](/docs/app/api-reference/functions/fetch#memoization). With [Cache Components](/docs/app/getting-started/caching), you can cache a data function or component and revalidate that entry independently of the rest of the page. For implementation patterns, see [Fetching Data](/docs/app/getting-started/fetching-data).
+Identical `fetch` requests are [memoized during a server render](../03-api-reference/04-functions/fetch.md#memoization). With [Cache Components](../01-getting-started/08-caching.md), you can cache a data function or component and revalidate that entry independently of the rest of the page. For implementation patterns, see [Fetching Data](../01-getting-started/06-fetching-data.md).
 
 ## State and interactivity
 
@@ -138,30 +138,30 @@ A Client Component's code does reach the browser. React hydrates the component o
 >
 > Mutating Server Component DOM nodes directly can put the DOM out of sync with React's component tree.
 >
-> To update Server Component output, render the component again on the server. When the browser receives a new RSC Payload, React reconciles the component tree and updates the DOM. See [Streaming](/docs/app/guides/streaming#the-component-payload).
+> To update Server Component output, render the component again on the server. When the browser receives a new RSC Payload, React reconciles the component tree and updates the DOM. See [Streaming](./streaming.md#the-component-payload).
 
 `useState`, `useEffect`, and event handlers require code that runs in the browser and responds to updates. Server Component code never reaches the browser, so it cannot use these client-side APIs.
 
 Built-in browser and HTML behavior can provide interactivity without a Client Component. For example:
 
 - A `<details>` element opens and closes.
-- A `<form>` can submit through a [Server Function](/docs/app/guides/server-actions) passed to its `action` prop.
+- A `<form>` can submit through a [Server Function](./server-actions.md) passed to its `action` prop.
 - A `<video controls>` element plays and pauses.
 
 Use a Client Component when the behavior requires browser state that changes over time, such as a controlled input, live filter, or drag handle. A button or form does not require a Client Component when the browser provides all the required behavior.
 
-For the practical list of what belongs in each environment, see [When to use Server and Client Components](/docs/app/getting-started/server-and-client-components#when-to-use-server-and-client-components).
+For the practical list of what belongs in each environment, see [When to use Server and Client Components](../01-getting-started/05-server-and-client-components.md#when-to-use-server-and-client-components).
 
 ## Crossing the boundary
 
-You mark a module as a client entry point by adding the [`'use client'`](/docs/app/api-reference/directives/use-client) directive at the top of the file, before any imports. The directive draws a boundary in the module graph, and two rules determine what crosses it:
+You mark a module as a client entry point by adding the [`'use client'`](../03-api-reference/01-directives/use-client.md) directive at the top of the file, before any imports. The directive draws a boundary in the module graph, and two rules determine what crosses it:
 
-- **Code** crosses through imports. Whatever a Client Component imports is pulled into the [client bundle](/docs/app/glossary#client-bundles).
-- **Data** crosses through props, and it must be [serializable](/docs/app/getting-started/server-and-client-components#passing-data-from-server-to-client-components), so functions like event handlers cannot cross.
+- **Code** crosses through imports. Whatever a Client Component imports is pulled into the [client bundle](../04-glossary.md#client-bundles).
+- **Data** crosses through props, and it must be [serializable](../01-getting-started/05-server-and-client-components.md#passing-data-from-server-to-client-components), so functions like event handlers cannot cross.
 
 > **Good to know:**
 >
-> Passing a function as a prop from a Server Component to a Client Component throws. An event handler like `onClick` cannot cross. A [Server Function](/docs/app/guides/server-actions) marked with `'use server'` crosses as a reference.
+> Passing a function as a prop from a Server Component to a Client Component throws. An event handler like `onClick` cannot cross. A [Server Function](./server-actions.md) marked with `'use server'` crosses as a reference.
 >
 > A Server Function is not distinguishable from a plain function by its type. The TypeScript plugin allows a Client Component prop typed as a function when its name is `action` or ends in `Action`. The plugin flags other function props.
 
@@ -270,6 +270,6 @@ To leave a shared component unchanged, create a Client Component wrapper that im
 
 If client code enters the server graph without a boundary, the compiler points to where you need the directive.
 
-For more patterns, see [Interleaving Server and Client Components](/docs/app/getting-started/server-and-client-components#interleaving-server-and-client-components).
+For more patterns, see [Interleaving Server and Client Components](../01-getting-started/05-server-and-client-components.md#interleaving-server-and-client-components).
 
-For the other directives used in Next.js, see the [directives](/docs/app/api-reference/directives) documentation.
+For the other directives used in Next.js, see the [directives](../03-api-reference/01-directives/index.md) documentation.

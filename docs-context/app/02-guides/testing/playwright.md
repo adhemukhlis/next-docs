@@ -2,10 +2,6 @@
 title: How to set up Playwright with Next.js
 nav_title: Playwright
 description: Learn how to set up Playwright with Next.js for End-to-End (E2E) Testing.
-related:
- description: Learn more about testing instant navigations.
- links:
-  - app/guides/instant-navigation
 ---
 
 Playwright is a testing framework that lets you automate Chromium, Firefox, and WebKit with a single API. You can use it to write **End-to-End (E2E)** testing. This guide will show you how to set up Playwright with Next.js and write your first tests.
@@ -103,7 +99,7 @@ test('should navigate to the about page', async ({ page }) => {
 
 ### Testing instant navigations
 
-If you're using Cache Components, the `instant()` helper from `@next/playwright` lets you assert what is visible immediately after a navigation, before any dynamic content streams in. See the [Instant navigation guide](/docs/app/guides/instant-navigation) and the [`instant` API reference](/docs/app/api-reference/file-conventions/route-segment-config/instant) for setup and examples.
+If you're using Cache Components, the `instant()` helper from `@next/playwright` lets you assert what is visible immediately after a navigation, before any dynamic content streams in. See the [Instant navigation guide](../instant-navigation.md) and the [`instant` API reference](../../03-api-reference/03-file-conventions/02-route-segment-config/instant.md) for setup and examples.
 
 ### Running your Playwright tests
 
@@ -122,3 +118,9 @@ You can learn more about Playwright and Continuous Integration from these resour
 - [Next.js with Playwright example](https://github.com/vercel/next.js/tree/canary/examples/with-playwright)
 - [Playwright on your CI provider](https://playwright.dev/docs/ci)
 - [Playwright Discord](https://discord.com/invite/playwright-807756831384403968)
+
+## INDEX
+
+Learn more about testing instant navigations.
+
+- [Ensuring instant navigations](../instant-navigation.md)

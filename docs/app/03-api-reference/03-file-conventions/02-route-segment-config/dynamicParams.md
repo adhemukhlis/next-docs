@@ -3,7 +3,7 @@ title: dynamicParams
 description: API reference for the dynamicParams route segment config option.
 ---
 
-The `dynamicParams` option allows you to control what happens when a dynamic segment is visited that was not generated with [generateStaticParams](/docs/app/api-reference/functions/generate-static-params).
+The `dynamicParams` option allows you to control what happens when a dynamic segment is visited that was not generated with [generateStaticParams](../../04-functions/generate-static-params.md).
 
 ```tsx filename="layout.tsx | page.tsx" switcher
 export const dynamicParams = true // true | false
@@ -19,4 +19,4 @@ export const dynamicParams = true // true | false
 > **Good to know**:
 >
 > - This option replaces the `fallback: true | false | blocking` option of `getStaticPaths` in the `pages` directory.
-> - `dynamicParams` is not available when [Cache Components](/docs/app/api-reference/config/next-config-js/cacheComponents) is enabled.
+> - `dynamicParams` is not available when [Cache Components](../../05-config/01-next-config-js/cacheComponents.md) is enabled.

@@ -3,7 +3,7 @@ title: cookies
 description: API Reference for the cookies function.
 ---
 
-`cookies` is an **async** function that allows you to read the HTTP incoming request cookies in [Server Components](/docs/app/getting-started/server-and-client-components), and read/write outgoing request cookies in [Server Functions](/docs/app/getting-started/mutating-data) or [Route Handlers](/docs/app/api-reference/file-conventions/route).
+`cookies` is an **async** function that allows you to read the HTTP incoming request cookies in [Server Components](../../01-getting-started/05-server-and-client-components.md), and read/write outgoing request cookies in [Server Functions](../../01-getting-started/07-mutating-data.md) or [Route Handlers](../03-file-conventions/route.md).
 
 ```tsx filename="app/page.tsx" switcher
 import { cookies } from 'next/headers'
@@ -66,12 +66,12 @@ To learn more about these options, see the [MDN docs](https://developer.mozilla.
 
 - `cookies` is an **asynchronous** function that returns a promise. You must use `async/await` or React's [`use`](https://react.dev/reference/react/use) function to access cookies.
   - In version 14 and earlier, `cookies` was a synchronous function. To help with backwards compatibility, you can still access it synchronously in Next.js 15, but this behavior will be deprecated in the future.
-- `cookies` is a [Request-time API](/docs/app/glossary#request-time-apis) whose returned values cannot be known ahead of time. Using it in a layout or page will opt a route into [dynamic rendering](/docs/app/glossary#dynamic-rendering).
-- With [Cache Components](/docs/app/getting-started/caching), calling `cookies()` outside of a [`<Suspense>`](https://react.dev/reference/react/Suspense) boundary prevents the route from being prerendered. See [Next.js encountered runtime data during prerendering](/docs/messages/blocking-prerender-runtime) for fix options.
+- `cookies` is a [Request-time API](../../04-glossary.md#request-time-apis) whose returned values cannot be known ahead of time. Using it in a layout or page will opt a route into [dynamic rendering](../../04-glossary.md#dynamic-rendering).
+- With [Cache Components](../../01-getting-started/08-caching.md), calling `cookies()` outside of a [`<Suspense>`](https://react.dev/reference/react/Suspense) boundary prevents the route from being prerendered. See [Next.js encountered runtime data during prerendering](/docs/messages/blocking-prerender-runtime) for fix options.
 - The `.delete` method can only be called:
-  - In a [Server Function](/docs/app/getting-started/mutating-data) or [Route Handler](/docs/app/api-reference/file-conventions/route).
+  - In a [Server Function](../../01-getting-started/07-mutating-data.md) or [Route Handler](../03-file-conventions/route.md).
   - If it belongs to the same domain from which `.set` is called. For wildcard domains, the specific subdomain must be an exact match. Additionally, the code must be executed on the same protocol (HTTP or HTTPS) as the cookie you want to delete.
-- HTTP does not allow setting cookies after streaming starts, so you must use `.set` in a [Server Function](/docs/app/getting-started/mutating-data) or [Route Handler](/docs/app/api-reference/file-conventions/route).
+- HTTP does not allow setting cookies after streaming starts, so you must use `.set` in a [Server Function](../../01-getting-started/07-mutating-data.md) or [Route Handler](../03-file-conventions/route.md).
 
 ## Understanding Cookie Behavior in Server Components
 
@@ -84,11 +84,11 @@ The server can only send instructions (via `Set-Cookie` headers) to tell the bro
 
 ## Understanding Cookie Behavior in Server Functions
 
-After you set or delete a cookie in a Server Function, Next.js can return both the updated UI and new data in a single server roundtrip when the function is used as a [Server Action](/docs/app/getting-started/mutating-data#what-are-server-functions) (e.g., passed to a form's `action` prop). See [Caching and Revalidating](/docs/app/getting-started/caching).
+After you set or delete a cookie in a Server Function, Next.js can return both the updated UI and new data in a single server roundtrip when the function is used as a [Server Action](../../01-getting-started/07-mutating-data.md#what-are-server-functions) (e.g., passed to a form's `action` prop). See [Caching and Revalidating](../../01-getting-started/08-caching.md).
 
 The UI is not unmounted, but effects that depend on data coming from the server will re-run.
 
-To refresh cached data too, call [`revalidatePath`](/docs/app/api-reference/functions/revalidatePath) or [`revalidateTag`](/docs/app/api-reference/functions/revalidateTag) inside the function.
+To refresh cached data too, call [`revalidatePath`](./revalidatePath.md) or [`revalidateTag`](./revalidateTag.md) inside the function.
 
 ## Examples
 
@@ -150,7 +150,7 @@ export default async function Page() {
 
 ### Setting a cookie
 
-You can use the `(await cookies()).set(name, value, options)` method in a [Server Function](/docs/app/getting-started/mutating-data) or [Route Handler](/docs/app/api-reference/file-conventions/route) to set a cookie. The [`options` object](#options) is optional.
+You can use the `(await cookies()).set(name, value, options)` method in a [Server Function](../../01-getting-started/07-mutating-data.md) or [Route Handler](../03-file-conventions/route.md) to set a cookie. The [`options` object](#options) is optional.
 
 ```tsx filename="app/actions.ts" switcher
 'use server'
@@ -298,5 +298,5 @@ export async function deleteCookie(data) {
 
 | Version | Changes |
 | - | - |
-| `v15.0.0-RC` | `cookies` is now an async function. A [codemod](/docs/app/guides/upgrading/codemods#150) is available. |
+| `v15.0.0-RC` | `cookies` is now an async function. A [codemod](../../02-guides/upgrading/codemods.md#150) is available. |
 | `v13.0.0` | `cookies` introduced. |

@@ -20,3 +20,12 @@ Since `async` Server Components are new to the React ecosystem, some tools do no
 ## Guides
 
 See the guides below to learn how to set up Next.js with these commonly used testing tools:
+
+## INDEX
+
+Documents in this section:
+
+- [How to set up Cypress with Next.js](./cypress.md)
+- [How to set up Jest with Next.js](./jest.md)
+- [How to set up Playwright with Next.js](./playwright.md)
+- [How to set up Vitest with Next.js](./vitest.md)

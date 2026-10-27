@@ -3,7 +3,7 @@ title: deploymentId
 description: Configure a deployment identifier used for version skew protection and cache busting.
 ---
 
-The `deploymentId` option allows you to set an identifier for your deployment. This identifier is used for [version skew](/docs/app/guides/self-hosting#version-skew) protection and cache busting during rolling deployments.
+The `deploymentId` option allows you to set an identifier for your deployment. This identifier is used for [version skew](../../../02-guides/self-hosting.md#version-skew) protection and cache busting during rolling deployments.
 
 ```js filename="next.config.js"
 module.exports = {
@@ -27,7 +27,7 @@ When a `deploymentId` is configured, Next.js:
 2. Adds an `x-deployment-id` header to client-side navigation requests
 3. Adds an `x-nextjs-deployment-id` header to navigation responses
 4. Injects a `data-dpl-id` attribute on the `<html>` element
-5. Includes the `deploymentId` in the [`'use cache'` cache key](/docs/app/api-reference/directives/use-cache#cache-keys), invalidating cache entries when the deployment ID changes
+5. Includes the `deploymentId` in the [`'use cache'` cache key](../../01-directives/use-cache.md#cache-keys), invalidating cache entries when the deployment ID changes
 
 When the client detects a mismatch between its deployment ID and the server's (via the response header), it triggers a hard navigation (full page reload) instead of a client-side navigation. This ensures users always receive assets and Server Functions from a consistent deployment version.
 
@@ -67,5 +67,5 @@ A per-deployment value only avoids skew if requests are also routed by deploymen
 
 ## Related
 
-- [Self-Hosting - Version Skew](/docs/app/guides/self-hosting#version-skew)
-- [generateBuildId](/docs/app/api-reference/config/next-config-js/generateBuildId)
+- [Self-Hosting - Version Skew](../../../02-guides/self-hosting.md#version-skew)
+- [generateBuildId](./generateBuildId.md)

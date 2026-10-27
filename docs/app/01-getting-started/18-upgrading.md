@@ -5,9 +5,9 @@ related:
  title: Version guides
  description: See the version guides for in-depth upgrade instructions.
  links:
-  - app/guides/upgrading/version-16
-  - app/guides/upgrading/version-15
-  - app/guides/upgrading/version-14
+  - ../02-guides/upgrading/version-16.md
+  - ../02-guides/upgrading/version-15.md
+  - ../02-guides/upgrading/version-14.md
 ---
 
 ## Latest version
@@ -42,7 +42,7 @@ To have a coding agent perform and verify the upgrade, run:
 npx next@canary upgrade --agent=latest
 ```
 
-See [Upgrade with a coding agent](/docs/app/guides/upgrading/agent-upgrade) for other policies and upgrade reminders.
+See [Upgrade with a coding agent](../02-guides/upgrading/agent-upgrade.md) for other policies and upgrade reminders.
 
 If you prefer to upgrade manually, install the latest Next.js and React versions:
 
@@ -88,8 +88,8 @@ The following features are currently available in canary:
 
 **Authentication**:
 
-- [`forbidden`](/docs/app/api-reference/functions/forbidden)
-- [`unauthorized`](/docs/app/api-reference/functions/unauthorized)
-- [`forbidden.js`](/docs/app/api-reference/file-conventions/forbidden)
-- [`unauthorized.js`](/docs/app/api-reference/file-conventions/unauthorized)
-- [`authInterrupts`](/docs/app/api-reference/config/next-config-js/authInterrupts)
+- [`forbidden`](../03-api-reference/04-functions/forbidden.md)
+- [`unauthorized`](../03-api-reference/04-functions/unauthorized.md)
+- [`forbidden.js`](../03-api-reference/03-file-conventions/forbidden.md)
+- [`unauthorized.js`](../03-api-reference/03-file-conventions/unauthorized.md)
+- [`authInterrupts`](../03-api-reference/05-config/01-next-config-js/authInterrupts.md)

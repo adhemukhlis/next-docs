@@ -6,7 +6,7 @@ related:
  title: Next Steps
  description: See the API reference for more information on how to use Draft Mode.
  links:
-  - app/api-reference/functions/draft-mode
+  - ../03-api-reference/04-functions/draft-mode.md
 ---
 
 **Draft Mode** lets editors see how draft or in-progress content will render on your site, without waiting for revalidation. While an editor is in Draft Mode, cached or pre-rendered content is bypassed, and fetched from upstream sources directly. Other visitors continue to see the cached or pre-rendered version of the page.
@@ -18,8 +18,8 @@ Your data-fetching code does not need to change if your CMS serves draft and pub
 When Draft Mode is enabled for a request:
 
 - `fetch()` calls skip the Next.js fetch cache and hit the network directly.
-- Components and functions inside [`'use cache'`](/docs/app/api-reference/directives/use-cache) re-execute on every request, and their results are not saved to the cache.
-- [`unstable_cache`](/docs/app/api-reference/functions/unstable_cache) reads and writes are bypassed in the same way.
+- Components and functions inside [`'use cache'`](../03-api-reference/01-directives/use-cache.md) re-execute on every request, and their results are not saved to the cache.
+- [`unstable_cache`](../03-api-reference/04-functions/unstable_cache.md) reads and writes are bypassed in the same way.
 - The page is excluded from the ISR response cache and is served with `Cache-Control: private, no-cache, no-store, max-age=0, must-revalidate`.
 
 The effect applies whether the page is statically generated, served from cache, or revalidated through ISR.
@@ -44,11 +44,11 @@ Then, depending on your setup:
 - [Draft Mode with Cache Components](#draft-mode-with-cache-components) for surfacing the preview state from a `'use cache'` boundary.
 - [When your CMS uses a separate draft endpoint](#when-your-cms-uses-a-separate-draft-endpoint) for branching the fetch URL on `isEnabled`.
 
-> **Good to know:** `GET` is meant to be a safe, read-only method. Operations that affect future requests, like enabling Draft Mode via a cookie, should use `POST`. The entry handler uses `GET` because we're assuming a CMS preview integration: the CMS opens the URL in a new browser tab, which is a `GET` request. The exit flow in Step 4 uses `POST` (via [Server Action](/docs/app/getting-started/mutating-data) or `POST` Route Handler).
+> **Good to know:** `GET` is meant to be a safe, read-only method. Operations that affect future requests, like enabling Draft Mode via a cookie, should use `POST`. The entry handler uses `GET` because we're assuming a CMS preview integration: the CMS opens the URL in a new browser tab, which is a `GET` request. The exit flow in Step 4 uses `POST` (via [Server Action](../01-getting-started/07-mutating-data.md) or `POST` Route Handler).
 
 ## Step 1: Create a Route Handler
 
-Create a [Route Handler](/docs/app/api-reference/file-conventions/route) that sets the Draft Mode cookie. It can have any name, for example, `app/api/draft/route.ts`.
+Create a [Route Handler](../03-api-reference/03-file-conventions/route.md) that sets the Draft Mode cookie. It can have any name, for example, `app/api/draft/route.ts`.
 
 ```ts filename="app/api/draft/route.ts" switcher
 import { draftMode } from 'next/headers'
@@ -255,13 +255,13 @@ export async function PreviewBanner() {
 }
 ```
 
-Exiting Draft Mode also works with a `GET` Route Handler, but a `POST` is semantically more correct, for example via a form submitted through a [Server Action](/docs/app/getting-started/mutating-data) or to a `POST` Route Handler.
+Exiting Draft Mode also works with a `GET` Route Handler, but a `POST` is semantically more correct, for example via a form submitted through a [Server Action](../01-getting-started/07-mutating-data.md) or to a `POST` Route Handler.
 
-If you do use a `GET` Route Handler, trigger it from a `<form method="GET">` rather than a [`<Link>`](/docs/app/api-reference/components/link). Next.js prefetches `<Link>` components by default, which would clear the cookie before the editor clicks. Forms are not prefetched, regardless of method.
+If you do use a `GET` Route Handler, trigger it from a `<form method="GET">` rather than a [`<Link>`](../03-api-reference/02-components/link.md). Next.js prefetches `<Link>` components by default, which would clear the cookie before the editor clicks. Forms are not prefetched, regardless of method.
 
 ## Draft Mode with Cache Components
 
-You can read `isEnabled` inside a [`'use cache'`](/docs/app/api-reference/directives/use-cache) scope to render a preview indicator from a cached component. The cache bypass still applies, so the component re-executes with fresh data on every draft request.
+You can read `isEnabled` inside a [`'use cache'`](../03-api-reference/01-directives/use-cache.md) scope to render a preview indicator from a cached component. The cache bypass still applies, so the component re-executes with fresh data on every draft request.
 
 ```tsx filename="app/posts/[slug]/page.tsx" switcher
 import { draftMode } from 'next/headers'
@@ -301,7 +301,7 @@ async function Post({ slug }) {
 }
 ```
 
-> **Good to know:** `draftMode().enable()` and `draftMode().disable()` cannot be called inside a caching directive scope; toggle Draft Mode from a [Route Handler](/docs/app/api-reference/file-conventions/route) or [Server Action](/docs/app/getting-started/mutating-data) instead.
+> **Good to know:** `draftMode().enable()` and `draftMode().disable()` cannot be called inside a caching directive scope; toggle Draft Mode from a [Route Handler](../03-api-reference/03-file-conventions/route.md) or [Server Action](../01-getting-started/07-mutating-data.md) instead.
 
 ## When your CMS uses a separate draft endpoint
 

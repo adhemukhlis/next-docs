@@ -49,7 +49,8 @@ You can find the resources used in this example here:
 
 View transitions work in the App Router with no configuration. React 19.3 includes the `<ViewTransition>` component and `addTransitionType` API used in this guide.
 
-> [!NOTE] React's integration uses newer View Transitions API features (transition types and `view-transition-class`), available in Chromium 125+ and recent Safari and Firefox versions. Some animations may behave differently in Safari. Without browser support, your application works normally; the transitions do not animate.
+> [!NOTE]
+> React's integration uses newer View Transitions API features (transition types and `view-transition-class`), available in Chromium 125+ and recent Safari and Firefox versions. Some animations may behave differently in Safari. Without browser support, your application works normally; the transitions do not animate.
 
 Import the `ViewTransition` component from React:
 
@@ -453,7 +454,7 @@ Each pattern answers a different question for the user:
 
 For API details and more patterns:
 
-- [Link `transitionTypes` prop](/docs/app/api-reference/components/link#transitiontypes)
-- [`useRouter`](/docs/app/api-reference/functions/use-router), which also supports `transitionTypes` in `push()` and `replace()`
+- [Link `transitionTypes` prop](../03-api-reference/02-components/link.md#transitiontypes)
+- [`useRouter`](../03-api-reference/04-functions/use-router.md), which also supports `transitionTypes` in `push()` and `replace()`
 - [React `ViewTransition` component](https://react.dev/reference/react/ViewTransition)
 - [Complete CSS from this guide](https://github.com/nextjs/react-view-transitions-demo/blob/main/src/app/globals.css) — all keyframes and view transition rules in one file

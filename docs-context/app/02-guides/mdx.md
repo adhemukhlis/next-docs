@@ -105,7 +105,7 @@ export function useMDXComponents() {
 > **Good to know**:
 >
 > - `mdx-components.tsx` is **required** to use `@next/mdx` with App Router and will not work without it.
-> - Learn more about the [`mdx-components.tsx` file convention](/docs/app/api-reference/file-conventions/mdx-components).
+> - Learn more about the [`mdx-components.tsx` file convention](../03-api-reference/03-file-conventions/mdx-components.md).
 > - Learn how to [use custom styles and components](#using-custom-styles-and-components).
 
 ## Rendering MDX
@@ -116,7 +116,7 @@ You can render MDX using Next.js's file based routing or by importing MDX files 
 
 When using file based routing, you can use MDX pages like any other page.
 
-In App Router apps, that includes being able to use [metadata](/docs/app/getting-started/metadata-and-og-images).
+In App Router apps, that includes being able to use [metadata](../01-getting-started/14-metadata-and-og-images.md).
 
 Create a new MDX page within the `/app` directory:
 
@@ -220,7 +220,7 @@ width="1600"
 height="849"
 />
 
-[`generateStaticParams`](/docs/app/api-reference/functions/generate-static-params) can be used to prerender the provided routes. By marking `dynamicParams` as `false`, accessing a route not defined in `generateStaticParams` will 404.
+[`generateStaticParams`](../03-api-reference/04-functions/generate-static-params.md) can be used to prerender the provided routes. By marking `dynamicParams` as `false`, accessing a route not defined in `generateStaticParams` will 404.
 
 ```tsx filename="app/blog/[slug]/page.tsx" switcher
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
@@ -252,7 +252,7 @@ export function generateStaticParams() {
 export const dynamicParams = false
 ```
 
-> **Good to know**: Ensure you specify the `.mdx` file extension in your import. While it is not required to use [module path aliases](/docs/app/getting-started/installation#set-up-absolute-imports-and-module-path-aliases) (e.g., `@/content`), it does simplify your import path.
+> **Good to know**: Ensure you specify the `.mdx` file extension in your import. While it is not required to use [module path aliases](../01-getting-started/01-installation.md#set-up-absolute-imports-and-module-path-aliases) (e.g., `@/content`), it does simplify your import path.
 
 ## Using custom styles and components
 
@@ -377,7 +377,7 @@ export default function Page() {
 
 ### Shared layouts
 
-To share a layout across MDX pages, you can use the [built-in layouts support](/docs/app/api-reference/file-conventions/layout) with the App Router.
+To share a layout across MDX pages, you can use the [built-in layouts support](../03-api-reference/03-file-conventions/layout.md) with the App Router.
 
 ```tsx filename="app/mdx-page/layout.tsx" switcher
 export default function MdxLayout({ children }: { children: React.ReactNode }) {
@@ -463,7 +463,7 @@ export default withMDX(nextConfig)
 
 ### Using Plugins with Turbopack
 
-To use plugins with [Turbopack](/docs/app/api-reference/turbopack), upgrade to the latest `@next/mdx` and specify plugin names using a string:
+To use plugins with [Turbopack](../03-api-reference/08-turbopack.md), upgrade to the latest `@next/mdx` and specify plugin names using a string:
 
 ```js filename="next.config.mjs"
 import createMDX from '@next/mdx'
@@ -495,7 +495,7 @@ export default withMDX(nextConfig)
 
 > **Good to know**:
 >
-> remark and rehype plugins without serializable options cannot be used yet with [Turbopack](/docs/app/api-reference/turbopack), because JavaScript functions can't be passed to Rust.
+> remark and rehype plugins without serializable options cannot be used yet with [Turbopack](../03-api-reference/08-turbopack.md), because JavaScript functions can't be passed to Rust.
 
 ## Deep Dive: How do you transform markdown into HTML?
 

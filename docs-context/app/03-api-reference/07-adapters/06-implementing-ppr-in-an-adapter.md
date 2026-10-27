@@ -65,7 +65,7 @@ Adapter Router
 
 `requestMeta.onCacheEntryV2` is called when a response cache entry is looked up or generated. Use it to persist updated shell/postponed data.
 
-> \[!NOTE]
+> [!NOTE]
 >
 > - `requestMeta.onCacheEntry` still works, but is deprecated.
 > - Prefer `requestMeta.onCacheEntryV2`.

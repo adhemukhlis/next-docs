@@ -35,7 +35,7 @@ export default nextConfig
 
 If you expect a route to be static and the indicator has marked it as dynamic, it's likely the route has opted out of prerendering.
 
-You can confirm if a route is [prerendered](/docs/app/glossary#prerendering) or [dynamically rendered](/docs/app/glossary#dynamic-rendering) by building your application using `next build --debug`, and checking the output in your terminal. Static (or prerendered) routes will display a `○` symbol, whereas dynamic routes will display a `ƒ` symbol. For example:
+You can confirm if a route is [prerendered](../../../04-glossary.md#prerendering) or [dynamically rendered](../../../04-glossary.md#dynamic-rendering) by building your application using `next build --debug`, and checking the output in your terminal. Static (or prerendered) routes will display a `○` symbol, whereas dynamic routes will display a `ƒ` symbol. For example:
 
 ```bash filename="Build Output"
 Route (app)
@@ -48,10 +48,10 @@ Route (app)
 
 There are two reasons a route might opt out of prerendering:
 
-- The presence of [Request-time APIs](/docs/app/glossary#request-time-apis) which rely on request information.
-- An [uncached data request](/docs/app/getting-started/fetching-data), like a call to an ORM or database driver.
+- The presence of [Request-time APIs](../../../04-glossary.md#request-time-apis) which rely on request information.
+- An [uncached data request](../../../01-getting-started/06-fetching-data.md), like a call to an ORM or database driver.
 
-Check your route for any of these conditions, and if you are not able to statically render the route, then consider using [`loading.js`](/docs/app/api-reference/file-conventions/loading) or [`<Suspense />`](https://react.dev/reference/react/Suspense) to leverage [streaming](/docs/app/getting-started/linking-and-navigating#streaming).
+Check your route for any of these conditions, and if you are not able to statically render the route, then consider using [`loading.js`](../../03-file-conventions/loading.md) or [`<Suspense />`](https://react.dev/reference/react/Suspense) to leverage [streaming](../../../01-getting-started/04-linking-and-navigating.md#streaming).
 
 ## Version History
 

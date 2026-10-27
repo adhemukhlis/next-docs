@@ -9,7 +9,7 @@ To use it, place the file in the **root** of your application or inside a `src` 
 
 ## Usage
 
-Unlike [server-side instrumentation](/docs/app/guides/instrumentation), you do not need to export any specific functions. You can write your monitoring code directly in the file:
+Unlike [server-side instrumentation](../../02-guides/instrumentation.md), you do not need to export any specific functions. You can write your monitoring code directly in the file:
 
 ```ts filename="instrumentation-client.ts" switcher
 // Set up performance monitoring
@@ -114,7 +114,7 @@ Only synchronous, top-level code is guaranteed to complete before hydration. Asy
 
 ## See also
 
-`next.config.js` plugins (for example, wrappers like `withSentry`) can register their own client instrumentation module via the [`instrumentationClientInject`](/docs/app/api-reference/config/next-config-js/instrumentationClientInject) option. Injected modules run before this file, in array order, and may export the same router transition start hook. Application code should continue to use this file convention directly.
+`next.config.js` plugins (for example, wrappers like `withSentry`) can register their own client instrumentation module via the [`instrumentationClientInject`](../05-config/01-next-config-js/instrumentationClientInject.md) option. Injected modules run before this file, in array order, and may export the same router transition start hook. Application code should continue to use this file convention directly.
 
 ## Examples
 

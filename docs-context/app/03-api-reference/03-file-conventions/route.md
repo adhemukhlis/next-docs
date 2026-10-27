@@ -61,7 +61,7 @@ export async function OPTIONS(request) {}
 
 #### `request` (optional)
 
-The `request` object is a [NextRequest](/docs/app/api-reference/functions/next-request) object, which is an extension of the Web [Request](https://developer.mozilla.org/docs/Web/API/Request) API. `NextRequest` gives you further control over the incoming request, including easily accessing `cookies` and an extended, parsed, URL object `nextUrl`.
+The `request` object is a [NextRequest](../04-functions/next-request.md) object, which is an extension of the Web [Request](https://developer.mozilla.org/docs/Web/API/Request) API. `NextRequest` gives you further control over the incoming request, including easily accessing `cookies` and an extended, parsed, URL object `nextUrl`.
 
 ```ts filename="route.ts" switcher
 import type { NextRequest } from 'next/server'
@@ -79,7 +79,7 @@ export async function GET(request) {
 
 #### `context` (optional)
 
-- **`params`**: a promise that resolves to an object containing the [dynamic route parameters](/docs/app/api-reference/file-conventions/dynamic-routes) for the current route.
+- **`params`**: a promise that resolves to an object containing the [dynamic route parameters](./dynamic-routes.md) for the current route.
 
 ```ts filename="app/dashboard/[team]/route.ts" switcher
 export async function GET(request: Request, { params }: { params: Promise<{ team: string }> }) {
@@ -121,7 +121,7 @@ export async function GET(_req: NextRequest, ctx: RouteContext<'/users/[id]'>) {
 
 ### Cookies
 
-You can read or set cookies with [`cookies`](/docs/app/api-reference/functions/cookies) from `next/headers`.
+You can read or set cookies with [`cookies`](../04-functions/cookies.md) from `next/headers`.
 
 ```ts filename="route.ts" switcher
 import { cookies } from 'next/headers'
@@ -177,7 +177,7 @@ export async function GET(request) {
 }
 ```
 
-You can also use the underlying Web APIs to read cookies from the request ([`NextRequest`](/docs/app/api-reference/functions/next-request)):
+You can also use the underlying Web APIs to read cookies from the request ([`NextRequest`](../04-functions/next-request.md)):
 
 ```ts filename="app/api/route.ts" switcher
 import { type NextRequest } from 'next/server'
@@ -195,7 +195,7 @@ export async function GET(request) {
 
 ### Headers
 
-You can read headers with [`headers`](/docs/app/api-reference/functions/headers) from `next/headers`.
+You can read headers with [`headers`](../04-functions/headers.md) from `next/headers`.
 
 ```ts filename="route.ts" switcher
 import { headers } from 'next/headers'
@@ -246,7 +246,7 @@ export async function GET(request) {
 }
 ```
 
-You can also use the underlying Web APIs to read headers from the request ([`NextRequest`](/docs/app/api-reference/functions/next-request)):
+You can also use the underlying Web APIs to read headers from the request ([`NextRequest`](../04-functions/next-request.md)):
 
 ```ts filename="app/api/route.ts" switcher
 import { type NextRequest } from 'next/server'
@@ -264,7 +264,7 @@ export async function GET(request) {
 
 ### Revalidating Cached Data
 
-You can [revalidate cached data](/docs/app/guides/incremental-static-regeneration) using the `revalidate` route segment config option.
+You can [revalidate cached data](../../02-guides/incremental-static-regeneration.md) using the `revalidate` route segment config option.
 
 ```ts filename="app/posts/route.ts" switcher
 export const revalidate = 60
@@ -308,7 +308,7 @@ export async function GET(request) {
 
 ### Dynamic Route Segments
 
-Route Handlers can use [Dynamic Segments](/docs/app/api-reference/file-conventions/dynamic-routes) to create request handlers from dynamic data.
+Route Handlers can use [Dynamic Segments](./dynamic-routes.md) to create request handlers from dynamic data.
 
 ```ts filename="app/items/[slug]/route.ts" switcher
 export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {
@@ -330,15 +330,15 @@ export async function GET(request, { params }) {
 
 #### Static Generation with `generateStaticParams`
 
-You can use [`generateStaticParams`](/docs/app/api-reference/functions/generate-static-params) with dynamic Route Handlers to statically generate responses at build time for specified params, while handling other params dynamically at request time.
+You can use [`generateStaticParams`](../04-functions/generate-static-params.md) with dynamic Route Handlers to statically generate responses at build time for specified params, while handling other params dynamically at request time.
 
-When using [Cache Components](/docs/app/getting-started/caching), you can combine `generateStaticParams` with `use cache` to enable data caching for both prerendered and runtime params.
+When using [Cache Components](../../01-getting-started/08-caching.md), you can combine `generateStaticParams` with `use cache` to enable data caching for both prerendered and runtime params.
 
-See the [generateStaticParams with Route Handlers](/docs/app/api-reference/functions/generate-static-params#with-route-handlers) documentation for examples and details.
+See the [generateStaticParams with Route Handlers](../04-functions/generate-static-params.md#with-route-handlers) documentation for examples and details.
 
 ### URL Query Parameters
 
-The request object passed to the Route Handler is a `NextRequest` instance, which includes [some additional convenience methods](/docs/app/api-reference/functions/next-request#nexturl), such as those for more easily handling query parameters.
+The request object passed to the Route Handler is a `NextRequest` instance, which includes [some additional convenience methods](../04-functions/next-request.md#nexturl), such as those for more easily handling query parameters.
 
 ```ts filename="app/api/search/route.ts" switcher
 import { type NextRequest } from 'next/server'
@@ -548,7 +548,7 @@ export async function GET(request) {
 
 > **Good to know**:
 >
-> - To add CORS headers to multiple Route Handlers, you can use [Proxy](/docs/app/api-reference/file-conventions/proxy#cors) or the [`next.config.js` file](/docs/app/api-reference/config/next-config-js/headers#cors).
+> - To add CORS headers to multiple Route Handlers, you can use [Proxy](./proxy.md#cors) or the [`next.config.js` file](../05-config/01-next-config-js/headers.md#cors).
 
 ### Webhooks
 
@@ -592,7 +592,7 @@ Notably, unlike API Routes with the Pages Router, you do not need to use `bodyPa
 
 ### Non-UI Responses
 
-You can use Route Handlers to return non-UI content. Note that [`sitemap.xml`](/docs/app/api-reference/file-conventions/metadata/sitemap#generating-a-sitemap-using-code-js-ts), [`robots.txt`](/docs/app/api-reference/file-conventions/metadata/robots#generate-a-robots-file), [`app icons`](/docs/app/api-reference/file-conventions/metadata/app-icons#generate-icons-using-code-js-ts-tsx), and [open graph images](/docs/app/api-reference/file-conventions/metadata/opengraph-image) all have built-in support.
+You can use Route Handlers to return non-UI content. Note that [`sitemap.xml`](./01-metadata/sitemap.md#generating-a-sitemap-using-code-js-ts), [`robots.txt`](./01-metadata/robots.md#generate-a-robots-file), [`app icons`](./01-metadata/app-icons.md#generate-icons-using-code-js-ts-tsx), and [open graph images](./01-metadata/opengraph-image.md) all have built-in support.
 
 ```ts filename="app/rss.xml/route.ts" switcher
 export async function GET() {
@@ -633,7 +633,7 @@ export async function GET() {
 
 ### Segment Config Options
 
-Route Handlers use the same [route segment configuration](/docs/app/api-reference/file-conventions/route-segment-config) as pages and layouts.
+Route Handlers use the same [route segment configuration](./02-route-segment-config/index.md) as pages and layouts.
 
 ```ts filename="app/items/route.ts" switcher
 export const dynamic = 'auto'
@@ -653,12 +653,12 @@ export const runtime = 'nodejs'
 export const preferredRegion = 'auto' // deprecated
 ```
 
-See the [API reference](/docs/app/api-reference/file-conventions/route-segment-config) for more details.
+See the [API reference](./02-route-segment-config/index.md) for more details.
 
 ## Version History
 
 | Version | Changes |
 | - | - |
-| `v15.0.0-RC` | `context.params` is now a promise. A [codemod](/docs/app/guides/upgrading/codemods#150) is available |
+| `v15.0.0-RC` | `context.params` is now a promise. A [codemod](../../02-guides/upgrading/codemods.md#150) is available |
 | `v15.0.0-RC` | The default caching for `GET` handlers was changed from static to dynamic |
 | `v13.2.0` | Route Handlers are introduced. |

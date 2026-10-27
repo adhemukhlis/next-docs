@@ -12,11 +12,11 @@ This page provides best practices that you can use as a reference when [building
 
 These Next.js optimizations are enabled by default and require no configuration:
 
-- **[Server Components](/docs/app/getting-started/server-and-client-components):** Next.js uses Server Components by default. Server Components run on the server, and don't require JavaScript to render on the client. As such, they have no impact on the size of your client-side JavaScript bundles. You can then use [Client Components](/docs/app/getting-started/server-and-client-components) as needed for interactivity.
-- **[Code-splitting](/docs/app/getting-started/linking-and-navigating#how-navigation-works):** Server Components enable automatic code-splitting by route segments. You may also consider [lazy loading](/docs/app/guides/lazy-loading) Client Components and third-party libraries, where appropriate.
-- **[Prefetching](/docs/app/getting-started/linking-and-navigating#prefetching):** When a link to a new route enters the user's viewport, Next.js prefetches the route in background. This makes navigation to new routes almost instant. You can opt out of prefetching, where appropriate.
-- **[Prerendering](/docs/app/glossary#prerendering):** Next.js prerenders Server and Client Components on the server at build time and caches the rendered result to improve your application's performance. You can opt into [Dynamic Rendering](/docs/app/glossary#dynamic-rendering) for specific routes, where appropriate.
-- **[Caching](/docs/app/getting-started/caching):** Next.js caches data requests, the rendered result of Server and Client Components, static assets, and more, to reduce the number of network requests to your server, database, and backend services. You may opt out of caching, where appropriate.
+- **[Server Components](../01-getting-started/05-server-and-client-components.md):** Next.js uses Server Components by default. Server Components run on the server, and don't require JavaScript to render on the client. As such, they have no impact on the size of your client-side JavaScript bundles. You can then use [Client Components](../01-getting-started/05-server-and-client-components.md) as needed for interactivity.
+- **[Code-splitting](../01-getting-started/04-linking-and-navigating.md#how-navigation-works):** Server Components enable automatic code-splitting by route segments. You may also consider [lazy loading](./lazy-loading.md) Client Components and third-party libraries, where appropriate.
+- **[Prefetching](../01-getting-started/04-linking-and-navigating.md#prefetching):** When a link to a new route enters the user's viewport, Next.js prefetches the route in background. This makes navigation to new routes almost instant. You can opt out of prefetching, where appropriate.
+- **[Prerendering](../04-glossary.md#prerendering):** Next.js prerenders Server and Client Components on the server at build time and caches the rendered result to improve your application's performance. You can opt into [Dynamic Rendering](../04-glossary.md#dynamic-rendering) for specific routes, where appropriate.
+- **[Caching](../01-getting-started/08-caching.md):** Next.js caches data requests, the rendered result of Server and Client Components, static assets, and more, to reduce the number of network requests to your server, database, and backend services. You may opt out of caching, where appropriate.
 
 These defaults aim to improve your application's performance, and reduce the cost and amount of data transferred on each network request.
 
@@ -26,51 +26,51 @@ While building your application, we recommend using the following features to en
 
 ### Routing and rendering
 
-- **[Layouts](/docs/app/api-reference/file-conventions/layout):** Use layouts to share UI across pages and enable [partial rendering](/docs/app/getting-started/linking-and-navigating#client-side-transitions) on navigation.
-- **[`<Link>` component](/docs/app/api-reference/components/link):** Use the `<Link>` component for [client-side navigation and prefetching](/docs/app/getting-started/linking-and-navigating#how-navigation-works).
-- **[Error Handling](/docs/app/getting-started/error-handling):** Gracefully handle [catch-all errors](/docs/app/getting-started/error-handling) and [404 errors](/docs/app/api-reference/file-conventions/not-found) in production by creating custom error pages.
-- **[Client and Server Components](/docs/app/getting-started/server-and-client-components#examples):** Follow the recommended composition patterns for Server and Client Components, and check the placement of your [`"use client"` boundaries](/docs/app/getting-started/server-and-client-components#reducing-js-bundle-size) to avoid unnecessarily increasing your client-side JavaScript bundle.
-- **Request-time APIs:** Be aware that Request-time APIs like [`cookies`](/docs/app/api-reference/functions/cookies) and the [`searchParams`](/docs/app/api-reference/file-conventions/page#searchparams-optional) prop will opt the entire route into [Dynamic Rendering](/docs/app/glossary#dynamic-rendering) (or your whole application if used in the [Root Layout](/docs/app/api-reference/file-conventions/layout#root-layout)). Ensure Request-time API usage is intentional and wrap them in `<Suspense>` boundaries where appropriate.
+- **[Layouts](../03-api-reference/03-file-conventions/layout.md):** Use layouts to share UI across pages and enable [partial rendering](../01-getting-started/04-linking-and-navigating.md#client-side-transitions) on navigation.
+- **[`<Link>` component](../03-api-reference/02-components/link.md):** Use the `<Link>` component for [client-side navigation and prefetching](../01-getting-started/04-linking-and-navigating.md#how-navigation-works).
+- **[Error Handling](../01-getting-started/10-error-handling.md):** Gracefully handle [catch-all errors](../01-getting-started/10-error-handling.md) and [404 errors](../03-api-reference/03-file-conventions/not-found.md) in production by creating custom error pages.
+- **[Client and Server Components](../01-getting-started/05-server-and-client-components.md#examples):** Follow the recommended composition patterns for Server and Client Components, and check the placement of your [`"use client"` boundaries](../01-getting-started/05-server-and-client-components.md#reducing-js-bundle-size) to avoid unnecessarily increasing your client-side JavaScript bundle.
+- **Request-time APIs:** Be aware that Request-time APIs like [`cookies`](../03-api-reference/04-functions/cookies.md) and the [`searchParams`](../03-api-reference/03-file-conventions/page.md#searchparams-optional) prop will opt the entire route into [Dynamic Rendering](../04-glossary.md#dynamic-rendering) (or your whole application if used in the [Root Layout](../03-api-reference/03-file-conventions/layout.md#root-layout)). Ensure Request-time API usage is intentional and wrap them in `<Suspense>` boundaries where appropriate.
 
 > **Good to know**: [Partial Prerendering (experimental)](/blog/next-14#partial-prerendering-preview) will allow parts of a route to be dynamic without opting the whole route into dynamic rendering.
 
 ### Data fetching and caching
 
-- **[Server Components](/docs/app/getting-started/fetching-data):** Leverage the benefits of fetching data on the server using Server Components.
-- **[Route Handlers](/docs/app/api-reference/file-conventions/route):** Use Route Handlers to access your backend resources from Client Components. But do not call Route Handlers from Server Components to avoid an additional server request.
-- **[Streaming](/docs/app/api-reference/file-conventions/loading):** Use Loading UI and React Suspense to progressively send UI from the server to the client, and prevent the whole route from blocking while data is being fetched.
-- **[Parallel Data Fetching](/docs/app/getting-started/fetching-data#parallel-data-fetching):** Reduce network waterfalls by fetching data in parallel, where appropriate.
-- **[Data Caching](/docs/app/getting-started/caching):** Verify whether your data requests are being cached or not, and opt into caching, where appropriate. Ensure requests that don't use `fetch` are [cached](/docs/app/api-reference/functions/unstable_cache).
-- **[Static Images](/docs/app/api-reference/file-conventions/public-folder):** Use the `public` directory to automatically cache your application's static assets, e.g. images.
+- **[Server Components](../01-getting-started/06-fetching-data.md):** Leverage the benefits of fetching data on the server using Server Components.
+- **[Route Handlers](../03-api-reference/03-file-conventions/route.md):** Use Route Handlers to access your backend resources from Client Components. But do not call Route Handlers from Server Components to avoid an additional server request.
+- **[Streaming](../03-api-reference/03-file-conventions/loading.md):** Use Loading UI and React Suspense to progressively send UI from the server to the client, and prevent the whole route from blocking while data is being fetched.
+- **[Parallel Data Fetching](../01-getting-started/06-fetching-data.md#parallel-data-fetching):** Reduce network waterfalls by fetching data in parallel, where appropriate.
+- **[Data Caching](../01-getting-started/08-caching.md):** Verify whether your data requests are being cached or not, and opt into caching, where appropriate. Ensure requests that don't use `fetch` are [cached](../03-api-reference/04-functions/unstable_cache.md).
+- **[Static Images](../03-api-reference/03-file-conventions/public-folder.md):** Use the `public` directory to automatically cache your application's static assets, e.g. images.
 
 ### UI and accessibility
 
-- **[Forms and Validation](/docs/app/guides/forms):** Use Server Actions to handle form submissions, server-side validation, and handle errors.
-- **[Global Error UI](/docs/app/api-reference/file-conventions/error#global-error):** Add `app/global-error.tsx` to provide consistent, accessible fallback UI and recovery for uncaught errors across your app.
-- **[Global 404](/docs/app/api-reference/file-conventions/not-found#global-not-foundjs-experimental):** Add `app/global-not-found.tsx` to serve an accessible 404 for unmatched routes across your app.
+- **[Forms and Validation](./forms.md):** Use Server Actions to handle form submissions, server-side validation, and handle errors.
+- **[Global Error UI](../03-api-reference/03-file-conventions/error.md#global-error):** Add `app/global-error.tsx` to provide consistent, accessible fallback UI and recovery for uncaught errors across your app.
+- **[Global 404](../03-api-reference/03-file-conventions/not-found.md#global-not-foundjs-experimental):** Add `app/global-not-found.tsx` to serve an accessible 404 for unmatched routes across your app.
 
-- **[Font Module](/docs/app/api-reference/components/font):** Optimize fonts by using the Font Module, which automatically hosts your font files with other static assets, removes external network requests, and reduces [layout shift](https://web.dev/articles/cls).
-- **[`<Image>` Component](/docs/app/api-reference/components/image):** Optimize images by using the Image Component, which automatically optimizes images, prevents layout shift, and serves them in modern formats like WebP.
-- **[`<Script>` Component](/docs/app/guides/scripts):** Optimize third-party scripts by using the Script Component, which automatically defers scripts and prevents them from blocking the main thread.
+- **[Font Module](../03-api-reference/02-components/font.md):** Optimize fonts by using the Font Module, which automatically hosts your font files with other static assets, removes external network requests, and reduces [layout shift](https://web.dev/articles/cls).
+- **[`<Image>` Component](../03-api-reference/02-components/image.md):** Optimize images by using the Image Component, which automatically optimizes images, prevents layout shift, and serves them in modern formats like WebP.
+- **[`<Script>` Component](./scripts.md):** Optimize third-party scripts by using the Script Component, which automatically defers scripts and prevents them from blocking the main thread.
 - **[ESLint](/docs/architecture/accessibility#linting):** Use the built-in `eslint-plugin-jsx-a11y` plugin to catch accessibility issues early.
 
 ### Security
 
-- **[Tainting](/docs/app/api-reference/config/next-config-js/taint):** Prevent sensitive data from being exposed to the client by tainting data objects and/or specific values.
-- **[Server Actions](/docs/app/getting-started/mutating-data):** Verify authentication and authorization inside each action. Do not rely on Proxy or layout or page level checks alone. Move database access to a `server-only` [Data Access Layer](/docs/app/guides/data-security#data-access-layer) and consider [rate limiting](/docs/app/guides/backend-for-frontend#rate-limiting) for expensive operations. Review the recommended [security practices](/blog/security-nextjs-server-components-actions).
+- **[Tainting](../03-api-reference/05-config/01-next-config-js/taint.md):** Prevent sensitive data from being exposed to the client by tainting data objects and/or specific values.
+- **[Server Actions](../01-getting-started/07-mutating-data.md):** Verify authentication and authorization inside each action. Do not rely on Proxy or layout or page level checks alone. Move database access to a `server-only` [Data Access Layer](./data-security.md#data-access-layer) and consider [rate limiting](./backend-for-frontend.md#rate-limiting) for expensive operations. Review the recommended [security practices](/blog/security-nextjs-server-components-actions).
 
-- **[Environment Variables](/docs/app/guides/environment-variables):** Ensure your `.env.*` files are added to `.gitignore` and only public variables are prefixed with `NEXT_PUBLIC_`.
-- **[Content Security Policy](/docs/app/guides/content-security-policy):** Consider adding a Content Security Policy to protect your application against various security threats such as cross-site scripting, clickjacking, and other code injection attacks.
+- **[Environment Variables](./environment-variables.md):** Ensure your `.env.*` files are added to `.gitignore` and only public variables are prefixed with `NEXT_PUBLIC_`.
+- **[Content Security Policy](./content-security-policy.md):** Consider adding a Content Security Policy to protect your application against various security threats such as cross-site scripting, clickjacking, and other code injection attacks.
 
 ### Metadata and SEO
 
-- **[Metadata API](/docs/app/getting-started/metadata-and-og-images):** Use the Metadata API to improve your application's Search Engine Optimization (SEO) by adding page titles, descriptions, and more.
-- **[Open Graph (OG) images](/docs/app/api-reference/file-conventions/metadata/opengraph-image):** Create OG images to prepare your application for social sharing.
-- **[Sitemaps](/docs/app/api-reference/functions/generate-sitemaps) and [Robots](/docs/app/api-reference/file-conventions/metadata/robots):** Help Search Engines crawl and index your pages by generating sitemaps and robots files.
+- **[Metadata API](../01-getting-started/14-metadata-and-og-images.md):** Use the Metadata API to improve your application's Search Engine Optimization (SEO) by adding page titles, descriptions, and more.
+- **[Open Graph (OG) images](../03-api-reference/03-file-conventions/01-metadata/opengraph-image.md):** Create OG images to prepare your application for social sharing.
+- **[Sitemaps](../03-api-reference/04-functions/generate-sitemaps.md) and [Robots](../03-api-reference/03-file-conventions/01-metadata/robots.md):** Help Search Engines crawl and index your pages by generating sitemaps and robots files.
 
 ### Type safety
 
-- **TypeScript and [TS Plugin](/docs/app/api-reference/config/typescript):** Use TypeScript and the TypeScript plugin for better type-safety, and to help you catch errors early.
+- **TypeScript and [TS Plugin](../03-api-reference/05-config/02-typescript.md):** Use TypeScript and the TypeScript plugin for better type-safety, and to help you catch errors early.
 
 ## Before going to production
 
@@ -80,11 +80,11 @@ Before going to production, you can run `next build` to build your application l
 
 - **[Lighthouse](https://developers.google.com/web/tools/lighthouse):** Run lighthouse in incognito to gain a better understanding of how your users will experience your site, and to identify areas for improvement. This is a simulated test and should be paired with looking at field data (such as Core Web Vitals).
 
-- **[`useReportWebVitals` hook](/docs/app/api-reference/functions/use-report-web-vitals):** Use this hook to send [Core Web Vitals](https://web.dev/articles/vitals) data to analytics tools.
+- **[`useReportWebVitals` hook](../03-api-reference/04-functions/use-report-web-vitals.md):** Use this hook to send [Core Web Vitals](https://web.dev/articles/vitals) data to analytics tools.
 
 ### Analyzing bundles
 
-Use the [`@next/bundle-analyzer` plugin](/docs/app/guides/package-bundling#nextbundle-analyzer-for-webpack) to analyze the size of your JavaScript bundles and identify large modules and dependencies that might be impacting your application's performance.
+Use the [`@next/bundle-analyzer` plugin](./package-bundling.md#nextbundle-analyzer-for-webpack) to analyze the size of your JavaScript bundles and identify large modules and dependencies that might be impacting your application's performance.
 
 Additionally, the following tools can help you understand the impact of adding new dependencies to your application:
 

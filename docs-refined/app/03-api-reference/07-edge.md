@@ -6,13 +6,13 @@ description: API Reference for the Edge Runtime.
 Next.js has two server runtimes you can use in your application:
 
 - The **Node.js Runtime** (default), which has access to all Node.js APIs and is used for rendering your application.
-- The **Edge Runtime** which contains a more limited [set of APIs](#reference), used in [Proxy](/docs/app/api-reference/file-conventions/proxy).
+- The **Edge Runtime** which contains a more limited [set of APIs](#reference), used in [Proxy](./03-file-conventions/proxy.md).
 
 ## Caveats
 
 - The Edge Runtime does not support all Node.js APIs. Some packages may not work as expected.
 - The Edge Runtime does not support Incremental Static Regeneration (ISR).
-- Both runtimes can support [streaming](/docs/app/api-reference/file-conventions/loading) depending on your deployment adapter.
+- Both runtimes can support [streaming](./03-file-conventions/loading.md) depending on your deployment adapter.
 
 ## Reference
 
@@ -137,7 +137,7 @@ The Edge Runtime supports the following APIs:
 
 ### Environment Variables
 
-You can use `process.env` to access [Environment Variables](/docs/app/guides/environment-variables) for both `next dev` and `next build`.
+You can use `process.env` to access [Environment Variables](../02-guides/environment-variables.md) for both `next dev` and `next build`.
 
 ### Unsupported APIs
 

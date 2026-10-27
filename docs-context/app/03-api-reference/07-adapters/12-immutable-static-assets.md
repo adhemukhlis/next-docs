@@ -3,7 +3,7 @@ title: Supporting Immutable Static Assets
 description: Support immutable static assets in an adapter
 ---
 
-See [`config.supportsImmutableAssets`](/docs/app/api-reference/config/next-config-js/supportsImmutableAssets) for end-user-facing information about this feature.
+See [`config.supportsImmutableAssets`](../05-config/01-next-config-js/supportsImmutableAssets.md) for end-user-facing information about this feature.
 
 When `config.supportsImmutableAssets` is enabled, Next.js outputs immutable content-addressed static assets under the public path `/_next/static/immutable/*`. This prefix can be used to differentiate immutable static assets from non-immutable static assets at the CDN level.
 

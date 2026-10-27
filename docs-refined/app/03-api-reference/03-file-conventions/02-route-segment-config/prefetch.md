@@ -2,22 +2,16 @@
 title: prefetch
 nav_title: prefetch config
 description: Configure how a route segment is prefetched during client navigation.
-related:
- title: Next Steps
- description: Learn how to use instant navigations in practice.
- links:
-  - app/guides/instant-navigation
-  - app/api-reference/file-conventions/route-segment-config/instant
 ---
 
-The `prefetch` route segment config controls how a segment is prefetched during client-side navigation. By default, the framework manages the strategy based on the app's [`partialPrefetching`](/docs/app/api-reference/config/next-config-js/partialPrefetching) setting. To override per segment, set this export to one of the values below.
+The `prefetch` route segment config controls how a segment is prefetched during client-side navigation. By default, the framework manages the strategy based on the app's [`partialPrefetching`](../../05-config/01-next-config-js/partialPrefetching.md) setting. To override per segment, set this export to one of the values below.
 
 > **Good to know**:
 >
-> - The `prefetch` export only works when [`cacheComponents`](/docs/app/api-reference/config/next-config-js/cacheComponents) is enabled.
+> - The `prefetch` export only works when [`cacheComponents`](../../05-config/01-next-config-js/cacheComponents.md) is enabled.
 > - `prefetch` cannot be used when the segment is a Client Component.
 > - The meaningful values to set are `'partial'` and `'force-disabled'`. `'auto'` is the default and is equivalent to omitting the export; don't write `prefetch = 'auto'` explicitly.
-> - A `page` or `layout` that also calls the [`prefetch()`](/docs/app/api-reference/functions/prefetch) function needs to import it under another name, for example `import { prefetch as prefetchStage } from 'next/cache'`.
+> - A `page` or `layout` that also calls the [`prefetch()`](../../04-functions/prefetch.md) function needs to import it under another name, for example `import { prefetch as prefetchStage } from 'next/cache'`.
 
 ```tsx filename="layout.tsx | page.tsx" switcher
 export const prefetch = 'partial'
@@ -39,9 +33,9 @@ export default function Page() {
 
 ### `'partial'`
 
-Opts the segment into [Partial Prefetching](/docs/app/guides/adopting-partial-prefetching) without enabling the global [`partialPrefetching`](/docs/app/api-reference/config/next-config-js/partialPrefetching) flag. A `<Link>` pointing at a segment with `prefetch = 'partial'` loads the per-route [App Shell](/docs/app/glossary#app-shell) instead of the legacy full prefetch. Set this on the destination, not the link.
+Opts the segment into [Partial Prefetching](../../../02-guides/adopting-partial-prefetching.md) without enabling the global [`partialPrefetching`](../../05-config/01-next-config-js/partialPrefetching.md) flag. A `<Link>` pointing at a segment with `prefetch = 'partial'` loads the per-route [App Shell](../../../04-glossary.md#app-shell) instead of the legacy full prefetch. Set this on the destination, not the link.
 
-For links that opt into a wider prefetch with [`<Link prefetch={true}>`](/docs/app/api-reference/components/link#prefetch), Next.js uses per-link prefetching. The server renders a fresh response that resolves URL data (`params`, `searchParams`, and the full URL). On pages where all the content is statically renderable, Next.js serves prefetches from the static cache. If a page accesses non-static data, it's prefetched at runtime.
+For links that opt into a wider prefetch with [`<Link prefetch={true}>`](../../02-components/link.md#prefetch), Next.js uses per-link prefetching. The server renders a fresh response that resolves URL data (`params`, `searchParams`, and the full URL). On pages where all the content is statically renderable, Next.js serves prefetches from the static cache. If a page accesses non-static data, it's prefetched at runtime.
 
 Use this for incremental adoption when you can't enable `partialPrefetching` for the entire app at once. Once every route in scope has `prefetch = 'partial'`, enable the global flag and remove the per-route exports.
 
@@ -83,3 +77,10 @@ export const prefetch: Prefetch = 'partial'
 | Version   | Changes                                                                              |
 | --------- | ------------------------------------------------------------------------------------ |
 | `v16.3.0` | `prefetch` export stabilized, replacing `unstable_prefetch` (Cache Components only). |
+
+## INDEX
+
+Learn how to use instant navigations in practice.
+
+- [Ensuring instant navigations](../../../02-guides/instant-navigation.md)
+- [instant](./instant.md)

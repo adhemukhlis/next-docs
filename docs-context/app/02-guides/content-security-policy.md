@@ -2,10 +2,6 @@
 title: How to set a Content Security Policy (CSP) for your Next.js application
 nav_title: Content Security Policy
 description: Learn how to set a Content Security Policy (CSP) for your Next.js application.
-related:
- links:
-  - app/api-reference/file-conventions/proxy
-  - app/api-reference/functions/headers
 ---
 
 [Content Security Policy (CSP)](https://developer.mozilla.org/docs/Web/HTTP/CSP) is important to guard your Next.js application against various security threats such as cross-site scripting (XSS), clickjacking, and other code injection attacks.
@@ -31,9 +27,9 @@ If an attacker wanted to load a script into your page, they'd need to guess the 
 
 ### Adding a nonce with Proxy
 
-[Proxy](/docs/app/api-reference/file-conventions/proxy) enables you to add headers and generate nonces before the page renders.
+[Proxy](../03-api-reference/03-file-conventions/proxy.md) enables you to add headers and generate nonces before the page renders.
 
-Every time a page is viewed, a fresh nonce should be generated. This means that you **must use [dynamic rendering](/docs/app/glossary#dynamic-rendering) to add nonces**.
+Every time a page is viewed, a fresh nonce should be generated. This means that you **must use [dynamic rendering](../04-glossary.md#dynamic-rendering) to add nonces**.
 
 For example:
 
@@ -112,7 +108,7 @@ export function proxy(request) {
 }
 ```
 
-By default, Proxy runs on all requests. You can filter Proxy to run on specific paths using a [`matcher`](/docs/app/api-reference/file-conventions/proxy#matcher).
+By default, Proxy runs on all requests. You can filter Proxy to run on specific paths using a [`matcher`](../03-api-reference/03-file-conventions/proxy.md#matcher).
 
 We recommend ignoring matching prefetches (from `next/link`) and static assets that don't need the CSP header.
 
@@ -200,7 +196,7 @@ export default async function Page() {
 
 ### Reading the nonce
 
-You can read the nonce from a [Server Component](/docs/app/getting-started/server-and-client-components) using [`headers`](/docs/app/api-reference/functions/headers):
+You can read the nonce from a [Server Component](../01-getting-started/05-server-and-client-components.md) using [`headers`](../03-api-reference/04-functions/headers.md):
 
 ```tsx filename="app/page.tsx" switcher
 import { headers } from 'next/headers'
@@ -270,7 +266,7 @@ Consider nonces when:
 
 ## Without Nonces
 
-For applications that do not require nonces, you can set the CSP header directly in your [`next.config.js`](/docs/app/api-reference/config/next-config-js) file:
+For applications that do not require nonces, you can set the CSP header directly in your [`next.config.js`](../03-api-reference/05-config/01-next-config-js/index.md) file:
 
 ```js filename="next.config.js"
 const isDev = process.env.NODE_ENV === 'development'
@@ -530,3 +526,8 @@ const cspHeader = `
 | - | - |
 | `v14.0.0` | Experimental SRI support added for hash-based CSP |
 | `v13.4.20` | Recommended for proper nonce handling and CSP header parsing. |
+
+## INDEX
+
+- [proxy.js](../03-api-reference/03-file-conventions/proxy.md)
+- [headers](../03-api-reference/04-functions/headers.md)

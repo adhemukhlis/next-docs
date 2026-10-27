@@ -4,14 +4,14 @@ nav_title: Next.js MCP Server
 description: Learn how to give coding agents access to your running Next.js app through the built-in MCP endpoint.
 related:
  links:
-  - app/guides/ai-agents
+  - ./ai-agents.md
 ---
 
 The [Model Context Protocol (MCP)](https://modelcontextprotocol.io) is an open standard that lets AI agents and coding assistants interact with your applications through one shared interface.
 
 In Next.js 16 and later, the development server exposes an MCP endpoint at `/_next/mcp`. It gives coding agents the running app's view of errors, routes, logs, and compilation issues. To connect your agent client to it, install the [`next-devtools-mcp`](https://www.npmjs.com/package/next-devtools-mcp) package.
 
-Skills such as [`next-dev-loop`](/docs/app/guides/ai-agents#next-dev-loop) call `/_next/mcp` directly, so they work without this setup.
+Skills such as [`next-dev-loop`](./ai-agents.md#next-dev-loop) call `/_next/mcp` directly, so they work without this setup.
 
 ## Getting started
 

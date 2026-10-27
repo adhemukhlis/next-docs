@@ -4,7 +4,7 @@ nav_title: src
 description: Save pages under the `src` folder as an alternative to the root `pages` directory.
 related:
  links:
-  - app/getting-started/project-structure
+  - ../../01-getting-started/02-project-structure.md
 ---
 
 As an alternative to having the special Next.js `app` or `pages` directories in the root of your project, Next.js also supports the common pattern of placing application code under the `src` folder.

@@ -2,29 +2,21 @@
 title: Optimizing prefetching
 description: Resolve per-link URL data, include session data in the App Shell, or defer expensive work to a later navigation stage.
 nav_title: Optimizing prefetching
-related:
- title: Learn more
- description: Learn more about the APIs and concepts used in this guide.
- links:
-  - app/guides/keeping-pages-static
-  - app/api-reference/config/next-config-js/partialPrefetching
-  - app/api-reference/functions/prefetch
-  - app/api-reference/functions/navigation
 ---
 
-Prefetching downloads a route's JavaScript, CSS, and RSC payload before the user navigates to it, so the router can render the next route without waiting for a round trip. The [Prefetching guide](/docs/app/guides/prefetching) covers what the App Router prefetches by default.
+Prefetching downloads a route's JavaScript, CSS, and RSC payload before the user navigates to it, so the router can render the next route without waiting for a round trip. The [Prefetching guide](./prefetching.md) covers what the App Router prefetches by default.
 
-With [Cache Components](/docs/app/getting-started/caching) and [Partial Prefetching](/docs/app/api-reference/config/next-config-js/partialPrefetching), Next.js loads server-rendered output in stages, before and during a client navigation. These are the route's [navigation stages](/docs/app/glossary#navigation-stages):
+With [Cache Components](../01-getting-started/08-caching.md) and [Partial Prefetching](../03-api-reference/05-config/01-next-config-js/partialPrefetching.md), Next.js loads server-rendered output in stages, before and during a client navigation. These are the route's [navigation stages](../04-glossary.md#navigation-stages):
 
-1. A default [`<Link>`](/docs/app/api-reference/components/link) loads the route's [**App Shell**](/docs/app/glossary#app-shell). It holds the route's static output and, for routes that read [`cookies()`](/docs/app/api-reference/functions/cookies) or [`headers()`](/docs/app/api-reference/functions/headers), its session-specific UI. Links to the same route share it.
-2. A [`<Link prefetch={true}>`](/docs/app/api-reference/components/link#prefetch), or [`router.prefetch(href, { kind: 'full' })`](/docs/app/api-reference/functions/use-router), also loads static or cached content that depends on the link's [URL data](/docs/app/glossary#url-data), such as [`searchParams`](/docs/app/api-reference/file-conventions/page#searchparams-optional) and [`params`](/docs/app/api-reference/file-conventions/page#params-optional), which the shared shell cannot include.
+1. A default [`<Link>`](../03-api-reference/02-components/link.md) loads the route's [**App Shell**](../04-glossary.md#app-shell). It holds the route's static output and, for routes that read [`cookies()`](../03-api-reference/04-functions/cookies.md) or [`headers()`](../03-api-reference/04-functions/headers.md), its session-specific UI. Links to the same route share it.
+2. A [`<Link prefetch={true}>`](../03-api-reference/02-components/link.md#prefetch), or [`router.prefetch(href, { kind: 'full' })`](../03-api-reference/04-functions/use-router.md), also loads static or cached content that depends on the link's [URL data](../04-glossary.md#url-data), such as [`searchParams`](../03-api-reference/03-file-conventions/page.md#searchparams-optional) and [`params`](../03-api-reference/03-file-conventions/page.md#params-optional), which the shared shell cannot include.
 3. When the user follows the link, the navigation renders the rest of the route.
 
-Use [`prefetch()`](/docs/app/api-reference/functions/prefetch) and [`navigation()`](/docs/app/api-reference/functions/navigation) to move expensive work to a later stage. To require that a stage stays static across a route, see [Keeping pages static](/docs/app/guides/keeping-pages-static).
+Use [`prefetch()`](../03-api-reference/04-functions/prefetch.md) and [`navigation()`](../03-api-reference/04-functions/navigation.md) to move expensive work to a later stage. To require that a stage stays static across a route, see [Keeping pages static](./keeping-pages-static.md).
 
 ## Use the optimizer skill (recommended)
 
-The [`next-partial-prefetching-optimizer`](/docs/app/guides/ai-agents#next-partial-prefetching-optimizer) skill applies this guide with a coding agent. It defines the UI that should be ready for a selected link in an [`instant()` test](/docs/app/guides/instant-navigation#prevent-regressions-with-e2e-tests), proves the current behavior, and works the test to green.
+The [`next-partial-prefetching-optimizer`](./ai-agents.md#next-partial-prefetching-optimizer) skill applies this guide with a coding agent. It defines the UI that should be ready for a selected link in an [`instant()` test](./instant-navigation.md#prevent-regressions-with-e2e-tests), proves the current behavior, and works the test to green.
 
 Install the skill:
 
@@ -38,7 +30,7 @@ Then give the agent the source, destination, and UI that should be available imm
 Make the search results instant when navigating from / to /search?q=react. Use the next-partial-prefetching-optimizer Skill.
 ```
 
-Enable [Cache Components](/docs/app/getting-started/caching) and [`partialPrefetching`](/docs/app/api-reference/config/next-config-js/partialPrefetching) before applying these optimizations:
+Enable [Cache Components](../01-getting-started/08-caching.md) and [`partialPrefetching`](../03-api-reference/05-config/01-next-config-js/partialPrefetching.md) before applying these optimizations:
 
 ```ts filename="next.config.ts" highlight={4,5}
 import type { NextConfig } from 'next'
@@ -51,11 +43,11 @@ const nextConfig: NextConfig = {
 export default nextConfig
 ```
 
-If the route is not yet structured for instant navigation, start with the [Instant navigation guide](/docs/app/guides/instant-navigation) to validate its caching structure.
+If the route is not yet structured for instant navigation, start with the [Instant navigation guide](./instant-navigation.md) to validate its caching structure.
 
 ## Resolve URL data at prefetch time
 
-Set `<Link prefetch={true}>` to resolve URL data for that link before navigation. The destination must use [Partial Prefetching](/docs/app/api-reference/config/next-config-js/partialPrefetching), enabled globally with `partialPrefetching` or per segment with [`prefetch = 'partial'`](/docs/app/api-reference/file-conventions/route-segment-config/prefetch#partial).
+Set `<Link prefetch={true}>` to resolve URL data for that link before navigation. The destination must use [Partial Prefetching](../03-api-reference/05-config/01-next-config-js/partialPrefetching.md), enabled globally with `partialPrefetching` or per segment with [`prefetch = 'partial'`](../03-api-reference/03-file-conventions/02-route-segment-config/prefetch.md#partial).
 
 For a custom link, call `router.prefetch(href, { kind: 'full' })` to request the same per-link stage. Calling `router.prefetch(href)` without the `kind` option requests only the App Shell.
 
@@ -124,13 +116,13 @@ Without `prefetch={true}`, the App Shell renders `<h1>` and shows the `<Results>
 
 With `prefetch={true}` on the link, the router requests a per-link prefetch that resolves `<Results>` before the click. The `q` value comes from the link's URL, which is known at prefetch time, and the cached `search(q)` call provides the result. When the user clicks, the results render immediately without showing the fallback.
 
-Next.js includes static and cached content in the prefetch until it reaches an uncached read. It then includes the fallback from the surrounding `<Suspense>` boundary. That boundary is already in place from [structuring the route for instant navigation](/docs/app/guides/instant-navigation).
+Next.js includes static and cached content in the prefetch until it reaches an uncached read. It then includes the fallback from the surrounding `<Suspense>` boundary. That boundary is already in place from [structuring the route for instant navigation](./instant-navigation.md).
 
 Generating the per-link prefetch costs **a server invocation per prefetchable link**, so it is opt-in per link. On pages where all the content is statically renderable, Next.js serves the prefetch from the static cache instead. A page that accesses non-static data is generated per prefetch, unless that access is [deferred to the navigation](#keep-the-prefetch-static).
 
 > **Good to know:** A cold cache (first visit, or after expiration) means the server still has to compute the cached result. Users may see a loading spinner on that first navigation. Subsequent navigations are instant as long as the cache is warm.
 
-Like `searchParams`, `params` needs a `<Suspense>` boundary, even when the values are predefined by [`generateStaticParams`](/docs/app/api-reference/functions/generate-static-params). A statically known param still belongs to one URL. A per-link prefetch with `prefetch={true}` resolves the values `generateStaticParams` does not cover.
+Like `searchParams`, `params` needs a `<Suspense>` boundary, even when the values are predefined by [`generateStaticParams`](../03-api-reference/04-functions/generate-static-params.md). A statically known param still belongs to one URL. A per-link prefetch with `prefetch={true}` resolves the values `generateStaticParams` does not cover.
 
 ## Include session data in the shell
 
@@ -193,7 +185,7 @@ Anything without a caching directive still streams in after navigation. A shell 
 
 ### `"use cache: private"`
 
-When the lookup is tied to a single session, use [`"use cache: private"`](/docs/app/api-reference/directives/use-cache-private). It assigns a cache lifetime to a function that reads cookies, headers, or other runtime data directly. Results are cached in the browser only, scoped to that session.
+When the lookup is tied to a single session, use [`"use cache: private"`](../03-api-reference/01-directives/use-cache-private.md). It assigns a cache lifetime to a function that reads cookies, headers, or other runtime data directly. Results are cached in the browser only, scoped to that session.
 
 ```tsx filename="app/dashboard/user-nav.tsx"
 import { cookies } from 'next/headers'
@@ -220,8 +212,8 @@ The App Shell is shared by the links into a route. A per-link prefetch runs for 
 
 Uncached work is already left out of prefetches. For cacheable work, `next/cache` exports functions that defer the code below each call:
 
-- [`prefetch()`](/docs/app/api-reference/functions/prefetch) defers the code until a per-link prefetch or navigation.
-- [`navigation()`](/docs/app/api-reference/functions/navigation) defers the code until navigation.
+- [`prefetch()`](../03-api-reference/04-functions/prefetch.md) defers the code until a per-link prefetch or navigation.
+- [`navigation()`](../03-api-reference/04-functions/navigation.md) defers the code until navigation.
 
 In the following diagram, a gray dashed outline marks the Suspense fallback, while blue marks the deferred work once it renders:
 
@@ -233,7 +225,7 @@ width="1200"
 height="480"
 />
 
-Both functions apply only during runtime rendering, so they do not change a fully static route. Each call defers the component that awaits it and that component's descendants. Earlier stages render the nearest [`<Suspense>`](https://react.dev/reference/react/Suspense) fallback, which the deferred subtree replaces when its stage runs. Unlike [`connection()`](/docs/app/api-reference/functions/connection), neither function makes the subtree request-dependent, so functions within it can still use `use cache`. See [How `navigation()` differs from `connection()`](/docs/app/api-reference/functions/navigation#how-navigation-differs-from-connection).
+Both functions apply only during runtime rendering, so they do not change a fully static route. Each call defers the component that awaits it and that component's descendants. Earlier stages render the nearest [`<Suspense>`](https://react.dev/reference/react/Suspense) fallback, which the deferred subtree replaces when its stage runs. Unlike [`connection()`](../03-api-reference/04-functions/connection.md), neither function makes the subtree request-dependent, so functions within it can still use `use cache`. See [How `navigation()` differs from `connection()`](../03-api-reference/04-functions/navigation.md#how-navigation-differs-from-connection).
 
 ### Keep expensive session data out of the App Shell
 
@@ -316,7 +308,7 @@ export async function getLatestMessage(threadId: string) {
 
 The per-link prefetch includes the cached subject and the message fallback. The cached message body loads when the user opens the thread, then remains available for later visits.
 
-Leaving the subtree uncached would also keep it out of prefetches, but it would lose its cache lifetime on navigation too. For `use cache` content, a [`stale`](/docs/app/api-reference/functions/cacheLife#stale) time of five minutes or more lets the client-side router reuse it after the first navigation. Below that, each navigation fetches it again.
+Leaving the subtree uncached would also keep it out of prefetches, but it would lose its cache lifetime on navigation too. For `use cache` content, a [`stale`](../03-api-reference/04-functions/cacheLife.md#stale) time of five minutes or more lets the client-side router reuse it after the first navigation. Below that, each navigation fetches it again.
 
 ### Keep the prefetch static
 
@@ -349,13 +341,13 @@ async function Stories() {
 
 Reading the cookie below `navigation()` does not make the per-link prefetch render per request, because that read would not have resolved during the prefetch anyway. The same holds for `prefetch()` and the App Shell. When every `cookies()` and `headers()` read sits below `prefetch()`, the shell is served from static output. Reading `params` or `searchParams` does not require a runtime shell. URL data is excluded from the shared shell, but it can make a per-link prefetch render at runtime unless it sits below `navigation()`.
 
-Each call defers one subtree. To require static output for the whole route, so a later change cannot reintroduce request-time rendering, set [`ensureStatic`](/docs/app/api-reference/file-conventions/route-segment-config/ensureStatic). The [Keeping pages static](/docs/app/guides/keeping-pages-static) guide walks through each level.
+Each call defers one subtree. To require static output for the whole route, so a later change cannot reintroduce request-time rendering, set [`ensureStatic`](../03-api-reference/03-file-conventions/02-route-segment-config/ensureStatic.md). The [Keeping pages static](./keeping-pages-static.md) guide walks through each level.
 
 ## Test prefetched and deferred content
 
-The [Instant navigation guide](/docs/app/guides/instant-navigation#prevent-regressions-with-e2e-tests) explains how to install and configure `@next/playwright`. For a client navigation, use `instant()` to inspect the destination's prefetched UI.
+The [Instant navigation guide](./instant-navigation.md#prevent-regressions-with-e2e-tests) explains how to install and configure `@next/playwright`. For a client navigation, use `instant()` to inspect the destination's prefetched UI.
 
-When [adopting Partial Prefetching](/docs/app/guides/adopting-partial-prefetching#verify-prefetched-ui-with-tests), run this test before enabling the feature and rerun the same assertions afterward. This preserves the UI selected from the legacy full prefetch while its implementation moves to the App Shell or a per-link prefetch.
+When [adopting Partial Prefetching](./adopting-partial-prefetching.md#verify-prefetched-ui-with-tests), run this test before enabling the feature and rerun the same assertions afterward. This preserves the UI selected from the legacy full prefetch while its implementation moves to the App Shell or a per-link prefetch.
 
 Inside the callback, click the link, wait for the destination URL, and assert which content is available. After the callback releases the navigation, assert that deferred content eventually renders:
 
@@ -387,11 +379,11 @@ In development, a `prefetch()` or `navigation()` call outside `<Suspense>` surfa
 
 Use `prefetch={true}` on routes where:
 
-- Part of the component tree depends on URL data: the full URL, `searchParams`, or `params` not resolved by [`generateStaticParams`](/docs/app/api-reference/functions/generate-static-params)
+- Part of the component tree depends on URL data: the full URL, `searchParams`, or `params` not resolved by [`generateStaticParams`](../03-api-reference/04-functions/generate-static-params.md)
 - That part of the tree has a known cache lifetime (it can be expressed with `"use cache"` or `"use cache: private"`)
 - The traffic justifies the per-link server invocation
 
-Prefetching cached data does not change its freshness behavior. If a mutation can update the data, [tag and invalidate the cached result](/docs/app/getting-started/revalidating).
+Prefetching cached data does not change its freshness behavior. If a mutation can update the data, [tag and invalidate the cached result](../01-getting-started/09-revalidating.md).
 
 Skip it when the prefetch can't produce a better UI than the App Shell. Each visible `<Link prefetch={true}>` can wake a server, and that cost only pays off if more of the page is ready before the click:
 
@@ -401,7 +393,7 @@ Skip it when the prefetch can't produce a better UI than the App Shell. Each vis
 
 A per-link prefetch is best-effort. It only helps the navigations where it completes before the click. On a slow connection, on a feed of many links, or on a direct visit, it may not be ready when the user navigates, and the navigation falls back to the App Shell.
 
-When many links to a route are visible at once, such as a grid of cards, each `<Link prefetch={true}>` prefetches that link's content as it enters the viewport, so the grid makes one such server request per card. Prefetch on intent instead. A [hover-triggered prefetch](/docs/app/guides/prefetching#hover-triggered-prefetch) fetches only the links the user is likely to click. The default `<Link>` (without `prefetch={true}`) loads only the App Shell, so it doesn't carry this cost.
+When many links to a route are visible at once, such as a grid of cards, each `<Link prefetch={true}>` prefetches that link's content as it enters the viewport, so the grid makes one such server request per card. Prefetch on intent instead. A [hover-triggered prefetch](./prefetching.md#hover-triggered-prefetch) fetches only the links the user is likely to click. The default `<Link>` (without `prefetch={true}`) loads only the App Shell, so it doesn't carry this cost.
 
 | | App Shell | Per-link prefetch with `prefetch={true}` | Navigation |
 | - | - | - | - |
@@ -414,7 +406,16 @@ When many links to a route are visible at once, such as a grid of cards, each `<
 
 ## Next steps
 
-- [Adopting Partial Prefetching](/docs/app/guides/adopting-partial-prefetching) for how `<Link>` behaves under the new model and how to migrate existing apps.
-- [`prefetch()`](/docs/app/api-reference/functions/prefetch) and [`navigation()`](/docs/app/api-reference/functions/navigation) for the full behavior of each navigation stage API.
-- [Keeping pages static](/docs/app/guides/keeping-pages-static) for requiring a static App Shell, prefetch, or complete route with `ensureStatic`.
-- [Instant navigation guide](/docs/app/guides/instant-navigation) for validating the route's caching structure.
+- [Adopting Partial Prefetching](./adopting-partial-prefetching.md) for how `<Link>` behaves under the new model and how to migrate existing apps.
+- [`prefetch()`](../03-api-reference/04-functions/prefetch.md) and [`navigation()`](../03-api-reference/04-functions/navigation.md) for the full behavior of each navigation stage API.
+- [Keeping pages static](./keeping-pages-static.md) for requiring a static App Shell, prefetch, or complete route with `ensureStatic`.
+- [Instant navigation guide](./instant-navigation.md) for validating the route's caching structure.
+
+## INDEX
+
+Learn more about the APIs and concepts used in this guide.
+
+- [Keeping pages static](./keeping-pages-static.md)
+- [partialPrefetching](../03-api-reference/05-config/01-next-config-js/partialPrefetching.md)
+- [prefetch](../03-api-reference/04-functions/prefetch.md)
+- [navigation](../03-api-reference/04-functions/navigation.md)

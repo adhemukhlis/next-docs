@@ -15,7 +15,7 @@ export const maxDuration = 5
 
 ## Server Actions
 
-If using [Server Actions](/docs/app/getting-started/mutating-data), set the `maxDuration` at the page level to change the default timeout of all Server Actions used on the page.
+If using [Server Actions](../../../01-getting-started/07-mutating-data.md), set the `maxDuration` at the page level to change the default timeout of all Server Actions used on the page.
 
 ## Version History
 

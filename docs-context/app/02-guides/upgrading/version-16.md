@@ -12,7 +12,7 @@ Run the latest upgrade CLI from your app's directory:
 npx next@canary upgrade --agent=latest
 ```
 
-The CLI prepares the Next.js 16 migration guides and codemod command for the agent, then asks it to apply the changes and verify the app. See [Upgrade with a coding agent](/docs/app/guides/upgrading/agent-upgrade) for details.
+The CLI prepares the Next.js 16 migration guides and codemod command for the agent, then asks it to apply the changes and verify the app. See [Upgrade with a coding agent](./agent-upgrade.md) for details.
 
 ## Or upgrade manually
 
@@ -31,11 +31,11 @@ Before upgrading, point `AGENTS.md` at version-matched Next.js docs so a coding 
 npx @next/codemod@canary agents-md
 ```
 
-After upgrading, check that `AGENTS.md` points at the docs bundled with the installed version in `node_modules/next/dist/docs/`. On Next.js 16.2 and later, `next dev` keeps this block up to date when it detects a coding agent. If the setup downloaded docs into `.next-docs/`, remove that directory once nothing references it. See [Version-matched documentation](/docs/app/guides/ai-agents#version-matched-documentation) for the managed block and setup details.
+After upgrading, check that `AGENTS.md` points at the docs bundled with the installed version in `node_modules/next/dist/docs/`. On Next.js 16.2 and later, `next dev` keeps this block up to date when it detects a coding agent. If the setup downloaded docs into `.next-docs/`, remove that directory once nothing references it. See [Version-matched documentation](../ai-agents.md#version-matched-documentation) for the managed block and setup details.
 
 ## Using the codemod
 
-To update to Next.js version 16, you can use the `upgrade` [codemod](/docs/app/guides/upgrading/codemods#160):
+To update to Next.js version 16, you can use the `upgrade` [codemod](./codemods.md#160):
 
 ```bash package="pnpm"
 pnpm dlx @next/codemod@canary upgrade latest
@@ -53,7 +53,7 @@ yarn dlx @next/codemod@canary upgrade latest
 bunx @next/codemod@canary upgrade latest
 ```
 
-The [codemod](/docs/app/guides/upgrading/codemods#160) is able to:
+The [codemod](./codemods.md#160) is able to:
 
 - Update `next.config.js` to use the new `turbopack` configuration
 - Migrate from `next lint` to the ESLint CLI
@@ -125,7 +125,7 @@ This is no longer necessary. You can update your `package.json` scripts:
 }
 ```
 
-If your project has a [custom `webpack`](/docs/app/api-reference/config/next-config-js/webpack) configuration and you run `next build` (which now uses Turbopack by default), the build will **fail** to prevent misconfiguration issues.
+If your project has a [custom `webpack`](../../03-api-reference/05-config/01-next-config-js/webpack.md) configuration and you run `next build` (which now uses Turbopack by default), the build will **fail** to prevent misconfiguration issues.
 
 You have a few different ways to address this:
 
@@ -185,10 +185,10 @@ const nextConfig: NextConfig = {
 export default nextConfig
 ```
 
-Make sure to review the `Turbopack` configuration [options](/docs/app/api-reference/config/next-config-js/turbopack). **Next.js 16** introduces various improvements and new options, for example:
+Make sure to review the `Turbopack` configuration [options](../../03-api-reference/05-config/01-next-config-js/turbopack.md). **Next.js 16** introduces various improvements and new options, for example:
 
-- [Advanced Webpack loader conditions](/docs/app/api-reference/config/next-config-js/turbopack#advanced-webpack-loader-conditions)
-- [debugIds](/docs/app/api-reference/config/next-config-js/turbopack#debug-ids)
+- [Advanced Webpack loader conditions](../../03-api-reference/05-config/01-next-config-js/turbopack.md#advanced-webpack-loader-conditions)
+- [debugIds](../../03-api-reference/05-config/01-next-config-js/turbopack.md#debug-ids)
 
 ### Resolve alias fallback
 
@@ -250,7 +250,7 @@ export default nextConfig
 
 ### Turbopack File System Caching
 
-Turbopack stores compiler artifacts on disk between runs, for significantly faster compile times across restarts. Filesystem caching is enabled by default for both `next dev` and `next build`, through `experimental.turbopackFileSystemCacheForDev` and `experimental.turbopackFileSystemCacheForBuild`. See [Turbopack FileSystem Caching](/docs/app/api-reference/config/next-config-js/turbopackFileSystemCache) to configure or disable either one.
+Turbopack stores compiler artifacts on disk between runs, for significantly faster compile times across restarts. Filesystem caching is enabled by default for both `next dev` and `next build`, through `experimental.turbopackFileSystemCacheForDev` and `experimental.turbopackFileSystemCacheForBuild`. See [Turbopack FileSystem Caching](../../03-api-reference/05-config/01-next-config-js/turbopackFileSystemCache.md) to configure or disable either one.
 
 ## Async Request APIs (Breaking change)
 
@@ -258,21 +258,21 @@ Version 15 introduced [Async Request APIs](https://nextjs.org/docs/app/guides/up
 
 Starting with **Next.js 16**, synchronous access is fully removed. These APIs can only be accessed asynchronously.
 
-- [`cookies`](/docs/app/api-reference/functions/cookies)
-- [`headers`](/docs/app/api-reference/functions/headers)
-- [`draftMode`](/docs/app/api-reference/functions/draft-mode)
-- `params` in [`layout.js`](/docs/app/api-reference/file-conventions/layout), [`page.js`](/docs/app/api-reference/file-conventions/page), [`route.js`](/docs/app/api-reference/file-conventions/route), [`default.js`](/docs/app/api-reference/file-conventions/default), [`opengraph-image`](/docs/app/api-reference/file-conventions/metadata/opengraph-image#opengraph-image), [`twitter-image`](/docs/app/api-reference/file-conventions/metadata/opengraph-image#twitter-image), [`icon`](/docs/app/api-reference/file-conventions/metadata/app-icons#icon), and [`apple-icon`](/docs/app/api-reference/file-conventions/metadata/app-icons#apple-icon).
-- `searchParams` in [`page.js`](/docs/app/api-reference/file-conventions/page)
+- [`cookies`](../../03-api-reference/04-functions/cookies.md)
+- [`headers`](../../03-api-reference/04-functions/headers.md)
+- [`draftMode`](../../03-api-reference/04-functions/draft-mode.md)
+- `params` in [`layout.js`](../../03-api-reference/03-file-conventions/layout.md), [`page.js`](../../03-api-reference/03-file-conventions/page.md), [`route.js`](../../03-api-reference/03-file-conventions/route.md), [`default.js`](../../03-api-reference/03-file-conventions/default.md), [`opengraph-image`](../../03-api-reference/03-file-conventions/01-metadata/opengraph-image.md#opengraph-image), [`twitter-image`](../../03-api-reference/03-file-conventions/01-metadata/opengraph-image.md#twitter-image), [`icon`](../../03-api-reference/03-file-conventions/01-metadata/app-icons.md#icon), and [`apple-icon`](../../03-api-reference/03-file-conventions/01-metadata/app-icons.md#apple-icon).
+- `searchParams` in [`page.js`](../../03-api-reference/03-file-conventions/page.md)
 
-Use the [codemod](/docs/app/guides/upgrading/codemods#migrate-to-async-dynamic-apis) to migrate to async Request-time APIs.
+Use the [codemod](./codemods.md#migrate-to-async-dynamic-apis) to migrate to async Request-time APIs.
 
 ### Migrating types for async Request-time APIs
 
-To help migrate to async `params` and `searchParams`, you can run [`npx next typegen`](/docs/app/api-reference/cli/next#next-typegen-options) to automatically generate these globally available types helpers:
+To help migrate to async `params` and `searchParams`, you can run [`npx next typegen`](../../03-api-reference/06-cli/next.md#next-typegen-options) to automatically generate these globally available types helpers:
 
-- [`PageProps`](/docs/app/api-reference/file-conventions/page#page-props-helper)
-- [`LayoutProps`](/docs/app/api-reference/file-conventions/layout#layout-props-helper)
-- [`RouteContext`](/docs/app/api-reference/file-conventions/route#route-context-helper)
+- [`PageProps`](../../03-api-reference/03-file-conventions/page.md#page-props-helper)
+- [`LayoutProps`](../../03-api-reference/03-file-conventions/layout.md#layout-props-helper)
+- [`RouteContext`](../../03-api-reference/03-file-conventions/route.md#route-context-helper)
 
 > **Good to know**: `typegen` was introduced in Next.js 15.5
 
@@ -327,7 +327,7 @@ export default async function Image({ params, id }) {
 
 ## Async `id` parameter for `sitemap` (Breaking change)
 
-Previously, the `id` values returned from [`generateSitemaps`](/docs/app/api-reference/functions/generate-sitemaps) were passed directly to the `sitemap` generating function.
+Previously, the `id` values returned from [`generateSitemaps`](../../03-api-reference/04-functions/generate-sitemaps.md) were passed directly to the `sitemap` generating function.
 
 ```js filename="app/product/sitemap.js"
 export async function generateSitemaps() {
@@ -415,7 +415,7 @@ bun add -D babel-plugin-react-compiler
 
 ### revalidateTag
 
-[`revalidateTag`](/docs/app/api-reference/functions/revalidateTag) now requires a second argument specifying a [`cacheLife`](/docs/app/api-reference/functions/cacheLife#reference) profile. The single-argument form is deprecated and will produce a TypeScript error.
+[`revalidateTag`](../../03-api-reference/04-functions/revalidateTag.md) now requires a second argument specifying a [`cacheLife`](../../03-api-reference/04-functions/cacheLife.md#reference) profile. The single-argument form is deprecated and will produce a TypeScript error.
 
 ```ts
 // Before
@@ -425,7 +425,7 @@ revalidateTag('posts')
 revalidateTag('posts', 'max')
 ```
 
-If you need immediate expiration rather than stale-while-revalidate, use [`updateTag`](/docs/app/api-reference/functions/updateTag) in Server Actions instead.
+If you need immediate expiration rather than stale-while-revalidate, use [`updateTag`](../../03-api-reference/04-functions/updateTag.md) in Server Actions instead.
 
 ```ts filename="app/actions.ts" switcher
 'use server'
@@ -453,7 +453,7 @@ Use `revalidateTag` for content where a slight delay in updates is acceptable, s
 
 ### updateTag
 
-[`updateTag`](/docs/app/api-reference/functions/updateTag) is a new [Server Actions](/docs/app/getting-started/mutating-data#what-are-server-functions)-only API that provides **read-your-writes** semantics, where a user makes a change and the UI immediately shows the change, rather than stale data.
+[`updateTag`](../../03-api-reference/04-functions/updateTag.md) is a new [Server Actions](../../01-getting-started/07-mutating-data.md#what-are-server-functions)-only API that provides **read-your-writes** semantics, where a user makes a change and the UI immediately shows the change, rather than stale data.
 
 It does this by expiring and immediately refreshing data within the same request.
 
@@ -485,11 +485,11 @@ export async function updateUserProfile(userId, profile) {
 
 This ensures interactive features reflect changes immediately. Perfect for forms, user settings, and any workflow where users expect to see their updates instantly.
 
-Learn more about when to use `updateTag` or `revalidateTag` [here](/docs/app/api-reference/functions/updateTag#when-to-use-updatetag).
+Learn more about when to use `updateTag` or `revalidateTag` [here](../../03-api-reference/04-functions/updateTag.md#when-to-use-updatetag).
 
 ### refresh
 
-[`refresh`](/docs/app/api-reference/functions/refresh) allows you to refresh the client router from within a Server Action.
+[`refresh`](../../03-api-reference/04-functions/refresh.md) allows you to refresh the client router from within a Server Action.
 
 ```ts filename="app/actions.ts" switcher
 'use server'
@@ -523,7 +523,7 @@ Use it when you need to refresh the client router after performing an action.
 
 ### cacheLife and cacheTag
 
-[`cacheLife`](/docs/app/api-reference/functions/cacheLife) and [`cacheTag`](/docs/app/api-reference/functions/cacheTag) are now stable. The `unstable_` prefix is no longer needed.
+[`cacheLife`](../../03-api-reference/04-functions/cacheLife.md) and [`cacheTag`](../../03-api-reference/04-functions/cacheTag.md) are now stable. The `unstable_` prefix is no longer needed.
 
 Wherever you had aliased imports like:
 
@@ -554,7 +554,7 @@ If the increased request count causes issues, please let us know by creating an 
 
 **Next.js 16** removes the experimental **Partial Prerendering (PPR)** flag and configuration options, including the route level segment `experimental_ppr`.
 
-Starting with **Next.js 16**, you can opt into PPR using the [`cacheComponents`](/docs/app/api-reference/config/next-config-js/cacheComponents) configuration.
+Starting with **Next.js 16**, you can opt into PPR using the [`cacheComponents`](../../03-api-reference/05-config/01-next-config-js/cacheComponents.md) configuration.
 
 ```js filename="next.config.js"
 /** @type {import('next').NextConfig} */
@@ -565,7 +565,7 @@ const nextConfig = {
 module.exports = nextConfig
 ```
 
-PPR in **Next.js 16** works differently than in **Next.js 15** canaries. If you are using PPR today, stay in the current Next.js 15 canary you are using. See [Migrating to Cache Components](/docs/app/guides/migrating-to-cache-components) for migration patterns.
+PPR in **Next.js 16** works differently than in **Next.js 15** canaries. If you are using PPR today, stay in the current Next.js 15 canary you are using. See [Migrating to Cache Components](../migrating-to-cache-components.md) for migration patterns.
 
 ```js filename="next.config.js"
 /** @type {import('next').NextConfig} */
@@ -626,7 +626,7 @@ const nextConfig = {
 module.exports = nextConfig
 ```
 
-The version 16 [codemod](/docs/app/guides/upgrading/codemods#160) is able to update these flags too.
+The version 16 [codemod](./codemods.md#160) is able to update these flags too.
 
 ## `next/image` changes
 
@@ -890,7 +890,7 @@ module.exports = {
 
 Additionally, a lockfile mechanism prevents multiple `next dev` or `next build` instances on the same project.
 
-The [Turbopack tracing command](/docs/app/guides/local-development#turbopack-tracing) should be:
+The [Turbopack tracing command](../local-development.md#turbopack-tracing) should be:
 
 ```bash package="pnpm"
 pnpm next internal trace .next-profiles/trace-turbopack.bin
@@ -910,9 +910,9 @@ bunx next internal trace .next-profiles/trace-turbopack.bin
 
 ## Parallel Routes `default.js` requirement
 
-All [parallel route](/docs/app/api-reference/file-conventions/parallel-routes) slots now require explicit `default.js` files. Builds will fail without them.
+All [parallel route](../../03-api-reference/03-file-conventions/parallel-routes.md) slots now require explicit `default.js` files. Builds will fail without them.
 
-To maintain previous behavior, create a [`default.js`](/docs/app/api-reference/file-conventions/default) file that calls `notFound()` or returns `null`.
+To maintain previous behavior, create a [`default.js`](../../03-api-reference/03-file-conventions/default.md) file that calls `notFound()` or returns `null`.
 
 ```tsx filename="app/@modal/default.tsx"
 import { notFound } from 'next/navigation'
@@ -934,7 +934,7 @@ export default function Default() {
 
 `@next/eslint-plugin-next` now defaults to ESLint Flat Config format, aligning with ESLint v10 which will drop legacy config support.
 
-Make sure to review our API reference for the [`@next/eslint-plugin-next`](/docs/app/api-reference/config/eslint#setup-eslint) plugin.
+Make sure to review our API reference for the [`@next/eslint-plugin-next`](../../03-api-reference/05-config/03-eslint.md#setup-eslint) plugin.
 
 If you're using the legacy `.eslintrc` format, consider migrating to the flat config format. See the [ESLint migration guide](https://eslint.org/docs/latest/use/configure/migration-guide) for details.
 
@@ -1001,7 +1001,7 @@ const nextConfig = {/* Your config options */}
 module.exports = nextConfig
 ```
 
-Alternatively, use the [`phase`](/docs/app/api-reference/config/next-config-js#phase) in which the configuration is loaded.
+Alternatively, use the [`phase`](../../03-api-reference/05-config/01-next-config-js/index.md#phase) in which the configuration is loaded.
 
 ## Build Adapters API (alpha)
 
@@ -1019,7 +1019,7 @@ const nextConfig = {
 module.exports = nextConfig
 ```
 
-`adapterPath` was promoted to a stable, top-level option in 16.2.0. See [`adapterPath`](/docs/app/api-reference/config/next-config-js/adapterPath) for the current API reference.
+`adapterPath` was promoted to a stable, top-level option in 16.2.0. See [`adapterPath`](../../03-api-reference/05-config/01-next-config-js/adapterPath.md) for the current API reference.
 
 ## Modern Sass API
 
@@ -1136,7 +1136,7 @@ export default async function Page() {
 }
 ```
 
-> **Good to know**: Use the [taint API](/docs/app/api-reference/config/next-config-js/taint) to prevent accidentally passing sensitive server values to Client Components.
+> **Good to know**: Use the [taint API](../../03-api-reference/05-config/01-next-config-js/taint.md) to prevent accidentally passing sensitive server values to Client Components.
 
 For client-accessible values, use the `NEXT_PUBLIC_` prefix:
 
@@ -1153,7 +1153,7 @@ export default function ClientComponent() {
 }
 ```
 
-To ensure environment variables are read at runtime (not bundled at build time), use the [`connection()`](/docs/app/api-reference/functions/connection) function before reading from `process.env`:
+To ensure environment variables are read at runtime (not bundled at build time), use the [`connection()`](../../03-api-reference/04-functions/connection.md) function before reading from `process.env`:
 
 ```tsx filename="app/page.tsx"
 import { connection } from 'next/server'
@@ -1165,11 +1165,11 @@ export default async function Page() {
 }
 ```
 
-Learn more about [environment variables](/docs/app/guides/environment-variables).
+Learn more about [environment variables](../environment-variables.md).
 
 ### `devIndicators` Options
 
-The following options have been removed from [`devIndicators`](/docs/app/api-reference/config/next-config-js/devIndicators):
+The following options have been removed from [`devIndicators`](../../03-api-reference/05-config/01-next-config-js/devIndicators.md):
 
 - `appIsrStatus`
 - `buildActivity`
@@ -1199,7 +1199,7 @@ module.exports = {
 }
 ```
 
-If you were actively using these flags, migrate to top-level [`cacheComponents`](/docs/app/api-reference/config/next-config-js/cacheComponents):
+If you were actively using these flags, migrate to top-level [`cacheComponents`](../../03-api-reference/05-config/01-next-config-js/cacheComponents.md):
 
 ```ts filename="next.config.ts" switcher
 import type { NextConfig } from 'next'
@@ -1221,17 +1221,17 @@ module.exports = {
 
 If you were not actively adopting Cache Components, remove the flags instead. Enabling `cacheComponents` is not a rename-only change: it can surface build errors for uncached data outside of `<Suspense>` and requires adopting the Cache Components model.
 
-For the full migration path, see [Migrating to Cache Components](/docs/app/guides/migrating-to-cache-components).
+For the full migration path, see [Migrating to Cache Components](../migrating-to-cache-components.md).
 
 ### `unstable_rootParams`
 
-The `unstable_rootParams` function has been removed. Use [`next/root-params`](/docs/app/api-reference/functions/next-root-params) instead.
+The `unstable_rootParams` function has been removed. Use [`next/root-params`](../../03-api-reference/04-functions/next-root-params.md) instead.
 
 ## Troubleshooting
 
 ### Installation fails after upgrading to React 19
 
-- [ ] Follow the [React recovery checklist](/docs/app/guides/upgrading/version-15#installation-fails-after-upgrading-to-react-19).
+- [ ] Follow the [React recovery checklist](./version-15.md#installation-fails-after-upgrading-to-react-19).
 
 ### Installation fails after upgrading ESLint
 

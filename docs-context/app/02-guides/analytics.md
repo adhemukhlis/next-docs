@@ -4,7 +4,7 @@ nav_title: Analytics
 description: Measure and track page performance using Next.js Speed Insights
 ---
 
-Next.js has built-in support for measuring and reporting performance metrics. You can either use the [`useReportWebVitals`](/docs/app/api-reference/functions/use-report-web-vitals) hook to manage reporting yourself, or alternatively, Vercel provides a [managed service](https://vercel.com/analytics?utm_source=next-site\&utm_medium=docs\&utm_campaign=next-website) to automatically collect and visualize metrics for you.
+Next.js has built-in support for measuring and reporting performance metrics. You can either use the [`useReportWebVitals`](../03-api-reference/04-functions/use-report-web-vitals.md) hook to manage reporting yourself, or alternatively, Vercel provides a [managed service](https://vercel.com/analytics?utm_source=next-site\&utm_medium=docs\&utm_campaign=next-website) to automatically collect and visualize metrics for you.
 
 ## Client Instrumentation
 
@@ -54,7 +54,7 @@ export default function Layout({ children }) {
 
 > Since the `useReportWebVitals` hook must be used in a Client Component, create a separate file for the `WebVitals` component with `'use client'` at the top, before any imports. Import this component into the root layout to keep the client boundary limited to this module and its imports.
 
-View the [API Reference](/docs/app/api-reference/functions/use-report-web-vitals) for more information.
+View the [API Reference](../03-api-reference/04-functions/use-report-web-vitals.md) for more information.
 
 ## Web Vitals
 

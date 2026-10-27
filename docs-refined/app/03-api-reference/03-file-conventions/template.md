@@ -3,7 +3,7 @@ title: template.js
 description: API Reference for the template.js file.
 ---
 
-A **template** file is similar to a [layout](/docs/app/getting-started/layouts-and-pages#creating-a-layout) in that it wraps a layout or page. Unlike layouts that persist across routes and maintain state, templates are given a unique key, meaning children Client Components reset their state on navigation.
+A **template** file is similar to a [layout](../../01-getting-started/03-layouts-and-pages.md#creating-a-layout) in that it wraps a layout or page. Unlike layouts that persist across routes and maintain state, templates are given a unique key, meaning children Client Components reset their state on navigation.
 
 They are useful when you need to:
 
@@ -44,7 +44,7 @@ In terms of nesting, `template.js` is rendered between a layout and its children
 </Layout>
 ```
 
-In the [component hierarchy](/docs/app/getting-started/project-structure#component-hierarchy), `template.js` renders between `layout.js` and `error.js`. It wraps `error.js`, `loading.js`, `not-found.js`, and `page.js`, but does **not** wrap the `layout.js` in the same segment.
+In the [component hierarchy](../../01-getting-started/02-project-structure.md#component-hierarchy), `template.js` renders between `layout.js` and `error.js`. It wraps `error.js`, `loading.js`, `not-found.js`, and `page.js`, but does **not** wrap the `layout.js` in the same segment.
 
 ## Props
 

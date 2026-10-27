@@ -4,13 +4,13 @@ description: Learn how to enable the experimental `authInterrupts` configuration
 version: canary
 related:
  links:
-  - app/api-reference/functions/forbidden
-  - app/api-reference/functions/unauthorized
-  - app/api-reference/file-conventions/forbidden
-  - app/api-reference/file-conventions/unauthorized
+  - ../../04-functions/forbidden.md
+  - ../../04-functions/unauthorized.md
+  - ../../03-file-conventions/forbidden.md
+  - ../../03-file-conventions/unauthorized.md
 ---
 
-The `authInterrupts` configuration option allows you to use [`forbidden`](/docs/app/api-reference/functions/forbidden) and [`unauthorized`](/docs/app/api-reference/functions/unauthorized) APIs in your application. While these functions are experimental, you must enable the `authInterrupts` option in your `next.config.js` file to use them:
+The `authInterrupts` configuration option allows you to use [`forbidden`](../../04-functions/forbidden.md) and [`unauthorized`](../../04-functions/unauthorized.md) APIs in your application. While these functions are experimental, you must enable the `authInterrupts` option in your `next.config.js` file to use them:
 
 ```ts filename="next.config.ts" switcher
 import type { NextConfig } from 'next'

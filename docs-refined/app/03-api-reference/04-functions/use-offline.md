@@ -2,15 +2,11 @@
 title: useOffline
 description: API Reference for the useOffline hook.
 version: experimental
-related:
- links:
-  - app/api-reference/config/next-config-js/useOffline
-  - app/guides/progressive-web-apps
 ---
 
 The `useOffline` hook returns a boolean indicating whether the app is currently offline. Use it to render connectivity-aware UI, such as a banner when the user loses their network connection, or an offline-aware Suspense fallback.
 
-The hook is one piece of a larger feature. Enabling the [`experimental.useOffline`](/docs/app/api-reference/config/next-config-js/useOffline) config option turns on offline connectivity detection and automatic retry of blocked navigation, prefetch, and Server Action requests, and exposes this hook so Client Components can read the state.
+The hook is one piece of a larger feature. Enabling the [`experimental.useOffline`](../05-config/01-next-config-js/useOffline.md) config option turns on offline connectivity detection and automatic retry of blocked navigation, prefetch, and Server Action requests, and exposes this hook so Client Components can read the state.
 
 Without the flag, this hook always returns `false`.
 
@@ -44,7 +40,7 @@ export function OfflineStatus() {
 }
 ```
 
-For details on how connectivity is detected and requests retried, see [How retry works](/docs/app/api-reference/config/next-config-js/useOffline#how-retry-works).
+For details on how connectivity is detected and requests retried, see [How retry works](../05-config/01-next-config-js/useOffline.md#how-retry-works).
 
 ## Parameters
 
@@ -147,7 +143,7 @@ export default function RootLayout({ children }) {
 
 ### Offline-aware Suspense fallback
 
-When a user navigates to a route while offline, the prefetched static shell renders immediately but the dynamic content behind a `<Suspense>` boundary blocks on the network. For example, use `useOffline` inside a [`loading.tsx`](/docs/app/api-reference/file-conventions/loading) file to explain why the content is taking longer than expected.
+When a user navigates to a route while offline, the prefetched static shell renders immediately but the dynamic content behind a `<Suspense>` boundary blocks on the network. For example, use `useOffline` inside a [`loading.tsx`](../03-file-conventions/loading.md) file to explain why the content is taking longer than expected.
 
 ```tsx filename="app/destination/loading.tsx" switcher
 'use client'
@@ -180,3 +176,8 @@ When connectivity is restored, Next.js retries the blocked request and the dynam
 | Version   | Changes                       |
 | --------- | ----------------------------- |
 | `v16.x.0` | `useOffline` hook introduced. |
+
+## INDEX
+
+- [useOffline](../05-config/01-next-config-js/useOffline.md)
+- [How to build a Progressive Web Application (PWA) with Next.js](../../02-guides/progressive-web-apps.md)

@@ -5,7 +5,7 @@ description: API Reference for the connection function.
 
 The `connection()` function allows you to indicate rendering should wait for an incoming user request before continuing.
 
-It's useful when a component doesn't use [Request-time APIs](/docs/app/glossary#request-time-apis) like `cookies` or `headers`, but still needs to produce different output per request, such as `Math.random()` or `new Date()`.
+It's useful when a component doesn't use [Request-time APIs](../../04-glossary.md#request-time-apis) like `cookies` or `headers`, but still needs to produce different output per request, such as `Math.random()` or `new Date()`.
 
 ```ts filename="app/page.tsx" switcher
 import { connection } from 'next/server'
@@ -79,9 +79,9 @@ function connection(): Promise<void>
 
 ## Good to know
 
-- `connection` replaces [`unstable_noStore`](/docs/app/api-reference/functions/unstable_noStore) to better align with the future of Next.js.
+- `connection` replaces [`unstable_noStore`](./unstable_noStore.md) to better align with the future of Next.js.
 - The function is only necessary when dynamic rendering is required and common Request-time APIs are not used.
-- With [Cache Components](/docs/app/api-reference/config/next-config-js/cacheComponents), prefer [`io()`](/docs/app/api-reference/functions/io) for excluding content from the static shell. It works the same way but can also be cached and prefetched. Reach for `connection()` only when rendering should wait for a real user request.
+- With [Cache Components](../05-config/01-next-config-js/cacheComponents.md), prefer [`io()`](./io.md) for excluding content from the static shell. It works the same way but can also be cached and prefetched. Reach for `connection()` only when rendering should wait for a real user request.
 
 ### Version History
 

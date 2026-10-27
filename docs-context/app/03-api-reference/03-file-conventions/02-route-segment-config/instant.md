@@ -1,26 +1,17 @@
 ---
 title: instant
 description: Configure instant navigation validation for a route segment.
-related:
- title: Next Steps
- description: Learn how to use instant navigations in practice.
- links:
-  - app/guides/instant-navigation
-  - app/api-reference/file-conventions/route-segment-config/ensureStatic
-  - app/getting-started/caching
-  - app/getting-started/revalidating
-  - app/api-reference/directives/use-cache
 ---
 
 The `instant` route segment config controls how Next.js validates whether a navigation into this segment would produce an instant UI.
 
 Next.js uses prefetching to preload navigations for all in-app links on the current page. However, client-side data fetching or partially prerendered results from the server can lead to navigations that don't update the UI immediately. To help you build fast-feeling navigations, `instant` lets you tell Next.js what to expect from navigations through the configured segment. For instance, you can indicate that navigations into this segment should produce a UI that renders instantly without waiting on any externally loaded data. You can also indicate that navigations aren't expected to be instant.
 
-When a segment is configured to expect an instant UI, Next.js surfaces any code in your application that would block the navigation from updating the UI immediately. See the [Instant Navigation guide](/docs/app/guides/instant-navigation) for an end-to-end walkthrough.
+When a segment is configured to expect an instant UI, Next.js surfaces any code in your application that would block the navigation from updating the UI immediately. See the [Instant Navigation guide](../../../02-guides/instant-navigation.md) for an end-to-end walkthrough.
 
 > **Good to know**:
 >
-> - The `instant` export only works when [`cacheComponents`](/docs/app/api-reference/config/next-config-js/cacheComponents) is enabled.
+> - The `instant` export only works when [`cacheComponents`](../../05-config/01-next-config-js/cacheComponents.md) is enabled.
 > - `instant` cannot be used in Client Components. It will throw an error.
 > - Next.js does not perform prefetches in development, so navigations may not feel as instant as they will in production. Validation reflects what will happen during `next start`, where prefetching is enabled.
 
@@ -96,7 +87,7 @@ Each error identifies the component that would block navigation. The fix is usua
 
 ## How `instant` differs from `ensureStatic`
 
-`instant` validates whether a navigation shows UI immediately. [`ensureStatic`](/docs/app/api-reference/file-conventions/route-segment-config/ensureStatic) requires selected server-rendered output to be static instead of rendered for each request. A route can be fully static and still block a navigation, for example when a Client Component loads data in the browser.
+`instant` validates whether a navigation shows UI immediately. [`ensureStatic`](./ensureStatic.md) requires selected server-rendered output to be static instead of rendered for each request. A route can be fully static and still block a navigation, for example when a Client Component loads data in the browser.
 
 ## Configuring validation defaults
 
@@ -143,7 +134,7 @@ When the UI is frozen, click **Resume** to let the current navigation finish. Th
 
 ## Testing instant navigation
 
-The `@next/playwright` package exports an `instant()` helper that holds back dynamic content while the callback runs against the instant UI. The testing API is available automatically in development. For a production build, enable [`experimental.exposeTestingApiInProductionBuild`](/docs/app/api-reference/config/next-config-js/exposeTestingApiInProductionBuild) in the test build. See the [guide](/docs/app/guides/instant-navigation#prevent-regressions-with-e2e-tests) for a full example.
+The `@next/playwright` package exports an `instant()` helper that holds back dynamic content while the callback runs against the instant UI. The testing API is available automatically in development. For a production build, enable [`experimental.exposeTestingApiInProductionBuild`](../../05-config/01-next-config-js/exposeTestingApiInProductionBuild.md) in the test build. See the [guide](../../../02-guides/instant-navigation.md#prevent-regressions-with-e2e-tests) for a full example.
 
 ```typescript
 import { instant } from '@next/playwright'
@@ -173,3 +164,13 @@ export const instant: InstantConfig = true
 | Version | Changes |
 | - | - |
 | `v16.3.0` | `instant` export stabilized, replacing `unstable_instant` (Cache Components only). |
+
+## INDEX
+
+Learn how to use instant navigations in practice.
+
+- [Ensuring instant navigations](../../../02-guides/instant-navigation.md)
+- [ensureStatic](./ensureStatic.md)
+- [Caching](../../../01-getting-started/08-caching.md)
+- [Revalidating](../../../01-getting-started/09-revalidating.md)
+- [use cache](../../01-directives/use-cache.md)

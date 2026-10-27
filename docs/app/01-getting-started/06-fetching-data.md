@@ -5,12 +5,12 @@ related:
  title: Next steps
  description: Learn more about advanced data-fetching patterns and the features mentioned in this page.
  links:
-  - app/guides/single-page-applications
-  - app/guides/data-security
-  - app/api-reference/functions/fetch
-  - app/api-reference/file-conventions/loading
-  - app/api-reference/config/next-config-js/logging
-  - app/api-reference/config/next-config-js/taint
+  - ../02-guides/single-page-applications.md
+  - ../02-guides/data-security.md
+  - ../03-api-reference/04-functions/fetch.md
+  - ../03-api-reference/03-file-conventions/loading.md
+  - ../03-api-reference/05-config/01-next-config-js/logging.md
+  - ../03-api-reference/05-config/01-next-config-js/taint.md
 ---
 
 This page will walk you through how you can fetch data in [Server](#server-components) and [Client](#client-components) Components, and how to [stream](#streaming) components that depend on uncached data.
@@ -58,9 +58,9 @@ export default async function Page() {
 
 > **Good to know:**
 >
-> - Identical `fetch` requests in a React component tree are [memoized](/docs/app/glossary#memoization) by default, so you can fetch data in the component that needs it instead of drilling props.
-> - `fetch` requests are not cached by default and will block the page from rendering until the request is complete. Use the [`use cache`](/docs/app/api-reference/directives/use-cache) directive to cache results, or wrap the fetching component in [`<Suspense>`](/docs/app/getting-started/caching#streaming-uncached-data) to stream fresh data at request time. See [caching](/docs/app/getting-started/caching) for details.
-> - During development, you can log `fetch` calls for better visibility and debugging. See the [`logging` API reference](/docs/app/api-reference/config/next-config-js/logging).
+> - Identical `fetch` requests in a React component tree are [memoized](../04-glossary.md#memoization) by default, so you can fetch data in the component that needs it instead of drilling props.
+> - `fetch` requests are not cached by default and will block the page from rendering until the request is complete. Use the [`use cache`](../03-api-reference/01-directives/use-cache.md) directive to cache results, or wrap the fetching component in [`<Suspense>`](./08-caching.md#streaming-uncached-data) to stream fresh data at request time. See [caching](./08-caching.md) for details.
+> - During development, you can log `fetch` calls for better visibility and debugging. See the [`logging` API reference](../03-api-reference/05-config/01-next-config-js/logging.md).
 
 #### With an ORM or database
 
@@ -96,13 +96,13 @@ export default async function Page() {
 }
 ```
 
-You should still ensure requests are properly authenticated and authorized. For best practices on securing server-side data access, see the [data security guide](/docs/app/guides/data-security).
+You should still ensure requests are properly authenticated and authorized. For best practices on securing server-side data access, see the [data security guide](../02-guides/data-security.md).
 
 ### Streaming
 
 When you fetch data in Server Components, the data is fetched and rendered on the server for each request. If you have any slow data requests, the whole route will be blocked from rendering until all the data is fetched.
 
-To improve the initial load time and user experience, you can break the page into smaller _chunks_ and progressively send those chunks from the server to the client. This is called streaming. See the [Streaming guide](/docs/app/guides/streaming) for a deeper look at how streaming works, including the HTTP contract, infrastructure considerations, and performance trade-offs.
+To improve the initial load time and user experience, you can break the page into smaller _chunks_ and progressively send those chunks from the server to the client. This is called streaming. See the [Streaming guide](../02-guides/streaming.md) for a deeper look at how streaming works, including the HTTP contract, infrastructure considerations, and performance trade-offs.
 
 <Image
   alt="How Server Rendering with Streaming Works"
@@ -117,7 +117,7 @@ There are two ways you can use streaming in your application:
 1. Wrapping a page with a [`loading.js` file](#with-loadingjs)
 2. Wrapping a component with [`<Suspense>`](#with-suspense)
 
-> **Good to know:** Bots and crawlers are served differently from browsers. Next.js waits for data fetching to finish and sends the fully rendered page instead of streaming it progressively. See [Bots and crawlers](/docs/app/guides/streaming#bots-and-crawlers).
+> **Good to know:** Bots and crawlers are served differently from browsers. Next.js waits for data fetching to finish and sends the fully rendered page instead of streaming it progressively. See [Bots and crawlers](../02-guides/streaming.md#bots-and-crawlers).
 
 #### With `loading.js`
 
@@ -155,7 +155,7 @@ On navigation, the user will immediately see the layout and a [loading state](#c
   height="691"
 />
 
-Behind the scenes, `loading.js` will be [nested inside `layout.js`](/docs/app/getting-started/project-structure#component-hierarchy), and will automatically wrap the `page.js` file and any children below in a `<Suspense>` boundary.
+Behind the scenes, `loading.js` will be [nested inside `layout.js`](./02-project-structure.md#component-hierarchy), and will automatically wrap the `page.js` file and any children below in a `<Suspense>` boundary.
 
 <Image
   alt="loading.js overview"
@@ -165,9 +165,9 @@ Behind the scenes, `loading.js` will be [nested inside `layout.js`](/docs/app/ge
   height="768"
 />
 
-Because of this, a layout that accesses uncached or runtime data (e.g. `cookies()`, `headers()`, or uncached fetches) does not fall back to a same route segment `loading.js`. Instead, it blocks navigation until the layout finishes rendering. [Cache Components](/docs/app/getting-started/caching) prevents this by guiding you with a build-time error.
+Because of this, a layout that accesses uncached or runtime data (e.g. `cookies()`, `headers()`, or uncached fetches) does not fall back to a same route segment `loading.js`. Instead, it blocks navigation until the layout finishes rendering. [Cache Components](./08-caching.md) prevents this by guiding you with a build-time error.
 
-To fix this, wrap the uncached access in its own [`<Suspense>`](#with-suspense) boundary with a fallback, or move the data fetching into `page.js` where `loading.js` can cover it. See [`loading.js`](/docs/app/api-reference/file-conventions/loading) for more details.
+To fix this, wrap the uncached access in its own [`<Suspense>`](#with-suspense) boundary with a fallback, or move the data fetching into `page.js` where `loading.js` can cover it. See [`loading.js`](../03-api-reference/03-file-conventions/loading.md) for more details.
 
 This is why, while `loading.js` works well for streaming route segments, using `<Suspense>` closer to the runtime or uncached data access is recommended.
 
@@ -310,7 +310,7 @@ export default function Posts({ posts }) {
 
 In the example above, the `<Posts>` component is wrapped in a [`<Suspense>` boundary](https://react.dev/reference/react/Suspense). This means the fallback will be shown while the promise is being resolved. Learn more about [streaming](#streaming).
 
-You can resolve a promise on the server with `await` or in a Client Component with `use()`. React covers [when to resolve a Promise in a Server or Client Component](https://react.dev/reference/react/use#resolve-promise-in-server-or-client-component). To share one promise with many Client Components instead of passing it as a prop, provide it through context. See [Using React's `use` within a Context Provider](/docs/app/guides/single-page-applications#using-reacts-use-within-a-context-provider).
+You can resolve a promise on the server with `await` or in a Client Component with `use()`. React covers [when to resolve a Promise in a Server or Client Component](https://react.dev/reference/react/use#resolve-promise-in-server-or-client-component). To share one promise with many Client Components instead of passing it as a prop, provide it through context. See [Using React's `use` within a Context Provider](../02-guides/single-page-applications.md#using-reacts-use-within-a-context-provider).
 
 #### Community libraries
 
@@ -361,7 +361,7 @@ export default function BlogPage() {
 }
 ```
 
-See [Client-side data fetching](/docs/app/guides/client-side-data-fetching) for direct browser fetching, providing initial data from a Server Component, and coordinating a library cache with the Next.js server and client caches.
+See [Client-side data fetching](../02-guides/client-side-data-fetching/index.md) for direct browser fetching, providing initial data from a Server Component, and coordinating a library cache with the Next.js server and client caches.
 
 ## Examples
 
@@ -437,13 +437,13 @@ async function Playlists({ artistID }) {
 
 In this example, `<Suspense>` allows the playlists to stream in after the artist data loads. However, the page still waits for the artist data before displaying anything. To prevent this, you can wrap the entire page component in a `<Suspense>` boundary (for example, using a [`loading.js` file](#with-loadingjs)) to show a loading state immediately.
 
-Ensure your data source can resolve the first request quickly, as it blocks everything else. If you can't optimize the request further, consider [caching](/docs/app/getting-started/caching) the result if the data changes infrequently.
+Ensure your data source can resolve the first request quickly, as it blocks everything else. If you can't optimize the request further, consider [caching](./08-caching.md) the result if the data changes infrequently.
 
 ### Parallel data fetching
 
 Parallel data fetching happens when data requests in a route are eagerly initiated and start at the same time.
 
-By default, [layouts and pages](/docs/app/getting-started/layouts-and-pages) are rendered in parallel. So each segment starts fetching data as soon as possible.
+By default, [layouts and pages](./03-layouts-and-pages.md) are rendered in parallel. So each segment starts fetching data as soon as possible.
 
 However, within _any_ component, multiple `async`/`await` requests can still be sequential if placed after the other. For example, `getAlbums` will be blocked until `getArtist` is resolved:
 
@@ -593,9 +593,9 @@ To preload data, call the data-fetching function without `await` before blocking
 
 The data-fetching function must deduplicate matching calls so the component can reuse the request started during preloading. Use one of the following approaches:
 
-- For `fetch`, [identical requests are memoized automatically](/docs/app/api-reference/functions/fetch#memoization).
+- For `fetch`, [identical requests are memoized automatically](../03-api-reference/04-functions/fetch.md#memoization).
 - For an ORM or database, wrap the data-fetching function in [`React.cache`](#reusing-data-with-reactcache).
-- With Cache Components, add [`'use cache'`](/docs/app/api-reference/directives/use-cache) to the data-fetching function. If the function reads request APIs such as `cookies()` or `headers()`, use [`'use cache: private'`](/docs/app/api-reference/directives/use-cache-private).
+- With Cache Components, add [`'use cache'`](../03-api-reference/01-directives/use-cache.md) to the data-fetching function. If the function reads request APIs such as `cookies()` or `headers()`, use [`'use cache: private'`](../03-api-reference/01-directives/use-cache-private.md).
 
 In production, matching calls to a private Cache Function can reuse the same result within one request. This lets a component reuse a request started during preloading without storing the result in a server cache across requests.
 

@@ -5,7 +5,7 @@ related:
  title: Next Steps
  description: Learn how to create modals with Intercepted and Parallel Routes.
  links:
-  - app/api-reference/file-conventions/parallel-routes
+  - ./parallel-routes.md
 ---
 
 Intercepting routes allows you to load a route from another part of your application within the current layout. This routing paradigm can be useful when you want to display the content of a route without the user switching to a different context.
@@ -51,13 +51,13 @@ For example, you can intercept the `photo` segment from within the `feed` segmen
   height="604"
 />
 
-> **Good to know:** The `(..)` convention is based on _route segments_, not the file-system. For example, it does not consider `@slot` folders in [Parallel Routes](/docs/app/api-reference/file-conventions/parallel-routes).
+> **Good to know:** The `(..)` convention is based on _route segments_, not the file-system. For example, it does not consider `@slot` folders in [Parallel Routes](./parallel-routes.md).
 
 ## Examples
 
 ### Modals
 
-Intercepting Routes can be used together with [Parallel Routes](/docs/app/api-reference/file-conventions/parallel-routes) to create modals. This allows you to solve common challenges when building modals, such as:
+Intercepting Routes can be used together with [Parallel Routes](./parallel-routes.md) to create modals. This allows you to solve common challenges when building modals, such as:
 
 - Making the modal content **shareable through a URL**.
 - **Preserving context** when the page is refreshed, instead of closing the modal.
@@ -76,7 +76,7 @@ Consider the following UI pattern, where a user can open a photo modal from a ga
 
 In the above example, the path to the `photo` segment can use the `(..)` matcher since `@modal` is a slot and **not** a segment. This means that the `photo` route is only one segment level higher, despite being two file-system levels higher.
 
-See the [Parallel Routes](/docs/app/api-reference/file-conventions/parallel-routes#modals) documentation for a step-by-step example, or see our [image gallery example](https://github.com/nextjs/nextgram).
+See the [Parallel Routes](./parallel-routes.md#modals) documentation for a step-by-step example, or see our [image gallery example](https://github.com/nextjs/nextgram).
 
 > **Good to know:**
 >

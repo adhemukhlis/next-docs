@@ -6,10 +6,10 @@ related:
  title: Next Steps
  description: Learn more about the topics mentioned in this guide.
  links:
-  - app/guides/authentication
-  - app/guides/content-security-policy
-  - app/guides/forms
-  - app/guides/server-actions
+  - ./authentication.md
+  - ./content-security-policy.md
+  - ./forms.md
+  - ./server-actions.md
 ---
 
 [React Server Components](https://react.dev/reference/rsc/server-components) improve performance and simplify data fetching, but also shift where and how data is accessed, changing some of the traditional security assumptions for handling data in frontend apps.
@@ -28,7 +28,7 @@ We recommend choosing one data fetching approach and avoiding mixing them. This 
 
 ### External HTTP APIs
 
-You should follow a **Zero Trust** model when adopting Server Components in an existing project. You can continue calling your existing API endpoints such as REST or GraphQL from Server Components using [`fetch`](/docs/app/api-reference/functions/fetch), just as you would in Client Components.
+You should follow a **Zero Trust** model when adopting Server Components in an existing project. You can continue calling your existing API endpoints such as REST or GraphQL from Server Components using [`fetch`](../03-api-reference/04-functions/fetch.md), just as you would in Client Components.
 
 ```tsx filename="app/page.tsx"
 import { cookies } from 'next/headers'
@@ -217,7 +217,7 @@ To prevent accidental exposure of private data to the client, you can use React 
 - [`experimental_taintObjectReference`](https://react.dev/reference/react/experimental_taintObjectReference) for data objects.
 - [`experimental_taintUniqueValue`](https://react.dev/reference/react/experimental_taintUniqueValue) for specific values.
 
-You can enable usage in your Next.js app with the [`experimental.taint`](/docs/app/api-reference/config/next-config-js/taint) option in `next.config.js`:
+You can enable usage in your Next.js app with the [`experimental.taint`](../03-api-reference/05-config/01-next-config-js/taint.md) option in `next.config.js`:
 
 ```js filename="next.config.js"
 module.exports = {
@@ -231,7 +231,7 @@ This prevents the tainted objects or values from being passed to the client. How
 
 > **Good to know:**
 >
-> - By default, environment variables are only available on the Server. Next.js exposes any environment variable prefixed with `NEXT_PUBLIC_` to the client. [Learn more](/docs/app/guides/environment-variables).
+> - By default, environment variables are only available on the Server. Next.js exposes any environment variable prefixed with `NEXT_PUBLIC_` to the client. [Learn more](./environment-variables.md).
 > - Functions and classes are already blocked from being passed to Client Components by default.
 
 ### Preventing client-side execution of server-only code
@@ -264,7 +264,7 @@ pnpm add server-only
 bun add server-only
 ```
 
-Read more about `server-only` in the [preventing environment poisoning](/docs/app/getting-started/server-and-client-components#preventing-environment-poisoning) section.
+Read more about `server-only` in the [preventing environment poisoning](../01-getting-started/05-server-and-client-components.md#preventing-environment-poisoning) section.
 
 ## Mutating Data
 
@@ -384,7 +384,7 @@ export async function deletePost(postId: string) {
 }
 ```
 
-Learn more about [Authentication](/docs/app/guides/authentication) in Next.js.
+Learn more about [Authentication](./authentication.md) in Next.js.
 
 ### Using a Data Access Layer for mutations
 
@@ -467,7 +467,7 @@ export async function updateUserSafe(data: FormData) {
 
 ### Rate limiting
 
-For expensive operations (sending emails, writing to a database), consider adding rate limiting to prevent abuse. See the [Rate limiting](/docs/app/guides/backend-for-frontend#rate-limiting) example in the Backend for Frontend guide.
+For expensive operations (sending emails, writing to a database), consider adding rate limiting to prevent abuse. See the [Rate limiting](./backend-for-frontend.md#rate-limiting) example in the Backend for Frontend guide.
 
 ### Closures and encryption
 
@@ -531,7 +531,7 @@ The key must be a base64-encoded value whose decoded length matches a valid AES 
 openssl rand -base64 32
 ```
 
-This is an advanced use case where consistent encryption behavior across multiple deployments is critical for your application. Follow standard security practices such as key rotation and signing. See the [Self-Hosting guide](/docs/app/guides/self-hosting#server-functions-encryption-key) for deployment-specific considerations.
+This is an advanced use case where consistent encryption behavior across multiple deployments is critical for your application. Follow standard security practices such as key rotation and signing. See the [Self-Hosting guide](./self-hosting.md#server-functions-encryption-key) for deployment-specific considerations.
 
 ### Allowed origins (advanced)
 
@@ -541,7 +541,7 @@ Behind the scenes, Server Actions use the `POST` method, and only this HTTP meth
 
 As an additional protection, Server Actions in Next.js also compare the [Origin header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin) to the [Host header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Host) (or `X-Forwarded-Host`). If these don't match, the request will be aborted. In other words, Server Actions can only be invoked on the same host as the page that hosts it.
 
-For large applications that use reverse proxies or multi-layered backend architectures (where the server API differs from the production domain), it's recommended to use the configuration option [`serverActions.allowedOrigins`](/docs/app/api-reference/config/next-config-js/serverActions) option to specify a list of safe origins. The option accepts an array of strings.
+For large applications that use reverse proxies or multi-layered backend architectures (where the server API differs from the production domain), it's recommended to use the configuration option [`serverActions.allowedOrigins`](../03-api-reference/05-config/01-next-config-js/serverActions.md) option to specify a list of safe origins. The option accepts an array of strings.
 
 ```js filename="next.config.js"
 /** @type {import('next').NextConfig} */

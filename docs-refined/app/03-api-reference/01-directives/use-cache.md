@@ -1,17 +1,6 @@
 ---
 title: use cache
 description: Learn how to use the "use cache" directive to cache data in your Next.js application.
-related:
- title: Related
- description: View related API references.
- links:
-  - app/api-reference/directives/use-cache-private
-  - app/api-reference/config/next-config-js/cacheComponents
-  - app/api-reference/config/next-config-js/cacheLife
-  - app/api-reference/config/next-config-js/cacheHandlers
-  - app/api-reference/functions/cacheTag
-  - app/api-reference/functions/cacheLife
-  - app/api-reference/functions/revalidateTag
 ---
 
 The `use cache` directive allows you to mark a route, React component, or a function as cacheable. It can be used at the top of a file to indicate that all exports in the file should be cached, or inline at the top of a function or component to cache the return value. Functions and components that use `use cache` must be async.
@@ -19,12 +8,12 @@ The `use cache` directive allows you to mark a route, React component, or a func
 > **Good to know:**
 >
 > - To use cookies or headers, read them outside cached scopes and pass values as arguments. This is the preferred pattern.
-> - If the in-memory cache isn't sufficient for runtime data, [`'use cache: remote'`](/docs/app/api-reference/directives/use-cache-remote) allows platforms to provide a dedicated cache handler, though it requires a network roundtrip to check the cache and typically incurs platform fees.
-> - For compliance requirements or when you can't refactor to pass runtime data as arguments to a `use cache` scope, see [`'use cache: private'`](/docs/app/api-reference/directives/use-cache-private).
+> - If the in-memory cache isn't sufficient for runtime data, [`'use cache: remote'`](./use-cache-remote.md) allows platforms to provide a dedicated cache handler, though it requires a network roundtrip to check the cache and typically incurs platform fees.
+> - For compliance requirements or when you can't refactor to pass runtime data as arguments to a `use cache` scope, see [`'use cache: private'`](./use-cache-private.md).
 
 ## Usage
 
-`use cache` is a Cache Components feature. To enable it, add the [`cacheComponents`](/docs/app/api-reference/config/next-config-js/cacheComponents) option to your `next.config.ts` file:
+`use cache` is a Cache Components feature. To enable it, add the [`cacheComponents`](../05-config/01-next-config-js/cacheComponents.md) option to your `next.config.ts` file:
 
 ```ts filename="next.config.ts" switcher
 import type { NextConfig } from 'next'
@@ -80,7 +69,7 @@ export default async function Page() {
 
 A cache entry's key is generated using a serialized version of its inputs, which includes:
 
-1. **Build ID** - Unique per build, changing this invalidates all cache entries. If [`deploymentId`](/docs/app/api-reference/config/next-config-js/deploymentId) is configured, it overrides the build ID for cache key purposes.
+1. **Build ID** - Unique per build, changing this invalidates all cache entries. If [`deploymentId`](../05-config/01-next-config-js/deploymentId.md) is configured, it overrides the build ID for cache key purposes.
 2. **Function ID** - A secure hash of the function's location and signature in the codebase
 3. **Serializable arguments** - Props (for components) or function arguments
 4. **HMR refresh hash** (development only) - Invalidates cache on hot module replacement
@@ -102,13 +91,13 @@ async function Component({ userId }: { userId: string }) {
 
 In the snippet above, `userId` is captured from the outer scope and `filter` is passed as an argument, so both become part of the `getData` function's cache key. This means different user and filter combinations will have separate cache entries.
 
-> **Good to know:** When a cached function reads [root parameters](/docs/app/api-reference/functions/next-root-params), only the ones it actually reads become part of its cache key.
+> **Good to know:** When a cached function reads [root parameters](../04-functions/next-root-params.md), only the ones it actually reads become part of its cache key.
 
 ### Cache output
 
 A cached function produces the same output for the same inputs. The first call with a given set of inputs runs the function body and stores its output. Every later call with the same inputs reuses that output, within a render pass and across requests, for as long as the entry lasts.
 
-Outputs are stored by a [cache handler](/docs/app/api-reference/config/next-config-js/cacheHandlers), [in memory](#runtime-caching-considerations) by default, and last until they [revalidate](#revalidation).
+Outputs are stored by a [cache handler](../05-config/01-next-config-js/cacheHandlers.md), [in memory](#runtime-caching-considerations) by default, and last until they [revalidate](#revalidation).
 
 ```tsx filename="lib/orders.ts"
 import { cacheLife } from 'next/cache'
@@ -135,11 +124,11 @@ export async function getOrderTotals(accountId: string) {
 }
 ```
 
-In the example above, each `accountId` has its own entry for `getOrderSummary`, holding the serialized `{ orders, totals }` object it returns. Calls to `getOrders` have their own entries, keyed by the same `accountId`. If an earlier call, through the summary or directly, already filled one, `db.orders.findMany` doesn't run and those orders become part of the summary's output. See [nested caching behavior](/docs/app/api-reference/functions/cacheLife#nested-caching-behavior) for how an inner lifetime affects the entry around it.
+In the example above, each `accountId` has its own entry for `getOrderSummary`, holding the serialized `{ orders, totals }` object it returns. Calls to `getOrders` have their own entries, keyed by the same `accountId`. If an earlier call, through the summary or directly, already filled one, `db.orders.findMany` doesn't run and those orders become part of the summary's output. See [nested caching behavior](../04-functions/cacheLife.md#nested-caching-behavior) for how an inner lifetime affects the entry around it.
 
 Note that `getOrderTotals` is not cached. It is exported so other parts of the application can read fresh totals in an uncached scope. Inside `getOrderSummary`, though, the totals query only runs when that function runs following the `'hours'` lifetime set there.
 
-With [Cache Components](/docs/app/api-reference/config/next-config-js/cacheComponents), prerendering fills the entry and keeps rendering, so this output contributes to the route's [static shell](/docs/app/getting-started/caching#prerendering) and can contribute to its [prefetch](/docs/app/getting-started/caching#prefetching). A cache life too short to store safely leaves a hole that resolves at request time instead. See [prerendering behavior](/docs/app/api-reference/functions/cacheLife#prerendering-behavior) for the thresholds.
+With [Cache Components](../05-config/01-next-config-js/cacheComponents.md), prerendering fills the entry and keeps rendering, so this output contributes to the route's [static shell](../../01-getting-started/08-caching.md#prerendering) and can contribute to its [prefetch](../../01-getting-started/08-caching.md#prefetching). A cache life too short to store safely leaves a hole that resolves at request time instead. See [prerendering behavior](../04-functions/cacheLife.md#prerendering-behavior) for the thresholds.
 
 ## Serialization
 
@@ -241,23 +230,24 @@ With the default in-memory handler, runtime cache behavior depends on your hosti
 | Environment     | Runtime Caching Behavior                                                                                                                                     |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **Serverless**  | Cache entries typically don't persist across requests (each request can be a different instance), or during revalidation. Build-time caching works normally. |
-| **Self-hosted** | Cache entries persist across requests. Control cache size with [`cacheMaxMemorySize`](/docs/app/api-reference/config/next-config-js/cacheMaxMemorySize).     |
+| **Self-hosted** | Cache entries persist across requests. Control cache size with [`cacheMaxMemorySize`](../05-config/01-next-config-js/cacheMaxMemorySize.md).                 |
 
 For example, in a serverless environment, a cached function shared by two pages executes on each static shell revalidation, whereas in self-hosted or environments with persistent memory, the cached output is reused if it's still fresh.
 
-If the default in-memory cache isn't enough, consider **[`use cache: remote`](/docs/app/api-reference/directives/use-cache-remote)** which allows platforms to provide a dedicated cache handler (like Redis or KV database). This helps reduce hits against data sources not scaled to your total traffic, though it comes with costs (storage, network latency, platform fees).
+If the default in-memory cache isn't enough, consider **[`use cache: remote`](./use-cache-remote.md)** which allows platforms to provide a dedicated cache handler (like Redis or KV database). This helps reduce hits against data sources not scaled to your total traffic, though it comes with costs (storage, network latency, platform fees).
 
-> [!NOTE] With the default in-memory handler, serverless instances are ephemeral, so entries may not be reused between requests, unlike with `use cache: remote`. Neither caching directive carries over to a new deploy, because the [cache key](#cache-keys) includes the build (or `deploymentId`) ID.
+> [!NOTE]
+> With the default in-memory handler, serverless instances are ephemeral, so entries may not be reused between requests, unlike with `use cache: remote`. Neither caching directive carries over to a new deploy, because the [cache key](#cache-keys) includes the build (or `deploymentId`) ID.
 >
-> For data that needs to persist across deploys, use [`unstable_cache`](/docs/app/api-reference/functions/unstable_cache) for non-`fetch` functions or the [`fetch`](/docs/app/api-reference/functions/fetch) cache.
+> For data that needs to persist across deploys, use [`unstable_cache`](../04-functions/unstable_cache.md) for non-`fetch` functions or the [`fetch`](../04-functions/fetch.md) cache.
 
-Very rarely, for compliance requirements or when you can't refactor your code to pass runtime data as arguments to a `use cache` scope, you might need [`use cache: private`](/docs/app/api-reference/directives/use-cache-private).
+Very rarely, for compliance requirements or when you can't refactor your code to pass runtime data as arguments to a `use cache` scope, you might need [`use cache: private`](./use-cache-private.md).
 
 ### Draft Mode
 
-When [Draft Mode](/docs/app/guides/draft-mode) is enabled, all cached functions and components re-execute on every request, and results are not saved to the cache. This ensures draft content is always fresh without requiring any changes to your caching code.
+When [Draft Mode](../../02-guides/draft-mode.md) is enabled, all cached functions and components re-execute on every request, and results are not saved to the cache. This ensures draft content is always fresh without requiring any changes to your caching code.
 
-You can read `isEnabled` from [`draftMode()`](/docs/app/api-reference/functions/draft-mode) inside a `use cache` scope, however, other runtime APIs like `cookies()` and `headers()` are not allowed, even when Draft Mode is active. See [Passing runtime values to cached functions](/docs/app/getting-started/caching#passing-runtime-values-to-cached-functions) for the recommended pattern.
+You can read `isEnabled` from [`draftMode()`](../04-functions/draft-mode.md) inside a `use cache` scope, however, other runtime APIs like `cookies()` and `headers()` are not allowed, even when Draft Mode is active. See [Passing runtime values to cached functions](../../01-getting-started/08-caching.md#passing-runtime-values-to-cached-functions) for the recommended pattern.
 
 ```tsx filename="app/components/content.tsx"
 import { draftMode } from 'next/headers'
@@ -273,7 +263,7 @@ async function Content() {
 }
 ```
 
-Calling `enable()` or `disable()` inside a caching directive scope will also throw an error. Draft Mode can only be toggled in [Route Handlers](/docs/app/api-reference/file-conventions/route) or [Server Actions](/docs/app/getting-started/mutating-data).
+Calling `enable()` or `disable()` inside a caching directive scope will also throw an error. Draft Mode can only be toggled in [Route Handlers](../03-file-conventions/route.md) or [Server Actions](../../01-getting-started/07-mutating-data.md).
 
 ### React.cache isolation
 
@@ -305,7 +295,7 @@ This isolation ensures cached functions have predictable, self-contained behavio
 
 ## `use cache` at runtime
 
-On the **server**, cache entries are stored in-memory and respect the `revalidate` and `expire` times from your `cacheLife` configuration. You can customize the cache storage by configuring [`cacheHandlers`](/docs/app/api-reference/config/next-config-js/cacheHandlers) in your `next.config.js` file.
+On the **server**, cache entries are stored in-memory and respect the `revalidate` and `expire` times from your `cacheLife` configuration. You can customize the cache storage by configuring [`cacheHandlers`](../05-config/01-next-config-js/cacheHandlers.md) in your `next.config.js` file.
 
 On the **client**, content from the server cache is stored in the browser's memory for the duration defined by the `stale` time. The client router enforces a **minimum 30-second stale time**, regardless of configuration.
 
@@ -315,14 +305,14 @@ The `x-nextjs-stale-time` response header communicates cache lifetime from serve
 
 Cached functions revalidate based on the `revalidate` and `expire` times in their `cacheLife` profile, or on-demand through tags. These two approaches are not mutually exclusive and are often paired:
 
-- **[Time-based](#time-based-revalidation)**: refresh automatically after a set duration with [`cacheLife`](/docs/app/api-reference/functions/cacheLife).
-- **[On-demand](#on-demand-revalidation)**: invalidate after a mutation with [`cacheTag`](/docs/app/api-reference/functions/cacheTag) and [`revalidateTag`](/docs/app/api-reference/functions/revalidateTag) or [`updateTag`](/docs/app/api-reference/functions/updateTag).
+- **[Time-based](#time-based-revalidation)**: refresh automatically after a set duration with [`cacheLife`](../04-functions/cacheLife.md).
+- **[On-demand](#on-demand-revalidation)**: invalidate after a mutation with [`cacheTag`](../04-functions/cacheTag.md) and [`revalidateTag`](../04-functions/revalidateTag.md) or [`updateTag`](../04-functions/updateTag.md).
 
 For example, a blog post that changes only when its author edits it can use a long `cacheLife` like `max` with a `cacheTag`, then invalidate on demand when the post is saved. A list of recent posts that updates throughout the day can use a shorter profile like `hours` to refresh on its own, without manual invalidation.
 
 ### Time-based revalidation
 
-Set an explicit cache lifetime with [`cacheLife`](/docs/app/api-reference/functions/cacheLife) in every `use cache` scope. It makes the cache behavior clear at the call site, instead of depending on the `default` profile or surrounding caches.
+Set an explicit cache lifetime with [`cacheLife`](../04-functions/cacheLife.md) in every `use cache` scope. It makes the cache behavior clear at the call site, instead of depending on the `default` profile or surrounding caches.
 
 ```tsx filename="lib/data.ts"
 import { cacheLife } from 'next/cache'
@@ -350,11 +340,11 @@ async function getData() {
 }
 ```
 
-Nesting a short-lived use cache inside one without an explicit [cacheLife](/docs/app/api-reference/functions/cacheLife) fails the build during prerendering. See [Nested short-lived caches](/docs/app/api-reference/functions/cacheLife#nested-short-lived-caches) for the rule and fix.
+Nesting a short-lived use cache inside one without an explicit [cacheLife](../04-functions/cacheLife.md) fails the build during prerendering. See [Nested short-lived caches](../04-functions/cacheLife.md#nested-short-lived-caches) for the rule and fix.
 
 ### On-demand revalidation
 
-Use [`cacheTag`](/docs/app/api-reference/functions/cacheTag), [`updateTag`](/docs/app/api-reference/functions/updateTag), or [`revalidateTag`](/docs/app/api-reference/functions/revalidateTag) for on-demand cache invalidation:
+Use [`cacheTag`](../04-functions/cacheTag.md), [`updateTag`](../04-functions/updateTag.md), or [`revalidateTag`](../04-functions/revalidateTag.md) for on-demand cache invalidation:
 
 ```tsx filename="lib/data.ts"
 import { cacheTag } from 'next/cache'
@@ -583,16 +573,16 @@ export async function getTopProducts() {
 }
 ```
 
-Framework function exports are covered like any other, so [`generateMetadata`](/docs/app/api-reference/functions/generate-metadata) and [`generateStaticParams`](/docs/app/api-reference/functions/generate-static-params) must be async in such a file.
+Framework function exports are covered like any other, so [`generateMetadata`](../04-functions/generate-metadata.md) and [`generateStaticParams`](../04-functions/generate-static-params.md) must be async in such a file.
 
 > **Good to know**:
 >
-> - When a cached directive (`use cache`, [`use cache: private`](/docs/app/api-reference/directives/use-cache-private), or [`use cache: remote`](/docs/app/api-reference/directives/use-cache-remote)) is at the top of a file, you can import its exported functions into a Client Component and call them directly; they run on the server and return the result, similar to a [Server Function](/docs/app/glossary#server-function). Prefer calling cached functions on the server and passing results down as props.
+> - When a cached directive (`use cache`, [`use cache: private`](./use-cache-private.md), or [`use cache: remote`](./use-cache-remote.md)) is at the top of a file, you can import its exported functions into a Client Component and call them directly; they run on the server and return the result, similar to a [Server Function](../../04-glossary.md#server-function). Prefer calling cached functions on the server and passing results down as props.
 > - Only exported functions are available to Client Components. Other exports, such as constants and objects, are dropped from what the client receives, so importing one fails the build with an "export doesn't exist" error. Move shared values to a separate file without the directive.
 
 ### Caching a route segment's output with `use cache`
 
-A `page` or `layout` file is a module too, so a file-level directive there follows the same rules. Each route segment is a separate entry point and is cached independently. To prerender a whole route, add `use cache` to the top of every segment file it renders: the `page`, the `layout`, and any [parallel route](/docs/app/api-reference/file-conventions/parallel-routes) slots.
+A `page` or `layout` file is a module too, so a file-level directive there follows the same rules. Each route segment is a separate entry point and is cached independently. To prerender a whole route, add `use cache` to the top of every segment file it renders: the `page`, the `layout`, and any [parallel route](../03-file-conventions/parallel-routes.md) slots.
 
 ```tsx filename="app/layout.tsx" switcher
 'use cache'
@@ -662,7 +652,7 @@ NEXT_PRIVATE_DEBUG_CACHE=1 npm run dev
 NEXT_PRIVATE_DEBUG_CACHE=1 npm run start
 ```
 
-> **Good to know:** This environment variable also logs ISR and other caching mechanisms. See [Verifying correct production behavior](/docs/app/guides/incremental-static-regeneration#verifying-correct-production-behavior) for more details.
+> **Good to know:** This environment variable also logs ISR and other caching mechanisms. See [Verifying correct production behavior](../../02-guides/incremental-static-regeneration.md#verifying-correct-production-behavior) for more details.
 
 #### Console log replays
 
@@ -746,14 +736,14 @@ Use Next.js's built-in `fetch()` deduplication or use separate Maps for cached a
 
 ## Platform Support
 
-| Deployment Option                                                   | Supported         |
-| ------------------------------------------------------------------- | ----------------- |
-| [Node.js server](/docs/app/getting-started/deploying#nodejs-server) | Yes               |
-| [Docker container](/docs/app/getting-started/deploying#docker)      | Yes               |
-| [Static export](/docs/app/getting-started/deploying#static-export)  | No                |
-| [Adapters](/docs/app/getting-started/deploying#adapters)            | Platform-specific |
+| Deployment Option                                                        | Supported         |
+| ------------------------------------------------------------------------ | ----------------- |
+| [Node.js server](../../01-getting-started/17-deploying.md#nodejs-server) | Yes               |
+| [Docker container](../../01-getting-started/17-deploying.md#docker)      | Yes               |
+| [Static export](../../01-getting-started/17-deploying.md#static-export)  | No                |
+| [Adapters](../../01-getting-started/17-deploying.md#adapters)            | Platform-specific |
 
-Learn how to [configure caching](/docs/app/guides/self-hosting#caching-and-isr) when self-hosting Next.js.
+Learn how to [configure caching](../../02-guides/self-hosting.md#caching-and-isr) when self-hosting Next.js.
 
 ## Version History
 
@@ -761,3 +751,15 @@ Learn how to [configure caching](/docs/app/guides/self-hosting#caching-and-isr) 
 | --------- | -------------------------------------------------------------------------- |
 | `v16.0.0` | `"use cache"` stabilized and is enabled with the Cache Components feature. |
 | `v15.0.0` | `"use cache"` is introduced as an experimental feature.                    |
+
+## INDEX
+
+View related API references.
+
+- [use cache: private](./use-cache-private.md)
+- [cacheComponents](../05-config/01-next-config-js/cacheComponents.md)
+- [cacheLife](../05-config/01-next-config-js/cacheLife.md)
+- [cacheHandlers](../05-config/01-next-config-js/cacheHandlers.md)
+- [cacheTag](../04-functions/cacheTag.md)
+- [cacheLife](../04-functions/cacheLife.md)
+- [revalidateTag](../04-functions/revalidateTag.md)

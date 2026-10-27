@@ -35,7 +35,7 @@ Navigating from a page in one zone to a page in another zone, such as from `/` t
 
 ## How to define a zone
 
-A zone is a normal Next.js application where you also configure an [assetPrefix](/docs/app/api-reference/config/next-config-js/assetPrefix) to avoid conflicts with pages and static files in other zones.
+A zone is a normal Next.js application where you also configure an [assetPrefix](../03-api-reference/05-config/01-next-config-js/assetPrefix.md) to avoid conflicts with pages and static files in other zones.
 
 ```js filename="next.config.js"
 /** @type {import('next').NextConfig} */
@@ -71,7 +71,7 @@ const nextConfig = {
 
 With the Multi Zones set-up, you need to route the paths to the correct zone since they are served by different applications. You can use any HTTP proxy to do this, but one of the Next.js applications can also be used to route requests for the entire domain.
 
-To route to the correct zone using a Next.js application, you can use [`rewrites`](/docs/app/api-reference/config/next-config-js/rewrites). For each path served by a different zone, you would add a rewrite rule to send that path to the domain of the other zone, and you also need to rewrite the requests for the static assets. For example:
+To route to the correct zone using a Next.js application, you can use [`rewrites`](../03-api-reference/05-config/01-next-config-js/rewrites.md). For each path served by a different zone, you would add a rewrite rule to send that path to the domain of the other zone, and you also need to rewrite the requests for the static assets. For example:
 
 ```js filename="next.config.js"
 async rewrites() {
@@ -98,7 +98,7 @@ async rewrites() {
 
 ### Routing requests using proxy
 
-Routing requests through [`rewrites`](/docs/app/api-reference/config/next-config-js/rewrites) is recommended to minimize latency overhead for the requests, but proxy can also be used when there is a need for a dynamic decision when routing. For example, if you are using a feature flag to decide where a path should be routed such as during a migration, you can use proxy.
+Routing requests through [`rewrites`](../03-api-reference/05-config/01-next-config-js/rewrites.md) is recommended to minimize latency overhead for the requests, but proxy can also be used when there is a need for a dynamic decision when routing. For example, if you are using a feature flag to decide where a path should be routed such as during a migration, you can use proxy.
 
 ```js filename="proxy.js"
 export async function proxy(request) {
@@ -111,7 +111,7 @@ export async function proxy(request) {
 
 ## Linking between zones
 
-Links to paths in a different zone should use an `a` tag instead of the Next.js [`<Link>`](/docs/app/api-reference/components/link) component. This is because Next.js will try to prefetch and soft navigate to any relative path in `<Link>` component, which will not work across zones.
+Links to paths in a different zone should use an `a` tag instead of the Next.js [`<Link>`](../03-api-reference/02-components/link.md) component. This is because Next.js will try to prefetch and soft navigate to any relative path in `<Link>` component, which will not work across zones.
 
 ## Sharing code
 
@@ -121,7 +121,7 @@ Since the pages in different zones may be released at different times, feature f
 
 ## Server Actions
 
-When using [Server Actions](/docs/app/getting-started/mutating-data) with Multi-Zones, you must explicitly allow the user-facing origin since your user facing domain may serve multiple applications. In your `next.config.js` file, add the following lines:
+When using [Server Actions](../01-getting-started/07-mutating-data.md) with Multi-Zones, you must explicitly allow the user-facing origin since your user facing domain may serve multiple applications. In your `next.config.js` file, add the following lines:
 
 ```js filename="next.config.js"
 const nextConfig = {
@@ -133,4 +133,4 @@ const nextConfig = {
 }
 ```
 
-See [`serverActions.allowedOrigins`](/docs/app/api-reference/config/next-config-js/serverActions#allowedorigins) for more information.
+See [`serverActions.allowedOrigins`](../03-api-reference/05-config/01-next-config-js/serverActions.md#allowedorigins) for more information.

@@ -1,15 +1,12 @@
 ---
 title: unauthorized.js
 description: API reference for the unauthorized.js special file.
-related:
- links:
-  - app/api-reference/functions/unauthorized
 version: experimental
 ---
 
-The **unauthorized** file renders UI when the [`unauthorized`](/docs/app/api-reference/functions/unauthorized) function is invoked.
+The **unauthorized** file renders UI when the [`unauthorized`](../04-functions/unauthorized.md) function is invoked.
 
-Before streaming starts, Next.js returns a `401` status code. After streaming starts, the status code remains `200` and the unauthorized UI renders in the response. Next.js injects a `<meta name="robots" content="noindex" />` tag in both cases. See [Status codes](/docs/app/api-reference/file-conventions/loading#status-codes) for details.
+Before streaming starts, Next.js returns a `401` status code. After streaming starts, the status code remains `200` and the unauthorized UI renders in the response. Next.js injects a `<meta name="robots" content="noindex" />` tag in both cases. See [Status codes](./loading.md#status-codes) for details.
 
 ```tsx filename="app/unauthorized.tsx" switcher
 import Login from '@/app/components/Login'
@@ -49,7 +46,7 @@ export default function Unauthorized() {
 
 ### Displaying login UI to unauthenticated users
 
-You can use [`unauthorized`](/docs/app/api-reference/functions/unauthorized) function to render the `unauthorized.js` file with a login UI.
+You can use [`unauthorized`](../04-functions/unauthorized.md) function to render the `unauthorized.js` file with a login UI.
 
 ```tsx filename="app/dashboard/page.tsx" switcher
 import { verifySession } from '@/app/lib/dal'
@@ -114,3 +111,7 @@ export default function UnauthorizedPage() {
 | Version   | Changes                       |
 | --------- | ----------------------------- |
 | `v15.1.0` | `unauthorized.js` introduced. |
+
+## INDEX
+
+- [unauthorized](../04-functions/unauthorized.md)

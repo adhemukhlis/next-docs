@@ -117,17 +117,17 @@ module.exports = createJestConfig(config)
 Under the hood, `next/jest` is automatically configuring Jest for you, including:
 
 - Setting up `transform` using the [Next.js Compiler](/docs/architecture/nextjs-compiler).
-- Auto mocking stylesheets (`.css`, `.module.css`, and their scss variants), image imports and [`next/font`](/docs/app/api-reference/components/font).
+- Auto mocking stylesheets (`.css`, `.module.css`, and their scss variants), image imports and [`next/font`](../../03-api-reference/02-components/font.md).
 - Loading `.env` (and all variants) into `process.env`.
 - Ignoring `node_modules` from test resolving and transforms.
 - Ignoring `.next` from test resolving.
 - Loading `next.config.js` for flags that enable SWC transforms.
 
-> **Good to know**: To test environment variables directly, load them manually in a separate setup script or in your `jest.config.ts` file. For more information, please see [Test Environment Variables](/docs/app/guides/environment-variables#test-environment-variables).
+> **Good to know**: To test environment variables directly, load them manually in a separate setup script or in your `jest.config.ts` file. For more information, please see [Test Environment Variables](../environment-variables.md#test-environment-variables).
 
 ## Optional: Handling Absolute Imports and Module Path Aliases
 
-If your project is using [Module Path Aliases](/docs/app/getting-started/installation#set-up-absolute-imports-and-module-path-aliases), you will need to configure Jest to resolve the imports by matching the paths option in the `jsconfig.json` file with the `moduleNameMapper` option in the `jest.config.js` file. For example:
+If your project is using [Module Path Aliases](../../01-getting-started/01-installation.md#set-up-absolute-imports-and-module-path-aliases), you will need to configure Jest to resolve the imports by matching the paths option in the `jsconfig.json` file with the `moduleNameMapper` option in the `jest.config.js` file. For example:
 
 ```json filename="tsconfig.json or jsconfig.json"
 {

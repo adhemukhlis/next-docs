@@ -3,7 +3,7 @@ title: supportsImmutableAssets
 description: Configure support for immutable static assets
 ---
 
-> **Attention**: This option is primarily intended for [adapter](/docs/app/api-reference/adapters) authors. App developers should only set it when troubleshooting adapter-specific issues.
+> **Attention**: This option is primarily intended for [adapter](../../07-adapters/index.md) authors. App developers should only set it when troubleshooting adapter-specific issues.
 >
 > **Enabling this feature when your provider or adapter does not support it can result in broken deployments.**
 
@@ -32,7 +32,7 @@ const nextConfig = {
 module.exports = nextConfig
 ```
 
-See [Supporting immutable static assets](/docs/app/api-reference/adapters/immutable-static-assets) for more information on how to support this feature in an adapter.
+See [Supporting immutable static assets](../../07-adapters/12-immutable-static-assets.md) for more information on how to support this feature in an adapter.
 
 ## Version History
 

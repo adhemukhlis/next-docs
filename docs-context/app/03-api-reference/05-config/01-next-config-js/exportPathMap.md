@@ -6,7 +6,7 @@ version: legacy
 
 > This feature is exclusive to `next export` and currently **deprecated** in favor of `getStaticPaths` with `pages` or `generateStaticParams` with `app`.
 
-`exportPathMap` allows you to specify a mapping of request paths to page destinations, to be used during export. Paths defined in `exportPathMap` will also be available when using [`next dev`](/docs/app/api-reference/cli/next#next-dev-options).
+`exportPathMap` allows you to specify a mapping of request paths to page destinations, to be used during export. Paths defined in `exportPathMap` will also be available when using [`next dev`](../../06-cli/next.md#next-dev-options).
 
 Let's start with an example, to create a custom `exportPathMap` for an app with the following pages:
 
@@ -63,7 +63,7 @@ module.exports = {
 
 ## Customizing the output directory
 
-[`next export`](/docs/app/guides/static-exports) will use `out` as the default output directory, you can customize this using the `-o` argument, like so:
+[`next export`](../../../02-guides/static-exports.md) will use `out` as the default output directory, you can customize this using the `-o` argument, like so:
 
 ```bash filename="Terminal"
 next export -o outdir
