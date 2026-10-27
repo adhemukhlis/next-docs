@@ -57,51 +57,53 @@ The following options are available:
 
 ### With the default template
 
-To create a new app using the default template, run the following command in your terminal:
+`--yes` uses previous preferences or the defaults for every option, without prompts:
 
 ```bash package="pnpm"
-pnpm create next-app
+pnpm create next-app my-app --yes
 ```
 
 ```bash package="npm"
-npx create-next-app@latest
+npx create-next-app@latest my-app --yes
 ```
 
-On installation, you'll see the following prompts:
+### With explicit options
 
-```txt filename="Terminal"
-What is your project named? my-app
-Would you like to use the recommended Next.js defaults?
-    Yes, use recommended defaults - TypeScript, ESLint, No React Compiler, Tailwind CSS, No src/ directory, App Router, Cache Components, AGENTS.md, Agent feedback
-    No, reuse previous settings
-    No, customize settings - Choose your own preferences
+Pass the options as flags instead of answering prompts:
+
+```bash package="pnpm"
+pnpm create next-app my-app \
+  --app \
+  --src-dir \
+  --typescript \
+  --import-alias "@/*" \
+  --turbopack \
+  --cache-components \
+  --react-compiler \
+  --biome \
+  --tailwind \
+  --use-pnpm
 ```
 
-If you choose to `customize settings`, you'll see the following prompts:
-
-```txt filename="Terminal"
-Would you like to use TypeScript? No / Yes
-Which linter would you like to use? ESLint / Biome / None
-Would you like to use React Compiler? No / Yes
-Would you like to use Tailwind CSS? No / Yes
-Would you like your code inside a `src/` directory? No / Yes
-Would you like to use App Router? (recommended) No / Yes
-Would you like to use Cache Components? No / Yes
-Would you like to customize the import alias (`@/*` by default)? No / Yes
-What import alias would you like configured? @/*
-Would you like to include AGENTS.md to guide coding agents to write up-to-date Next.js code? No / Yes
-Would you like to help improve Next.js by letting agents prepare anonymized feedback for your review as you code? (Disable anytime with `experimental.agentFeedback: false`.) No / Yes
+```bash package="npm"
+npx create-next-app@latest my-app \
+  --app \
+  --src-dir \
+  --typescript \
+  --import-alias "@/*" \
+  --turbopack \
+  --cache-components \
+  --react-compiler \
+  --biome \
+  --tailwind \
+  --use-npm
 ```
 
-After the prompts, `create-next-app` will create a folder with your project name and install the required dependencies.
+- Essential: `--app`, `--src-dir`, `--typescript`, `--import-alias`, `--turbopack` — they fix the router, source layout, language, import paths, and bundler.
+- Optional: `--cache-components`, `--react-compiler`, a linter flag, `--tailwind`, and the `--use-*` flag matching the package manager.
+- Linter: `--eslint` (with the rules from `@next/eslint-plugin-next`), `--biome` (linter and formatter with Next.js and React domain support), or `--no-linter`.
 
-### Linter Options
-
-**ESLint**: Sets up ESLint with the Next.js-specific rules from `@next/eslint-plugin-next`.
-
-**Biome**: Sets up Biome, a linter and formatter, with its built-in Next.js and React domain support.
-
-**None**: Skips linter configuration. You can add a linter later.
+`create-next-app` creates a `my-app` folder and installs the dependencies (`--skip-install` skips installing).
 
 ### With an official Next.js example
 

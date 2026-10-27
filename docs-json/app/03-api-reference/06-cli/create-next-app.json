@@ -906,8 +906,12 @@
 			"type": "paragraph",
 			"children": [
 				{
+					"type": "inlineCode",
+					"value": "--yes"
+				},
+				{
 					"type": "text",
-					"value": "To create a new app using the default template, run the following command in your terminal:"
+					"value": " uses previous preferences or the defaults for every option, without prompts:"
 				}
 			]
 		},
@@ -915,68 +919,13 @@
 			"type": "code",
 			"lang": "bash",
 			"meta": "package=\"pnpm\"",
-			"value": "pnpm create next-app"
+			"value": "pnpm create next-app my-app --yes"
 		},
 		{
 			"type": "code",
 			"lang": "bash",
 			"meta": "package=\"npm\"",
-			"value": "npx create-next-app@latest"
-		},
-		{
-			"type": "paragraph",
-			"children": [
-				{
-					"type": "text",
-					"value": "On installation, you'll see the following prompts:"
-				}
-			]
-		},
-		{
-			"type": "code",
-			"lang": "txt",
-			"meta": "filename=\"Terminal\"",
-			"value": "What is your project named? my-app\nWould you like to use the recommended Next.js defaults?\n    Yes, use recommended defaults - TypeScript, ESLint, No React Compiler, Tailwind CSS, No src/ directory, App Router, Cache Components, AGENTS.md, Agent feedback\n    No, reuse previous settings\n    No, customize settings - Choose your own preferences"
-		},
-		{
-			"type": "paragraph",
-			"children": [
-				{
-					"type": "text",
-					"value": "If you choose to "
-				},
-				{
-					"type": "inlineCode",
-					"value": "customize settings"
-				},
-				{
-					"type": "text",
-					"value": ", you'll see the following prompts:"
-				}
-			]
-		},
-		{
-			"type": "code",
-			"lang": "txt",
-			"meta": "filename=\"Terminal\"",
-			"value": "Would you like to use TypeScript? No / Yes\nWhich linter would you like to use? ESLint / Biome / None\nWould you like to use React Compiler? No / Yes\nWould you like to use Tailwind CSS? No / Yes\nWould you like your code inside a `src/` directory? No / Yes\nWould you like to use App Router? (recommended) No / Yes\nWould you like to use Cache Components? No / Yes\nWould you like to customize the import alias (`@/*` by default)? No / Yes\nWhat import alias would you like configured? @/*\nWould you like to include AGENTS.md to guide coding agents to write up-to-date Next.js code? No / Yes\nWould you like to help improve Next.js by letting agents prepare anonymized feedback for your review as you code? (Disable anytime with `experimental.agentFeedback: false`.) No / Yes"
-		},
-		{
-			"type": "paragraph",
-			"children": [
-				{
-					"type": "text",
-					"value": "After the prompts, "
-				},
-				{
-					"type": "inlineCode",
-					"value": "create-next-app"
-				},
-				{
-					"type": "text",
-					"value": " will create a folder with your project name and install the required dependencies."
-				}
-			]
+			"value": "npx create-next-app@latest my-app --yes"
 		},
 		{
 			"type": "heading",
@@ -984,7 +933,7 @@
 			"children": [
 				{
 					"type": "text",
-					"value": "Linter Options"
+					"value": "With explicit options"
 				}
 			]
 		},
@@ -992,61 +941,209 @@
 			"type": "paragraph",
 			"children": [
 				{
-					"type": "strong",
+					"type": "text",
+					"value": "Pass the options as flags instead of answering prompts:"
+				}
+			]
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"pnpm\"",
+			"value": "pnpm create next-app my-app \\\n  --app \\\n  --src-dir \\\n  --typescript \\\n  --import-alias \"@/*\" \\\n  --turbopack \\\n  --cache-components \\\n  --react-compiler \\\n  --biome \\\n  --tailwind \\\n  --use-pnpm"
+		},
+		{
+			"type": "code",
+			"lang": "bash",
+			"meta": "package=\"npm\"",
+			"value": "npx create-next-app@latest my-app \\\n  --app \\\n  --src-dir \\\n  --typescript \\\n  --import-alias \"@/*\" \\\n  --turbopack \\\n  --cache-components \\\n  --react-compiler \\\n  --biome \\\n  --tailwind \\\n  --use-npm"
+		},
+		{
+			"type": "list",
+			"ordered": false,
+			"start": null,
+			"spread": false,
+			"children": [
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
 					"children": [
 						{
-							"type": "text",
-							"value": "ESLint"
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Essential: "
+								},
+								{
+									"type": "inlineCode",
+									"value": "--app"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "--src-dir"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "--typescript"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "--import-alias"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "--turbopack"
+								},
+								{
+									"type": "text",
+									"value": " — they fix the router, source layout, language, import paths, and bundler."
+								}
+							]
 						}
 					]
 				},
 				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Optional: "
+								},
+								{
+									"type": "inlineCode",
+									"value": "--cache-components"
+								},
+								{
+									"type": "text",
+									"value": ", "
+								},
+								{
+									"type": "inlineCode",
+									"value": "--react-compiler"
+								},
+								{
+									"type": "text",
+									"value": ", a linter flag, "
+								},
+								{
+									"type": "inlineCode",
+									"value": "--tailwind"
+								},
+								{
+									"type": "text",
+									"value": ", and the "
+								},
+								{
+									"type": "inlineCode",
+									"value": "--use-*"
+								},
+								{
+									"type": "text",
+									"value": " flag matching the package manager."
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "listItem",
+					"spread": false,
+					"checked": null,
+					"children": [
+						{
+							"type": "paragraph",
+							"children": [
+								{
+									"type": "text",
+									"value": "Linter: "
+								},
+								{
+									"type": "inlineCode",
+									"value": "--eslint"
+								},
+								{
+									"type": "text",
+									"value": " (with the rules from "
+								},
+								{
+									"type": "inlineCode",
+									"value": "@next/eslint-plugin-next"
+								},
+								{
+									"type": "text",
+									"value": "), "
+								},
+								{
+									"type": "inlineCode",
+									"value": "--biome"
+								},
+								{
+									"type": "text",
+									"value": " (linter and formatter with Next.js and React domain support), or "
+								},
+								{
+									"type": "inlineCode",
+									"value": "--no-linter"
+								},
+								{
+									"type": "text",
+									"value": "."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "paragraph",
+			"children": [
+				{
+					"type": "inlineCode",
+					"value": "create-next-app"
+				},
+				{
 					"type": "text",
-					"value": ": Sets up ESLint with the Next.js-specific rules from "
+					"value": " creates a "
 				},
 				{
 					"type": "inlineCode",
-					"value": "@next/eslint-plugin-next"
+					"value": "my-app"
 				},
 				{
 					"type": "text",
-					"value": "."
-				}
-			]
-		},
-		{
-			"type": "paragraph",
-			"children": [
+					"value": " folder and installs the dependencies ("
+				},
 				{
-					"type": "strong",
-					"children": [
-						{
-							"type": "text",
-							"value": "Biome"
-						}
-					]
+					"type": "inlineCode",
+					"value": "--skip-install"
 				},
 				{
 					"type": "text",
-					"value": ": Sets up Biome, a linter and formatter, with its built-in Next.js and React domain support."
-				}
-			]
-		},
-		{
-			"type": "paragraph",
-			"children": [
-				{
-					"type": "strong",
-					"children": [
-						{
-							"type": "text",
-							"value": "None"
-						}
-					]
-				},
-				{
-					"type": "text",
-					"value": ": Skips linter configuration. You can add a linter later."
+					"value": " skips installing)."
 				}
 			]
 		},

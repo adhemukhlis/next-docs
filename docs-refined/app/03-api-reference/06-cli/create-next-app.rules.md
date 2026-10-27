@@ -4,7 +4,7 @@ Lock for `docs-refined/app/03-api-reference/06-cli/create-next-app.md`, on top o
 
 ## Purpose
 
-Reference for the `create-next-app` CLI: how to invoke it, every option it accepts, its interactive prompts, and how to start from an example. It is not a setup walkthrough — creating and running a first app step by step belongs in Installation (`../../01-getting-started/01-installation.md`).
+Reference for the `create-next-app` CLI: how to invoke it, every option it accepts, non-interactive usage with flags, and how to start from an example. It is not a setup walkthrough — creating and running a first app step by step belongs in Installation (`../../01-getting-started/01-installation.md`).
 
 ## Content (in this order)
 
@@ -12,15 +12,16 @@ Reference for the `create-next-app` CLI: how to invoke it, every option it accep
 2. Intro: one or two sentences on what the CLI does (default template or an example from a public GitHub repository), then "Basic usage:" with the pnpm and npm commands.
 3. `## Reference`: one line, then the options table (`Options` | `Description`).
 4. `## Examples`, with these subsections:
-   1. `### With the default template`: pnpm and npm commands, the default-settings prompt, the customize-settings prompts, what happens after.
-   2. `### Linter Options`: one line each for ESLint, Biome, and None.
+   1. `### With the default template`: `my-app --yes` commands (pnpm, npm), one line on what `--yes` does.
+   2. `### With explicit options`: one multi-line command per package manager (pnpm with `--use-pnpm`, npm with `--use-npm`) passing `--app`, `--src-dir`, `--typescript`, `--import-alias "@/*"`, `--turbopack`, `--cache-components`, `--react-compiler`, `--biome`, `--tailwind`; then bullets: essential flags, optional flags, linter flags (`--eslint`, `--biome`, `--no-linter`); then one line on the folder it creates and `--skip-install`.
    3. `### With an official Next.js example`: the `--example` commands and the link to the examples directory.
    4. `### With any public GitHub example`: the `--example "<GitHub URL>"` commands.
 
 ## Keep
 
 - Every row of the options table, verbatim: flag names, `or` aliases, defaults ("(default)", "(enabled by default)", `"@/\*"`), and descriptions. Upstream's row order.
-- CLI prompt output (`txt filename="Terminal"` blocks) verbatim, including the `App Router` prompt line and the `experimental.agentFeedback` hint — it is real CLI output.
+- The essential flags: `--app`, `--src-dir`, `--typescript`, `--import-alias`, `--turbopack`.
+- Multi-line commands use ` \` line continuations only — no comments after a `\`, it breaks the command.
 - Placeholder syntax in commands as-is: `[project-name] [options]`, `[example-name] [your-project-name]`, `"https://github.com/.../"`.
 - Links to the examples directory in the vercel/next.js repository.
 
@@ -28,7 +29,8 @@ Reference for the `create-next-app` CLI: how to invoke it, every option it accep
 
 - The yarn and bun command blocks (global package manager rule).
 - "It is the easiest way to get started with Next.js." — marketing.
-- In `### Linter Options`, the judgment words: "The traditional and most popular JavaScript linter", "fast, modern", "for optimal performance". State what each option sets up.
+- The interactive prompt transcripts (`txt filename="Terminal"` blocks) and the "you'll see the following prompts" / "If you choose to `customize settings`" text — replaced by `### With explicit options` (global audience rule).
+- The separate `### Linter Options` section — the linter flags are a bullet under `### With explicit options`, without judgment words ("traditional and most popular", "fast, modern", "optimal performance").
 - "Once you've answered the prompts, a new project will be created with your chosen configuration." — it repeats the sentence after the prompts.
 - Fix "The `create-next-app` CLI allow you" → "allows you".
 
@@ -38,4 +40,4 @@ Reference for the `create-next-app` CLI: how to invoke it, every option it accep
 
 ## Upstream changes
 
-Port `git diff -- docs/app/03-api-reference/06-cli/create-next-app.md` refined per these rules. Copy new or changed options table rows and CLI prompt output verbatim. Keep only the pnpm and npm variants of new commands. Never carry over anything listed under Remove.
+Port `git diff -- docs/app/03-api-reference/06-cli/create-next-app.md` refined per these rules. Copy new or changed options table rows verbatim; when upstream adds a prompt, add its flag to `### With explicit options` only if it is essential. Never carry over prompt transcripts. Keep only the pnpm and npm variants of new commands. Never carry over anything listed under Remove.

@@ -2,6 +2,8 @@
 
 Refined [Next.js](https://github.com/vercel/next.js/tree/canary/docs) documentation (`canary`): App Router only, stable first-class APIs, no legacy Pages Router content.
 
+Written for **AI coding agents** to use as context: readable by humans, but without guidance meant only for humans (interactive prompts, UI walkthroughs). Commands and config come first.
+
 | Directory       | Content                                                              | Produced by          |
 | --------------- | -------------------------------------------------------------------- | -------------------- |
 | `docs/`         | Upstream docs, kept original (used to detect official changes)       | `fetch.mjs`          |

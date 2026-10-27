@@ -1,6 +1,6 @@
 # next-docs
 
-Refined Next.js documentation: consistent, lightweight, and free of legacy baggage. Only stable, first-class App Router usage — no Pages Router.
+Refined Next.js documentation: consistent, lightweight, and free of legacy baggage. Only stable, first-class App Router usage — no Pages Router. Audience: AI coding agents (human-readable, but no human-only guidance).
 
 ## Pipeline
 

@@ -12,6 +12,14 @@ Refine `<name>.md` only when `<name>.rules.md` exists next to it. Without one, t
 
 To refine such a document, its `<name>.rules.md` has to be written first.
 
+## Audience: AI agents
+
+These docs are written for AI coding agents that use them as context. They stay readable for humans, but carry no guidance meant only for humans.
+
+- Prefer a non-interactive command with explicit flags or a config file over interactive steps. Don't reproduce interactive prompt transcripts ("you'll see the following prompts…").
+- No click-through UI walkthroughs or "you'll see" narration. Give the command, file, or config that produces the result.
+- Keep what an agent needs to act: exact commands, flags, file names, code, and constraints (versions, defaults).
+
 ## Scope: App Router only, no legacy
 
 - Document the App Router only. Don't mention, compare with, or link to the Pages Router — not even to say it exists or how to migrate from it.
