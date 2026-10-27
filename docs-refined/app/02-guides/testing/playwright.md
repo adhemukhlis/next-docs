@@ -121,6 +121,6 @@ You can learn more about Playwright and Continuous Integration from these resour
 
 ## INDEX
 
-Learn more about testing instant navigations.
+Related documents:
 
 - [Ensuring instant navigations](../instant-navigation.md)

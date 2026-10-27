@@ -78,6 +78,8 @@ During `next dev`, Next.js DevTools can also show a **Vulnerability Insight** wh
 
 ## INDEX
 
+Related documents:
+
 - [Upgrade with a coding agent](../../../02-guides/upgrading/agent-upgrade.md)
 - [How Next.js supports AI coding agents](../../../02-guides/ai-agents.md)
 - [next CLI](../../06-cli/next.md)

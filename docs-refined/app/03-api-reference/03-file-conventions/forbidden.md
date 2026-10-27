@@ -50,4 +50,6 @@ export default function Forbidden() {
 
 ## INDEX
 
+Related documents:
+
 - [forbidden](../04-functions/forbidden.md)

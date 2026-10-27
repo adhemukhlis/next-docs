@@ -7,7 +7,7 @@ The **App Router** is a file-system based router that uses React's latest featur
 
 ## INDEX
 
-Sections of the App Router documentation:
+Documents in this section:
 
 - [Getting Started](./01-getting-started/index.md)
 - [Guides](./02-guides/index.md)

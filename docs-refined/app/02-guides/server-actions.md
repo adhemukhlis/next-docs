@@ -168,7 +168,7 @@ To minimize disruption:
 
 ## INDEX
 
-Learn more about creating, securing, and configuring Server Actions.
+Related documents:
 
 - [Mutating Data](../01-getting-started/07-mutating-data.md)
 - [How to create forms with Server Actions](./forms.md)

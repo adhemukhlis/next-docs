@@ -299,7 +299,7 @@ The destination needs [Partial Prefetching](./adopting-partial-prefetching.md) f
 
 ## INDEX
 
-Learn more about authentication, caching, and prefetching in Next.js.
+Related documents:
 
 - [How to implement authentication in Next.js](./authentication.md)
 - [Caching](../01-getting-started/08-caching.md)

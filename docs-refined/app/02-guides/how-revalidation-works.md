@@ -90,7 +90,7 @@ Cache failures result in degraded performance (stale content, extra renders), no
 
 ## INDEX
 
-Related guides and references.
+Related documents:
 
 - [Caching](../01-getting-started/08-caching.md)
 - [How to implement Incremental Static Regeneration (ISR)](./incremental-static-regeneration.md)

@@ -240,6 +240,6 @@ module.exports = {
 
 ## INDEX
 
-See the API Reference for the full feature set of Next.js Image.
+Related documents:
 
 - [Image Component](../03-api-reference/02-components/image.md)

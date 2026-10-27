@@ -590,7 +590,7 @@ export default function ViewCount({ initialViews }) {
 
 ## INDEX
 
-Learn more about Server Actions and the APIs mentioned in this page.
+Related documents:
 
 - [Server Actions and Mutations](../02-guides/server-actions.md)
 - [revalidatePath](../03-api-reference/04-functions/revalidatePath.md)

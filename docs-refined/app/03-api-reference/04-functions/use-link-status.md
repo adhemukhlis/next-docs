@@ -257,7 +257,7 @@ If the navigation to a new route is fast, users may see an unnecessary flash of 
 
 ## INDEX
 
-Learn more about the features mentioned in this page by reading the API Reference.
+Related documents:
 
 - [Link Component](../02-components/link.md)
 - [loading.js](../03-file-conventions/loading.md)

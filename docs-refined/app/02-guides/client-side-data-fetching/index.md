@@ -71,7 +71,7 @@ Documents in this section:
 - [How to fetch client-side data with SWR](./swr.md)
 - [How to fetch client-side data with TanStack Query](./tanstack-query.md)
 
-Related:
+Related documents:
 
 - [Fetching Data](../../01-getting-started/06-fetching-data.md)
 - [How to build single-page applications with Next.js](../single-page-applications.md)

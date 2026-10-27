@@ -10,7 +10,7 @@ Entry point of the **Configuration** section: it only introduces the section and
 
 1. Frontmatter: `title: Configuration` and a one-sentence `description`. No other keys.
 2. Optional: one short sentence introducing the section. Nothing more.
-3. `## INDEX`, the last section: the lead "Documents in this section:", then the section list.
+3. `## INDEX`, the last section: the lead `Documents in this section:`, then the section list.
 
 ## Section list
 

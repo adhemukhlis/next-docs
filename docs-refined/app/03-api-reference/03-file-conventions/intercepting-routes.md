@@ -79,6 +79,6 @@ See the [Parallel Routes](./parallel-routes.md#modals) documentation for a step-
 
 ## INDEX
 
-Learn how to create modals with Intercepted and Parallel Routes.
+Related documents:
 
 - [Parallel Routes](./parallel-routes.md)

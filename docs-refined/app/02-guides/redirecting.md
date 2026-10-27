@@ -513,6 +513,8 @@ export function GET(request) {
 
 ## INDEX
 
+Related documents:
+
 - [redirect](../03-api-reference/04-functions/redirect.md)
 - [permanentRedirect](../03-api-reference/04-functions/permanentRedirect.md)
 - [proxy.js](../03-api-reference/03-file-conventions/proxy.md)

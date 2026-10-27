@@ -240,6 +240,6 @@ export default async function Image({ params, id }) {
 
 ## INDEX
 
-View all the Metadata API options.
+Related documents:
 
 - [Metadata Files API Reference](../03-file-conventions/01-metadata/index.md)

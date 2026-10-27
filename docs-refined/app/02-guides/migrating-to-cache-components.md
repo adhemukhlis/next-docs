@@ -980,7 +980,7 @@ See [Preserving UI state across navigations](./preserving-ui-state.md) for detai
 
 ## INDEX
 
-Learn about other behavior changes when Cache Components is enabled.
+Related documents:
 
 - [Optimizing the static shell](./optimizing-the-static-shell.md)
 - [Ensuring instant navigations](./instant-navigation.md)

@@ -680,7 +680,7 @@ Use [Optimizing prefetching](./optimizing-prefetching.md) when URL-specific cont
 
 ## INDEX
 
-Learn more about the APIs used in this guide.
+Related documents:
 
 - [use cache](../03-api-reference/01-directives/use-cache.md)
 - [use cache: remote](../03-api-reference/01-directives/use-cache-remote.md)

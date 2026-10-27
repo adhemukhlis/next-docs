@@ -114,4 +114,6 @@ export default function UnauthorizedPage() {
 
 ## INDEX
 
+Related documents:
+
 - [unauthorized](../04-functions/unauthorized.md)

@@ -18,4 +18,6 @@ For full documentation, see the [`proxy.js` API reference](./proxy.md).
 
 ## INDEX
 
+Related documents:
+
 - [proxy.js](./proxy.md)

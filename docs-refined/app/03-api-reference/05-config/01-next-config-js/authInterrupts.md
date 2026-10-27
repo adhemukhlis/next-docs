@@ -28,6 +28,8 @@ module.exports = {
 
 ## INDEX
 
+Related documents:
+
 - [forbidden](../../04-functions/forbidden.md)
 - [unauthorized](../../04-functions/unauthorized.md)
 - [forbidden.js](../../03-file-conventions/forbidden.md)

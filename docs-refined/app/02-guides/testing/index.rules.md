@@ -10,7 +10,7 @@ Entry point of the **Testing** section, and an overview of it: the types of test
 
 1. Frontmatter: `title: Testing` and a one-sentence `description`. No other keys.
 2. The overview content described above, refined per `global.rules.md`.
-3. `## INDEX`, the last section: the lead "Documents in this section:", then the section list.
+3. `## INDEX`, the last section: the lead `Documents in this section:`, then the section list.
 
 ## Section list
 

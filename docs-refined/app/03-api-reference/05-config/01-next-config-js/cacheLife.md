@@ -85,7 +85,7 @@ The configuration object has key values with the following format:
 
 ## INDEX
 
-View related API references.
+Related documents:
 
 - [use cache](../../01-directives/use-cache.md)
 - [cacheHandlers](./cacheHandlers.md)

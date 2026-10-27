@@ -402,7 +402,7 @@ A route-level [`loading.tsx`](../03-api-reference/03-file-conventions/loading.md
 
 ## INDEX
 
-The hook and config flag used in this guide.
+Related documents:
 
 - [useOffline](../03-api-reference/04-functions/use-offline.md)
 - [useOffline](../03-api-reference/05-config/01-next-config-js/useOffline.md)

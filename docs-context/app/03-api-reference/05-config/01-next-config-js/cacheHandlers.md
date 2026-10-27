@@ -574,7 +574,7 @@ module.exports = {
 
 ## INDEX
 
-View related API references.
+Related documents:
 
 - [use cache](../../01-directives/use-cache.md)
 - [use cache: remote](../../01-directives/use-cache-remote.md)

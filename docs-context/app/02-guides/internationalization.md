@@ -291,6 +291,6 @@ export default async function RootLayout({ children, params }) {
 
 ## INDEX
 
-Related API references and conventions.
+Related documents:
 
 - [next/root-params](../03-api-reference/04-functions/next-root-params.md)

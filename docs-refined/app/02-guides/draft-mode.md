@@ -330,6 +330,6 @@ The cache bypass still applies to both branches; the fork only chooses where to 
 
 ## INDEX
 
-See the API reference for more information on how to use Draft Mode.
+Related documents:
 
 - [draftMode](../03-api-reference/04-functions/draft-mode.md)

@@ -905,7 +905,7 @@ Some hosts deploy Route Handlers as lambda functions. This means:
 
 ## INDEX
 
-Learn more about Route Handlers, Proxy, and Rewrites
+Related documents:
 
 - [route.js](../03-api-reference/03-file-conventions/route.md)
 - [proxy.js](../03-api-reference/03-file-conventions/proxy.md)

@@ -189,7 +189,7 @@ When content doesn't need time-based revalidation, for example data from a CMS, 
 
 ## INDEX
 
-Learn more about the APIs mentioned on this page.
+Related documents:
 
 - [cacheLife](../03-api-reference/04-functions/cacheLife.md)
 - [cacheTag](../03-api-reference/04-functions/cacheTag.md)

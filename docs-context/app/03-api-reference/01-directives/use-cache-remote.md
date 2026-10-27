@@ -599,7 +599,7 @@ function RecommendationsList({ items }) {
 
 ## INDEX
 
-View related API references.
+Related documents:
 
 - [use cache](./use-cache.md)
 - [use cache: private](./use-cache-private.md)

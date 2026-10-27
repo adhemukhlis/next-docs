@@ -211,7 +211,7 @@ See the [Next.js 16 upgrade guide](../../02-guides/upgrading/version-16.md#cache
 
 ## INDEX
 
-View related API references.
+Related documents:
 
 - [cacheComponents](../05-config/01-next-config-js/cacheComponents.md)
 - [use cache](../01-directives/use-cache.md)

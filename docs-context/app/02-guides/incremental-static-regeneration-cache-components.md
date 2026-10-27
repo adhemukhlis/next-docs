@@ -234,6 +234,8 @@ If you are migrating from the Pages Router:
 
 ## INDEX
 
+Related documents:
+
 - [cacheComponents](../03-api-reference/05-config/01-next-config-js/cacheComponents.md)
 - [generateStaticParams](../03-api-reference/04-functions/generate-static-params.md)
 - [loading.js](../03-api-reference/03-file-conventions/loading.md)

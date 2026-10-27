@@ -657,7 +657,7 @@ The item request continues while `checkIsAvailable()` runs. If the page renders 
 
 ## INDEX
 
-Learn more about advanced data-fetching patterns and the features mentioned in this page.
+Related documents:
 
 - [How to build single-page applications with Next.js](../02-guides/single-page-applications.md)
 - [How to think about data security in Next.js](../02-guides/data-security.md)

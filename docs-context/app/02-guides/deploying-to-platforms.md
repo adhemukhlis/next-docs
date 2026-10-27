@@ -87,7 +87,7 @@ Next.js's [rendering model](./rendering-philosophy.md) places the static/dynamic
 
 ## INDEX
 
-Related guides and references.
+Related documents:
 
 - [Next.js Rendering Philosophy](./rendering-philosophy.md)
 - [How to self-host your Next.js application](./self-hosting.md)

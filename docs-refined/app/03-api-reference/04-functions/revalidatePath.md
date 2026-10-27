@@ -227,4 +227,6 @@ export async function GET(request) {
 
 ## INDEX
 
+Related documents:
+
 - [Server Actions and Mutations](../../02-guides/server-actions.md)

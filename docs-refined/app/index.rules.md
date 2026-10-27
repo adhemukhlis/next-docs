@@ -10,7 +10,7 @@ Entry point of the App Router section: say in one paragraph what the App Router 
 
 1. Frontmatter: `title: App Router` and a one-sentence `description`. No other keys.
 2. One short intro paragraph: the App Router is Next.js's file-system based router, built on React features such as Server Components, Suspense, and Server Functions (linked to react.dev).
-3. `## INDEX`: a one-line lead, then the section list.
+3. `## INDEX`: the lead `Documents in this section:`, then the section list.
 
 ## Section list
 

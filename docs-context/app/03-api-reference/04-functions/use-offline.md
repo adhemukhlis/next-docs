@@ -179,5 +179,7 @@ When connectivity is restored, Next.js retries the blocked request and the dynam
 
 ## INDEX
 
+Related documents:
+
 - [useOffline](../05-config/01-next-config-js/useOffline.md)
 - [How to build a Progressive Web Application (PWA) with Next.js](../../02-guides/progressive-web-apps.md)

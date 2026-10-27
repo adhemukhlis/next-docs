@@ -64,16 +64,19 @@ Related documents go in the body instead, as an explicit `## INDEX` section at t
 ```md
 ## INDEX
 
-Learn the fundamentals of building an App Router project.
+Related documents:
 
 - [Installation](./01-getting-started/01-installation.md)
 - [Project structure and organization](./01-getting-started/02-project-structure.md)
 ```
 
 - Heading is exactly `## INDEX`, last section of the document.
-- Optional one-line lead (from the old `related.description`), then a list of `- [<frontmatter title of the target>](<relative path>)`. Titles only, no per-item descriptions.
-- Same order as the old `related.links`. Drop links to documents that don't exist in `docs-refined/`.
-- `bun run build` enforces this: it rejects any frontmatter key other than `title`, `description`, `nav_title`, `version`, and a `## INDEX` that isn't the last section.
+- The section holds one or two groups, each a fixed lead line followed by a list. No other text — no custom intro sentences.
+  - `Documents in this section:` — the documents this one contains: the full tree in `docs-refined/index.md`, the direct children in a section's `index.md`. Only in those index documents, always first.
+  - `Related documents:` — documents related to this one (what used to be `related`).
+- List items: `- [<frontmatter title of the target>](<relative path>)`. Titles only, no per-item descriptions.
+- Related documents keep the order of the old `related.links`. Drop links to documents that don't exist in `docs-refined/`.
+- `bun run build` enforces this: it rejects any frontmatter key other than `title`, `description`, `nav_title`, `version`, a `## INDEX` that isn't the last section, and anything in it other than the two leads, each followed by a list.
 
 ## Writing
 

@@ -62,6 +62,8 @@ Some UI patterns behave differently when components stay mounted instead of unmo
 
 ## INDEX
 
+Related documents:
+
 - [Caching](../../../01-getting-started/08-caching.md)
 - [Incremental Static Regeneration with Cache Components](../../../02-guides/incremental-static-regeneration-cache-components.md)
 - [use cache](../../01-directives/use-cache.md)

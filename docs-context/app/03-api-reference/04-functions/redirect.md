@@ -222,5 +222,7 @@ The `redirect()` method uses a `307` by default, instead of a `302` temporary re
 
 ## INDEX
 
+Related documents:
+
 - [permanentRedirect](./permanentRedirect.md)
 - [Server Actions and Mutations](../../02-guides/server-actions.md)

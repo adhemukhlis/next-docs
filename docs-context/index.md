@@ -15,7 +15,7 @@ This is the documentation for [Next.js](https://nextjs.org), the React framework
 
 ## INDEX
 
-Every document in this documentation, nested by section, with its relative path:
+Documents in this section:
 
 - [App Router](./app/index.md)
   - [Getting Started](./app/01-getting-started/index.md)

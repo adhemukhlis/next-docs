@@ -61,5 +61,7 @@ To prevent [`create-next-app`](../../06-cli/create-next-app.md) from creating ag
 
 ## INDEX
 
+Related documents:
+
 - [How Next.js supports AI coding agents](../../../02-guides/ai-agents.md)
 - [agentFeedback](./agentFeedback.md)

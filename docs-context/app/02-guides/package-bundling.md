@@ -320,6 +320,6 @@ module.exports = nextConfig
 
 ## INDEX
 
-Learn more about optimizing your application for production.
+Related documents:
 
 - [How to optimize your Next.js application for production](./production-checklist.md)

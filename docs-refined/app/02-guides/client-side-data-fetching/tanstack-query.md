@@ -606,7 +606,7 @@ See the [live `next-spa-patterns` demo](https://next-spa-patterns.labs.vercel.de
 
 ## INDEX
 
-Related guides and references.
+Related documents:
 
 - [Fetching Data](../../01-getting-started/06-fetching-data.md)
 - [How to build single-page applications with Next.js](../single-page-applications.md)

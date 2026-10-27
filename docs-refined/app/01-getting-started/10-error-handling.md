@@ -435,7 +435,7 @@ export default function GlobalError({ error, retry }) {
 
 ## INDEX
 
-Learn more about the features mentioned in this page by reading the API Reference.
+Related documents:
 
 - [redirect](../03-api-reference/04-functions/redirect.md)
 - [error.js](../03-api-reference/03-file-conventions/error.md)

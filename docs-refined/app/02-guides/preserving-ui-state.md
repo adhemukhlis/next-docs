@@ -548,7 +548,7 @@ The [Activity Patterns Demo](https://react-activity-patterns.labs.vercel.dev) ([
 
 ## INDEX
 
-Learn more about Cache Components and preserving UI state.
+Related documents:
 
 - [Caching](../01-getting-started/08-caching.md)
 - [Migrating to Cache Components](./migrating-to-cache-components.md)

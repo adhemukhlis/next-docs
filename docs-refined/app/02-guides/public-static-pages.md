@@ -255,5 +255,7 @@ We started with a static page, added async work, and resolved the blocking behav
 
 ## INDEX
 
+Related documents:
+
 - [Keeping pages static](./keeping-pages-static.md)
 - [Incremental Static Regeneration with Cache Components](./incremental-static-regeneration-cache-components.md)

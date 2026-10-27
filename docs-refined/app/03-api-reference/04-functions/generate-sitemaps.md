@@ -71,6 +71,6 @@ export default async function sitemap(props) {
 
 ## INDEX
 
-Learn how to create sitemaps for your Next.js application.
+Related documents:
 
 - [sitemap.xml](../03-file-conventions/01-metadata/sitemap.md)

@@ -225,5 +225,7 @@ export default function Component({ children }) {
 
 ## INDEX
 
+Related documents:
+
 - [Error Handling](../../01-getting-started/10-error-handling.md)
 - [error.js](../03-file-conventions/error.md)

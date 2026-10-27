@@ -471,7 +471,7 @@ The store now loads shared navigation from its static App Shell, includes cached
 
 ## INDEX
 
-Require static output across a route or defer work within one subtree.
+Related documents:
 
 - [ensureStatic](../03-api-reference/03-file-conventions/02-route-segment-config/ensureStatic.md)
 - [prefetch](../03-api-reference/04-functions/prefetch.md)

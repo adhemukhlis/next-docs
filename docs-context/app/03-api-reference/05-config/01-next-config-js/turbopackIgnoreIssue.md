@@ -164,7 +164,7 @@ module.exports = {
 
 ## INDEX
 
-Learn more about Turbopack configuration.
+Related documents:
 
 - [turbopack](./turbopack.md)
 - [Turbopack](../../08-turbopack.md)

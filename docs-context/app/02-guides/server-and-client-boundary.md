@@ -268,7 +268,7 @@ For the other directives used in Next.js, see the [directives](../03-api-referen
 
 ## INDEX
 
-Learn how to apply this model and where the boundary is defined.
+Related documents:
 
 - [Server and Client Components](../01-getting-started/05-server-and-client-components.md)
 - [use client](../03-api-reference/01-directives/use-client.md)

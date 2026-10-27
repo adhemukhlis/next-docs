@@ -601,7 +601,7 @@ Data sources available during the build-time prerender have to be available at r
 
 ## INDEX
 
-Learn more about revalidation and the APIs mentioned on this page.
+Related documents:
 
 - [Revalidating](./09-revalidating.md)
 - [use cache](../03-api-reference/01-directives/use-cache.md)

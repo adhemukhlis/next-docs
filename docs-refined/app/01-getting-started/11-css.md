@@ -262,7 +262,7 @@ To keep CSS ordering predictable:
 
 ## INDEX
 
-Learn more about the alternatives ways you can use CSS in your application.
+Related documents:
 
 - [How to install Tailwind CSS v3 in your Next.js application](../02-guides/tailwind-v3-css.md)
 - [How to use Sass](../02-guides/sass.md)

@@ -225,6 +225,8 @@ export async function GET(request, { params }) {
 
 ## INDEX
 
+Related documents:
+
 - [not-found.js](../03-file-conventions/not-found.md)
 - [forbidden](./forbidden.md)
 - [unauthorized](./unauthorized.md)

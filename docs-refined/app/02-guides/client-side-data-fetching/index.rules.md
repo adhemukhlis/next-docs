@@ -10,7 +10,7 @@ Entry point of the **Client-side data fetching** section, and an overview of it:
 
 1. Frontmatter: `title: Client-side data fetching` and a one-sentence `description`. No other keys.
 2. The overview content described above, refined per `global.rules.md`.
-3. `## INDEX`, the last section: the lead "Documents in this section:", then the section list; then the lead "Related:" and links to related documents outside this section.
+3. `## INDEX`, the last section: the lead `Documents in this section:`, then the section list; then the lead `Related documents:` and links to related documents outside this section.
 
 ## Section list
 

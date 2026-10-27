@@ -412,7 +412,7 @@ The exception is [multiple root layouts](#multiple-root-layouts). When different
 
 ## INDEX
 
-Related API references and conventions.
+Related documents:
 
 - [layout.js](../03-file-conventions/layout.md)
 - [generateStaticParams](./generate-static-params.md)

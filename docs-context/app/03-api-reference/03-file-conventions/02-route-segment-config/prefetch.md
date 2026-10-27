@@ -80,7 +80,7 @@ export const prefetch: Prefetch = 'partial'
 
 ## INDEX
 
-Learn how to use instant navigations in practice.
+Related documents:
 
 - [Ensuring instant navigations](../../../02-guides/instant-navigation.md)
 - [instant](./instant.md)

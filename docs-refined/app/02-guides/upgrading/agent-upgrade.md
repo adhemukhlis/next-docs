@@ -136,6 +136,8 @@ The CLI needs access to release metadata and, for stable targets, security advis
 
 ## INDEX
 
+Related documents:
+
 - [Upgrading](../../01-getting-started/18-upgrading.md)
 - [next CLI](../../03-api-reference/06-cli/next.md)
 - [agentUpgrade](../../03-api-reference/05-config/01-next-config-js/agentUpgrade.md)

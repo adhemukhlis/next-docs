@@ -90,5 +90,7 @@ Disabling Next.js Telemetry also removes the managed feedback block the next tim
 
 ## INDEX
 
+Related documents:
+
 - [How Next.js supports AI coding agents](../../../02-guides/ai-agents.md)
 - [agentRules](./agentRules.md)

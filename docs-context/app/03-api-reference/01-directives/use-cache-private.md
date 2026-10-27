@@ -174,7 +174,7 @@ The following request-specific APIs can be used inside `'use cache: private'` fu
 
 ## INDEX
 
-View related API references.
+Related documents:
 
 - [use cache](./use-cache.md)
 - [cacheComponents](../05-config/01-next-config-js/cacheComponents.md)

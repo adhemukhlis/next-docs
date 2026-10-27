@@ -432,7 +432,7 @@ Synchronous values such as [`Math.random()`](/docs/messages/blocking-prerender-r
 
 ## INDEX
 
-Learn more about deploying, caching, and configuring production builds.
+Related documents:
 
 - [Deploying](../01-getting-started/17-deploying.md)
 - [Caching](../01-getting-started/08-caching.md)

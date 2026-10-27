@@ -777,5 +777,7 @@ The codemod will rename the file and the function name from `middleware` to `pro
 
 ## INDEX
 
+Related documents:
+
 - [NextRequest](../04-functions/next-request.md)
 - [NextResponse](../04-functions/next-response.md)

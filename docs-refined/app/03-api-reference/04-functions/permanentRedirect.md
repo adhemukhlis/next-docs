@@ -73,4 +73,6 @@ export default async function Profile({ params }) {
 
 ## INDEX
 
+Related documents:
+
 - [redirect](./redirect.md)

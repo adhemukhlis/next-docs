@@ -164,4 +164,6 @@ The endpoint is enabled by default. To disable it, set `experimental.mcpServer` 
 
 ## INDEX
 
+Related documents:
+
 - [How Next.js supports AI coding agents](./ai-agents.md)

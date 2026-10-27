@@ -49,6 +49,23 @@ const rules = [
 		const at = headings.indexOf('INDEX')
 		return at !== -1 && at !== headings.length - 1 ? ['section `## INDEX` harus jadi section terakhir'] : []
 	},
+	// Isi `## INDEX`: hanya pasangan lead tetap + list
+	// "Documents in this section:" hanya di index.md dan selalu pertama; "Related documents:" untuk dokumen terkait
+	function indexLeads(tree, file) {
+		const start = tree.children.findIndex((node) => node.type === 'heading' && node.depth === 2 && toString(node) === 'INDEX')
+		if (start === -1) return []
+		const nodes = tree.children.slice(start + 1)
+		const messages = []
+		for (let i = 0; i < nodes.length; i += 2) {
+			const lead = nodes[i].type === 'paragraph' ? toString(nodes[i]) : null
+			const isContents = lead === 'Documents in this section:'
+			if (!isContents && lead !== 'Related documents:')
+				messages.push(`isi \`## INDEX\` harus diawali lead "Documents in this section:" atau "Related documents:", bukan ${lead ? `"${lead}"` : nodes[i].type}`)
+			else if (isContents && (i !== 0 || !file.endsWith('index.md'))) messages.push('"Documents in this section:" hanya untuk index.md, sebagai grup pertama')
+			if (nodes[i + 1]?.type !== 'list') messages.push(`lead "${lead}" harus diikuti list`)
+		}
+		return messages
+	},
 	// Link internal = path file relatif yang beneran ada, bukan URL /docs/app/...
 	function internalLinksRelative(tree, file, files) {
 		const messages = []

@@ -363,6 +363,6 @@ In this example, route handlers for all blog post IDs returned by `generateStati
 
 ## INDEX
 
-For more information on what to do next, we recommend the following sections
+Related documents:
 
 - [generateStaticParams](../04-functions/generate-static-params.md)

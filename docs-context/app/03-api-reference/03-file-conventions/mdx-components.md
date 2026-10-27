@@ -57,4 +57,6 @@ export function useMDXComponents() {
 
 ## INDEX
 
+Related documents:
+
 - [How to use markdown and MDX in Next.js](../../02-guides/mdx.md)

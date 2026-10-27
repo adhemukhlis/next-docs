@@ -59,4 +59,6 @@ export default async function Default({ params }) {
 
 ## INDEX
 
+Related documents:
+
 - [Parallel Routes](./parallel-routes.md)

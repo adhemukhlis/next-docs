@@ -561,7 +561,7 @@ The [Optimizing prefetching guide](./optimizing-prefetching.md) covers when the 
 
 ## INDEX
 
-Learn more about prefetching and instant navigations.
+Related documents:
 
 - [Ensuring instant navigations](./instant-navigation.md)
 - [Optimizing prefetching](./optimizing-prefetching.md)

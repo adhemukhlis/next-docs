@@ -782,7 +782,7 @@ For a step-by-step workflow that applies these patterns to an existing route, se
 
 ## INDEX
 
-Related API references and guides.
+Related documents:
 
 - [loading.js](../03-api-reference/03-file-conventions/loading.md)
 - [Fetching Data](../01-getting-started/06-fetching-data.md)

@@ -411,6 +411,6 @@ type Sitemap = Array<{
 
 ## INDEX
 
-Learn how to use the generateSitemaps function.
+Related documents:
 
 - [generateSitemaps](../../04-functions/generate-sitemaps.md)

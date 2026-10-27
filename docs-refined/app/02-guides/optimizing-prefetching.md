@@ -413,7 +413,7 @@ When many links to a route are visible at once, such as a grid of cards, each `<
 
 ## INDEX
 
-Learn more about the APIs and concepts used in this guide.
+Related documents:
 
 - [Keeping pages static](./keeping-pages-static.md)
 - [partialPrefetching](../03-api-reference/05-config/01-next-config-js/partialPrefetching.md)

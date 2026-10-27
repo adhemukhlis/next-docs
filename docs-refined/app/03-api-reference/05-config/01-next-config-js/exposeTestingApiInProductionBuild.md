@@ -65,7 +65,7 @@ The option requires [`cacheComponents`](./cacheComponents.md). Development build
 
 ## INDEX
 
-Learn how to inspect and test instant navigation.
+Related documents:
 
 - [instant](../../03-file-conventions/02-route-segment-config/instant.md)
 - [Ensuring instant navigations](../../../02-guides/instant-navigation.md)

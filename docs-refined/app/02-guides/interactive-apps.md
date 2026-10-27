@@ -787,7 +787,7 @@ Related guides:
 
 ## INDEX
 
-Learn more about the APIs used in this guide.
+Related documents:
 
 - [refresh](../03-api-reference/04-functions/refresh.md)
 - [use cache](../03-api-reference/01-directives/use-cache.md)

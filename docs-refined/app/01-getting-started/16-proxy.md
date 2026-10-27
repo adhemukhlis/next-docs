@@ -73,7 +73,7 @@ Read more about [using `proxy`](../02-guides/backend-for-frontend.md#proxy), or 
 
 ## INDEX
 
-Learn more about Proxy
+Related documents:
 
 - [proxy.js](../03-api-reference/03-file-conventions/proxy.md)
 - [How to use Next.js as a backend for your frontend](../02-guides/backend-for-frontend.md)

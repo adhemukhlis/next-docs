@@ -476,5 +476,7 @@ See the [Loading UI](./loading.md) and [Error Handling](../../01-getting-started
 
 ## INDEX
 
+Related documents:
+
 - [default.js](./default.md)
 - [How to implement authentication in Next.js](../../02-guides/authentication.md)

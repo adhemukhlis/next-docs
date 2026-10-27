@@ -69,7 +69,7 @@ See [Deploying to Platforms](./deploying-to-platforms.md#cdn-infrastructure-comp
 
 ## INDEX
 
-Learn more about the features discussed on this page.
+Related documents:
 
 - [Caching](../01-getting-started/08-caching.md)
 - [Streaming](./streaming.md)

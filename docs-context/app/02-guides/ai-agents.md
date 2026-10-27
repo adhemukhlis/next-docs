@@ -288,7 +288,7 @@ Make the product title instant when navigating from /products to /products/[id].
 
 ## INDEX
 
-Learn more about the APIs and tools described in this guide.
+Related documents:
 
 - [Connecting coding agents to the Next.js MCP server](./mcp.md)
 - [Upgrading](../01-getting-started/18-upgrading.md)

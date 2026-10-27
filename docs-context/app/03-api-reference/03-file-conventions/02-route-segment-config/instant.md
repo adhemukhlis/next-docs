@@ -167,7 +167,7 @@ export const instant: InstantConfig = true
 
 ## INDEX
 
-Learn how to use instant navigations in practice.
+Related documents:
 
 - [Ensuring instant navigations](../../../02-guides/instant-navigation.md)
 - [ensureStatic](./ensureStatic.md)

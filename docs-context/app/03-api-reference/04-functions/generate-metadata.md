@@ -1632,7 +1632,7 @@ export const metadata = {
 
 ## INDEX
 
-View all the Metadata API options.
+Related documents:
 
 - [Metadata Files API Reference](../03-file-conventions/01-metadata/index.md)
 - [generateViewport](./generate-viewport.md)

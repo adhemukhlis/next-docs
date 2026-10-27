@@ -137,4 +137,6 @@ export function onRequestError() {
 
 ## INDEX
 
+Related documents:
+
 - [How to set up instrumentation](../../02-guides/instrumentation.md)

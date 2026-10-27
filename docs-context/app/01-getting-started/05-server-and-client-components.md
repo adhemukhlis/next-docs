@@ -583,7 +583,7 @@ Next.js also provides its own type declarations for `server-only` and `client-on
 
 ## INDEX
 
-Learn more about the APIs mentioned in this page.
+Related documents:
 
 - [use client](../03-api-reference/01-directives/use-client.md)
 - [The Server and Client Boundary](../02-guides/server-and-client-boundary.md)

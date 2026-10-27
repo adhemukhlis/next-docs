@@ -31,4 +31,6 @@ To use the `src` folder, move the `app` Router folder or `pages` Router folder t
 
 ## INDEX
 
+Related documents:
+
 - [Project structure and organization](../../01-getting-started/02-project-structure.md)

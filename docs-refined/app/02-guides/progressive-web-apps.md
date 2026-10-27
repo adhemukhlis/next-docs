@@ -663,4 +663,6 @@ Learn more about defining [Content Security Policies](./content-security-policy.
 
 ## INDEX
 
+Related documents:
+
 - [manifest.json](../03-api-reference/03-file-conventions/01-metadata/manifest.md)

@@ -576,7 +576,7 @@ For opted-out segments, the navigation blocks on the server. If the content depe
 
 ## INDEX
 
-Explore the full instant API, caching, and revalidation.
+Related documents:
 
 - [instant](../03-api-reference/03-file-conventions/02-route-segment-config/instant.md)
 - [Optimizing prefetching](./optimizing-prefetching.md)

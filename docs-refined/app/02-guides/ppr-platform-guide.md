@@ -108,7 +108,7 @@ For the complete adapter API reference and implementation examples, see the [Dep
 
 ## INDEX
 
-Related guides and references.
+Related documents:
 
 - [Next.js Rendering Philosophy](./rendering-philosophy.md)
 - [Streaming](./streaming.md)

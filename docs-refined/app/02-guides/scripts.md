@@ -262,6 +262,6 @@ export default function Page() {
 
 ## INDEX
 
-Learn more about the next/script API.
+Related documents:
 
 - [Script Component](../03-api-reference/02-components/script.md)

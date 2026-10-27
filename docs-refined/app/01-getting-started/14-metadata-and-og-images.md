@@ -313,7 +313,7 @@ export default async function Image({ params }) {
 
 ## INDEX
 
-Learn more about the Metadata APIs mentioned in this page.
+Related documents:
 
 - [generateMetadata](../03-api-reference/04-functions/generate-metadata.md)
 - [generateViewport](../03-api-reference/04-functions/generate-viewport.md)

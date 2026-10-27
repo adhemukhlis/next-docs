@@ -162,7 +162,7 @@ export const ensureStatic: EnsureStatic = 'navigation'
 
 ## INDEX
 
-Choose a static level or defer selected subtrees to a later navigation stage.
+Related documents:
 
 - [Keeping pages static](../../../02-guides/keeping-pages-static.md)
 - [Optimizing prefetching](../../../02-guides/optimizing-prefetching.md)

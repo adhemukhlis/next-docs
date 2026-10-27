@@ -10,7 +10,7 @@ Entry point of the **Components** section: it only introduces the section and ma
 
 1. Frontmatter: `title: Components` and a one-sentence `description`. No other keys.
 2. Optional: one short sentence introducing the section. Nothing more.
-3. `## INDEX`, the last section: the lead "Documents in this section:", then the section list.
+3. `## INDEX`, the last section: the lead `Documents in this section:`, then the section list.
 
 ## Section list
 

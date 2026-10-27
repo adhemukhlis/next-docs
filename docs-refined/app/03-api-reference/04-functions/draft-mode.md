@@ -136,6 +136,6 @@ export default async function Page() {
 
 ## INDEX
 
-Learn how to use Draft Mode with this step-by-step guide.
+Related documents:
 
 - [How to preview content with Draft Mode in Next.js](../../02-guides/draft-mode.md)

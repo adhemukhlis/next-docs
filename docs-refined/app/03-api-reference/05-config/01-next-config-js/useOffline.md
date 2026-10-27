@@ -96,5 +96,7 @@ In practice, this feature is unlikely to flood your server. The only extra traff
 
 ## INDEX
 
+Related documents:
+
 - [useOffline](../../04-functions/use-offline.md)
 - [How to build a Progressive Web Application (PWA) with Next.js](../../../02-guides/progressive-web-apps.md)

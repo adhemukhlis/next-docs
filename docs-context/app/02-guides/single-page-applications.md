@@ -562,7 +562,7 @@ If you are already using a SPA with the Pages Router, you can learn how to [incr
 
 ## INDEX
 
-Related guides and references.
+Related documents:
 
 - [Client-side data fetching](./client-side-data-fetching/index.md)
 - [Building interactive apps](./interactive-apps.md)

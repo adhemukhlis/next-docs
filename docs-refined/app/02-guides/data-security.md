@@ -596,7 +596,7 @@ If you're doing an audit of a Next.js project, here are a few things we recommen
 
 ## INDEX
 
-Learn more about the topics mentioned in this guide.
+Related documents:
 
 - [How to implement authentication in Next.js](./authentication.md)
 - [How to set a Content Security Policy (CSP) for your Next.js application](./content-security-policy.md)

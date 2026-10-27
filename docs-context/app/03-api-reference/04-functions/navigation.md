@@ -189,6 +189,8 @@ A `Promise<void>`. It is not meant to be consumed.
 
 ## INDEX
 
+Related documents:
+
 - [Optimizing prefetching](../../02-guides/optimizing-prefetching.md)
 - [Keeping pages static](../../02-guides/keeping-pages-static.md)
 - [prefetch](./prefetch.md)

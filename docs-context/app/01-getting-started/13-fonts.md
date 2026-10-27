@@ -198,6 +198,6 @@ const roboto = localFont({
 
 ## INDEX
 
-See the API Reference for the full feature set of Next.js Font
+Related documents:
 
 - [Font Module](../03-api-reference/02-components/font.md)

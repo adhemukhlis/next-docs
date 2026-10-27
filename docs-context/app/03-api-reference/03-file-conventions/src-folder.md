@@ -31,4 +31,6 @@ height="687"
 
 ## INDEX
 
+Related documents:
+
 - [Project structure and organization](../../01-getting-started/02-project-structure.md)

@@ -110,7 +110,7 @@ For a full table showing the infrastructure primitives available on every major 
 
 ## INDEX
 
-Related guides and references.
+Related documents:
 
 - [Deploying Next.js to different platforms](./deploying-to-platforms.md)
 - [How to self-host your Next.js application](./self-hosting.md)

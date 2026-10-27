@@ -10,7 +10,7 @@ Entry point of the **Metadata Files API Reference** section, and an overview of 
 
 1. Frontmatter: `title: Metadata Files API Reference`, `nav_title: Metadata Files` and a one-sentence `description`. No other keys.
 2. The overview content described above, refined per `global.rules.md`.
-3. `## INDEX`, the last section: the lead "Documents in this section:", then the section list.
+3. `## INDEX`, the last section: the lead `Documents in this section:`, then the section list.
 
 ## Section list
 

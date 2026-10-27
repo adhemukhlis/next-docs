@@ -439,6 +439,8 @@ export function LocaleSwitcher() {
 
 ## INDEX
 
+Related documents:
+
 - [Link Component](../03-api-reference/02-components/link.md)
 - [loading.js](../03-api-reference/03-file-conventions/loading.md)
 - [Optimizing prefetching](../02-guides/optimizing-prefetching.md)

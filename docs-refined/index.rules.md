@@ -11,7 +11,7 @@ Entry point of the docs: state what this documentation is, then map every docume
 1. Frontmatter: `title: Next.js Docs` and a one-sentence `description`. No other keys.
 2. One short intro paragraph: Next.js documentation, App Router only, stable first-class APIs only.
 3. A GFM `> [!CAUTION]` alert (marker alone on its line, content on the following `> ` lines): bold "**REFINED, not official.**" lead, then the risks as a list — no legacy (Pages Router and older patterns removed, point to the official docs), canary snapshot (may be unreleased or lag behind upstream), AI-edited (may contain mistakes, verify against official docs), removed information (links outside the App Router docs may be dead). Keep it to these points; update them if the scope of the refinement changes.
-4. `## INDEX`: a one-line lead, then the document list.
+4. `## INDEX`: the lead `Documents in this section:`, then the document list.
 
 ## Document list
 

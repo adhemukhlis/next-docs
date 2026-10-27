@@ -344,7 +344,7 @@ export default function Layout(props: LayoutProps<'/dashboard'>) {
 
 ## INDEX
 
-Learn more about the features mentioned in this page by reading the API Reference.
+Related documents:
 
 - [Linking and Navigating](./04-linking-and-navigating.md)
 - [layout.js](../03-api-reference/03-file-conventions/layout.md)

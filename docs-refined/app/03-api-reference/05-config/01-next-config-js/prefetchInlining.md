@@ -94,7 +94,7 @@ Lower thresholds keep more per-segment deduplication; higher thresholds inline m
 
 ## INDEX
 
-View related API references and guides.
+Related documents:
 
 - [Link Component](../../02-components/link.md)
 - [Prefetching](../../../02-guides/prefetching.md)

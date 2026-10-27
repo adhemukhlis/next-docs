@@ -529,5 +529,7 @@ const cspHeader = `
 
 ## INDEX
 
+Related documents:
+
 - [proxy.js](../03-api-reference/03-file-conventions/proxy.md)
 - [headers](../03-api-reference/04-functions/headers.md)

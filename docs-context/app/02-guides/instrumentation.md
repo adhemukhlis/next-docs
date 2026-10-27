@@ -91,4 +91,6 @@ export async function register() {
 
 ## INDEX
 
+Related documents:
+
 - [instrumentation.js](../03-api-reference/03-file-conventions/instrumentation.md)

@@ -89,7 +89,7 @@ The following features are currently available in canary:
 
 ## INDEX
 
-See the version guides for in-depth upgrade instructions.
+Related documents:
 
 - [How to upgrade to version 16](../02-guides/upgrading/version-16.md)
 - [How to upgrade to version 15](../02-guides/upgrading/version-15.md)

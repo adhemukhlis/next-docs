@@ -754,7 +754,7 @@ Learn how to [configure caching](../../02-guides/self-hosting.md#caching-and-isr
 
 ## INDEX
 
-View related API references.
+Related documents:
 
 - [use cache: private](./use-cache-private.md)
 - [cacheComponents](../05-config/01-next-config-js/cacheComponents.md)

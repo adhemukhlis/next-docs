@@ -197,7 +197,7 @@ export async function GET(_req: NextRequest, ctx: RouteContext<'/users/[id]'>) {
 
 ## INDEX
 
-Learn more about Route Handlers
+Related documents:
 
 - [route.js](../03-api-reference/03-file-conventions/route.md)
 - [How to use Next.js as a backend for your frontend](../02-guides/backend-for-frontend.md)

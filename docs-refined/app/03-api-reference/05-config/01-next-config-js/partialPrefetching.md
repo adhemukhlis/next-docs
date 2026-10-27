@@ -62,7 +62,7 @@ A segment that exports an explicit [`prefetch`](../../03-file-conventions/02-rou
 
 ## INDEX
 
-View related API references and guides.
+Related documents:
 
 - [cacheComponents](./cacheComponents.md)
 - [prefetch](../../03-file-conventions/02-route-segment-config/prefetch.md)

@@ -10,7 +10,7 @@ Entry point of the **Route Segment Config** section, and an overview of it: what
 
 1. Frontmatter: `title: Route Segment Config` and a one-sentence `description`. No other keys.
 2. The overview content described above, refined per `global.rules.md`.
-3. `## INDEX`, the last section: the lead "Documents in this section:", then the section list.
+3. `## INDEX`, the last section: the lead `Documents in this section:`, then the section list.
 
 ## Section list
 
