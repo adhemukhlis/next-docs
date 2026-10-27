@@ -1,5 +1,5 @@
 // Pull the latest Next.js docs (canary) into docs/, App Router only.
-// Usage: bun script.mjs [--force | --fmt]
+// Usage: bun fetch.mjs [--force | --fmt]
 //   --force  overwrite docs/ even if it has uncommitted changes
 //   --fmt    only run formatting (Step 9), no pull
 
