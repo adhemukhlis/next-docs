@@ -37,4 +37,4 @@ Bun only, plain JavaScript (ESM). No TypeScript, no `tsconfig.json`.
 - `Bun.file` / `Bun.write` for file I/O, `Bun.Glob` for walking, `Bun.$` for shell, `Bun.argv`, `import.meta.dir`.
 - `node:fs/promises` only for what Bun lacks (`rm`, `rename`, `readdir`, `mkdir`).
 
-Detailed rules live in `.claude/rules/`.
+Detailed rules live in `.claude/rules/`. To refine documents, use the `refine` skill (`.claude/skills/refine/`).
