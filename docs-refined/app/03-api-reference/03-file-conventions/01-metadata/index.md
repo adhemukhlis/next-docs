@@ -10,6 +10,7 @@ Each file convention can be defined using a static file (e.g. `opengraph-image.j
 
 Once a file is defined, Next.js will automatically serve the file (with hashes in production for caching) and update the relevant head elements with the correct metadata, such as the asset's URL, file type, and image size.
 
+> [!TIP]
 > **Good to know**:
 >
 > - Special Route Handlers like [`sitemap.ts`](./sitemap.md), [`opengraph-image.tsx`](./opengraph-image.md), and [`icon.tsx`](./app-icons.md), and other [metadata files](./index.md) are cached by default.

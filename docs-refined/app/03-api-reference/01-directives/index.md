@@ -13,7 +13,8 @@ Directives are string literals that tell the compiler and bundler how to treat t
 
 The `'use cache'` directive also has [`'use cache: remote'`](./use-cache-remote.md) and [`'use cache: private'`](./use-cache-private.md) variants. Configure custom [cache handlers](../05-config/01-next-config-js/cacheHandlers.md) to control where cached entries are stored.
 
-> **Good to know:** Next.js applies directives during compilation in both development and production.
+> [!TIP]
+> **Good to know**: Next.js applies directives during compilation in both development and production.
 >
 > The error overlay, indicators, and stack traces point to your source file and line rather than the generated output.
 

@@ -31,6 +31,7 @@ const nextConfig = {/* config options here */}
 export default nextConfig
 ```
 
+> [!TIP]
 > **Good to know**: `next.config` with the `.cjs` or `.cts` extensions are currently **not** supported.
 
 ## Configuration as a Function

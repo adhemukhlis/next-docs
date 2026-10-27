@@ -55,6 +55,15 @@ A route's UI file is a React component, so always name it with its JSX extension
 - Match the language of the surrounding example: `page.tsx` next to TypeScript, `page.jsx` next to JavaScript. In prose with no example, use `page.tsx`.
 - Applies to prose, inline code, and code fence filenames: a `jsx` block uses `filename="app/.../page.jsx"`, a `tsx` block `filename="app/.../page.tsx"` (TS/JS switcher pairs must match each other).
 
+## React files: `.jsx` / `.tsx` only
+
+Every file that contains React syntax (JSX) uses `.jsx` or `.tsx`, never `.js` — the `page` rule above applies to all of them. Writing JSX in `.js` is a habit these docs don't teach.
+
+- File conventions that export a React component: `layout`, `page`, `template`, `loading`, `not-found`, `error`, `global-error`, `default`, and the like. Write them as `layout.tsx` / `layout.jsx`, never `layout.js` or bare `layout` in prose.
+- In tables of supported extensions, list `.jsx` `.tsx` only for these files.
+- `route` is the exception: a route handler has no JSX, so it stays `.js` / `.ts` (`route.ts` in prose).
+- Same matching as for `page`: `.tsx` next to TypeScript, `.jsx` next to JavaScript, `.tsx` in prose with no example; code fence filenames included.
+
 ## Links
 
 - Internal links are file paths relative to the linking document, with the real file names (`NN-` prefixes and `.md` included): `[Forms](../02-guides/forms.md#server-actions)`, not `[Forms](./app/02-guides/forms.md)`. This also applies to reference definitions.
@@ -85,6 +94,26 @@ Related documents:
 - List items: `- [<frontmatter title of the target>](<relative path>)`. Titles only, no per-item descriptions.
 - Related documents keep the order of the old `related.links`. Drop links to documents that don't exist in `docs-refined/`.
 - `bun run build` enforces this: it rejects any frontmatter key other than `title`, `description`, `nav_title`, `version`, a `## INDEX` that isn't the last section, and anything in it other than the two leads, each followed by a list.
+
+## No images
+
+Delete every `<Image … />` element outside code fences (the multi-line block with `alt`, `srcLight`, `srcDark`, `width`, `height`), along with the blank line around it. It renders a picture on nextjs.org only, and an AI agent doesn't read images.
+
+- Code inside fences is exempt: an `<Image>` in a code example (`next/image` usage) stays.
+- Don't replace the image with a description; the surrounding text stays as it is.
+- Upstream changes never carry new `<Image>` elements over.
+
+## Good to know: GFM `[!TIP]` alert
+
+A "Good to know" blockquote becomes a GFM `[!TIP]` alert. Keep the bold `**Good to know**:` label and the text as they are; only add the `> [!TIP]` line above it.
+
+```md
+> [!TIP]
+> **Good to know**: Helpful advice for doing things better or more easily.
+```
+
+- Multi-line notes keep their body: `> [!TIP]`, then `> **Good to know**:`, `>`, and the `> - …` list items.
+- `> [!TIP]` stays alone on its line (`bun run fmt` restores it if the formatter joins them).
 
 ## Package manager: npm and pnpm only
 
