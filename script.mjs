@@ -1,6 +1,7 @@
 // Pull the latest Next.js docs (canary) into docs/, App Router only.
-// Usage: bun script.js [--force]
+// Usage: bun script.mjs [--force | --fmt]
 //   --force  overwrite docs/ even if it has uncommitted changes
+//   --fmt    only run formatting (Step 9), no pull
 
 import { $ } from 'bun'
 import { rm, rename, readdir } from 'node:fs/promises'
@@ -14,6 +15,11 @@ const ignoreList = ['02-pages', '03-architecture', '04-community']
 const force = Bun.argv.includes('--force')
 
 $.cwd(rootDir)
+
+if (Bun.argv.includes('--fmt')) {
+	await format()
+	process.exit(0)
+}
 
 // Step 0: Refuse to wipe uncommitted refinements in docs/, then clean up previous runs
 const dirty = (await $`git status --porcelain -- docs`.quiet().nothrow().text()).trim()
@@ -99,11 +105,16 @@ for (const file of files) {
 }
 console.log(`  ✨ Processed ${files.length} file(s), converted ${convertedCount} .mdx file(s) to .md.`)
 
-// Step 9: Format with bun fmt (reads .prettierrc)
+// Step 9: Format with bun fmt
 console.log('\n🎨 Step 9: Running formatting...')
-await $`bun fmt --no-script --log-level silent docs`
+await format()
 
 console.log('\n🎉 All steps completed successfully!')
+
+// Formatting options live here, inline — the repo has no formatter config file
+async function format() {
+	await $`bun fmt --no-script --no-config --log-level silent --ignore-pattern node_modules --ignore-pattern data --use-tabs --tab-width 1 --bracket-same-line --single-quote --trailing-comma all --arrow-parens always --no-semi --prose-wrap never --print-width 180 --single-attribute-per-line --object-wrap preserve --end-of-line lf .`
+}
 
 async function isDir(path) {
 	try {
