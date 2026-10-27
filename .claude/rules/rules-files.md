@@ -26,6 +26,10 @@ What the document is for and who reads it, in 1–3 sentences. What it is not (w
 
 Numbered list: frontmatter, then each `##` section (with required `###` subsections) and what it holds. Ends with `## INDEX` when the document has one.
 
+## Sources
+
+Other documents in `docs-refined/` this one must stay consistent with, and which parts follow them (e.g. "Quick start follows the `create-next-app` reference"). Link to the source for more detail instead of repeating it.
+
 ## Keep
 
 Facts that must survive refining exactly: versions, commands, CLI output, option names, defaults, code examples that must stay.

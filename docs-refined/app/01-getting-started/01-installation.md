@@ -1,36 +1,52 @@
 ---
 title: Installation
-description: Learn how to create a new Next.js application with the `create-next-app` CLI, and set up TypeScript, ESLint, and Module Path Aliases.
+description: Create a Next.js App Router app with `create-next-app` or by manual installation, run the development server, and set up TypeScript, editor labels, linting, module path aliases, and upgrades.
 ---
 
 Create a new Next.js app and run it locally.
 
 ## Quick start
 
-1. Create a new Next.js app named `my-app`.
-2. `cd my-app` and start the dev server.
-3. Visit `http://localhost:3000`.
+Create a Next.js app named `my-app` with explicit options, then start the development server on `http://localhost:3000`:
 
 ```bash package="pnpm"
-pnpm create next-app@latest my-app --yes
+pnpm create next-app my-app \
+  --app \
+  --src-dir \
+  --typescript \
+  --import-alias "@/*" \
+  --turbopack \
+  --cache-components \
+  --react-compiler \
+  --biome \
+  --tailwind \
+  --use-pnpm
 cd my-app
 pnpm dev
 ```
 
 ```bash package="npm"
-npx create-next-app@latest my-app --yes
+npx create-next-app@latest my-app \
+  --app \
+  --src-dir \
+  --typescript \
+  --import-alias "@/*" \
+  --turbopack \
+  --cache-components \
+  --react-compiler \
+  --biome \
+  --tailwind \
+  --use-npm
 cd my-app
 npm run dev
 ```
 
-- `--yes` skips prompts using saved preferences or defaults. The default setup enables TypeScript, Tailwind CSS, ESLint, App Router, and Turbopack, with import alias `@/*`, and includes `AGENTS.md` to guide coding agents to write up-to-date Next.js code.
+- Essential: `--app`, `--src-dir`, `--typescript`, `--import-alias`, `--turbopack`. The rest are optional.
+- More detail: [`create-next-app`](../03-api-reference/06-cli/create-next-app.md#with-explicit-options) — every option and what each flag sets.
 
 ## System requirements
 
-Before you begin, make sure your development environment meets the following requirements:
-
-- Minimum Node.js version: [20.9](https://nodejs.org/)
-- Operating systems: macOS, Windows (including WSL), and Linux.
+- Node.js 20.9 or later.
 
 ## Supported browsers
 
